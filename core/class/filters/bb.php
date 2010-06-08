@@ -155,7 +155,7 @@ function bb_filter($bb2html)
     }
 
     $bb2html = str_replace(' :newline: ', "\n", $bb2html);
-    $bb2html = PHPWS_Text::breaker($bb2html);
+    $bb2html = Text::breaker($bb2html);
     return $bb2html;
 }
 

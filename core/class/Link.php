@@ -1,10 +1,12 @@
 <?php
+namespace Core;
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-class PHPWS_Link {
+
+class Link {
     public  $label       = null;
     public  $module      = null;
     public  $address     = null;
@@ -202,16 +204,16 @@ class PHPWS_Link {
     public function getAuthKey()
     {
         // if not secure, authkey irrelevant
-        if (!$this->secure || !class_exists('Current_User')) {
+        if (!$this->secure || !class_exists('\Current_User')) {
             return null;
         }
 
         if ($this->salted) {
             // Have to make them strings because GET will change them on the
             // other side.
-            return Current_User::getAuthKey(PHPWS_Text::saltArray($this->values));
+            return \Current_User::getAuthKey(Text::saltArray($this->values));
         } else {
-            $result = Current_User::getAuthKey();
+            $result = \Current_User::getAuthKey();
             return $result;
         }
     }
@@ -349,4 +351,6 @@ class PHPWS_Link {
         return $this->get();
     }
 }
+
+class PHPWS_Link extends Link {}
 ?>

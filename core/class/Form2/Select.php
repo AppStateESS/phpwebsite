@@ -101,7 +101,7 @@ class Select extends Base {
      * alter the options.
      * @return unknown_type
      */
-    public function __toString($with_label=false)
+    public function __toString()
     {
         $optgroups_exist = false;
         if (!empty($this->options)) {
@@ -123,7 +123,7 @@ class Select extends Base {
             }
         }
         $this->setValue(implode("\n", $value));
-        return parent::__toString($with_label);
+        return parent::__toString();
     }
 
     public function setSelected($name)

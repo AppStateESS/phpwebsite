@@ -62,9 +62,9 @@ class Base extends Tag {
         $this->label = $label;
     }
 
-    public function __toString($with_label=false)
+    public function __toString()
     {
-        if ($with_label && isset($this->id) && !empty($this->label)) {
+        if (isset($this->id) && !empty($this->label)) {
             return sprintf('<label for="%s">%s</label> %s', $this->id, $this->label, parent::__toString());
         } else {
             return parent::__toString();

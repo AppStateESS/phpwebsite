@@ -1,5 +1,5 @@
 <?php
-
+namespace Core;
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -13,15 +13,15 @@ class Backup {
 
     public function setCurrentId($id){
         if (empty($id)) {
-            return  PHPWS_Error::get(PHPWS_INVALID_VALUE, 'core', __CLASS__ . '::' . __FUNCTION__);
+            return  Error::get(PHPWS_INVALID_VALUE, 'core', __CLASS__ . '::' . __FUNCTION__);
         }
 
         $this->current_id = $id;
     }
 
     public function setTable($table){
-        if (!PHPWS_DB::isTable($table)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_TABLE, 'core', __CLASS__ . '::' . __FUNCTION__);
+        if (!DB::isTable($table)) {
+            return Error::get(DB_NO_TABLE, 'core', __CLASS__ . '::' . __FUNCTION__);
         }
 
         $this->table = $table;
@@ -33,10 +33,10 @@ class Backup {
     }
 
     public function buildPastItems(){
-        if (!PHPWS_DB::isTable($this->getBackupTableName())) {
+        if (!DB::isTable($this->getBackupTableName())) {
             $result = $this->_buildBackupTable();
 
-            if (PHPWS_Error::isError($result))
+            if (Error::isError($result))
             return $result;
         }
 
@@ -45,13 +45,13 @@ class Backup {
     }
 
     public function getPastItems(){
-        $db = new PHPWS_DB($this->table);
+        $db = new DB($this->table);
         $db->addWhere('id', $this->current_id);
         return $db->select('row');
     }
 
     public function _buildBackupTable($table){
-        $db = new PHPWS_DB($table);
+        $db = new DB($table);
         $result = $db->getTableColumns(TRUE);
 
         foreach ($result as $col){
@@ -60,18 +60,18 @@ class Backup {
             $allColumns[] = $col;
         }
 
-        $columns = PHPWS_DB::parseColumns($allColumns);
+        $columns = DB::parseColumns($allColumns);
         $columns[] = 'backup_id int NOT NULL';
         $columns[] = 'backup_order smallint NOT NULL';
 
         $sql = 'CREATE TABLE ' . Backup::getBackupTableName($table) .
             ' (' . implode(', ', $columns) . ')';
 
-        return PHPWS_DB::query($sql);
+        return DB::query($sql);
     }
 
     public function create($main_id, $backup_id, $item_order){
-        $db = new PHPWS_DB(Backup::getBackupTableName());
+        $db = new DB(Backup::getBackupTableName());
         $db->addValue('main_id', $main_id);
         $db->addValue('backup_id', $backup_id);
         $db->addValue('item_order', $item_order);
@@ -80,19 +80,19 @@ class Backup {
 
 
     public function save($item_id, $table, $total_backups=5){
-        if (!PHPWS_DB::isTable($table)) {
+        if (!DB::isTable($table)) {
             return FALSE;
         }
 
         $backupTable = Backup::getBackupTable($table);
-        if (PHPWS_Error::isError($backupTable))
+        if (Error::isError($backupTable))
         return $backupTable;
 
-        $db = new PHPWS_DB($table);
+        $db = new DB($table);
         $db->addWhere('id', $item_id);
         $source_row = $db->select('row');
 
-        $db2 = new PHPWS_DB($backupTable);
+        $db2 = new DB($backupTable);
         $db2->addWhere('backup_id', $source_row['id']);
         $db2->addOrder('backup_order');
         $past_rows = $db2->select();
@@ -125,15 +125,15 @@ class Backup {
     }
 
     public function getBackupTable($table){
-        if (!PHPWS_DB::isTable($table)) {
+        if (!DB::isTable($table)) {
             return FALSE;
         }
 
         $backupTable = Backup::getBackupTableName($table);
-        if (!PHPWS_DB::isTable($backupTable)){
+        if (!DB::isTable($backupTable)){
             $result = Backup::_buildBackupTable($table);
 
-            if (PHPWS_Error::isError($result)) {
+            if (Error::isError($result)) {
                 return $result;
             }
         }
@@ -142,20 +142,20 @@ class Backup {
 
     public function get($item_id, $table){
         $backupTable = Backup::getBackupTable($table);
-        if (PHPWS_Error::isError($backupTable))
+        if (Error::isError($backupTable))
         return $backupTable;
 
-        $db = new PHPWS_DB($backupTable);
+        $db = new DB($backupTable);
         $db->addOrder('backup_order desc');
         return $db->select();
     }
 
     public function flush($item_id, $table){
         $backupTable = Backup::getBackupTable($table);
-        if (PHPWS_Error::isError($backupTable))
+        if (Error::isError($backupTable))
         return $backupTable;
 
-        $db = new PHPWS_DB($backupTable);
+        $db = new DB($backupTable);
         $db->addWhere('backup_id', $item_id);
         return $db->delete();
     }

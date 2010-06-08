@@ -34,6 +34,7 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
 
     /**
      * Reference to the parent object's primary key.
+     * Set in loadDatabase
      * @var integer
      */
     private $primary_key = null;
@@ -151,7 +152,7 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
     {
         $this->object_values = $this->pullValues();
         //removes the id column to be inserted later or used as a conditional
-        unset($this->object_values['id']);
+        unset($this->object_values[$this->primary_key_column]);
     }
 
     /**
@@ -208,7 +209,7 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
         if ($this->primary_key) {
             // old object, update
             $this->new_object = false;
-            $this->db2_table->addWhere($this->primary_key_column, $this->primary_key);
+            //$this->db2_table->addWhere($this->primary_key_column, $this->primary_key);
             $this->db2->update();
         } else {
             // new object, insert
@@ -248,6 +249,11 @@ abstract class DB2_Object extends Data implements DB2_Object_Interface {
         }
         $this->db2_table->addWhere($this->primary_key_column, $this->primary_key);
         $this->db2->delete();
+    }
+
+    public function getLastQuery()
+    {
+        return $this->db2->query;
     }
 }
 

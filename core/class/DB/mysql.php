@@ -55,7 +55,7 @@ class mysql_PHPWS_SQL {
 
     public function renameColumn($table, $column_name, $new_name, $specs)
     {
-        $table = PHPWS_DB::addPrefix($table);
+        $table = DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
         $table, $column_name, $new_name, $specs['parameters']);
         return $sql;
@@ -86,9 +86,9 @@ class mysql_PHPWS_SQL {
 
     public function dropSequence($table)
     {
-        $table = PHPWS_DB::addPrefix($table);
-        $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP TABLE $table");
-        if (PHPWS_Error::isError($result)) {
+        $table = DB::addPrefix($table);
+        $result = $GLOBALS['DB']['connection']->query("DROP TABLE $table");
+        if (Error::isError($result)) {
             return $result;
         }
 
@@ -98,7 +98,7 @@ class mysql_PHPWS_SQL {
 
     public function dropTableIndex($name, $table)
     {
-        $table = PHPWS_DB::addPrefix($table);
+        $table = DB::addPrefix($table);
         return sprintf('DROP INDEX %s ON %s', $name, $table);
     }
 

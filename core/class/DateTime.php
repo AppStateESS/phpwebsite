@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * Contains functions to assist with the system Date and Time formats. The formats
  * are how the admin chooses the date to appear on their site,

@@ -68,11 +68,6 @@ class Input extends Base {
         }
     }
 
-    public function __toString()
-    {
-        return parent::__toString($this->type != 'submit');
-    }
-
     public function isHidden()
     {
         return $this->type == 'hidden';

@@ -1,5 +1,5 @@
 <?php
-
+namespace Core;
 define ('DBPAGER_DEFAULT_LIMIT', 25);
 define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
@@ -205,7 +205,7 @@ class DBPager {
     public function __construct($table, $class=null)
     {
         if (empty($table)) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
+            $this->error = Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
             return;
         }
 
@@ -227,9 +227,9 @@ class DBPager {
         }
 
         $this->table = & $table;
-        $this->db = new PHPWS_DB($table);
+        $this->db = new DB($table);
 
-        if (PHPWS_Error::isError($this->db)){
+        if (Error::isError($this->db)){
             $this->error = $this->db;
             $this->db = null;
         }
@@ -247,7 +247,7 @@ class DBPager {
             }
             $this->_class_vars = $class_var_list;
         } elseif ($class) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
+            $this->error = Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
         }
 
         $this->loadLink();
@@ -377,7 +377,7 @@ class DBPager {
 
     public function loadLink()
     {
-        $this->link = PHPWS_Core::getCurrentUrl(true, false);
+        $this->link = Core::getCurrentUrl(true, false);
     }
 
     public function setAnchor($anchor)
@@ -799,7 +799,7 @@ class DBPager {
         }
 
         $count = $this->getTotalRows();
-        if (PHPWS_Error::isError($count)) {
+        if (Error::isError($count)) {
             return $count;
         }
 
@@ -875,7 +875,7 @@ class DBPager {
 
         $this->row_query = $this->db->lastQuery();
 
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
@@ -924,17 +924,17 @@ class DBPager {
         if ($current_page != 1) {
             if ($total_pages > 500 && $current_page > 50) {
                 $values['pg'] = $current_page - 50;
-                $pageList[] = PHPWS_Text::moduleLink('&lt;&lt;&lt;', $module, $values, null, _('Back 50 pages'));
+                $pageList[] = Text::moduleLink('&lt;&lt;&lt;', $module, $values, null, _('Back 50 pages'));
             }
 
             if ($total_pages > 100 && $current_page > 10) {
                 $values['pg'] = $current_page - 10;
-                $pageList[] = PHPWS_Text::moduleLink('&lt;&lt;', $module, $values, null, _('Back 10 pages'));
+                $pageList[] = Text::moduleLink('&lt;&lt;', $module, $values, null, _('Back 10 pages'));
             }
             $values['pg'] = $current_page - 1;
-            $pageList[] = PHPWS_Text::moduleLink('&lt;', $module, $values, null, _('Back one page'));
+            $pageList[] = Text::moduleLink('&lt;', $module, $values, null, _('Back one page'));
             $values['pg'] = 1;
-            $pageList[] = PHPWS_Text::moduleLink('1', $module, $values, null, _('First page'));
+            $pageList[] = Text::moduleLink('1', $module, $values, null, _('First page'));
         } else {
             $pageList[] = '[1]';
         }
@@ -950,7 +950,7 @@ class DBPager {
                     for ($i=2; $i < $current_page; $i++) {
                         if ($i != $current_page) {
                             $values['pg'] = 1;
-                            $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
+                            $pageList[] = Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
                         } else {
                             $pageList[] = "[$current_page]";
                         }
@@ -962,7 +962,7 @@ class DBPager {
 
                 for ($i=0,$j = $current_page + $skip; $i < $divider; $i++,$j += $skip) {
                     $values['pg'] = $j;
-                    $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
+                    $pageList[] = Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
             } else {
                 $beginning_pages = $current_page - 1;
@@ -984,7 +984,7 @@ class DBPager {
                 }
                 for ($i=0,$j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++,$j += $front_skip) {
                     $values['pg'] = $j;
-                    $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
+                    $pageList[] = Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
 
                 $pageList[] = "[$current_page]";
@@ -992,7 +992,7 @@ class DBPager {
                 if ($back_skip) {
                     for ($i=0,$j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++,$j += $back_skip) {
                         $values['pg'] = $j;
-                        $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
+                        $pageList[] = Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                     }
                 }
             }
@@ -1003,26 +1003,26 @@ class DBPager {
                     $pageList[] = "[$i]";
                 } else {
                     $values['pg'] = $i;
-                    $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
+                    $pageList[] = Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
                 }
             }
         }
 
         if ($total_pages != $current_page) {
             $values['pg'] = $total_pages;
-            $pageList[] = PHPWS_Text::moduleLink($total_pages, $module, $values, null, _('Last page'));
+            $pageList[] = Text::moduleLink($total_pages, $module, $values, null, _('Last page'));
 
             $values['pg'] = $current_page + 1;
-            $pageList[] = PHPWS_Text::moduleLink('&gt;', $module, $values, null, _('Forward one page'));
+            $pageList[] = Text::moduleLink('&gt;', $module, $values, null, _('Forward one page'));
 
             if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
                 $values['pg'] = $current_page + 10;
-                $pageList[] = PHPWS_Text::moduleLink('&gt;&gt;', $module, $values, null, _('Forward 10 pages'));
+                $pageList[] = Text::moduleLink('&gt;&gt;', $module, $values, null, _('Forward 10 pages'));
             }
 
             if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
                 $values['pg'] = $current_page + 50;
-                $pageList[] = PHPWS_Text::moduleLink('&gt;&gt;&gt;', $module, $values, null, _('Forward 50 pages'));
+                $pageList[] = Text::moduleLink('&gt;&gt;&gt;', $module, $values, null, _('Forward 50 pages'));
             }
         } else {
             $pageList[] = "[$current_page]";
@@ -1107,7 +1107,7 @@ class DBPager {
                 $button_string .= $this->sort_headers[$varname]['title'];
             }
 
-            $link = PHPWS_Text::moduleLink($button_string, $module, $values, null, $alt);
+            $link = Text::moduleLink($button_string, $module, $values, null, $alt);
 
             $template[strtoupper($buttonname)] = $link;
         }
@@ -1154,7 +1154,7 @@ class DBPager {
         }
 
         // pull any extra values in current url
-        $extra = PHPWS_Text::getGetValues();
+        $extra = Text::getGetValues();
         $search_val = & $extra['search'];
         if (UTF8_MODE) {
             $preg = '/[^\w\s\pL]/u';
@@ -1206,15 +1206,15 @@ class DBPager {
 
         if ($this->allow_partial_report) {
             $values['dbprt'] = 'csva';
-            $all = PHPWS_Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
+            $all = Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
 
             $values['dbprt'] = 'csvp';
-            $part = PHPWS_Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
+            $part = Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
 
             return sprintf(_('CSV Report - %s | %s'), $all, $part);
         } else {
             $values['dbprt'] = 'csva';
-            return PHPWS_Text::moduleLink(_('CSV Report'), $module, $values, null, _('Download a complete CSV file'));
+            return Text::moduleLink(_('CSV Report'), $module, $values, null, _('Download a complete CSV file'));
         }
     }
 
@@ -1241,7 +1241,7 @@ class DBPager {
                 $links[] = $limit;
             } else {
                 $values['limit'] = & $limit;
-                $links[] = PHPWS_Text::moduleLink($limit, $module, $values, null, sprintf(_('Limit results to %s rows'), $limit));
+                $links[] = Text::moduleLink($limit, $module, $values, null, sprintf(_('Limit results to %s rows'), $limit));
             }
         }
 
@@ -1285,7 +1285,7 @@ class DBPager {
 
                 if (!empty($this->row_tags)) {
                     if (!in_array($this->row_tags['method'], $this->_methods)) {
-                        return PHPWS_Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $this->row_tags['method']);
+                        return Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $this->row_tags['method']);
                     }
 
                     if (empty($this->row_tags['variable'])) {
@@ -1351,8 +1351,8 @@ class DBPager {
 
         $template = $form->getTemplate();
 
-        if (PHPWS_Error::isError($template)) {
-            PHPWS_Error::log($template);
+        if (Error::isError($template)) {
+            Error::log($template);
             return null;
         }
 
@@ -1393,8 +1393,8 @@ class DBPager {
         }
 
         $template = $form->getTemplate();
-        if (PHPWS_Error::isError($template)) {
-            PHPWS_Error::log($template);
+        if (Error::isError($template)) {
+            Error::log($template);
             return null;
         }
 
@@ -1415,7 +1415,7 @@ class DBPager {
 
         $pages = $this->getPageLinks();
 
-        if (PHPWS_Error::isError($pages)) {
+        if (Error::isError($pages)) {
             return $pages;
         }
 
@@ -1453,7 +1453,7 @@ class DBPager {
         }
 
         $index_set = false;
-        $tmp_file = PHPWS_Text::randomString(10) . time();
+        $tmp_file = Text::randomString(10) . time();
         $directory = CACHE_DIRECTORY;
         $file_path = sprintf('%s/%s', $directory, $tmp_file);;
         $fp = fopen($file_path, 'w');
@@ -1465,7 +1465,7 @@ class DBPager {
                 $result = call_user_func($this->report_row, $foo);
             } else {
                 if (is_object($foo)) {
-                    $result = PHPWS_Core::stripObjValues($foo);
+                    $result = Core::stripObjValues($foo);
                 } else {
                     $result = & $foo;
                 }
@@ -1517,7 +1517,7 @@ class DBPager {
 
         if (empty($this->display_rows)) {
             $result = $this->initialize();
-            if (PHPWS_Error::isError($result)) {
+            if (Error::isError($result)) {
                 return $result;
             }
         }
@@ -1529,16 +1529,16 @@ class DBPager {
         }
 
         if (!isset($this->module)) {
-            return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
+            return Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
         }
 
         if (!isset($this->template)) {
-            return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
+            return Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
         }
 
         $rows = $this->getPageRows();
 
-        if (PHPWS_Error::isError($rows)) {
+        if (Error::isError($rows)) {
             return $rows;
         }
 
@@ -1599,7 +1599,7 @@ class DBPager {
 
     public function saveLastView()
     {
-        $_SESSION['DBPager_Last_View'][$this->table] = PHPWS_Core::getCurrentUrl();
+        $_SESSION['DBPager_Last_View'][$this->table] = Core::getCurrentUrl();
     }
 
     public static function getLastView($table)

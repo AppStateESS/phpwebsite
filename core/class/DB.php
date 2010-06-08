@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * A database class
  *
@@ -26,7 +27,7 @@ if (!defined('ALLOW_TABLE_LOCKS')) {
     define('ALLOW_TABLE_LOCKS', false);
 }
 
-class PHPWS_DB {
+class DB {
     public $tables      = null;
     public $where       = array();
     public $order       = array();
@@ -69,12 +70,12 @@ class PHPWS_DB {
 
     public function __construct($table=null)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
         if (isset($table)) {
             $result = $this->setTable($table);
 
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Error::isError($result)) {
+                Error::log($result);
             }
         }
         $this->setMode('assoc');
@@ -89,8 +90,8 @@ class PHPWS_DB {
     }
     public static function touchDB()
     {
-        if (!PHPWS_DB::isConnected()) {
-            return PHPWS_DB::loadDB();
+        if (!DB::isConnected()) {
+            return DB::loadDB();
         }
     }
 
@@ -101,7 +102,7 @@ class PHPWS_DB {
 
     public static function isConnected()
     {
-        if (!empty($GLOBALS['PHPWS_DB']['connection'])) {
+        if (!empty($GLOBALS['DB']['connection'])) {
             return true;
         } else {
             return false;
@@ -115,11 +116,11 @@ class PHPWS_DB {
 
     public static function _updateCurrent($key)
     {
-        $GLOBALS['PHPWS_DB']['lib']        = $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'];
-        $GLOBALS['PHPWS_DB']['dsn']        = & $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn'];
-        $GLOBALS['PHPWS_DB']['connection'] = $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'];
-        $GLOBALS['PHPWS_DB']['tbl_prefix'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'];
-        $GLOBALS['PHPWS_DB']['type']       = & $GLOBALS['PHPWS_DB']['dbs'][$key]['type'];
+        $GLOBALS['DB']['lib']        = $GLOBALS['DB']['dbs'][$key]['lib'];
+        $GLOBALS['DB']['dsn']        = & $GLOBALS['DB']['dbs'][$key]['dsn'];
+        $GLOBALS['DB']['connection'] = $GLOBALS['DB']['dbs'][$key]['connection'];
+        $GLOBALS['DB']['tbl_prefix'] = & $GLOBALS['DB']['dbs'][$key]['tbl_prefix'];
+        $GLOBALS['DB']['type']       = & $GLOBALS['DB']['dbs'][$key]['type'];
     }
 
     public static function loadDB($dsn=null, $tbl_prefix=null, $force_reconnect=false, $show_error=true)
@@ -136,22 +137,22 @@ class PHPWS_DB {
         }
 
         $key = substr(md5($dsn . $tbl_prefix), 0, 10);
-        $dbname = PHPWS_DB::getDbName($dsn);
-        $GLOBALS['PHPWS_DB']['key'] = $key;
+        $dbname = DB::getDbName($dsn);
+        $GLOBALS['DB']['key'] = $key;
 
-        if (!empty($GLOBALS['PHPWS_DB']['dbs'][$key]['connection']) && !$force_reconnect) {
-            PHPWS_DB::_updateCurrent($key);
+        if (!empty($GLOBALS['DB']['dbs'][$key]['connection']) && !$force_reconnect) {
+            DB::_updateCurrent($key);
             return true;
         }
 
-        $pear_db = new DB;
+        $pear_db = new \DB;
         $connect = $pear_db->connect($dsn);
 
-        if (PHPWS_Error::isError($connect)) {
+        if (Error::isError($connect)) {
             if (CLEAR_DSN) {
                 $connect->userinfo = str_replace($dsn, '-- DSN removed --', $connect->userinfo);
             }
-            PHPWS_Error::log($connect);
+            Error::log($connect);
             if ($show_error) {
                 PHPWS_Core::errorPage();
             } else {
@@ -159,14 +160,14 @@ class PHPWS_DB {
             }
         }
 
-        PHPWS_DB::logDB(sprintf(_('Connected to database "%s"'), $dbname));
+        DB::logDB(sprintf(_('Connected to database "%s"'), $dbname));
 
         // Load the factory files
         $type = $connect->dbsyntax;
         $result = PHPWS_Core::initCoreClass('DB/' . $type .'.php');
         if ($result == false) {
-            PHPWS_DB::logDB(_('Failed to connect.'));
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB',
+            DB::logDB(_('Failed to connect.'));
+            Error::log(File_NOT_FOUND, 'core', 'DB::loadDB',
             PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
             PHPWS_Core::errorPage();
         }
@@ -177,13 +178,13 @@ class PHPWS_DB {
             $connect->setOption('portability', $dblib->portability);
         }
 
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['lib']        = $dblib;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn']        = $dsn;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'] = $connect;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['type']       = $type;
+        $GLOBALS['DB']['dbs'][$key]['lib']        = $dblib;
+        $GLOBALS['DB']['dbs'][$key]['dsn']        = $dsn;
+        $GLOBALS['DB']['dbs'][$key]['connection'] = $connect;
+        $GLOBALS['DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
+        $GLOBALS['DB']['dbs'][$key]['type']       = $type;
 
-        PHPWS_DB::_updateCurrent($key);
+        DB::_updateCurrent($key);
 
         return true;
     }
@@ -199,14 +200,14 @@ class PHPWS_DB {
 
     public static function query($sql, $prefix=true)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
         if ($prefix) {
-            $sql = PHPWS_DB::prefixQuery($sql);
+            $sql = DB::prefixQuery($sql);
         }
 
-        PHPWS_DB::logDB($sql);
+        DB::logDB($sql);
 
-        return $GLOBALS['PHPWS_DB']['connection']->query($sql);
+        return $GLOBALS['DB']['connection']->query($sql);
     }
 
     public function getColumnInfo($col_name, $parsed=false)
@@ -229,9 +230,9 @@ class PHPWS_DB {
 
     public function inDatabase($table, $column=null)
     {
-        $table = PHPWS_DB::addPrefix(strip_tags($table));
+        $table = DB::addPrefix(strip_tags($table));
 
-        PHPWS_DB::touchDB();
+        DB::touchDB();
         static $database_info = null;
 
         $column = trim($column);
@@ -245,8 +246,8 @@ class PHPWS_DB {
             }
         }
 
-        $result = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-        if (PHPWS_Error::isError($result)) {
+        $result = $GLOBALS['DB']['connection']->tableInfo($table);
+        if (Error::isError($result)) {
             if ($result->getCode() == DB_ERROR_NEED_MORE_DATA) {
                 return false;
             } else {
@@ -291,16 +292,16 @@ class PHPWS_DB {
         $table_check = $table_compare;
         foreach ($this->tables as $table) {
             if (!isset($table)) {
-                return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTableColumns');
+                return Error::get(DB_ERROR_TABLE, 'core', 'DB::getTableColumns');
             }
 
             $table = $this->addPrefix($table);
 
-            $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
+            $columns =  $GLOBALS['DB']['connection']->tableInfo($table);
 
-            if (PHPWS_Error::isError($columns)) {
-                PHPWS_Error::log('Could not get columns in table: ' . $table);
-                PHPWS_Error::log($columns);
+            if (Error::isError($columns)) {
+                Error::log('Could not get columns in table: ' . $table);
+                Error::log($columns);
                 return $columns;
             }
 
@@ -325,7 +326,7 @@ class PHPWS_DB {
     public function isTableColumn($column_name)
     {
         $columns = $this->getTableColumns();
-        if (PHPWS_Error::isError($columns)) {
+        if (Error::isError($columns)) {
             return $columns;
         }
         if (strpos($column_name, '.')) {
@@ -361,23 +362,23 @@ class PHPWS_DB {
 
     public static function isTable($table)
     {
-        PHPWS_DB::touchDB();
-        $tables = PHPWS_DB::listTables();
+        DB::touchDB();
+        $tables = DB::listTables();
 
-        $table = PHPWS_DB::addPrefix($table);
+        $table = DB::addPrefix($table);
         return in_array($table, $tables);
     }
 
     public static function listTables()
     {
-        PHPWS_DB::touchDB();
-        return $GLOBALS['PHPWS_DB']['connection']->getlistOf('tables');
+        DB::touchDB();
+        return $GLOBALS['DB']['connection']->getlistOf('tables');
     }
 
     public function listDatabases()
     {
-        PHPWS_DB::touchDB();
-        return $GLOBALS['PHPWS_DB']['connection']->getlistOf('databases');
+        DB::touchDB();
+        return $GLOBALS['DB']['connection']->getlistOf('databases');
     }
 
     public function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null, $ignore_tables=false)
@@ -401,14 +402,14 @@ class PHPWS_DB {
             }
             return;
         }
-        if (PHPWS_DB::allowed($table)) {
+        if (DB::allowed($table)) {
             if ($as) {
                 $this->table_as[$as] = $table;
             } elseif (empty($this->tables) || !in_array($table, $this->tables)) {
                 $this->tables[] = $table;
             }
         } else {
-            return PHPWS_Error::get(PHPWS_DB_BAD_TABLE_NAME, 'core', 'PHPWS_DB::addTable', $table);
+            return Error::get(DB_BAD_TABLE_NAME, 'core', 'DB::addTable', $table);
         }
         return true;
     }
@@ -439,9 +440,9 @@ class PHPWS_DB {
 
         $table = $this->addPrefix($table);
 
-        $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
+        $columns =  $GLOBALS['DB']['connection']->tableInfo($table);
 
-        if (PHPWS_Error::isError($columns)) {
+        if (Error::isError($columns)) {
             return $columns;
         }
 
@@ -459,7 +460,7 @@ class PHPWS_DB {
             return null;
         }
 
-        if (is_object($table1) && get_class($table1) == 'PHPWS_DB') {
+        if (is_object($table1) && get_class($table1) == 'DB') {
             if (empty($table1->subselect_as)) {
                 return null;
             }
@@ -468,7 +469,7 @@ class PHPWS_DB {
             $table1 = $table1->subselect_as;
         }
 
-        if (is_object($table2) && get_class($table2) == 'PHPWS_DB') {
+        if (is_object($table2) && get_class($table2) == 'DB') {
             if (empty($table2->subselect_as)) {
                 return null;
             }
@@ -522,14 +523,14 @@ class PHPWS_DB {
                 $join_on = 'ON ' . $result;
             }
 
-            if (is_object($join_to) && get_class($join_to) == 'PHPWS_DB') {
+            if (is_object($join_to) && get_class($join_to) == 'DB') {
                 if (empty($join_to->subselect_as)) {
                     return null;
                 }
                 $join_to = $join_to->subselect_as;
             }
 
-            if (is_object($join_from) && get_class($join_from) == 'PHPWS_DB') {
+            if (is_object($join_from) && get_class($join_from) == 'DB') {
                 if (empty($join_from->subselect_as)) {
                     return null;
                 }
@@ -579,7 +580,7 @@ class PHPWS_DB {
     public function getTable($format=true)
     {
         if (empty($this->tables)) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTable');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::getTable');
         }
 
         if ($format == true) {
@@ -624,7 +625,7 @@ class PHPWS_DB {
 
     public function addGroupBy($group_by)
     {
-        if (PHPWS_DB::allowed($group_by)) {
+        if (DB::allowed($group_by)) {
             if (!strpos($group_by, '.')) {
                 $group_by = $this->tables[0] . '.' . $group_by;
             }
@@ -664,22 +665,22 @@ class PHPWS_DB {
 
     public function addWhere($column, $value=null, $operator=null, $conj=null, $group=null, $join=false)
     {
-        PHPWS_DB::touchDB();
-        $where = new PHPWS_DB_Where;
+        DB::touchDB();
+        $where = new DB_Where;
         $where->setJoin($join);
         $operator = strtoupper($operator);
         if (is_array($column)) {
             foreach ($column as $new_column => $new_value) {
                 $result = $this->addWhere($new_column, $new_value, $operator, $conj, $group);
-                if (PHPWS_Error::isError($result)) {
+                if (Error::isError($result)) {
                     return $result;
                 }
             }
             return true;
         } else {
-            if (!PHPWS_DB::allowed($column) || preg_match('[^\w\.]', $column)) {
-                return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core',
-                                        'PHPWS_DB::addWhere', $column);
+            if (!DB::allowed($column) || preg_match('[^\w\.]', $column)) {
+                return Error::get(DB_BAD_COL_NAME, 'core',
+                                        'DB::addWhere', $column);
             }
         }
 
@@ -697,11 +698,11 @@ class PHPWS_DB {
             foreach ($value as $newVal) {
                 if ($search_in) {
                     $result = $this->addWhere($column, $newVal, $operator, $conj, $group);
-                    if (PHPWS_Error::isError($result)) {
+                    if (Error::isError($result)) {
                         return $result;
                     }
                 } else {
-                    $newVal = $GLOBALS['PHPWS_DB']['connection']->escapeSimple($newVal);
+                    $newVal = $GLOBALS['DB']['connection']->escapeSimple($newVal);
                     $new_value_list[] = $newVal;
                 }
             }
@@ -720,7 +721,7 @@ class PHPWS_DB {
                 }
                 $value = 'NULL';
             } else {
-                $value = $GLOBALS['PHPWS_DB']['connection']->escapeSimple($value);
+                $value = $GLOBALS['DB']['connection']->escapeSimple($value);
             }
         }
 
@@ -733,7 +734,7 @@ class PHPWS_DB {
                 if (isset($this->table_as[$join_table])) {
                     $source_table = $join_table;
                     $column = & $join_column;
-                } elseif (PHPWS_DB::inDatabase($join_table, $join_column)) {
+                } elseif (DB::inDatabase($join_table, $join_column)) {
                     $column = & $join_column;
                     $source_table = $join_table;
                     $this->addTable($join_table);
@@ -948,13 +949,13 @@ class PHPWS_DB {
         }
 
         if (!empty($as)) {
-            if (!PHPWS_DB::allowed($as)) {
-                return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $as);
+            if (!DB::allowed($as)) {
+                return Error::get(DB_BAD_COL_NAME, 'core', 'DB::addColumn', $as);
             }
         }
 
-        if (!PHPWS_DB::allowed($column)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $column);
+        if (!DB::allowed($column)) {
+            return Error::get(DB_BAD_COL_NAME, 'core', 'DB::addColumn', $column);
         }
 
         if ($distinct && !$count) {
@@ -1078,7 +1079,7 @@ class PHPWS_DB {
             $order = preg_replace('/[^\w\s\.]/', '', $order);
 
             if (preg_match('/(random|rand)(\(\))?/i', $order)) {
-                $this->order[] = $GLOBALS['PHPWS_DB']['lib']->randomOrder();
+                $this->order[] = $GLOBALS['DB']['lib']->randomOrder();
             } else {
                 if (strpos($order, '.')) {
                     list($table, $new_order) = explode('.', $order);
@@ -1121,13 +1122,13 @@ class PHPWS_DB {
         if (is_array($column)) {
             foreach ($column as $colKey=>$colVal){
                 $result = $this->addValue($colKey, $colVal);
-                if (PHPWS_Error::isError($result)) {
+                if (Error::isError($result)) {
                     return $result;
                 }
             }
         } else {
-            if (!PHPWS_DB::allowed($column)) {
-                return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addValue', $column);
+            if (!DB::allowed($column)) {
+                return Error::get(DB_BAD_COL_NAME, 'core', 'DB::addValue', $column);
             }
 
             $this->values[$column] = $value;
@@ -1192,7 +1193,7 @@ class PHPWS_DB {
         }
 
         if ($dbReady) {
-            return $GLOBALS['PHPWS_DB']['lib']->getLimit($this->limit);
+            return $GLOBALS['DB']['lib']->getLimit($this->limit);
         }
         else {
             return $this->limit;
@@ -1212,14 +1213,14 @@ class PHPWS_DB {
 
     public function affectedRows()
     {
-        $query =  PHPWS_DB::lastQuery();
+        $query =  DB::lastQuery();
         $process = strtolower(substr($query, 0, strpos($query, ' ')));
 
         if ($process == 'select') {
             return false;
         }
 
-        return $GLOBALS['PHPWS_DB']['connection']->affectedRows();
+        return $GLOBALS['DB']['connection']->affectedRows();
     }
 
     /**
@@ -1243,46 +1244,46 @@ class PHPWS_DB {
 
     public function lastQuery()
     {
-        return $GLOBALS['PHPWS_DB']['connection']->last_query;
+        return $GLOBALS['DB']['connection']->last_query;
     }
 
     public function insert($auto_index=true)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
         $maxID = true;
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::insert');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::insert');
         }
 
         $values = $this->getAllValues();
 
         if (!isset($values)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_VALUES, 'core', 'PHPWS_DB::insert');
+            return Error::get(DB_NO_VALUES, 'core', 'DB::insert');
         }
 
         if ($auto_index) {
             $idColumn = $this->getIndex();
 
-            if (PHPWS_Error::isError($idColumn)) {
+            if (Error::isError($idColumn)) {
                 return $idColumn;
             } elseif(isset($idColumn)) {
                 $check_table = $this->addPrefix($table);
-                $maxID = $GLOBALS['PHPWS_DB']['connection']->nextId($check_table);
+                $maxID = $GLOBALS['DB']['connection']->nextId($check_table);
                 $values[$idColumn] = $maxID;
             }
         }
 
         foreach ($values as $index=>$entry){
             $columns[] = $index;
-            $set[] = PHPWS_DB::dbReady($entry);
+            $set[] = DB::dbReady($entry);
         }
 
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
 
-        $result = PHPWS_DB::query($query);
+        $result = DB::query($query);
 
-        if (DB::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         } else {
             return $maxID;
@@ -1291,11 +1292,11 @@ class PHPWS_DB {
 
     public function update($return_affected=false)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
 
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::insert');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::insert');
         }
 
         $values = $this->getAllValues();
@@ -1306,20 +1307,20 @@ class PHPWS_DB {
         }
 
         if (empty($values)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_VALUES, 'core', 'PHPWS_DB::update');
+            return Error::get(DB_NO_VALUES, 'core', 'DB::update');
         }
 
         foreach ($values as $index=>$data) {
-            $columns[] = $index . ' = ' . PHPWS_DB::dbReady($data);
+            $columns[] = $index . ' = ' . DB::dbReady($data);
         }
 
         $limit = $this->getLimit(true);
         $order = $this->getOrder(true);
 
         $query = "UPDATE $table SET " . implode(', ', $columns) ." $where $order $limit";
-        $result = PHPWS_DB::query($query);
+        $result = DB::query($query);
 
-        if (DB::isError($result)) {
+        if (\PEAR::isError($result)) {
             return $result;
         } else {
             if ($return_affected) {
@@ -1346,7 +1347,7 @@ class PHPWS_DB {
         $table = $this->getTable();
 
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::select');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::select');
         }
 
         $where   = $this->getWhere(true);
@@ -1382,7 +1383,7 @@ class PHPWS_DB {
                 $sql = & $this->sql;
             }
         }
-        PHPWS_DB::touchDB();
+        DB::touchDB();
         if (isset($type) && is_string($type)) {
             $type = strtolower($type);
         }
@@ -1392,7 +1393,7 @@ class PHPWS_DB {
 
         if (!isset($sql)) {
             $sql_array = $this->getSelectSQL($type);
-            if (PHPWS_Error::isError($sql_array)) {
+            if (Error::isError($sql_array)) {
                 return $sql_array;
             }
 
@@ -1433,7 +1434,7 @@ class PHPWS_DB {
             $mode = DB_FETCHMODE_ASSOC;
         }
 
-        $sql = PHPWS_DB::prefixQuery($sql);
+        $sql = DB::prefixQuery($sql);
 
         if ($this->_test_mode) {
             exit($sql);
@@ -1448,51 +1449,51 @@ class PHPWS_DB {
 
         switch ($type){
             case 'assoc':
-                PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null,null, $mode);
+                DB::logDB($sql);
+                return $GLOBALS['DB']['connection']->getAssoc($sql, null,null, $mode);
                 break;
 
             case 'col':
                 if (empty($sql) && empty($this->columns)) {
-                    return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, 'core', 'PHPWS_DB::select');
+                    return Error::get(DB_NO_COLUMN_SET, 'core', 'DB::select');
                 }
 
                 if (isset($indexby)) {
-                    PHPWS_DB::logDB($sql);
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                    DB::logDB($sql);
+                    $result = $GLOBALS['DB']['connection']->getAll($sql, null, $mode);
 
-                    if (PHPWS_Error::isError($result)) {
+                    if (Error::isError($result)) {
                         return $result;
                     }
-                    return PHPWS_DB::_indexBy($result, $indexby, true);
+                    return DB::_indexBy($result, $indexby, true);
                 }
-                PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
+                DB::logDB($sql);
+                return $GLOBALS['DB']['connection']->getCol($sql);
                 break;
 
             case 'min':
             case 'max':
             case 'one':
-                PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, null, $mode);
+                DB::logDB($sql);
+                return $GLOBALS['DB']['connection']->getOne($sql, null, $mode);
                 break;
 
             case 'row':
-                PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getRow($sql, array(), $mode);
+                DB::logDB($sql);
+                return $GLOBALS['DB']['connection']->getRow($sql, array(), $mode);
                 break;
 
             case 'count':
-                PHPWS_DB::logDB($sql);
+                DB::logDB($sql);
                 if (empty($this->columns)) {
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getRow($sql);
-                    if (PHPWS_Error::isError($result)) {
+                    $result = $GLOBALS['DB']['connection']->getRow($sql);
+                    if (Error::isError($result)) {
                         return $result;
                     }
                     return $result[0];
                 } else {
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
-                    if (PHPWS_Error::isError($result)) {
+                    $result = $GLOBALS['DB']['connection']->getCol($sql);
+                    if (Error::isError($result)) {
                         return $result;
                     }
 
@@ -1501,9 +1502,9 @@ class PHPWS_DB {
                 break;
 
             case 'count_array':
-                PHPWS_DB::logDB($sql);
-                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
-                if (PHPWS_Error::isError($result)) {
+                DB::logDB($sql);
+                $result = $GLOBALS['DB']['connection']->getAll($sql, null, $mode);
+                if (Error::isError($result)) {
                     return $result;
                 }
                 return $result;
@@ -1512,14 +1513,14 @@ class PHPWS_DB {
 
             case 'all':
             default:
-                PHPWS_DB::logDB($sql);
-                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
-                if (PHPWS_Error::isError($result)) {
+                DB::logDB($sql);
+                $result = $GLOBALS['DB']['connection']->getAll($sql, null, $mode);
+                if (Error::isError($result)) {
                     return $result;
                 }
 
                 if (isset($indexby)) {
-                    return PHPWS_DB::_indexBy($result, $indexby);
+                    return DB::_indexBy($result, $indexby);
                 }
 
                 return $result;
@@ -1529,31 +1530,31 @@ class PHPWS_DB {
 
     public static function getRow($sql)
     {
-        $db = new PHPWS_DB;
+        $db = new DB;
         return $db->select('row', $sql);
     }
 
     public static function getCol($sql)
     {
-        $db = new PHPWS_DB;
+        $db = new DB;
         return $db->select('col', $sql);
     }
 
     public static function getAll($sql)
     {
-        $db = new PHPWS_DB;
+        $db = new DB;
         return $db->select('all', $sql);
     }
 
     public static function getOne($sql)
     {
-        $db = new PHPWS_DB;
+        $db = new DB;
         return $db->select('one', $sql);
     }
 
     public static function getAssoc($sql)
     {
-        $db = new PHPWS_DB;
+        $db = new DB;
         return $db->select('assoc', $sql);
     }
 
@@ -1590,10 +1591,10 @@ class PHPWS_DB {
                 }
 
                 if (isset($item[$col_check]) || $item[$col_check] === null ) {
-                    PHPWS_DB::_expandIndex($rows, $value, $item[$col_check], $stacked);
+                    DB::_expandIndex($rows, $value, $item[$col_check], $stacked);
                 }
             } else {
-                PHPWS_DB::_expandIndex($rows, $item[$indexby], $item, $stacked);
+                DB::_expandIndex($rows, $item[$indexby], $item, $stacked);
             }
         }
 
@@ -1641,7 +1642,7 @@ class PHPWS_DB {
 
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::incrementColumn');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::incrementColumn');
         }
 
         $where = $this->getWhere(true);
@@ -1656,7 +1657,7 @@ class PHPWS_DB {
         }
 
         $query = "UPDATE $table SET $column_name = $column_name $math $where";
-        $result = PHPWS_DB::query($query);
+        $result = DB::query($query);
 
         if (DB::isError($result)) {
             return $result;
@@ -1678,7 +1679,7 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::delete');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::delete');
         }
 
         $where = $this->getWhere(true);
@@ -1689,7 +1690,7 @@ class PHPWS_DB {
             $where = 'WHERE ' . $where;
         }
         $sql = "DELETE FROM $table $where $order $limit";
-        $result = PHPWS_DB::query($sql);
+        $result = DB::query($sql);
 
         if (DB::isError($result)) {
             return $result;
@@ -1710,22 +1711,22 @@ class PHPWS_DB {
      */
     public static function dropTable($table, $check_existence=true, $sequence_table=true)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
 
         // was using IF EXISTS but not cross compatible
-        if ($check_existence && !PHPWS_DB::isTable($table)) {
+        if ($check_existence && !DB::isTable($table)) {
             return true;
         }
 
-        $result = PHPWS_DB::query("DROP TABLE $table");
+        $result = DB::query("DROP TABLE $table");
 
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
-        if ($sequence_table && PHPWS_DB::isSequence($table)) {
-            $result = $GLOBALS['PHPWS_DB']['lib']->dropSequence($table . '_seq');
-            if (PHPWS_Error::isError($result)) {
+        if ($sequence_table && DB::isSequence($table)) {
+            $result = $GLOBALS['DB']['lib']->dropSequence($table . '_seq');
+            if (Error::isError($result)) {
                 return $result;
             }
         }
@@ -1735,33 +1736,33 @@ class PHPWS_DB {
 
     public static function isSequence($table)
     {
-        $table = PHPWS_DB::addPrefix($table);
-        return is_numeric($GLOBALS['PHPWS_DB']['connection']->nextId($table));
+        $table = DB::addPrefix($table);
+        return is_numeric($GLOBALS['DB']['connection']->nextId($table));
     }
 
     public function truncateTable()
     {
         $table = $this->getTable(false);
         if(!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::truncateTable()');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::truncateTable()');
         }
 
         $sql = "TRUNCATE TABLE $table";
 
-        return PHPWS_DB::query($sql);
+        return DB::query($sql);
     }
 
     public function dropTableIndex($name=null)
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropTableIndex');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::dropTableIndex');
         }
 
         if (empty($name)) {
             $name = str_replace('_', '', $table) . '_idx';
         }
-        $sql = $GLOBALS['PHPWS_DB']['lib']->dropTableIndex($name, $table);
+        $sql = $GLOBALS['DB']['lib']->dropTableIndex($name, $table);
         return $this->query($sql);
     }
 
@@ -1780,19 +1781,19 @@ class PHPWS_DB {
 
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTableIndex');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::createTableIndex');
         }
 
         if (is_array($column)) {
             foreach ($column as $col) {
                 if (!$this->isTableColumn($col)) {
-                    return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::createTableIndex');
+                    return Error::get(DB_BAD_COL_NAME, 'core', 'DB::createTableIndex');
                 }
             }
             $column = implode(',', $column);
         } else {
             if (!$this->isTableColumn($column)) {
-                return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::createTableIndex');
+                return Error::get(DB_BAD_COL_NAME, 'core', 'DB::createTableIndex');
             }
         }
 
@@ -1815,7 +1816,7 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTableIndex');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::createTableIndex');
         }
         $sql = sprintf('alter table %s add primary key(%s)', $table, $column);
         return $this->query($sql);
@@ -1825,7 +1826,7 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTable');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::createTable');
         }
 
         $values = $this->getAllValues();
@@ -1836,7 +1837,7 @@ class PHPWS_DB {
 
 
         $sql = "CREATE TABLE $table ( " . implode(', ', $parameters) . ' )';
-        return PHPWS_DB::query($sql);
+        return DB::query($sql);
     }
 
     /**
@@ -1849,15 +1850,15 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::renameTableColumn');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::renameTableColumn');
         }
 
         $specs = $this->getColumnInfo($old_name, true);
         if (empty($specs)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::renameTableColumn', $old_name);
+            return Error::get(DB_BAD_COL_NAME, 'core', 'DB::renameTableColumn', $old_name);
         }
 
-        $sql = $GLOBALS['PHPWS_DB']['lib']->renameColumn($table, $old_name, $new_name, $specs);
+        $sql = $GLOBALS['DB']['lib']->renameColumn($table, $old_name, $new_name, $specs);
 
         return $this->query($sql, false);
     }
@@ -1878,30 +1879,30 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addTableColumn');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::addTableColumn');
         }
 
-        if (!PHPWS_DB::allowed($column)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
+        if (!DB::allowed($column)) {
+            return Error::get(DB_BAD_COL_NAME, 'core', 'DB::addTableColumn', $column);
         }
 
         if ($this->isTableColumn($column)) {
             return false;
         }
 
-        $sql = $GLOBALS['PHPWS_DB']['lib']->addColumn($table, $column, $parameter, $after);
+        $sql = $GLOBALS['DB']['lib']->addColumn($table, $column, $parameter, $after);
 
         foreach ($sql as $val) {
-            $result = PHPWS_DB::query($val);
-            if (PHPWS_Error::isError($result)) {
+            $result = DB::query($val);
+            if (Error::isError($result)) {
                 return $result;
             }
         }
 
         if ($indexed == true && DB_ALLOW_TABLE_INDEX) {
             $indexSql = "CREATE INDEX $column on $table($column)";
-            $result = PHPWS_DB::query($indexSql);
-            if (PHPWS_Error::isError($result)) {
+            $result = DB::query($indexSql);
+            if (Error::isError($result)) {
                 return $result;
             }
         }
@@ -1912,22 +1913,22 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::alterColumnType');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::alterColumnType');
         }
 
-        if (!PHPWS_DB::allowed($column)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::alterColumnType', $column);
+        if (!DB::allowed($column)) {
+            return Error::get(DB_BAD_COL_NAME, 'core', 'DB::alterColumnType', $column);
         }
 
         if (!$this->isTableColumn($column)) {
             return false;
         }
 
-        $sql = $GLOBALS['PHPWS_DB']['lib']->alterTableColumn($table, $column, $parameter);
+        $sql = $GLOBALS['DB']['lib']->alterTableColumn($table, $column, $parameter);
         $this->begin();
         foreach ($sql as $val) {
             $result = $this->query($val);
-            if (PHPWS_Error::isError($result)) {
+            if (Error::isError($result)) {
                 $this->rollback();
                 return $result;
             }
@@ -1942,16 +1943,16 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropColumn');
+            return Error::get(DB_ERROR_TABLE, 'core', 'DB::dropColumn');
         }
 
-        if (!PHPWS_DB::allowed($column)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::dropTableColumn', $column);
+        if (!DB::allowed($column)) {
+            return Error::get(DB_BAD_COL_NAME, 'core', 'DB::dropTableColumn', $column);
         }
 
         if ($this->isTableColumn($column)) {
             $sql = "ALTER TABLE $table DROP $column";
-            return PHPWS_DB::query($sql);
+            return DB::query($sql);
         } else {
             return true;
         }
@@ -1960,22 +1961,22 @@ class PHPWS_DB {
 
     public static function getDBType()
     {
-        return $GLOBALS['PHPWS_DB']['connection']->phptype;
+        return $GLOBALS['DB']['connection']->phptype;
     }
 
 
     public static function disconnect()
     {
-        if (empty($GLOBALS['PHPWS_DB']['dbs'])) {
+        if (empty($GLOBALS['DB']['dbs'])) {
             return;
         }
 
-        foreach ($GLOBALS['PHPWS_DB']['dbs'] as $db) {
+        foreach ($GLOBALS['DB']['dbs'] as $db) {
             if (!empty($db['connection'])) {
                 $db['connection']->disconnect();
             }
         }
-        unset($GLOBALS['PHPWS_DB']);
+        unset($GLOBALS['DB']);
     }
 
     /**
@@ -1986,10 +1987,10 @@ class PHPWS_DB {
     public static function importFile($filename, $report_errors=true)
     {
         if (!is_file($filename)) {
-            return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
+            return Error::get(File_NOT_FOUND, 'core', 'DB::importFile');
         }
         $data = file_get_contents($filename);
-        return PHPWS_DB::import($data, $report_errors);
+        return DB::import($data, $report_errors);
     }
 
     /**
@@ -2000,13 +2001,13 @@ class PHPWS_DB {
      */
     public static function import($text, $report_errors=true)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
 
         // first_import makes sure at least one query was completed
         // successfully
         $first_import = false;
 
-        $sqlArray = PHPWS_Text::sentence($text);
+        $sqlArray = Text::sentence($text);
         $error = false;
 
         foreach ($sqlArray as $sqlRow){
@@ -2025,15 +2026,15 @@ class PHPWS_DB {
                     continue;
                 }
 
-                PHPWS_DB::homogenize($query);
+                DB::homogenize($query);
 
-                $result = PHPWS_DB::query($query);
+                $result = DB::query($query);
 
                 if (DB::isError($result)) {
                     if ($report_errors) {
                         return $result;
                     } else {
-                        PHPWS_Error::log($result);
+                        Error::log($result);
                         $error = true;
                     }
                 }
@@ -2043,9 +2044,9 @@ class PHPWS_DB {
 
         if (!$first_import) {
             if ($report_errors) {
-                return PHPWS_Error::get(PHPWS_DB_IMPORT_FAILED, 'core', 'PHPWS_DB::import');
+                return Error::get(DB_IMPORT_FAILED, 'core', 'DB::import');
             } else {
-                PHPWS_Error::log(PHPWS_DB_IMPORT_FAILED, 'core', 'PHPWS_DB::import');
+                Error::log(DB_IMPORT_FAILED, 'core', 'DB::import');
                 $error = true;
             }
         }
@@ -2065,8 +2066,8 @@ class PHPWS_DB {
         $from[] = '/int\(\d+\)/iU';
         $to[]   = 'int';
 
-        if (PHPWS_DB::getDBType() != 'mysql' &&
-        PHPWS_DB::getDBType() != 'mysqli') {
+        if (DB::getDBType() != 'mysql' &&
+        DB::getDBType() != 'mysqli') {
             $from[] = '/mediumtext|longtext/i';
             $to[]   = 'text';
         }
@@ -2097,13 +2098,13 @@ class PHPWS_DB {
         }
 
         $query = implode(',', $newlist);
-        $GLOBALS['PHPWS_DB']['lib']->readyImport($query);
+        $GLOBALS['DB']['lib']->readyImport($query);
     }
 
 
     public function parsePearCol($info, $strip_name=false)
     {
-        $setting = $GLOBALS['PHPWS_DB']['lib']->export($info);
+        $setting = $GLOBALS['DB']['lib']->export($info);
         if (isset($info['flags'])) {
             if (stristr($info['flags'], 'multiple_key')) {
                 if (DB_ALLOW_TABLE_INDEX) {
@@ -2162,11 +2163,11 @@ class PHPWS_DB {
 
     public function export($structure=true, $contents=true)
     {
-        PHPWS_DB::touchDB();
+        DB::touchDB();
         $table = $this->addPrefix($this->tables[0]);
 
         if ($structure == true) {
-            $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
+            $columns =  $GLOBALS['DB']['connection']->tableInfo($table);
             $column_info = $this->parseColumns($columns);
             $index = $this->getIndex();
 
@@ -2178,13 +2179,13 @@ class PHPWS_DB {
 
         if ($contents == true) {
             if ($rows = $this->select()) {
-                if (PHPWS_Error::isError($rows)) {
+                if (Error::isError($rows)) {
                     return $rows;
                 }
                 foreach ($rows as $dataRow){
                     foreach ($dataRow as $key=>$value){
                         $allKeys[] = $key;
-                        $allValues[] = PHPWS_DB::quote($value);
+                        $allValues[] = DB::quote($value);
                     }
 
                     $sql[] = "INSERT INTO $table (" . implode(', ', $allKeys) . ') VALUES (' . implode(', ', $allValues) . ');';
@@ -2202,7 +2203,7 @@ class PHPWS_DB {
 
     public function quote($text)
     {
-        return $GLOBALS['PHPWS_DB']['connection']->quote($text);
+        return $GLOBALS['DB']['connection']->quote($text);
     }
 
     public static function extractTableName($sql_value)
@@ -2264,9 +2265,9 @@ class PHPWS_DB {
     public function dbReady($value=null)
     {
         if (is_array($value) || is_object($value)) {
-            return PHPWS_DB::dbReady(serialize($value));
+            return DB::dbReady(serialize($value));
         } elseif (is_string($value)) {
-            return "'" . $GLOBALS['PHPWS_DB']['connection']->escapeSimple($value) . "'";
+            return "'" . $GLOBALS['DB']['connection']->escapeSimple($value) . "'";
         } elseif (is_null($value)) {
             return 'NULL';
         } elseif (is_bool($value)) {
@@ -2315,11 +2316,11 @@ class PHPWS_DB {
     public function loadObject($object, $require_where=true)
     {
         if (!is_object($object)) {
-            return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::loadObject');
+            return Error::get(DB_NOT_OBJECT, 'core', 'DB::loadObject');
         }
 
         if ($require_where && empty($object->id) && empty($this->where)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_ID, 'core', 'PHPWS_DB::loadObject', get_class($object));
+            return Error::get(DB_NO_ID, 'core', 'DB::loadObject', get_class($object));
         }
 
         if ($require_where && empty($this->where)) {
@@ -2328,7 +2329,7 @@ class PHPWS_DB {
 
         $variables = $this->select('row');
 
-        if (PHPWS_Error::isError($variables)) {
+        if (Error::isError($variables)) {
             return $variables;
         } elseif (empty($variables)) {
             return false;
@@ -2370,14 +2371,14 @@ class PHPWS_DB {
             return null;
         }
 
-        if (PHPWS_Error::isError($result) || !isset($result)) {
+        if (Error::isError($result) || !isset($result)) {
             return $result;
         }
 
         $this->requireClasses();
 
         if (!class_exists($class_name)) {
-            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects', $class_name);
+            return Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'DB::getObjects', $class_name);
         }
 
         $num_args = func_num_args();
@@ -2410,13 +2411,13 @@ class PHPWS_DB {
     public function saveObject($object, $stripChar=false, $autodetect_id=true)
     {
         if (!is_object($object)) {
-            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'PHPWS_DB::saveObject', _('Type') . ': ' . gettype($object));
+            return Error::get(PHPWS_WRONG_TYPE, 'core', 'DB::saveObject', _('Type') . ': ' . gettype($object));
         }
 
         $object_vars = get_object_vars($object);
 
         if (!is_array($object_vars)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_OBJ_VARS, 'core', 'PHPWS_DB::saveObject');
+            return Error::get(DB_NO_OBJ_VARS, 'core', 'DB::saveObject');
         }
 
         foreach ($object_vars as $column => $value){
@@ -2426,7 +2427,7 @@ class PHPWS_DB {
 
             $isTblColumn = $this->isTableColumn($column);
 
-            if(PHPWS_Error::isError($isTblColumn)){
+            if(Error::isError($isTblColumn)){
                 throw new Exception('Could not determine if column ' . $column . ' is a valid column in this table. Check table ownership.');
             }
 
@@ -2505,7 +2506,7 @@ class PHPWS_DB {
      * Crutch function from old database
      */
     public function sqlFriendlyName($name) {
-        if (!PHPWS_DB::allowed($name)) {
+        if (!DB::allowed($name)) {
             return false;
         }
 
@@ -2518,7 +2519,7 @@ class PHPWS_DB {
 
         $max_id = $this->select('one');
 
-        if (PHPWS_Error::isError($max_id)) {
+        if (Error::isError($max_id)) {
             return $max_id;
         }
 
@@ -2526,12 +2527,12 @@ class PHPWS_DB {
             $seq_table = $this->getTable(false) . '_seq';
             if (!$this->isTable($seq_table)) {
                 $table = $this->addPrefix($this->getTable(false));
-                $GLOBALS['PHPWS_DB']['connection']->nextId($table);
+                $GLOBALS['DB']['connection']->nextId($table);
             }
 
-            $seq = new PHPWS_DB($seq_table);
+            $seq = new DB($seq_table);
             $result = $seq->select('one');
-            if (PHPWS_Error::logIfError($result)) {
+            if (Error::logIfError($result)) {
                 return false;
             }
 
@@ -2548,16 +2549,16 @@ class PHPWS_DB {
 
     public static function addPrefix($table)
     {
-        if (isset($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
-            return $GLOBALS['PHPWS_DB']['tbl_prefix'] . $table;
+        if (isset($GLOBALS['DB']['tbl_prefix'])) {
+            return $GLOBALS['DB']['tbl_prefix'] . $table;
         }
         return $table;
     }
 
     public static function getPrefix()
     {
-        if (isset($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
-            return $GLOBALS['PHPWS_DB']['tbl_prefix'];
+        if (isset($GLOBALS['DB']['tbl_prefix'])) {
+            return $GLOBALS['DB']['tbl_prefix'];
         }
         return null;
     }
@@ -2569,10 +2570,10 @@ class PHPWS_DB {
      */
     public static function prefixQuery($sql)
     {
-        if (!$GLOBALS['PHPWS_DB']['tbl_prefix']) {
+        if (!$GLOBALS['DB']['tbl_prefix']) {
             return $sql;
         }
-        $tables = PHPWS_DB::pullTables($sql);
+        $tables = DB::pullTables($sql);
 
         if (empty($tables)) {
             return $sql;
@@ -2580,7 +2581,7 @@ class PHPWS_DB {
 
         foreach ($tables as $tbl) {
             $tbl = trim($tbl);
-            $sql = PHPWS_DB::prefixVary($sql, $tbl);
+            $sql = DB::prefixVary($sql, $tbl);
         }
         return $sql;
     }
@@ -2597,7 +2598,7 @@ class PHPWS_DB {
         foreach ($ar as $v) {
             if ($repl) {
                 $subsql[] = preg_replace("/([\s\W])$tbl(\W)|([\s\W])$tbl$/",
-                                         '$1${3}' . $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '$2', $v);
+                                         '$1${3}' . $GLOBALS['DB']['tbl_prefix'] . $tbl . '$2', $v);
                 $repl = false;
             } else {
                 $subsql[] = $v;
@@ -2759,7 +2760,7 @@ class PHPWS_DB {
             return false;
         }
 
-        $query = $GLOBALS['PHPWS_DB']['lib']->lockTables($this->locked);
+        $query = $GLOBALS['DB']['lib']->lockTables($this->locked);
         return $this->query($query);
     }
 
@@ -2769,7 +2770,7 @@ class PHPWS_DB {
             return true;
         }
 
-        $query = $GLOBALS['PHPWS_DB']['lib']->unlockTables();
+        $query = $GLOBALS['DB']['lib']->unlockTables();
         return $this->query($query);
     }
 
@@ -2781,7 +2782,7 @@ class PHPWS_DB {
             return false;
         }
         $GLOBALS['DB_Transaction'] = true;
-        return PHPWS_DB::query('BEGIN');
+        return DB::query('BEGIN');
     }
 
     public function commit()
@@ -2791,7 +2792,7 @@ class PHPWS_DB {
             return false;
         }
         $GLOBALS['DB_Transaction'] = false;
-        return PHPWS_DB::query('COMMIT');
+        return DB::query('COMMIT');
     }
 
     public function rollback()
@@ -2801,7 +2802,7 @@ class PHPWS_DB {
             return false;
         }
         $GLOBALS['DB_Transaction'] = false;
-        return PHPWS_DB::query('ROLLBACK');
+        return DB::query('ROLLBACK');
     }
 
     /**
@@ -2839,55 +2840,55 @@ class PHPWS_DB {
         if ($current_order == 1 && $direction == -1) {
             // moving up when current item is at top of list
             // need to shift all other items down and pop this on the end
-            PHPWS_DB::begin();
+            DB::begin();
 
-            if (PHPWS_Error::logIfError($this->reduceColumn($order_column))) {
-                PHPWS_DB::rollback();
+            if (Error::logIfError($this->reduceColumn($order_column))) {
+                DB::rollback();
                 return false;
             }
             $db->reset();
             $db->addWhere($id_column, $id);
             $db->addValue($order_column, $total_rows);
-            if (PHPWS_Error::logIfError($db->update())) {
-                PHPWS_DB::rollback();
+            if (Error::logIfError($db->update())) {
+                DB::rollback();
                 return false;
             }
-            PHPWS_DB::commit();
+            DB::commit();
             unset($db);
             return true;
         } elseif ($current_order == $total_rows && $direction == 1) {
             // moving down when current item is at bottom/end of list
             // need to shift all other items up and shift this on the beginning
-            PHPWS_DB::begin();
-            if (PHPWS_Error::logIfError($this->incrementColumn($order_column))) {
-                PHPWS_DB::rollback();
+            DB::begin();
+            if (Error::logIfError($this->incrementColumn($order_column))) {
+                DB::rollback();
                 return false;
             }
             $db->reset();
             $db->addWhere($id_column, $id);
             $db->addValue($order_column, 1);
-            if (PHPWS_Error::logIfError($db->update())) {
-                PHPWS_DB::rollback();
+            if (Error::logIfError($db->update())) {
+                DB::rollback();
                 return false;
             }
-            PHPWS_DB::commit();
+            DB::commit();
             unset($db);
             return true;
         } else {
-            PHPWS_DB::begin();
+            DB::begin();
             $db = clone($this);
             $db->addWhere($order_column, $current_order + $direction);
             $db->addValue($order_column, $current_order);
-            if (PHPWS_Error::logIfError($db->update())) {
-                PHPWS_DB::rollback();
+            if (Error::logIfError($db->update())) {
+                DB::rollback();
                 return false;
             }
 
             $db = clone($this);
             $db->addWhere($id_column, $id);
             $db->addValue($order_column, $current_order + $direction);
-            if (PHPWS_Error::logIfError($db->update())) {
-                PHPWS_DB::rollback();
+            if (Error::logIfError($db->update())) {
+                DB::rollback();
                 return false;
             }
             unset($db);
@@ -2903,7 +2904,7 @@ class PHPWS_DB {
     }
 }
 
-class PHPWS_DB_Where {
+class DB_Where {
     public $table      = null;
     public $column     = null;
     public $value      = null;
@@ -2931,18 +2932,18 @@ class PHPWS_DB_Where {
             return false;
         }
 
-        if (!PHPWS_DB::checkOperator($operator)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', 'PHPWS_DB::addWhere', _('DB Operator:') . $operator);
+        if (!DB::checkOperator($operator)) {
+            return Error::get(DB_BAD_OP, 'core', 'DB::addWhere', _('DB Operator:') . $operator);
         }
 
         if ($operator == 'LIKE' || $operator == 'ILIKE') {
-            $operator = $GLOBALS['PHPWS_DB']['lib']->getLike();
+            $operator = $GLOBALS['DB']['lib']->getLike();
         } elseif ($operator == 'NOT LIKE' || $operator == 'NOT ILIKE') {
-            $operator = 'NOT ' . $GLOBALS['PHPWS_DB']['lib']->getLike();
+            $operator = 'NOT ' . $GLOBALS['DB']['lib']->getLike();
         } elseif ($operator == '~' || $operator == '~*' || $operator == 'REGEXP' || $operator == 'RLIKE') {
-            $operator = $GLOBALS['PHPWS_DB']['lib']->getRegexp();
+            $operator = $GLOBALS['DB']['lib']->getRegexp();
         } elseif ($operator == '!~' || $operator == '!~*' || $operator == 'NOT REGEXP' || $operator == 'NOT RLIKE') {
-            $operator = $GLOBALS['PHPWS_DB']['lib']->getNotRegexp();
+            $operator = $GLOBALS['DB']['lib']->getNotRegexp();
         }
 
         $this->operator = $operator;
@@ -3018,6 +3019,6 @@ class PHPWS_DB_Where {
         $operator = &$this->operator;
         return sprintf('%s %s %s', $column, $operator, $value);
     }
-} // END PHPWS_DB_Where
+} // END DB_Where
 
 ?>

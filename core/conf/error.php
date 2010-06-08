@@ -19,21 +19,21 @@ $errors[PHPWS_NO_FUNCTION]           = _('Function name not found.');
 $errors[PHPWS_HUB_IDENTITY]          = _('Unable to verify source directory. Check PHPWS_SOURCE_DIR.');
 
 // Database.php 100 - 199
-$errors[PHPWS_DB_ERROR_TABLE]        = _('Table name not set.');
-$errors[PHPWS_DB_NO_VALUES]          = _('No values were set before the query');
-$errors[PHPWS_DB_NO_OBJ_VARS]        = _('No variables in object.');
-$errors[PHPWS_DB_BAD_OP]             = _('Not an acceptable operator.');
-$errors[PHPWS_DB_BAD_TABLE_NAME]     = _('Improper table name.');
-$errors[PHPWS_DB_BAD_COL_NAME]       = _('Improper column name.');
-$errors[PHPWS_DB_NO_COLUMN_SET]      = _('Missing column to select.');
-$errors[PHPWS_DB_NOT_OBJECT]         = _('Expecting an object variable.');
-$errors[PHPWS_DB_NO_VARIABLES]       = _('Class does not contain variables.');
-$errors[PHPWS_DB_NO_WHERE]           = _('Function was expecting a "where" parameter.');
-$errors[PHPWS_DB_NO_JOIN_DB]         = _('Join database does not exist.');
-$errors[PHPWS_DB_NO_TABLE]           = _('Table does not exist.');
-$errors[PHPWS_DB_NO_ID]              = _('loadObject expected the object to have an id or where clause.');
-$errors[PHPWS_DB_EMPTY_SELECT]       = _('Select returned an empty result.');
-$errors[PHPWS_DB_IMPORT_FAILED]      = _('Database import failed.');
+$errors[DB_ERROR_TABLE]        = _('Table name not set.');
+$errors[DB_NO_VALUES]          = _('No values were set before the query');
+$errors[DB_NO_OBJ_VARS]        = _('No variables in object.');
+$errors[DB_BAD_OP]             = _('Not an acceptable operator.');
+$errors[DB_BAD_TABLE_NAME]     = _('Improper table name.');
+$errors[DB_BAD_COL_NAME]       = _('Improper column name.');
+$errors[DB_NO_COLUMN_SET]      = _('Missing column to select.');
+$errors[DB_NOT_OBJECT]         = _('Expecting an object variable.');
+$errors[DB_NO_VARIABLES]       = _('Class does not contain variables.');
+$errors[DB_NO_WHERE]           = _('Function was expecting a "where" parameter.');
+$errors[DB_NO_JOIN_DB]         = _('Join database does not exist.');
+$errors[DB_NO_TABLE]           = _('Table does not exist.');
+$errors[DB_NO_ID]              = _('loadObject expected the object to have an id or where clause.');
+$errors[DB_EMPTY_SELECT]       = _('Select returned an empty result.');
+$errors[DB_IMPORT_FAILED]      = _('Database import failed.');
 
 
 // List.php 200 - 299
@@ -76,19 +76,19 @@ $errors[PHPWS_NO_MODULE]              = _('Blank module title sent to get functi
 $errors[PHPWS_UNMATCHED_OPTION]       = _('Help option not found in help configuration file.');
 
 // File.php 800 - 899
-$errors[PHPWS_FILE_WRONG_CONSTRUCT]   = _('PHPWS_File received an unknown construct.');
-$errors[PHPWS_FILE_NONCLASS]          = _('Class not found.');
-$errors[PHPWS_FILE_DELETE_DENIED]     = _('Unable to delete file.');
-$errors[PHPWS_DIR_DELETE_DENIED]      = _('Unable to delete directory.');
-$errors[PHPWS_DIR_NOT_WRITABLE]       = _('Directory is not writable.');
-$errors[PHPWS_FILE_CANT_READ]         = _('Cannot read file.');
-$errors[PHPWS_FILE_NO_FILES]          = _('Variable name not found in_FILES array.');
-$errors[PHPWS_FILE_DIR_NONWRITE]      = _('Unable to save file in selected directory.');
-$errors[PHPWS_FILE_NO_TMP]            = _('Upload directory not set in file object.');
-$errors[PHPWS_FILE_SIZE]              = sprintf(_('Upload file size is larger than the server %s maximum.'), ini_get('post_max_size'));
-$errors[PHPWS_GD_ERROR]               = _('GD image libraries do not support this image type.');
-$errors[PHPWS_FILE_NOT_WRITABLE]      = _('File not writable.');
-$errors[PHPWS_FILE_NO_COPY]           = _('Unable to copy file.');
+$errors[FILE_WRONG_CONSTRUCT]   = _('File received an unknown construct.');
+$errors[FILE_NONCLASS]          = _('Class not found.');
+$errors[FILE_DELETE_DENIED]     = _('Unable to delete file.');
+$errors[DIR_DELETE_DENIED]      = _('Unable to delete directory.');
+$errors[DIR_NOT_WRITABLE]       = _('Directory is not writable.');
+$errors[FILE_CANT_READ]         = _('Cannot read file.');
+$errors[FILE_NO_FILES]          = _('Variable name not found in_FILES array.');
+$errors[FILE_DIR_NONWRITE]      = _('Unable to save file in selected directory.');
+$errors[FILE_NO_TMP]            = _('Upload directory not set in file object.');
+$errors[FILE_SIZE]              = sprintf(_('Upload file size is larger than the server %s maximum.'), ini_get('post_max_size'));
+$errors[GD_ERROR]               = _('GD image libraries do not support this image type.');
+$errors[FILE_NOT_WRITABLE]      = _('File not writable.');
+$errors[FILE_NO_COPY]           = _('Unable to copy file.');
 
 // Text.php 1000-1099
 $errors[PHPWS_TEXT_NOT_STRING]        = _('Function expected a string variable.');

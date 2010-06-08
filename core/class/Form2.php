@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -130,14 +131,14 @@ class Form2 extends Tag {
         return $this->addInput('password', $name, $value);
     }
 
-    public function __toString($with_label=true)
+    public function __toString()
     {
         if (empty($this->id)) {
             $this->loadId();
         }
         foreach ($this->inputs as $input_list) {
             foreach ($input_list as $input) {
-                $value[] = $input->__toString($with_label);
+                $value[] = $input->__toString();
             }
         }
         $this->setValue('<p>' . implode("</p><p>", $value) . '</p>');

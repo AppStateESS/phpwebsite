@@ -1,5 +1,5 @@
 <?php
-
+namespace Core;
 /**
  * Used to load DHTML editors. Plugin files must be available.
  *
@@ -7,7 +7,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initCoreClass('File.php');
+Core::initCoreClass('File.php');
 
 // If true, then force the usage of the selected editor
 if (!defined('FORCE_EDITOR')) {
@@ -29,8 +29,8 @@ class Editor {
     {
         $editorList = $this->getEditorList();
 
-        if (PHPWS_Error::isError($editorList)) {
-            PHPWS_Error::log($editorList);
+        if (Error::isError($editorList)) {
+            Error::log($editorList);
             $this->type = null;
             return;
         }
@@ -42,8 +42,8 @@ class Editor {
         $this->editorList = $editorList;
         if (isset($type)) {
             $result = $this->setType($type);
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Error::isError($result)) {
+                Error::log($result);
                 $this->type = null;
                 return;
             }
@@ -81,12 +81,12 @@ class Editor {
         if ($this->height > 200) {
             $formData['HEIGHT'] = (int)$this->height;
         }
-        return Layout::getJavascript('editors/' . $this->type, $formData);
+        return \Layout::getJavascript('editors/' . $this->type, $formData);
     }
 
     public static function getEditorList()
     {
-        return PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'javascript/editors/', true);
+        return File::readDirectory(PHPWS_SOURCE_DIR . 'javascript/editors/', true);
     }
 
     public function getError()
@@ -146,7 +146,7 @@ class Editor {
             $this->type = $type;
         }
         else {
-            return PHPWS_Error::get(EDITOR_MISSING_FILE, 'core', 'Editor::constructor', $type);
+            return Error::get(EDITOR_MISSING_FILE, 'core', 'Editor::constructor', $type);
         }
     }
 

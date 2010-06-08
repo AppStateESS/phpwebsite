@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 require_once PHPWS_SOURCE_DIR . '/lib/xml/XML-RPC/IXR_Library.inc.php';
 
 /**
@@ -207,15 +208,15 @@ class MyServer extends IXR_IntrospectionServer {
 
     public function removeCategoryItems($key_id)
     {
-        $db = new PHPWS_DB('category_items');
+        $db = new DB('category_items');
         $db->addWhere('key_id', (int)$key_id);
         return $db->delete();
     }
 
     public function saveCategories($id, $categories, $api_type)
     {
-        PHPWS_Core::initModClass('categories', 'Categories.php');
-        PHPWS_Core::initModClass('categories', 'Action.php');
+        Core::initModClass('categories', 'Categories.php');
+        Core::initModClass('categories', 'Action.php');
 
         $key_id = $this->getKeyId($id);
 
@@ -267,7 +268,7 @@ class MyServer extends IXR_IntrospectionServer {
 
 
     public function blogger_getUsersBlogs($args) {
-        return array(array('url'=>PHPWS_Core::getHomeHttp(), 'blogid'=>'1', 'blogName'=>Layout::getPageTitle(true)));
+        return array(array('url'=>Core::getHomeHttp(), 'blogid'=>'1', 'blogName'=>Layout::getPageTitle(true)));
     }
 
 
@@ -351,7 +352,7 @@ class MyServer extends IXR_IntrospectionServer {
         $result = Current_User::loginUser($username, $password);
 
         // Bad result or blank result returns an error message
-        if (PHPWS_Error::logIfError($result) || !$result) {
+        if (Error::logIfError($result) || !$result) {
             return new IXR_Error(4000, XMLRPC_CANNOT_AUTHENTICATE);
         }
 
@@ -378,7 +379,7 @@ class MyServer extends IXR_IntrospectionServer {
 
     public function dropUser()
     {
-        PHPWS_Core::killSession('User');
+        Core::killSession('User');
     }
 
 
@@ -404,8 +405,8 @@ class MyServer extends IXR_IntrospectionServer {
      * a trim call on the currentTagContents variable.
      */
     public function metaWeblog_newMediaObject($args) {
-        PHPWS_Core::requireInc('core', 'file_types.php');
-        PHPWS_Core::initCoreClass('File.php');
+        Core::requireInc('core', 'file_types.php');
+        Core::initCoreClass('File.php');
         $allowed_images = unserialize(ALLOWED_IMAGE_TYPES);
 
         /* Login the user */
@@ -414,9 +415,9 @@ class MyServer extends IXR_IntrospectionServer {
             return $logged;
         }
 
-        $filename = PHPWS_File::nameToSafe($args[3]['name']);
+        $filename = File::nameToSafe($args[3]['name']);
         $filetype = $args[3]['type'];
-        $ext = PHPWS_File::getFileExtension($filename);
+        $ext = File::getFileExtension($filename);
 
         if ( !(ALLOW_OCTET_STREAM && $filetype == 'application/octet-stream')
         && !in_array($filetype, $allowed_images)) {
@@ -433,7 +434,7 @@ class MyServer extends IXR_IntrospectionServer {
             $img_directory = 'images/';
         }
 
-        PHPWS_File::appendSlash($img_directory);
+        File::appendSlash($img_directory);
 
         $source_file = $img_directory . $filename;
         @unlink($source_file);
@@ -447,7 +448,7 @@ class MyServer extends IXR_IntrospectionServer {
             return new IXR_Error(-651, "Unable to write file - $filename.");
         }
         fclose($handle);
-        $url = PHPWS_Core::getHomeHttp() . $img_directory . $filename;
+        $url = Core::getHomeHttp() . $img_directory . $filename;
         return $url;
     }
 
@@ -490,14 +491,14 @@ class MyServer extends IXR_IntrospectionServer {
             return false;
         }
 
-        $db = new PHPWS_DB('categories');
+        $db = new DB('categories');
         $db->addWhere('category_items.key_id', $key_id);
         $db->addWhere('id', 'category_items.cat_id');
         $result = $db->select();
 
         if (empty($result)) {
             return false;
-        } elseif (PHPWS_Error::logIfError($result)) {
+        } elseif (Error::logIfError($result)) {
             return false;
         }
 
@@ -562,7 +563,7 @@ class MyServer extends IXR_IntrospectionServer {
      */
     public function appendImages($text)
     {
-        $url = PHPWS_Core::getHomeHttp();
+        $url = Core::getHomeHttp();
         return preg_replace('@(src=")\./(images)@', '\\1' . $url . '\\2', $text);
     }
 

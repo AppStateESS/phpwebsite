@@ -1,4 +1,5 @@
 <?php
+namespace core;
 /**
  * Controls the text parsing and profanity controls for phpWebSite
  * Also contains extra HTML utilities
@@ -17,8 +18,8 @@ if (!defined('UTF8_MODE')) {
     define ('UTF8_MODE', false);
 }
 
-PHPWS_Core::requireConfig('core', 'text_settings.php');
-PHPWS_Core::initCoreClass('Link.php');
+Core::requireConfig('core', 'text_settings.php');
+Core::initCoreClass('Link.php');
 
 if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
@@ -52,7 +53,7 @@ if (!defined('USE_STRIP_TAGS')) {
     define('USE_STRIP_TAGS', true);
 }
 
-class PHPWS_Text {
+class Text {
     public $use_profanity  = ALLOW_PROFANITY;
     public $use_breaker    = USE_BREAKER;
     public $use_strip_tags = USE_STRIP_TAGS;
@@ -91,7 +92,7 @@ class PHPWS_Text {
         }
     }
 
-    public function breakPost($name)
+    public static function breakPost($name)
     {
         $check_name = sprintf('%s_breaker', $name);
         return isset($_POST[$check_name]);
@@ -159,11 +160,11 @@ class PHPWS_Text {
 
         $text = $this->text;
         if (ALLOW_TEXT_FILTERS && $this->use_filters) {
-            $text = PHPWS_Text::filterText($text);
+            $text = Text::filterText($text);
         }
 
         if (!$this->use_profanity) {
-            $text = PHPWS_Text::profanityFilter($text);
+            $text = Text::profanityFilter($text);
         }
 
         if ($this->use_strip_tags) {
@@ -171,15 +172,15 @@ class PHPWS_Text {
         }
 
         if ($this->use_breaker) {
-            $text = PHPWS_Text::breaker($text);
+            $text = Text::breaker($text);
         }
 
         if ($this->fix_anchors) {
-            $text = PHPWS_Text::fixAnchors($text);
+            $text = Text::fixAnchors($text);
         }
 
         if ($this->collapse_urls) {
-            $text = PHPWS_Text::collapseUrls($text);
+            $text = Text::collapseUrls($text);
         }
 
         return $text;
@@ -229,7 +230,7 @@ class PHPWS_Text {
      */
     public function fixAnchors($text)
     {
-        $home_http = PHPWS_Core::getCurrentUrl();
+        $home_http = Core::getCurrentUrl();
 
         return preg_replace('/href="#([\w\-]+)"/',
         sprintf('href="%s#\\1"', $home_http),
@@ -261,7 +262,7 @@ class PHPWS_Text {
         $xhtml[chr(195).chr(175)] = '&iuml;';
 
         $text = strtr($text, $xhtml);
-        $text = PHPWS_Text::fixAmpersand($text);
+        $text = Text::fixAmpersand($text);
         return $text;
     }
 
@@ -283,7 +284,7 @@ class PHPWS_Text {
     public function profanityFilter($text)
     {
         if (!is_string($text)) {
-            return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
+            return Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'Text::profanityFilter');
         }
 
         $words = unserialize(PROFANE_WORDS);
@@ -307,7 +308,7 @@ class PHPWS_Text {
     public static function sentence($text, $stripNewlines = false)
     {
         if (!is_string($text)) {
-            return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
+            return Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'Text::sentence');
         }
 
         return preg_split("/\r\n|\n/", $text);
@@ -361,7 +362,7 @@ class PHPWS_Text {
     {
         // Moved over from getPrint/parseOutput
         if ((bool)$relative_links) {
-            PHPWS_Text::makeRelative($text, true, true);
+            Text::makeRelative($text, true, true);
         }
 
         if ($encode) {
@@ -466,14 +467,14 @@ class PHPWS_Text {
      */
     public static function rewriteLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link = Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         $link->rewrite = true;
         return $link->get();
     }
 
     public function secureRewriteLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link = Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         $link->rewrite = true;
         $link->secure  = true;
         return $link->get();
@@ -497,7 +498,7 @@ class PHPWS_Text {
 
     public static function quickLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        $link = new PHPWS_Link($subject, $module, $getVars);
+        $link = new Link($subject, $module, $getVars);
         $link->setTarget($target);
 
         if (!empty($title)) {
@@ -518,7 +519,7 @@ class PHPWS_Text {
      */
     public static function secureLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link = Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         $link->secure = true;
         return $link->get();
     }
@@ -536,7 +537,7 @@ class PHPWS_Text {
      */
     public static function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true, $rewrite=false)
     {
-        $link = new PHPWS_Link(null, $module, $getVars);
+        $link = new Link(null, $module, $getVars);
         $link->secure      = $secure;
         $link->full_url    = $add_base;
         $link->convert_amp = $convert_amp;
@@ -566,7 +567,7 @@ class PHPWS_Text {
      */
     public static function moduleLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
-        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link = Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         return $link->get();
     }// END FUNC moduleLink()
 
@@ -631,7 +632,7 @@ class PHPWS_Text {
      */
     public static function makeRelative(&$text, $prefix=true, $inlink_only=false)
     {
-        $address = addslashes(PHPWS_Core::getHomeHttp());
+        $address = addslashes(Core::getHomeHttp());
         if ($prefix) {
             $pre = './';
         } else {
@@ -677,7 +678,7 @@ class PHPWS_Text {
                     continue;
                 }
                 $search = "\[($module):([\w\s:\.\?\!]*)\]";
-                $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
+                $text = preg_replace_callback("/$search/Ui", 'Core\getEmbedded', $text);
             }
         }
 
@@ -761,7 +762,7 @@ class PHPWS_Text {
         }
         xml_parse_into_struct($xml_parser, $contents, $arr_vals);
         xml_parser_free($xml_parser);
-        $result = PHPWS_Text::_orderXML($arr_vals);
+        $result = Text::_orderXML($arr_vals);
 
         return getXMLLevel($result, $level);
     }
@@ -788,7 +789,7 @@ class PHPWS_Text {
             } elseif ($type == 'complete') {
                 $insert = array('tag' => $tag, 'value' => $value);
             } else {
-                $insert = array('tag' => $tag, 'value' => PHPWS_Text::_orderXML($arr_vals));
+                $insert = array('tag' => $tag, 'value' => Text::_orderXML($arr_vals));
             }
             $new_val[] = $insert;
         }
@@ -803,7 +804,7 @@ class PHPWS_Text {
 
         foreach ($arr_vals as $tag) {
             if (is_array($tag['value'])) {
-                $new_arr[$tag['tag']][] = PHPWS_Text::tagXML($tag['value']);
+                $new_arr[$tag['tag']][] = Text::tagXML($tag['value']);
             } else {
                 $new_arr[$tag['tag']] = $tag['value'];
             }
@@ -844,7 +845,7 @@ class PHPWS_Text {
         }
 
         return str_replace('\"', '"', preg_replace('/(<a .*?>\s*http(s)?:\/\/)(.*?)(\s*<\/a>)/ie',
-                                                   "'\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'",
+                                                   "'\\1' . Text::shortenUrl('\\3', $limit) . '\\4'",
         $text));
     }
 
@@ -904,8 +905,10 @@ class PHPWS_Text {
         $tag = preg_replace('/[<>]/', '', $tag);
         return "<$tag>" . implode("</$tag>\n<$tag>", $content) . "</$tag>\n";
     }
-}//END CLASS PHPWS_Text
+}//END CLASS Text
 
+
+class PHPWS_Text extends Text {}
 
 function getXMLLevel($xml, $level)
 {

@@ -1,5 +1,5 @@
 <?php
-
+namespace Core;
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney gmail dot com>
@@ -7,7 +7,7 @@
 
 require_once 'Cache/Lite.php';
 
-class PHPWS_Cache {
+class Cache {
 
     public static function initCache($lifetime=CACHE_LIFETIME)
     {
@@ -15,7 +15,7 @@ class PHPWS_Cache {
                          'cacheDir' => CACHE_DIRECTORY,
                          'lifeTime' => (int)$lifetime
         );
-        $cache = new Cache_Lite($options);
+        $cache = new \Cache_Lite($options);
 
         return $cache;
     }
@@ -37,32 +37,32 @@ class PHPWS_Cache {
      */
     public static function get($key, $lifetime=CACHE_LIFETIME)
     {
-        if (!PHPWS_Cache::isEnabled()) {
+        if (!Cache::isEnabled()) {
             return;
         }
 
-        $cache = PHPWS_Cache::initCache($lifetime);
+        $cache = Cache::initCache($lifetime);
         $key .= SITE_HASH . CURRENT_LANGUAGE;
         return $cache->get(md5($key));
     }
 
     public static function writeIni($switch=0)
     {
-        PHPWS_Core::initCoreClass('File.php');
+        Core::initCoreClass('File.php');
         $info = "cache = $switch\n";
-        return PHPWS_File::writeFile(CACHE_DIRECTORY . 'phpws_cache.ini', $info, TRUE);
+        return File::writeFile(CACHE_DIRECTORY . 'Cache.ini', $info, TRUE);
     }
 
     public static function remove($key)
     {
         $key .= SITE_HASH . CURRENT_LANGUAGE;
-        $cache = PHPWS_Cache::initCache();
+        $cache = Cache::initCache();
         return $cache->remove(md5($key));
     }
 
     public static function clearCache()
     {
-        $cache = PHPWS_Cache::initCache();
+        $cache = Cache::initCache();
         $cache->clean();
     }
 
@@ -75,17 +75,18 @@ class PHPWS_Cache {
     public static function save($key, $content)
     {
         $key .= SITE_HASH . CURRENT_LANGUAGE;
-        if (!PHPWS_Cache::isEnabled()) {
+        if (!Cache::isEnabled()) {
             return;
         }
 
         if (!is_string($content)) {
-            return PHPWS_Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
+            return Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
         }
-        $cache = PHPWS_Cache::initCache();
+        $cache = Cache::initCache();
         return $cache->save($content, md5($key));
     }
 
 }
 
+class PHPWS_Cache extends Cache{}
 ?>

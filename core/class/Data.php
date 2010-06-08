@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -36,7 +37,7 @@ abstract class Data {
 
     public function firebug()
     {
-        if (PHPWS_Settings::get('core', 'firephp_enabled')) {
+        if (Settings::get('core', 'firephp_enabled')) {
 
             require_once('FirePHPCore/FirePHP.class.php');
             $firephp = FirePHP::getInstance(true);

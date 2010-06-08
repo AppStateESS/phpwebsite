@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 
 /**
  * Controls module manipulation
@@ -22,26 +23,27 @@ if (!defined('PHPWS_LOG_DIRECTORY')) {
 }
 
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
-PHPWS_Core::initCoreClass('Error.php');
-class PHPWS_Core {
+
+
+class Core {
 
     /**
      * Loads each module's /inc/init.php file
      */
     public static function initializeModules()
     {
-        if (!$moduleList = PHPWS_Core::getModules()) {
-            PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'initializeModules');
-            PHPWS_Core::errorPage();
+        if (!$moduleList = Core::getModules()) {
+            Error::log(PHPWS_NO_MODULES, 'core', 'initializeModules');
+            Core::errorPage();
         }
 
-        if (PHPWS_Error::isError($moduleList)) {
-            PHPWS_Error::log($moduleList);
-            PHPWS_Core::errorPage();
+        if (Error::isError($moduleList)) {
+            Error::log($moduleList);
+            Core::errorPage();
         }
 
         foreach ($moduleList as $mod) {
-            PHPWS_Core::setCurrentModule($mod['title']);
+            Core::setCurrentModule($mod['title']);
             /* Using include instead of require to prevent broken mods from hosing the site */
             $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/init.php';
 
@@ -59,8 +61,8 @@ class PHPWS_Core {
     public static function closeModules()
     {
         if (!isset($GLOBALS['Modules'])) {
-            PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
-            PHPWS_Core::errorPage();
+            Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
+            Core::errorPage();
         }
 
         foreach ($GLOBALS['Modules'] as $mod){
@@ -76,7 +78,7 @@ class PHPWS_Core {
      */
     public static function getModules($active=true, $just_title=false)
     {
-        $DB = new PHPWS_DB('modules');
+        $DB = new DB('modules');
         if ($active == true) {
             $DB->addWhere('active', 1);
         }
@@ -102,14 +104,14 @@ class PHPWS_Core {
             return $GLOBALS['Core_Module_Names'];
         }
 
-        $db = new PHPWS_DB('modules');
+        $db = new DB('modules');
         $db->setIndexBy('title');
         $db->addOrder('proper_name');
         $db->addColumn('proper_name');
         $db->addColumn('title');
         $result = $db->select('col');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Error::isError($result)) {
+            Error::log($result);
             return NULL;
         }
 
@@ -122,7 +124,6 @@ class PHPWS_Core {
      */
     public static function loadAsMod($use_file=true)
     {
-        PHPWS_Core::initCoreClass('Module.php');
         $core_mod = new PHPWS_Module('core', $use_file);
         return $core_mod;
     }
@@ -134,12 +135,12 @@ class PHPWS_Core {
     public static function runtimeModules()
     {
         if (!isset($GLOBALS['Modules'])) {
-            PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
-            PHPWS_Core::errorPage();
+            Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
+            Core::errorPage();
         }
 
         foreach ($GLOBALS['Modules'] as $title=>$mod) {
-            PHPWS_Core::setCurrentModule($title);
+            Core::setCurrentModule($title);
             $runtimeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/runtime.php';
             is_file($runtimeFile) ? include_once $runtimeFile : NULL;
         }
@@ -151,16 +152,16 @@ class PHPWS_Core {
     public static function runCurrentModule()
     {
         if (isset($_REQUEST['module'])) {
-            $mods = PHPWS_Core::getModules(true, true);
+            $mods = Core::getModules(true, true);
             if (!in_array($_REQUEST['module'], $mods)) {
-                PHPWS_Core::home();
+                Core::home();
             }
-            PHPWS_Core::setCurrentModule($_REQUEST['module']);
+            Core::setCurrentModule($_REQUEST['module']);
             $modFile = PHPWS_SOURCE_DIR . 'mod/' . $_REQUEST['module'] . '/index.php';
             if (is_file($modFile)) {
                 include $modFile;
             } else {
-                PHPWS_Core::errorPage('404');
+                Core::errorPage('404');
             }
         }
     }
@@ -175,7 +176,7 @@ class PHPWS_Core {
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
+            Error::log(File_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
             require_once 'PEAR/Exception.php';
             throw new PEAR_Exception(dgettext('core', 'Could not initialize module class ' . $classFile));
         }
@@ -185,7 +186,7 @@ class PHPWS_Core {
             require_once $classFile;
         }catch(Exception $e){
             // Log the exception
-            PHPWS_Error::log($e->getMessage());
+            Error::log($e->getMessage());
             // Re-throw the exception
             throw $e;
         }
@@ -197,14 +198,17 @@ class PHPWS_Core {
     /**
      * Requires a core class file once
      * Returns true is successful, false otherwise
+     *
+     * Deprecated since namespace use but still may be needed
      */
+
     public static function initCoreClass($file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
+            Error::log(File_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
             require_once 'PEAR/Exception.php';
             throw new PEAR_Exception(dgettext('core', 'Could not initialize core class ' . $classFile));
         }
@@ -214,7 +218,7 @@ class PHPWS_Core {
             require_once $classFile;
         }catch (Exception $e){
             // Log the exception
-            PHPWS_Error::log($e->getMessage());
+            Error::log($e->getMessage());
             // Re-throw the exception
             throw $e;
         }
@@ -229,8 +233,8 @@ class PHPWS_Core {
      */
     public static function setLastPost()
     {
-        $key = PHPWS_Core::_getPostKey();
-        if (!PHPWS_Core::isPosted()) {
+        $key = Core::_getPostKey();
+        if (!Core::isPosted()) {
             $_SESSION['PHPWS_LastPost'][] = $key;
             if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK) {
                 array_shift($_SESSION['PHPWS_LastPost']);
@@ -275,7 +279,7 @@ class PHPWS_Core {
             return false;
         }
 
-        $key = PHPWS_Core::_getPostKey();
+        $key = Core::_getPostKey();
 
         if (!isset($_SESSION['PHPWS_Post_Count'])) {
             $_SESSION['PHPWS_Post_Count'][$key] = 1;
@@ -301,7 +305,7 @@ class PHPWS_Core {
 
     public static function bookmark($allow_authkey=true)
     {
-        $url = PHPWS_Core::getCurrentUrl();
+        $url = Core::getCurrentUrl();
 
         if(!$allow_authkey && preg_match('/authkey=/', $url)) {
             $url = null;
@@ -318,9 +322,9 @@ class PHPWS_Core {
                 $_SESSION['PHPWS_Bookmark'] = null;
                 unset($_SESSION['PHPWS_Bookmark']);
             }
-            PHPWS_Core::reroute($bm);
+            Core::reroute($bm);
         } else {
-            PHPWS_Core::goBack();
+            Core::goBack();
         }
     }
 
@@ -331,14 +335,14 @@ class PHPWS_Core {
     {
         if (isset($_SERVER['HTTP_REFERER'])) {
             // prevent an endless loop
-            $current_url = PHPWS_Core::getCurrentUrl(false);
+            $current_url = Core::getCurrentUrl(false);
             if (strtolower($current_url) == strtolower($_SERVER['HTTP_REFERER'])) {
-                PHPWS_Core::home();
+                Core::home();
             } else {
-                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+                Core::reroute($_SERVER['HTTP_REFERER']);
             }
         } else {
-            PHPWS_Core::home();
+            Core::home();
         }
     }
 
@@ -347,7 +351,7 @@ class PHPWS_Core {
      */
     public static function home()
     {
-        PHPWS_Core::reroute();
+        Core::reroute();
     }
 
     /**
@@ -369,18 +373,18 @@ class PHPWS_Core {
      */
     public static function reroute($address=NULL)
     {
-        $current_url = PHPWS_Core::getCurrentUrl();
+        $current_url = Core::getCurrentUrl();
 
         if ($current_url == $address) {
             return;
         }
 
         // Set last post since we will be skipping it
-        PHPWS_Core::setLastPost();
+        Core::setLastPost();
 
         if (!preg_match('/^http/', $address)) {
             $address = preg_replace('@^/@', '', $address);
-            $http = PHPWS_Core::getHttp();
+            $http = Core::getHttp();
 
             $dirArray = explode('/', $_SERVER['PHP_SELF']);
             array_pop($dirArray);
@@ -472,7 +476,7 @@ class PHPWS_Core {
      */
     public static function requireConfig($module, $file=NULL, $exitOnError=true)
     {
-        return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
+        return Core::configRequireOnce($module, $file, $exitOnError);
     }
 
 
@@ -488,9 +492,9 @@ class PHPWS_Core {
         }
 
         if (!is_file($inc_file)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
+            Error::log(File_NOT_FOUND, 'core', 'requireInc', $inc_file);
             if ($exitOnError) {
-                PHPWS_Core::errorPage();
+                Core::errorPage();
             }
             else {
                 return false;
@@ -512,12 +516,12 @@ class PHPWS_Core {
         if (empty($file)) {
             $file = 'config.php';
         }
-        $config_file = PHPWS_Core::getConfigFile($module, $file);
+        $config_file = Core::getConfigFile($module, $file);
 
         if (empty($config_file) || !$config_file) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
+            Error::log(File_NOT_FOUND, 'core', 'configRequireOnce', $file);
             if ($exitOnError) {
-                PHPWS_Core::errorPage();
+                Core::errorPage();
             }
             else {
                 return $config_file;
@@ -548,11 +552,11 @@ class PHPWS_Core {
         $factory = new Log(1);
         $log  = $factory->singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
-        if (PHPWS_Error::isError($log)) {
+        if (Error::isError($log)) {
             return;
         }
 
-        if (PHPWS_Core::isBranch()) {
+        if (Core::isBranch()) {
             $branch_name = Branch::getCurrentBranchName();
             $message = '{' . $branch_name . '}' . $message;
         } else {
@@ -620,7 +624,7 @@ class PHPWS_Core {
             return true;
         } elseif (empty($_POST) && isset($_SERVER['CONTENT_LENGTH'])) {
             Security::log(_('User tried to post a file beyond server limits.'));
-            PHPWS_Core::errorPage('overpost');
+            Core::errorPage('overpost');
         }
 
         return true;
@@ -637,8 +641,8 @@ class PHPWS_Core {
             return $core_modules;
         }
 
-        $file = PHPWS_Core::getConfigFile('core', 'core_modules.php');
-        if (PHPWS_Error::isError($file)) {
+        $file = Core::getConfigFile('core', 'core_modules.php');
+        if (Error::isError($file)) {
             return $file;
         }
 
@@ -651,7 +655,7 @@ class PHPWS_Core {
      */
     public static function installModList($active_only=false)
     {
-        $db = new PHPWS_DB('modules');
+        $db = new DB('modules');
         if ($active_only) {
             $db->addWhere('active', 1);
         }
@@ -670,8 +674,8 @@ class PHPWS_Core {
         $var_array = NULL;
 
         if(!is_array($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core',
-                                    'PHPWS_Core::stripObjValues', $className);
+            return Error::get(PHPWS_CLASS_VARS, 'core',
+                                    'Core::stripObjValues', $className);
         }
 
         foreach ($classVars as $key => $value) {
@@ -701,11 +705,11 @@ class PHPWS_Core {
         $classVars = get_class_vars($className);
 
         if(!is_array($classVars) || empty($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::plugObject', $className);
+            return Error::get(PHPWS_CLASS_VARS, 'core', 'Core::plugObject', $className);
         }
 
         if (isset($variables) && !is_array($variables)) {
-            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
+            return Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
         }
 
         foreach($classVars as $key => $value) {
@@ -744,7 +748,7 @@ class PHPWS_Core {
         }
 
         if ($with_http) {
-            $address[] = PHPWS_Core::getHttp();
+            $address[] = Core::getHttp();
         }
         $address[] = $_SERVER['HTTP_HOST'];
 
@@ -807,10 +811,10 @@ class PHPWS_Core {
         include $file;
 
         if (!$get_file) {
-            if (!PHPWS_DB::isTable('core_version')) {
+            if (!DB::isTable('core_version')) {
                 $version = '1.0.0';
             } else {
-                $db = new PHPWS_DB('core_version');
+                $db = new DB('core_version');
                 $db->addColumn('version');
                 $version = $db->select('one');
             }
@@ -830,7 +834,7 @@ class PHPWS_Core {
     public static function getCurrentUrl($relative=true, $use_redirect=true)
     {
         if (!$relative) {
-            $address[] = PHPWS_Core::getHomeHttp();
+            $address[] = Core::getHomeHttp();
         }
 
         $self = & $_SERVER['PHP_SELF'];
@@ -874,15 +878,15 @@ class PHPWS_Core {
             $GLOBALS['Is_Branch'] = false;
             return true;
         } else {
-            if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
+            if (!Core::initModClass('branch', 'Branch.php')) {
+                Error::log(PHPWS_HUB_IDENTITY, 'core', 'Core::checkBranch');
                 return false;
             }
             if (Branch::checkCurrentBranch()) {
                 $GLOBALS['Is_Branch'] = true;
                 return true;
             } else {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
+                Error::log(PHPWS_HUB_IDENTITY, 'core', 'Core::checkBranch');
                 return false;
             }
         }
@@ -934,5 +938,5 @@ class PHPWS_Core {
         return true;
     }
 }// End of core class
-
+class PHPWS_Core extends Core {}
 ?>

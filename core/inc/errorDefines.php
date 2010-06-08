@@ -21,21 +21,21 @@ define('PHPWS_HUB_IDENTITY',         -16);
 
 /*********** Database.php ***************/
 
-define('PHPWS_DB_ERROR_TABLE',        -100);
-define('PHPWS_DB_NO_VALUES',          -101);
-define('PHPWS_DB_NO_OBJ_VARS',        -102);
-define('PHPWS_DB_BAD_OP',             -103);
-define('PHPWS_DB_BAD_TABLE_NAME',     -104);
-define('PHPWS_DB_BAD_COL_NAME',       -104);
-define('PHPWS_DB_NO_COLUMN_SET',      -105);
-define('PHPWS_DB_NOT_OBJECT',         -106);
-define('PHPWS_DB_NO_VARIABLES',       -107);
-define('PHPWS_DB_NO_WHERE',           -108);
-define('PHPWS_DB_NO_JOIN_DB',         -109);
-define('PHPWS_DB_NO_TABLE',           -110);
-define('PHPWS_DB_NO_ID',              -111);
-define('PHPWS_DB_EMPTY_SELECT',       -112);
-define('PHPWS_DB_IMPORT_FAILED',      -113);
+define('DB_ERROR_TABLE',        -100);
+define('DB_NO_VALUES',          -101);
+define('DB_NO_OBJ_VARS',        -102);
+define('DB_BAD_OP',             -103);
+define('DB_BAD_TABLE_NAME',     -104);
+define('DB_BAD_COL_NAME',       -104);
+define('DB_NO_COLUMN_SET',      -105);
+define('DB_NOT_OBJECT',         -106);
+define('DB_NO_VARIABLES',       -107);
+define('DB_NO_WHERE',           -108);
+define('DB_NO_JOIN_DB',         -109);
+define('DB_NO_TABLE',           -110);
+define('DB_NO_ID',              -111);
+define('DB_EMPTY_SELECT',       -112);
+define('DB_IMPORT_FAILED',      -113);
 
 
 /************* List.php *****************/

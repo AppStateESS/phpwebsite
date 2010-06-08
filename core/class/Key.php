@@ -1,5 +1,5 @@
 <?php
-
+namespace Core;
 /**
  * Small class to help modules plug in features from other modules
  *
@@ -87,7 +87,7 @@ class Key {
     public function getUrl($full_path=false)
     {
         if ($full_path) {
-            return sprintf('<a href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $this->url, $this->title);
+            return sprintf('<a href="%s%s">%s</a>', Core::getHomeHttp(), $this->url, $this->title);
         } else {
             return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
         }
@@ -160,13 +160,13 @@ class Key {
 
     public function loadViewGroups()
     {
-        $db = new PHPWS_DB('phpws_key_view');
+        $db = new DB('phpws_key_view');
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Error::isError($result)) {
+            Error::log($result);
             return array();
         }
         $this->_view_groups = $result;
@@ -182,12 +182,12 @@ class Key {
 
     public function loadEditGroups()
     {
-        $db = new PHPWS_DB('phpws_key_edit');
+        $db = new DB('phpws_key_edit');
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Error::isError($result)) {
+            Error::log($result);
             return array();
         }
         $this->_edit_groups = $result;
@@ -203,7 +203,7 @@ class Key {
 
     public function allowView($check_dates=true)
     {
-        if (Current_User::allow($this->module, $this->edit_permission,
+        if (\Current_User::allow($this->module, $this->edit_permission,
         $this->item_id, $this->item_name)) {
             return true;
         } elseif (!$this->active) {
@@ -220,12 +220,12 @@ class Key {
             return true;
         } else {
             if ($this->restricted == KEY_LOGGED_RESTRICTED) {
-                return Current_User::isLogged();
+                return \Current_User::isLogged();
             } elseif ($this->restricted == KEY_GROUP_RESTRICTED) {
-                if ($this->edit_permission && Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
+                if ($this->edit_permission && \Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
                     return true;
                 } else {
-                    $user_groups = Current_User::getGroups();
+                    $user_groups = \Current_User::getGroups();
                     if (empty($user_groups)) {
                         return false;
                     } else {
@@ -244,20 +244,20 @@ class Key {
             return true;
         }
 
-        return Current_User::allow($this->module, $this->edit_permission,
+        return \Current_User::allow($this->module, $this->edit_permission,
         $this->item_id, $this->item_name);
     }
 
     public function init()
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
 
         $result = $db->loadObject($this);
 
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             $this->_error = $result;
         } elseif (empty($result)) {
-            $this->_error = PHPWS_Error::get(KEY_NOT_FOUND, 'core', 'Key::init', $this->id);
+            $this->_error = Error::get(KEY_NOT_FOUND, 'core', 'Key::init', $this->id);
             $this->id = null;
         }
 
@@ -284,26 +284,26 @@ class Key {
         }
 
         if (empty($this->creator)) {
-            $this->creator = Current_User::getDisplayName();
-            $this->creator_id = Current_User::getId();
+            $this->creator = \Current_User::getDisplayName();
+            $this->creator_id = \Current_User::getId();
         }
 
-        $this->updater = Current_User::getDisplayName();
-        $this->updater_id = Current_User::getId();
+        $this->updater = \Current_User::getDisplayName();
+        $this->updater_id = \Current_User::getId();
 
         $this->update_date = time();
 
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
 
         if (!$this->id) {
             $db->addWhere('module', $this->module);
             $db->addWhere('item_name', $this->item_name);
             $db->addWhere('item_id', $this->item_id);
             $result = $db->select('row');
-            if (PHPWS_Error::isError($result)) {
+            if (Error::isError($result)) {
                 return $result;
             } elseif ($result) {
-                return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save',
+                return Error::get(KEY_DUPLICATE, 'core', 'Key::save',
                 sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
             }
             $db->reset();
@@ -311,7 +311,7 @@ class Key {
 
 
         $result = $db->saveObject($this);
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             $this->_error = $result;
             return $result;
         }
@@ -325,23 +325,23 @@ class Key {
             return false;
         }
 
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
         $db->addValue('restricted', $this->restricted);
-        if (PHPWS_Error::logIfError($db->saveObject($this))) {
+        if (Error::logIfError($db->saveObject($this))) {
             return false;
         }
 
-        $view_db = new PHPWS_DB('phpws_key_view');
+        $view_db = new DB('phpws_key_view');
         $view_db->addWhere('key_id', $this->id);
         $result = $view_db->delete();
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
-        $edit_db = new PHPWS_DB('phpws_key_edit');
+        $edit_db = new DB('phpws_key_edit');
         $edit_db->addWhere('key_id', $this->id);
         $result = $edit_db->delete();
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
@@ -357,7 +357,7 @@ class Key {
                     $view_db->resetValues();
                     $view_db->addValue('key_id', $this->id);
                     $view_db->addValue('group_id', $group_id);
-                    PHPWS_Error::logIfError($view_db->insert());
+                    Error::logIfError($view_db->insert());
                 }
             }
         }
@@ -370,7 +370,7 @@ class Key {
                 $edit_db->resetValues();
                 $edit_db->addValue('key_id', $this->id);
                 $edit_db->addValue('group_id', $group_id);
-                PHPWS_Error::logIfError($edit_db->insert());
+                Error::logIfError($edit_db->insert());
             }
         }
         return true;
@@ -394,13 +394,13 @@ class Key {
 
     public function setTitle($title)
     {
-        $this->title = PHPWS_Text::condense($title);
+        $this->title = Text::condense($title);
     }
 
     public function setSummary($summary)
     {
         $summary = preg_replace('/(<|&lt;|\[).*(>|&gt;|\])/sUi', ' ', $summary);
-        $this->summary = trim(PHPWS_Text::condense($summary, 255));
+        $this->summary = trim(Text::condense($summary, 255));
     }
 
     public function setUrl($url, $local=true)
@@ -410,7 +410,7 @@ class Key {
         }
 
         if ($local) {
-            PHPWS_Text::makeRelative($url, false);
+            Text::makeRelative($url, false);
         }
         $this->url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
@@ -461,7 +461,7 @@ class Key {
 
     public function getTplTags()
     {
-        $module_names = PHPWS_Core::getModuleNames();
+        $module_names = Core::getModuleNames();
 
         $tpl['ID']          = $this->id;
         $tpl['MODULE']      = $module_names[$this->module];
@@ -479,14 +479,14 @@ class Key {
     public function delete()
     {
         $all_is_well = true;
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
         $this->unregister();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Error::isError($result)) {
+            Error::log($result);
             $all_is_well = false;
         }
 
@@ -495,8 +495,8 @@ class Key {
         $db->addWhere('key_id', $this->id);
         $result = $db->delete();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Error::isError($result)) {
+            Error::log($result);
             $all_is_well = false;
         }
 
@@ -505,8 +505,8 @@ class Key {
         $db->addWhere('key_id', $this->id);
         $result = $db->delete();
 
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (Error::isError($result)) {
+            Error::log($result);
             $all_is_well = false;
         }
         return $all_is_well;
@@ -551,7 +551,7 @@ class Key {
 
         if ($source_table == 'phpws_key') {
             if (!isset($db->tables[1])) {
-                return PHPWS_Error::get(KEY_RESTRICT_NO_TABLE, 'core', 'Key::restrictView');
+                return Error::get(KEY_RESTRICT_NO_TABLE, 'core', 'Key::restrictView');
             }
             $source_table = $db->tables[1];
             $key_table = true;
@@ -572,8 +572,8 @@ class Key {
             $db->addJoin('left', 'phpws_key', $source_table, 'id', 'key_id');
         }
 
-        if ( Current_User::isDeity() ||
-        (isset($module) && Current_User::isUnrestricted($module) )
+        if ( \Current_User::isDeity() ||
+        (isset($module) && \Current_User::isUnrestricted($module) )
         ) {
             return;
         }
@@ -583,11 +583,11 @@ class Key {
             $db->addWhere('phpws_key.hide_after', $now, '>', null, 'active');
         }
 
-        if (!Current_User::isLogged()) {
+        if (!\Current_User::isLogged()) {
             $db->addWhere('phpws_key.restricted', 0, null, 'and', 'active');
             return;
         } else {
-            $groups = Current_User::getGroups();
+            $groups = \Current_User::getGroups();
             if (empty($groups)) {
                 return;
             }
@@ -603,7 +603,7 @@ class Key {
             $db->addWhere('phpws_key_view.group_id', $groups, 'in', null, 'restrict_2');
 
             if (empty($module)) {
-                $levels = Current_User::getUnrestrictedLevels();
+                $levels = \Current_User::getUnrestrictedLevels();
                 if (!empty($levels)) {
                     $db->addWhere('phpws_key.module', $levels, null, null, 'permission');
                     $db->groupIn('active', 'permission');
@@ -648,20 +648,20 @@ class Key {
      */
     public static function restrictEdit($db, $module, $edit_permission=null, $source_table=null, $key_id_column=null, $owner_id_column=null)
     {
-        if (Current_User::isDeity()) {
+        if (\Current_User::isDeity()) {
             return;
         }
 
         // if the user doesn't have rights for the module or subpermissions,
         // then we just stymie the whole query
-        if (!Current_User::allow($module, $edit_permission)) {
+        if (!\Current_User::allow($module, $edit_permission)) {
             $db->setQWhere('1=0');
             return;
         }
 
         // If the current user has unrestricted rights to edit the item
         // linked to this key, no further restrictions are necessary
-        if ( Current_User::isUnrestricted($module) ) {
+        if ( \Current_User::isUnrestricted($module) ) {
             return;
         } else {
             $db->setDistinct(1);
@@ -674,10 +674,10 @@ class Key {
             }
 
             if (!empty($owner_id_column)) {
-                $db->addWhere($source_table.'.'.$owner_id_column, Current_User::getId(), null, 'or','key_1');
+                $db->addWhere($source_table.'.'.$owner_id_column, \Current_User::getId(), null, 'or','key_1');
             }
 
-            $groups = Current_User::getGroups();
+            $groups = \Current_User::getGroups();
             if (!empty($groups)) {
                 $db->addJoin('left', $source_table, 'phpws_key_edit', 'key_id', 'key_id');
                 $db->addWhere('phpws_key_edit.group_id', $groups, 'in', 'or', 'key_1');
@@ -688,7 +688,7 @@ class Key {
 
     public function modulesInUse()
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
         $db->addColumn('module');
         $db->addColumn('modules.proper_name');
         $db->addWhere('module', 'modules.title');
@@ -710,7 +710,7 @@ class Key {
         }
 
         $_SESSION['Key_Views'][] = $this->id;
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
         $db->addWhere('id', $this->id);
         return $db->incrementColumn('times_viewed');
     }
@@ -769,7 +769,7 @@ class Key {
     public function unregister()
     {
         $success = true;
-        $db = new PHPWS_DB('phpws_key_register');
+        $db = new DB('phpws_key_register');
         $db->addColumn('module');
         $result = $db->select('col');
         if (empty($result)) {
@@ -780,7 +780,7 @@ class Key {
             $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module);
 
             if (!is_file($filename)) {
-                PHPWS_Error::log(KEY_UNREG_FILE_MISSING, 'core', 'PHPWS_Key::unregister', $filename);
+                Error::log(KEY_UNREG_FILE_MISSING, 'core', 'PHPWS_Key::unregister', $filename);
                 continue;
             }
 
@@ -788,13 +788,13 @@ class Key {
 
             $func_name = $module . '_unregister_key';
             if (!function_exists($func_name)) {
-                PHPWS_Error::log(KEY_UNREG_FUNC_MISSING, 'core', 'PHPWS_Key::unregister', $func_name);
+                Error::log(KEY_UNREG_FUNC_MISSING, 'core', 'PHPWS_Key::unregister', $func_name);
                 continue;
             }
 
             $result = $func_name($this);
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (Error::isError($result)) {
+                Error::log($result);
                 $success = false;
             }
         }
@@ -803,7 +803,7 @@ class Key {
 
     public static function registerModule($module)
     {
-        $db = new PHPWS_DB('phpws_key_register');
+        $db = new DB('phpws_key_register');
         $db->addValue('module', $module);
         return $db->insert();
     }
@@ -820,10 +820,10 @@ class Key {
     {
         $error_free = true;
 
-        $db1 = new PHPWS_DB('phpws_key');
+        $db1 = new DB('phpws_key');
         $db1->addWhere('module', $module);
         $result = $db1->getObjects('Key');
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
@@ -836,10 +836,10 @@ class Key {
             }
         }
 
-        $db2 = new PHPWS_DB('phpws_key_register');
+        $db2 = new DB('phpws_key_register');
         $db2->addWhere('module', $module);
         $result = $db2->delete();
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
@@ -848,7 +848,7 @@ class Key {
 
     public static function getAllIds($module)
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
         $db->addColumn('id');
         $db->addWhere('module', $module);
         return $db->select('col');
@@ -860,7 +860,7 @@ class Key {
         if (empty($item_name)) {
             $item_name = $module;
         }
-        $db = new PHPWS_DB('phpws_key');
+        $db = new DB('phpws_key');
         $db->addWhere('item_id', (int)$item_id);
         $db->addWhere('module', $module);
         $db->addWhere('item_name', $item_name);

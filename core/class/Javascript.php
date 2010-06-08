@@ -1,12 +1,19 @@
 <?php
+namespace Core;
 /**
+ * There are two important GLOBAL values in Javascript. This prevents repeats of headers and includes.
+ * $this->includes is an array of scripts to be included
+ * $GLOBALS['Javascript_Headers'] is an array of script to be added to the head of the page.
+ * Both are accessed by Layout.
+ *
  *
  * @version $Id$
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
 
-PHPWS_Core::initCoreClass('jsmin.php');
+
+Core::initCoreClass('jsmin.php');
 
 abstract class Javascript extends Data {
     /**
@@ -21,22 +28,57 @@ abstract class Javascript extends Data {
 
     protected $head_script = null;
 
-    protected $body_script = null;
+    protected $body_script = '';
 
     protected $demo_code = null;
 
     protected $example = null;
+
+    protected $includes = null;
+
+    /**
+     * Indicates whether object has been prepared for output
+     * factory object should trip this flag after preparation
+     * @var boolean
+     */
+    protected $prepared = false;
 
     /**
      * An array of scripts to include in the head.
      *
      * @var array
      */
-    protected $includes = null;
 
     abstract public function loadDemo();
+
+    /**
+     * The prepare function should ready the head and body scripts for usage.
+     */
     abstract public function prepare();
 
+    /**
+     * Indicates whether jquery has been included. See loadJQuery
+     * @var boolean
+     */
+    protected static $jquery_loaded = false;
+
+    /**
+     * Tracks factory scripts includes and prevents repeat
+     * @var array
+     */
+    protected static $script_list = null;
+
+    /**
+     * List of current head script keys. Prevents repeats in head of document
+     * @var array
+     */
+    protected static $current_heads = array();
+
+
+    public function isPrepared()
+    {
+        return $this->prepared;
+    }
 
     public function setBodyScript($body_script)
     {
@@ -56,6 +98,47 @@ abstract class Javascript extends Data {
         $this->head_script = $head_script;
     }
 
+    /**
+     * Returns a string consisting of all current Javascript headers and includes
+     */
+    public static function getObjects()
+    {
+        return $GLOBALS['Javascript_Objects'];
+    }
+
+    public static function getHeaders()
+    {
+        $head = null;
+        if (isset($GLOBALS['Javascript_Objects'])) {
+            foreach ($GLOBALS['Javascript_Objects'] as $js) {
+                if (!$js->isPrepared()) {
+                    $js->prepare();
+                }
+                if ($include = $js->getIncludes()) {
+                    $includes[] = $include;
+                }
+                if ($header = $js->getHeadScript()) {
+                    $headers[] = $header;
+                }
+            }
+            if (isset($includes)) {
+                $head .= implode("\n", $includes);
+            }
+
+            if (isset($headers)) {
+                $head .= implode("\n", $headers);
+            }
+        }
+        return $head;
+    }
+
+    public function getIncludes()
+    {
+        if (!empty($this->includes)) {
+            return implode("\n", $this->includes) . "\n";
+        }
+    }
+
     public function getHeadScript()
     {
         return $this->head_script;
@@ -63,25 +146,31 @@ abstract class Javascript extends Data {
 
     public function getBodyScript()
     {
+        if (!$this->isPrepared()) {
+            $this->prepare();
+        }
         return $this->body_script;
     }
 
     public static function factory($script_name)
     {
-        static $script_list = null;
-
-        if (!isset($script_list[$script_name])) {
+        if (!isset(self::$script_list[$script_name])) {
             $js_path = PHPWS_SOURCE_DIR . 'javascript/' . $script_name . '/factory.php';
             if (!is_file($js_path)) {
                 throw new PEAR_Exception(dgettext('core', 'Could not find javascript factory file.'));
             }
             require_once $js_path;
+            self::$script_list[$script_name] = 1;
         }
 
         $factory_class_name = 'javascript_' . $script_name;
-
         $js = new $factory_class_name;
         $js->script_name = $script_name;
+        if ($js->use_jquery) {
+            $js->loadJQuery();
+        }
+
+        $GLOBALS['Javascript_Objects'][] = $js;
         return $js;
     }
 
@@ -137,11 +226,9 @@ EOF;
 
     public function loadJQuery()
     {
-        static $jquery_loaded = false;
-
-        if (!$jquery_loaded) {
-            $this->addHeadInclude(PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js', true, true);
-            $jquery_loaded = true;
+        if (!self::$jquery_loaded) {
+            $this->addInclude(PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js', true, true);
+            self::$jquery_loaded = true;
         }
     }
 
@@ -154,7 +241,7 @@ EOF;
      *                               the script file.
      * @param boolean $prepend : forces the scripts to the front of the head_script array
      */
-    public function addHeadInclude($file_name, $strict_path=false, $prepend=false)
+    public function addInclude($file_name, $strict_path=false, $prepend=false)
     {
         if (!$strict_path) {
             $file_name =  PHPWS_SOURCE_HTTP . 'javascript/' . $this->script_name . '/' . $file_name;
@@ -169,17 +256,6 @@ EOF;
         }
     }
 
-    public function getIncludes()
-    {
-        if ($this->use_jquery) {
-            $this->loadJQuery();
-        }
-
-        if (!empty($this->includes)) {
-            return implode("\n", $this->includes);
-        }
-    }
-
     /**
      * Indicates whether the current script is already in the head queue. This
      * prevents repeats in the head section of the page. The sample can be
@@ -191,15 +267,13 @@ EOF;
      */
     private function currentlyInHead($sample)
     {
-        static $current_heads = array();
-
         $key = md5($sample);
 
-        $result = in_array($key, $current_heads);
+        $result = in_array($key, self::$current_heads);
         if ($result) {
             return true;
         } else {
-            $current_heads[] = $key;
+            self::$current_heads[] = $key;
             return false;
         }
     }
@@ -280,6 +354,34 @@ EOF;
     </body>
 </html>
 EOF;
+    }
+
+    /**
+     * Displays parameters in javascript format
+     * @param unknown_type $label
+     * @param array $parameters
+     */
+    public static function displayParams(array $parameters) {
+
+        foreach ($parameters as $key=>$value) {
+            switch (gettype($value)) {
+                case 'boolean':
+                    $value = $value ? 'true' : 'false';
+                    break;
+
+                case 'string':
+                    $value = "'$value'";
+                    break;
+
+                case 'array':
+                    //@TODO this needs testing
+                    $value = Javascript::displayParams($key, $value);
+                    break;
+            }
+            $param[] = "$key: $value";
+        }
+
+        return implode(",\n", $param);
     }
 
 }

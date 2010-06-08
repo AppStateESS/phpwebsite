@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * Controls templates
  *
@@ -17,7 +18,7 @@ if (!defined('CACHE_TPL_LOCALLY')) {
     define('CACHE_TPL_LOCALLY', false);
 }
 
-class PHPWS_Template extends HTML_Template_Sigma {
+class Template extends \HTML_Template_Sigma {
     public $module           = NULL;
     public $error            = NULL;
     public $lastTemplatefile = NULL;
@@ -32,8 +33,8 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if (isset($file)){
             $result = $this->setFile($file);
 
-            if (PHPWS_Error::isError($result)){
-                PHPWS_Error::log($result);
+            if (Error::isError($result)){
+                Error::log($result);
                 $this->error = $result;
             }
         }
@@ -53,7 +54,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return PHPWS_SOURCE_DIR . "mod/$module/templates/";
         }
 
-        $theme = Layout::getThemeDir();
+        $theme = \Layout::getThemeDir();
         return sprintf('%stemplates/%s/', $theme, $module);
     }
 
@@ -64,7 +65,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public function setCache()
     {
-        if ($this->ignore_cache || !PHPWS_Template::allowSigmaCache()) {
+        if ($this->ignore_cache || !Template::allowSigmaCache()) {
             return;
         }
 
@@ -106,7 +107,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
      */
     public static function getTemplateDirectory($module, $directory=NULL)
     {
-        $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
+        $theme_dir  = Template::getTplDir($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
 
         if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
@@ -120,7 +121,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public static function getTemplateHttp($module, $directory=NULL)
     {
-        $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
+        $theme_dir  = Template::getTplDir($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_HTTP, $module, $directory);
         if (FORCE_THEME_TEMPLATES) {
             return $theme_dir;
@@ -132,9 +133,9 @@ class PHPWS_Template extends HTML_Template_Sigma {
      * Lists the template files in a directory.
      * Can be called statically.
      */
-    public function listTemplates($module, $directory=NULL)
+    public static function listTemplates($module, $directory=NULL)
     {
-        $tpl_dir = PHPWS_Template::getTemplateDirectory($module, $directory);
+        $tpl_dir = Template::getTemplateDirectory($module, $directory);
 
         if (!$result = scandir($tpl_dir)) {
             return NULL;
@@ -161,10 +162,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
             $result = $this->loadTemplateFile($file);
             $used_tpl = & $file;
         } else {
-            $theme_tpl    = PHPWS_Template::getTplDir($module) . $file;
+            $theme_tpl    = Template::getTplDir($module) . $file;
             $mod_tpl      = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
 
-            if (PHPWS_Error::isError($theme_tpl)) {
+            if (Error::isError($theme_tpl)) {
                 return $theme_tpl;
             }
 
@@ -181,7 +182,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         if ($result) {
-            PHPWS_Error::logIfError($result);
+            Error::logIfError($result);
             $this->lastTemplatefile = $used_tpl;
             return $result;
         } else {
@@ -201,8 +202,8 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public function setData($data)
     {
-        if (PHPWS_Error::isError($data)){
-            PHPWS_Error::log($data);
+        if (Error::isError($data)){
+            Error::log($data);
             return NULL;
         }
 
@@ -222,28 +223,28 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public static function process($template, $module, $file, $strict=false, $ignore_cache=false)
     {
         if (!is_array($template)) {
-            return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core',
-                                    'PHPWS_Template::process',
+            return Error::log(PHPWS_VAR_TYPE, 'core',
+                                    'Template::process',
                                     'template=' . gettype($template));
             return NULL;
         }
 
-        if (PHPWS_Error::isError($template)){
-            PHPWS_Error::log($template);
+        if (Error::isError($template)){
+            Error::log($template);
             return NULL;
         }
 
         if ($strict) {
-            $tpl = new PHPWS_Template;
+            $tpl = new Template;
             $tpl->setFile($file, true);
         } else {
-            $tpl = new PHPWS_Template($module, $file);
+            $tpl = new Template($module, $file);
         }
 
         $tpl->ignore_cache = (bool)$ignore_cache;
 
-        if (PHPWS_Error::isError($tpl->error)) {
-            PHPWS_Error::log($tpl->error);
+        if (Error::isError($tpl->error)) {
+            Error::log($tpl->error);
             return _('Template error.');
         }
 
@@ -264,7 +265,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         $result = $tpl->get();
 
-        if (PHPWS_Error::isError($result)) {
+        if (Error::isError($result)) {
             return $result;
         }
 
@@ -285,14 +286,14 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public static function processTemplate($template, $module, $file, $defaultTpl=true)
     {
         if ($defaultTpl) {
-            return PHPWS_Template::process($template, $module, $file);
+            return Template::process($template, $module, $file);
         } else {
-            $tpl = new PHPWS_Template($module);
+            $tpl = new Template($module);
             $tpl->setFile($file, true);
             $tpl->setData($template);
             return $tpl->get();
         }
     }
 }
-
+class PHPWS_Template extends Template {}
 ?>

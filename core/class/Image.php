@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *

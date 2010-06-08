@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -18,6 +19,28 @@
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
+spl_autoload_register(null, false);
+spl_autoload_extensions('.php');
 
-require_once PHPWS_SOURCE_DIR . 'core/class/DB.php';
+function autoload($class_name)
+{
+    //if using namespace
+    if (strstr($class_name, '\\')) {
+        $class_name = substr(strrchr($class_name, '\\'), 1);
+    }
+    $filename = $class_name . '.php';
+    $file = PHPWS_SOURCE_DIR . 'core/class/' . $filename;
+    if (!is_file($file)) {
+        $filename = str_replace('PHPWS_', '', $class_name) . '.php';
+        $file = PHPWS_SOURCE_DIR . 'core/class/' . $filename;
+        if (!is_file($file)) {
+            return false;
+        }
+    }
+    require_once $file;
+    return true;
+}
+
+spl_autoload_register('Core\autoload');
+
 ?>
