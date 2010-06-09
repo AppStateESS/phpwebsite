@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * debugger for the phpWebSite core
  *

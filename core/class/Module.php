@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Class contains module information
  *

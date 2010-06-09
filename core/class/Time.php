@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * The PHPWS_Time class is mainly for the parsing of timestamps
  * into and out of UTC time.

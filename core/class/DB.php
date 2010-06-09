@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * A database class
  *

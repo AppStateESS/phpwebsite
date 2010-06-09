@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Separates work into batches to prevent memory caps or timeouts
  *

@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -48,6 +48,11 @@ abstract class Data {
             $firephp->setOptions($options);
             $firephp->log($this, get_class($this));
         }
+    }
+
+    public function extract()
+    {
+        return get_object_vars($this);
     }
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Copied from php.net
  * http://us2.php.net/manual/en/ref.xml.php

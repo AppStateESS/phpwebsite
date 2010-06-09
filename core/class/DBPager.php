@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 define ('DBPAGER_DEFAULT_LIMIT', 25);
 define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));

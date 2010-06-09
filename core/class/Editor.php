@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Used to load DHTML editors. Plugin files must be available.
  *

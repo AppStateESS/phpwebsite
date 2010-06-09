@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Creates a session to hold module settings.
  * Prevents modules from having to load their config tables

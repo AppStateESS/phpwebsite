@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Write, reads, and deletes cookies under one site index
  * @author Matthew McNaney <mcnaney at gmail dot com>

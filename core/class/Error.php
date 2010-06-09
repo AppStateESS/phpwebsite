@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -54,8 +54,10 @@ class Error {
         }
     }
 
-    public static function get($value, $module, $funcName=NULL, $extraInfo=NULL){
-        setLanguage(DEFAULT_LANGUAGE);
+    public static function get($value, $module, $funcName=NULL, $extraInfo=NULL)
+    {
+        $language = new Language;
+        $language->setLanguage(DEFAULT_LANGUAGE);
 
         if (empty($module)) {
             return Error::get(PHPWS_NO_MODULE, 'core', 'Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
@@ -117,7 +119,7 @@ class Error {
         }
 
         $error = Error::raiseError($message, $value, NULL, NULL, implode('', $fullError));
-        setLanguage(CURRENT_LANGUAGE);
+        $language->setLanguage($GLOBALS['CURRENT_LANGUAGE']);
         return $error;
     }
 

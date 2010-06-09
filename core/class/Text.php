@@ -678,7 +678,7 @@ class Text {
                     continue;
                 }
                 $search = "\[($module):([\w\s:\.\?\!]*)\]";
-                $text = preg_replace_callback("/$search/Ui", 'Core\getEmbedded', $text);
+                $text = preg_replace_callback("/$search/Ui", 'core\getEmbedded', $text);
             }
         }
 

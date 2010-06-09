@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Creates HTML form elements and/or an entire form
  *

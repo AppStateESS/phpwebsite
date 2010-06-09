@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Frontend class for Pear's Mail class.
  * Settings are in core/conf/mail_settings.php

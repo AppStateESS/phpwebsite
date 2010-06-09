@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * There are two important GLOBAL values in Javascript. This prevents repeats of headers and includes.
  * $this->includes is an array of scripts to be included

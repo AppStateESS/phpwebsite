@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -25,8 +25,10 @@ class Language {
     {
         /* Initialize language settings */
         if (DISABLE_TRANSLATION || !function_exists('bindtextdomain')) {
-            define('CURRENT_LANGUAGE', 'en_US');
-            define('PHPWS_TRANSLATION', FALSE);
+            $GLOBALS['CURRENT_LANGUAGE'] = 'en_US';
+            if (!defined('PHPWS_TRANSLATION')) {
+                define('PHPWS_TRANSLATION', FALSE);
+            }
 
             if (!function_exists('dgettext')) {
                 function dgettext($mod, $text) {
@@ -41,7 +43,9 @@ class Language {
             }
 
         } else {
-            define('PHPWS_TRANSLATION', TRUE);
+            if (!defined('PHPWS_TRANSLATION')) {
+                define('PHPWS_TRANSLATION', TRUE);
+            }
             $this->initLanguage();
             $core_locale = PHPWS_SOURCE_DIR . 'locale';
 
@@ -141,10 +145,10 @@ class Language {
         }
 
         if ($locale != FALSE) {
-            define('CURRENT_LANGUAGE', $locale);
+            $GLOBALS['CURRENT_LANGUAGE'] = $locale;
         }
         else {
-            define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
+            $GLOBALS['CURRENT_LANGUAGE'] = DEFAULT_LANGUAGE;
         }
 
         $this->loadLanguageDefaults($locale);
@@ -188,7 +192,7 @@ class Language {
      */
     function translateFile($filename)
     {
-        $language = str_ireplace('.utf-8', '', CURRENT_LANGUAGE);
+        $language = str_ireplace('.utf-8', '', $GLOBALS['CURRENT_LANGUAGE']);
         return strtolower($language . '_' . $filename);
     }
 }

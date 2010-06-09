@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Small class to help modules plug in features from other modules
  *

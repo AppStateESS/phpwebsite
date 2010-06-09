@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 
 /**
  * Handles the logging and routing of security problems

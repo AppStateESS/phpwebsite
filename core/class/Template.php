@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * Controls templates
  *
@@ -27,10 +27,11 @@ class Template extends \HTML_Template_Sigma {
     public function __construct($module=NULL, $file=NULL)
     {
         $this->HTML_Template_Sigma();
-        if (isset($module))
-        $this->setModule($module);
+        if (isset($module)) {
+            $this->setModule($module);
+        }
 
-        if (isset($file)){
+        if (isset($file)) {
             $result = $this->setFile($file);
 
             if (Error::isError($result)){
@@ -46,15 +47,12 @@ class Template extends \HTML_Template_Sigma {
      */
     public static function getTplDir($module)
     {
+        /*
         if ($module == 'core') {
             return PHPWS_SOURCE_DIR . 'core/templates/';
         }
-
-        if (!class_exists('Layout')) {
-            return PHPWS_SOURCE_DIR . "mod/$module/templates/";
-        }
-
-        $theme = \Layout::getThemeDir();
+*/
+        $theme = \layout\Layout::getThemeDir();
         return sprintf('%stemplates/%s/', $theme, $module);
     }
 
@@ -107,12 +105,14 @@ class Template extends \HTML_Template_Sigma {
      */
     public static function getTemplateDirectory($module, $directory=NULL)
     {
-        $theme_dir  = Template::getTplDir($module) . $directory;
+        $theme_dir = Template::getTplDir($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
 
         if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
             return $theme_dir;
-        } elseif (is_dir($module_dir)) {
+        }
+
+        elseif (is_dir($module_dir)) {
             return $module_dir;
         } else {
             return NULL;
@@ -170,6 +170,7 @@ class Template extends \HTML_Template_Sigma {
             }
 
             if (is_file($theme_tpl)) {
+                echo $theme_tpl;
                 $result = $this->loadTemplateFile($theme_tpl);
                 $used_tpl = & $theme_tpl;
             } elseif (is_file($mod_tpl)) {
@@ -220,34 +221,20 @@ class Template extends \HTML_Template_Sigma {
     }
 
 
-    public static function process($template, $module, $file, $strict=false, $ignore_cache=false)
+    public static function process(array $template, $module, $file, $strict=false, $ignore_cache=false)
     {
-        if (!is_array($template)) {
-            return Error::log(PHPWS_VAR_TYPE, 'core',
-                                    'Template::process',
-                                    'template=' . gettype($template));
-            return NULL;
-        }
-
-        if (Error::isError($template)){
-            Error::log($template);
-            return NULL;
-        }
-
         if ($strict) {
             $tpl = new Template;
             $tpl->setFile($file, true);
         } else {
             $tpl = new Template($module, $file);
         }
-
         $tpl->ignore_cache = (bool)$ignore_cache;
 
         if (Error::isError($tpl->error)) {
             Error::log($tpl->error);
             return _('Template error.');
         }
-
         foreach ($template as $key => $value) {
             if (!is_array($value) || !isset($tpl->_blocks[$key])) {
                 continue;

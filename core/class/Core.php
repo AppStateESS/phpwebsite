@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 
 /**
  * Controls module manipulation
@@ -549,7 +549,7 @@ class Core {
 
 
         $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
-        $factory = new Log(1);
+        $factory = new \Log(1);
         $log  = $factory->singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
         if (Error::isError($log)) {

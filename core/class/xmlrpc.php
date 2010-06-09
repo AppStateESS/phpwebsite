@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 require_once PHPWS_SOURCE_DIR . '/lib/xml/XML-RPC/IXR_Library.inc.php';
 
 /**

@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace core;
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney gmail dot com>
@@ -42,7 +42,7 @@ class Cache {
         }
 
         $cache = Cache::initCache($lifetime);
-        $key .= SITE_HASH . CURRENT_LANGUAGE;
+        $key .= SITE_HASH . $GLOBALS['CURRENT_LANGUAGE'];
         return $cache->get(md5($key));
     }
 
@@ -55,7 +55,7 @@ class Cache {
 
     public static function remove($key)
     {
-        $key .= SITE_HASH . CURRENT_LANGUAGE;
+        $key .= SITE_HASH . $GLOBALS['CURRENT_LANGUAGE'];
         $cache = Cache::initCache();
         return $cache->remove(md5($key));
     }
@@ -74,7 +74,7 @@ class Cache {
      */
     public static function save($key, $content)
     {
-        $key .= SITE_HASH . CURRENT_LANGUAGE;
+        $key .= SITE_HASH . $GLOBALS['CURRENT_LANGUAGE'];
         if (!Cache::isEnabled()) {
             return;
         }
