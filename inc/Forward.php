@@ -14,7 +14,7 @@ if (!defined('UTF8_MODE')) {
 
 function forwardInfo()
 {
-    $url =  Core\Core::getCurrentUrl();
+    $url =  core\Core::getCurrentUrl();
 
     if ($url == 'index.php' || $url== '') {
         return;
@@ -35,7 +35,7 @@ function forwardInfo()
     $aUrl = explode('/', $url);
     $module = array_shift($aUrl);
 
-    $mods = Core\Core::getModules(true, true);
+    $mods = core\Core::getModules(true, true);
 
     if (!in_array($module, $mods)) {
         $GLOBALS['Forward'] = $module;

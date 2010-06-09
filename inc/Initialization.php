@@ -50,11 +50,11 @@ if (!defined('IGNORE_BROWSER_LANGUAGE')) {
     define('IGNORE_BROWSER_LANGUAGE', false);
 }
 
-require_once PHPWS_SOURCE_DIR . 'core/inc/autoload.php';
+//require_once PHPWS_SOURCE_DIR . 'core/inc/autoload.php';
 
-$language = new Core\Language;
+$language = new core\Language;
 
-define('PHPWS_HOME_HTTP', Core\Core::getHomeHttp());
+define('PHPWS_HOME_HTTP', core\Core::getHomeHttp());
 loadBrowserInformation();
 
 function loadBrowserInformation()
@@ -86,6 +86,32 @@ function getBrowser()
     } else {
         return $GLOBALS['browser'];
     }
+}
+
+function __autoload($class_name)
+{
+    if (strstr($class_name, '\\')) {
+        $ns = explode('\\', $class_name);
+        $cls = array_pop($ns);
+        $base = array_pop($ns);
+        $filename = $cls . '.php';
+        if (!empty($base)) {
+            if ($base == 'core') {
+                $file = PHPWS_SOURCE_DIR . 'core/class/' . $filename;
+            } else {
+                $file = PHPWS_SOURCE_DIR . "mod/$base/class/$filename";
+            }
+        }
+    } else {
+        // autoload cannot operate without namespaces
+        return false;
+    }
+    echo $file . '<br>';
+    if (!is_file($file)) {
+        return false;
+    }
+    require_once $file;
+    return true;
 }
 
 ?>
