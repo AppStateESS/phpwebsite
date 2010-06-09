@@ -723,7 +723,7 @@ class MDB2
 	 *
 	 * @access  public
 	 */
-	function errorMessage($value = null)
+	public static function errorMessage($value = null)
 	{
 		static $errorMessages;
 
