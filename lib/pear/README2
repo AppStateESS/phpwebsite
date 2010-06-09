@@ -41,6 +41,10 @@ MDB2/Manager/mysql.php
 ---------------------------
 pass-by-references removed
 
+MDB2.php
+---------------------------
+errorMessage mad public static
+
 
 DB.php
 ---------------------------
