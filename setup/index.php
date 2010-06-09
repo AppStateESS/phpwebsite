@@ -11,9 +11,9 @@ set_include_path('lib/pear/');
 
 define('CONFIG_CREATED', is_file('config/core/config.php'));
 if (CONFIG_CREATED) {
-	require_once './config/core/config.php';
+    require_once './config/core/config.php';
 } else {
-	define('SITE_HASH', md5(rand()));
+    define('SITE_HASH', md5(rand()));
 }
 require_once './setup/config.php';
 require_once './core/class/Init.php';
@@ -21,8 +21,8 @@ require_once './core/class/Template.php';
 require_once './setup/class/Setup.php';
 
 // Core is loaded in Init
-Core\Core::initModClass('boost', 'Boost.php');
-Core\Core::initModClass('users', 'Current_User.php');
+core\Core::initModClass('boost', 'Boost.php');
+core\Core::initModClass('users', 'Current_User.php');
 
 $setup = new Setup;
 
@@ -46,33 +46,33 @@ exit('end of switch');
  */
 function isWindows()
 {
-	if (isset($_SERVER['WINDIR']) ||
-	preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
-		return TRUE;
-	} else {
-		return FALSE;
-	}
+    if (isset($_SERVER['WINDIR']) ||
+    preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 
 function fakeCore()
 {
-	exit('fakecore');
-	if (!function_exists('setLanguage')) {
-		function setLanguage(){}
-	}
+    exit('fakecore');
+    if (!function_exists('setLanguage')) {
+        function setLanguage(){}
+    }
 
-	set_include_path('./lib/pear/');
-	define('PHPWS_LOG_DIRECTORY', './logs/');
-	define('DEFAULT_LANGUAGE', 'en_US');
-	define('CURRENT_LANGUAGE', 'en_US');
-	define('PHPWS_SOURCE_DIR', getcwd() . '/');
-	define('LOG_PERMISSION', 0600);
-	define('PHPWS_LOG_ERRORS', true);
-	define('LOG_TIME_FORMAT', '%X %x');
-	require_once './core/class/Core.php';
-	require_once './core/class/Error.php';
-	require_once './core/class/File.php';
+    set_include_path('./lib/pear/');
+    define('PHPWS_LOG_DIRECTORY', './logs/');
+    define('DEFAULT_LANGUAGE', 'en_US');
+    $GLOBALS['CURRENT_LANGUAGE'] = 'en_US';
+    define('PHPWS_SOURCE_DIR', getcwd() . '/');
+    define('LOG_PERMISSION', 0600);
+    define('PHPWS_LOG_ERRORS', true);
+    define('LOG_TIME_FORMAT', '%X %x');
+    require_once './core/class/Core.php';
+    require_once './core/class/Error.php';
+    require_once './core/class/File.php';
 }
 
 /**
@@ -81,19 +81,19 @@ function fakeCore()
  */
 function serverPass($content)
 {
-	exit('serverpass');
-	if (!isset($_COOKIE['check_server']) || !$_COOKIE['check_server']) {
-		if (checkServer($content)) {
-			$content[] = dgettext('core','Server passed enough tests to allow installation.');
-			$content[] = sprintf('<p><a href="index.php">%s</a></p>', dgettext('core','Continue...'));
-			setcookie('check_server', 1, 0);
-		} else {
-			$content[] = dgettext('core','Server failed crucial tests. You may not install phpWebSite.');
-			setcookie('check_server', 0, 0);
-		}
+    exit('serverpass');
+    if (!isset($_COOKIE['check_server']) || !$_COOKIE['check_server']) {
+        if (checkServer($content)) {
+            $content[] = dgettext('core','Server passed enough tests to allow installation.');
+            $content[] = sprintf('<p><a href="index.php">%s</a></p>', dgettext('core','Continue...'));
+            setcookie('check_server', 1, 0);
+        } else {
+            $content[] = dgettext('core','Server failed crucial tests. You may not install phpWebSite.');
+            setcookie('check_server', 0, 0);
+        }
 
-		display(dgettext('core', 'Checking server'), implode('<br />', $content));
-	}
+        display(dgettext('core', 'Checking server'), implode('<br />', $content));
+    }
 }
 
 

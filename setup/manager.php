@@ -19,9 +19,9 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 
 require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 
-Core\Core::initModClass('users', 'Current_User.php');
-Core\Core::initModClass('boost', 'Boost.php');
-Core\Core::initModClass('layout', 'Layout.php');
+core\Core::initModClass('users', 'Current_User.php');
+core\Core::initModClass('boost', 'Boost.php');
+core\Core::initModClass('layout', 'Layout.php');
 
 session_start();
 
@@ -40,7 +40,7 @@ class PHPWS_SiteManager
         if (!Current_User::isLogged() && !isset($_POST['phpws_username'])) {
             $command = 'login';
         } elseif (!Current_User::isDeity() && !isset($_POST['phpws_username'])) {
-            Core\Core::killAllSessions();
+            core\Core::killAllSessions();
             $command = 'login';
         } elseif (!isset($_REQUEST['command'])) {
             $command = 'main';
@@ -60,10 +60,10 @@ class PHPWS_SiteManager
                     $message = _('Username and password combination not found.');
                     $content = PHPWS_SiteManager::loginForm();
                 } elseif (!Current_User::isDeity()) {
-                    Core\Core::killAllSessions();
+                    core\Core::killAllSessions();
                     $content = _('You must be a deity to run Site Manager.');
                 } else {
-                    Core\Core::reroute('manager.php?command=main');
+                    core\Core::reroute('manager.php?command=main');
                 }
 
                 break;
@@ -78,7 +78,7 @@ class PHPWS_SiteManager
                 $module = new PHPWS_Module($_GET['module_title']);
                 $boost->addModule($module);
                 $boost->uninstall();
-                Core\Core::goBack();
+                core\Core::goBack();
                 break;
         }
 
@@ -112,7 +112,7 @@ class PHPWS_SiteManager
 
     function main()
     {
-        $db = new Core\DB('modules');
+        $db = new core\DB('modules');
         $db->addOrder('title');
         $result = $db->select();
 
