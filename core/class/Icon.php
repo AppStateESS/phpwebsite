@@ -1,5 +1,4 @@
 <?php
-namespace core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -106,7 +105,7 @@ class Icon extends Image {
         }
 
         $css = Icon::getIconSource() . 'icon.css';
-        \Layout::addToStyleList($css);
+        Layout::addToStyleList($css);
         $included = true;
     }
 

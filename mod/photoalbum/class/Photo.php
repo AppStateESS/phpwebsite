@@ -68,7 +68,7 @@ class PHPWS_Photo extends PHPWS_Item {
         $tags['PHOTO_TEXT'] = dgettext('photoalbum', 'Upload Image');
         $tags['SHORT_TEXT'] = dgettext('photoalbum', 'Short');
 
-        $tags['SHORT'] = \core\Text::parseOutput($this->getLabel());
+        $tags['SHORT'] = PHPWS_Text::parseOutput($this->getLabel());
 
         if($showLinks) {
             if($this->isHidden()) {
@@ -85,7 +85,7 @@ class PHPWS_Photo extends PHPWS_Item {
                 $getArray = array('PHPWS_Album_op'=>'view');  //bookmarked pic
             }
 
-            $tags['BACK_LINK'] = \core\Text::moduleLink(dgettext('photoalbum', 'Back to album'), 'photoalbum', $getArray);
+            $tags['BACK_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Back to album'), 'photoalbum', $getArray);
 
             $links = array();
 
@@ -118,13 +118,13 @@ class PHPWS_Photo extends PHPWS_Item {
 
         if(isset($this->_blurb) && (strlen($this->_blurb) > 0)) {
             $tags['EXT_TEXT'] = dgettext('photoalbum', 'Extended');
-            $tags['EXT'] = \core\Text::parseOutput($this->_blurb);
+            $tags['EXT'] = PHPWS_Text::parseOutput($this->_blurb);
         }
 
         $tags['UPDATED_TEXT'] = dgettext('photoalbum', 'Updated');
         $tags['UPDATED'] = $this->getUpdated();
 
-        return \core\Template::processTemplate($tags, 'photoalbum', 'viewPhoto.tpl');
+        return PHPWS_Template::processTemplate($tags, 'photoalbum', 'viewPhoto.tpl');
     }
 
     public function _edit() {
@@ -159,7 +159,7 @@ class PHPWS_Photo extends PHPWS_Item {
             $hidden = 1;
         }
 
-        $form = new \core\Form('PHPWS_Photo_edit');
+        $form = new PHPWS_Form('PHPWS_Photo_edit');
 
         if(isset($this->_name)) {
             $form->add('Photo_remove', 'checkbox');
@@ -217,16 +217,16 @@ class PHPWS_Photo extends PHPWS_Item {
          'PAGER_start'   => $PAGER_start,
          'PAGER_section' => $PAGER_section);
 
-         $tags['BACK_LINK'] = \core\Text::moduleLink(dgettext('photoalbum', 'Back to album'), 'photoalbum', $getArray);
+         $tags['BACK_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Back to album'), 'photoalbum', $getArray);
          */
-        $tags['BACK_LINK'] = \core\Text::backLink();
+        $tags['BACK_LINK'] = PHPWS_Text::backLink();
 
         $tags['PHOTO_TEXT'] = dgettext('photoalbum', 'Upload Image');
         $tags['SHORT_TEXT'] = dgettext('photoalbum', 'Short');
         $tags['EXT_TEXT'] = dgettext('photoalbum', 'Extended');
         $tags['HIDDEN_TEXT'] = dgettext('photoalbum', 'Activity');
 
-        return \core\Template::processTemplate($tags, 'photoalbum', 'editPhoto.tpl');
+        return PHPWS_Template::processTemplate($tags, 'photoalbum', 'editPhoto.tpl');
     }
 
     /**
@@ -234,7 +234,7 @@ class PHPWS_Photo extends PHPWS_Item {
      */
     public function _save() {
         $allowedImageTypes = unserialize(ALLOWED_IMAGE_TYPES);
-        \core\Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $id = $this->getId();
         $authorize = TRUE;
         if(isset($id)) {
@@ -276,14 +276,14 @@ class PHPWS_Photo extends PHPWS_Item {
 
         if($_FILES['Photo']['error'] == 0) {
             if(isset($this->_name)) {
-                \core\Error::log(PHOTOALBUM_DUPLICATE_IMAGE, 'photoalbum', 'PHPWS_Photo::save', $this->_name);
+                PHPWS_Error::log(PHOTOALBUM_DUPLICATE_IMAGE, 'photoalbum', 'PHPWS_Photo::save', $this->_name);
                 $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'You must remove the image before uploading a new one.');
                 $_REQUEST['PHPWS_Photo_op'] = 'edit';
                 $this->action();
                 return;
             }
 
-            $name = \core\File::nameToSafe($_FILES['Photo']['name']);
+            $name = PHPWS_File::nameToSafe($_FILES['Photo']['name']);
             $name = strtolower($name);
             $file = PHOTOALBUM_DIR . $this->_album . '/' . $name;
 
@@ -306,7 +306,7 @@ class PHPWS_Photo extends PHPWS_Item {
                     if($info[2] == 1 || $info[2] == 2 || $info[2] == 3) {
                         $dir = 'images/photoalbum/' . $this->_album . '/';
 
-                        $thumbnail = \core\File::makeThumbnail($this->_name, $dir, $dir, PHOTOALBUM_TN_WIDTH, PHOTOALBUM_TN_HEIGHT);
+                        $thumbnail = PHPWS_File::makeThumbnail($this->_name, $dir, $dir, PHOTOALBUM_TN_WIDTH, PHOTOALBUM_TN_HEIGHT);
 
                         if (!is_array($thumbnail)) {
                             exit('Thumbnail error');
@@ -331,7 +331,7 @@ class PHPWS_Photo extends PHPWS_Item {
                     return;
                 }
                 if (PHOTOALBUM_RS) {
-                    \core\File::scaleImage($file, $file, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT);
+                    PHPWS_File::scaleImage($file, $file, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT);
                     $new_size = getimagesize($file);
                     $this->_width = $new_size[0];
                     $this->_height = $new_size[1];
@@ -350,7 +350,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
 
         if(isset($_REQUEST['Photo_ext'])) {
-            $this->_blurb = \core\Text::parseInput($_REQUEST['Photo_ext']);
+            $this->_blurb = PHPWS_Text::parseInput($_REQUEST['Photo_ext']);
         }
 
         if(isset($_REQUEST['Photo_hidden']) && ($_REQUEST['Photo_hidden'] == 1)) {
@@ -359,7 +359,7 @@ class PHPWS_Photo extends PHPWS_Item {
             $this->setHidden(FALSE);
         }
 
-        if(isset($error) && \core\Error::isError($error)) {
+        if(isset($error) && PHPWS_Error::isError($error)) {
             $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'You must enter a short description for the photo.');
             $_REQUEST['PHPWS_Photo_op'] = 'edit';
             $this->action();
@@ -367,7 +367,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
 
         $error = $this->commit();
-        if(core\Error::isError($error)) {
+        if(PHPWS_Error::isError($error)) {
             $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'There was a problem saving the information to the database.');
             $_REQUEST['PHPWS_Photo_op'] = 'edit';
             $this->action();
@@ -375,9 +375,9 @@ class PHPWS_Photo extends PHPWS_Item {
         }
 
         $sql = 'UPDATE mod_photoalbum_albums SET image=\'' . $this->getThumbnail() . '\' WHERE id=\'' . $this->_album . '\'';
-        \core\DB::query($sql);
+        PHPWS_DB::query($sql);
 
-        if(isset($thumbnail) && \core\Error::isError($thumbnail)) {
+        if(isset($thumbnail) && PHPWS_Error::isError($thumbnail)) {
             $message=sprintf(dgettext('photoalbum', 'The Photo %s was saved but their was a problem creating the thumbnail image.'), $this->getLabel());
         } else {
             $message = sprintf(dgettext('photoalbum', 'The Photo %s was successfully saved.'), $this->getLabel());
@@ -457,7 +457,7 @@ class PHPWS_Photo extends PHPWS_Item {
         } else {
             $title = dgettext('photoalbum', 'Delete Photo Confirmation');
 
-            $form = new \core\Form('PHPWS_Photo_delete');
+            $form = new PHPWS_Form('PHPWS_Photo_delete');
             $form->add('module', 'hidden', 'photoalbum');
             $form->add('PHPWS_Photo_op', 'hidden', 'delete');
 
@@ -482,12 +482,12 @@ class PHPWS_Photo extends PHPWS_Item {
             $tags = $form->getTemplate();
             $tags['MESSAGE'] = dgettext('photoalbum', 'Are you sure you want to delete this photo?');
 
-            $content = \core\Template::process($tags, 'photoalbum', 'deletePhoto.tpl');
+            $content = PHPWS_Template::process($tags, 'photoalbum', 'deletePhoto.tpl');
             $template['CONTENT'] = "<h3>$title</h3>$content";
             $template['CONTENT'] .= $this->_view(FALSE);
 
             $template['TITLE'] = dgettext('photoalbum', 'Photo Album') . ':&#160;' . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
-            Layout::add(core\Template::process($template, 'layout', 'box.tpl'));
+            Layout::add(PHPWS_Template::process($template, 'layout', 'box.tpl'));
         }
     }
 
@@ -523,9 +523,9 @@ class PHPWS_Photo extends PHPWS_Item {
         if(isset($_REQUEST['PHPWS_Photo_op'])) {
             switch($_REQUEST['PHPWS_Photo_op']) {
                 case 'view':
-                    $key = new \core\Key($_SESSION['PHPWS_AlbumManager']->album->_key_id);
+                    $key = new Key($_SESSION['PHPWS_AlbumManager']->album->_key_id);
                     if (!$key->allowView()) {
-                        \core\Core::errorPage('403');
+                        PHPWS_Core::errorPage('403');
                     }
                     $title = dgettext('photoalbum', 'View Photo');
                     $content = $this->_view();
@@ -557,7 +557,7 @@ class PHPWS_Photo extends PHPWS_Item {
         if(isset($content)) {
             $template['TITLE'] = $title;
             $template['CONTENT'] = $content;
-            Layout::add(core\Template::process($template, 'layout', 'box.tpl'));
+            Layout::add(PHPWS_Template::process($template, 'layout', 'box.tpl'));
         }
     }
 
@@ -568,7 +568,7 @@ class PHPWS_Photo extends PHPWS_Item {
         $vars['PHPWS_Photo_id'] = $value['id'];
         $vars['PHPWS_Photo_op'] = 'view';
 
-        $link = \core\Text::linkAddress('photoalbum', $vars);
+        $link = PHPWS_Text::linkAddress('photoalbum', $vars);
         $tpl['THUMBNAIL'] = sprintf('<a href="%s"><img src="%s/%s" title="%s" width="%s" height="%s"/></a>',
         $link,
         $directory, $value['tnname'],
@@ -579,12 +579,12 @@ class PHPWS_Photo extends PHPWS_Item {
 
         if (Current_User::allow('photoalbum', 'edit_photo')) {
             $vars['PHPWS_Photo_op'] = 'edit';
-            $links[] = \core\Text::secureLink(dgettext('photoalbum', 'Edit'), 'photoalbum', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('photoalbum', 'Edit'), 'photoalbum', $vars);
         }
 
         if (Current_User::allow('photoalbum', 'delete_photo')) {
             $vars['PHPWS_Photo_op'] = 'delete';
-            $links[] = \core\Text::secureLink(dgettext('photoalbum', 'Delete'), 'photoalbum', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('photoalbum', 'Delete'), 'photoalbum', $vars);
         }
 
         if (isset($links)) {

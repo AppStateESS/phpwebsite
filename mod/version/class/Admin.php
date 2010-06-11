@@ -25,8 +25,8 @@ class Version_Admin {
                 break;
 
             case 'post_setting':
-                \core\Settings::set('version', 'saved_versions', $_REQUEST['saved_versions']);
-                \core\Settings::save('version');
+                PHPWS_Settings::set('version', 'saved_versions', $_REQUEST['saved_versions']);
+                PHPWS_Settings::save('version');
                 $title = dgettext('version', 'Version settings');
                 $message = dgettext('version', 'Settings saved.');
                 $content = Version_Admin::settings();
@@ -38,7 +38,7 @@ class Version_Admin {
         $template['CONTENT'] = $content;
         $template['MESSAGE'] = $message;
 
-        Layout::add(PHPWS_ControlPanel::display(core\Template::process($template, 'version', 'main.tpl')));
+        Layout::add(PHPWS_ControlPanel::display(PHPWS_Template::process($template, 'version', 'main.tpl')));
     }
 
     public static function settings()
@@ -49,9 +49,9 @@ class Version_Admin {
         $versions[25] = 25;
         $versions[50] = 50;
 
-        $version_number = \core\Settings::get('version', 'saved_versions');
+        $version_number = PHPWS_Settings::get('version', 'saved_versions');
 
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'version');
         $form->addHidden('command', 'post_setting');
         $form->addSelect('saved_versions', $versions);
@@ -61,7 +61,7 @@ class Version_Admin {
         $form->addSubmit(dgettext('version', 'Save'));
         $template = $form->getTemplate();
 
-        $content = \core\Template::process($template, 'version', 'settings.tpl');
+        $content = PHPWS_Template::process($template, 'version', 'settings.tpl');
         return $content;
     }
 }

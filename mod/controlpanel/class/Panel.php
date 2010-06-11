@@ -5,8 +5,8 @@
  * @version $Id$
  */
 
-core\Core::requireConfig('controlpanel');
-core\Core::initModClass('controlpanel', 'Tab.php');
+PHPWS_Core::requireConfig('controlpanel');
+PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 
 class PHPWS_Panel{
     public $itemname     = null;
@@ -41,13 +41,13 @@ class PHPWS_Panel{
             $tab->setId($id);
 
             if (!isset($info['title'])) {
-                return \core\Error::get(CP_MISSING_TITLE, 'controlpanel', 'quickSetTabs');
+                return PHPWS_Error::get(CP_MISSING_TITLE, 'controlpanel', 'quickSetTabs');
             } else {
                 $tab->setTitle($info['title']);
             }
 
             if (!isset($info['link'])) {
-                return \core\Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
+                return PHPWS_Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
             } else {
                 $tab->setLink($info['link']);
             }
@@ -76,7 +76,7 @@ class PHPWS_Panel{
     public function setTabs($tabs)
     {
         if (!is_array($tabs)) {
-            return \core\Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
+            return PHPWS_Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
         }
 
         $this->tabs = & $tabs;
@@ -160,7 +160,7 @@ class PHPWS_Panel{
 
     public function getFirstTab()
     {
-        \core\Core::initModClass('controlpanel', 'Tab.php');
+        PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         $result = null;
 
         $tabs = $this->getTabs();
@@ -187,7 +187,7 @@ class PHPWS_Panel{
             $settpl['TITLE']   = & $title;
             $settpl['MESSAGE'] = & $message;
             $settpl['CONTENT'] = & $content;
-            $content = \core\Template::process($settpl, 'controlpanel', 'default.tpl');
+            $content = PHPWS_Template::process($settpl, 'controlpanel', 'default.tpl');
         }
 
         if (!isset($module)) {
@@ -198,7 +198,7 @@ class PHPWS_Panel{
             $panel = CP_DEFAULT_PANEL;
         }
 
-        if (!is_file(core\Template::getTemplateDirectory($module) . $panel)){
+        if (!is_file(PHPWS_Template::getTemplateDirectory($module) . $panel)){
             $module = 'controlpanel';
             $panel = CP_DEFAULT_PANEL;
         }
@@ -222,7 +222,7 @@ class PHPWS_Panel{
         }
 
         $template['CONTENT'] = $content;
-        return \core\Template::process($template, $module, $panel);
+        return PHPWS_Template::process($template, $module, $panel);
     }
 }
 

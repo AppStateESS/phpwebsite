@@ -42,6 +42,6 @@ define('COMMENT_NO_SUBJECT', dgettext('comments', 'No subject'));
 // 25, 50, or 100 comments per page.
 define('COMMENT_DEFAULT_LIMIT', 25);
 
-define('CM_LOCK_IMAGE', \core\Icon::show('lock'));
+define('CM_LOCK_IMAGE', Icon::show('lock'));
 
 ?>

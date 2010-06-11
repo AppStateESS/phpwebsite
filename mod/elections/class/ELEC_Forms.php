@@ -80,7 +80,7 @@ class Elections_Forms {
 
     public function listBallots()
     {
-        if (core\Settings::get('elections', 'enable_elections') || Current_User::isUnrestricted('elections')) {
+        if (PHPWS_Settings::get('elections', 'enable_elections') || Current_User::isUnrestricted('elections')) {
             $ptags['TITLE_HEADER'] = dgettext('elections', 'Title');
             $ptags['OPENS_HEADER'] = dgettext('elections', 'Opens');
             $ptags['CLOSES_HEADER'] = dgettext('elections', 'Closes');
@@ -89,8 +89,9 @@ class Elections_Forms {
                 $ptags['VOTES_HEADER'] = dgettext('elections', 'Votes');
             }
 
-            \core\Core::initModClass('elections', 'ELEC_Ballot.php');
-                        $pager = new \core\DBPager('elections_ballots', 'Elections_Ballot');
+            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+            PHPWS_Core::initCoreClass('DBPager.php');
+            $pager = new DBPager('elections_ballots', 'Elections_Ballot');
             $pager->setModule('elections');
             if (!isset($_SESSION['User']->username)) {
                 $pager->addWhere('pubview', 1);
@@ -103,7 +104,7 @@ class Elections_Forms {
                 $vars['aop']  = 'menu';
                 $vars['tab']  = 'settings';
                 $vars2['aop']  = 'new_ballot';
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('elections', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('elections', 'Settings'), 'elections', $vars),  \core\Text::secureLink(dgettext('elections', 'New Ballot'), 'elections', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('elections', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('elections', 'Settings'), 'elections', $vars),  PHPWS_Text::secureLink(dgettext('elections', 'New Ballot'), 'elections', $vars2));
             }
             $pager->addPageTags($ptags);
             $pager->addToggle('class="toggle1"');
@@ -115,7 +116,7 @@ class Elections_Forms {
         }
 
         $this->election->content = $content;
-        $this->election->title = sprintf(dgettext('elections', '%s Ballots'), \core\Text::parseOutput(core\Settings::get('elections', 'title')));
+        $this->election->title = sprintf(dgettext('elections', '%s Ballots'), PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'title')));
     }
 
 
@@ -125,8 +126,9 @@ class Elections_Forms {
         $ptags['BALLOT_HEADER'] = dgettext('elections', 'Ballot');
         $ptags['VOTES_HEADER'] = dgettext('elections', 'Votes');
 
-        \core\Core::initModClass('elections', 'ELEC_Candidate.php');
-                $pager = new \core\DBPager('elections_candidates', 'Elections_Candidate');
+        PHPWS_Core::initModClass('elections', 'ELEC_Candidate.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('elections_candidates', 'Elections_Candidate');
         $pager->setModule('elections');
 
         if ($ballot_id > 0) {
@@ -145,14 +147,14 @@ class Elections_Forms {
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'menu';
             $vars2['tab']  = 'new_candidate';
-            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('elections', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('elections', 'Settings'), 'elections', $vars),  \core\Text::secureLink(dgettext('elections', 'New Candidate'), 'elections', $vars2));
+            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('elections', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('elections', 'Settings'), 'elections', $vars),  PHPWS_Text::secureLink(dgettext('elections', 'New Candidate'), 'elections', $vars2));
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('title', 'description');
 
         $this->election->content = $pager->get();
-        $this->election->title = sprintf(dgettext('elections', '%s Candidates'), \core\Text::parseOutput(core\Settings::get('elections', 'title')));
+        $this->election->title = sprintf(dgettext('elections', '%s Candidates'), PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'title')));
     }
 
 
@@ -164,8 +166,9 @@ class Elections_Forms {
             $ptags['DATE_HEADER'] = dgettext('elections', 'Vote date');
             $ptags['IP_HEADER'] = dgettext('elections', 'IP Address');
 
-            \core\Core::initModClass('elections', 'ELEC_Vote.php');
-                        $pager = new \core\DBPager('elections_votes', 'Elections_Vote');
+            PHPWS_Core::initModClass('elections', 'ELEC_Vote.php');
+            PHPWS_Core::initCoreClass('DBPager.php');
+            $pager = new DBPager('elections_votes', 'Elections_Vote');
             $pager->setModule('elections');
             if ($ballot_id > 0) {
                 $pager->addWhere('ballot_id', $ballot_id);
@@ -185,13 +188,13 @@ class Elections_Forms {
         }
 
         $this->election->content = $content;
-        $this->election->title = sprintf(dgettext('elections', '%s Voting Log'), \core\Text::parseOutput(core\Settings::get('elections', 'title')));
+        $this->election->title = sprintf(dgettext('elections', '%s Voting Log'), PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'title')));
     }
 
 
     public function editBallot()
     {
-        $form = new \core\Form('elections_ballot');
+        $form = new PHPWS_Form('elections_ballot');
         $ballot = & $this->election->ballot;
         $choices = array('1'=>1,'2'=>2,'3'=>3,'4'=>4,'5'=>5,'6'=>6,'7'=>7,'8'=>8,'9'=>9,'10'=>10,'11'=>11,'12'=>12,'13'=>13,'14'=>14,'15'=>15,'16'=>16,'17'=>17,'18'=>18,'19'=>19,'20'=>20);
 
@@ -217,11 +220,11 @@ class Elections_Forms {
         $form->setLabel('description', dgettext('elections', 'Description'));
 
 
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $ballot->image_id);
         $manager->imageOnly();
-        $manager->maxImageWidth(core\Settings::get('elections', 'max_width'));
-        $manager->maxImageHeight(core\Settings::get('elections', 'max_height'));
+        $manager->maxImageWidth(PHPWS_Settings::get('elections', 'max_width'));
+        $manager->maxImageHeight(PHPWS_Settings::get('elections', 'max_height'));
         if ($manager) {
             $form->addTplTag('FILE_MANAGER', $manager->get());
         }
@@ -300,13 +303,13 @@ class Elections_Forms {
         $tpl['CUSTOMFIELDS_TEXT'] = dgettext('elections', 'Custom Fields');
         $tpl['CUSTOMFIELDS_NOTE'] = dgettext('elections', 'Using these will add fields to the candidate template for this election.');
 
-        $this->election->content = \core\Template::process($tpl, 'elections', 'edit_ballot.tpl');
+        $this->election->content = PHPWS_Template::process($tpl, 'elections', 'edit_ballot.tpl');
     }
 
 
     public function editCandidate()
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $candidate = & $this->election->candidate;
         $ballot = & $this->election->ballot;
 
@@ -331,11 +334,11 @@ class Elections_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('elections', 'Description'));
 
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $candidate->image_id);
         $manager->imageOnly();
-        $manager->maxImageWidth(core\Settings::get('elections', 'max_width'));
-        $manager->maxImageHeight(core\Settings::get('elections', 'max_height'));
+        $manager->maxImageWidth(PHPWS_Settings::get('elections', 'max_width'));
+        $manager->maxImageHeight(PHPWS_Settings::get('elections', 'max_height'));
         if ($manager) {
             $form->addTplTag('FILE_MANAGER', $manager->get());
         }
@@ -370,14 +373,14 @@ class Elections_Forms {
             $tpl['CUSTOM_LABEL'] = dgettext('elections', 'Details');
         }
 
-        $this->election->content = \core\Template::process($tpl, 'elections', 'edit_candidate.tpl');
+        $this->election->content = PHPWS_Template::process($tpl, 'elections', 'edit_candidate.tpl');
     }
 
 
     public function reports()
     {
 
-        $form = new \core\Form('elections_reports');
+        $form = new PHPWS_Form('elections_reports');
         $form->addHidden('module', 'elections');
         $form->addHidden('aop', 'get_report');
         $form->setMethod('get');
@@ -404,51 +407,51 @@ class Elections_Forms {
         javascriptMod('elections', 'utilities');
 
         $this->election->title = dgettext('elections', 'Reports');
-        $this->election->content = \core\Template::process($tpl, 'elections', 'reports.tpl');
+        $this->election->content = PHPWS_Template::process($tpl, 'elections', 'reports.tpl');
     }
 
 
     public function editSettings()
     {
 
-        $form = new \core\Form('elections_settings');
+        $form = new PHPWS_Form('elections_settings');
         $form->addHidden('module', 'elections');
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('enable_elections', 1);
-        $form->setMatch('enable_elections', \core\Settings::get('elections', 'enable_elections'));
+        $form->setMatch('enable_elections', PHPWS_Settings::get('elections', 'enable_elections'));
         $form->setLabel('enable_elections', dgettext('elections', 'Enable elections'));
 
         $form->addCheckbox('enable_sidebox', 1);
-        $form->setMatch('enable_sidebox', \core\Settings::get('elections', 'enable_sidebox'));
+        $form->setMatch('enable_sidebox', PHPWS_Settings::get('elections', 'enable_sidebox'));
         $form->setLabel('enable_sidebox', dgettext('elections', 'Enable elections sidebox'));
 
         $form->addCheckbox('sidebox_homeonly', 1);
-        $form->setMatch('sidebox_homeonly', \core\Settings::get('elections', 'sidebox_homeonly'));
+        $form->setMatch('sidebox_homeonly', PHPWS_Settings::get('elections', 'sidebox_homeonly'));
         $form->setLabel('sidebox_homeonly', dgettext('elections', 'Show sidebox on home page only'));
 
-        $form->addTextField('title', \core\Settings::get('elections', 'title'));
+        $form->addTextField('title', PHPWS_Settings::get('elections', 'title'));
         $form->setLabel('title', dgettext('elections', 'Module title'));
         $form->setSize('title', 30);
 
-        $form->addTextArea('sidebox_text', \core\Settings::get('elections', 'sidebox_text'));
+        $form->addTextArea('sidebox_text', PHPWS_Settings::get('elections', 'sidebox_text'));
         $form->setRows('sidebox_text', '4');
         $form->setCols('sidebox_text', '40');
         $form->setLabel('sidebox_text', dgettext('elections', 'Sidebox text'));
 
         $form->addCheckbox('enable_images', 1);
-        $form->setMatch('enable_images', \core\Settings::get('elections', 'enable_images'));
+        $form->setMatch('enable_images', PHPWS_Settings::get('elections', 'enable_images'));
         $form->setLabel('enable_images', dgettext('elections', 'Enable images on candidate profiles'));
 
-        $form->addTextField('max_width', \core\Settings::get('elections', 'max_width'));
+        $form->addTextField('max_width', PHPWS_Settings::get('elections', 'max_width'));
         $form->setLabel('max_width', dgettext('elections', 'Maximum image width (50-600)'));
         $form->setSize('max_width', 4,4);
 
-        $form->addTextField('max_height', \core\Settings::get('elections', 'max_height'));
+        $form->addTextField('max_height', PHPWS_Settings::get('elections', 'max_height'));
         $form->setLabel('max_height', dgettext('elections', 'Maximum image height (50-600)'));
         $form->setSize('max_height', 4,4);
 
-        $form->addTextField('expiry_interval', \core\Settings::get('elections', 'expiry_interval'));
+        $form->addTextField('expiry_interval', PHPWS_Settings::get('elections', 'expiry_interval'));
         $form->setLabel('expiry_interval', dgettext('elections', 'Default open time of election (in days, 1-365)'));
         $form->setSize('expiry_interval', 4,4);
 
@@ -458,7 +461,7 @@ class Elections_Forms {
         $tpl['SETTINGS_LABEL'] = dgettext('elections', 'General Settings');
 
         $this->election->title = dgettext('elections', 'Settings');
-        $this->election->content = \core\Template::process($tpl, 'elections', 'edit_settings.tpl');
+        $this->election->content = PHPWS_Template::process($tpl, 'elections', 'edit_settings.tpl');
     }
 
 
@@ -479,14 +482,14 @@ class Elections_Forms {
         $tpl['DONATE'] = sprintf(dgettext('elections', 'If you would like to help out with the ongoing development of elections, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=Elections%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->election->title = dgettext('elections', 'Read me');
-        $this->election->content = \core\Template::process($tpl, 'elections', 'info.tpl');
+        $this->election->content = PHPWS_Template::process($tpl, 'elections', 'info.tpl');
     }
 
 
     public function selectBallot()
     {
 
-        $form = new \core\Form('elections_ballots');
+        $form = new PHPWS_Form('elections_ballots');
         $form->addHidden('module', 'elections');
         $form->addHidden('aop', 'edit_candidate');
 
@@ -507,13 +510,13 @@ class Elections_Forms {
         $tpl['BALLOT_ID_GROUP_LABEL'] = dgettext('elections', 'Select ballot');
 
         $this->election->title = dgettext('elections', 'New candidate step one');
-        $this->election->content = \core\Template::process($tpl, 'elections', 'select_ballot.tpl');
+        $this->election->content = PHPWS_Template::process($tpl, 'elections', 'select_ballot.tpl');
     }
 
 
     public function getAllGroups()
     {
-        \core\Core::initModClass('users', 'Action.php');
+        PHPWS_Core::initModClass('users', 'Action.php');
         return User_Action::getGroups('group');
     }
 
@@ -526,7 +529,7 @@ class Elections_Forms {
         if ($groups) {
             foreach ($groups as $var=>$val) {
                 if ($count) {
-                    $db = new \core\DB('users_members');
+                    $db = new PHPWS_DB('users_members');
                     $db->addWhere('group_id', $var);
                     $qty = $db->count();
                     $items[$var] = $val . ' ('.$qty.')';
@@ -538,14 +541,14 @@ class Elections_Forms {
 
         if ($items) {
             if ($multiple) {
-                $form = new \core\Form;
+                $form = new PHPWS_Form;
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
                     $form->setMatch($select_name, $match);
                 }
                 return $form->get($select_name);
             } else {
-                $form = new \core\Form;
+                $form = new PHPWS_Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -561,8 +564,8 @@ class Elections_Forms {
 
     public function getAllBallots()
     {
-        \core\Core::initModClass('elections', 'ELEC_Ballot.php');
-        $db = new \core\DB('elections_ballots');
+        PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+        $db = new PHPWS_DB('elections_ballots');
         $db->addColumn('id');
         $db->addColumn('title');
         $result = $db->getObjects('Elections_Ballot');
@@ -581,7 +584,7 @@ class Elections_Forms {
             $items[0] = dgettext('elections', '- All -');
             foreach ($ballots as $ballot) {
                 if ($count) {
-                    $db = new \core\DB($countitem);
+                    $db = new PHPWS_DB($countitem);
                     $db->addWhere('ballot_id', $ballot->id);
                     $qty = $db->count();
                     $items[$ballot->id] = $ballot->title . ' ('.$qty.')';
@@ -592,7 +595,7 @@ class Elections_Forms {
         }
 
         if (!empty($items)) {
-            $form = new \core\Form;
+            $form = new PHPWS_Form;
             if ($multiple) {
                 $form->addMultiple($select_name, $items);
                 if (!empty($match) && is_array($match)) {
@@ -600,7 +603,7 @@ class Elections_Forms {
                 }
                 return $form->get($select_name);
             } else {
-                $form = new \core\Form;
+                $form = new PHPWS_Form;
                 $form->addSelect($select_name, $items);
                 if (!empty($match) && is_string($match)) {
                     $form->setMatch($select_name, $match);
@@ -633,7 +636,7 @@ class Elections_Forms {
         } else {
             $text = dgettext('elections', 'Submit');
         }
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addSubmit($type, $text);
         if ($extra) {
             $question = dgettext('elections', 'Are you sure you wish to purge the selected logs');

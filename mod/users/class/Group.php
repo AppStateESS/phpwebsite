@@ -22,7 +22,7 @@ class PHPWS_Group {
         if (isset($id)){
             $this->setId($id);
             $result = $this->init();
-            if (core\Error::isError($result)){
+            if (PHPWS_Error::isError($result)){
                 $this->_error = $result;
                 return;
             }
@@ -34,7 +34,7 @@ class PHPWS_Group {
 
     public function init()
     {
-        $db = new \core\DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         return $db->loadObject($this);
     }
 
@@ -60,13 +60,13 @@ class PHPWS_Group {
 
     public function loadGroups()
     {
-        $DB = new \core\DB('users_members');
+        $DB = new PHPWS_DB('users_members');
         $DB->addWhere('member_id', $this->getId());
         $DB->addColumn('group_id');
         $result = $DB->select('col');
 
-        if (core\Error::isError($result)){
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)){
+            PHPWS_Error::log($result);
             return;
         }
 
@@ -85,7 +85,7 @@ class PHPWS_Group {
 
     public function loadMembers()
     {
-        $db = new \core\DB('users_members');
+        $db = new PHPWS_DB('users_members');
         $db->addWhere('group_id', $this->getId());
         $db->addColumn('member_id');
         $result = $db->select('col');
@@ -96,20 +96,20 @@ class PHPWS_Group {
     {
         if ($test == TRUE){
             if (empty($name) || preg_match('/[^\w\s]+/', $name))
-            return \core\Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
+            return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
             if (strlen($name) < GROUPNAME_LENGTH)
-            return \core\Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
+            return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
-            $db = new \core\DB('users_groups');
+            $db = new PHPWS_DB('users_groups');
             $db->addWhere('name', $name);
             $db->addWhere('id', $this->id, '!=');
             $result = $db->select('one');
             if (isset($result)){
-                if(core\Error::isError($result))
+                if(PHPWS_Error::isError($result))
                 return $result;
                 else
-                return \core\Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
+                return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
             } else {
                 $this->name = $name;
                 return TRUE;
@@ -151,14 +151,14 @@ class PHPWS_Group {
 
     public function dropAllMembers()
     {
-        $db = new \core\DB('users_members');
+        $db = new PHPWS_DB('users_members');
         $db->addWhere('group_id', $this->getId());
         return $db->delete();
     }
 
     public function clearMembership()
     {
-        $db = new \core\DB('users_members');
+        $db = new PHPWS_DB('users_members');
         $db->addWhere('member_id', $this->getId());
         return $db->delete();
     }
@@ -166,13 +166,13 @@ class PHPWS_Group {
     public function addMember($member, $test=FALSE)
     {
         if ($test == TRUE) {
-            $db = new \core\DB('users_groups');
+            $db = new PHPWS_DB('users_groups');
             $db->addWhere('id', $member);
             $result = $db->select('one');
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 return false;
             } elseif (!$result) {
-                \core\Error::log(USER_ERR_GROUP_DNE, 'users', 'addMember');
+                PHPWS_Error::log(USER_ERR_GROUP_DNE, 'users', 'addMember');
                 return false;
             } else {
                 $this->_members[] = $member;
@@ -190,18 +190,18 @@ class PHPWS_Group {
 
     public function save()
     {
-        $db = new \core\DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
 
         $result = $db->saveObject($this);
         $members = $this->getMembers();
 
         if (isset($members)){
             $this->dropAllMembers();
-            $db = new \core\DB('users_members');
+            $db = new PHPWS_DB('users_members');
             foreach($members as $member){
                 $db->addValue('group_id', $this->getId());
                 $db->addValue('member_id', $member);
-                \core\Error::logIfError($db->insert());
+                PHPWS_Error::logIfError($db->insert());
                 $db->resetValues();
             }
         }
@@ -209,7 +209,7 @@ class PHPWS_Group {
 
     public function kill()
     {
-        $db = new \core\DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         $db->addWhere('id', $this->id);
         $db->delete();
         $this->dropAllMembers();
@@ -220,7 +220,7 @@ class PHPWS_Group {
 
     public function dropPermissions()
     {
-        $modules = \core\Core::getModules(true, true);
+        $modules = PHPWS_Core::getModules(true, true);
         if (empty($modules)) {
             return false;
         }
@@ -228,28 +228,28 @@ class PHPWS_Group {
         foreach ($modules as $mod) {
             $permTable = Users_Permission::getPermissionTableName($mod);
 
-            $db = new \core\DB($permTable);
+            $db = new PHPWS_DB($permTable);
             if (!$db->isTable($permTable)) {
                 continue;
             }
 
             $db->addWhere('group_id', $this->id);
-            \core\Error::logIfError($db->delete());
+            PHPWS_Error::logIfError($db->delete());
 
-            $db = new \core\DB('phpws_key_edit');
+            $db = new PHPWS_DB('phpws_key_edit');
             $db->addWhere('group_id', $this->id);
-            \core\Error::logIfError($db->delete());
+            PHPWS_Error::logIfError($db->delete());
 
-            $db = new \core\DB('phpws_key_view');
+            $db = new PHPWS_DB('phpws_key_view');
             $db->addWhere('group_id', $this->id);
-            \core\Error::logIfError($db->delete());
+            PHPWS_Error::logIfError($db->delete());
         }
         return true;
     }
 
     public function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
     {
-        \core\Core::initModClass('users', 'Permission.php');
+        PHPWS_Core::initModClass('users', 'Permission.php');
 
         if (!isset($this->_permissions)) {
             $this->loadPermissions();
@@ -260,7 +260,7 @@ class PHPWS_Group {
 
     public function getPermissionLevel($module)
     {
-        \core\Core::initModClass('users', 'Permission.php');
+        PHPWS_Core::initModClass('users', 'Permission.php');
 
         if (!isset($this->_permission)) {
             $this->loadPermissions();
@@ -288,17 +288,17 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = \core\Text::secureLink(core\Icon::show('edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = \core\Text::secureLink(core\Icon::show('permission'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users', $linkVar);
         $linkVar['command'] = 'manageMembers';
-        $links[] = \core\Text::secureLink(core\Icon::show('users', dgettext('users', 'Members')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(Icon::show('users', dgettext('users', 'Members')), 'users', $linkVar);
 
         $linkVar['command'] = 'remove_group';
-        $removelink['ADDRESS'] = \core\Text::linkAddress('users', $linkVar, TRUE);
+        $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
         $removelink['QUESTION'] = dgettext('users', 'Are you SURE you want to remove this group?');
-        $removelink['LINK'] = \core\Icon::show('delete', dgettext('users', 'Remove'));
+        $removelink['LINK'] = Icon::show('delete', dgettext('users', 'Remove'));
         $links[] = Layout::getJavascript('confirm', $removelink);
 
         $template['ACTIONS'] = implode('', $links);

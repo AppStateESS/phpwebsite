@@ -1,5 +1,4 @@
 <?php
-namespace core;
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -553,7 +552,7 @@ class DB2 extends Data {
             return;
         }
 
-        Core::log($sql, 'db.log');
+        PHPWS_Core::log($sql, 'db.log');
     }
 
     /**
@@ -886,7 +885,7 @@ class DB2 extends Data {
      */
     public function pearError($result)
     {
-        if (Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->error = & $result;
             return true;
         } else {
@@ -1399,7 +1398,7 @@ class DB2 extends Data {
             $message[] = sprintf("(%s) File:%s | Line:%s | Function:%s%s%s(%s)", $count, $err['file'], $err['line'], $err['class'], $err['type'], $err['function'], $err['args']);
             $count++;
         }
-        Core::log($e->getMessage() . ' -- ' . implode(', ', $message), 'db2.log', dgettext('core', 'DB2 Error'), PEAR_LOG_CRIT);
+        PHPWS_Core::log($e->getMessage() . ' -- ' . implode(', ', $message), 'db2.log', dgettext('core', 'DB2 Error'), PEAR_LOG_CRIT);
     }
 
     /**

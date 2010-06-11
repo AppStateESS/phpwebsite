@@ -32,7 +32,7 @@ function my_page()
             Layout_User_Settings::save_settings();
             $_SESSION['Reset_Layout'] = 1;
             $_SESSION['Layout_User_Message'] = dgettext('layout', 'Settings saved');
-            \core\Core::reroute('index.php?module=users&action=user&tab=layout');
+            PHPWS_Core::reroute('index.php?module=users&action=user&tab=layout');
             break;
     }
 
@@ -40,14 +40,14 @@ function my_page()
     $tpl['CONTENT'] = $content;
     $tpl['MESSAGE'] = $message;
 
-    return \core\Template::process($tpl, 'layout', 'main.tpl');
+    return PHPWS_Template::process($tpl, 'layout', 'main.tpl');
 }
 
 
 class Layout_User_Settings {
     public static function user_form()
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         My_Page::addHidden($form, 'layout');
 
         $form->addHidden('lo_command', 'save_settings');
@@ -55,7 +55,7 @@ class Layout_User_Settings {
         $css = Layout::getAlternateStyles();
         if ($css) {
             $form->addSelect('alternate', $css);
-            $form->setMatch('alternate', \core\Cookie::read('layout_style'));
+            $form->setMatch('alternate', PHPWS_Cookie::read('layout_style'));
             $form->setLabel('alternate', dgettext('layout', 'Available styles'));
             $form->addSubmit(dgettext('layout', 'Save settings'));
         } else {
@@ -64,13 +64,13 @@ class Layout_User_Settings {
         }
 
         $template = $form->getTemplate();
-        return \core\Template::process($template, 'layout', 'user_form.tpl');
+        return PHPWS_Template::process($template, 'layout', 'user_form.tpl');
     }
 
     public function save_settings()
     {
         if (isset($_POST['alternate'])) {
-            \core\Cookie::write('layout_style', $_POST['alternate']);
+            PHPWS_Cookie::write('layout_style', $_POST['alternate']);
             return TRUE;
         }
     }

@@ -4,6 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
+PHPWS_Core::initCoreClass('xmlrpc.php');
 
 class Blog_XML extends MyServer {
     public $image_directory = 'images/blog/';
@@ -12,7 +13,7 @@ class Blog_XML extends MyServer {
     {
         $blog = new Blog($id);
         if ($blog->delete()) {
-            \core\Cache::clearCache();
+            PHPWS_Cache::clearCache();
             return true;
         } else {
             return new IXR_Error(4040, 'Unable to delete entry.');
@@ -51,13 +52,13 @@ class Blog_XML extends MyServer {
 
     public function getRecent($limit)
     {
-        $db = new \core\DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         $db->setLimit($limit);
         $db->addOrder('publish_date desc');
-        \core\Key::restrictEdit($db, 'blog', 'edit_blog');
+        Key::restrictEdit($db, 'blog', 'edit_blog');
         $result = $db->getObjects('Blog');
 
-        if (core\Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return new IXR_Error(4000, XMLRPC_BAD_RESULT);
         }
 
@@ -117,10 +118,10 @@ class Blog_XML extends MyServer {
         if (isset($mt_allow_comments)) {
             $blog->allow_comments = (bool)$mt_allow_comments;
         } else {
-            $blog->allow_comments = \core\Settings::get('blog', 'allow_comments');
+            $blog->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
         }
 
-        if (core\Settings::get('blog', 'obey_publish')) {
+        if (PHPWS_Settings::get('blog', 'obey_publish')) {
             $blog->approved = $publish;
         } else {
             $blog->approved = 1;
@@ -128,10 +129,10 @@ class Blog_XML extends MyServer {
 
         $result = $blog->save();
 
-        if (core\Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return new IXR_Error(5010, 'Database Error!  Post not saved.');
         } else {
-            \core\Cache::clearCache();
+            PHPWS_Cache::clearCache();
             return $blog->id;
         }
     }
@@ -148,11 +149,11 @@ class Blog_XML extends MyServer {
         $d['title'] = $blog->title;
 
         if (MOD_REWRITE_ENABLED) {
-            $d['link'] = \core\Core::getHomeHttp() . 'blog/' . $blog->id;
+            $d['link'] = PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
         } else {
-            $d['link'] = \core\Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+            $d['link'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
         }
-        $d['permalink'] = \core\Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+        $d['permalink'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
         $d['mt_allow_comments'] = $blog->allow_comments;
         $d['mt_allow_pings'] = 0;

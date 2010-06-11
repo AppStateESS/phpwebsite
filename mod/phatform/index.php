@@ -69,6 +69,6 @@ $tpl['TITLE'] = $GLOBALS['CNT_phatform']['title'];
 $tpl['MESSAGE'] = $GLOBALS['CNT_phatform']['message'];
 $tpl['CONTENT'] = $GLOBALS['CNT_phatform']['content'];
 
-Layout::add(core\Template::process($tpl, 'phatform', 'box.tpl'));
+Layout::add(PHPWS_Template::process($tpl, 'phatform', 'box.tpl'));
 
 ?>

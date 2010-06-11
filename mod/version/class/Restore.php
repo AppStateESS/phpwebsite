@@ -42,7 +42,7 @@ class Version_Restore {
             return FALSE;
         }
 
-        $db = new \core\DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addWhere('vr_approved', 1);
         $db->addWhere('vr_current', 0);
@@ -54,7 +54,7 @@ class Version_Restore {
 
         if (empty($result)) {
             return NULL;
-        } elseif ( \core\Error::isError($result) ) {
+        } elseif ( PHPWS_Error::isError($result) ) {
             $this->error = $result;
             return;
         }
@@ -79,7 +79,7 @@ class Version_Restore {
     public function getList()
     {
 
-        if ( !core\DB::isTable($this->version_table) || empty($this->backup_list) ) {
+        if ( !PHPWS_DB::isTable($this->version_table) || empty($this->backup_list) ) {
             $msg = dgettext('version', 'No backup versions available.');
 
             return $msg;
@@ -107,11 +107,11 @@ class Version_Restore {
 
             if (!empty($this->class_name) && !empty($this->view_method)) {
                 $temp_obj = new $this->class_name;
-                \core\Core::plugObject($temp_obj, $version);
+                PHPWS_Core::plugObject($temp_obj, $version);
 
                 $result = $temp_obj->{$this->view_method}();
 
-                if (core\Error::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     return $result;
                 } elseif (empty($result)) {
                     continue;
@@ -150,7 +150,7 @@ class Version_Restore {
             return $msg;
         } else {
 
-            return \core\Template::process($template, 'version', $template_file);
+            return PHPWS_Template::process($template, 'version', $template_file);
         }
     }
 }

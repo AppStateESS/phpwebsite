@@ -1,5 +1,5 @@
 <?php
-namespace layout;
+
 /**
  * Controls the content "boxes" for sections of content
  * in Layout.
@@ -25,13 +25,13 @@ class Layout_Box {
 
         $this->setID($id);
         $result = $this->init();
-        if (core\Error::isError($result))
-        \core\Error::log($result);
+        if (PHPWS_Error::isError($result))
+        PHPWS_Error::log($result);
     }
 
     public function init()
     {
-        $DB = new \core\DB('layout_box');
+        $DB = new PHPWS_DB('layout_box');
         return $DB->loadObject($this);
     }
 
@@ -97,13 +97,13 @@ class Layout_Box {
 
     public function save()
     {
-        $db = new \core\DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('module', $this->module);
         $db->addWhere('content_var', $this->content_var);
         $db->addWhere('theme', $this->theme);
         $result = $db->select('one');
 
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif ($result && $result != $this->id) {
             return FALSE;
@@ -133,7 +133,7 @@ class Layout_Box {
             $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
 
             if (!in_array($dest, $themeVars)) {
-                return \core\Error::get(LAYOUT_BAD_THEME_VAR, 'layout', 'Layout_Box::move', $dest);
+                return PHPWS_Error::get(LAYOUT_BAD_THEME_VAR, 'layout', 'Layout_Box::move', $dest);
             }
             $themeVar = $this->theme_var;
             $this->setThemeVar($dest);
@@ -144,7 +144,7 @@ class Layout_Box {
             return;
         }
 
-        $db = new \core\DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('id', $this->id, '!=');
         $db->addWhere('theme', $this->theme);
         $db->addWhere('theme_var', $this->theme_var);
@@ -156,8 +156,8 @@ class Layout_Box {
             return NULL;
         }
 
-        if (core\Error::isError($boxes)) {
-            \core\Error::log($boxes);
+        if (PHPWS_Error::isError($boxes)) {
+            PHPWS_Error::log($boxes);
             return NULL;
         }
 
@@ -177,8 +177,8 @@ class Layout_Box {
                     $old_box = & $boxes[$this->box_order - 1];
                     $old_box->box_order++;
                     $this->box_order--;
-                    if (!core\Error::logIfError($old_box->save())) {
-                        \core\Error::logIfError($this->save());
+                    if (!PHPWS_Error::logIfError($old_box->save())) {
+                        PHPWS_Error::logIfError($this->save());
                     }
                     return;
                 }
@@ -192,8 +192,8 @@ class Layout_Box {
                     $old_box = & $boxes[$this->box_order + 1];
                     $old_box->box_order--;
                     $this->box_order++;
-                    if (!core\Error::logIfError($old_box->save())) {
-                        \core\Error::logIfError($this->save());
+                    if (!PHPWS_Error::logIfError($old_box->save())) {
+                        PHPWS_Error::logIfError($this->save());
                     }
                     return;
                 }
@@ -223,7 +223,7 @@ class Layout_Box {
 
     public function reorderBoxes($theme, $themeVar)
     {
-        $db = new \core\DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('theme', $theme);
         $db->addWhere('theme_var', $themeVar);
         $db->addOrder('box_order');
@@ -243,7 +243,7 @@ class Layout_Box {
 
     public function nextBox()
     {
-        $DB = new \core\DB('layout_box');
+        $DB = new PHPWS_DB('layout_box');
         $DB->addWhere('theme', $this->theme);
         $DB->addWhere('theme_var', $this->theme_var);
         $DB->addColumn('box_order', 'max');
@@ -260,11 +260,11 @@ class Layout_Box {
         $theme_var = $this->getThemeVar();
         $theme = $this->getTheme();
 
-        $db = new \core\DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('id', $this->getId());
         $result = $db->delete();
 
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

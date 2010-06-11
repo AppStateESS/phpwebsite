@@ -10,11 +10,11 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 
-core\Core::initModClass('blog', 'Blog.php');
+PHPWS_Core::initModClass('blog', 'Blog.php');
 
 if (isset($_GET['xmlrpc']))
 {
-    \core\Core::initModClass('blog', 'Blog_XML.php');
+    PHPWS_Core::initModClass('blog', 'Blog_XML.php');
     $xml = new Blog_XML;
     return;
 }
@@ -22,7 +22,7 @@ if (isset($_GET['xmlrpc']))
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin') {
     if (Current_User::allow('blog')) {
-        \core\Core::initModClass('blog', 'Blog_Admin.php');
+        PHPWS_Core::initModClass('blog', 'Blog_Admin.php');
         Blog_Admin::main();
     } else {
         Current_User::disallow();

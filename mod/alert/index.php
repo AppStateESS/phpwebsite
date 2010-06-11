@@ -10,7 +10,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-core\Core::initModClass('alert', 'Alert.php');
+PHPWS_Core::initModClass('alert', 'Alert.php');
 $alert = new Alert;
 
 if (isset($_REQUEST['aop'])) {

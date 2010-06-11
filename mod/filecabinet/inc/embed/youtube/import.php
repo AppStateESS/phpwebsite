@@ -6,7 +6,8 @@
 
 function youtube_import($media)
 {
-        $feed_url = 'http://gdata.youtube.com/feeds/api/videos?vq=';
+    PHPWS_Core::initCoreClass('XMLParser.php');
+    $feed_url = 'http://gdata.youtube.com/feeds/api/videos?vq=';
     if (preg_match('/http:\/\//', $media->file_name)) {
         $pull_regexp = '@http://(www.)?youtube.com/.*(\?|&)v=([^&]+)(&.*)?@';
         $media->file_name = preg_replace($pull_regexp, "\\3", $media->file_name);
@@ -14,7 +15,7 @@ function youtube_import($media)
 
     $parse = new XMLParser($feed_url . $media->file_name, false);
     if ($parse->error) {
-        \core\Error::log($parse->error);
+        PHPWS_Error::log($parse->error);
         return false;
     }
     $parse->setContentOnly(false);
@@ -29,7 +30,7 @@ function youtube_import($media)
         $thumb_name = 'youtube_' . $media->file_name . '.jpg';
         $thumb_dir  = $media->thumbnailDirectory();
         if (!is_dir($thumb_dir)) {
-            \core\Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
+            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet', 'youtube_import', $thumb_dir);
             $media->genericTN($thumb_name);
         } else {
             $thumb_path = $thumb_dir . $thumb_name;

@@ -6,7 +6,7 @@
  */
 
 if (!isset($_SESSION['Whodis'])) {
-    \core\Core::initModClass('whodis', 'Whodis.php');
+    PHPWS_Core::initModClass('whodis', 'Whodis.php');
     Whodis::record();
     $_SESSION['Whodis'] = true;
 }

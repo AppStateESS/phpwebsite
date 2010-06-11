@@ -22,8 +22,8 @@ class Checkin {
      */
     public function loadVisitorList($staff_id=null, $index=false)
     {
-        \core\Core::initModClass('checkin', 'Visitors.php');
-        $db = new \core\DB('checkin_visitor');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        $db = new PHPWS_DB('checkin_visitor');
         if ($index) {
             $db->setIndexBy('assigned', true);
         }
@@ -34,7 +34,7 @@ class Checkin {
         $db->addOrder('arrival_time asc');
         $result = $db->getObjects('Checkin_Visitor');
 
-        if (!core\Error::logIfError($result)) {
+        if (!PHPWS_Error::logIfError($result)) {
             $this->visitor_list = & $result;
         }
     }
@@ -42,21 +42,21 @@ class Checkin {
 
     public function loadStaffList()
     {
-        \core\Core::initModClass('checkin', 'Staff.php');
-        $db = new \core\DB('checkin_staff');
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        $db = new PHPWS_DB('checkin_staff');
         $db->addColumn('users.display_name');
         $db->addColumn('checkin_staff.*');
         $db->addWhere('user_id', 'users.id');
         $db->addOrder('checkin_staff.view_order');
         $result = $db->getObjects('Checkin_Staff');
-        if (!core\Error::logIfError($result)) {
+        if (!PHPWS_Error::logIfError($result)) {
             $this->staff_list = & $result;
         }
     }
 
     public function loadStaff($id=0, $load_reasons=false)
     {
-        \core\Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
 
         if (!$id && !empty($_REQUEST['staff_id'])) {
             $id = (int)$_REQUEST['staff_id'];
@@ -73,7 +73,7 @@ class Checkin {
 
     public function loadReason($id=0)
     {
-        \core\Core::initModClass('checkin', 'Reasons.php');
+        PHPWS_Core::initModClass('checkin', 'Reasons.php');
 
         if (!$id && !empty($_REQUEST['reason_id'])) {
             $id = (int)$_REQUEST['reason_id'];
@@ -88,7 +88,7 @@ class Checkin {
 
     public static function getReasons($all=false)
     {
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         $db->addOrder('summary');
         if (!$all) {
             $db->addColumn('id');
@@ -101,7 +101,7 @@ class Checkin {
 
     public function loadVisitor($id=0)
     {
-        \core\Core::initModClass('checkin', 'Visitors.php');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
 
         if (!$id && isset($_REQUEST['visitor_id'])) {
             $id = (int)$_REQUEST['visitor_id'];
@@ -116,14 +116,14 @@ class Checkin {
 
     public function getStaffList($as_object=false, $available_only=false)
     {
-        $db = new \core\DB('checkin_staff');
+        $db = new PHPWS_DB('checkin_staff');
         if ($available_only) {
             $db->addWhere('status', 1, '!=');
         }
         $db->addWhere('user_id', 'users.id');
         $db->addColumn('users.display_name');
         if ($as_object) {
-            \core\Core::initModClass('checkin', 'Staff.php');
+            PHPWS_Core::initModClass('checkin', 'Staff.php');
             $db->addColumn('*');
             return $db->getObjects('Checkin_Staff');
         } else {

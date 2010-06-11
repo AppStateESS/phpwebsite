@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
-<!DOCTYPE template SYSTEM "../../../inc/page.dtd">
 <template>
-    <title>Text Only</title>
-    <summary>One large text area and nothing else.</summary>
-    <thumbnail>text_only.png</thumbnail>
-    <style>page.css</style>
-    <structure>
-        <section>
-            <name>text1</name>
-            <type>text</type>
-        </section>
-    </structure>
-    <folders>
-        <name>one-column</name>
-        <name>no-image</name>
-    </folders>
+	<title>Text Only</title>
+	<summary>One large text area and nothing else.</summary>
+	<thumbnail>text_only.png</thumbnail>
+	<style>page.css</style>
+	<structure>
+		<section>
+			<name>text1</name>
+			<type>text</type>
+		</section>
+	</structure>
+	<folders>
+		<name>one-column</name>
+		<name>no-image</name>
+	</folders>
 </template>

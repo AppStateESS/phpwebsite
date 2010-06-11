@@ -7,8 +7,8 @@
  * @version $Id$
  */
 
-core\Core::requireConfig('calendar');
-core\Core::requireInc('calendar', 'error_defines.php');
+PHPWS_Core::requireConfig('calendar');
+PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
 define('MINI_CAL_NO_SHOW',     0);
 define('MINI_CAL_SHOW_FRONT',  1);
@@ -79,7 +79,7 @@ class PHPWS_Calendar {
      */
     public function admin()
     {
-        \core\Core::initModClass('calendar', 'Admin.php');
+        PHPWS_Core::initModClass('calendar', 'Admin.php');
         $this->admin = new Calendar_Admin;
         $this->admin->calendar = & $this;
         $this->admin->main();
@@ -95,7 +95,7 @@ class PHPWS_Calendar {
 
 
     public function getEvents($start_search=null, $end_search=null) {
-        \core\Core::initModClass('calendar', 'Event.php');
+        PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
             $start_search = mktime(0,0,0,1,1,1970);
         }
@@ -120,7 +120,7 @@ class PHPWS_Calendar {
             $year = &$this->int_year;
         }
 
-        $start_day = (int)core\Settings::get('calendar', 'starting_day');
+        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
         require_once 'Calendar/Month/Weekdays.php';
         $oMonth = new Calendar_Month_Weekdays($year, $month, $start_day);
         return $oMonth;
@@ -131,8 +131,8 @@ class PHPWS_Calendar {
      */
     public function getScheduleList($mode='object')
     {
-        $db = new \core\DB('calendar_schedule');
-        \core\Key::restrictView($db);
+        $db = new PHPWS_DB('calendar_schedule');
+        Key::restrictView($db);
         $user_id = Current_User::getId();
 
         if ($user_id) {
@@ -160,7 +160,7 @@ class PHPWS_Calendar {
     public function getWeek()
     {
         require_once 'Calendar/Week.php';
-        $start_day = (int)core\Settings::get('calendar', 'starting_day');
+        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
         $oWeek = new Calendar_Week($this->int_year, $this->int_month, $this->int_day, $start_day);
         $oWeek->build();
         return $oWeek;
@@ -175,29 +175,29 @@ class PHPWS_Calendar {
 
     public function loadDefaultSchedule()
     {
-        $sch_id = \core\Settings::get('calendar', 'public_schedule');
+        $sch_id = PHPWS_Settings::get('calendar', 'public_schedule');
 
         if ($sch_id > 0) {
             $this->schedule = new Calendar_Schedule((int)$sch_id);
         } elseif ($sch_id == -1) {
             $this->schedule = new Calendar_Schedule;
         } else {
-            $db = new \core\DB('calendar_schedule');
+            $db = new PHPWS_DB('calendar_schedule');
             $db->addColumn('id');
             $db->addWhere('public', 1);
             $db->setLimit(1);
             $id = $db->select('one');
 
-            if (core\Error::isError($id)) {
-                \core\Error::log($id);
+            if (PHPWS_Error::isError($id)) {
+                PHPWS_Error::log($id);
                 return;
             }
 
             if (empty($id)) {
                 $id = -1;
             }
-            \core\Settings::set('calendar', 'public_schedule', $id);
-            \core\Settings::save('calendar');
+            PHPWS_Settings::set('calendar', 'public_schedule', $id);
+            PHPWS_Settings::save('calendar');
         }
     }
 
@@ -276,7 +276,7 @@ class PHPWS_Calendar {
      */
     public function loadSchedule()
     {
-        \core\Core::initModClass('calendar', 'Schedule.php');
+        PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
         if (!empty($_REQUEST['sch_id'])) {
             $this->schedule = new Calendar_Schedule($_REQUEST['sch_id']);
@@ -306,7 +306,7 @@ class PHPWS_Calendar {
 
     public function loadUser()
     {
-        \core\Core::initModClass('calendar', 'User.php');
+        PHPWS_Core::initModClass('calendar', 'User.php');
         $this->user = new Calendar_User;
         $this->user->calendar = & $this;
     }

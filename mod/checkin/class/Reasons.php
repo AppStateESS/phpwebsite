@@ -23,7 +23,7 @@ class Checkin_Reasons {
 
     public function init()
     {
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         return $db->loadObject($this);
     }
 
@@ -32,13 +32,13 @@ class Checkin_Reasons {
         $vars['reason_id'] = $this->id;
 
         $vars['aop'] = 'edit_reason';
-        $links[] = \core\Text::secureLink(core\Icon::show('edit'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'checkin', $vars);
 
 
         $vars['aop'] = 'delete_reason';
         $js['question'] = dgettext('confirm', 'Are you sure you want to delete this reason?.');
-        $js['address']  = \core\Text::linkAddress('checkin', $vars, true);
-        $js['link'] = \core\Icon::show('delete');
+        $js['address']  = PHPWS_Text::linkAddress('checkin', $vars, true);
+        $js['link'] = Icon::show('delete');
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode('', $links);
@@ -47,21 +47,21 @@ class Checkin_Reasons {
 
     public function delete()
     {
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('id', $this->id);
-        $result = !core\Error::logIfError($db->delete());
+        $result = !PHPWS_Error::logIfError($db->delete());
         if ($result) {
-            $db = new \core\DB('checkin_rtos');
+            $db = new PHPWS_DB('checkin_rtos');
             $db->addWhere('reason_id', $this->id);
-            return !core\Error::logIfError($db->delete());
+            return !PHPWS_Error::logIfError($db->delete());
         }
         return false;
     }
 
     public function save()
     {
-        $db = new \core\DB('checkin_reasons');
-        return !core\Error::logIfError($db->saveObject($this));
+        $db = new PHPWS_DB('checkin_reasons');
+        return !PHPWS_Error::logIfError($db->saveObject($this));
     }
 }
 

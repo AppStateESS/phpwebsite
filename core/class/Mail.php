@@ -1,5 +1,5 @@
 <?php
-namespace core;
+
 /**
  * Frontend class for Pear's Mail class.
  * Settings are in core/conf/mail_settings.php
@@ -40,9 +40,9 @@ namespace core;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-Core::requireConfig('core', 'mail_settings.php');
+PHPWS_Core::requireConfig('core', 'mail_settings.php');
 
-class Mail {
+class PHPWS_Mail {
     public $send_to           = array();
     public $subject_line      = null;
     public $from_address      = null;
@@ -257,7 +257,7 @@ class Mail {
             foreach($this->send_to as $address) {
                 $recipients['To']   = $address;
                 $result = $mail_object->send($recipients, $m_headers, $body);
-                if (Error::logIfError($result)) {
+                if (PHPWS_Error::logIfError($result)) {
                     $error_found = true;
                 }
             }
@@ -273,7 +273,5 @@ class Mail {
     }
 
 }
-
-class PHPWS_Mail extends Mail{}
 
 ?>

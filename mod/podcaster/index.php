@@ -26,7 +26,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-core\Core::initModClass('podcaster', 'Podcaster.php');
+PHPWS_Core::initModClass('podcaster', 'Podcaster.php');
 $podcaster = new Podcaster;
 
 if (isset($_REQUEST['aop'])) {
@@ -42,7 +42,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['channel'])) {
     $podcaster->userMenu('view_channel');
 } else {
-    \core\Core::home();
+    PHPWS_Core::home();
 }
 
 ?>

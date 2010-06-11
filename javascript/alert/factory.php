@@ -11,14 +11,6 @@ class javascript_alert extends Javascript {
     private $label = null;
     private $content = null;
 
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->label = dgettext('core', 'Alert message here.');
-        $this->content = dgettext('core', 'Click for alert');
-    }
-
     public function loadDemo()
     {
         $demo_code = <<<EOF

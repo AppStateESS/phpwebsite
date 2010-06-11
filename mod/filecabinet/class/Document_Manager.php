@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::initModClass('filecabinet', 'Document.php');
+PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class FC_Document_Manager {
     public $folder   = null;
@@ -29,7 +29,7 @@ class FC_Document_Manager {
                     Current_User::disallow();
                 }
                 $this->document->delete();
-                \core\Core::returnToBookmark();
+                PHPWS_Core::returnToBookmark();
                 break;
             case 'post_document_upload':
                 if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
@@ -50,7 +50,7 @@ class FC_Document_Manager {
                     Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true,
                     sprintf('[filecabinet:doc:%s]', $this->document->id));
                 }
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
         }
 
@@ -70,8 +70,9 @@ class FC_Document_Manager {
             $this->loadDocument();
         }
 
-        
-        $form = new \core\Form;
+        PHPWS_Core::initCoreClass('File.php');
+
+        $form = new PHPWS_FORM;
         $form->addHidden('module',    'filecabinet');
         $form->addHidden('dop',       'post_document_upload');
         $form->addHidden('ms',        $this->max_size);
@@ -129,7 +130,7 @@ class FC_Document_Manager {
             $template['ERROR'] = $this->document->printErrors();
         }
 
-        return \core\Template::process($template, 'filecabinet', 'document_edit.tpl');
+        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
     }
 
     public function loadDocument($document_id=0)
@@ -145,7 +146,7 @@ class FC_Document_Manager {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(core\Settings::get('filecabinet', 'max_document_size'));
+            $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_document_size'));
         }
     }
 
@@ -154,8 +155,8 @@ class FC_Document_Manager {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
 
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             javascript('close_refresh', $vars);
@@ -163,13 +164,13 @@ class FC_Document_Manager {
         } elseif ($result) {
             $result = $this->document->save();
 
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
                 Layout::nakedDisplay($content);
                 exit();
             }
-            \core\Core::initModClass('filecabinet', 'File_Assoc.php');
+            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
             FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             $this->document->moveToFolder();

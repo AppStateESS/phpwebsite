@@ -29,10 +29,10 @@ class Search {
 
 	public function init()
 	{
-		$db = new \core\DB('search');
+		$db = new PHPWS_DB('search');
 		$db->addWhere('key_id', $this->key_id);
 		$result = $db->loadObject($this);
-		if (core\Error::isError($result)) {
+		if (PHPWS_Error::isError($result)) {
 			$this->_error = $result;
 		}
 
@@ -148,9 +148,9 @@ class Search {
 
 		// Removes trademark/registered, contractions, and website suffix
 		$text = preg_replace('/(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
-		$config_file = \core\Core::getConfigFile('search', $file_name);
+		$config_file = PHPWS_Core::getConfigFile('search', $file_name);
 		if (!$config_file) {
-			$config_file = \core\Core::getConfigFile('search', 'wordlist.txt');
+			$config_file = PHPWS_Core::getConfigFile('search', 'wordlist.txt');
 			if (!$config_file) {
 				return $text;
 			}
@@ -183,12 +183,12 @@ class Search {
 		if (empty($this->key_id) || empty($this->keywords)) {
 			return FALSE;
 		}
-		$db = new \core\DB('search');
+		$db = new PHPWS_DB('search');
 		$db->addWhere('key_id', $this->key_id);
 		$db->delete();
 		$db->reset();
 
-		$key = new \core\Key($this->key_id);
+		$key = new Key($this->key_id);
 
 		$db->addValue('key_id', $key->id);
 		$db->addValue('module', $key->module);

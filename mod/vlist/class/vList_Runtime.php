@@ -27,9 +27,9 @@ class vList_Runtime
 {
 
     public static function showBlock() {
-        if (core\Settings::get('vlist', 'enable_sidebox')) {
-            if (core\Settings::get('vlist', 'sidebox_homeonly')) {
-                $key = \core\Key::getCurrent();
+        if (PHPWS_Settings::get('vlist', 'enable_sidebox')) {
+            if (PHPWS_Settings::get('vlist', 'sidebox_homeonly')) {
+                $key = Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     vList_Runtime::showvListBlock();
                 }
@@ -41,11 +41,11 @@ class vList_Runtime
 
     public function showvListBlock() {
 
-        $db = new \core\DB('vlist_listing');
+        $db = new PHPWS_DB('vlist_listing');
         $db->addColumn('id');
         $db->addWhere('approved', 1);
         $db->addWhere('active', 1);
-        if (core\Settings::get('vlist', 'block_order_by')) {
+        if (PHPWS_Settings::get('vlist', 'block_order_by')) {
             $db->addOrder('rand');
             $label = dgettext('vlist', 'Random Listing');
         } else {
@@ -54,11 +54,11 @@ class vList_Runtime
         }
         $db->setLimit(1);
         $result = $db->select();
-        if (!core\Error::logIfError($result) && !empty($result)) {
-            $tpl['TITLE'] = \core\Text::parseOutput(core\Settings::get('vlist', 'module_title'));
+        if (!PHPWS_Error::logIfError($result) && !empty($result)) {
+            $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vlist', 'module_title'));
             $tpl['LABEL'] = $label;
-            $tpl['TEXT'] = \core\Text::parseOutput(core\Settings::get('vlist', 'sidebox_text'));
-            \core\Core::initModClass('vlist', 'vList_Listing.php');
+            $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vlist', 'sidebox_text'));
+            PHPWS_Core::initModClass('vlist', 'vList_Listing.php');
             $listing = new vList_Listing($result[0]['id']);
             $tpl['NAME'] = $listing->viewLink();
             if ($listing->image_id) {
@@ -66,16 +66,16 @@ class vList_Runtime
             } else {
                 $tpl['THUMBNAIL'] = null;
             }
-            $tpl['LINK'] = \core\Text::moduleLink(dgettext('vlist', 'Browse all listings'), 'vlist', array('uop'=>'listings'));
+            $tpl['LINK'] = PHPWS_Text::moduleLink(dgettext('vlist', 'Browse all listings'), 'vlist', array('uop'=>'listings'));
 
             if (Current_User::allow('vlist', 'edit_listing')) {
-                $tpl['SUBMIT_LINK'] = \core\Text::secureLink(dgettext('vlist', 'Add Listing'), 'vlist', array('aop'=>'new_listing'));
-            } elseif (core\Settings::get('vlist', 'anon_files') || (core\Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '')) {
-                $tpl['SUBMIT_LINK'] = \core\Text::moduleLink(dgettext('vlist', 'Submit a listing'), 'vlist', array('uop'=>'submit_listing'));
+                $tpl['SUBMIT_LINK'] = PHPWS_Text::secureLink(dgettext('vlist', 'Add Listing'), 'vlist', array('aop'=>'new_listing'));
+            } elseif (PHPWS_Settings::get('vlist', 'anon_files') || (PHPWS_Settings::get('vlist', 'user_files') && $_SESSION['User']->username != '')) {
+                $tpl['SUBMIT_LINK'] = PHPWS_Text::moduleLink(dgettext('vlist', 'Submit a listing'), 'vlist', array('uop'=>'submit_listing'));
             }
 
-            \core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(core\Template::process($tpl, 'vlist', 'block.tpl'), 'vlist', 'vlist_sidebox');
+            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Layout::add(PHPWS_Template::process($tpl, 'vlist', 'block.tpl'), 'vlist', 'vlist_sidebox');
         }
 
     }

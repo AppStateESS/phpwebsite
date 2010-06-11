@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!DOCTYPE dependency PUBLIC "-//phpwebsite//dependency structure//EN" "http://phpwebsite.appstate.edu/dependency.dtd">
 <dependency>
   <module>
     <title>core</title>

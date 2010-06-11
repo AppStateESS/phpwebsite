@@ -22,17 +22,17 @@ class Alert_Type {
 
         $this->id = (int)$id;
         $result = $this->init();
-        if (!$result || \core\Error::logIfError($result)) {
+        if (!$result || PHPWS_Error::logIfError($result)) {
             $this->id = 0;
         }
     }
 
     public function init()
     {
-        $db = new \core\DB('alert_type');
+        $db = new PHPWS_DB('alert_type');
         $result = $db->loadObject($this);
 
-        if (!$result || \core\Error::isError($result)) {
+        if (!$result || PHPWS_Error::isError($result)) {
             return $result;
         }
         return true;
@@ -46,14 +46,14 @@ class Alert_Type {
 
     public function rowTags()
     {
-        $links[] = \core\Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop'=>'edit_type', 'type_id'=>$this->id));
+        $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop'=>'edit_type', 'type_id'=>$this->id));
 
         $links[] = sprintf('%s/%s&nbsp;all',
-        \core\Text::secureLink(dgettext('alert', 'Add'), 'alert',
+        PHPWS_Text::secureLink(dgettext('alert', 'Add'), 'alert',
         array('aop'=>'add_all_participants', 'type_id'=>$this->id),
         null,
         sprintf(dgettext('alert', 'Add all participants to %s'), $this->title)),
-        \core\Text::secureLink(dgettext('alert', 'Remove'), 'alert',
+        PHPWS_Text::secureLink(dgettext('alert', 'Remove'), 'alert',
         array('aop'=>'remove_all_participants', 'type_id'=>$this->id),
         null,
         sprintf(dgettext('alert', 'Remove all participants from %s'), $this->title))
@@ -63,12 +63,12 @@ class Alert_Type {
         if (Current_User::allow('alert', 'delete_type')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert type?');
             $js['link']     = dgettext('alert', 'Delete');
-            $js['address']  = \core\Text::linkAddress('alert', array('aop'=>'delete_type', 'type_id'=>$this->id), true);
+            $js['address']  = PHPWS_Text::linkAddress('alert', array('aop'=>'delete_type', 'type_id'=>$this->id), true);
             $links[] = javascript('confirm', $js);
         }
 
         $tpl['EMAIL'] = $this->email ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
-        $tpl['RSSFEED'] = $this->rssfeed ? \core\Text::rewriteLink(dgettext('alert', 'Yes'), 'alert', array('rssfeed'=>$this->feedname)) : dgettext('alert', 'No');
+        $tpl['RSSFEED'] = $this->rssfeed ? PHPWS_Text::rewriteLink(dgettext('alert', 'Yes'), 'alert', array('rssfeed'=>$this->feedname)) : dgettext('alert', 'No');
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
@@ -76,12 +76,12 @@ class Alert_Type {
 
     public function getDefaultAlert()
     {
-        return \core\Text::parseOutput($this->default_alert);
+        return PHPWS_Text::parseOutput($this->default_alert);
     }
 
     public function setDefaultAlert($text)
     {
-        $this->default_alert = \core\Text::parseInput($text);
+        $this->default_alert = PHPWS_Text::parseInput($text);
     }
 
     public function setTitle($title)
@@ -91,20 +91,20 @@ class Alert_Type {
 
     public function save()
     {
-        $db = new \core\DB('alert_type');
+        $db = new PHPWS_DB('alert_type');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new \core\DB('alert_type');
+        $db = new PHPWS_DB('alert_type');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        if (core\Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return;
         }
 
-        $db = new \core\DB('alert_item');
+        $db = new PHPWS_DB('alert_item');
         $db->addWhere('type_id', $this->id);
         return $db->delete();
     }
@@ -114,7 +114,7 @@ class Alert_Type {
      */
     public function getItems()
     {
-        $db = new \core\DB('alert_item');
+        $db = new PHPWS_DB('alert_item');
         $db->addWhere('type_id', $this->id);
         $db->addWhere('active', 1);
         $db->addOrder('create_date desc');

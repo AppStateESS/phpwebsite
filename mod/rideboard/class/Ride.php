@@ -26,12 +26,12 @@ class RB_Ride {
     public function __construct($id=0)
     {
         if (!$id) {
-            $this->s_location = \core\Settings::get('rideboard', 'default_slocation');
+            $this->s_location = PHPWS_Settings::get('rideboard', 'default_slocation');
             return;
         }
 
         $this->id = (int)$id;
-        $db = new \core\DB('rb_ride');
+        $db = new PHPWS_DB('rb_ride');
         $db->addTable('rb_location', 't1');
         $db->addTable('rb_location', 't2');
         $db->addColumn('*');
@@ -40,7 +40,7 @@ class RB_Ride {
         $db->addColumn('t1.city_state', null, 'start_location');
         $db->addColumn('t2.city_state', null, 'dest_location');
 
-        if (core\Error::logIfError($db->loadObject($this))) {
+        if (PHPWS_Error::logIfError($db->loadObject($this))) {
             $this->id = 0;
         }
     }
@@ -57,7 +57,7 @@ class RB_Ride {
 
     public function save()
     {
-        $db = new \core\DB('rb_ride');
+        $db = new PHPWS_DB('rb_ride');
         if (!$this->user_id) {
             $this->user_id = Current_User::getId();
         }
@@ -124,7 +124,7 @@ class RB_Ride {
         $tpl['RIDE_TYPE']   = $this->getRideType();
         $tpl['GENDER_PREF'] = $this->getGenderPref();
         $tpl['SMOKING']     = $this->getSmoking();
-        $tpl['COMMENTS']    = \core\Text::parseOutput($this->comments);
+        $tpl['COMMENTS']    = PHPWS_Text::parseOutput($this->comments);
         $tpl['DEPART_TIME'] = $this->getDepartTime();
 
         if ($this->s_location) {
@@ -140,7 +140,7 @@ class RB_Ride {
         }
 
         $links[] = javascript('open_window',
-        array('address'=>core\Text::linkAddress('rideboard', array('uop'=>'view_ride',
+        array('address'=>PHPWS_Text::linkAddress('rideboard', array('uop'=>'view_ride',
                                                                                           'rid'=>$this->id)),
                                     'label'  => dgettext('rideboard', 'Read more'),
                                     'width' => 640,
@@ -149,7 +149,7 @@ class RB_Ride {
 
         if ($admin && ($this->user_id == Current_User::getId() || Current_User::allow('rideboard'))) {
             $js['question'] = dgettext('rideboard', 'Are you sure you want to delete this ride?');
-            $js['address'] = \core\Text::linkAddress('rideboard', array('uop'=>'delete_ride',
+            $js['address'] = PHPWS_Text::linkAddress('rideboard', array('uop'=>'delete_ride',
                                                                         'rid'=>$this->id),
             true);
             $js['link'] = dgettext('rideboard', 'Delete');
@@ -163,9 +163,9 @@ class RB_Ride {
 
     public function delete()
     {
-        $db = new \core\DB('rb_ride');
+        $db = new PHPWS_DB('rb_ride');
         $db->addWhere('id', $this->id);
-        return !core\Error::logIfError($db->delete());
+        return !PHPWS_Error::logIfError($db->delete());
     }
 
     public function view()
@@ -231,7 +231,7 @@ class RB_Ride {
 
         $tpl['CLOSE'] = javascript('close_window');
 
-        return \core\Template::process($tpl, 'rideboard', 'view_ride.tpl');
+        return PHPWS_Template::process($tpl, 'rideboard', 'view_ride.tpl');
     }
 }
 

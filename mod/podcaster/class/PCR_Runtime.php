@@ -27,9 +27,9 @@ class PCR_Runtime
 {
 
     public static function showBlock() {
-        if (core\Settings::get('podcaster', 'show_block')) {
-            if (core\Settings::get('podcaster', 'block_on_home_only')) {
-                $key = \core\Key::getCurrent();
+        if (PHPWS_Settings::get('podcaster', 'show_block')) {
+            if (PHPWS_Settings::get('podcaster', 'block_on_home_only')) {
+                $key = Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     PCR_Runtime::showPodcasterBlock();
                 }
@@ -41,31 +41,31 @@ class PCR_Runtime
 
     public static function showPodcasterBlock() {
 
-        $db = new \core\DB('podcaster_episode');
+        $db = new PHPWS_DB('podcaster_episode');
         $db->addColumn('id');
         $db->addWhere('active', 1);
         $db->addWhere('approved', 1);
-        if (core\Settings::get('podcaster', 'block_order_by_rand')) {
+        if (PHPWS_Settings::get('podcaster', 'block_order_by_rand')) {
             $db->addOrder('rand');
         } else {
             $db->addOrder('date_created desc');
         }
         $db->setLimit(1);
         $result = $db->select();
-        if (!core\Error::logIfError($result) && !empty($result)) {
+        if (!PHPWS_Error::logIfError($result) && !empty($result)) {
             $tpl['TITLE'] = dgettext('podcaster', 'Podcaster');
-            if (core\Settings::get('podcaster', 'block_order_by_rand')) {
+            if (PHPWS_Settings::get('podcaster', 'block_order_by_rand')) {
                 $tpl['EPISODE_LABEL'] = dgettext('podcaster', 'Random Episode');
             } else {
                 $tpl['EPISODE_LABEL'] = dgettext('podcaster', 'Most Recent Episode');
             }
             $tpl['CHANNEL_LABEL'] = dgettext('podcaster', 'From the  channel...');
-            \core\Core::initModClass('podcaster', 'PCR_Episode.php');
+            PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
             $episode = new Podcaster_Episode($result[0]['id']);
             $tpl['EPISODE_TITLE'] = $episode->viewLink();
             $tpl['CHANNEL_TITLE'] = $episode->getChannel(true, true);
-            \core\Core::initModClass('layout', 'Layout.php');
-            Layout::add(core\Template::process($tpl, 'podcaster', 'block.tpl'), 'podcaster', 'pcr_sidebox');
+            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Layout::add(PHPWS_Template::process($tpl, 'podcaster', 'block.tpl'), 'podcaster', 'pcr_sidebox');
         }
 
     }

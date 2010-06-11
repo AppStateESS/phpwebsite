@@ -29,9 +29,9 @@ function rolodex_update(&$content, $currentVersion)
 
 
         case version_compare($currentVersion, '0.7.0', '<'):
-            $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/rolodex/boost/sql_update_070.sql');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/rolodex/boost/sql_update_070.sql');
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = '+ Unable to add the location and feature tables.';
                 return false;
             } else {
@@ -104,8 +104,8 @@ function rolodex_update(&$content, $currentVersion)
 
 
         case version_compare($currentVersion, '1.0.0', '<'):
-            \core\Core::initModClass('demographics', 'Demographics.php');
-            if (core\Error::logIfError(Demographics::registerDefaultField('evening_phone'))) {
+            PHPWS_Core::initModClass('demographics', 'Demographics.php');
+            if (PHPWS_Error::logIfError(Demographics::registerDefaultField('evening_phone'))) {
                 $content[] = 'Could not register evening_phone column in demographics table.</pre>';
                 return false;
             }
@@ -143,9 +143,9 @@ function rolodex_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.1.0', '<'):
             $content[] = '<pre>';
-            $db = new \core\DB('rolodex_member');
+            $db = new PHPWS_DB('rolodex_member');
             if (!$db->isTableColumn('email_privacy')) {
-                if (core\Error::logIfError($db->addTableColumn('email_privacy', 'smallint NOT NULL default 0'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('email_privacy', 'smallint NOT NULL default 0'))) {
                     $content[] = '--- Could not create column email_privacy on rolodex_member table.</pre>';
                     return false;
                 } else {

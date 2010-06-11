@@ -115,7 +115,7 @@ function controlpanel_update(&$content, $currentVersion)
 
 
 		case version_compare($currentVersion, '2.3.0', '<'):
-			$db = new \core\DB('controlpanel_link');
+			$db = new PHPWS_DB('controlpanel_link');
 			$db->addColumn('id');
 			$db->addColumn('image');
 			$result = $db->select();

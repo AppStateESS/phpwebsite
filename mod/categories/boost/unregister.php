@@ -6,7 +6,7 @@
  */
 
 function categories_unregister($module, &$content){
-    \core\Core::initModClass("categories", "Categories.php");
+    PHPWS_Core::initModClass("categories", "Categories.php");
 
     Categories::removeModule($module);
 }

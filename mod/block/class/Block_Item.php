@@ -53,13 +53,13 @@ class Block_Item {
 
 	public function setContent($content)
 	{
-		$this->content = \core\Text::parseInput($content);
+		$this->content = PHPWS_Text::parseInput($content);
 	}
 
 	public function getContent($format=TRUE)
 	{
 		if ($format) {
-			return \core\Text::parseTag(core\Text::parseOutput($this->content), null, 'block');
+			return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content), null, 'block');
 		} else {
 			return $this->content;
 		}
@@ -72,7 +72,7 @@ class Block_Item {
 
 	public function getKey()
 	{
-		$key = new \core\Key('block', 'block', $this->id);
+		$key = new Key('block', 'block', $this->id);
 		return $key;
 	}
 
@@ -91,15 +91,15 @@ class Block_Item {
 			return FALSE;
 		}
 
-		$db = new \core\DB('block');
+		$db = new PHPWS_DB('block');
 		return $db->loadObject($this);
 	}
 
 	public function save($save_key=TRUE)
 	{
-		$db = new \core\DB('block');
+		$db = new PHPWS_DB('block');
 		$result = $db->saveObject($this);
-		if (core\Error::isError($result)) {
+		if (PHPWS_Error::isError($result)) {
 			return $result;
 		}
 
@@ -111,17 +111,17 @@ class Block_Item {
 	public function saveKey()
 	{
 		if (empty($this->key_id)) {
-			$key = new \core\Key;
+			$key = new Key;
 			$key->module = $key->item_name = 'block';
 			$key->item_id = $this->id;
 		} else {
-			$key = new \core\Key($this->key_id);
+			$key = new Key($this->key_id);
 		}
 
 		$key->edit_permission = 'edit_block';
 		$key->title = $this->title;
 		$result = $key->save();
-		if (core\Error::isError($result)) {
+		if (PHPWS_Error::isError($result)) {
 			return $result;
 		}
 
@@ -134,7 +134,7 @@ class Block_Item {
 
 	public function clearPins()
 	{
-		$db = new \core\DB('block_pinned');
+		$db = new PHPWS_DB('block_pinned');
 		$db->addWhere('block_id', $this->id);
 		$db->delete();
 	}
@@ -142,19 +142,19 @@ class Block_Item {
 	public function kill()
 	{
 		$this->clearPins();
-		$db = new \core\DB('block');
+		$db = new PHPWS_DB('block');
 		$db->addWhere('id', $this->id);
 
 		$result = $db->delete();
 
-		if (core\Error::isError($result)) {
-			core\Error::log($result);
+		if (PHPWS_Error::isError($result)) {
+			PHPWS_Error::log($result);
 		}
 
-		$key = new \core\Key($this->key_id);
+		$key = new Key($this->key_id);
 		$result = $key->delete();
-		if (core\Error::isError($result)) {
-			core\Error::log($result);
+		if (PHPWS_Error::isError($result)) {
+			PHPWS_Error::log($result);
 		}
 	}
 
@@ -162,8 +162,8 @@ class Block_Item {
 	{
 		$edit = $opt = null;
 		if (Current_User::allow('block', 'edit_block', $this->id)) {
-			$img = \core\Icon::show('edit', dgettext('block', 'Edit block'));
-			$edit = \core\Text::secureLink($img, 'block', array('block_id'=>$this->id,
+			$img = Icon::show('edit', dgettext('block', 'Edit block'));
+			$edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
                                                                 'action'=>'edit'));
 
 			if (!empty($this->_pin_key) && $pin_mode) {
@@ -171,14 +171,14 @@ class Block_Item {
 				$link['block_id'] = $this->id;
 				$link['key_id'] = $this->_pin_key->id;
 				$img = '<img src="' . PHPWS_SOURCE_HTTP . '/mod/block/img/pin.png" />';
-				$opt = \core\Text::secureLink($img, 'block', $link);
+				$opt = PHPWS_Text::secureLink($img, 'block', $link);
 			} elseif (!empty($this->_pin_key) && $admin_icon) {
 				$vars['action'] = 'remove';
 				$vars['block_id'] = $this->id;
 				$vars['key_id'] = $this->_pin_key->id;
-				$js_var['ADDRESS'] = \core\Text::linkAddress('block', $vars, TRUE);
+				$js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
 				$js_var['QUESTION'] = dgettext('block', 'Are you sure you want to remove this block from this page?');
-				$icon = \core\Icon::get('close');
+				$icon = Icon::get('close');
 				$icon->setAlt(dgettext('block', 'Delete block'));
 				$icon->setStyle('margin : 3px');
 				$js_var['LINK'] = $icon->__toString();
@@ -192,7 +192,7 @@ class Block_Item {
 		if (!$this->hide_title) {
 			$template['TITLE'] = $this->getTitle();
 		}
-		return \core\Template::process($template, 'block', 'sample.tpl');
+		return PHPWS_Template::process($template, 'block', 'sample.tpl');
 	}
 
 	public function isPinned()
@@ -209,12 +209,12 @@ class Block_Item {
 		static $all_pinned = null;
 
 		if (empty($all_pinned)) {
-			$db = new \core\DB('block_pinned');
+			$db = new PHPWS_DB('block_pinned');
 			$db->addWhere('key_id', -1);
 			$db->addColumn('block_id');
 			$result = $db->select('col');
-			if (core\Error::isError($result)) {
-				core\Error::log($result);
+			if (PHPWS_Error::isError($result)) {
+				PHPWS_Error::log($result);
 				return false;
 			}
 			if ($result) {
@@ -238,19 +238,19 @@ class Block_Item {
 
 		if (Current_User::allow('block', 'edit_block', $this->id)) {
 			$vars['action'] = 'edit';
-			$links[] = \core\Text::secureLink(core\Icon::show('edit', dgettext('block', 'Edit')), 'block', $vars);
+			$links[] = PHPWS_Text::secureLink(Icon::show('edit', dgettext('block', 'Edit')), 'block', $vars);
 			if ($this->isPinned()) {
 				$vars['action'] = 'unpin';
-				$links[] = \core\Text::secureLink(core\Icon::show('unsticky', dgettext('block', 'Unpin')), 'block', $vars);
+				$links[] = PHPWS_Text::secureLink(Icon::show('unsticky', dgettext('block', 'Unpin')), 'block', $vars);
 			} else {
 				if ($this->allPinned()) {
 					$vars['action'] = 'remove';
-					$links[] = \core\Text::secureLink(core\Icon::show('unsticky', dgettext('block', 'Unpin all')), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('unsticky', dgettext('block', 'Unpin all')), 'block', $vars);
 				} else {
 					$vars['action'] = 'pin';
-					$links[] = \core\Text::secureLink(core\Icon::show('clip', dgettext('block', 'Clip')), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('clip', dgettext('block', 'Clip')), 'block', $vars);
 					$vars['action'] = 'pin_all';
-					$links[] = \core\Text::secureLink(core\Icon::show('sticky_all', dgettext('block', 'Pin all')), 'block', $vars);
+					$links[] = PHPWS_Text::secureLink(Icon::show('sticky_all', dgettext('block', 'Pin all')), 'block', $vars);
 				}
 			}
 
@@ -260,15 +260,15 @@ class Block_Item {
 
 
 			$vars['action'] = 'copy';
-			$links[] = \core\Text::secureLink(core\Icon::show('copy', dgettext('block', 'Copy')), 'block', $vars);
+			$links[] = PHPWS_Text::secureLink(Icon::show('copy', dgettext('block', 'Copy')), 'block', $vars);
 		}
 
 
 		if (Current_User::allow('block', 'delete_block')) {
 			$vars['action'] = 'delete';
 			$confirm_vars['QUESTION'] = dgettext('block', 'Are you sure you want to permanently delete this block?');
-			$confirm_vars['ADDRESS'] = \core\Text::linkAddress('block', $vars, TRUE);
-			$confirm_vars['LINK'] = \core\Icon::show('delete');
+			$confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+			$confirm_vars['LINK'] = Icon::show('delete');
 			$links[] = javascript('confirm', $confirm_vars);
 		}
 

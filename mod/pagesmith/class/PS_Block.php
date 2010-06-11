@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::initModClass('pagesmith', 'PS_Section.php');
+PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Block extends PS_Section {
     // Id to the element tracked by this block e.g. the image id
@@ -24,9 +24,9 @@ class PS_Block extends PS_Section {
 
     public function init()
     {
-        $db = new \core\DB('ps_block');
+        $db = new PHPWS_DB('ps_block');
         $result = $db->loadObject($this);
-        if (core\Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return $result;
         }
         if (!$result) {
@@ -39,7 +39,7 @@ class PS_Block extends PS_Section {
 
     public function loadFiller()
     {
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager($this->secname, $this->type_id);
         $manager->maxImageWidth($this->width);
         $manager->maxImageHeight($this->height);
@@ -73,7 +73,7 @@ class PS_Block extends PS_Section {
     public function getContent()
     {
         if (empty($this->content)) {
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $this->content = Cabinet::getTag($this->type_id);
         }
         return $this->content;
@@ -81,7 +81,7 @@ class PS_Block extends PS_Section {
 
     public function save($key_id=null)
     {
-        $db = new \core\DB('ps_block');
+        $db = new PHPWS_DB('ps_block');
         $db->saveObject($this);
     }
 

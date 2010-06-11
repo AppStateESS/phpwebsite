@@ -27,7 +27,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-core\Core::initModClass('whatsnew', 'Whatsnew.php');
+PHPWS_Core::initModClass('whatsnew', 'Whatsnew.php');
 $whatsnew = new whatsnew;
 
 if (isset($_REQUEST['aop'])) {
@@ -35,7 +35,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['uop'])) {
     $whatsnew->userMenu();
 } else {
-    \core\Core::home();
+    PHPWS_Core::home();
 }
 
 

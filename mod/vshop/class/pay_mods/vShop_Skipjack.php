@@ -65,7 +65,7 @@ class vShop_Skipjack {
 
     public function form ($order) {
 
-        $form = new \core\Form('vshop_payment');
+        $form = new PHPWS_Form('vshop_payment');
         $form->addSubmit(dgettext('vshop', 'Click once to complete payment'));
 
         $form->addHidden('module', 'vshop');
@@ -101,7 +101,7 @@ class vShop_Skipjack {
         $errors = null;
         $customvars = null;
         $total = number_format($order->order_array['total_grand'], 2, '.', '');
-        $orderstring = \core\Settings::get('vshop', 'mod_title') . "~" . dgettext('vshop', 'Aggregated items') . "~" . $total . "~1~N~||";
+        $orderstring = PHPWS_Settings::get('vshop', 'mod_title') . "~" . dgettext('vshop', 'Aggregated items') . "~" . $total . "~1~N~||";
 
 /*  this isn't really needed but could be used to send custom stuff to skipjack
         $customvars = array(

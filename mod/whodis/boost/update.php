@@ -39,9 +39,9 @@ CREATE TABLE whodis_filters (
   filter varchar(255) NOT NULL default '',
   PRIMARY KEY  (id)
 )";
-            $result = \core\DB::query($sql);
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            $result = PHPWS_DB::query($sql);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = 'An error occurred when trying to create the whodis_filters table.';
                 return false;
             } else {
@@ -91,17 +91,17 @@ CREATE TABLE whodis_filters (
 </pre>';
 
         case version_compare($version, '0.1.2', '<'):
-            if (!core\DB::isTable('whodis_filters')) {
-                $db = new \core\DB('whodis_filters');
+            if (!PHPWS_DB::isTable('whodis_filters')) {
+                $db = new PHPWS_DB('whodis_filters');
                 $db->addValue('id', 'int not null default 0');
                 $db->addValue('filter', 'varchar(255) not null default \'\'');
 
-                if (core\Error::logIfError($db->createTable())) {
+                if (PHPWS_Error::logIfError($db->createTable())) {
                     $content[] = 'Could not create whodis_filters table.';
                     return false;
                 } else {
                     $db->reset();
-                    \core\Error::logIfError($db->createPrimaryKey());
+                    PHPWS_Error::logIfError($db->createPrimaryKey());
                 }
             }
 
@@ -111,8 +111,8 @@ CREATE TABLE whodis_filters (
 </pre>';
 
         case version_compare($version, '0.2.0', '<'):
-            $db = new \core\DB('whodis');
-            if (core\Error::logIfError($db->alterColumnType('url', 'text'))) {
+            $db = new PHPWS_DB('whodis');
+            if (PHPWS_Error::logIfError($db->alterColumnType('url', 'text'))) {
                 $content[] = 'Could not change whodis.url to text.';
                 return false;
             }

@@ -11,7 +11,7 @@ function alert_update(&$content, $version)
     switch (1) {
         case version_compare($version, '1.1.0', '<'):
             $content[] = '<pre>';
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             if (Cabinet::convertImagesToFileAssoc('alert_item', 'image_id')) {
                 $content[] = '--- Converted images to new File Cabinet format.';
             } else {

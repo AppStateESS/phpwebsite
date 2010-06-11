@@ -53,17 +53,17 @@ class Search_Admin {
             case 'close_admin':
                 unset($_SESSION['Search_Add_Words']);
                 unset($_SESSION['Search_Admin']);
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'delete_keyword':
                 Search_Admin::deleteKeyword();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'add_parse_word':
                 if (!isset($_REQUEST['keyword'])) {
-                    \core\Core::goBack();
+                    PHPWS_Core::goBack();
                 }
                 Search_Admin::addParseWord($_REQUEST['keyword']);
                 Search_Admin::sendMessage(dgettext('search', 'Keywords added to admin menu.'), 'keyword');
@@ -76,41 +76,41 @@ class Search_Admin {
                         unset($_SESSION['Search_Add_Words'][$array_key]);
                     }
                 }
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'add_keyword':
                 if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
-                    \core\Core::goBack();
+                    PHPWS_Core::goBack();
                 }
 
                 Search_Admin::addKeyword($_GET['kw'], $_GET['key_id']);
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'remove_searchword':
                 if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
-                    \core\Core::goBack();
+                    PHPWS_Core::goBack();
                 }
 
                 Search_Admin::removeSearchword($_GET['kw'], $_GET['key_id']);
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'add_ignore':
                 if (!isset($_GET['keyword'])) {
-                    \core\Core::goBack();
+                    PHPWS_Core::goBack();
                 }
                 Search_Admin::setIgnore($_GET['keyword'], 1);
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'remove_ignore':
                 if (!isset($_GET['keyword'])) {
-                    \core\Core::goBack();
+                    PHPWS_Core::goBack();
                 }
                 Search_Admin::setIgnore($_GET['keyword'], 0);
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'save_settings':
@@ -121,7 +121,7 @@ class Search_Admin {
 
         $template['MESSAGE'] = Search_Admin::getMessage();
 
-        $final = \core\Template::process($template, 'search', 'main.tpl');
+        $final = PHPWS_Template::process($template, 'search', 'main.tpl');
 
         $panel->setContent($final);
         $finalPanel = $panel->display();
@@ -132,7 +132,7 @@ class Search_Admin {
     {
         $search = new Search((int)$key_id);
         if ($search->_error) {
-            \core\Error::log($search->_error);
+            PHPWS_Error::log($search->_error);
             return;
         }
 
@@ -144,7 +144,7 @@ class Search_Admin {
     {
         $search = new Search((int)$key_id);
         if ($search->_error) {
-            \core\Error::log($search->_error);
+            PHPWS_Error::log($search->_error);
             return;
         }
 
@@ -155,7 +155,7 @@ class Search_Admin {
     public function sendMessage($message, $command)
     {
         $_SESSION['Search_Message'] = $message;
-        \core\Core::reroute('index.php?module=search&command=' . $command);
+        PHPWS_Core::reroute('index.php?module=search&command=' . $command);
     }
 
     public static function getMessage()
@@ -181,7 +181,7 @@ class Search_Admin {
 
     public static function miniAdmin()
     {
-        $key = \core\Key::getCurrent();
+        $key = Key::getCurrent();
 
         if (empty($key) || $key->isDummy() || isset($key->_error)) {
             $on_page = FALSE;
@@ -196,7 +196,7 @@ class Search_Admin {
                     $vars['key_id'] = $key->id;
                     $link['WORD'] = $vars['kw'] = $keyword;
                     $vars['command'] = 'remove_searchword';
-                    $link['DROP_LINK'] = \core\Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
+                    $link['DROP_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
                     $tpl['current-words'][] = $link;
                 }
             }
@@ -209,13 +209,13 @@ class Search_Admin {
                 $link = $vars = NULL;
                 $link['WORD'] = $vars['kw'] = $keyword;
                 $vars['command'] = 'drop_keyword';
-                $link['DROP_LINK'] = \core\Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
+                $link['DROP_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
 
                 if ($on_page) {
                     if (!in_array($keyword, $search->keywords)) {
                         $vars['key_id'] = $key->id;
                         $vars['command'] = 'add_keyword';
-                        $link['ADD_LINK'] = \core\Text::secureLink(dgettext('search', 'Add'), 'search', $vars);
+                        $link['ADD_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Add'), 'search', $vars);
                     }
                 }
 
@@ -226,9 +226,9 @@ class Search_Admin {
 
         $tpl['TITLE'] = dgettext('search', 'Search Admin');
 
-        $tpl['CLOSE_LINK'] = \core\Text::secureLink(dgettext('search', 'Close'), 'search', array('module'=>'search', 'command'=>'close_admin'));
+        $tpl['CLOSE_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Close'), 'search', array('module'=>'search', 'command'=>'close_admin'));
 
-        $content = \core\Template::process($tpl, 'search', 'mini_menu.tpl');
+        $content = PHPWS_Template::process($tpl, 'search', 'mini_menu.tpl');
 
         Layout::add($content, 'search', 'admin_box');
     }
@@ -237,30 +237,31 @@ class Search_Admin {
     {
         $main['TITLE'] = dgettext('search', 'Search Settings');
 
-        $form = new \core\Form('settings');
+        $form = new PHPWS_Form('settings');
         $form->addHidden('module', 'search');
         $form->addHidden('command', 'save_settings');
 
         $form->addCheckBox('show_alternates');
         $form->setLabel('show_alternates', dgettext('search', 'Show alternate options'));
-        $form->setMatch('show_alternates', \core\Settings::get('search', 'show_alternates'));
+        $form->setMatch('show_alternates', PHPWS_Settings::get('search', 'show_alternates'));
 
         $form->addSubmit(dgettext('search', 'Save settings'));
 
         $tpl = $form->getTemplate();
 
-        $main['CONTENT'] = \core\Template::process($tpl, 'search', 'settings.tpl');
+        $main['CONTENT'] = PHPWS_Template::process($tpl, 'search', 'settings.tpl');
         return $main;
     }
 
     public static function keyword()
     {
-        
+        PHPWS_Core::initCoreClass('DBPager.php');
+
         $tpl['TITLE'] = dgettext('search', 'Keywords');
 
-        \core\Core::initModClass('search', 'Stats.php');
+        PHPWS_Core::initModClass('search', 'Stats.php');
 
-        $pager = new \core\DBPager('search_stats', 'Search_Stats');
+        $pager = new DBPager('search_stats', 'Search_Stats');
         $pager->setModule('search');
         $pager->setTemplate('pager.tpl');
         $pager->addRowTags('getTplTags');
@@ -274,7 +275,7 @@ class Search_Admin {
         // remember word to add to items
         $options['add_parse_word'] = dgettext('search', 'Clip word');
 
-        $form = new \core\Form('keywords');
+        $form = new PHPWS_Form('keywords');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addSelect('command', $options);
@@ -307,12 +308,13 @@ class Search_Admin {
 
     public static function ignore()
     {
-        
+        PHPWS_Core::initCoreClass('DBPager.php');
+
         $tpl['TITLE'] = dgettext('search', 'Ignored');
 
-        \core\Core::initModClass('search', 'Stats.php');
+        PHPWS_Core::initModClass('search', 'Stats.php');
 
-        $pager = new \core\DBPager('search_stats', 'Search_Stats');
+        $pager = new DBPager('search_stats', 'Search_Stats');
         $pager->setModule('search');
         $pager->setTemplate('ignore.tpl');
         $pager->addRowTags('getTplTags');
@@ -323,7 +325,7 @@ class Search_Admin {
         // if entered in search box, remove
         $options['remove_ignore'] = dgettext('search', 'Allow');
 
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addSelect('command', $options);
@@ -356,7 +358,7 @@ class Search_Admin {
         if (!is_array($kw_list)) {
             return FALSE;
         }
-        $db = new \core\DB('search_stats');
+        $db = new PHPWS_DB('search_stats');
         $db->addWhere('keyword', $kw_list);
         $db->addValue('ignored', (int)$ignore);
         return $db->update();
@@ -364,7 +366,7 @@ class Search_Admin {
 
     public static function cpanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
         $tab['keyword']  = array ('title'=>dgettext('search', 'Keywords'), 'link'=> $link);
         $tab['ignore']   = array ('title'=>dgettext('search', 'Ignore'), 'link'=> $link);
@@ -380,7 +382,7 @@ class Search_Admin {
     public function deleteKeyword()
     {
         if (!empty($_GET['keyword'])) {
-            $db = new \core\DB('search_stats');
+            $db = new PHPWS_DB('search_stats');
             if (is_array($_GET['keyword'])) {
                 foreach ($_GET['keyword'] as $kw) {
                     $db->addWhere('keyword', htmlentities($kw, ENT_QUOTES, 'UTF-8'), '=', 'or');
@@ -396,12 +398,12 @@ class Search_Admin {
     public function saveSettings()
     {
         if (isset($_POST['show_alternates'])) {
-            \core\Settings::set('search', 'show_alternates', 1);
+            PHPWS_Settings::set('search', 'show_alternates', 1);
         } else {
-            \core\Settings::set('search', 'show_alternates', 0);
+            PHPWS_Settings::set('search', 'show_alternates', 0);
         }
 
-        \core\Settings::save('search');
+        PHPWS_Settings::save('search');
     }
 }
 

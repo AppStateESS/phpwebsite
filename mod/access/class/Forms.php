@@ -17,14 +17,15 @@ class Access_Forms {
             return;
         }
 
-        \core\Core::initModClass('access', 'Shortcut.php');
-                $pager = new \core\DBPager('access_shortcuts', 'Access_Shortcut');
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('access_shortcuts', 'Access_Shortcut');
         $pager->setModule('access');
         $pager->setTemplate('forms/shortcut_list.tpl');
         $pager->setLink('index.php?module=access&amp;tab=shortcuts');
         $pager->addToggle('class="bgcolor1"');
 
-        $form = new \core\Form('shortcut_list');
+        $form = new PHPWS_Form('shortcut_list');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut_list');
 
@@ -64,20 +65,20 @@ class Access_Forms {
             return;
         }
 
-        \core\Core::initModClass('access', 'Allow_Deny.php');
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
-        $form = new \core\Form('allow_deny');
+        $form = new PHPWS_Form('allow_deny');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_deny_allow');
 
         $form->addCheck('allow_deny_enabled', 1);
-        $form->setMatch('allow_deny_enabled', \core\Settings::get('access', 'allow_deny_enabled'));
+        $form->setMatch('allow_deny_enabled', PHPWS_Settings::get('access', 'allow_deny_enabled'));
         $form->setLabel('allow_deny_enabled', dgettext('access', 'Allow/Deny enabled'));
         $form->addSubmit('go', dgettext('access', 'Go'));
 
         $result = Access::getAllowDeny();
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
         }
 
         $form->addText('allow_address');
@@ -85,7 +86,7 @@ class Access_Forms {
         $form->addSubmit('add_allow_address', dgettext('access', 'Add allowed IP'));
         $form->addSubmit('add_deny_address', dgettext('access', 'Add denied IP'));
 
-        $db = new \core\DB('access_allow_deny');
+        $db = new PHPWS_DB('access_allow_deny');
         $result = $db->getObjects('Access_Allow_Deny');
 
         $options['none']      = dgettext('access', '-- Choose option --');
@@ -93,7 +94,7 @@ class Access_Forms {
         $options['deactive']  = dgettext('access', 'Deactivate');
         $options['delete']    = dgettext('access', 'Delete');
 
-        if (core\Settings::get('access', 'allow_all')) {
+        if (PHPWS_Settings::get('access', 'allow_all')) {
             $allow_all = TRUE;
             $options['allow_all'] = dgettext('access', 'Do not allow all');
         } else {
@@ -105,7 +106,7 @@ class Access_Forms {
 
         unset($options['allow_all']);
 
-        if (core\Settings::get('access', 'deny_all')) {
+        if (PHPWS_Settings::get('access', 'deny_all')) {
             $deny_all = TRUE;
             $options['deny_all'] = dgettext('access', 'Do not deny all');
         } else {
@@ -135,15 +136,15 @@ class Access_Forms {
         $template['DENY_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
 
 
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             return dgettext('access', 'An error occurred when trying to access the allowed and denied ip records. Please check your logs.');
         } elseif (empty($result)) {
             $template['DENY_MESSAGE']  = dgettext('access', 'No denied ip addresses found.');
             $template['ALLOW_MESSAGE'] = dgettext('access', 'No allowed ip addresses found.');
         } else {
             foreach ($result as $allow_deny) {
-                $action = \core\Text::secureLink(dgettext('access', 'Delete'), 'access', array('ad_id'=>$allow_deny->id, 'command'=>'delete_allow_deny'));
+                $action = PHPWS_Text::secureLink(dgettext('access', 'Delete'), 'access', array('ad_id'=>$allow_deny->id, 'command'=>'delete_allow_deny'));
                 if ($allow_deny->active) {
                     $active = dgettext('access', 'Yes');
                 } else {
@@ -183,12 +184,12 @@ class Access_Forms {
         $template['IP_ADDRESS_LABEL'] = dgettext('access', 'IP Address');
         $template['WARNING']          = dgettext('access', 'Remember to "Update" your access file when finished changing IP rules.');
 
-        return \core\Template::process($template, 'access', 'forms/allow_deny.tpl');
+        return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
     }
 
     public function shortcut_menu()
     {
-        \core\Core::initModClass('access', 'Shortcut.php');
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
         @$sc_id = $_REQUEST['sc_id'];
 
         if (!$sc_id) {
@@ -198,7 +199,7 @@ class Access_Forms {
                 return;
             } else {
                 $shortcut = new Access_Shortcut;
-                $key = new \core\Key($key_id);
+                $key = new Key($key_id);
                 if (!$key->id) {
                     javascript('close_window');
                     return;
@@ -213,7 +214,7 @@ class Access_Forms {
             }
         }
 
-        $form = new \core\Form('shortcut_menu');
+        $form = new PHPWS_Form('shortcut_menu');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut');
         if (isset($key_id)) {
@@ -228,7 +229,7 @@ class Access_Forms {
 
         $tpl['TITLE'] = dgettext('access', 'Shortcuts');
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />', dgettext('access', 'Cancel'));
-        $content = \core\Template::process($tpl, 'access', 'shortcut_menu.tpl');
+        $content = PHPWS_Template::process($tpl, 'access', 'shortcut_menu.tpl');
         return $content;
     }
 

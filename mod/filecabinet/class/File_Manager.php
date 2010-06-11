@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::initModClass('filecabinet', 'File_Assoc.php');
+PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
 class FC_File_Manager {
     public $module         = null;
     public $file_assoc     = null;
@@ -38,7 +38,7 @@ class FC_File_Manager {
 
     public function __construct($module, $itemname, $file_id=0)
     {
-        $this->max_width  = $this->max_height = \core\Settings::get('filecabinet', 'max_image_dimension');
+        $this->max_width  = $this->max_height = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
         $this->module     = & $module;
         $this->itemname   = & $itemname;
         $this->session_id = md5($this->module . $this->itemname);
@@ -141,7 +141,7 @@ class FC_File_Manager {
 
     public function loadFileAssoc($file_id)
     {
-        \core\Core::initModClass('filecabinet', 'File_Assoc.php');
+        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $this->file_assoc = new FC_File_Assoc($file_id);
     }
 
@@ -246,7 +246,7 @@ class FC_File_Manager {
         $tpl['LINK_ID']     = 'l_' . $this->session_id;
 
         $tpl['ITEMNAME']    = $this->itemname;
-        return \core\Template::process($tpl, 'filecabinet', 'file_manager/placeholder.tpl');
+        return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/placeholder.tpl');
     }
 
     // Copy of image manager's getClearLink
@@ -259,7 +259,7 @@ class FC_File_Manager {
         $add_vars = $this->linkInfo();
         $add_vars['fop']  = 'open_file_manager';
         $add_vars['fid'] = 0;
-        $js_vars['authkey'] = Current_User::getAuthKey(core\Text::saltArray($add_vars));
+        $js_vars['authkey'] = Current_User::getAuthKey(PHPWS_Text::saltArray($add_vars));
 
         return javascriptMod('filecabinet', 'clear_file', $js_vars);
     }
@@ -299,7 +299,7 @@ class FC_File_Manager {
         if (isset($fid)) {
             $add_vars['fid'] = $fid;
         }
-        $link = new \core\Link(null, 'filecabinet', $add_vars, true);
+        $link = new PHPWS_Link(null, 'filecabinet', $add_vars, true);
         $link->convertAmp(false);
         $link->setSalted();
         return $link->getAddress();
@@ -352,13 +352,13 @@ class FC_File_Manager {
         $vars = $this->linkInfo();
         $vars['fop']   = 'fm_folders';
         $vars['ftype'] = DOCUMENT_FOLDER;
-        $document = \core\Text::secureLink($document_img, 'filecabinet', $vars);
+        $document = PHPWS_Text::secureLink($document_img, 'filecabinet', $vars);
 
         $vars['ftype'] = IMAGE_FOLDER;
-        $image    = \core\Text::secureLink($image_img, 'filecabinet', $vars);
+        $image    = PHPWS_Text::secureLink($image_img, 'filecabinet', $vars);
 
         $vars['ftype'] = MULTIMEDIA_FOLDER;
-        $media    = \core\Text::secureLink($media_img, 'filecabinet', $vars);
+        $media    = PHPWS_Text::secureLink($media_img, 'filecabinet', $vars);
 
         $tpl['DOCUMENT_ICON'] = & $document;
         $tpl['MEDIA_ICON']    = & $media;
@@ -371,7 +371,7 @@ class FC_File_Manager {
         $tpl['INSTRUCTION'] = dgettext('filecabinet', 'Choose the type of file you wish to add');
         $tpl['CLOSE'] = javascript('close_window');
 
-        return \core\Template::process($tpl, 'filecabinet', 'file_manager/start_view.tpl');
+        return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/start_view.tpl');
     }
 
 
@@ -400,7 +400,7 @@ class FC_File_Manager {
                 $tpl['DOCUMENT_ICON'] = & $document_img;
             } else {
                 $vars['ftype'] = DOCUMENT_FOLDER;
-                $document = \core\Text::secureLink($document_img, 'filecabinet', $vars);
+                $document = PHPWS_Text::secureLink($document_img, 'filecabinet', $vars);
                 $tpl['DOCUMENT_ICON'] = & $document;
             }
         }
@@ -419,7 +419,7 @@ class FC_File_Manager {
                 $tpl['IMAGE_ICON'] = & $image_img;
             } else {
                 $vars['ftype'] = IMAGE_FOLDER;
-                $image = \core\Text::secureLink($image_img, 'filecabinet', $vars);
+                $image = PHPWS_Text::secureLink($image_img, 'filecabinet', $vars);
                 $tpl['IMAGE_ICON']    = & $image;
             }
         }
@@ -438,7 +438,7 @@ class FC_File_Manager {
                 $tpl['MEDIA_ICON'] = & $media_img;
             } else {
                 $vars['ftype'] = MULTIMEDIA_FOLDER;
-                $media    = \core\Text::secureLink($media_img, 'filecabinet', $vars);
+                $media    = PHPWS_Text::secureLink($media_img, 'filecabinet', $vars);
                 $tpl['MEDIA_ICON']    = & $media;
             }
         }
@@ -467,7 +467,7 @@ class FC_File_Manager {
             }
         }
 
-        $db = new \core\DB('folders');
+        $db = new PHPWS_DB('folders');
         $db->addWhere('module_created', $this->module, null, null, 'mod_limit');
 
         if (!$this->mod_limit) {
@@ -482,14 +482,14 @@ class FC_File_Manager {
             $fvars['fop'] = 'fm_fld_contents';
             foreach ($folders as $folder) {
                 $fvars['folder_id'] = $folder->id;
-                $row['ADDRESS'] = \core\Text::linkAddress('filecabinet', $fvars, true);
+                $row['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $fvars, true);
                 $row['ICON'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/folder.png" />';
                 $row['TITLE'] = &$folder->title;
                 $tpl['folder-list'][] = $row;
             }
         }
         $tpl['FOLDER_TITLE'] = 'folder view';
-        return \core\Template::process($tpl, 'filecabinet', 'file_manager/folder_view.tpl');
+        return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_view.tpl');
     }
 
     /**
@@ -498,7 +498,7 @@ class FC_File_Manager {
     public function folderContentView()
     {
         javascript('jquery');
-        \core\Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         javascript('confirm'); // needed for deletion
 
         Layout::addStyle('filecabinet');
@@ -532,7 +532,7 @@ class FC_File_Manager {
                 $this->max_height);
 
                 javascriptMod('filecabinet', 'pick_file', $js);
-                $db = new \core\DB('images');
+                $db = new PHPWS_DB('images');
                 $class_name = 'PHPWS_Image';
                 $file_type  = FC_IMAGE;
                 $altvars    = $link_info;
@@ -558,7 +558,7 @@ class FC_File_Manager {
                         if (!$this->lock_type || in_array(FC_IMAGE_RANDOM, $this->lock_type)) {
                             $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
                             $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
-                            $tpl['ALT1'] = \core\Text::secureLink($image1, 'filecabinet', $altvars);
+                            $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
 
                             if ($this->file_assoc->file_type == FC_IMAGE_RANDOM && $this->current_folder->id == $this->file_assoc->file_id) {
                                 $tpl['ALT_HIGH1'] = ' alt-high';
@@ -579,7 +579,7 @@ class FC_File_Manager {
                             $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
                             $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
 
-                            $form = new \core\Form('carousel-options');
+                            $form = new PHPWS_Form('carousel-options');
                             $form->setMethod('get');
                             $altvars['file_type'] = FC_IMAGE_FOLDER;
                             $form->addHidden($altvars);
@@ -600,7 +600,7 @@ class FC_File_Manager {
                             $subtpl['LINK'] = sprintf('<a href="#" onclick="return carousel_pick();">%s</a>',
                             $image2);
                             $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
-                            $tpl['ALT2'] = \core\Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
+                            $tpl['ALT2'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
                         } else {
                             $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
                             $tpl['ALT2'] = $image2;
@@ -619,7 +619,7 @@ class FC_File_Manager {
 
                             $altvars['file_type'] = FC_IMAGE_LIGHTBOX;
 
-                            $form = new \core\Form('lightbox-options');
+                            $form = new PHPWS_Form('lightbox-options');
                             $form->setMethod('get');
                             $form->addHidden($altvars);
                             $form->addHidden('module', 'filecabinet');
@@ -639,7 +639,7 @@ class FC_File_Manager {
                             $subtpl['LINK'] = sprintf('<a href="#" onclick="return lightbox_pick();">%s</a>', $image3);
                             $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
 
-                            $tpl['ALT3'] = \core\Template::process($subtpl, 'filecabinet', 'file_manager/lightbox_pick.tpl');
+                            $tpl['ALT3'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/lightbox_pick.tpl');
 
                         } else {
                             $image3 = sprintf($image_string, $img_dir . $img3, $not_allowed, $img3_alt);
@@ -663,8 +663,8 @@ class FC_File_Manager {
                 break;
 
             case DOCUMENT_FOLDER:
-                \core\Core::initModClass('filecabinet', 'Document.php');
-                $db = new \core\DB('documents');
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $db = new PHPWS_DB('documents');
                 $class_name = 'PHPWS_Document';
                 $file_type = FC_DOCUMENT;
 
@@ -681,7 +681,7 @@ class FC_File_Manager {
                         $img1_title = dgettext('filecabinet', 'Show all files in the folder');
                         $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
 
-                        $tpl['ALT1'] = \core\Text::secureLink($image1, 'filecabinet', $altvars);
+                        $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
 
                         if ($this->file_assoc->file_type == FC_DOCUMENT_FOLDER && $this->current_folder->id == $this->file_assoc->file_id) {
                             $tpl['ALT_HIGH1'] = ' alt-high';
@@ -709,8 +709,8 @@ class FC_File_Manager {
                 $this->max_height);
 
                 javascriptMod('filecabinet', 'pick_file', $js);
-                \core\Core::initModClass('filecabinet', 'Multimedia.php');
-                $db = new \core\DB('multimedia');
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $db = new PHPWS_DB('multimedia');
                 $class_name = 'PHPWS_Multimedia';
                 $file_type = FC_MEDIA;
                 $tpl['ADD_EMBED'] = $this->current_folder->embedLink(true);
@@ -750,7 +750,7 @@ class FC_File_Manager {
             }
         }
         $tpl['CLOSE'] = javascript('close_window');
-        return \core\Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
+        return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/folder_content_view.tpl');
     }
 
     /**
@@ -807,7 +807,7 @@ class FC_File_Manager {
             $vars['vis']     = $file->num_visible;
             $vars['url']     = $this->editAddress($file->id);
 
-            $max_size = \core\Settings::get('filecabinet', 'max_thumbnail_size');
+            $max_size = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
             $total_size = ($max_size * $file->num_visible) + ($file->num_visible * 10);
 
             $total_size = $file->getTotalCarouselSize();
@@ -847,7 +847,7 @@ class FC_File_Manager {
             }
         }
 
-        $db = new \core\DB('fc_file_assoc');
+        $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('file_type', (int)$file_type);
         switch ($file_type) {
             case FC_IMAGE_RESIZE:
@@ -867,7 +867,7 @@ class FC_File_Manager {
         $result = $db->loadObject($file_assoc);
 
         if ($result) {
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 return false;
             } elseif (!$update) {
                 return $file_assoc;
@@ -884,7 +884,7 @@ class FC_File_Manager {
                 $file_assoc->width   = $this->max_width;
                 $file_assoc->height  = $this->max_height;
 
-                \core\Core::initModClass('filecabinet', 'Image.php');
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $image = new PHPWS_Image($id);
                 if (!$dst = $image->makeResizePath()) {
                     return false;

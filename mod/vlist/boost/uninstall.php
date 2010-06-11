@@ -24,12 +24,12 @@
 
 function vlist_uninstall(&$content) {
 
-    \core\DB::dropTable('vlist_listing');
-    \core\DB::dropTable('vlist_group');
-    \core\DB::dropTable('vlist_group_items');
-    \core\DB::dropTable('vlist_element');
-    \core\DB::dropTable('vlist_element_option');
-    \core\DB::dropTable('vlist_element_items');
+    PHPWS_DB::dropTable('vlist_listing');
+    PHPWS_DB::dropTable('vlist_group');
+    PHPWS_DB::dropTable('vlist_group_items');
+    PHPWS_DB::dropTable('vlist_element');
+    PHPWS_DB::dropTable('vlist_element_option');
+    PHPWS_DB::dropTable('vlist_element_items');
     $content[] = dgettext('vlist', 'vList tables dropped.');
 
     return true;

@@ -10,8 +10,8 @@ if (!Current_User::isDeity()){
 }
 
 function photoalbum_uninstall(&$content) {
-    \core\DB::dropTable('mod_photoalbum_albums');
-    \core\DB::dropTable('mod_photoalbum_photos');
+    PHPWS_DB::dropTable('mod_photoalbum_albums');
+    PHPWS_DB::dropTable('mod_photoalbum_photos');
     $content[] = 'Table uninstalled.';
     return TRUE;
 }

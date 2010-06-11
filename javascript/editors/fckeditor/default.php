@@ -16,7 +16,7 @@
 javascript('jquery');
 $autogrow = true;
 
-$data['VALUE'] = preg_replace('@src="(./)?(images|files)/@', 'src="' . Core\Core::getHomeHttp() . '\\2/', $data['VALUE']);
+$data['VALUE'] = preg_replace('@src="(./)?(images|files)/@', 'src="' . PHPWS_Core::getHomeHttp() . '\\2/', $data['VALUE']);
 
 
 if (empty($data['WIDTH']) || empty($data['HEIGHT'])) {
@@ -66,7 +66,7 @@ $_SESSION['FCK_IMAGE_DIRECTORY'] = FCK_IMAGE_DIRECTORY;
 $_SESSION['FCK_FILE_DIRECTORY'] = FCK_FILE_DIRECTORY;
 $_SESSION['FCK_MEDIA_DIRECTORY'] = FCK_MEDIA_DIRECTORY;
 
-$home_url = Core\Core::getHomeHttp();
+$home_url = PHPWS_Core::getHomeHttp();
 
 if (!defined('FCK_IMAGE_URL')) {
     define('FCK_IMAGE_URL', $home_url . 'images/');

@@ -5,5 +5,5 @@
  */
 
 //define('CLIPBOARD_DROP_LINK', dgettext('clipboard', 'Drop'));
-define('CLIPBOARD_DROP_LINK', \core\Icon::show('delete', dgettext('clipboard', 'Drop')));
+define('CLIPBOARD_DROP_LINK', Icon::show('delete', dgettext('clipboard', 'Drop')));
 ?>

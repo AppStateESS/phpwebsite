@@ -1,5 +1,4 @@
 <?php
-namespace core;
 /**
  * jsmin.php - PHP implementation of Douglas Crockford's JSMin.
  *

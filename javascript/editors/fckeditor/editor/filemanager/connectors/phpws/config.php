@@ -42,7 +42,7 @@ $Config['UserFilesAbsolutePath'] = substr($current_dir, 0, strpos($current_dir, 
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only
 //		authenticated users can access this file or use some kind of session checking.
 require_once $Config['UserFilesAbsolutePath'] . 'config/core/config.php';
-define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
+define('SESSION_NAME', md5($_GET['local'] . $_SERVER['REMOTE_ADDR']));
 session_name(SESSION_NAME);
 session_start();
 

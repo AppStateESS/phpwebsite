@@ -9,15 +9,15 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 if (!isset($_REQUEST['action'])) {
-    \core\Core::errorPage('404');
+    PHPWS_Core::errorPage('404');
 }
 
 if (!class_exists('PHPWS_User')){
-    \core\Error::log('PHPWS_CLASS_NOT_CONSTRUCTED', 'core', NULL, 'Class: PHPWS_Users');
+    PHPWS_Error::log('PHPWS_CLASS_NOT_CONSTRUCTED', 'core', NULL, 'Class: PHPWS_Users');
     return;
 }
 
-core\Core::initModClass('users', 'Action.php');
+PHPWS_Core::initModClass('users', 'Action.php');
 
 switch ($_REQUEST['action']){
     case 'user':
@@ -39,7 +39,7 @@ switch ($_REQUEST['action']){
 
     case 'reset':
         $_SESSION['User'] = new PHPWS_User;
-        \core\Core::home();
+        PHPWS_Core::home();
         break;
 }// End area switch
 

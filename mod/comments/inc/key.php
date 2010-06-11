@@ -14,15 +14,15 @@ function comments_unregister_key(Key $key)
         return FALSE;
     }
 
-    \core\Core::initModClass('comments', 'Comment_Thread.php');
+    PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
 
     $thread = new Comment_Thread;
 
-    $db = new \core\DB('comments_threads');
+    $db = new PHPWS_DB('comments_threads');
     $db->addWhere('key_id', $key->id);
     $result = $db->loadObject($thread);
 
-    if (core\Error::isError($result)) {
+    if (PHPWS_Error::isError($result)) {
         return $result;
     } elseif (empty($result)) {
         return TRUE;

@@ -6,11 +6,11 @@
 
 function rss_unregister($module, &$content)
 {
-    $db = new \core\DB('rssfeeds');
+    $db = new PHPWS_DB('rssfeeds');
     $db->addWhere('module', $module);
     $result = $db->delete();
-    if (core\Error::isError($result)) {
-        \core\Error::log($result);
+    if (PHPWS_Error::isError($result)) {
+        PHPWS_Error::log($result);
         $content[] = dgettext('rss', 'An error occurred trying to unregister this module from RSSFeeds.');
         return FALSE;
     } else {

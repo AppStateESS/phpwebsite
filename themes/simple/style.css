@@ -25,15 +25,6 @@ body {
 	color: black;
 }
 
-.smaller {
-	font-size : .9em;
-}
-
-.larger {
-	font-size : 1.1em;
-}
-
-
 div#body-sub {
 	background: transparent url("images/bg_stripe.png") repeat-x;
 }
@@ -84,7 +75,7 @@ div#header {
 }
 
 div#main-content {
-
+	
 }
 
 div#sidepanel {
@@ -313,7 +304,7 @@ li.menu-link ul li a.menu-link-href {
 #body-content ul.tabmenu {
 	margin : 2px 0px;
 	}
-
+	
 #body-content ul.tabmenu li {
 	margin: 0px;
 	margin-right: 4px;

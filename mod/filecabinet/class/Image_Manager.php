@@ -5,8 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::requireConfig('filecabinet');
-core\Core::initModClass('filecabinet', 'Image.php');
+PHPWS_Core::requireConfig('filecabinet');
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
 if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
     define('RESIZE_IMAGE_USE_DUPLICATE', true);
@@ -44,7 +44,7 @@ class FC_Image_Manager {
                     Current_User::disallow();
                 }
                 $this->image->delete();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'post_image_upload':
@@ -70,7 +70,7 @@ class FC_Image_Manager {
                     Clipboard::copy($this->image->title, $this->image->getTag(null,false,true), true,
                     sprintf('[filecabinet:image:%s]', $this->image->id));
                 }
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
         }
         return $this->content;
@@ -96,7 +96,7 @@ class FC_Image_Manager {
      */
     public function edit($force_width=0, $force_height=0)
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
         $form->addHidden('iop',      'post_image_upload');
@@ -255,7 +255,7 @@ class FC_Image_Manager {
 
         $template['ERRORS'] = $this->image->printErrors();
 
-        $this->content = \core\Template::process($template, 'filecabinet', 'image_edit.tpl');
+        $this->content = PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
     }
 
 
@@ -276,8 +276,8 @@ class FC_Image_Manager {
     {
         // importPost in File_Common
         $result = $this->image->importPost('file_name');
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             $this->content = dgettext('filecabinet', 'An error occurred when trying to save your image.');
@@ -316,8 +316,8 @@ class FC_Image_Manager {
 
             $result = $this->image->save();
             $this->updateResizes($this->image);
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
             }
 
             $this->image->moveToFolder();
@@ -343,19 +343,19 @@ class FC_Image_Manager {
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(core\Settings::get('filecabinet', 'max_image_size'));
+            $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_image_size'));
         }
 
         if (isset($_REQUEST['mh']) && $_REQUEST['mh'] > 50) {
             $this->setMaxHeight($_REQUEST['mh']);
         } else {
-            $this->setMaxHeight(core\Settings::get('filecabinet', 'max_image_dimension'));
+            $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         if (isset($_REQUEST['mw']) && $_REQUEST['mw'] > 50) {
             $this->setMaxWidth($_REQUEST['mw']);
         } else {
-            $this->setMaxWidth(core\Settings::get('filecabinet', 'max_image_dimension'));
+            $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
     }
 
@@ -378,7 +378,7 @@ class FC_Image_Manager {
             return;
         }
 
-        $images = \core\File::readDirectory($dir, false, true);
+        $images = PHPWS_File::readDirectory($dir, false, true);
         if (empty($images)) {
             return;
         }

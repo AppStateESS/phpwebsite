@@ -9,8 +9,8 @@
  * @version $Id$
  */
 
-core\Core::initModClass('users', 'Authorization.php');
-core\Core::initModClass('users', 'Users.php');
+PHPWS_Core::initModClass('users', 'Authorization.php');
+PHPWS_Core::initModClass('users', 'Users.php');
 
 if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);
@@ -150,7 +150,7 @@ final class Current_User {
             $auth->forceLogin();
         }
 
-        \core\Core::initModClass('users', 'Form.php');
+        PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
             Layout::set($login, 'users', 'login_box', false);
@@ -186,7 +186,7 @@ final class Current_User {
 
     public static function verifySaltedUrl()
     {
-        $val = \core\Text::getGetValues();
+        $val = PHPWS_Text::getGetValues();
         unset($val['module']);
         unset($val['authkey']);
         unset($val['owpop']);
@@ -255,7 +255,7 @@ final class Current_User {
 
     public static function updateLastLogged()
     {
-        $db = new \core\DB('users');
+        $db = new PHPWS_DB('users');
         $db->addWhere('id', $_SESSION['User']->getId());
         $db->addValue('last_logged', time());
         return $db->update();
@@ -323,7 +323,7 @@ final class Current_User {
 
     public static function permissionMenu()
     {
-        $key = \core\Key::getCurrent();
+        $key = Key::getCurrent();
 
         if (empty($key) || $key->isDummy() || empty($key->edit_permission)) {
             return;
@@ -334,7 +334,7 @@ final class Current_User {
 
             if (!javascriptEnabled()) {
                 $tpl = User_Form::permissionMenu($key);
-                $content = \core\Template::process($tpl, 'users', 'forms/permission_menu.tpl');
+                $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
                 Layout::add($content, 'users', 'permissions');
             } else {
                 $links[] = Current_User::popupPermission($key->id, sprintf(dgettext('users', 'Set permissions'), $key->title));
@@ -353,7 +353,7 @@ final class Current_User {
 
         switch($mode) {
             case 'icon':
-                $js_vars['label'] = \core\Icon::show('permission', $label);
+                $js_vars['label'] = Icon::show('permission', $label);
                 break;
 
             default:
@@ -383,27 +383,27 @@ final class Current_User {
     public static function loginUser($username, $password=null)
     {
         if (!Current_User::allowUsername($username)) {
-            return \core\Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
+            return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
         }
 
         // First check if they are currently a user
         $user = new PHPWS_User;
-        $db = new \core\DB('users');
+        $db = new PHPWS_DB('users');
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
 
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
         if ($result == false) {
-            if (core\Error::logIfError($user->setUsername($username))) {
+            if (PHPWS_Error::logIfError($user->setUsername($username))) {
                 return false;
             }
         } else {
             // This user is in the local database
             if (!$user->approved) {
-                return \core\Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
+                return PHPWS_Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
             }
             if (!$user->loadScript()) {
                 Layout::add(dgettext('users', 'Could not load authentication script. Please contact site administrator.'));
@@ -420,7 +420,7 @@ final class Current_User {
         $auth->setPassword($password);
         $result = $auth->authenticate();
 
-        if (core\Error::isError($result)){
+        if (PHPWS_Error::isError($result)){
             return $result;
         }
 
@@ -432,13 +432,13 @@ final class Current_User {
                 $user->setApproved(true);
                 $auth->createUser();
                 $user->save();
-                \core\Core::initModClass('users', 'Action.php');
+                PHPWS_Core::initModClass('users', 'Action.php');
                 User_Action::assignDefaultGroup($user);
             }
 
 
             if (!$user->active) {
-                return \core\Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
+                return PHPWS_Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
             }
 
             if ($auth->localUser()) {
@@ -458,14 +458,14 @@ final class Current_User {
         if (Current_User::isLogged()) {
             return false;
         }
-        \core\Core::bookmark(false);
+        PHPWS_Core::bookmark(false);
         $auth = Current_User::getAuthorization();
         if (!empty($auth->login_url)) {
             $url = $auth->login_url;
         } else {
             $url = 'index.php?module=users&action=user&command=login_page';
         }
-        \core\Core::reroute($url);
+        PHPWS_Core::reroute($url);
     }
 
     public static function rememberLogin()
@@ -474,7 +474,7 @@ final class Current_User {
             return false;
         }
 
-        $remember = \core\Cookie::read('remember_me');
+        $remember = PHPWS_Cookie::read('remember_me');
         if (!$remember) {
             return false;
         }
@@ -498,19 +498,19 @@ final class Current_User {
             return false;
         }
 
-        $db = new \core\DB('user_authorization');
+        $db = new PHPWS_DB('user_authorization');
         $db->addWhere('username', $username);
         $db->addWhere('password', $rArray['password']);
         $result = $db->select('row');
 
         if (!$result) {
             return false;
-        } elseif (core\Error::isError($result)) {
-            \core\Error::log($result);
+        } elseif (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             return false;
         }
 
-        $db2 = new \core\DB('users');
+        $db2 = new PHPWS_DB('users');
         $db2->addWhere('username', $username);
         $db2->addWhere('approved', 1);
         $db2->addWhere('active', 1);
@@ -521,8 +521,8 @@ final class Current_User {
 
         if (!$result) {
             return false;
-        } elseif (core\Error::isError($result)) {
-            \core\Error::log($result);
+        } elseif (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             return false;
         }
 
@@ -532,7 +532,7 @@ final class Current_User {
 
     public static function allowRememberMe()
     {
-        if ( \core\Settings::get('users', 'allow_remember') &&
+        if ( PHPWS_Settings::get('users', 'allow_remember') &&
         ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
             return true;
         } else {
@@ -548,7 +548,7 @@ final class Current_User {
         require_once $user->auth_path;
         $class_name = $user->auth_name . '_authorization';
         if (!class_exists($class_name)) {
-            \core\Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
+            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
             return false;
         }
         $GLOBALS['User_Authorization'] = new $class_name($user);

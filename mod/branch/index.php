@@ -9,7 +9,7 @@ if (!Current_User::authorized('branch')) {
     Current_User::disallow();
 }
 
-core\Core::initModClass('branch', 'Branch_Admin.php');
+PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
 $branch_admin = new Branch_Admin;
 $branch_admin->main();
 

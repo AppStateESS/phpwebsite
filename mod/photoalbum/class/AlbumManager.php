@@ -7,7 +7,7 @@
  */
 
 require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Album.php');
-core\Core::initModClass('photoalbum', 'Message.php');
+PHPWS_Core::initModClass('photoalbum', 'Message.php');
 class PHPWS_AlbumManager {
 
     /**
@@ -47,10 +47,11 @@ class PHPWS_AlbumManager {
             return;
         }
 
-                $template['TITLE'] = dgettext('photoalbum', 'Photo Albums');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $template['TITLE'] = dgettext('photoalbum', 'Photo Albums');
         $template['CONTENT'] = NULL;
 
-        $pager = new \core\DBPager('mod_photoalbum_albums');
+        $pager = new DBPager('mod_photoalbum_albums');
         $pager->setModule('photoalbum');
         $pager->setTemplate('albums/list.tpl');
 
@@ -87,7 +88,7 @@ class PHPWS_AlbumManager {
     }
 
     public function _accessDenied() {
-        if(core\Error::isError($this->error)) {
+        if(PHPWS_Error::isError($this->error)) {
             $this->error->message('CNT_photoalbum', dgettext('photoalbum', 'Access Denied!'));
             $this->error = NULL;
         } else {
@@ -99,7 +100,7 @@ class PHPWS_AlbumManager {
 
     public function updateAlbumList($albumId) {
         $sql = "SELECT label, tnname, tnwidth, tnheight FROM mod_photoalbum_photos WHERE album='$albumId' ORDER BY updated DESC LIMIT 1";
-        $result = \core\DB::getAll($sql);
+        $result = PHPWS_DB::getAll($sql);
 
         if(isset($result[0])) {
             $image[] = '<img src="images/photoalbum/';
@@ -114,7 +115,7 @@ class PHPWS_AlbumManager {
 
             $time = time();
             $sql = "UPDATE mod_photoalbum_albums SET image='$image', updated='$time' WHERE id='$albumId'";
-            \core\DB::query($sql);
+            PHPWS_DB::query($sql);
         }
     }
 

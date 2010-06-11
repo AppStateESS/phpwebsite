@@ -4,8 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::requireInc('pagesmith', 'error_defines.php');
-core\Core::requireConfig('pagesmith');
+PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
+PHPWS_Core::requireConfig('pagesmith');
 
 if (!defined('PS_ALLOWED_HEADER_TAGS')) {
     define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
@@ -102,7 +102,7 @@ class PageSmith {
                 }
                 $this->loadPage();
                 $this->page->delete();
-                \core\Cache::clearCache();
+                PHPWS_Cache::clearCache();
                 $this->loadForms();
                 $this->forms->pageList();
                 break;
@@ -153,11 +153,11 @@ class PageSmith {
 
                     case 1:
                         $this->killSaved();
-                        \core\Cache::clearCache();
+                        PHPWS_Cache::clearCache();
                         if (isset($_POST['save_so_far'])) {
-                            \core\Core::reroute(core\Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
+                            PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
                         } else {
-                            \core\Core::reroute($this->page->url());
+                            PHPWS_Core::reroute($this->page->url());
                         }
                         break;
                 }
@@ -167,7 +167,7 @@ class PageSmith {
                 $this->loadPage();
                 $this->page->front_page = (bool)$_GET['fp'];
                 $this->page->save();
-                \core\Cache::clearCache();
+                PHPWS_Cache::clearCache();
                 $this->loadForms();
                 $this->forms->pageList();
                 break;
@@ -177,7 +177,7 @@ class PageSmith {
                     Current_User::disallow();
                 }
                 $this->shortenLinks();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'lengthen_links':
@@ -185,7 +185,7 @@ class PageSmith {
                     Current_User::disallow();
                 }
                 $this->lengthenLinks();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'post_settings':
@@ -225,7 +225,7 @@ class PageSmith {
                 break;
 
             default:
-                \core\Core::errorPage('404');
+                PHPWS_Core::errorPage('404');
                 break;
         }
 
@@ -233,7 +233,7 @@ class PageSmith {
             $tpl['TITLE']   = $this->title;
             $tpl['CONTENT'] = $this->content;
             $tpl['MESSAGE'] = $this->message;
-            Layout::nakedDisplay(core\Template::process($tpl, 'pagesmith', 'admin_main.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl'));
         } else {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
         }
@@ -242,14 +242,14 @@ class PageSmith {
 
     public function loadForms()
     {
-        \core\Core::initModClass('pagesmith', 'PS_Forms.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Forms.php');
         $this->forms = new PS_Forms;
         $this->forms->ps = & $this;
     }
 
     public function loadPage()
     {
-        \core\Core::initModClass('pagesmith', 'PS_Page.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
         if (@$_REQUEST['id']) {
             $this->page = new PS_Page($_REQUEST['id']);
         } else {
@@ -270,7 +270,7 @@ class PageSmith {
 
     public function loadPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('pagesmith');
 
         $link = 'index.php?module=pagesmith&amp;aop=menu';
@@ -290,7 +290,7 @@ class PageSmith {
 
     public static function pageTplDir()
     {
-        return \core\Template::getTemplateDirectory('pagesmith')  . 'page_templates/';
+        return PHPWS_Template::getTemplateDirectory('pagesmith')  . 'page_templates/';
     }
 
 
@@ -337,7 +337,7 @@ class PageSmith {
                             if ($this->someContent($_SESSION['PS_Page'][$this->page->id][$section->secname])) {
                                 $some_content = true;
                             }
-                            $section->content = \core\Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
+                            $section->content = PHPWS_Text::parseInput($_SESSION['PS_Page'][$this->page->id][$section->secname]);
                         }
                     } elseif (isset($_POST[$section_name])) {
                         if ($this->someContent($_POST[$section_name])) {
@@ -366,7 +366,7 @@ class PageSmith {
             return 0;
         }
 
-        if  (!$this->page->id && !$this->page->parent_page && \core\Settings::get('pagesmith', 'auto_link')) {
+        if  (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith', 'auto_link')) {
             $menu_link = true;
         } else {
             $menu_link = false;
@@ -374,11 +374,11 @@ class PageSmith {
 
         if (!$tpl_set) {
             $this->page->save();
-            \core\Cache::clearCache();
+            PHPWS_Cache::clearCache();
         }
 
-        if ($menu_link && \core\Core::moduleExists('menu')) {
-            if (core\Core::initModClass('menu', 'Menu.php')) {
+        if ($menu_link && PHPWS_Core::moduleExists('menu')) {
+            if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
                 Menu::quickKeyLink($this->page->key_id);
             }
         }
@@ -435,22 +435,22 @@ class PageSmith {
     public function killSaved()
     {
         $_SESSION['PS_Page'] = null;
-        \core\Core::killSession('PS_Page');
+        PHPWS_Core::killSession('PS_Page');
     }
 
     public function postHeader()
     {
-        \core\Core::initModClass('pagesmith', 'PS_Text.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
 
         $section = new PS_Text;
         $section->pid = $_POST['pid'];
         $section->secname = $_POST['section_name'];
-        $section->content = \core\Text::parseInput($header);
+        $section->content = PHPWS_Text::parseInput($header);
         $section->setSaved();
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
         //$vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
-        $vars['content'] = addslashes(core\Text::parseOutput($section->content));
+        $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
         $vars['hidden_value'] = $section->content;
         Layout::nakedDisplay(javascriptMod('pagesmith', 'update', $vars));
 
@@ -459,21 +459,21 @@ class PageSmith {
     public function postText()
     {
         $warning = null;
-        \core\Core::initModClass('pagesmith', 'PS_Text.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $text = & $_POST['text'];
 
         $section = new PS_Text;
         $section->pid = $_POST['pid'];
         $section->secname = $_POST['section_name'];
         $section->content =  preg_replace("@\r\n|\r|\n@", '', $text);
-        if (PS_CHECK_CHAR_LENGTH && strlen(core\Text::parseInput($section->content)) > 65535) {
+        if (PS_CHECK_CHAR_LENGTH && strlen(PHPWS_Text::parseInput($section->content)) > 65535) {
             $warning = dgettext('pagesmith', "You have exceeded the allowed character limit. The page will not save correctly. Click ok to save the text anyway, cancel to return to previous version.");
         }
         $section->setSaved();
 
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
-        $vars['content'] = addslashes(core\Text::parseOutput($section->content));
-        $vars['hidden_value'] = \core\Text::parseInput($section->content);
+        $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
+        $vars['hidden_value'] = PHPWS_Text::parseInput($section->content);
 
         if ($warning) {
             $vars['warning'] = addslashes($warning);
@@ -484,11 +484,11 @@ class PageSmith {
 
     public function postSettings()
     {
-        \core\Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
-        \core\Settings::set('pagesmith', 'back_to_top', isset($_POST['back_to_top']));
+        PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
+        PHPWS_Settings::set('pagesmith', 'back_to_top', isset($_POST['back_to_top']));
         
-        \core\Settings::save('pagesmith');
-        \core\Cache::clearCache();
+        PHPWS_Settings::save('pagesmith');
+        PHPWS_Cache::clearCache();
     }
 
     private function postTemplate()
@@ -509,8 +509,8 @@ class PageSmith {
             $this->message = dgettext('pagesmith', 'Missing template file.');
             return false;
         } else {
-            $ext = \core\File::getFileExtension($_FILES['template_file']['name']);
-            if ($ext != 'tpl' || !core\File::checkMimeType($_FILES['template_file']['tmp_name'], $ext)) {
+            $ext = PHPWS_File::getFileExtension($_FILES['template_file']['name']);
+            if ($ext != 'tpl' || !PHPWS_File::checkMimeType($_FILES['template_file']['tmp_name'], $ext)) {
                 $this->message = dgettext('pagesmith', 'Wrong file type for template file.');
                 return false;
             }
@@ -520,8 +520,8 @@ class PageSmith {
             $this->message = dgettext('pagesmith', 'Missing style sheet.');
             return false;
         } else {
-            $ext = \core\File::getFileExtension($_FILES['style_sheet']['name']);
-            if ($ext != 'css' || !core\File::checkMimeType($_FILES['style_sheet']['tmp_name'], $ext)) {
+            $ext = PHPWS_File::getFileExtension($_FILES['style_sheet']['name']);
+            if ($ext != 'css' || !PHPWS_File::checkMimeType($_FILES['style_sheet']['tmp_name'], $ext)) {
                 $this->message = dgettext('pagesmith', 'Wrong file type for style sheet.');
                 return false;
             }
@@ -531,9 +531,9 @@ class PageSmith {
             $this->message = dgettext('pagesmith', 'Missing icon file.');
             return false;
         } else {
-            $ext = \core\File::getFileExtension($_FILES['icon']['name']);
+            $ext = PHPWS_File::getFileExtension($_FILES['icon']['name']);
 
-            if ( ($ext != 'png' && $ext != 'jpg' && $ext != 'gif') || !core\File::checkMimeType($_FILES['icon']['tmp_name'], $ext)) {
+            if ( ($ext != 'png' && $ext != 'jpg' && $ext != 'gif') || !PHPWS_File::checkMimeType($_FILES['icon']['tmp_name'], $ext)) {
                 $this->message = dgettext('pagesmith', 'Wrong file type for icon file.');
                 return false;
             }
@@ -543,9 +543,9 @@ class PageSmith {
             $this->message = dgettext('pagesmith', 'Missing structure file.');
             return false;
         } else {
-            $ext = \core\File::getFileExtension($_FILES['structure_file']['name']);
+            $ext = PHPWS_File::getFileExtension($_FILES['structure_file']['name']);
 
-            if ($ext != 'xml' || !core\File::checkMimeType($_FILES['structure_file']['tmp_name'], $ext)) {
+            if ($ext != 'xml' || !PHPWS_File::checkMimeType($_FILES['structure_file']['tmp_name'], $ext)) {
                 $this->message = dgettext('pagesmith', 'Wrong file type for structure file.');
                 return false;
             }
@@ -570,12 +570,12 @@ class PageSmith {
             return false;
         }
         $template_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/' . $tpl;
-        return \core\File::rmdir($template_dir);
+        return PHPWS_File::rmdir($template_dir);
     }
 
     public function getTemplateList()
     {
-        $tpl_list = \core\File::listDirectories(PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/');
+        $tpl_list = PHPWS_File::listDirectories(PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/');
 
         foreach ($tpl_list as $name) {
             $tpl = new PS_Template($name);
@@ -588,19 +588,19 @@ class PageSmith {
     {
         $id = explode('-', $sec_id);
         if ($id[0] == 'text') {
-            $db = new \core\DB('ps_text');
+            $db = new PHPWS_DB('ps_text');
         } elseif ($id[0] == 'block') {
-            $db = new \core\DB('ps_block');
+            $db = new PHPWS_DB('ps_block');
         } else {
             return;
         }
         $db->addWhere('id', (int)$id[1]);
-        \core\Error::logIfError($db->delete());
+        PHPWS_Error::logIfError($db->delete());
     }
 
     private function shortenLinks()
     {
-        $db = new \core\DB('menu_links');
+        $db = new PHPWS_DB('menu_links');
         $db->addColumn('id');
         $db->addColumn('url');
         $db->addColumn('key_id');
@@ -610,22 +610,22 @@ class PageSmith {
 
         if (empty($result)) {
             return true;
-        } elseif (core\Error::logIfError($result)) {
+        } elseif (PHPWS_Error::logIfError($result)) {
             return false;
         }
 
         $db->reset();
 
-        $db2 = new \core\DB('phpws_key');
+        $db2 = new PHPWS_DB('phpws_key');
 
         foreach ($result as $link) {
             $link['url'] = preg_replace('@index.php\?module=pagesmith(&uop=view_page)?&id=(\d+)$@', 'pagesmith/\\2', $link['url']);
             $db->addValue($link);
             $db->addWhere('id', $link['id']);
-            if (!core\Error::logIfError($db->update()) && $link['key_id']) {
+            if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
                 $db2->addValue('url', $link['url']);
                 $db2->addWhere('id', $link['key_id']);
-                \core\Error::logIfError($db2->update());
+                PHPWS_Error::logIfError($db2->update());
                 $db2->reset();
             }
             $db->reset();
@@ -634,7 +634,7 @@ class PageSmith {
 
     private function lengthenLinks()
     {
-        $db = new \core\DB('menu_links');
+        $db = new PHPWS_DB('menu_links');
         $db->addColumn('id');
         $db->addColumn('url');
         $db->addColumn('key_id');
@@ -642,22 +642,22 @@ class PageSmith {
         $result = $db->select();
         if (empty($result)) {
             return true;
-        } elseif (core\Error::logIfError($result)) {
+        } elseif (PHPWS_Error::logIfError($result)) {
             return false;
         }
 
         $db->reset();
 
-        $db2 = new \core\DB('phpws_key');
+        $db2 = new PHPWS_DB('phpws_key');
 
         foreach ($result as $link) {
             $link['url'] = preg_replace('@pagesmith/(\d+)$@', 'index.php?module=pagesmith&uop=view_page&id=\\1', $link['url']);
             $db->addValue($link);
             $db->addWhere('id', $link['id']);
-            if (!core\Error::logIfError($db->update()) && $link['key_id']) {
+            if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
                 $db2->addValue('url', $link['url']);
                 $db2->addWhere('id', $link['key_id']);
-                \core\Error::logIfError($db2->update());
+                PHPWS_Error::logIfError($db2->update());
                 $db2->reset();
             }
             $db->reset();

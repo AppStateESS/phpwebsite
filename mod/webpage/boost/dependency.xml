@@ -1,40 +1,39 @@
 <?xml version="1.0"?>
-<!DOCTYPE dependency PUBLIC "-//phpwebsite//dependency structure//EN" "http://phpwebsite.appstate.edu/dependency.dtd">
 <dependency>
-    <module>
-        <title>menu</title>
-        <properName>Menu Manager</properName>
-        <version>1.6.0</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/menu</url>
-    </module>
-    <module>
-        <title>core</title>
-        <properName>phpWebSite Core</properName>
-        <version>1.9.5</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
-    </module>
-    <module>
-        <title>categories</title>
-        <properName>Categories</properName>
-        <version>2.3.0</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/categories</url>
-    </module>
-    <module>
-        <title>search</title>
-        <properName>Search</properName>
-        <version>0.4.0</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/search</url>
-    </module>
-    <module>
-        <title>users</title>
-        <properName>Users</properName>
-        <version>2.6.3</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/users</url>
-    </module>
-    <module>
-        <title>filecabinet</title>
-        <properName>File Cabinet</properName>
-        <version>2.2.4</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
-    </module>
+	<module>
+		<title>menu</title>
+		<properName>Menu Manager</properName>
+		<version>1.6.0</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/menu</url>
+	</module>
+	<module>
+		<title>core</title>
+		<properName>phpWebSite Core</properName>
+		<version>1.9.5</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
+	</module>
+	<module>
+		<title>categories</title>
+		<properName>Categories</properName>
+		<version>2.3.0</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/categories</url>
+	</module>
+	<module>
+		<title>search</title>
+		<properName>Search</properName>
+		<version>0.4.0</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/search</url>
+	</module>
+	<module>
+		<title>users</title>
+		<properName>Users</properName>
+		<version>2.6.3</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/users</url>
+	</module>
+	<module>
+		<title>filecabinet</title>
+		<properName>File Cabinet</properName>
+		<version>2.2.4</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
+	</module>
 </dependency>

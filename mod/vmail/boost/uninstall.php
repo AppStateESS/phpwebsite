@@ -24,7 +24,7 @@
 
 function vmail_uninstall(&$content) {
 
-    \core\DB::dropTable('vmail_recipients');
+    PHPWS_DB::dropTable('vmail_recipients');
     $content[] = dgettext('vmail', 'vMail tables dropped.');
 
     return true;

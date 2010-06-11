@@ -11,8 +11,8 @@ class RSS_Admin {
     {
         $tpl['MESSAGE'] = NULL;
         $message = RSS_Admin::getMessage();
-        \core\Core::initModClass('rss', 'Feed.php');
-        \core\Core::initModClass('rss', 'Channel.php');
+        PHPWS_Core::initModClass('rss', 'Feed.php');
+        PHPWS_Core::initModClass('rss', 'Channel.php');
 
         if (!Current_User::allow('rss')) {
             Current_User::disallow();
@@ -53,7 +53,7 @@ class RSS_Admin {
                 $result = RSS_Admin::save_settings();
 
                 if (!$result) {
-                    \core\Settings::save('rss');
+                    PHPWS_Settings::save('rss');
                     $result = dgettext('rss', 'Settings saved successfully.');
                 }
                 $tpl = RSS_Admin::settings();
@@ -65,7 +65,7 @@ class RSS_Admin {
                 if (is_array($result)) {
                     $tpl = RSS_Admin::editFeed($feed);
                     $tpl['MESSAGE'] = implode('<br />', $result);
-                    Layout::nakedDisplay(core\Template::process($tpl, 'rss', 'main.tpl'));
+                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
                     exit();
                 } else {
                     $result = $feed->save();
@@ -84,7 +84,7 @@ class RSS_Admin {
                     $tpl = RSS_Admin::editChannel($channel);
                 } else {
                     $result = $channel->save();
-                    if (core\Error::isError($result)) {
+                    if (PHPWS_Error::isError($result)) {
                         RSS_Admin::sendMessage(dgettext('rss', 'An error occurred when saving your channel.'), 'channels');
                     } else {
                         RSS_Admin::sendMessage(dgettext('rss', 'Channel saved.'), 'channels');
@@ -112,13 +112,13 @@ class RSS_Admin {
 
             case 'add_feed':
                 $tpl = RSS_Admin::editFeed($feed);
-                Layout::nakedDisplay(core\Template::process($tpl, 'rss', 'main.tpl'));
+                Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
                 exit();
                 break;
 
             case 'edit_feed':
                 $tpl = RSS_Admin::editFeed($feed);
-                Layout::nakedDisplay(core\Template::process($tpl, 'rss', 'main.tpl'));
+                Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
                 exit();
                 break;
 
@@ -128,7 +128,7 @@ class RSS_Admin {
                 break;
 
             default:
-                \core\Core::errorPage('404');
+                PHPWS_Core::errorPage('404');
                 break;
         }
 
@@ -136,7 +136,7 @@ class RSS_Admin {
             $tpl['MESSAGE'] = $message;
         }
 
-        $content = \core\Template::process($tpl, 'rss', 'main.tpl');
+        $content = PHPWS_Template::process($tpl, 'rss', 'main.tpl');
 
         $panel->setContent($content);
         $content = $panel->display();
@@ -148,7 +148,7 @@ class RSS_Admin {
     {
         $_SESSION['RSS_Message'] = $message;
 
-        \core\Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
+        PHPWS_Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
         $command, Current_User::getAuthKey()));
 
     }
@@ -184,7 +184,7 @@ class RSS_Admin {
 
     public function editChannel(RSS_Channel $channel)
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'post_channel');
         $form->addSubmit(dgettext('rss', 'Save Channel'));
@@ -201,7 +201,7 @@ class RSS_Admin {
 
         $formtpl = $form->getTemplate();
 
-        $tpl['CONTENT'] = \core\Template::processTemplate($formtpl, 'rss', 'channel_form.tpl');
+        $tpl['CONTENT'] = PHPWS_Template::processTemplate($formtpl, 'rss', 'channel_form.tpl');
 
         $tpl['TITLE'] = dgettext('rss', 'Edit channel');
 
@@ -211,7 +211,7 @@ class RSS_Admin {
 
     public function settings()
     {
-        $form = new \core\Form('rss-settings');
+        $form = new PHPWS_Form('rss-settings');
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'save_settings');
 
@@ -219,18 +219,18 @@ class RSS_Admin {
         $filenames = array(1=>'RSS 1.0', 2=>'RSS 2.0');
         $form->addRadio('rssfeed', $files);
         $form->setLabel('rssfeed', $filenames);
-        $form->setMatch('rssfeed', \core\Settings::get('rss', 'rssfeed'));
+        $form->setMatch('rssfeed', PHPWS_Settings::get('rss', 'rssfeed'));
 
 
-        $form->addText('editor', \core\Settings::get('rss', 'editor'));
+        $form->addText('editor', PHPWS_Settings::get('rss', 'editor'));
         $form->setLabel('editor', dgettext('rss', 'Managing editor email address'));
         $form->setSize('editor', 30);
 
-        $form->addText('webmaster', \core\Settings::get('rss', 'webmaster'));
+        $form->addText('webmaster', PHPWS_Settings::get('rss', 'webmaster'));
         $form->setLabel('webmaster', dgettext('rss', 'Webmaster email address'));
         $form->setSize('webmaster', 30);
 
-        $form->addText('copyright', \core\Settings::get('rss', 'copyright'));
+        $form->addText('copyright', PHPWS_Settings::get('rss', 'copyright'));
         $form->setLabel('copyright', dgettext('rss', 'Copyright'));
         $form->setSize('copyright', 40);
         $form->addSubmit(dgettext('rss', 'Save settings'));
@@ -238,7 +238,7 @@ class RSS_Admin {
         $tpl = $form->getTemplate();
 
         $fc['TITLE']   = dgettext('rss', 'General Settings');
-        $fc['CONTENT'] = \core\Template::process($tpl, 'rss', 'settings.tpl');
+        $fc['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'settings.tpl');
 
         return $fc;
     }
@@ -246,30 +246,30 @@ class RSS_Admin {
     public function save_settings()
     {
         $message = null;
-        \core\Settings::set('rss', 'rssfeed', (int)$_POST['rssfeed']);
+        PHPWS_Settings::set('rss', 'rssfeed', (int)$_POST['rssfeed']);
 
         if (!empty($_POST['editor'])) {
-            if (core\Text::isValidInput($_POST['editor'], 'email')) {
-                \core\Settings::set('rss', 'editor', $_POST['editor']);
+            if (PHPWS_Text::isValidInput($_POST['editor'], 'email')) {
+                PHPWS_Settings::set('rss', 'editor', $_POST['editor']);
             } else {
                 $message = dgettext('rss', 'Please check editor email format.');
             }
         } else {
-            \core\Settings::set('rss', 'editor', '');
+            PHPWS_Settings::set('rss', 'editor', '');
         }
 
         if (!empty($_POST['webmaster'])) {
-            if (core\Text::isValidInput($_POST['webmaster'], 'email')) {
-                \core\Settings::set('rss', 'webmaster', $_POST['webmaster']);
+            if (PHPWS_Text::isValidInput($_POST['webmaster'], 'email')) {
+                PHPWS_Settings::set('rss', 'webmaster', $_POST['webmaster']);
             } else {
                 $message = dgettext('rss', 'Please check webmaster email format.');
             }
         } else {
-            \core\Settings::set('rss', 'webmaster', '');
+            PHPWS_Settings::set('rss', 'webmaster', '');
         }
 
         if (!empty($_POST['copyright'])) {
-            \core\Settings::set('rss', 'copyright', strip_tags($_POST['copyright']));
+            PHPWS_Settings::set('rss', 'copyright', strip_tags($_POST['copyright']));
         }
 
         return $message;
@@ -277,18 +277,18 @@ class RSS_Admin {
 
     public static function channels()
     {
-        \core\Core::initModClass('rss', 'Channel.php');
+        PHPWS_Core::initModClass('rss', 'Channel.php');
         $final_tpl['TITLE'] = dgettext('rss', 'Administrate RSS Feeds');
 
-        $db = new \core\DB('rss_channel');
+        $db = new PHPWS_DB('rss_channel');
         $db->addOrder('title');
         $channels = $db->getObjects('RSS_Channel');
 
         if (empty($channels)) {
             $final_tpl['CONTENT'] = dgettext('rss', 'No channels have been registered.');
             return $final_tpl;
-        } elseif (core\Error::isError($channels)) {
-            \core\Error::log($channels);
+        } elseif (PHPWS_Error::isError($channels)) {
+            PHPWS_Error::log($channels);
             $final_tpl['CONTENT'] = dgettext('rss', 'An error occurred when trying to access your RSS channels.');
             return $final_tpl;
         }
@@ -309,14 +309,14 @@ class RSS_Admin {
         $tpl['ACTIVE_LABEL'] = dgettext('rss', 'Active');
         $tpl['ACTION_LABEL'] = dgettext('rss', 'Action');
 
-        $final_tpl['CONTENT'] = \core\Template::process($tpl, 'rss', 'channel_list.tpl');
+        $final_tpl['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'channel_list.tpl');
 
         return $final_tpl;
     }
 
     public static function editFeed(RSS_Feed $feed)
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         if ($feed->id) {
             $form->addHidden('feed_id', $feed->id);
         }
@@ -349,7 +349,7 @@ class RSS_Admin {
         $template['TITLE_WARNING'] = dgettext('rss', 'Feed title will be used if left empty');
         $template['REFRESH_WARNING'] = dgettext('rss', 'In seconds');
 
-        $content = \core\Template::process($template, 'rss', 'add_feed.tpl');
+        $content = PHPWS_Template::process($template, 'rss', 'add_feed.tpl');
 
         $tpl['TITLE'] = dgettext('rss', 'Add Feed');
         $tpl['CONTENT'] = $content;
@@ -358,7 +358,7 @@ class RSS_Admin {
 
     public static function import()
     {
-        \core\Core::requireConfig('rss');
+        PHPWS_Core::requireConfig('rss');
 
         if (!ini_get('allow_url_fopen')) {
             $tpl['TITLE'] = dgettext('rss', 'Sorry');
@@ -366,7 +366,8 @@ class RSS_Admin {
             return $tpl;
         }
 
-                \core\Core::initModClass('rss', 'Feed.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('rss', 'Feed.php');
         $content = NULL;
 
         $vars['address'] = 'index.php?module=rss&command=add_feed';
@@ -381,7 +382,7 @@ class RSS_Admin {
         $template['ACTION_LABEL']  = dgettext('rss', 'Action');
         $template['REFRESH_TIME_LABEL'] = dgettext('rss', 'Refresh feed');
 
-        $pager = new \core\DBPager('rss_feeds', 'RSS_Feed');
+        $pager = new DBPager('rss_feeds', 'RSS_Feed');
         $pager->setModule('rss');
         $pager->setTemplate('admin_feeds.tpl');
         $pager->addPageTags($template);

@@ -55,12 +55,12 @@ switch ($_REQUEST['op']) {
         break;
         if(isset($_REQUEST['yes'])) {
             // Call up a list of all topics in this forum.
-            $db = new \core\DB('phpwsbb_topics');
+            $db = new PHPWS_DB('phpwsbb_topics');
             $db->addColumn('id');
             $db->addWhere('fid', $_REQUEST['forum']);
             $ids = $db->select('col');
-            if (core\Error::logIfError($ids))
-            $message = \core\Error::printError($id_list);
+            if (PHPWS_Error::logIfError($ids))
+            $message = PHPWS_Error::printError($id_list);
             // If there is a list...
             if (!empty($ids))
             foreach ($ids AS $recid) {
@@ -70,11 +70,11 @@ switch ($_REQUEST['op']) {
             // Delete the Forum
             if (empty($message)) {
                 // Delete the forum record & Key id
-                $db = new \core\DB('phpwsbb_forums');
+                $db = new PHPWS_DB('phpwsbb_forums');
                 $db->addWhere('id', $_REQUEST['forum']);
                 $result = $db->delete();
-                if (core\Error::logIfError($result))
-                $msg[] = \core\Error::printError($result);
+                if (PHPWS_Error::logIfError($result))
+                $msg[] = PHPWS_Error::printError($result);
                 $message = dgettext('phpwsbb', 'Forum %s and all attatched topics have been deleted');
             }
         } elseif(isset($_REQUEST['no'])) {
@@ -84,7 +84,7 @@ switch ($_REQUEST['op']) {
             $address = 'index.php?module=phpwsbb&amp;op=delete_forum&amp;forum='.$forum->id;
             $title = dgettext('phpwsbb', 'Delete Confirmation') .' -- '. $forum->get_title();
             $question = dgettext('phpwsbb', 'This will delete the forum and all topics under it!  Are you sure you want to delete this?');
-            \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::show_dialog($address, $title, $question);
         }
         break;
@@ -112,7 +112,7 @@ switch ($_REQUEST['op']) {
         }
         if (empty($topic)) {
             if (!empty($_REQUEST['key_id'])) {
-                $key = new \core\Key((int) $_REQUEST['key_id']);
+                $key = new Key((int) $_REQUEST['key_id']);
             }
             else {
                 $content = dgettext('phpwsbb', 'phpwsBB::assign_forum is missing some required parameters');
@@ -124,7 +124,7 @@ switch ($_REQUEST['op']) {
         // Show dialog if destination forum hasn't been picked yet
         if (!isset($_REQUEST['new_forum'])) {
             // Show the assignment form
-            \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
             if (!empty($topic))
             $content = PHPWSBB_Forms::assign_forum($topic, $is_popup);
             else
@@ -148,15 +148,15 @@ switch ($_REQUEST['op']) {
         // otherwise, we're importing a key...
         else {
             // get thread's id#
-            $db = new \core\DB('comments_threads');
+            $db = new PHPWS_DB('comments_threads');
             $db->addColumn('id');
             $db->addWhere('key_id', $key->id);
             $result = $db->select('one');
             $db->reset();
             if (!$result)
             $message = dgettext('phpwsbb', 'ERROR: Thread not found');
-            elseif (core\Error::logIfError($result))
-            $message = \core\Error::printError($result);
+            elseif (PHPWS_Error::logIfError($result))
+            $message = PHPWS_Error::printError($result);
             else {
                 // insert the new topic
                 $topic = new PHPWSBB_Topic();
@@ -184,10 +184,10 @@ switch ($_REQUEST['op']) {
             $url = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
             $template['CONTENT'] = sprintf('<input type="button" value="%s" onclick="opener.location.href=\'%s\'; window.close();" style="text-align: center" />',
             dgettext('categories', 'Close Window'), $url);
-            Layout::nakedDisplay(core\Template::process($template, 'phpwsbb', 'main.tpl')); // auto-exit
+            Layout::nakedDisplay(PHPWS_Template::process($template, 'phpwsbb', 'main.tpl')); // auto-exit
         }
         $content = $topic->view();
-        $_SESSION['core\DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
+        $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
         break;
 
     case 'delete_topic':
@@ -197,11 +197,11 @@ switch ($_REQUEST['op']) {
         }
         if(isset($_REQUEST['yes'])) {
             $result = $topic->delete();
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $message = dgettext('phpwsbb', 'The topic could not be deleted.');
                 $title = $topic->get_title();
                 $content = $topic->view();
-                $_SESSION['core\DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
+                $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
             }
             else {
                 unset($topic);
@@ -217,7 +217,7 @@ switch ($_REQUEST['op']) {
             $address = 'index.php?module=phpwsbb&amp;op=delete_topic&amp;topic='.$topic->id;
             $title = dgettext('phpwsbb', 'Delete Confirmation') .' -- '. $topic->get_title();
             $question = dgettext('phpwsbb', 'This will delete the topic and all messages under it!  Are you sure you want to delete this?');
-            \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::show_dialog($address, $title, $question);
         }
         break;
@@ -231,7 +231,7 @@ switch ($_REQUEST['op']) {
             $message = dgettext('phpwsbb', 'The requested operation did not work');
             $title = $topic->get_title();
             $content = $topic->view();
-            $_SESSION['core\DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
+            $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
             break;
         }
         $forum->update_forum(true);
@@ -261,12 +261,12 @@ switch ($_REQUEST['op']) {
             break;
         }
         // Get list of all affected comment ids
-        $db = new \core\DB('comments_items');
+        $db = new PHPWS_DB('comments_items');
         $db->addColumn('id');
         $db->addWhere('thread_id', (int) $_REQUEST['topic']);
         $db->addWhere('create_time', (int) $_REQUEST['split_point'], '>=');
         $id_list = $db->select('col');
-        if (core\Error::logIfError($id_list))
+        if (PHPWS_Error::logIfError($id_list))
         break;
         // if is_phpwsbb & this would get rid of all comments, abort
         if (!empty($topic->id) && $topic->total_posts <= count($id_list)) {
@@ -276,7 +276,7 @@ switch ($_REQUEST['op']) {
         }
         // otherwise, show PHPWSBB_Forms::split_comments()
         else {
-            \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+            PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
             $content = PHPWSBB_Forms::split_comments($id_list);
         }
         break;
@@ -305,10 +305,10 @@ FROM phpwsbb_topics
 GROUP BY phpwsbb_topics.id
 ORDER BY comments_items.create_time desc
 ';
-        $db = new \core\DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $result = $db->select(null, $sql);
-        if (core\Error::logIfError($result))
-        $message = \core\Error::printError($result);
+        if (PHPWS_Error::logIfError($result))
+        $message = PHPWS_Error::printError($result);
         elseif (empty($result))
         $message = dgettext('phpwsbb', 'No threads were found!');
         else {
@@ -345,11 +345,11 @@ ORDER BY comments_items.create_time desc
             $message = $msg_noauth;
             break;
         }
-        $db = new \core\DB('phpwsbb_topics');
+        $db = new PHPWS_DB('phpwsbb_topics');
         $sql = 'SELECT fid,COUNT(total_posts) AS total_topics, SUM(total_posts) AS total_topic_posts FROM phpwsbb_topics GROUP BY fid';
         $count_info = $db->select(null, $sql);
-        if (core\Error::logIfError($count_info))
-        $message = \core\Error::printError($count_info);
+        if (PHPWS_Error::logIfError($count_info))
+        $message = PHPWS_Error::printError($count_info);
         elseif (empty($count_info))
         $message = dgettext('phpwsbb', 'Not all thread summary information was found!');
         else {
@@ -371,12 +371,12 @@ ORDER BY comments_items.create_time desc
             $message = $msg_noauth;
             break;
         }
-        \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+        PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
         $template['TITLE'] = dgettext('phpwsbb', 'PHPWSBB Settings');
         if (!empty($_REQUEST['reset'])) {
             include(PHPWS_SOURCE_DIR . 'mod/phpwsbb/inc/settings.php');
-            \core\Settings::set('phpwsbb', $settings);
-            \core\Settings::save('phpwsbb');
+            PHPWS_Settings::set('phpwsbb', $settings);
+            PHPWS_Settings::save('phpwsbb');
             $template['MESSAGE'] = dgettext('phpwsbb', 'Your settings have been reset to the factory defaults.');
         }
         elseif (!empty($_REQUEST['save'])) {
@@ -388,12 +388,12 @@ ORDER BY comments_items.create_time desc
             $settings['use_views'] = (bool) !empty($_POST['use_views']);
             $settings['long_date_format'] = $_POST['long_date_format'];
             $settings['short_date_format'] = $_POST['short_date_format'];
-            \core\Settings::set('phpwsbb', $settings);
-            \core\Settings::save('phpwsbb');
+            PHPWS_Settings::set('phpwsbb', $settings);
+            PHPWS_Settings::save('phpwsbb');
             $template['MESSAGE'] = dgettext('phpwsbb', 'Your settings have been saved.');
         }
         $template['CONTENT'] = PHPWSBB_Forms::edit_configuration();
-        $content = PHPWS_ControlPanel::display(core\Template::process($template, 'phpwsbb', 'main.tpl'), 'admin');
+        $content = PHPWS_ControlPanel::display(PHPWS_Template::process($template, 'phpwsbb', 'main.tpl'), 'admin');
         $title = $message = '';
         unset($template);
         return;
@@ -435,7 +435,7 @@ ORDER BY comments_items.create_time desc
             // If there's a problem, show the split_comments form
             if (!$topic->create($forum->id)) {
                 $message = $topic->_error;
-                \core\Core::initModClass('phpwsbb', 'BB_Forms.php');
+                PHPWS_Core::initModClass('phpwsbb', 'BB_Forms.php');
                 $content = PHPWSBB_Forms::split_comments($comments);
                 break;
             }
@@ -447,7 +447,7 @@ ORDER BY comments_items.create_time desc
         }
         // otherwise, check Comment Thread permission
         else {
-            \core\Core::initModClass('comments', 'Comments.php');
+            PHPWS_Core::initModClass('comments', 'Comments.php');
             $thread = new Comment_Thread($topic->id);
             if (!$thread->canComment()) {
                 $content = dgettext('phpwsbb', "You don't have permission to post to this topic!");
@@ -456,18 +456,18 @@ ORDER BY comments_items.create_time desc
             unset($thread);
         }
         // Move comments
-        $db = new \core\DB('comments_items');
+        $db = new PHPWS_DB('comments_items');
         $db->addValue('thread_id', $topic->id);
         $db->addWhere('id', explode(',', $_REQUEST['comment_ids']));
         $db->addWhere('thread_id', $oldthread->id);
-        if (core\Error::logIfError($db->update())) {
+        if (PHPWS_Error::logIfError($db->update())) {
             $content = dgettext('phpwsbb', 'Could not move comments to the new topic');
             break;
         }
         // Update the new thread's stats
-        $db = new \core\DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         $sql = 'UPDATE comments_threads SET total_comments = (SELECT COUNT(id) FROM comments_items WHERE thread_id = comments_threads.id) WHERE id = '.$topic->id;
-        if (core\Error::logIfError($db->query($sql))) {
+        if (PHPWS_Error::logIfError($db->query($sql))) {
             $content = dgettext('phpwsbb', 'Could not update comment count in table "comments_threads"');
             break;
         }
@@ -480,12 +480,12 @@ ORDER BY comments_items.create_time desc
             $c_item->setThreadId($oldthread_id);
             $c_item->setSubject('This thread has been modified');
             $str = dgettext('phpwsbb', 'Some comments have been moved to a related topic.  You can view it by <a href="./index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id.'">clicking here.</a>');
-            $c_item->entry = \core\Text::parseInput($str);
+            $c_item->entry = PHPWS_Text::parseInput($str);
             $c_item->save();
         }
         // Update the old thread's stats
         $sql = 'UPDATE comments_threads SET total_comments = (SELECT COUNT(id) FROM comments_items WHERE thread_id = comments_threads.id) WHERE id = '.$oldthread_id;
-        if (core\Error::logIfError($db->query($sql))) {
+        if (PHPWS_Error::logIfError($db->query($sql))) {
             $content = dgettext('phpwsbb', 'Could not update comment count in table "comments_threads"');
             break;
         }
@@ -495,8 +495,8 @@ ORDER BY comments_items.create_time desc
             $oldtopic->update_topic();
             $oldtopic->commit();
         }
-        $_SESSION['core\DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
-        \core\Core::reroute('index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id);
+        $_SESSION['DBPager_Last_View']['comments_items'] = 'index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id;
+        PHPWS_Core::reroute('index.php?module=phpwsbb&amp;view=topic&amp;id='.$topic->id);
         break;
 }
 

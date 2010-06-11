@@ -4,8 +4,8 @@
    * @version $Id$
    */
 
-core\Core::requireConfig('notes');
-core\Core::initModClass('notes', 'Note_Item.php');
+PHPWS_Core::requireConfig('notes');
+PHPWS_Core::initModClass('notes', 'Note_Item.php');
 
 class Notes_My_Page {
     public $title   = null;
@@ -36,8 +36,8 @@ class Notes_My_Page {
         case 'delete_note':
             $note = new Note_Item((int)$_REQUEST['id']);
             $result = $note->delete();
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
             }
 
             if (isset($_REQUEST['js'])) {
@@ -85,7 +85,7 @@ class Notes_My_Page {
             break;
 
         default:
-            \core\Core::errorPage('404');
+            PHPWS_Core::errorPage('404');
         }
 
         $tpl['TITLE'] =  $this->title;
@@ -93,9 +93,9 @@ class Notes_My_Page {
         $tpl['MESSAGE'] = $this->message;
 
         if ($js) {
-            Layout::nakedDisplay(core\Template::process($tpl, 'notes', 'main.tpl'), null, true);
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'notes', 'main.tpl'), null, true);
         } else {
-            return \core\Template::process($tpl, 'notes', 'main.tpl');
+            return PHPWS_Template::process($tpl, 'notes', 'main.tpl');
         }
     }
 
@@ -105,13 +105,13 @@ class Notes_My_Page {
         $vars['op'] = 'send_note';
         $vars['key_id'] = $key->id;
         if (javascriptEnabled()) {
-            $js_vars['address'] = \core\Text::linkAddress('users', $vars);
+            $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
             $js_vars['label']   = dgettext('notes', 'Associate note');
             $js_vars['width']   = 650;
             $js_vars['height']  = 650;
             MiniAdmin::add('notes', javascript('open_window', $js_vars));
         } else {
-            MiniAdmin::add('notes', \core\Text::moduleLink(dgettext('notes', 'Associate note'), 'users', $vars));
+            MiniAdmin::add('notes', PHPWS_Text::moduleLink(dgettext('notes', 'Associate note'), 'users', $vars));
         }
     }
 
@@ -133,7 +133,7 @@ class Notes_My_Page {
         }
 
         if (!$_POST['uid'] && !preg_match('/[^\w\s\.]/', $_POST['username'])) {
-            $db = new \core\DB('users');
+            $db = new PHPWS_DB('users');
             $db->addWhere('username', $_POST['username']);
             $db->addColumn('id');
 
@@ -186,7 +186,8 @@ class Notes_My_Page {
     {
         Layout::addStyle('notes');
         unset($_SESSION['Notes_Unread']);
-                $pager = new \core\DBPager('notes', 'Note_Item');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('notes', 'Note_Item');
         $pager->setModule('notes');
         $pager->setTemplate('read.tpl');
         $pager->setEmptyMessage(dgettext('notes', 'No notes found.'));
@@ -210,7 +211,7 @@ class Notes_My_Page {
             javascript('close_refresh');
             Layout::nakedDisplay();
         } else {
-            \core\Core::reroute('index.php?module=users&action=user&tab=notes');
+            PHPWS_Core::reroute('index.php?module=users&action=user&tab=notes');
             exit();
         }
     }
@@ -219,13 +220,13 @@ class Notes_My_Page {
     public function sendNote(Note_Item $note)
     {
         Layout::addStyle('notes');
-        $form = new \core\Form('send_note');
+        $form = new PHPWS_Form('send_note');
 
         $form->addHidden($this->myPageVars());
         $form->addHidden('op', 'post_note');
 
         if (isset($_REQUEST['key_id'])) {
-            $key = new \core\Key($_REQUEST['key_id']);
+            $key = new Key($_REQUEST['key_id']);
             if ($key->id) {
                 $form->addHidden('key_id', $key->id);
                 $assoc = sprintf(dgettext('notes', 'Associate note to item: %s'), $key->title);
@@ -266,12 +267,12 @@ class Notes_My_Page {
         $tpl = $form->getTemplate();
 
         $this->title = dgettext('notes', 'Send note');
-        $this->content = \core\Template::process($tpl, 'notes', 'send_note.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'notes', 'send_note.tpl');
     }
 
     public static function showAssociations($key)
     {
-        $db = new \core\DB('notes');
+        $db = new PHPWS_DB('notes');
         $db->addWhere('user_id', Current_User::getId());
         $db->addWhere('key_id', $key->id);
         $db->addOrder('date_sent', 'desc');
@@ -286,7 +287,7 @@ class Notes_My_Page {
         }
         $tpl['TITLE'] = dgettext('notes', 'Associated Notes');
         $tpl['CONTENT'] = implode('<br />', $content);
-        Layout::add(core\Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
+        Layout::add(PHPWS_Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
     }
 
     public static function showUnread()
@@ -294,12 +295,12 @@ class Notes_My_Page {
         if ( isset($_SESSION['Notes_Unread']) && ( $_SESSION['Notes_Unread']['last_check'] + (NOTE_CHECK_INTERVAL * 60) >=  time() ) ) {
             $notes = $_SESSION['Notes_Unread']['last_count'];
         } else {
-            $db = new \core\DB('notes');
+            $db = new PHPWS_DB('notes');
             $db->addWhere('user_id', Current_User::getId());
             $db->addWhere('read_once', 0);
             $notes = $db->count();
-            if (core\Error::isError($notes)) {
-                \core\Error::log($notes);
+            if (PHPWS_Error::isError($notes)) {
+                PHPWS_Error::log($notes);
                 return;
             }
             $_SESSION['Notes_Unread']['last_check'] = time();
@@ -310,8 +311,8 @@ class Notes_My_Page {
             $tpl['TITLE'] = dgettext('notes', 'Notes');
             $link_val = sprintf(dgettext('notes', 'You have %d unread notes.'), $notes);
             $val = Notes_My_Page::myPageVars(false);
-            $tpl['CONTENT'] = \core\Text::moduleLink($link_val, 'users', $val);
-            $content = \core\Template::process($tpl, 'layout', 'box.tpl');
+            $tpl['CONTENT'] = PHPWS_Text::moduleLink($link_val, 'users', $val);
+            $content = PHPWS_Template::process($tpl, 'layout', 'box.tpl');
             Layout::add($content, 'notes', 'reminder');
         }
 

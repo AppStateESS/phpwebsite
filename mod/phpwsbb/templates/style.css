@@ -8,7 +8,7 @@
 a.phpwsbb_add_topic_link {
     display: block;
     float: left;
-    background-image: url(images/green-right.png);
+    background-image: url(../../images/mod/phpwsbb/green-right.png);
     padding-right: 8px;
     margin: 0 .5em;
 }
@@ -21,7 +21,7 @@ a.phpwsbb_add_topic_link:hover span {
 a.phpwsbb_add_topic_link span {
     display: block;
     padding: 0 10px 0 18px;
-    background: transparent url(images/green-left.png);
+    background: transparent url(../../images/mod/phpwsbb/green-left.png);
     line-height: 30px;
     color: white;
 }
@@ -30,12 +30,12 @@ a.phpwsbb_go_new_message_link {
     float: left;
     width: 16px;
     height: 16px;
-    background-image: url(images/new_message.png);
+    background-image: url(../../images/mod/phpwsbb/new_message.png);
     margin-right: .5em;
 }
 
 a.phpwsbb_go_new_message_link:hover { /*    background-color: #00ff00;*/
-
+    
 }
 
 a.phpwsbb_go_new_message_link span {
@@ -46,7 +46,7 @@ div.phpwsbb_new_messages {
     display: block;
     width: 16px;
     height: 16px;
-    background-image: url(images/new_messages.png);
+    background-image: url(../../images/mod/phpwsbb/new_messages.png);
 }
 
 div.phpwsbb_new_messages span {
@@ -56,7 +56,7 @@ div.phpwsbb_new_messages span {
 div.phpwsbb_no_new_messages {
     width: 16px;
     height: 16px;
-    background-image: url(images/no_new_messages.png);
+    background-image: url(../../images/mod/phpwsbb/no_new_messages.png);
 }
 
 div.phpwsbb_no_new_messages span {
@@ -67,7 +67,7 @@ div.phpwsbb_hot_topic {
     float: left;
     width: 20px;
     height: 20px;
-    background-image: url(images/hot.png);
+    background-image: url(../../images/mod/phpwsbb/hot.png);
     margin: 0 .5em;
 }
 
@@ -79,7 +79,7 @@ div.phpwsbb_locked {
     float: left;
     width: 16px;
     height: 16px;
-    background-image: url(images/locked.png);
+    background-image: url(../../images/mod/phpwsbb/locked.png);
     margin: 0 .5em;
 }
 
@@ -91,7 +91,7 @@ div.phpwsbb_sticky {
     float: left;
     width: 16px;
     height: 16px;
-    background-image: url(images/sticky.png);
+    background-image: url(../../images/mod/phpwsbb/sticky.png);
     margin: 0 1em;
 }
 
@@ -103,7 +103,7 @@ div.phpwsbb_subscribed {
     float: left;
     width: 16px;
     height: 16px;
-    background-image: url(images/subscribed.png);
+    background-image: url(../../images/mod/phpwsbb/subscribed.png);
     margin: 0 .5em;
 }
 
@@ -115,13 +115,13 @@ a.phpwsbb_go_forum_new_message_link {
     float: left;
     width: 16px;
     height: 16px;
-    background-image: url(images/new_message.png);
+    background-image: url(../../images/mod/phpwsbb/new_message.png);
     margin-right: .5em;
 }
 
 a.phpwsbb_go_forum_new_message_link:hover {
     /*    background-color: #00ff00;*/
-
+    
 }
 
 a.phpwsbb_go_forum_new_message_link span {
@@ -131,7 +131,7 @@ a.phpwsbb_go_forum_new_message_link span {
 div.phpwsbb_forum_new_messages {
     width: 16px;
     height: 16px;
-    background-image: url(images/new_messages.png);
+    background-image: url(../../images/mod/phpwsbb/new_messages.png);
 }
 
 div.phpwsbb_forum_new_messages span {
@@ -141,7 +141,7 @@ div.phpwsbb_forum_new_messages span {
 div.phpwsbb_forum_no_new_messages {
     width: 16px;
     height: 16px;
-    background-image: url(images/no_new_messages.png);
+    background-image: url(../../images/mod/phpwsbb/no_new_messages.png);
 }
 
 div.phpwsbb_forum_no_new_messages span {
@@ -152,7 +152,7 @@ div.phpwsbb_forum_locked {
     float: left;
     width: 16px;
     height: 16px;
-    background-image: url(images/locked.png);
+    background-image: url(../../images/mod/phpwsbb/locked.png);
     margin: 0 .5em;
 }
 

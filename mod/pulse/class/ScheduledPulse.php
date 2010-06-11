@@ -67,18 +67,18 @@ abstract class ScheduledPulse
 
     public static function getInstance(array $r)
     {
-        \core\Core::initModClass($r['module'], $r['class_file']);
+        PHPWS_Core::initModClass($r['module'], $r['class_file']);
         $sp = new $r['class']();
-        \core\Core::plugObject($sp, $r);
+        PHPWS_Core::plugObject($sp, $r);
         return $sp;
     }
 
     public function load()
     {
-        $db = new \core\DB('pulse_schedule');
+        $db = new PHPWS_DB('pulse_schedule');
         $result = $db->loadObject($this);
 
-        if(core\Error::logIfError($result)) {
+        if(PHPWS_Error::logIfError($result)) {
             return FALSE;
         }
         return TRUE;
@@ -86,10 +86,10 @@ abstract class ScheduledPulse
 
     public function save()
     {
-        $db = new \core\DB('pulse_schedule');
+        $db = new PHPWS_DB('pulse_schedule');
         $result = $db->saveObject($this);
 
-        if(core\Error::logIfError($result)) {
+        if(PHPWS_Error::logIfError($result)) {
             return FALSE;
         }
         return TRUE;

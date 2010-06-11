@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-core\Core::requireConfig('boost');
+PHPWS_Core::requireConfig('boost');
 
 if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
     Current_User::disallow();
@@ -20,22 +20,22 @@ if (!Current_User::authorized('boost')) {
 }
 
 if (!isset($_REQUEST['action'])) {
-    \core\Core::errorPage(404);
+    PHPWS_Core::errorPage(404);
 }
 
 $js = false;
 
 $content = array();
-core\Core::initModClass('boost', 'Form.php');
-core\Core::initModClass('controlpanel', 'Panel.php');
-core\Core::initModClass('boost', 'Action.php');
+PHPWS_Core::initModClass('boost', 'Form.php');
+PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+PHPWS_Core::initModClass('boost', 'Action.php');
 
 $boostPanel = new PHPWS_Panel('boost');
 $boostPanel->enableSecure();
 Boost_Form::setTabs($boostPanel);
 
 $vars = array('action'=>'admin', 'tab'=>$boostPanel->getCurrentTab());
-$backToBoost = \core\Text::secureLink(dgettext('boost', 'Return to Boost'), 'boost', $vars);
+$backToBoost = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost'), 'boost', $vars);
 
 switch ($_REQUEST['action']){
     case 'admin':
@@ -53,7 +53,7 @@ switch ($_REQUEST['action']){
         break;
 
     case 'aboutView':
-        \core\Core::initModClass('boost', 'Boost.php');
+        PHPWS_Core::initModClass('boost', 'Boost.php');
         PHPWS_Boost::aboutView($_REQUEST['aboutmod']);
         break;
 
@@ -64,8 +64,8 @@ switch ($_REQUEST['action']){
         }
 
         $result = Boost_Action::installModule($_REQUEST['opmod']);
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             $content[] = dgettext('boost', 'An error occurred while installing this module.') .
              ' ' . dgettext('boost', 'Please check your error logs.');
         } else {
@@ -80,7 +80,7 @@ switch ($_REQUEST['action']){
         if (@$_REQUEST['confirm'] == $_REQUEST['opmod']) {
             $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
         } else {
-            \core\Core::goBack();
+            PHPWS_Core::goBack();
         }
         break;
 

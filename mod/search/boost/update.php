@@ -14,8 +14,8 @@ function search_update(&$content, $currentVersion)
             $files[] = 'conf/wordlist.txt';
             $result = PHPWS_Boost::updateFiles($files, 'search');
             if ($result) {
-                if (core\Error::isError($result)) {
-                    \core\Error::log($result);
+                if (PHPWS_Error::isError($result)) {
+                    PHPWS_Error::log($result);
                     $content[] = 'Unable to copy wordlist files locally.';
                 } else {
                     $content[] = 'Wordlist files updated.';

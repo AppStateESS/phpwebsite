@@ -1,5 +1,5 @@
 <?php
-namespace layout;
+
 /**
  * Controls layout's settings
  *
@@ -7,6 +7,7 @@ namespace layout;
  * @version $Id$
  */
 
+PHPWS_Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
     public $current_theme    = null;
@@ -91,11 +92,11 @@ class Layout_Settings {
 
     public function getPageMetaTags($key_id)
     {
-        $db = new \core\DB('layout_metatags');
+        $db = new PHPWS_DB('layout_metatags');
         $db->addWhere('key_id', $key_id);
         $row = $db->select('row');
-        if (core\Error::isError($row)) {
-            \core\Error::log($row);
+        if (PHPWS_Error::isError($row)) {
+            PHPWS_Error::log($row);
             return null;
         }
 
@@ -125,7 +126,7 @@ class Layout_Settings {
     public function loadBoxes()
     {
         $theme = $this->current_theme;
-        $db = new \core\DB('layout_box');
+        $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $theme);
         if(!$boxes = $db->getObjects('Layout_Box')) {
             return;
@@ -141,15 +142,15 @@ class Layout_Settings {
 
     public function loadContentVars()
     {
-        $db = new \core\DB('layout_box');
+        $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $this->current_theme);
         $db->addColumn('content_var');
         $db->addColumn('module');
         $result = $db->select();
 
-        if (\core\Error::isError($result)){
-            \core\Error::log($result);
-            \core\Core::errorPage();
+        if (PHPWS_Error::isError($result)){
+            PHPWS_Error::log($result);
+            PHPWS_Core::errorPage();
         }
 
         if (empty($result)) {
@@ -164,13 +165,13 @@ class Layout_Settings {
 
     public function loadSettings($theme=null)
     {
-        $db = new \core\DB('layout_config');
+        $db = new PHPWS_DB('layout_config');
         $result = $db->loadObject($this, false);
-        if (\core\Error::isError($result)){
-            \core\Error::log($result);
-            \core\Core::errorPage();
+        if (PHPWS_Error::isError($result)){
+            PHPWS_Error::log($result);
+            PHPWS_Core::errorPage();
         }
-
+        
         if ($theme && is_dir(Layout::getThemeDirRoot() . $theme)) {
             $this->default_theme = $theme;
         }
@@ -178,7 +179,7 @@ class Layout_Settings {
         if (empty($this->current_theme)) {
             $this->current_theme = $this->default_theme;
         }
-
+        
         $themeInit = Layout::getThemeDirRoot() . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
@@ -186,21 +187,21 @@ class Layout_Settings {
             $this->loadBoxSettings($themeVars);
             $this->loadStyleSheets($themeVars);
         } else {
-            \core\Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
-            //core\Core::errorPage();
+            PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
+            //PHPWS_Core::errorPage();
         }
         if (Current_User::isDeity()) {
             $this->deity_reload = true;
         }
     }
-
+    
 
     public function loadStyleSheets($themeVars)
     {
         $this->_extra_styles = null;
         $this->_style_sheets = null;
         $directory = sprintf('themes/%s/', $this->current_theme);
-        @$cookie = \core\Cookie::read('layout_style');
+        @$cookie = PHPWS_Cookie::read('layout_style');
 
         for ($i = 1; $i < 20; $i++) {
             if (isset($themeVars['style_sheet_' . $i])) {
@@ -261,8 +262,8 @@ class Layout_Settings {
 
     public function saveSettings()
     {
-        $db = new \core\DB('layout_config');
-        $vars = \core\Core::stripObjValues($this);
+        $db = new PHPWS_DB('layout_config');
+        $vars = PHPWS_Core::stripObjValues($this);
         unset($vars['current_theme']);
         unset($vars['_contentVars']);
         unset($vars['_boxes']);
@@ -281,12 +282,12 @@ class Layout_Settings {
 
     public function loadKeyStyle($key_id)
     {
-        $db = new \core\DB('layout_styles');
+        $db = new PHPWS_DB('layout_styles');
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('style');
         $result = $db->select('one');
-        if (\core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             $this->_key_styles[$key_id] = null;
             return false;
         }

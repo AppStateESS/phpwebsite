@@ -14,7 +14,7 @@ class Profile_Forms {
 
     public function default_form()
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'profiler');
 
         return $form;
@@ -22,8 +22,8 @@ class Profile_Forms {
 
     public function edit($profile)
     {
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
-        $div = new \core\DB('profiler_division');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        $div = new PHPWS_DB('profiler_division');
         $div->addWhere('show_homepage', 1);
         $div->addOrder('title');
         $div->addColumn('id');
@@ -34,7 +34,7 @@ class Profile_Forms {
         if (empty($profile_types)) {
             $vars['tab'] = 'division';
             $msg = dgettext('profiler', 'Please make a profile division type first.');
-            return \core\Text::secureLink($msg, 'profiler', $vars);
+            return PHPWS_Text::secureLink($msg, 'profiler', $vars);
         }
 
         $form = Profile_Forms::default_form();
@@ -99,18 +99,19 @@ class Profile_Forms {
         $template['PHOTO_MEDIUM_LABEL'] = dgettext('profiler', 'Medium photo');
         $template['PHOTO_SMALL_LABEL'] = dgettext('profiler', 'Small photo');
 
-        return \core\Template::process($template, 'profiler', 'forms/edit.tpl');
+        return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
     }
 
     public function profileList()
     {
-                $pageTags['LASTNAME']     = dgettext('profiler', 'Last Name');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pageTags['LASTNAME']     = dgettext('profiler', 'Last Name');
         $pageTags['FIRSTNAME']    = dgettext('profiler', 'First Name');
         $pageTags['PROFILE_TYPE'] = dgettext('profiler', 'Type');
         $pageTags['SUBMIT_DATE']  = dgettext('profiler', 'Submission Date');
         $pageTags['ACTION']       = dgettext('profiler', 'Action');
 
-        $pager = new \core\DBPager('profiles', 'Profile');
+        $pager = new DBPager('profiles', 'Profile');
         $pager->db->addColumn('profiles.*');
         $pager->db->addColumn('profiler_division.title', NULL, '_division_title');
         $pager->db->addWhere('profile_type', 'profiler_division.id');
@@ -131,22 +132,23 @@ class Profile_Forms {
 
         $form->addSelect('profile_number', array(1, 2, 3, 4));
         $form->reindexValue('profile_number');
-        $form->setMatch('profile_number', \core\Settings::get('profiler', 'profile_number'));
+        $form->setMatch('profile_number', PHPWS_Settings::get('profiler', 'profile_number'));
         $form->setLabel('profile_number', dgettext('profiler', 'Number of profiles'));
 
         $form->addCheckbox('profile_homepage', 1);
-        $form->setMatch('profile_homepage', \core\Settings::get('profiler', 'profile_homepage'));
+        $form->setMatch('profile_homepage', PHPWS_Settings::get('profiler', 'profile_homepage'));
         $form->setLabel('profile_homepage', dgettext('profiler', 'Enable profile homepage'));
 
         $form->addSubmit(dgettext('profiler', 'Save settings'));
 
         $template = $form->getTemplate();
-        return \core\Template::process($template, 'profiler', 'forms/settings.tpl');
+        return PHPWS_Template::process($template, 'profiler', 'forms/settings.tpl');
     }
 
     public function divisionList()
     {
-                \core\Core::initModClass('profiler', 'Division.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('profiler', 'Division.php');
         $js_vars['height']  = '200';
         $js_vars['address'] = 'index.php?module=profiler&amp;command=edit_division&authkey=' . Current_User::getAuthKey();
         $js_vars['label']   = dgettext('profiler', 'Add division');
@@ -156,7 +158,7 @@ class Profile_Forms {
         $pageTags['ACTION_LABEL'] = dgettext('profiler', 'Action');
         $pageTags['ID_LABEL']     = dgettext('profiler', 'Division ID');
 
-        $pager = new \core\DBPager('profiler_division', 'Profiler_Division');
+        $pager = new DBPager('profiler_division', 'Profiler_Division');
         $pager->setModule('profiler');
         $pager->setTemplate('forms/division_list.tpl');
         $pager->addToggle('class="toggle1"');
@@ -167,7 +169,7 @@ class Profile_Forms {
 
     public function editDivision(Profiler_Division $division, $error=FALSE)
     {
-        $form = new \core\Form('division');
+        $form = new PHPWS_Form('division');
         $form->addHidden('module', 'profiler');
         $form->addHidden('command', 'update_division');
         if ($division->id) {
@@ -188,7 +190,7 @@ class Profile_Forms {
         if ($error) {
             $template['ERROR'] = dgettext('profiler', 'Your title is empty or already in use. Enter another.');
         }
-        return \core\Template::process($template, 'profiler', 'forms/division_edit.tpl');
+        return PHPWS_Template::process($template, 'profiler', 'forms/division_edit.tpl');
     }
 
 }

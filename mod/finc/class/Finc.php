@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-core\Core::requireInc('finc', 'errordefines.php');
-core\Core::requireConfig('finc');
+PHPWS_Core::requireInc('finc', 'errordefines.php');
+PHPWS_Core::requireConfig('finc');
 
 class Finc {
     var $forms       = null;
@@ -63,12 +63,12 @@ class Finc {
                     Current_User::disallow();
                 }
                 if ($this->postFile()) {
-                    if (core\Error::logIfError($this->file->save())) {
+                    if (PHPWS_Error::logIfError($this->file->save())) {
                         $this->forwardMessage(dgettext('finc', 'Error occurred when saving file.'));
-                        \core\Core::reroute('index.php?module=finc&aop=list');
+                        PHPWS_Core::reroute('index.php?module=finc&aop=list');
                     } else {
                         $this->forwardMessage(dgettext('finc', 'File saved successfully.'));
-                        \core\Core::reroute('index.php?module=finc&aop=list');
+                        PHPWS_Core::reroute('index.php?module=finc&aop=list');
                     }
                 } else {
                     $this->loadForm('edit');
@@ -113,7 +113,7 @@ class Finc {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('finc', 'Finc settings saved.'));
-                    \core\Core::reroute('index.php?module=finc&aop=menu');
+                    PHPWS_Core::reroute('index.php?module=finc&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -126,9 +126,9 @@ class Finc {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(core\Template::process($tpl, 'finc', 'main_admin.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'finc', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(core\Template::process($tpl, 'finc', 'main_admin.tpl'));
+            $this->panel->setContent(PHPWS_Template::process($tpl, 'finc', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -140,7 +140,7 @@ class Finc {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                \core\Core::errorPage('404');
+                PHPWS_Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -152,11 +152,11 @@ class Finc {
             case 'view_file':
                 $this->loadFile();
                 if ($this->file->active) {
-                    if (core\Settings::get('finc', 'show_title'))
+                    if (PHPWS_Settings::get('finc', 'show_title'))
                         $this->title = $this->file->getTitle(true);
-                    if (core\Settings::get('finc', 'add_title_tag'))
+                    if (PHPWS_Settings::get('finc', 'add_title_tag'))
                         Layout::addPageTitle($this->file->getTitle());
-                    if (core\Settings::get('finc', 'show_description'))
+                    if (PHPWS_Settings::get('finc', 'show_description'))
                         $this->description = $this->file->getDescription(true);
                     $this->content = $this->file->getContents();
                 } else {
@@ -177,9 +177,9 @@ class Finc {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(core\Template::process($tpl, 'finc', 'main_user.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'finc', 'main_user.tpl'));
         } else {
-            Layout::add(core\Template::process($tpl, 'finc', 'main_user.tpl'));
+            Layout::add(PHPWS_Template::process($tpl, 'finc', 'main_user.tpl'));
         }
 
     }
@@ -187,7 +187,7 @@ class Finc {
 
     function sendMessage()
     {
-        \core\Core::reroute('index.php?module=finc&amp;uop=message');
+        PHPWS_Core::reroute('index.php?module=finc&amp;uop=message');
     }
 
     function forwardMessage($message, $title=null)
@@ -206,14 +206,14 @@ class Finc {
             if (isset($_SESSION['FINC_Message']['title'])) {
                 $this->title = $_SESSION['FINC_Message']['title'];
             }
-            \core\Core::killSession('FINC_Message');
+            PHPWS_Core::killSession('FINC_Message');
         }
     }
 
 
     function loadForm($type)
     {
-        \core\Core::initModClass('finc', 'FINC_Forms.php');
+        PHPWS_Core::initModClass('finc', 'FINC_Forms.php');
         $this->forms = new Finc_Forms;
         $this->forms->finc = & $this;
         $this->forms->get($type);
@@ -222,7 +222,7 @@ class Finc {
 
     function loadFile($id=0)
     {
-        \core\Core::initModClass('finc', 'FINC_File.php');
+        PHPWS_Core::initModClass('finc', 'FINC_File.php');
 
         if ($id) {
             $this->file = new Finc_File($id);
@@ -238,7 +238,7 @@ class Finc {
 
     function loadPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('finc-panel');
         $link = 'index.php?module=finc&aop=menu';
 
@@ -302,22 +302,22 @@ class Finc {
     {
 
         isset($_POST['show_title']) ?
-            \core\Settings::set('finc', 'show_title', 1) :
-            \core\Settings::set('finc', 'show_title', 0);
+            PHPWS_Settings::set('finc', 'show_title', 1) :
+            PHPWS_Settings::set('finc', 'show_title', 0);
 
         isset($_POST['add_title_tag']) ?
-            \core\Settings::set('finc', 'add_title_tag', 1) :
-            \core\Settings::set('finc', 'add_title_tag', 0);
+            PHPWS_Settings::set('finc', 'add_title_tag', 1) :
+            PHPWS_Settings::set('finc', 'add_title_tag', 0);
 
         isset($_POST['show_description']) ?
-            \core\Settings::set('finc', 'show_description', 1) :
-            \core\Settings::set('finc', 'show_description', 0);
+            PHPWS_Settings::set('finc', 'show_description', 1) :
+            PHPWS_Settings::set('finc', 'show_description', 0);
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (core\Settings::save('finc')) {
+            if (PHPWS_Settings::save('finc')) {
                 return true;
             } else {
                 return falsel;

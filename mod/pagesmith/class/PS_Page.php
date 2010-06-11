@@ -43,9 +43,9 @@ class PS_Page {
 
 	public function init()
 	{
-		$db = new \core\DB('ps_page');
+		$db = new PHPWS_DB('ps_page');
 		$result = $db->loadObject($this);
-		if (core\Error::logIfError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		}
 		if (!$result) {
@@ -65,16 +65,16 @@ class PS_Page {
 
 	public function loadSections($form_mode=false, $filler=true)
 	{
-		core\Core::initModClass('pagesmith', 'PS_Text.php');
-		core\Core::initModClass('pagesmith', 'PS_Block.php');
+		PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+		PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
 
 		if (empty($this->_tpl)) {
 			$this->loadTemplate();
 		}
 
 		if (empty($this->_tpl->structure)) {
-			core\Error::log(PS_PG_TPL_ERROR, 'pagesmith', 'PS_Page::loadSections', $this->_tpl->file);
-			core\Core::errorPage();
+			PHPWS_Error::log(PS_PG_TPL_ERROR, 'pagesmith', 'PS_Page::loadSections', $this->_tpl->file);
+			PHPWS_Core::errorPage();
 		}
 
 		foreach ($this->_tpl->structure as $section_xml) {
@@ -106,8 +106,8 @@ class PS_Page {
 		if ($this->id) {
 			// load sections from database
 			// load sections should handle template
-			$text_db = new \core\DB('ps_text');
-			$block_db = new \core\DB('ps_block');
+			$text_db = new PHPWS_DB('ps_text');
+			$block_db = new PHPWS_DB('ps_block');
 
 			$text_db->addWhere('pid', $this->id);
 			$block_db->addWhere('pid', $this->id);
@@ -121,7 +121,7 @@ class PS_Page {
 			if (!empty($text_sections)) {
 				foreach ($text_sections as $secname=>$section) {
 					if (isset($this->_sections[$secname])) {
-						core\Core::plugObject($this->_sections[$secname], $section);
+						PHPWS_Core::plugObject($this->_sections[$secname], $section);
 						// we don't want smarttags parsed
 						$this->_content[$secname] = $this->_sections[$secname]->getContent(!$form_mode);
 					} else {
@@ -133,7 +133,7 @@ class PS_Page {
 			if (!empty($block_sections)) {
 				foreach ($block_sections as $secname=>$section) {
 					if (isset($this->_sections[$secname])) {
-						core\Core::plugObject($this->_sections[$secname], $section);
+						PHPWS_Core::plugObject($this->_sections[$secname], $section);
 						if ($form_mode && $this->_sections[$secname]->type_id) {
 							//reload the image form if the image is set
 							$this->_sections[$secname]->loadFiller();
@@ -152,7 +152,7 @@ class PS_Page {
 	 */
 	public function loadTemplate($tpl=null)
 	{
-		core\Core::initModClass('pagesmith', 'PS_Template.php');
+		PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
 		if (!empty($tpl)) {
 			$this->_tpl = new PS_Template($tpl);
 		} elseif (!empty($this->template)) {
@@ -168,7 +168,7 @@ class PS_Page {
 	{
 		$vars['uop'] = 'view_page';
 		$tpl['ID'] = $vars['id'] = $this->id;
-		$tpl['TITLE'] = \core\Text::moduleLink($this->title, 'pagesmith', $vars);
+		$tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'pagesmith', $vars);
 
 		if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
 			$links[] = $this->editLink(null, true);
@@ -198,7 +198,7 @@ class PS_Page {
 		}
 
 		if (!$this->parent_page) {
-			$db = new \core\DB('ps_page');
+			$db = new PHPWS_DB('ps_page');
 			$db->addWhere('parent_page', $this->id);
 			$db->addOrder('page_order');
 			$children = $db->getObjects('PS_Page');
@@ -210,7 +210,7 @@ class PS_Page {
 				foreach ($children as $subpage) {
 					$subtpl['subpages'][] = $subpage->row_tags(true);
 				}
-				$tpl['SUBPAGES'] = \core\Template::process($subtpl, 'pagesmith', 'sublist.tpl');
+				$tpl['SUBPAGES'] = PHPWS_Template::process($subtpl, 'pagesmith', 'sublist.tpl');
 			}
 		}
 
@@ -224,13 +224,13 @@ class PS_Page {
 		}
 
 		if ($icon) {
-			$label = \core\Icon::show('add', $label);
+			$label = Icon::show('add', $label);
 		}
 
 		$vars['pid']  = $this->id;
 		$vars['aop'] = 'menu';
 		$vars['tab'] = 'new';
-		return \core\Text::secureLink($label, 'pagesmith', $vars);
+		return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
 	}
 
 
@@ -238,10 +238,10 @@ class PS_Page {
 	{
 		$vars['id']  = $this->id;
 		$vars['aop'] = 'delete_page';
-		$js['ADDRESS'] = \core\Text::linkAddress('pagesmith', $vars,true);
+		$js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars,true);
 		$js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
 		if ($icon) {
-			$js['LINK'] = \core\Icon::show('delete');
+			$js['LINK'] = Icon::show('delete');
 		} else {
 			$js['LINK'] = dgettext('pagesmith', 'Delete');
 		}
@@ -251,14 +251,14 @@ class PS_Page {
 	public function editLink($label=null, $icon=false)
 	{
 		if ($icon) {
-			$label = \core\Icon::show('edit', dgettext('pagesmith', 'Edit page'));
+			$label = Icon::show('edit', dgettext('pagesmith', 'Edit page'));
 		} elseif (empty($label)) {
 			$label = dgettext('pagesmith', 'Edit');
 		}
 
 		$vars['id']  = $this->id;
 		$vars['aop'] = 'edit_page';
-		return \core\Text::secureLink($label, 'pagesmith', $vars);
+		return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
 	}
 
 	public function frontPageToggle($icon=false)
@@ -284,12 +284,12 @@ class PS_Page {
 		$vars['aop'] = 'front_page_toggle';
 		$vars['id'] = $this->id;
 
-		return \core\Text::secureLink($label, 'pagesmith', $vars, null, $title);
+		return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null, $title);
 	}
 
 	public function save()
 	{
-	    \core\Core::initModClass('search', 'Search.php');
+	    PHPWS_Core::initModClass('search', 'Search.php');
 		if (!$this->id) {
 			$this->create_date = time();
 		}
@@ -301,15 +301,15 @@ class PS_Page {
 		if (!$this->page_order && $this->parent_page) {
 			$page_order = $this->getLastPage();
 
-			if (!core\Error::logIfError($page_order)) {
+			if (!PHPWS_Error::logIfError($page_order)) {
 				$this->page_order = $page_order + 1;
 			} else {
 				$this->page_order = 1;
 			}
 		}
 
-		$db = new \core\DB('ps_page');
-		if (core\Error::logIfError($db->saveObject($this))) {
+		$db = new PHPWS_DB('ps_page');
+		if (PHPWS_Error::logIfError($db->saveObject($this))) {
 			return false;
 		}
 
@@ -318,23 +318,23 @@ class PS_Page {
 		$search = new Search($this->key_id);
 		$search->resetKeywords();
 		$search->addKeywords($this->title);
-		core\Error::logIfError($search->save());
+		PHPWS_Error::logIfError($search->save());
 
 		foreach ($this->_sections as $section) {
 			$section->pid = $this->id;
-			core\Error::logIfError($section->save($this->key_id));
+			PHPWS_Error::logIfError($section->save($this->key_id));
 		}
-		core\Cache::remove($this->cacheKey());
+		PHPWS_Cache::remove($this->cacheKey());
 	}
 
 	public function saveKey()
 	{
 		if (empty($this->key_id)) {
-			$key = new \core\Key;
+			$key = new Key;
 		} else {
-			$key = new \core\Key($this->key_id);
-			if (core\Error::isError($key->_error)) {
-				$key = new \core\Key;
+			$key = new Key($this->key_id);
+			if (PHPWS_Error::isError($key->_error)) {
+				$key = new Key;
 			}
 		}
 
@@ -353,19 +353,19 @@ class PS_Page {
 
 		$key->setTitle($this->title);
 		$result = $key->save();
-		if (core\Error::logIfError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return false;
 		}
 
 		if (!$this->key_id) {
 			$this->key_id = $key->id;
-			$db = new \core\DB('ps_page');
+			$db = new PHPWS_DB('ps_page');
 			$db->addWhere('id', $this->id);
 			$db->addValue('key_id', $this->key_id);
-			core\Error::logIfError($db->update());
+			PHPWS_Error::logIfError($db->update());
 		} elseif ($this->_title_change) {
-			if (core\Core::moduleExists('menu')){
-				core\Core::initModClass('menu', 'Menu.php');
+			if (PHPWS_Core::moduleExists('menu')){
+				PHPWS_Core::initModClass('menu', 'Menu.php');
 				Menu::updateKeyLink($this->key_id);
 			}
 		}
@@ -375,7 +375,7 @@ class PS_Page {
 	public function loadKey()
 	{
 		if (empty($this->_key)) {
-			$this->_key = new \core\Key($this->key_id);
+			$this->_key = new Key($this->key_id);
 		}
 	}
 
@@ -401,7 +401,7 @@ class PS_Page {
 			MiniAdmin::add('pagesmith', $this->frontPageToggle());
 		}
 		Layout::getCacheHeaders($this->cacheKey());
-		$cache = \core\Cache::get($this->cacheKey());
+		$cache = PHPWS_Cache::get($this->cacheKey());
 
 		$this->loadTemplate();
 		$this->_tpl->loadStyle();
@@ -414,7 +414,7 @@ class PS_Page {
 		}
 
 		$this->loadSections();
-		if (!empty($this->title) && !core\Core::atHome()) {
+		if (!empty($this->title) && !PHPWS_Core::atHome()) {
 			Layout::addPageTitle($this->title);
 		}
 
@@ -422,41 +422,41 @@ class PS_Page {
 
 		$anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
 
-		$tpl['CONTENT'] = \core\Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
+		$tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
 		$this->pageLinks($tpl);
-		if (core\Settings::get('pagesmith', 'back_to_top')) {
-			$tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', \core\Core::getCurrentUrl(), $anchor_title, dgettext('pagesmith', 'Back to top'));
+		if (PHPWS_Settings::get('pagesmith', 'back_to_top')) {
+			$tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', PHPWS_Core::getCurrentUrl(), $anchor_title, dgettext('pagesmith', 'Back to top'));
 		}
-		$content = \core\Template::process($tpl, 'pagesmith', 'page_frame.tpl');
+		$content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
 
 		Layout::cacheHeaders($this->cacheKey());
-		core\Cache::save($this->cacheKey(), $content);
+		PHPWS_Cache::save($this->cacheKey(), $content);
 		return $content;
 	}
 
 	public function delete()
 	{
-		$db = new \core\DB('ps_page');
+		$db = new PHPWS_DB('ps_page');
 		$db->addWhere('id', $this->id);
 		$result = $db->delete();
-		if (core\Error::logIfError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return false;
 		}
-		core\Key::drop($this->key_id);
+		Key::drop($this->key_id);
 
-		$db = new \core\DB('ps_text');
+		$db = new PHPWS_DB('ps_text');
 		$db->addWhere('pid', $this->id);
 		$db->delete();
 
-		$db = new \core\DB('ps_block');
+		$db = new PHPWS_DB('ps_block');
 		$db->addWhere('pid', $this->id);
 		$db->delete();
 
 		if ($this->parent_page) {
-			$db = new \core\DB('ps_page');
+			$db = new PHPWS_DB('ps_page');
 			$db->addWhere('parent_page', $this->parent_page);
 			$db->addWhere('page_order', $this->page_order, '>');
-			core\Error::logIfError($db->reduceColumn('page_order'));
+			PHPWS_Error::logIfError($db->reduceColumn('page_order'));
 		}
 
 		return true;
@@ -464,7 +464,7 @@ class PS_Page {
 
 	private function pageLinks(&$tpl)
 	{
-		$db = new \core\DB('ps_page');
+		$db = new PHPWS_DB('ps_page');
 		$db->addColumn('id');
 		$db->addColumn('page_order');
 		$db->setIndexBy('page_order');
@@ -478,7 +478,7 @@ class PS_Page {
 
 		$pages = $db->select('col');
 
-		if (core\Error::logIfError($pages) || empty($pages)) {
+		if (PHPWS_Error::logIfError($pages) || empty($pages)) {
 			return;
 		}
 
@@ -494,7 +494,7 @@ class PS_Page {
 
 		foreach ($pages as $page_no=>$id) {
 			if ($page_no == 0 && $prev_page) {
-				$link = new \core\Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith', 'Previous'),
+				$link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith', 'Previous'),
                                        'pagesmith', array('id'=>$prev_page));
 				$links[] = $link->get();
 			}
@@ -507,7 +507,7 @@ class PS_Page {
 					$next_page = null;
 				}
 			} else {
-				$link = new \core\Link($page_no + 1, 'pagesmith', array('id'=>$id));
+				$link = new PHPWS_Link($page_no + 1, 'pagesmith', array('id'=>$id));
 				$link->setRewrite();
 				$links[] = $link->get();
 			}
@@ -530,13 +530,13 @@ class PS_Page {
 		if (MOD_REWRITE_ENABLED) {
 			return 'pagesmith/' . $vars['id'];
 		} else {
-			return \core\Text::linkAddress('pagesmith', $vars);
+			return PHPWS_Text::linkAddress('pagesmith', $vars);
 		}
 	}
 
 	public function getLastPage()
 	{
-		$db = new \core\DB('ps_page');
+		$db = new PHPWS_DB('ps_page');
 		if (!$this->parent_page) {
 			$db->addWhere('parent_page', $this->id);
 		} else {

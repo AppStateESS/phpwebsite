@@ -123,7 +123,7 @@ class vShop_Forms {
 
     function settingsPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=vshop&aop=menu';
 
         if (Current_User::allow('vshop', 'settings', null, null, true)){
@@ -140,7 +140,7 @@ class vShop_Forms {
 
     function ordersPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=vshop&aop=menu';
 
         if (Current_User::allow('vshop', 'edit_orders')){
@@ -160,15 +160,16 @@ class vShop_Forms {
     public function listDepts()
     {
         if (Current_User::allow('vshop', 'edit_items') && isset($_REQUEST['uop'])) {
-            $link[] = \core\Text::secureLink(dgettext('vshop', 'Add new department'), 'vshop', array('aop'=>'new_dept'));
+            $link[] = PHPWS_Text::secureLink(dgettext('vshop', 'Add new department'), 'vshop', array('aop'=>'new_dept'));
             MiniAdmin::add('vshop', $link);
         }
 
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Title');
         $ptags['ITEMS_HEADER'] = dgettext('vshop', 'Items');
 
-        \core\Core::initModClass('vshop', 'vShop_Dept.php');
-                $pager = new \core\DBPager('vshop_depts', 'vShop_Dept');
+        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('vshop_depts', 'vShop_Dept');
         $pager->setModule('vshop');
 
         /* I am not using the next line in this mod, I just leave it
@@ -186,7 +187,7 @@ class vShop_Forms {
             $vars['aop']  = 'menu';
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'new_dept';
-            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vshop', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('vshop', 'Settings'), 'vshop', $vars),  \core\Text::secureLink(dgettext('vshop', 'New Department'), 'vshop', $vars2));
+            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vshop', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('vshop', 'Settings'), 'vshop', $vars),  PHPWS_Text::secureLink(dgettext('vshop', 'New Department'), 'vshop', $vars2));
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
@@ -194,7 +195,7 @@ class vShop_Forms {
         $pager->cacheQueries();
 
         $this->vshop->content = $pager->get();
-        $this->vshop->title = sprintf(dgettext('vshop', '%s Departments'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+        $this->vshop->title = sprintf(dgettext('vshop', '%s Departments'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
     }
 
 
@@ -202,13 +203,14 @@ class vShop_Forms {
     {
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Name');
         $ptags['PRICE_HEADER'] = dgettext('vshop', 'Price');
-//        if (core\Settings::get('vshop', 'use_inventory')) {
+//        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             $ptags['STOCK_HEADER'] = dgettext('vshop', 'Stock');
 //        }
         $ptags['DEPT_HEADER'] = dgettext('vshop', 'Department');
 
-        \core\Core::initModClass('vshop', 'vShop_Item.php');
-                $pager = new \core\DBPager('vshop_items', 'vShop_Item');
+        PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('vshop_items', 'vShop_Item');
         $pager->setModule('vshop');
         $pager->setOrder('title', 'asc', true);
         $pager->setTemplate('list_items.tpl');
@@ -219,7 +221,7 @@ class vShop_Forms {
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'menu';
             $vars2['tab']  = 'new_item';
-            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vshop', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('vshop', 'Settings'), 'vshop', $vars),  \core\Text::secureLink(dgettext('vshop', 'New Item'), 'vshop', $vars2));
+            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vshop', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('vshop', 'Settings'), 'vshop', $vars),  PHPWS_Text::secureLink(dgettext('vshop', 'New Item'), 'vshop', $vars2));
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
@@ -227,22 +229,23 @@ class vShop_Forms {
         $pager->cacheQueries();
 
         $this->vshop->content = $pager->get();
-        $this->vshop->title = sprintf(dgettext('vshop', '%s Items'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+        $this->vshop->title = sprintf(dgettext('vshop', '%s Items'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
     }
 
 
     public function listTaxes()
     {
         if (Current_User::allow('vshop', 'settings') && isset($_REQUEST['uop'])) {
-            $link[] = \core\Text::secureLink(dgettext('vshop', 'Add new tax'), 'vshop', array('aop'=>'new_tax'));
+            $link[] = PHPWS_Text::secureLink(dgettext('vshop', 'Add new tax'), 'vshop', array('aop'=>'new_tax'));
             MiniAdmin::add('vshop', $link);
         }
 
         $ptags['TITLE_HEADER'] = dgettext('vshop', 'Title');
         $ptags['RATE_HEADER'] = dgettext('vshop', 'Rate');
 
-        \core\Core::initModClass('vshop', 'vShop_Tax.php');
-                $pager = new \core\DBPager('vshop_taxes', 'vShop_Tax');
+        PHPWS_Core::initModClass('vshop', 'vShop_Tax.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('vshop_taxes', 'vShop_Tax');
         $pager->setModule('vshop');
 
         $pager->setOrder('title', 'asc', true);
@@ -253,19 +256,19 @@ class vShop_Forms {
             $vars['aop']  = 'menu';
             $vars['tab']  = 'settings';
             $vars2['aop']  = 'new_tax';
-            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vshop', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('vshop', 'Settings'), 'vshop', $vars),  \core\Text::secureLink(dgettext('vshop', 'New Tax'), 'vshop', $vars2));
+            $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('vshop', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('vshop', 'Settings'), 'vshop', $vars),  PHPWS_Text::secureLink(dgettext('vshop', 'New Tax'), 'vshop', $vars2));
         }
         if (Current_User::allow('vshop', 'settings', null, null, true)) {
             $vars['aop']  = 'new_tax';
-            $label = \core\Icon::show('add', dgettext('rolodex', 'Add Tax'));
-            $ptags['ADD_LINK'] = \core\Text::secureLink($label . ' ' . dgettext('vshop', 'Add Tax'), 'vshop', $vars);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Tax'));
+            $ptags['ADD_LINK'] = PHPWS_Text::secureLink($label . ' ' . dgettext('vshop', 'Add Tax'), 'vshop', $vars);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->cacheQueries();
 
         $this->vshop->content = $pager->get();
-        $this->vshop->title = sprintf(dgettext('vshop', '%s Taxes'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+        $this->vshop->title = sprintf(dgettext('vshop', '%s Taxes'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
     }
 
 
@@ -277,8 +280,9 @@ class vShop_Forms {
         $ptags['UPDATED_HEADER'] = dgettext('vshop', 'Modified');
         $ptags['STATUS_HEADER'] = dgettext('vshop', 'Status');
 
-        \core\Core::initModClass('vshop', 'vShop_Order.php');
-                $pager = new \core\DBPager('vshop_orders', 'vShop_Order');
+        PHPWS_Core::initModClass('vshop', 'vShop_Order.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('vshop_orders', 'vShop_Order');
         $pager->setModule('vshop');
         $pager->addWhere('completed', $completed);
         $pager->addWhere('cancelled', $cancelled);
@@ -291,13 +295,13 @@ class vShop_Forms {
         $pager->cacheQueries();
 
         $this->vshop->content = $pager->get();
-        $this->vshop->title = sprintf(dgettext('vshop', '%s Orders'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+        $this->vshop->title = sprintf(dgettext('vshop', '%s Orders'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
     }
 
 
     public function editDept()
     {
-        $form = new \core\Form('vshop_dept');
+        $form = new PHPWS_Form('vshop_dept');
         $dept = & $this->vshop->dept;
 
         $form->addHidden('module', 'vshop');
@@ -305,10 +309,10 @@ class vShop_Forms {
         if ($dept->id) {
             $form->addHidden('id', $dept->id);
             $form->addSubmit(dgettext('vshop', 'Update'));
-            $this->vshop->title = sprintf(dgettext('vshop', 'Update %s department'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+            $this->vshop->title = sprintf(dgettext('vshop', 'Update %s department'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
         } else {
             $form->addSubmit(dgettext('vshop', 'Create'));
-            $this->vshop->title = sprintf(dgettext('vshop', 'Create %s department'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+            $this->vshop->title = sprintf(dgettext('vshop', 'Create %s department'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
         }
 
         $form->addText('title', $dept->getTitle());
@@ -324,12 +328,12 @@ class vShop_Forms {
         $form->setRequired('description');
         $form->setLabel('description', dgettext('vshop', 'Description'));
 
-        if (core\Settings::get('vshop', 'enable_files')) {
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        if (PHPWS_Settings::get('vshop', 'enable_files')) {
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $dept->file_id);
             $manager->imageOnly();
-            $manager->maxImageWidth(core\Settings::get('vshop', 'max_width'));
-            $manager->maxImageHeight(core\Settings::get('vshop', 'max_height'));
+            $manager->maxImageWidth(PHPWS_Settings::get('vshop', 'max_width'));
+            $manager->maxImageHeight(PHPWS_Settings::get('vshop', 'max_height'));
             if ($manager) {
                 $form->addTplTag('FILE_MANAGER', $manager->get());
             }
@@ -340,13 +344,13 @@ class vShop_Forms {
         $tpl['DETAILS_LABEL'] = dgettext('vshop', 'Details');
 
 
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'edit_dept.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'edit_dept.tpl');
     }
 
 
     public function editItem()
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $item = & $this->vshop->item;
         $dept = & $this->vshop->dept;
 
@@ -362,8 +366,8 @@ class vShop_Forms {
             $form->addSubmit(dgettext('vshop', 'Add'));
         }
 
-        \core\Core::initModClass('vshop', 'vShop_Dept.php');
-        $db = new \core\DB('vshop_depts');
+        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+        $db = new PHPWS_DB('vshop_depts');
         $db->addColumn('id');
         $db->addColumn('title');
         $result = $db->getObjects('vShop_Dept');
@@ -388,12 +392,12 @@ class vShop_Forms {
         $form->setRequired('description');
         $form->setLabel('description', dgettext('vshop', 'Description'));
 
-        if (core\Settings::get('vshop', 'enable_files')) {
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        if (PHPWS_Settings::get('vshop', 'enable_files')) {
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $manager = Cabinet::fileManager('file_id', $item->file_id);
 //            $manager->imageOnly();
-            $manager->maxImageWidth(core\Settings::get('vshop', 'max_width'));
-            $manager->maxImageHeight(core\Settings::get('vshop', 'max_height'));
+            $manager->maxImageWidth(PHPWS_Settings::get('vshop', 'max_width'));
+            $manager->maxImageHeight(PHPWS_Settings::get('vshop', 'max_height'));
             if ($manager) {
                 $form->addTplTag('FILE_MANAGER', $manager->get());
             }
@@ -409,7 +413,7 @@ class vShop_Forms {
         $form->setMatch('taxable', $item->taxable);
         $form->setLabel('taxable', dgettext('vshop', 'Taxable'));
 
-        if (core\Settings::get('vshop', 'use_inventory')) {
+        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             $form->addText('stock', $item->stock);
             $form->setSize('stock', 5);
             $form->setMaxSize('stock', 5);
@@ -423,7 +427,7 @@ class vShop_Forms {
 //        $form->setRequired('weight');
         $form->setLabel('weight', dgettext('vshop', 'Weight'));
 
-        if (core\Settings::get('vshop', 'shipping_calculation') == 2) {
+        if (PHPWS_Settings::get('vshop', 'shipping_calculation') == 2) {
             $form->addText('shipping', $item->shipping);
             $form->setSize('shipping', 5);
             $form->setMaxSize('shipping', 5);
@@ -434,13 +438,13 @@ class vShop_Forms {
         $tpl = $form->getTemplate();
         $tpl['INFO_LABEL'] = dgettext('vshop', 'Item details');
 
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'edit_item.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'edit_item.tpl');
     }
 
 
     public function editTax()
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $tax = & $this->vshop->tax;
         require PHPWS_SOURCE_DIR . 'mod/vshop/inc/zones.php';
 
@@ -474,7 +478,7 @@ class vShop_Forms {
         $tpl = $form->getTemplate();
         $tpl['INFO_LABEL'] = dgettext('vshop', 'Tax details');
 
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'edit_tax.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'edit_tax.tpl');
     }
 
 
@@ -487,14 +491,14 @@ class vShop_Forms {
         $tpl['CUSTOMER'] = $this->billingApp();
 
         $this->vshop->title = dgettext('vshop', 'Checkout');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'checkout.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'checkout.tpl');
     }
 
 
     public function setStatus($order)
     {
 
-        $form = new \core\Form('set_status');
+        $form = new PHPWS_Form('set_status');
         require PHPWS_SOURCE_DIR . 'mod/vshop/inc/statuses.php';
 
         $form->addHidden('module', 'vshop');
@@ -514,7 +518,7 @@ class vShop_Forms {
         $tpl = $form->getTemplate();
         $tpl['TITLE'] = sprintf(dgettext('vshop', 'Order %s Status'), $order->id);
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />', dgettext('vshop', 'Cancel'));
-        $content = \core\Template::process($tpl, 'vshop', 'set_status.tpl');
+        $content = PHPWS_Template::process($tpl, 'vshop', 'set_status.tpl');
 
         return $content;
     }
@@ -524,115 +528,115 @@ class vShop_Forms {
     {
 
         require PHPWS_SOURCE_DIR . 'mod/vshop/inc/payment_methods.php';
-        $form = new \core\Form('vshop_settings');
+        $form = new PHPWS_Form('vshop_settings');
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('enable_sidebox', 1);
-        $form->setMatch('enable_sidebox', \core\Settings::get('vshop', 'enable_sidebox'));
-        $form->setLabel('enable_sidebox', sprintf(dgettext('vshop', 'Enable %s sidebox'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title'))));
+        $form->setMatch('enable_sidebox', PHPWS_Settings::get('vshop', 'enable_sidebox'));
+        $form->setLabel('enable_sidebox', sprintf(dgettext('vshop', 'Enable %s sidebox'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title'))));
 
         $form->addCheckbox('sidebox_homeonly', 1);
-        $form->setMatch('sidebox_homeonly', \core\Settings::get('vshop', 'sidebox_homeonly'));
+        $form->setMatch('sidebox_homeonly', PHPWS_Settings::get('vshop', 'sidebox_homeonly'));
         $form->setLabel('sidebox_homeonly', dgettext('vshop', 'Show sidebox on home page only'));
 
-        $form->addTextField('mod_title', \core\Settings::get('vshop', 'mod_title'));
+        $form->addTextField('mod_title', PHPWS_Settings::get('vshop', 'mod_title'));
         $form->setLabel('mod_title', dgettext('vshop', 'Module title'));
         $form->setSize('mod_title', 30);
 
-        $form->addTextArea('sidebox_text', \core\Text::parseOutput(core\Settings::get('vshop', 'sidebox_text')));
+        $form->addTextArea('sidebox_text', PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'sidebox_text')));
         $form->setRows('sidebox_text', '4');
         $form->setCols('sidebox_text', '40');
         $form->setLabel('sidebox_text', dgettext('vshop', 'Sidebox text'));
 
         $form->addCheckbox('enable_files', 1);
-        $form->setMatch('enable_files', \core\Settings::get('vshop', 'enable_files'));
+        $form->setMatch('enable_files', PHPWS_Settings::get('vshop', 'enable_files'));
         $form->setLabel('enable_files', dgettext('vshop', 'Enable images and files on department and item records'));
 
-        $form->addTextField('max_width', \core\Settings::get('vshop', 'max_width'));
+        $form->addTextField('max_width', PHPWS_Settings::get('vshop', 'max_width'));
         $form->setLabel('max_width', dgettext('vshop', 'Maximum image width (50-600)'));
         $form->setSize('max_width', 4,4);
 
-        $form->addTextField('max_height', \core\Settings::get('vshop', 'max_height'));
+        $form->addTextField('max_height', PHPWS_Settings::get('vshop', 'max_height'));
         $form->setLabel('max_height', dgettext('vshop', 'Maximum image height (50-600)'));
         $form->setSize('max_height', 4,4);
 
         $form->addCheckbox('use_inventory', 1);
-        $form->setMatch('use_inventory', \core\Settings::get('vshop', 'use_inventory'));
+        $form->setMatch('use_inventory', PHPWS_Settings::get('vshop', 'use_inventory'));
         $form->setLabel('use_inventory', dgettext('vshop', 'Use inventory control'));
 
         $form->addCheckbox('use_breadcrumb', 1);
-        $form->setMatch('use_breadcrumb', \core\Settings::get('vshop', 'use_breadcrumb'));
+        $form->setMatch('use_breadcrumb', PHPWS_Settings::get('vshop', 'use_breadcrumb'));
         $form->setLabel('use_breadcrumb', dgettext('vshop', 'Use breadcrumb navigation'));
 
-        $form->addTextArea('checkout_inst', \core\Text::parseOutput(core\Settings::get('vshop', 'checkout_inst')));
+        $form->addTextArea('checkout_inst', PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'checkout_inst')));
         $form->setRows('checkout_inst', '4');
         $form->setCols('checkout_inst', '40');
         $form->setLabel('checkout_inst', dgettext('vshop', 'Checkout instructions'));
 
-        $form->addTextField('admin_email', \core\Settings::get('vshop', 'admin_email'));
+        $form->addTextField('admin_email', PHPWS_Settings::get('vshop', 'admin_email'));
         $form->setRequired('admin_email');
         $form->setLabel('admin_email', dgettext('vshop', 'Shop admin e-mail'));
         $form->setSize('admin_email', 30);
 
-        $form->addTextArea('order_message', \core\Text::parseOutput(core\Settings::get('vshop', 'order_message')));
+        $form->addTextArea('order_message', PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'order_message')));
         $form->setRows('order_message', '4');
         $form->setCols('order_message', '40');
         $form->setLabel('order_message', dgettext('vshop', 'Thanks message to customer'));
 
-        $form->addTextField('weight_unit', \core\Settings::get('vshop', 'weight_unit'));
+        $form->addTextField('weight_unit', PHPWS_Settings::get('vshop', 'weight_unit'));
         $form->setLabel('weight_unit', dgettext('vshop', 'Unit of weight'));
         $form->setSize('weight_unit', 5);
 
-        $form->addTextField('currency', \core\Settings::get('vshop', 'currency'));
+        $form->addTextField('currency', PHPWS_Settings::get('vshop', 'currency'));
         $form->setRequired('currency');
         $form->setLabel('currency', dgettext('vshop', 'Currency code (ISO 3 letter code, eg. USD, CAD)'));
         $form->setSize('currency', 5);
 
-        $form->addTextField('currency_symbol', \core\Settings::get('vshop', 'currency_symbol'));
+        $form->addTextField('currency_symbol', PHPWS_Settings::get('vshop', 'currency_symbol'));
         $form->setLabel('currency_symbol', dgettext('vshop', 'Currency symbol'));
         $form->setSize('currency_symbol', 5);
 
         $choices = array(1=>dgettext('vshop', 'Leading'), 2=>dgettext('vshop', 'Trailing'));
         $form->addSelect('curr_symbol_pos', $choices);
-        $form->setMatch('curr_symbol_pos', \core\Settings::get('vshop', 'curr_symbol_pos'));
+        $form->setMatch('curr_symbol_pos', PHPWS_Settings::get('vshop', 'curr_symbol_pos'));
         $form->setLabel('curr_symbol_pos', dgettext('vshop', 'Currency marker position'));
 
         $form->addCheckbox('display_currency', 1);
-        $form->setMatch('display_currency', \core\Settings::get('vshop', 'display_currency'));
+        $form->setMatch('display_currency', PHPWS_Settings::get('vshop', 'display_currency'));
         $form->setLabel('display_currency', dgettext('vshop', 'Display currency code'));
 
         $choices = array(1=>dgettext('vshop', 'Free shipping'), 2=>dgettext('vshop', 'Flat rate per item'), 3=>dgettext('vshop', 'Flat rate per order'), 4=>dgettext('vshop', '% rate * weight'), 5=>dgettext('vshop', '% rate * total'));
         $form->addSelect('shipping_calculation', $choices);
         $form->setLabel('shipping_calculation', dgettext('vShop', 'Shipping calculation method'));
-        $form->setMatch('shipping_calculation', \core\Settings::get('vshop', 'shipping_calculation'));
+        $form->setMatch('shipping_calculation', PHPWS_Settings::get('vshop', 'shipping_calculation'));
 
-        $form->addTextField('shipping_flat', \core\Settings::get('vshop', 'shipping_flat'));
+        $form->addTextField('shipping_flat', PHPWS_Settings::get('vshop', 'shipping_flat'));
         $form->setLabel('shipping_flat', dgettext('vshop', '.00 Shipping flat rate (if using flat rate per order)'));
         $form->setSize('shipping_flat', 4);
 
-        $form->addTextField('shipping_percent', \core\Settings::get('vshop', 'shipping_percent'));
+        $form->addTextField('shipping_percent', PHPWS_Settings::get('vshop', 'shipping_percent'));
         $form->setLabel('shipping_percent', dgettext('vshop', '% Shipping rate (if using a percentage rate)'));
         $form->setSize('shipping_percent', 3);
 
-        $form->addTextField('shipping_minimum', number_format(core\Settings::get('vshop', 'shipping_minimum'), 2, '.', ','));
+        $form->addTextField('shipping_minimum', number_format(PHPWS_Settings::get('vshop', 'shipping_minimum'), 2, '.', ','));
         $form->setLabel('shipping_minimum', dgettext('vshop', 'Minimum shipping charge of x.xx (0 to disable)'));
         $form->setSize('shipping_minimum', 6);
 
-        $form->addTextField('shipping_maximum', number_format(core\Settings::get('vshop', 'shipping_maximum'), 2, '.', ','));
+        $form->addTextField('shipping_maximum', number_format(PHPWS_Settings::get('vshop', 'shipping_maximum'), 2, '.', ','));
         $form->setLabel('shipping_maximum', dgettext('vshop', 'Free shipping if total is over xx.xx (0 to disable)'));
         $form->setSize('shipping_maximum', 6);
 
         $form->addMultiple('pay_methods', $pay_methods);
         $form->setRequired('pay_methods');
         $form->setLabel('pay_methods', dgettext('vshop', 'Payment Method(s)'));
-        $form->setMatch('pay_methods', unserialize(core\Settings::get('vshop', 'payment_methods')));
+        $form->setMatch('pay_methods', unserialize(PHPWS_Settings::get('vshop', 'payment_methods')));
 
         $form->addCheckbox('secure_checkout', 1);
-        $form->setMatch('secure_checkout', \core\Settings::get('vshop', 'secure_checkout'));
+        $form->setMatch('secure_checkout', PHPWS_Settings::get('vshop', 'secure_checkout'));
         $form->setLabel('secure_checkout', dgettext('vshop', 'Use SSL checkout'));
 
-        $form->addTextField('secure_url', \core\Settings::get('vshop', 'secure_url'));
+        $form->addTextField('secure_url', PHPWS_Settings::get('vshop', 'secure_url'));
         $form->setLabel('secure_url', dgettext('vshop', 'Secure URL (eg. https://secure.mydomain.com/)'));
         $form->setSize('secure_url', 40);
 
@@ -647,7 +651,7 @@ class vShop_Forms {
         $tpl['PAY_METHODS_NOTE'] = dgettext('vshop', 'You must check each payment method you wish to use for configuration. For instance, the Paypal method requires an email address. Please refer to mod/vshop/class/pay_mods/*.php for each method you wish to offer.');
 
         $this->vshop->title = dgettext('vshop', 'Settings');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'edit_settings.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'edit_settings.tpl');
     }
 
 
@@ -659,7 +663,7 @@ class vShop_Forms {
         $tpl['INFO'] = 'coming soon...';
 
         $this->vshop->title = dgettext('vshop', 'Reports');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'reports.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'reports.tpl');
     }
 
 
@@ -680,19 +684,19 @@ class vShop_Forms {
         $tpl['DONATE'] = sprintf(dgettext('vshop', 'If you would like to help out with the ongoing development of vShop, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=vShop%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->vshop->title = dgettext('vshop', 'Read me');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'info.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'info.tpl');
     }
 
 
     public function selectDept()
     {
 
-        $form = new \core\Form('vshop_depts');
+        $form = new PHPWS_Form('vshop_depts');
         $form->addHidden('module', 'vshop');
         $form->addHidden('aop', 'edit_item');
 
-        \core\Core::initModClass('vshop', 'vShop_Dept.php');
-        $db = new \core\DB('vshop_depts');
+        PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
+        $db = new PHPWS_DB('vshop_depts');
         $db->addColumn('id');
         $db->addColumn('title');
         $result = $db->getObjects('vShop_Dept');
@@ -705,21 +709,21 @@ class vShop_Forms {
             $form->setLabel('dept_id', dgettext('vshop', 'Available departments'));
             $form->addSubmit('save', dgettext('vshop', 'Continue'));
         } else {
-            $form->addTplTag('NO_DEPTS_NOTE', sprintf(dgettext('vshop', 'Sorry, there are no departments available. You will have to create a %s first.'), \core\Text::secureLink(dgettext('vshop', 'New Department'), 'vshop', array('aop'=>'new_dept'))));
+            $form->addTplTag('NO_DEPTS_NOTE', sprintf(dgettext('vshop', 'Sorry, there are no departments available. You will have to create a %s first.'), PHPWS_Text::secureLink(dgettext('vshop', 'New Department'), 'vshop', array('aop'=>'new_dept'))));
         }
         
         $tpl = $form->getTemplate();
         $tpl['DEPT_ID_GROUP_LABEL'] = dgettext('vshop', 'Select department');
 
         $this->vshop->title = dgettext('vshop', 'New item step one');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'select_dept.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'select_dept.tpl');
     }
 
 
     public function checkout()
     {
 
-        $tpl['INSTRUCTION'] = \core\Text::parseOutput(core\Settings::get('vshop', 'checkout_inst'));
+        $tpl['INSTRUCTION'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'checkout_inst'));
         $tpl['CART_TITLE'] = dgettext('vshop', 'Cart contents');
         $tpl['CART'] = $this->cartApp();
         $tpl['NOTE'] = dgettext('vshop', 'Any applicable taxes and shipping/handling fees will be calculated and displayed when you click Continue below.');
@@ -727,24 +731,24 @@ class vShop_Forms {
         $tpl['CUSTOMER'] = $this->billingApp();
 
         $this->vshop->title = dgettext('vshop', 'Checkout');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'checkout.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'checkout.tpl');
     }
 
 
     public function cartApp()
     {
-        $form = new \core\Form('vshop_cart');
+        $form = new PHPWS_Form('vshop_cart');
         $form->addHidden('module', 'vshop');
         $form->addHidden('uop', 'update_cart');
         $form->addSubmit(dgettext('vshop', 'Update quantities'));
 
         $tpl = $form->getTemplate();
 
-        \core\Core::initModClass('vshop', 'vShop_Cart.php');
+        PHPWS_Core::initModClass('vshop', 'vShop_Cart.php');
         $cart = vShop_Cart::CreateInstance();
         $cart_data = $cart->GetCart();
         if (!empty($cart_data)) {
-            $tpl['TITLE'] = sprintf(dgettext('vshop', '%s Cart'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+            $tpl['TITLE'] = sprintf(dgettext('vshop', '%s Cart'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
             $tpl['LABEL'] = dgettext('vshop', 'Cart contents');
             $tpl['NAME_LABEL'] = dgettext('vshop', 'Name');
             $tpl['QTY_LABEL'] = dgettext('vshop', 'Qty');
@@ -753,7 +757,7 @@ class vShop_Forms {
             $total_items = 0.00;
             foreach ($cart_data as $id=>$val) {
                 $qty = $cart_data[$id]['count'];
-                \core\Core::initModClass('vshop', 'vShop_Item.php');
+                PHPWS_Core::initModClass('vshop', 'vShop_Item.php');
                 $item = new vShop_Item($id);
                 $subtotal = $item->price * $qty;
                 $total_items = $total_items + $subtotal;
@@ -768,25 +772,25 @@ class vShop_Forms {
             }
             $tpl['TOTAL_LABEL'] = dgettext('vshop', 'Total');
 //            $tpl['TOTAL'] = number_format($total_items, 2, '.', ',');
-            if (core\Settings::get('vshop', 'curr_symbol_pos') == 1) {
-                $tpl['TOTAL'] = \core\Settings::get('vshop', 'currency_symbol') . number_format($total_items, 2, '.', ',');
-                if (core\Settings::get('vshop', 'display_currency')) {
-                    $tpl['TOTAL'] .= ' ' . \core\Settings::get('vshop', 'currency');
+            if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
+                $tpl['TOTAL'] = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($total_items, 2, '.', ',');
+                if (PHPWS_Settings::get('vshop', 'display_currency')) {
+                    $tpl['TOTAL'] .= ' ' . PHPWS_Settings::get('vshop', 'currency');
                 }
             } else {
-                $tpl['TOTAL'] = number_format($total_items, 2, '.', ',') . \core\Settings::get('vshop', 'currency_symbol');
-                if (core\Settings::get('vshop', 'display_currency')) {
-                    $tpl['TOTAL'] .= ' ' . \core\Settings::get('vshop', 'currency');
+                $tpl['TOTAL'] = number_format($total_items, 2, '.', ',') . PHPWS_Settings::get('vshop', 'currency_symbol');
+                if (PHPWS_Settings::get('vshop', 'display_currency')) {
+                    $tpl['TOTAL'] .= ' ' . PHPWS_Settings::get('vshop', 'currency');
                 }
             }
-            return \core\Template::process($tpl, 'vshop', 'checkout_cart.tpl');
+            return PHPWS_Template::process($tpl, 'vshop', 'checkout_cart.tpl');
         }
     }
 
 
     public function billingApp($admin=false)
     {
-        $form = new \core\Form('vshop_billing');
+        $form = new PHPWS_Form('vshop_billing');
         $order = & $this->vshop->order;
         require PHPWS_SOURCE_DIR . 'mod/vshop/inc/zones.php';
         require PHPWS_SOURCE_DIR . 'mod/vshop/inc/payment_methods.php';
@@ -862,7 +866,7 @@ class vShop_Forms {
         $form->setLabel('postal_code', dgettext('vshop', 'Postal/Zip code'));
 
 
-        $allowed_methods = unserialize(core\Settings::get('vshop', 'payment_methods'));
+        $allowed_methods = unserialize(PHPWS_Settings::get('vshop', 'payment_methods'));
         foreach ($allowed_methods as $method) {
             $choices[$method] = $pay_methods[$method];
         }
@@ -875,7 +879,7 @@ class vShop_Forms {
 
         $tpl = $form->getTemplate();
 
-        return \core\Template::process($tpl, 'vshop', 'checkout_billing.tpl');
+        return PHPWS_Template::process($tpl, 'vshop', 'checkout_billing.tpl');
     }
 
 
@@ -888,7 +892,7 @@ class vShop_Forms {
         $tpl['PAYMENT'] = $this->paymentApp();
 
         $this->vshop->title = dgettext('vshop', 'Payment');
-        $this->vshop->content = \core\Template::process($tpl, 'vshop', 'payment.tpl');
+        $this->vshop->content = PHPWS_Template::process($tpl, 'vshop', 'payment.tpl');
     }
 
 
@@ -898,7 +902,7 @@ class vShop_Forms {
         $order = & $this->vshop->order;
         $order_data = $order->order_array;
 
-        $tpl['TITLE'] = sprintf(dgettext('vshop', '%s Purchase'), \core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')));
+        $tpl['TITLE'] = sprintf(dgettext('vshop', '%s Purchase'), PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')));
         $tpl['LABEL'] = dgettext('vshop', 'Order details');
         $tpl['ID_LABEL'] = dgettext('vshop', 'ID');
         $tpl['NAME_LABEL'] = dgettext('vshop', 'Name');
@@ -935,22 +939,22 @@ class vShop_Forms {
 
         $tpl['FINAL_LABEL'] = dgettext('vshop', 'Total Due');
 //        $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',');
-        if (core\Settings::get('vshop', 'curr_symbol_pos') == 1) {
-            $tpl['FINAL'] = \core\Settings::get('vshop', 'currency_symbol') . number_format($order_data['total_grand'], 2, '.', ',');
-            if (core\Settings::get('vshop', 'display_currency')) {
-                $tpl['FINAL'] .= ' ' . \core\Settings::get('vshop', 'currency');
+        if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
+            $tpl['FINAL'] = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($order_data['total_grand'], 2, '.', ',');
+            if (PHPWS_Settings::get('vshop', 'display_currency')) {
+                $tpl['FINAL'] .= ' ' . PHPWS_Settings::get('vshop', 'currency');
             }
         } else {
-            $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',') . \core\Settings::get('vshop', 'currency_symbol');
-            if (core\Settings::get('vshop', 'display_currency')) {
-                $tpl['FINAL'] .= ' ' . \core\Settings::get('vshop', 'currency');
+            $tpl['FINAL'] = number_format($order_data['total_grand'], 2, '.', ',') . PHPWS_Settings::get('vshop', 'currency_symbol');
+            if (PHPWS_Settings::get('vshop', 'display_currency')) {
+                $tpl['FINAL'] .= ' ' . PHPWS_Settings::get('vshop', 'currency');
             }
         }
         
         if ($formatted) {
-            return \core\Template::process($tpl, 'vshop', 'order_details.tpl');
+            return PHPWS_Template::process($tpl, 'vshop', 'order_details.tpl');
         } else {
-            return \core\Template::process($tpl, 'vshop', 'order_details_plain.tpl');
+            return PHPWS_Template::process($tpl, 'vshop', 'order_details_plain.tpl');
         }
     }
 
@@ -961,13 +965,13 @@ class vShop_Forms {
         /* I should error check here to make sure the class is there */
         
         $payclass = $this->vshop->order->pay_method;
-        \core\Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
+        PHPWS_Core::initModClass('vshop', 'pay_mods/' . $payclass . '.php');
         $payment = new $payclass($this->vshop->order->id);
 
         $this->vshop->title = dgettext('vshop', 'Confirm order');
         $tpl = $payment->form($this->vshop->order);
 
-        return \core\Template::process($tpl, 'vshop', 'pay_mods/' . $payclass . '.tpl');
+        return PHPWS_Template::process($tpl, 'vshop', 'pay_mods/' . $payclass . '.tpl');
     }
 
 

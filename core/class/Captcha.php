@@ -1,5 +1,4 @@
 <?php
-namespace core;
 /**
  * Small class that assists in loading CAPTCHA routines
  *

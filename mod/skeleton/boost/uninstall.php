@@ -24,8 +24,8 @@
 
 function skeleton_uninstall(&$content) {
 
-    \core\DB::dropTable('skeleton_skeletons');
-    \core\DB::dropTable('skeleton_bones');
+    PHPWS_DB::dropTable('skeleton_skeletons');
+    PHPWS_DB::dropTable('skeleton_bones');
     $content[] = dgettext('skeleton', 'Skeleton tables dropped.');
 
     return true;

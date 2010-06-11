@@ -11,7 +11,7 @@
  */
 if (isset($_REQUEST['module']))
 return;
-core\Core::initModClass('phpwsbb', 'BB_Data.php');
+PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
 $forums = PHPWSBB_Data::get_forum_list();
 $forum_ids = array_keys($forums);
 
@@ -19,23 +19,23 @@ $forum_ids = array_keys($forums);
  * Display block with all active forums
  */
 $list = array();
-if (!isset($_REQUEST['module']) && \core\Settings::get('phpwsbb', 'showforumsblock')) {
+if (!isset($_REQUEST['module']) && PHPWS_Settings::get('phpwsbb', 'showforumsblock')) {
     if (!Current_User::isLogged()) {
         $cachekey = 'bb_forumsblock';
-        $list = \core\Cache::get($cachekey);
+        $list = PHPWS_Cache::get($cachekey);
         if (!empty($list))
         $list = unserialize($list);
     }
     if (empty($list))  {
         $list = array();
         foreach($forums as $rowid => $row)
-        $list[]['ITEM'] = \core\Text::rewriteLink(core\Text::parseOutput($row), 'phpwsbb', array('view'=>'forum', 'id'=>$rowid));
+        $list[]['ITEM'] = PHPWS_Text::rewriteLink(PHPWS_Text::parseOutput($row), 'phpwsbb', array('view'=>'forum', 'id'=>$rowid));
         if (!Current_User::isLogged())
-        \core\Cache::save($cachekey, serialize($list), 86400);
+        PHPWS_Cache::save($cachekey, serialize($list), 86400);
     }
     if (!empty($list))  {
         $title = dgettext('phpwsbb', 'Message Boards');
-        $finalContent = \core\Template::process(array('TITLE'=>$title, 'listrows'=>$list), 'phpwsbb', 'forum_links.tpl');
+        $finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'listrows'=>$list), 'phpwsbb', 'forum_links.tpl');
         Layout::add($finalContent, 'phpwsbb', 'forumsblock');
     }
 }
@@ -45,25 +45,25 @@ if (!isset($_REQUEST['module']) && \core\Settings::get('phpwsbb', 'showforumsblo
  * Display block with recently changed threads in it
  */
 $list = array();
-if (core\Settings::get('phpwsbb', 'showlatestpostsblock')) {
+if (PHPWS_Settings::get('phpwsbb', 'showlatestpostsblock')) {
     // Load all forum records
     if (!Current_User::isLogged()) {
         $cachekey = 'bb_latestpostsblock';
-        $list = \core\Cache::get($cachekey);
+        $list = PHPWS_Cache::get($cachekey);
         if (!empty($list))
         $list = unserialize($list);
     }
     if (empty($list))  {
-        \core\Core::initModClass('phpwsbb', 'Topic.php');
-        $db = new \core\DB('phpwsbb_topics');
+        PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
+        $db = new PHPWS_DB('phpwsbb_topics');
         PHPWSBB_Topic::addColumns($db);
-        \core\Key::restrictView($db, 'phpwsbb');
+        Key::restrictView($db, 'phpwsbb');
         $db->addOrder('lastpost_date desc');
-        $db->setLimit(core\Settings::get('phpwsbb', 'maxlatesttopics'));
+        $db->setLimit(PHPWS_Settings::get('phpwsbb', 'maxlatesttopics'));
         // What forums can we search in?
         $db->addWhere('fid', $forum_ids, 'IN');
         $result = $db->select();
-        if (core\Error::logIfError($result))
+        if (PHPWS_Error::logIfError($result))
         return;
         if (!empty($result)) {
             $list = array();
@@ -73,11 +73,11 @@ if (core\Settings::get('phpwsbb', 'showlatestpostsblock')) {
             }
         }
         if (!Current_User::isLogged())
-        \core\Cache::save($cachekey, serialize($list), 86400);
+        PHPWS_Cache::save($cachekey, serialize($list), 86400);
     }
     if (!empty($list))  {
         $title = dgettext('phpwsbb', 'Latest Forum Posts');
-        $finalContent = \core\Template::process(array('TITLE'=>$title, 'listrows'=>$list), 'phpwsbb', 'latest_posts.tpl');
+        $finalContent = PHPWS_Template::process(array('TITLE'=>$title, 'listrows'=>$list), 'phpwsbb', 'latest_posts.tpl');
         Layout::add($finalContent, 'phpwsbb', 'latestpostsblock');
     }
 }

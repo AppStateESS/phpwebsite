@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::initModClass('rideboard', 'Rideboard.php');
+PHPWS_Core::initModClass('rideboard', 'Rideboard.php');
 $rideboard = new Rideboard;
 
 if (isset($_REQUEST['aop'])) {

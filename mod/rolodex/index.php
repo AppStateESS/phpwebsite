@@ -26,7 +26,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-core\Core::initModClass('rolodex', 'Rolodex.php');
+PHPWS_Core::initModClass('rolodex', 'Rolodex.php');
 $rolodex = new Rolodex;
 
 if (isset($_REQUEST['aop'])) {

@@ -27,9 +27,9 @@ class ELEC_Runtime
 {
 
     public static function showBlock() {
-        if (core\Settings::get('elections', 'enable_sidebox')) {
-            if (core\Settings::get('elections', 'sidebox_homeonly')) {
-                $key = \core\Key::getCurrent();
+        if (PHPWS_Settings::get('elections', 'enable_sidebox')) {
+            if (PHPWS_Settings::get('elections', 'sidebox_homeonly')) {
+                $key = Key::getCurrent();
                 if (!empty($key) && $key->isHomeKey()) {
                     ELEC_Runtime::showElectionsBlock();
                 }
@@ -42,14 +42,14 @@ class ELEC_Runtime
 
     public function showElectionsBlock() {
 
-        $tpl['TITLE'] = \core\Text::parseOutput(core\Settings::get('elections', 'title'));
+        $tpl['TITLE'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'title'));
 
-        if (core\Settings::get('elections', 'enable_elections') || Current_User::isUnrestricted('elections')) {
+        if (PHPWS_Settings::get('elections', 'enable_elections') || Current_User::isUnrestricted('elections')) {
 
-            $tpl['TEXT'] = \core\Text::parseOutput(core\Settings::get('elections', 'sidebox_text'));
+            $tpl['TEXT'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('elections', 'sidebox_text'));
 
-            \core\Core::initModClass('elections', 'ELEC_Ballot.php');
-            $db = new \core\DB('elections_ballots');
+            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
+            $db = new PHPWS_DB('elections_ballots');
             if (!isset($_SESSION['User']->username)) {
                 $db->addWhere('pubview', 1);
             }
@@ -59,19 +59,19 @@ class ELEC_Runtime
 
             $result = $db->getObjects('Elections_ballot');
 
-            if (!core\Error::logIfError($result) && !empty($result)) {
+            if (!PHPWS_Error::logIfError($result) && !empty($result)) {
                 foreach ($result as $ballot) {
                     $tpl['ballot_links'][] = $ballot->viewLink(false, true);
                 }
-                $tpl['BROWSE_LINK'] = \core\Text::moduleLink(dgettext('elections', 'Browse all ballots'), 'elections', array('uop'=>'list_ballots'));
+                $tpl['BROWSE_LINK'] = PHPWS_Text::moduleLink(dgettext('elections', 'Browse all ballots'), 'elections', array('uop'=>'list_ballots'));
             }
 
         } else {
             $tpl['TEXT'] = dgettext('elections', 'Thank you for your interest. However, all elections are currently closed.');
         }
 
-        \core\Core::initModClass('layout', 'Layout.php');
-        Layout::add(core\Template::process($tpl, 'elections', 'block.tpl'), 'elections', 'elections_sidebox');
+        PHPWS_Core::initModClass('layout', 'Layout.php');
+        Layout::add(PHPWS_Template::process($tpl, 'elections', 'block.tpl'), 'elections', 'elections_sidebox');
     }
 
 

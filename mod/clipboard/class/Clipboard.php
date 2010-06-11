@@ -30,7 +30,7 @@ class Clipboard
 
             case 'clear':
                 unset($_SESSION['Clipboard']);
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
         }
 
@@ -66,14 +66,14 @@ class Clipboard
 
         $button = dgettext('clipboard', 'Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
-        Layout::nakedDisplay(core\Template::process($template, 'clipboard', 'clipboard.tpl'));
+        Layout::nakedDisplay(PHPWS_Template::process($template, 'clipboard', 'clipboard.tpl'));
     }
 
 
     public static function show()
     {
         javascript('jquery');
-        \core\Core::configRequireOnce('clipboard', 'config.php');
+        PHPWS_Core::configRequireOnce('clipboard', 'config.php');
 
         if (!isset($_SESSION['Clipboard'])) {
             Clipboard::init();
@@ -105,13 +105,13 @@ class Clipboard
 
         unset($clipVars['key']);
         $clipVars['action'] = 'clear';
-        $template['CLEAR'] = \core\Text::moduleLink(dgettext('clipboard', 'Clear'), 'clipboard', $clipVars);
+        $template['CLEAR'] = PHPWS_Text::moduleLink(dgettext('clipboard', 'Clear'), 'clipboard', $clipVars);
         $template['LINKS'] = implode('', $content);
 
-        $vars['CONTENT'] = \core\Template::process($template, 'clipboard', 'list.tpl');
+        $vars['CONTENT'] = PHPWS_Template::process($template, 'clipboard', 'list.tpl');
         $vars['TITLE'] = dgettext('clipboard', 'Clipboard');
 
-        $layout = \core\Template::process($vars, 'clipboard', 'show.tpl');
+        $layout = PHPWS_Template::process($vars, 'clipboard', 'show.tpl');
 
         Layout::set($layout, 'clipboard', 'clipboard');
     }

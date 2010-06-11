@@ -25,10 +25,10 @@ function blog_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.4.1', '<'):
             $content[] = '<pre>';
 
-            $db = new \core\DB('blog_entries');
+            $db = new PHPWS_DB('blog_entries');
             $result = $db->addTableColumn('image_id', 'int NOT NULL default 0');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = 'Unable to add image_id colume to blog_entries table.</pre>';
                 return false;
             }
@@ -69,10 +69,10 @@ function blog_update(&$content, $currentVersion)
             $content[] = '<pre>1.4.3 Changes
 -------------';
 
-            $db = new \core\DB('blog_entries');
+            $db = new PHPWS_DB('blog_entries');
             $result = $db->addTableColumn('expire_date', 'int not null default 0', 'publish_date');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = 'Unable to create table column "expire_date" on blog_entries table.</pre>';
                 return false;
             } else {
@@ -80,8 +80,8 @@ function blog_update(&$content, $currentVersion)
             }
 
             $result = $db->addTableColumn('sticky', 'smallint not null default 0');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = 'Unable to create table column "sticky" on blog_entries table.</pre>';
                 return false;
             } else {
@@ -141,10 +141,10 @@ function blog_update(&$content, $currentVersion)
             $columns['updater']     = 'varchar(50) NOT NULL';
             $columns['updater_id']  = 'int not null default 0';
 
-            $db = new \core\DB('blog_entries');
+            $db = new PHPWS_DB('blog_entries');
             foreach ($columns as $column_name => $col_info) {
                 $result = $db->addTableColumn($column_name, $col_info, 'create_date');
-                if (core\Error::logIfError($result)) {
+                if (PHPWS_Error::logIfError($result)) {
                     $content[] = "--- Unable to create table column '$column_name' on blog_entries table.</pre>";
                     return false;
                 } else {
@@ -203,14 +203,14 @@ function blog_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.7.0', '<'):
             $content[] = '<pre>';
-            $db = new \core\DB('blog_entries');
-            if (core\Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
+            $db = new PHPWS_DB('blog_entries');
+            if (PHPWS_Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
                 $content[] = '--- Unable to create image_link column on blog_entries table.</pre>';
                 return false;
             } else {
                 $content[] = '--- Created image_link column on blog_entries table';
             }
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             if (Cabinet::convertImagesToFileAssoc('blog_entries', 'image_id')) {
                 $content[] = '--- Converted images to new File Cabinet format.';
             } else {
@@ -231,8 +231,8 @@ function blog_update(&$content, $currentVersion)
             }
 
         case version_compare($currentVersion, '1.7.2', '<'):
-            $db = new \core\DB('blog_entries');
-            if (core\Error::logIfError($db->addTableColumn('thumbnail', 'smallint not null default 0'))) {
+            $db = new PHPWS_DB('blog_entries');
+            if (PHPWS_Error::logIfError($db->addTableColumn('thumbnail', 'smallint not null default 0'))) {
                 $content[] = 'Unable to create thumbnail column on blog_entries table.';
             }
             $content[] = '<pre>';

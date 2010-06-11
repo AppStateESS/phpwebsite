@@ -6,26 +6,26 @@
 
 function calendar_uninstall(&$content)
 {
-    \core\Core::initModClass('calendar', 'Schedule.php');
+    PHPWS_Core::initModClass('calendar', 'Schedule.php');
     // Need functions to remove old event tables
-    $db = new \core\DB('calendar_schedule');
+    $db = new PHPWS_DB('calendar_schedule');
     $schedules = $db->getObjects('Calendar_Schedule');
 
-    if (core\Error::isError($schedules)) {
+    if (PHPWS_Error::isError($schedules)) {
         return $schedules;
     } elseif (empty($schedules)) {
-        $result = \core\DB::dropTable('calendar_schedule');
-        if (core\Error::isError($result)) {
+        $result = PHPWS_DB::dropTable('calendar_schedule');
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
-        $result = \core\DB::dropTable('calendar_notice');
-        if (core\Error::isError($result)) {
+        $result = PHPWS_DB::dropTable('calendar_notice');
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
-        $result = \core\DB::dropTable('calendar_suggestions');
-        if (core\Error::isError($result)) {
+        $result = PHPWS_DB::dropTable('calendar_suggestions');
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -36,29 +36,29 @@ function calendar_uninstall(&$content)
 
     foreach ($schedules as $sch) {
         $result = $sch->delete();
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             $error = true;
         }
     }
 
-    $result = \core\DB::dropTable('calendar_schedule');
-    if (core\Error::isError($result)) {
+    $result = PHPWS_DB::dropTable('calendar_schedule');
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
-    $result = \core\DB::dropTable('calendar_notice');
-    if (core\Error::isError($result)) {
+    $result = PHPWS_DB::dropTable('calendar_notice');
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
-    $result = \core\DB::dropTable('calendar_suggestions');
-    if (core\Error::isError($result)) {
+    $result = PHPWS_DB::dropTable('calendar_suggestions');
+    if (PHPWS_Error::isError($result)) {
         return $result;
     }
 
-    if (core\DB::isTable('converted')) {
-        $db2 = new \core\DB('converted');
+    if (PHPWS_DB::isTable('converted')) {
+        $db2 = new PHPWS_DB('converted');
         $db2->addWhere('convert_name', array('schedule', 'calendar'));
         $db2->delete();
         $content[] = dgettext('calendar', 'Removed convert flag.');

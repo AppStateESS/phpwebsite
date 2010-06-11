@@ -23,8 +23,8 @@
  */
 
 
-core\Core::initModClass('whatsnew', 'Whatsnew.php');
-if (core\Settings::get('whatsnew', 'enable')) {
+PHPWS_Core::initModClass('whatsnew', 'Whatsnew.php');
+if (PHPWS_Settings::get('whatsnew', 'enable')) {
     Whatsnew::showBlock();
 }
 

@@ -5,6 +5,6 @@
  * @version $Id$
  */
 
-core\Core::initModClass('clipboard', 'Clipboard.php');
+PHPWS_Core::initModClass('clipboard', 'Clipboard.php');
 
 ?>

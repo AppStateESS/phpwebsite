@@ -52,9 +52,9 @@ class vShop_Item {
 
     public function init()
     {
-        $db = new \core\DB('vshop_items');
+        $db = new PHPWS_DB('vshop_items');
         $result = $db->loadObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -70,7 +70,7 @@ class vShop_Item {
 
     public function setDescription($description)
     {
-        $this->description = \core\Text::parseInput($description);
+        $this->description = PHPWS_Text::parseInput($description);
     }
 
     public function setDept_id($dept_id)
@@ -123,12 +123,12 @@ class vShop_Item {
         if ($print) {
             if ($breadcrumb) {
                 if (vShop::countDepts() !== 1) {
-                    return \core\Text::moduleLink(core\Text::parseOutput(core\Settings::get('vshop', 'mod_title')), 'vshop') . ' &#187; ' . $this->getDept(true) . ' &#187; ' . \core\Text::parseOutput($this->title);
+                    return PHPWS_Text::moduleLink(PHPWS_Text::parseOutput(PHPWS_Settings::get('vshop', 'mod_title')), 'vshop') . ' &#187; ' . $this->getDept(true) . ' &#187; ' . PHPWS_Text::parseOutput($this->title);
                 } else {
-                    return $this->getDept(true) . ' &#187; ' . \core\Text::parseOutput($this->title);
+                    return $this->getDept(true) . ' &#187; ' . PHPWS_Text::parseOutput($this->title);
                 }
             } else {
-                return \core\Text::parseOutput($this->title);
+                return PHPWS_Text::parseOutput($this->title);
             }
         } else {
             return $this->title;
@@ -142,7 +142,7 @@ class vShop_Item {
         }
 
         if ($print) {
-            return \core\Text::parseOutput($this->description);
+            return PHPWS_Text::parseOutput($this->description);
         } else {
             return $this->description;
         }
@@ -166,7 +166,7 @@ class vShop_Item {
             return null;
         }
 
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $file = Cabinet::getFile($this->file_id);
 
         if ($file->isImage(true)) {
@@ -194,7 +194,7 @@ class vShop_Item {
         }
 
         if ($print) {
-            \core\Core::initModClass('vshop', 'vShop_Dept.php');
+            PHPWS_Core::initModClass('vshop', 'vShop_Dept.php');
             $dept = new vShop_Dept($this->dept_id);
             return $dept->viewLink();
         } else {
@@ -209,15 +209,15 @@ class vShop_Item {
         }
 
         if ($print) {
-            if (core\Settings::get('vshop', 'curr_symbol_pos') == 1) {
-                $price = \core\Settings::get('vshop', 'currency_symbol') . number_format($this->price, 2, '.', ',');
-                if (core\Settings::get('vshop', 'display_currency')) {
-                    $price .= ' ' . \core\Settings::get('vshop', 'currency');
+            if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
+                $price = PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($this->price, 2, '.', ',');
+                if (PHPWS_Settings::get('vshop', 'display_currency')) {
+                    $price .= ' ' . PHPWS_Settings::get('vshop', 'currency');
                 }
             } else {
-                $price = number_format($this->price, 2, '.', ',') . \core\Settings::get('vshop', 'currency_symbol');
-                if (core\Settings::get('vshop', 'display_currency')) {
-                    $price .= ' ' . \core\Settings::get('vshop', 'currency');
+                $price = number_format($this->price, 2, '.', ',') . PHPWS_Settings::get('vshop', 'currency_symbol');
+                if (PHPWS_Settings::get('vshop', 'display_currency')) {
+                    $price .= ' ' . PHPWS_Settings::get('vshop', 'currency');
                 }
             }
             return $price;
@@ -230,7 +230,7 @@ class vShop_Item {
     {
         if ($print) {
             if ($this->stock > 0) {
-                return sprintf(dgettext('vshop', '%s in stock'), \core\Text::parseOutput($this->stock));
+                return sprintf(dgettext('vshop', '%s in stock'), PHPWS_Text::parseOutput($this->stock));
             } else {
                 return dgettext('vshop', 'Out of stock');
             }
@@ -243,7 +243,7 @@ class vShop_Item {
     {
         if ($print) {
             if ($this->weight > 0) {
-                return $this->weight . \core\Settings::get('vshop', 'weight_unit');
+                return $this->weight . PHPWS_Settings::get('vshop', 'weight_unit');
             } else {
                 return dgettext('vshop', 'No weight provided');
             }
@@ -256,10 +256,10 @@ class vShop_Item {
     {
         if ($print) {
             if ($this->shipping > 0) {
-                if (core\Settings::get('vshop', 'curr_symbol_pos') == 1) {
-                    return \core\Settings::get('vshop', 'currency_symbol') . number_format($this->shipping, 2, '.', ',');
+                if (PHPWS_Settings::get('vshop', 'curr_symbol_pos') == 1) {
+                    return PHPWS_Settings::get('vshop', 'currency_symbol') . number_format($this->shipping, 2, '.', ',');
                 } else {
-                    return number_format($this->shipping, 2, '.', ',') . \core\Settings::get('vshop', 'currency_symbol');
+                    return number_format($this->shipping, 2, '.', ',') . PHPWS_Settings::get('vshop', 'currency_symbol');
                 }
             } else {
                 return dgettext('vshop', 'No shipping rate provided');
@@ -273,10 +273,10 @@ class vShop_Item {
     public function view()
     {
         if (!$this->id) {
-            \core\Core::errorPage(404);
+            PHPWS_Core::errorPage(404);
         }
 
-        $key = new \core\Key($this->key_id);
+        $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
             Current_User::requireLogin();            
@@ -286,20 +286,20 @@ class vShop_Item {
         $tpl['ITEM_LINKS'] = $this->links();
         $tpl['TITLE'] = $this->getTitle(true);
         $tpl['PRICE'] = $this->getPrice(true);
-        if (core\Settings::get('vshop', 'use_inventory')) {
+        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             $tpl['STOCK'] = $this->getStock(true);
         }
         $tpl['WEIGHT'] = $this->getWeight(true);
-        if (core\Settings::get('vshop', 'shipping_calculation') == 2) {
+        if (PHPWS_Settings::get('vshop', 'shipping_calculation') == 2) {
             $tpl['SHIPPING_LABEL'] = dgettext('vshop', 'Shipping');
             $tpl['SHIPPING'] = $this->getShipping(true);
         }
-        $tpl['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
         $tpl['FILE'] = $this->getFile();
 
         $key->flag();
 
-        return \core\Template::process($tpl, 'vshop', 'view_item.tpl');
+        return PHPWS_Template::process($tpl, 'vshop', 'view_item.tpl');
     }
 
 
@@ -312,9 +312,9 @@ class vShop_Item {
             $vars['dept_id'] = $this->dept_id;
             $vars['item_id'] = $this->id;
             $vars['aop']  = 'edit_item';
-            $links[] = \core\Text::secureLink(dgettext('vshop', 'Edit item'), 'vshop', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('vshop', 'Edit item'), 'vshop', $vars);
         }
-        if (!core\Settings::get('vshop', 'use_breadcrumb')) {
+        if (!PHPWS_Settings::get('vshop', 'use_breadcrumb')) {
             if (vShop::countDepts() !== 1) {
                 $links[] = sprintf(dgettext('vshop', 'Belongs to: %s'), $this->getDept(true));
             }
@@ -336,11 +336,11 @@ class vShop_Item {
         }
 
         /* delete the item */
-        $db = new \core\DB('vshop_items');
+        $db = new PHPWS_DB('vshop_items');
         $db->addWhere('id', $this->id);
-        \core\Error::logIfError($db->delete());
+        PHPWS_Error::logIfError($db->delete());
 
-        \core\Key::drop($this->key_id);
+        Key::drop($this->key_id);
     }
 
 
@@ -352,14 +352,14 @@ class vShop_Item {
 
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop']  = 'edit_item';
-            $label = \core\Icon::show('edit');
-            $links[] = \core\Text::secureLink($label, 'vshop', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop'] = 'delete_item';
-            $js['ADDRESS'] = \core\Text::linkAddress('vshop', $vars, true);
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the item %s?'), $this->getTitle());
-            $js['LINK'] = \core\Icon::show('delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -367,7 +367,7 @@ class vShop_Item {
         $tpl['DESCRIPTION'] = $this->getListDescription(120);
         $tpl['DEPT'] = $this->getDept(true);
         $tpl['ITEM_PRICE'] = $this->getPrice(true);
-//        if (core\Settings::get('vshop', 'use_inventory')) {
+//        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             $tpl['ITEM_STOCK'] = $this->getStock();
 //        }
 
@@ -387,22 +387,22 @@ class vShop_Item {
         $links[] = $this->addLink(true) . ' ' . $this->addLink();
 
         if (Current_User::allow('vshop', 'edit_items')) {
-            $label = \core\Icon::show('edit');
+            $label = Icon::show('edit');
             $vars['aop']  = 'edit_item';
-            $links[] = \core\Text::secureLink($label, 'vshop', $vars);
+            $links[] = PHPWS_Text::secureLink($label, 'vshop', $vars);
         }
         if (Current_User::allow('vshop', 'edit_items')) {
             $vars['aop'] = 'delete_item';
-            $js['ADDRESS'] = \core\Text::linkAddress('vshop', $vars, true);
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('vshop', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vshop', 'Are you sure you want to delete the item %s?'), $this->getTitle());
-            $js['LINK'] = \core\Icon::show('delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
         $tpl['ITEM_TITLE'] = $this->viewLink();
         $tpl['ITEM_DESCRIPTION'] = $this->getDescription(true);
         $tpl['ITEM_PRICE'] = $this->getPrice(true);
-        if (core\Settings::get('vshop', 'use_inventory')) {
+        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             $tpl['ITEM_STOCK'] = $this->getStock(true);
         }
 
@@ -421,10 +421,10 @@ class vShop_Item {
 
     public function save()
     {
-        $db = new \core\DB('vshop_items');
+        $db = new PHPWS_DB('vshop_items');
 
         $result = $db->saveObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -435,7 +435,7 @@ class vShop_Item {
         $search->addKeywords($this->title);
         $search->addKeywords($this->description);
         $result = $search->save();
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -445,11 +445,11 @@ class vShop_Item {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new \core\Key;
+            $key = new Key;
         } else {
-            $key = new \core\Key($this->key_id);
-            if (core\Error::isError($key->_error)) {
-                $key = new \core\Key;
+            $key = new Key($this->key_id);
+            if (PHPWS_Error::isError($key->_error)) {
+                $key = new Key;
             }
         }
 
@@ -461,16 +461,16 @@ class vShop_Item {
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
-        if (core\Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new \core\DB('vshop_items');
+            $db = new PHPWS_DB('vshop_items');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            \core\Error::logIfError($db->update());
+            PHPWS_Error::logIfError($db->update());
         }
         return true;
     }
@@ -478,7 +478,8 @@ class vShop_Item {
 
     public function viewLink($bare=false)
     {
-                $link = new \core\Link($this->title, 'vshop', array('dept'=>$this->dept_id, 'item'=>$this->id));
+        PHPWS_Core::initCoreClass('Link.php');
+        $link = new PHPWS_Link($this->title, 'vshop', array('dept'=>$this->dept_id, 'item'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -491,7 +492,7 @@ class vShop_Item {
 
     public function addLink($icon=false, $enabled=true)
     {
-        if (core\Settings::get('vshop', 'use_inventory')) {
+        if (PHPWS_Settings::get('vshop', 'use_inventory')) {
             if ($this->stock < 1 || !$enabled) {
                 if ($icon) {
                     $link = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/soldout.gif" width="12" height="12" alt="' . dgettext('vshop', 'Sold out') . '" title="' . dgettext('vshop', 'Sold out') . '" border="0" />';
@@ -504,7 +505,7 @@ class vShop_Item {
         if ($icon) {
             $link = '<a href="index.php?module=vshop&amp;dept=' . $this->dept_id . '&amp;item=' . $this->id . '&amp;uop=addto_cart"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/plus.gif" width="12" height="12" alt="' . dgettext('vshop', 'Add') . '" title="' . dgettext('vshop', 'Add') . '" border="0" /></a>';
         } else {
-            $link = \core\Text::moduleLink(dgettext('vshop', 'Add to cart'), "vshop",  array('dept'=>$this->dept_id, 'item'=>$this->id, 'uop'=>'addto_cart'));
+            $link = PHPWS_Text::moduleLink(dgettext('vshop', 'Add to cart'), "vshop",  array('dept'=>$this->dept_id, 'item'=>$this->id, 'uop'=>'addto_cart'));
         }
         return $link;
     }
@@ -514,7 +515,7 @@ class vShop_Item {
         if ($icon) {
             $link = '<a href="index.php?module=vshop&amp;dept=' . $this->dept_id . '&amp;item=' . $this->id . '&amp;uop=subtractfrom_cart"><img src="' . PHPWS_SOURCE_HTTP . 'mod/vshop/img/minus.gif" width="12" height="12" alt="' . dgettext('vshop', 'Subtract') . '" title="' . dgettext('vshop', 'Subtract') . '" border="0" /></a>';
         } else {
-            $link = \core\Text::moduleLink(dgettext('vshop', 'Subtract from cart'), "vshop",  array('dept'=>$this->dept_id, 'item'=>$this->id, 'uop'=>'subtractfrom_cart'));
+            $link = PHPWS_Text::moduleLink(dgettext('vshop', 'Subtract from cart'), "vshop",  array('dept'=>$this->dept_id, 'item'=>$this->id, 'uop'=>'subtractfrom_cart'));
         }
         return $link;
     }

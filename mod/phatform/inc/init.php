@@ -6,17 +6,17 @@
  */
 
 if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'phatform') {
-    \core\Core::requireConfig('phatform', 'phatform.php');
-    \core\Core::initModClass('phatform', 'Form.php');
-    \core\Core::initModClass('phatform', 'FormManager.php');
-    \core\Core::initModClass('phatform', 'Report.php');
-    \core\Core::initModClass('phatform', 'Element.php');
-    \core\Core::initModClass('phatform', 'Checkbox.php');
-    \core\Core::initModClass('phatform', 'Dropbox.php');
-    \core\Core::initModClass('phatform', 'Multiselect.php');
-    \core\Core::initModClass('phatform', 'Radiobutton.php');
-    \core\Core::initModClass('phatform', 'Textarea.php');
-    \core\Core::initModClass('phatform', 'Textfield.php');
+    PHPWS_Core::requireConfig('phatform', 'phatform.php');
+    PHPWS_Core::initModClass('phatform', 'Form.php');
+    PHPWS_Core::initModClass('phatform', 'FormManager.php');
+    PHPWS_Core::initModClass('phatform', 'Report.php');
+    PHPWS_Core::initModClass('phatform', 'Element.php');
+    PHPWS_Core::initModClass('phatform', 'Checkbox.php');
+    PHPWS_Core::initModClass('phatform', 'Dropbox.php');
+    PHPWS_Core::initModClass('phatform', 'Multiselect.php');
+    PHPWS_Core::initModClass('phatform', 'Radiobutton.php');
+    PHPWS_Core::initModClass('phatform', 'Textarea.php');
+    PHPWS_Core::initModClass('phatform', 'Textfield.php');
 
     /**
      * error definitions

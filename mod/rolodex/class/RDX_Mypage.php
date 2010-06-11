@@ -23,7 +23,7 @@
  */
 
 
-core\Core::initModClass('rolodex', 'Rolodex.php');
+PHPWS_Core::initModClass('rolodex', 'Rolodex.php');
 class Rolodex_Mypage {
 
     public static function main()
@@ -33,22 +33,22 @@ class Rolodex_Mypage {
 
         if (empty($tpl['CONTENT']))
         {
-            $tpl['TITLE'] = sprintf(dgettext('rolodex', 'Manage my %s profile'), \core\Settings::get('rolodex', 'module_title'));
-            $db = new \core\DB('rolodex_member');
+            $tpl['TITLE'] = sprintf(dgettext('rolodex', 'Manage my %s profile'), PHPWS_Settings::get('rolodex', 'module_title'));
+            $db = new PHPWS_DB('rolodex_member');
             $db->addWhere('user_id', Current_User::getId());
             $result = $db->count();
             if ($result > 0) {
                 $vars['user_id'] = Current_User::getId();
                 $vars['uop'] = 'edit_member';
-                $links[] = \core\Text::secureLink(dgettext('rolodex', 'Edit my profile'), 'rolodex', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('rolodex', 'Edit my profile'), 'rolodex', $vars);
             } else {
                 $vars['user_id'] = Current_User::getId();
-                if (core\Settings::get('rolodex', 'req_approval')) {
+                if (PHPWS_Settings::get('rolodex', 'req_approval')) {
                     $vars['uop'] = 'submit_member';
-                    $links[] = \core\Text::secureLink(dgettext('rolodex', 'Submit my profile'), 'rolodex', $vars);
+                    $links[] = PHPWS_Text::secureLink(dgettext('rolodex', 'Submit my profile'), 'rolodex', $vars);
                 } else {
                     $vars['uop'] = 'add_member';
-                    $links[] = \core\Text::secureLink(dgettext('rolodex', 'Add my profile'), 'rolodex', $vars);
+                    $links[] = PHPWS_Text::secureLink(dgettext('rolodex', 'Add my profile'), 'rolodex', $vars);
                 }
             }
 
@@ -57,14 +57,14 @@ class Rolodex_Mypage {
             $tpl['CONTENT'] = implode(' | ', $links);
             $tpl['CONTENT'] .= Rolodex_Mypage::searchForm();
             if ($result > 0) {
-                \core\Core::initModClass('rolodex', 'RDX_Member.php');
+                PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
                 if (Rolodex_Member::isDataVisible('privacy_export')) {
-                    $tpl['CONTENT'] .= '<br />' . \core\Text::moduleLink(dgettext('rolodex', 'Export records to csv'), 'rolodex', array('uop'=>'export'));
+                    $tpl['CONTENT'] .= '<br />' . PHPWS_Text::moduleLink(dgettext('rolodex', 'Export records to csv'), 'rolodex', array('uop'=>'export'));
                 }
             }
         }
 
-        return \core\Template::process($tpl, 'rolodex', 'my_page.tpl');
+        return PHPWS_Template::process($tpl, 'rolodex', 'my_page.tpl');
     }
 
 
@@ -87,7 +87,7 @@ class Rolodex_Mypage {
 
     public static function searchForm()
     {
-        $form = new \core\Form('rolodex_search');
+        $form = new PHPWS_Form('rolodex_search');
         $form->setMethod('get');
         $form->addHidden('module', 'rolodex');
         $form->addHidden('uop', 'list');
@@ -97,22 +97,22 @@ class Rolodex_Mypage {
         $form->addHidden('orderby_dir', 'asc');
         $form->addText('pager_c_search');
         $form->setSize('pager_c_search', 25);
-        $form->setLabel('pager_c_search', sprintf(dgettext('rolodex', 'Search %s'), \core\Settings::get('rolodex', 'module_title')));
+        $form->setLabel('pager_c_search', sprintf(dgettext('rolodex', 'Search %s'), PHPWS_Settings::get('rolodex', 'module_title')));
         $form->addSubmit('go', dgettext('rolodex', 'Search'));
         $tpl = $form->getTemplate();
-        return \core\Template::process($tpl, 'rolodex', 'search.tpl');
+        return PHPWS_Template::process($tpl, 'rolodex', 'search.tpl');
     }
 
     public function sendMessage(&$result, $success_msg, $error_msg)
     {
-        $_SESSION['rolodex_message'] = (core\Error::logIfError($result) ? $error_msg : $success_msg);
-        \core\Core::reroute(core\Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
+        $_SESSION['rolodex_message'] = (PHPWS_Error::logIfError($result) ? $error_msg : $success_msg);
+        PHPWS_Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
     }
 
     public function sendMessageOnly($msg)
     {
         $_SESSION['rolodex_message'] = $msg;
-        \core\Core::reroute(core\Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
+        PHPWS_Core::reroute(PHPWS_Text::linkAddress('users', array('action'=>'user', 'tab'=>'rolodex'), false));
     }
 
     public static function getMessage()

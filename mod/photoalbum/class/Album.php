@@ -109,7 +109,7 @@ class PHPWS_Album extends PHPWS_Item {
 
         $sql = implode(' ', $sql);
 
-        $this->photos = \core\DB::getCol($sql);
+        $this->photos = PHPWS_DB::getCol($sql);
     }
 
 
@@ -137,7 +137,7 @@ class PHPWS_Album extends PHPWS_Item {
             $hidden = 1;
         }
 
-        $form = new \core\Form('PHPWS_Album_edit');
+        $form = new PHPWS_Form('PHPWS_Album_edit');
         $form->add('Album_name', 'text', $this->getLabel());
         $form->setSize('Album_name', 33);
         $form->setMaxSize('Album_name', 255);
@@ -183,7 +183,7 @@ class PHPWS_Album extends PHPWS_Item {
 
         $tags['LINKS'] = implode('&#160;|&#160;', $links);
 
-        return \core\Template::processTemplate($tags, 'photoalbum', 'editAlbum.tpl');
+        return PHPWS_Template::processTemplate($tags, 'photoalbum', 'editAlbum.tpl');
     }
 
     public function _save() {
@@ -207,11 +207,11 @@ class PHPWS_Album extends PHPWS_Item {
         }
 
         if(isset($_REQUEST['Album_ext'])) {
-            $this->_blurb1 = \core\Text::parseInput($_REQUEST['Album_ext']);
+            $this->_blurb1 = PHPWS_Text::parseInput($_REQUEST['Album_ext']);
         }
 
         if(isset($_REQUEST['Album_short'])) {
-            $this->_blurb0 = \core\Text::parseInput($_REQUEST['Album_short']);
+            $this->_blurb0 = PHPWS_Text::parseInput($_REQUEST['Album_short']);
         }
 
         if(isset($_REQUEST['Album_name'])) {
@@ -224,7 +224,7 @@ class PHPWS_Album extends PHPWS_Item {
             $this->setHidden(FALSE);
         }
 
-        if(core\Error::isError($error)) {
+        if(PHPWS_Error::isError($error)) {
             $message =  dgettext('photoalbum', 'You must enter a name for the Photo Album.');
             javascript('alert', array('content' => $message));
             $_REQUEST['PHPWS_Album_op'] = 'edit';
@@ -233,7 +233,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
 
         $error = $this->commit();
-        if(core\Error::isError($error)) {
+        if(PHPWS_Error::isError($error)) {
             $message = dgettext('photoalbum', 'The Photo Album could not be updated to the database.');
             javascript('alert', array('content' => $message));
 
@@ -247,7 +247,7 @@ class PHPWS_Album extends PHPWS_Item {
 
             if(!is_dir($directory) && !@mkdir($directory)) {
                 $message = dgettext('photoalbum', 'The photo album image directory could not be created.');
-                \core\Error::log(PHOTOALBUM_NO_DIRECTORY, 'photoalbum', 'PHPWS_Album::_save', $directory);
+                PHPWS_Error::log(PHOTOALBUM_NO_DIRECTORY, 'photoalbum', 'PHPWS_Album::_save', $directory);
                 $_REQUEST['PHPWS_Album_op'] = 'edit';
             } else {
                 $message = sprintf(dgettext('photoalbum', 'The Photo Album "%s" was successfully saved.'), $this->getLabel());
@@ -270,14 +270,14 @@ class PHPWS_Album extends PHPWS_Item {
 
         if(isset($_REQUEST['Album_yes'])) {
             $this->kill();
-            $db = new \core\DB('mod_photoalbum_photos');
+            $db = new PHPWS_DB('mod_photoalbum_photos');
             $db->addWhere('album', $this->getId());
             $db->delete();
 
-            $key = new \core\Key($this->_key_id);
+            $key = new Key($this->_key_id);
             $key->delete();
 
-            \core\File::rmdir('images/photoalbum/' . $this->getId() . '/');
+            PHPWS_File::rmdir('images/photoalbum/' . $this->getId() . '/');
 
             $message = sprintf(dgettext('photoalbum', 'The album %s and all its photos were successfully deleted from the database.'), $this->getLabel());
             javascript('alert', array('content' => $message));
@@ -297,7 +297,7 @@ class PHPWS_Album extends PHPWS_Item {
         } else {
             $title = dgettext('photoalbum', 'Delete Album Confirmation');
 
-            $form = new \core\Form('PHPWS_Album_delete');
+            $form = new PHPWS_Form('PHPWS_Album_delete');
             $form->add('module', 'hidden', 'photoalbum');
             $form->add('PHPWS_Album_op', 'hidden', 'delete');
 
@@ -308,29 +308,30 @@ class PHPWS_Album extends PHPWS_Item {
             $tags = $form->getTemplate();
             $tags['MESSAGE'] = dgettext('photoalbum', 'Are you sure you want to delete this album and all the photos associated with it?');
 
-            $content = \core\Template::processTemplate($tags, 'photoalbum', 'deleteAlbum.tpl');
+            $content = PHPWS_Template::processTemplate($tags, 'photoalbum', 'deleteAlbum.tpl');
 
             $newLayout['TITLE']   = dgettext('photoalbum', 'Photo Album') . ':&#160;' . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
             $newLayout['CONTENT'] = "<h3>$title</h3>$content";
             $newLayout['CONTENT'] .= $this->_view();
 
-            $finalContent = \core\Template::process($newLayout, 'layout', 'box.tpl');
+            $finalContent = PHPWS_Template::process($newLayout, 'layout', 'box.tpl');
             Layout::add($finalContent);
         }
     }
 
     public function _view() {
-        
+        PHPWS_Core::initCoreClass('DBPager.php');
+
         $columns = NULL;
         $id = $this->getId();
 
-        $key = new \core\Key($this->_key_id);
+        $key = new Key($this->_key_id);
         if (!$key->allowView()) {
-            \core\Core::errorPage('403');
+            PHPWS_Core::errorPage('403');
         }
         $key->flag();
 
-        $pager = new \core\DBPager('mod_photoalbum_photos');
+        $pager = new DBPager('mod_photoalbum_photos');
         $pager->setModule('photoalbum');
         $pager->setTemplate('photos/list.tpl');
         $pager->setEmptyMessage(dgettext('photoalbum', 'No photos found.'));
@@ -359,8 +360,8 @@ class PHPWS_Album extends PHPWS_Item {
         $listTags['ALBUM_LINKS'] = implode('&#160;|&#160;', $this->getAlbumLinks());
         $listTags['ORDER_LABEL'] = dgettext('photoalbum', 'Order By');
         $listTags['FIRST_LABEL'] = dgettext('photoalbum', 'First');
-        $listTags['BLURB0'] = \core\Text::parseOutput($this->_blurb0);
-        $listTags['BLURB1'] = \core\Text::parseOutput($this->_blurb1);
+        $listTags['BLURB0'] = PHPWS_Text::parseOutput($this->_blurb0);
+        $listTags['BLURB1'] = PHPWS_Text::parseOutput($this->_blurb1);
         $listTags['CREATED'] = $this->getCreated();
         $listTags['UPDATED'] = $this->getUpdated();
         $listTags['OWNER'] = $this->getOwner();
@@ -373,11 +374,11 @@ class PHPWS_Album extends PHPWS_Item {
 
         if($pager->orderby_dir == 'desc') {
             $link_val['orderby_dir'] = 'asc';
-            $listTags['ASC_ORDER_LINK'] = \core\Text::moduleLink(dgettext('photoalbum', 'Oldest'), 'photoalbum', $link_val);
+            $listTags['ASC_ORDER_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Oldest'), 'photoalbum', $link_val);
             $listTags['DESC_ORDER_LINK'] = dgettext('photoalbum', 'Newest');
         } else {
             $link_val['orderby_dir'] = 'desc';
-            $listTags['DESC_ORDER_LINK'] = \core\Text::moduleLink(dgettext('photoalbum', 'Newest'), 'photoalbum', $link_val);
+            $listTags['DESC_ORDER_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Newest'), 'photoalbum', $link_val);
             $listTags['ASC_ORDER_LINK'] = dgettext('photoalbum', 'Oldest');
         }
 
@@ -419,7 +420,7 @@ class PHPWS_Album extends PHPWS_Item {
             }
         }
 
-        $form = new \core\Form('PHPWS_Batch_add');
+        $form = new PHPWS_Form('PHPWS_Batch_add');
 
         for($i = 1; $i <= PHOTOALBUM_MAX_UPLOADS; $i++) {
             $uploads[$i] = $i;
@@ -488,10 +489,10 @@ class PHPWS_Album extends PHPWS_Item {
                 }
             }
             $tags['HIDDEN'] .= '</select>';
-            $formTags['PHOTO_FORMS'] .= \core\Template::processTemplate($tags, 'photoalbum', 'albums/photoForm.tpl');
+            $formTags['PHOTO_FORMS'] .= PHPWS_Template::processTemplate($tags, 'photoalbum', 'albums/photoForm.tpl');
         }
 
-        return \core\Template::processTemplate($formTags, 'photoalbum', 'albums/batchAdd.tpl');
+        return PHPWS_Template::processTemplate($formTags, 'photoalbum', 'albums/batchAdd.tpl');
     }
 
     public function _batchSave() {
@@ -520,7 +521,7 @@ class PHPWS_Album extends PHPWS_Item {
             $this->_batch[$key]['hidden'] = $_REQUEST['Photo_hidden'][$key];
 
             if(isset($_REQUEST['Photo_short'][$key])) {
-                $this->_batch[$key]['label'] = \core\Text::parseInput($_REQUEST['Photo_short'][$key]);
+                $this->_batch[$key]['label'] = PHPWS_Text::parseInput($_REQUEST['Photo_short'][$key]);
             }
 
             if($value == 0) {
@@ -537,7 +538,7 @@ class PHPWS_Album extends PHPWS_Item {
                     }
                 }
 
-                $name = \core\File::nameToSafe($_FILES['Photo']['name'][$key]);
+                $name = PHPWS_File::nameToSafe($_FILES['Photo']['name'][$key]);
                 $name = strtolower($name);
                 $file = PHOTOALBUM_DIR . $this->getId() . '/' . $name;
                 if(is_file($file)) {
@@ -558,7 +559,7 @@ class PHPWS_Album extends PHPWS_Item {
 
                         if($info[2] == 2 || $info[2] == 3) {
                             $dir = PHOTOALBUM_DIR . $this->getId() . '/';
-                            $thumbnail = \core\File::makeThumbnail($this->_batch[$key]['name'], $dir, $dir, PHOTOALBUM_TN_WIDTH, PHOTOALBUM_TN_HEIGHT);
+                            $thumbnail = PHPWS_File::makeThumbnail($this->_batch[$key]['name'], $dir, $dir, PHOTOALBUM_TN_WIDTH, PHOTOALBUM_TN_HEIGHT);
                             if(is_file($dir . $thumbnail[0])) {
                                 $this->_batch[$key]['tnname'] = $thumbnail[0];
                                 $this->_batch[$key]['tnwidth'] = $thumbnail[1];
@@ -566,7 +567,7 @@ class PHPWS_Album extends PHPWS_Item {
                             }
                             if(PHOTOALBUM_RS) {
                                 $file = $dir . $this->_batch[$key]['name'];
-                                \core\File::scaleImage($file, $file, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT);
+                                PHPWS_File::scaleImage($file, $file, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT);
                                 $new_size = getimagesize($file);
                                 $this->_batch[$key]['width']  = $new_size[0];
                                 $this->_batch[$key]['height'] = $new_size[1];
@@ -620,7 +621,7 @@ class PHPWS_Album extends PHPWS_Item {
                     $value['owner'] = Current_User::getUsername();
                     $value['editor'] = Current_User::getUsername();
                     $value['approved'] = TRUE;
-                    $db = new \core\DB('mod_photoalbum_photos');
+                    $db = new PHPWS_DB('mod_photoalbum_photos');
                     $db->addValue($value);
                     $db->insert();
 
@@ -656,12 +657,12 @@ class PHPWS_Album extends PHPWS_Item {
         $update_album = FALSE;
 
         if (empty($this->_key_id)) {
-            $key = new \core\Key;
+            $key = new Key;
             $update_album = TRUE;
         } else {
-            $key = new \core\Key($this->_key_id);
-            if (core\Error::isError($key->getError())) {
-                $key = new \core\Key;
+            $key = new Key($this->_key_id);
+            if (PHPWS_Error::isError($key->getError())) {
+                $key = new Key;
                 $update_album = TRUE;
             }
         }
@@ -747,7 +748,7 @@ class PHPWS_Album extends PHPWS_Item {
         if(isset($content)) {
             $template['TITLE'] = $title;
             $template['CONTENT'] = $content;
-            Layout::add(core\Template::process($template, 'layout', 'box.tpl'));
+            Layout::add(PHPWS_Template::process($template, 'layout', 'box.tpl'));
         }
     }
 
@@ -755,8 +756,8 @@ class PHPWS_Album extends PHPWS_Item {
     {
         $vars['PHPWS_Album_op'] = 'view';
         $vars['PHPWS_Album_id'] = $value['id'];
-        $tpl['IMAGE'] = \core\Text::moduleLink($value['image'], 'photoalbum', $vars);
-        $tpl['LABEL'] = \core\Text::moduleLink($value['label'], 'photoalbum', $vars);
+        $tpl['IMAGE'] = PHPWS_Text::moduleLink($value['image'], 'photoalbum', $vars);
+        $tpl['LABEL'] = PHPWS_Text::moduleLink($value['label'], 'photoalbum', $vars);
         $tpl['UPDATED'] = strftime('%c', $value['updated']);
         return $tpl;
     }

@@ -61,10 +61,10 @@ if (ini_get('session.use_trans_sid')) {
 
 // Attempt to clean out the xss tags
 
-if (!(core\Core::allowScriptTags()) &&
+if (!(PHPWS_Core::allowScriptTags()) &&
 (!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST))) {
     Security::log(_('Attempted cross-site scripting attack.'));
-    core\Core::errorPage('400');
+    PHPWS_Core::errorPage('400');
 }
 
 /**

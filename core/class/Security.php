@@ -1,5 +1,4 @@
 <?php
-namespace core;
 
 /**
  * Handles the logging and routing of security problems
@@ -28,7 +27,7 @@ class Security {
 
         $infraction = sprintf('%s@%s %s -- %s', $username, $ip, $via, $message);
 
-        Core::log(escapeshellcmd($infraction), 'security.log', _('Warning'));
+        PHPWS_Core::log(escapeshellcmd($infraction), 'security.log', _('Warning'));
     }
 }
 

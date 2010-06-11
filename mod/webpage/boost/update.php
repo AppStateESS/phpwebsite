@@ -74,7 +74,7 @@ Please download version 0.5.3</pre>';
 
         case version_compare($currentVersion, '1.1.0', '<'):
             $content[] = '<pre>';
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             if (Cabinet::convertImagesToFileAssoc('webpage_page', 'image_id')) {
                 $content[] = '--- Converted images to new File Cabinet format.';
             } else {

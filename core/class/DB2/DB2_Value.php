@@ -38,8 +38,6 @@ class DB2_Value extends DB2_Column {
             $this->value = $value;
         } elseif (is_null($value)) {
             $this->value = 'NULL';
-        } elseif (is_bool($value)) {
-            $this->value = $value ? 1 : 0;
         } else {
             throw new PEAR_Exception(sprintf(dgettext('core', 'Unacceptable value type (%s)'), gettype($value)));
         }

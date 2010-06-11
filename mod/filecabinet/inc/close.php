@@ -8,11 +8,11 @@
 pinFolder();
 
 function pinFolder() {
-    $key = \core\Key::getCurrent();
+    $key = Key::getCurrent();
     if ($key && !$key->isDummy()) {
         if ( Current_User::isUnrestricted('filecabinet') &&
         Current_User::allow('filecabinet', 'edit_folders') ) {
-            $js['address'] = \core\Text::linkAddress('filecabinet', array('aop'=>'pin_form', 'key_id'=>$key->id), true);
+            $js['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'pin_form', 'key_id'=>$key->id), true);
             $js['label'] = dgettext('filecabinet', 'Pin folder');
             $js['width'] = 360;
             $js['height'] = 150;
@@ -20,7 +20,7 @@ function pinFolder() {
             MiniAdmin::add('filecabinet', $link);
         }
 
-        \core\Core::initModClass('filecabinet', 'Folder.php');
+        PHPWS_Core::initModClass('filecabinet', 'Folder.php');
         Folder::getPinned($key->id);
     }
 }

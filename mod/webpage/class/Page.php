@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-core\Core::requireInc('webpage', 'error_defines.php');
+PHPWS_Core::requireInc('webpage', 'error_defines.php');
 
 class Webpage_Page {
     public $id          = 0;
@@ -34,9 +34,9 @@ class Webpage_Page {
 
     public function init()
     {
-        $db = new \core\DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $result = $db->loadObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
             return;
         }
@@ -67,7 +67,7 @@ class Webpage_Page {
 
     public function setContent($content)
     {
-        $this->content = \core\Text::parseInput($content);
+        $this->content = PHPWS_Text::parseInput($content);
     }
 
 
@@ -79,7 +79,7 @@ class Webpage_Page {
 
     public function getContent()
     {
-        return \core\Text::parseTag(core\Text::parseOutput($this->content));
+        return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
     }
 
     public function getTemplateList()
@@ -88,7 +88,7 @@ class Webpage_Page {
         $files = @scandir($directory);
 
         if (empty($files)) {
-            \core\Error::log(WP_PAGE_DIRECTORY, 'webpage', 'Webpage_Page::getTemplateList', $directory);
+            PHPWS_Error::log(WP_PAGE_DIRECTORY, 'webpage', 'Webpage_Page::getTemplateList', $directory);
             return null;
         }
 
@@ -114,7 +114,7 @@ class Webpage_Page {
     public function post()
     {
         if (empty($_POST['volume_id'])) {
-            return \core\Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::post');
+            return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::post');
         }
 
         $this->volume_id = (int)$_POST['volume_id'];
@@ -132,7 +132,7 @@ class Webpage_Page {
         }
 
         if (empty($_POST['template'])) {
-            return \core\Error::get(WP_MISSING_TEMPLATE, 'webpage', 'Webpage_Page::post');
+            return PHPWS_Error::get(WP_MISSING_TEMPLATE, 'webpage', 'Webpage_Page::post');
         }
 
         $this->template = strip_tags($_POST['template']);
@@ -158,7 +158,7 @@ class Webpage_Page {
     {
         $template['PAGE_TITLE'] = $this->getTitle();
         $template['CONTENT'] = $this->getContent();
-        return \core\Template::process($template, 'webpage', 'page/' . $this->template);
+        return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
     public function getImage()
@@ -166,7 +166,7 @@ class Webpage_Page {
         if (!$this->image_id) {
             return null;
         } else {
-            \core\Core::initModClass('filecabinet', 'Cabinet.php');
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             return Cabinet::getTag($this->image_id);
         }
     }
@@ -187,13 +187,13 @@ class Webpage_Page {
 
             $vars['wp_admin'] = 'edit_page';
 
-            $links[] = \core\Text::secureLink(dgettext('webpage', 'Edit page'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page'), 'webpage', $vars);
 
             if ($admin) {
                 $this->moreAdminLinks($links);
             } else {
                 $vars['wp_admin'] = 'edit_webpage';
-                $links[] = \core\Text::secureLink(dgettext('webpage', 'Sort'), 'webpage', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Sort'), 'webpage', $vars);
             }
 
             $template['ADMIN_LINKS'] = implode(' | ', $links);
@@ -219,7 +219,7 @@ class Webpage_Page {
 
         if (Current_User::allow('webpage', 'edit_page', null, null, true)) {
             $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
-            $links[] = \core\Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
 
             if($this->page_number < count($this->_volume->_pages)) {
                 $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to join this page to the next?');
@@ -237,24 +237,24 @@ class Webpage_Page {
 
             $vars['wp_admin'] = 'page_up';
             if ($this->page_number > 1) {
-                $links[] = \core\Text::secureLink(dgettext('webpage', 'Move up'), 'webpage', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move up'), 'webpage', $vars);
             } elseif (count($this->_volume->_pages) > 1) {
-                $links[] = \core\Text::secureLink(dgettext('webpage', 'Move to end'), 'webpage', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to end'), 'webpage', $vars);
             }
 
             $total_pages = $this->_volume->getTotalPages();
             $vars['wp_admin'] = 'page_down';
             if ($this->page_number < $total_pages) {
-                $links[] = \core\Text::secureLink(dgettext('webpage', 'Move down'), 'webpage', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move down'), 'webpage', $vars);
             } elseif (count($this->_volume->_pages) > 1) {
-                $links[] = \core\Text::secureLink(dgettext('webpage', 'Move to front'), 'webpage', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to front'), 'webpage', $vars);
             }
         }
     }
 
     public function moveUp()
     {
-        $db = new \core\DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->volume_id);
         $total_pages = $db->count();
 
@@ -272,7 +272,7 @@ class Webpage_Page {
 
     public function moveDown()
     {
-        $db = new \core\DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->volume_id);
         $total_pages = $db->count();
 
@@ -299,7 +299,7 @@ class Webpage_Page {
             $address = $this->page_number;
         }
 
-        return \core\Text::rewriteLink($address, 'webpage', array('id'=>$id, 'page'=> $page));
+        return PHPWS_Text::rewriteLink($address, 'webpage', array('id'=>$id, 'page'=> $page));
     }
 
     public function getPageUrl()
@@ -331,26 +331,26 @@ class Webpage_Page {
                 $vars['version_id'] = $version_id;
             }
 
-            $links[] = \core\Text::secureLink(dgettext('webpage', 'Edit web page'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit web page'), 'webpage', $vars);
 
             $vars['wp_admin'] = 'edit_header';
-            $links[] = \core\Text::secureLink(dgettext('webpage', 'Edit page header'), 'webpage', $vars);
-            $links[] = \core\Text::secureLink(dgettext('webpage', 'View page list'), 'webpage', array('tab' => 'list'));
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page header'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'View page list'), 'webpage', array('tab' => 'list'));
 
             MiniAdmin::add('webpage', $links);
         }
 
-        return \core\Template::process($template, 'webpage', 'page/' . $this->template);
+        return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
     public function delete()
     {
-        $db = new \core\DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $db->addWhere('id', $this->id);
 
         $result = $db->delete();
 
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -362,7 +362,7 @@ class Webpage_Page {
         $this->volume_id, $this->page_number);
 
         $result = $db->query($sql);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } else {
             return true;
@@ -371,9 +371,9 @@ class Webpage_Page {
 
     public function save()
     {
-        \core\Core::initModClass('version', 'Version.php');
+        PHPWS_Core::initModClass('version', 'Version.php');
         if (empty($this->volume_id)) {
-            return \core\Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::save');
+            return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::save');
         }
 
         if (empty($this->_volume)) {
@@ -387,7 +387,7 @@ class Webpage_Page {
         }
 
         if (!$this->checkTemplate()) {
-            return \core\Error::get(WP_TPL_FILE_MISSING, 'webpages', 'Webpage_Page::save');
+            return PHPWS_Error::get(WP_TPL_FILE_MISSING, 'webpages', 'Webpage_Page::save');
         }
 
         if (empty($this->page_number)) {
@@ -395,9 +395,9 @@ class Webpage_Page {
         }
 
         if ($this->approved || !$this->id) {
-            $db = new \core\DB('webpage_page');
+            $db = new PHPWS_DB('webpage_page');
             $result = $db->saveObject($this);
-            if (core\Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }

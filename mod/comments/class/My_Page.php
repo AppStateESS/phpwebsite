@@ -3,7 +3,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-core\Core::initModClass('comments', 'Comment_User.php');
+PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments_My_Page {
 
@@ -45,13 +45,13 @@ class Comments_My_Page {
             $box['MESSAGE'] = &$message;
         }
 
-        return \core\Template::process($box, 'comments', 'my_page.tpl');
+        return PHPWS_Template::process($box, 'comments', 'my_page.tpl');
     }
 
     public function sendMessage($message, $command=NULL)
     {
         $_SESSION['Comment_Message'] = $message;
-        \core\Core::reroute('index.php?module=users&action=user&tab=comments');
+        PHPWS_Core::reroute('index.php?module=users&action=user&tab=comments');
     }
 
     public static function getMessage()
@@ -66,7 +66,7 @@ class Comments_My_Page {
 
     public static function editOptions($user)
     {
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $hidden['module'] = 'users';
         $hidden['action'] = 'user';
         $hidden['tab']    = 'comments';
@@ -74,7 +74,7 @@ class Comments_My_Page {
 
         $form->addHidden($hidden);
         //signature
-        if (core\Settings::get('comments', 'allow_signatures')) {
+        if (PHPWS_Settings::get('comments', 'allow_signatures')) {
             $form->addTextarea('signature', $user->signature);
             $form->setWidth('signature', '95%');
             $form->setRows('signature', 3);
@@ -87,7 +87,7 @@ class Comments_My_Page {
         $perm = $user->getAvatarLevel();
 
         //avatar
-        if (core\Settings::get('comments', 'allow_avatars')) {
+        if (PHPWS_Settings::get('comments', 'allow_avatars')) {
             $form->setEncode();
             $form->addTplTag('AVATAR_LABEL', dgettext('comments', 'Avatar'));
             $form->addTplTag('AVATAR_NOTE', sprintf(dgettext('comments', 'Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb.'),
@@ -98,7 +98,7 @@ class Comments_My_Page {
             }
 
             // Show Avatar Gallery selection script
-            $avatar_folder = \core\Settings::get('comments', 'avatar_folder_id');
+            $avatar_folder = PHPWS_Settings::get('comments', 'avatar_folder_id');
             if ($avatar_folder) {
                 $manager = Cabinet::fileManager('avatar_id', $user->avatar_id, 'comments');
                 $manager->reservedFolder($avatar_folder);
@@ -146,7 +146,7 @@ class Comments_My_Page {
         $form->addSelect('order_pref', array(1=>dgettext('comments', 'Oldest first'),
         2=>dgettext('comments', 'Newest first')));
         $form->setLabel('order_pref', dgettext('comments', 'Comment order preference'));
-        $form->setMatch('order_pref', \core\Cookie::read('cm_order_pref'));
+        $form->setMatch('order_pref', PHPWS_Cookie::read('cm_order_pref'));
         //website
         $form->addText('website', $user->website);
         $form->setSize('website', 60);
@@ -179,7 +179,7 @@ class Comments_My_Page {
         $form->addSubmit(dgettext('comments', 'Update'));
         $template = $form->getTemplate();
 
-        return \core\Template::process($template, 'comments', 'user_settings.tpl');
+        return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
     }
 
 }

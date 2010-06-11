@@ -64,7 +64,7 @@ class Rolodex_Forms {
                     $this->editMember($admin);
                 } else {
                     $this->rolodex->forwardMessage(dgettext('rolodex', 'You may only edit your own profile.'));
-                    \core\Core::reroute('index.php?module=rolodex&uop=list');
+                    PHPWS_Core::reroute('index.php?module=rolodex&uop=list');
                 }
                 break;
 
@@ -138,17 +138,17 @@ class Rolodex_Forms {
 
     public function settingsPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=rolodex&aop=menu';
 
         if (Current_User::allow('rolodex', 'settings', null, null, true)){
             $tags['settings'] = array('title'=>dgettext('rolodex', 'Settings'),
                                   'link'=>$link);
-            if (core\Settings::get('rolodex', 'use_locations')) {
+            if (PHPWS_Settings::get('rolodex', 'use_locations')) {
                 $tags['locations'] = array('title'=>dgettext('rolodex', 'Locations'),
                                       'link'=>$link);
             }
-            if (core\Settings::get('rolodex', 'use_features')) {
+            if (PHPWS_Settings::get('rolodex', 'use_features')) {
                 $tags['features'] = array('title'=>dgettext('rolodex', 'Features'),
                                       'link'=>$link);
             }
@@ -167,8 +167,9 @@ class Rolodex_Forms {
     {
 //print_r($_REQUEST); exit;
         /* init the classes */
-        \core\Core::initModClass('rolodex', 'RDX_Member.php');
-        
+        PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+
         /* add the alpha click list for approved lists */
         if (isset($approved) && $approved == 1) {
             $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
@@ -185,50 +186,50 @@ class Rolodex_Forms {
         }
 
         /* check for custom fields to include */
-        if (core\Settings::get('rolodex', 'custom1_name') && \core\Settings::get('rolodex', 'custom1_list')) {
-            $ptags['CUSTOM1_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom1_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom1_name') && PHPWS_Settings::get('rolodex', 'custom1_list')) {
+            $ptags['CUSTOM1_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom1_name'));
         } else {
             $ptags['CUSTOM1_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom2_name') && \core\Settings::get('rolodex', 'custom2_list')) {
-            $ptags['CUSTOM2_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom2_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom2_name') && PHPWS_Settings::get('rolodex', 'custom2_list')) {
+            $ptags['CUSTOM2_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom2_name'));
         } else {
             $ptags['CUSTOM2_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom3_name') && \core\Settings::get('rolodex', 'custom3_list')) {
-            $ptags['CUSTOM3_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom3_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom3_name') && PHPWS_Settings::get('rolodex', 'custom3_list')) {
+            $ptags['CUSTOM3_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom3_name'));
         } else {
             $ptags['CUSTOM3_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom4_name') && \core\Settings::get('rolodex', 'custom4_list')) {
-            $ptags['CUSTOM4_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom4_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom4_name') && PHPWS_Settings::get('rolodex', 'custom4_list')) {
+            $ptags['CUSTOM4_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom4_name'));
         } else {
             $ptags['CUSTOM4_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom5_name') && \core\Settings::get('rolodex', 'custom5_list') && Current_User::allow('rolodex', 'view_privates')) {
-            $ptags['CUSTOM5_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom5_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom5_name') && PHPWS_Settings::get('rolodex', 'custom5_list') && Current_User::allow('rolodex', 'view_privates')) {
+            $ptags['CUSTOM5_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom5_name'));
         } else {
             $ptags['CUSTOM5_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom6_name') && \core\Settings::get('rolodex', 'custom6_list') && Current_User::allow('rolodex', 'view_privates')) {
-            $ptags['CUSTOM6_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom6_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom6_name') && PHPWS_Settings::get('rolodex', 'custom6_list') && Current_User::allow('rolodex', 'view_privates')) {
+            $ptags['CUSTOM6_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom6_name'));
         } else {
             $ptags['CUSTOM6_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom7_name') && \core\Settings::get('rolodex', 'custom7_list') && Current_User::allow('rolodex', 'view_privates')) {
-            $ptags['CUSTOM7_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom7_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom7_name') && PHPWS_Settings::get('rolodex', 'custom7_list') && Current_User::allow('rolodex', 'view_privates')) {
+            $ptags['CUSTOM7_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom7_name'));
         } else {
             $ptags['CUSTOM7_SORT'] = null;
         }
-        if (core\Settings::get('rolodex', 'custom8_name') && \core\Settings::get('rolodex', 'custom8_list') && Current_User::allow('rolodex', 'view_privates')) {
-            $ptags['CUSTOM8_HEADER'] = \core\Text::parseOutput(core\Settings::get('rolodex', 'custom8_name'));
+        if (PHPWS_Settings::get('rolodex', 'custom8_name') && PHPWS_Settings::get('rolodex', 'custom8_list') && Current_User::allow('rolodex', 'view_privates')) {
+            $ptags['CUSTOM8_HEADER'] = PHPWS_Text::parseOutput(PHPWS_Settings::get('rolodex', 'custom8_name'));
         } else {
             $ptags['CUSTOM8_SORT'] = null;
         }
 
 
         /* init the pager */
-        $pager = new \core\DBPager('rolodex_member', 'Rolodex_Member');
+        $pager = new DBPager('rolodex_member', 'Rolodex_Member');
         $pager->setModule('rolodex');
         $pager->db->addColumn('rolodex_member.*');
         $pager->db->addColumn('demographics.*');
@@ -241,7 +242,7 @@ class Rolodex_Forms {
         }
 
         /* expired yes/no */
-        if (core\Settings::get('rolodex', 'enable_expiry')) {
+        if (PHPWS_Settings::get('rolodex', 'enable_expiry')) {
             if ($expired) {
                 $pager->addWhere('date_expires', time(), '<=');
             } else {
@@ -255,7 +256,7 @@ class Rolodex_Forms {
         }
 
         /* set the default sort order and title column sort */
-        if (core\Settings::get('rolodex', 'sortby')) {
+        if (PHPWS_Settings::get('rolodex', 'sortby')) {
             $sortby = 'demographics.last_name';
             $pager->joinResult('user_id', 'demographics', 'user_id', 'last_name', 'title');
         } else {
@@ -291,11 +292,11 @@ class Rolodex_Forms {
         /* if it's a list by location */
         if ($location) {
             $_REQUEST['locations'] = $location;
-            \core\Core::initModClass('rolodex', 'RDX_Location.php');
+            PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
             $item = new Rolodex_Location($location);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle(true);
-            $ptags['ITEM_DESCRIPTION'] = \core\Text::parseTag($item->getDescription(true));
+            $ptags['ITEM_DESCRIPTION'] = PHPWS_Text::parseTag($item->getDescription(true));
             $ptags['ITEM_IMAGE'] = $item->getFile();
             if ($item->getFile()) {
                 $ptags['ITEM_IMAGE'] = $item->getFile();
@@ -313,11 +314,11 @@ class Rolodex_Forms {
         /* if it's a list by feature */
         if ($feature) {
             $_REQUEST['features'] = $feature;
-            \core\Core::initModClass('rolodex', 'RDX_Feature.php');
+            PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
             $item = new Rolodex_Feature($feature);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle(true);
-            $ptags['ITEM_DESCRIPTION'] = \core\Text::parseTag($item->getDescription(true));
+            $ptags['ITEM_DESCRIPTION'] = PHPWS_Text::parseTag($item->getDescription(true));
             $ptags['ITEM_IMAGE'] = $item->getFile();
             if ($item->getFile()) {
                 $ptags['ITEM_IMAGE'] = $item->getFile();
@@ -335,11 +336,11 @@ class Rolodex_Forms {
         /* if it's a list by category */
         if ($category) {
             $_REQUEST['categories'] = $category;
-            \core\Core::initModClass('categories', 'Category.php');
+            PHPWS_Core::initModClass('categories', 'Category.php');
             $item = new Category($category);
             Layout::addPageTitle($item->getTitle());
             $ptags['ITEM_TITLE'] = $item->getTitle();
-            $ptags['ITEM_DESCRIPTION'] = \core\Text::parseTag($item->getDescription());
+            $ptags['ITEM_DESCRIPTION'] = PHPWS_Text::parseTag($item->getDescription());
             $ptags['ITEM_IMAGE'] = $item->getIcon();
             if ($item->getIcon()) {
                 $ptags['ITEM_IMAGE'] = $item->getIcon();
@@ -369,7 +370,7 @@ class Rolodex_Forms {
                 $vars2['aop']  = 'menu';
                 $vars2['tab']  = 'new';
                 if (isset($approved) && $approved == 1) {
-                    $pager->setEmptyMessage(sprintf(dgettext('rolodex', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('rolodex', 'Settings'), 'rolodex', $vars),  \core\Text::secureLink(dgettext('rolodex', 'New Member'), 'rolodex', $vars2)));
+                    $pager->setEmptyMessage(sprintf(dgettext('rolodex', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('rolodex', 'Settings'), 'rolodex', $vars),  PHPWS_Text::secureLink(dgettext('rolodex', 'New Member'), 'rolodex', $vars2)));
                 }
             } else {
                 $pager->setEmptyMessage(dgettext('rolodex', 'Sorry, no members are available at this time. Try broadening your search or returning later.'));
@@ -401,11 +402,11 @@ class Rolodex_Forms {
 
         /* set the list/page title */
         if (isset($approved) && $approved == 0) {
-            $this->rolodex->title = sprintf(dgettext('rolodex', 'Unapproved %s Members'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', 'Unapproved %s Members'), PHPWS_Settings::get('rolodex', 'module_title'));
         } elseif ($expired) {
-            $this->rolodex->title = sprintf(dgettext('rolodex', 'Expired %s Members'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', 'Expired %s Members'), PHPWS_Settings::get('rolodex', 'module_title'));
         } else {
-            $this->rolodex->title = sprintf(dgettext('rolodex', '%s Members'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', '%s Members'), PHPWS_Settings::get('rolodex', 'module_title'));
             if (isset($ptags['ITEM_TITLE'])) {
                 $this->rolodex->title .= sprintf(dgettext('rolodex', ' - %s'), $ptags['ITEM_TITLE']);
             }
@@ -419,8 +420,9 @@ class Rolodex_Forms {
         $ptags['DESCRIPTION_HEADER'] = dgettext('rolodex', 'Description');
         $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
 
-        \core\Core::initModClass('rolodex', 'RDX_Location.php');
-                $pager = new \core\DBPager('rolodex_location', 'Rolodex_Location');
+        PHPWS_Core::initModClass('rolodex', 'RDX_Location.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('rolodex_location', 'Rolodex_Location');
         $pager->setModule('rolodex');
 //        $pager->setOrder('title', 'asc', true);
         $pager->setDefaultOrder('title', 'asc', true);
@@ -432,15 +434,15 @@ class Rolodex_Forms {
                 $vars['aop']  = 'menu';
                 $vars['tab']  = 'settings';
                 $vars2['aop']  = 'new_location';
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('rolodex', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('rolodex', 'Settings'), 'rolodex', $vars),  \core\Text::secureLink(dgettext('rolodex', 'New Location'), 'rolodex', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('rolodex', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('rolodex', 'Settings'), 'rolodex', $vars),  PHPWS_Text::secureLink(dgettext('rolodex', 'New Location'), 'rolodex', $vars2));
             } else {
                 $ptags['EMPTY_MESSAGE'] = dgettext('rolodex', 'Sorry, no locations are available at this time.');
             }
         }
         if (Current_User::allow('rolodex', 'settings', null, null, true)) {
             $vars3['aop']  = 'new_location';
-            $label = \core\Icon::show('add', dgettext('rolodex', 'Add Location'));
-            $ptags['ADD_LINK'] = \core\Text::secureLink($label . ' ' . dgettext('rolodex', 'Add Location'), 'rolodex', $vars3);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Location'));
+            $ptags['ADD_LINK'] = PHPWS_Text::secureLink($label . ' ' . dgettext('rolodex', 'Add Location'), 'rolodex', $vars3);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
@@ -448,7 +450,7 @@ class Rolodex_Forms {
 //        $pager->addSortHeader('title', dgettext('rolodex', 'Title'));
 
         $this->rolodex->content = $pager->get();
-        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Locations'), \core\Settings::get('rolodex', 'module_title'));
+        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Locations'), PHPWS_Settings::get('rolodex', 'module_title'));
     }
 
 
@@ -458,8 +460,9 @@ class Rolodex_Forms {
         $ptags['DESCRIPTION_HEADER'] = dgettext('rolodex', 'Description');
         $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
 
-        \core\Core::initModClass('rolodex', 'RDX_Feature.php');
-                $pager = new \core\DBPager('rolodex_feature', 'Rolodex_feature');
+        PHPWS_Core::initModClass('rolodex', 'RDX_Feature.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('rolodex_feature', 'Rolodex_feature');
         $pager->setModule('rolodex');
         $pager->setOrder('title', 'asc', true);
         $pager->setTemplate('list_feature.tpl');
@@ -470,22 +473,22 @@ class Rolodex_Forms {
                 $vars['aop']  = 'menu';
                 $vars['tab']  = 'settings';
                 $vars2['aop']  = 'new_feature';
-                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('rolodex', 'Check your %s then create a %s to begin'), \core\Text::secureLink(dgettext('rolodex', 'Settings'), 'rolodex', $vars),  \core\Text::secureLink(dgettext('rolodex', 'New Feature'), 'rolodex', $vars2));
+                $ptags['EMPTY_MESSAGE'] = sprintf(dgettext('rolodex', 'Check your %s then create a %s to begin'), PHPWS_Text::secureLink(dgettext('rolodex', 'Settings'), 'rolodex', $vars),  PHPWS_Text::secureLink(dgettext('rolodex', 'New Feature'), 'rolodex', $vars2));
             } else {
                 $ptags['EMPTY_MESSAGE'] = dgettext('rolodex', 'Sorry, no features are available at this time.');
             }
         }
         if (Current_User::allow('rolodex', 'settings', null, null, true)) {
             $vars3['aop']  = 'new_feature';
-            $label = \core\Icon::show('add', dgettext('rolodex', 'Add Feature'));
-            $ptags['ADD_LINK'] = \core\Text::secureLink($label . ' ' . dgettext('rolodex', 'Add Feature'), 'rolodex', $vars3);
+            $label = Icon::show('add', dgettext('rolodex', 'Add Feature'));
+            $ptags['ADD_LINK'] = PHPWS_Text::secureLink($label . ' ' . dgettext('rolodex', 'Add Feature'), 'rolodex', $vars3);
         }
         $pager->addPageTags($ptags);
         $pager->addToggle('class="toggle1"');
         $pager->setSearch('title', 'description');
 
         $this->rolodex->content = $pager->get();
-        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Features'), \core\Settings::get('rolodex', 'module_title'));
+        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Features'), PHPWS_Settings::get('rolodex', 'module_title'));
     }
 
 
@@ -496,7 +499,8 @@ class Rolodex_Forms {
         $ptags['DESCRIPTION_HEADER'] = dgettext('rolodex', 'Description');
         $ptags['ALPHA_CLICK'] = $this->rolodex->alpha_click();
 
-                $pager = new \core\DBPager('categories');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('categories');
         $pager->setModule('rolodex');
         $pager->setOrder('title', 'asc', true);
         $pager->setTemplate('list_category.tpl');
@@ -508,25 +512,25 @@ class Rolodex_Forms {
 
 //        $pager->db->setTestMode();
         $this->rolodex->content = $pager->get();
-        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Categories'), \core\Settings::get('rolodex', 'module_title'));
+        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Categories'), PHPWS_Settings::get('rolodex', 'module_title'));
     }
 
 
     public function listCatsRow($value)
     {
-        $db = new \core\DB('category_items');
+        $db = new PHPWS_DB('category_items');
         $db->addWhere('cat_id', $value['id']);
         $db->addWhere('module', 'rolodex');
         $num = $db->count();
-        $tpl['TITLE'] = \core\Text::moduleLink($value['title'], "rolodex",  array('uop'=>'view_category', 'category'=>$value['id'])) . ' ('.$num.')';
+        $tpl['TITLE'] = PHPWS_Text::moduleLink($value['title'], "rolodex",  array('uop'=>'view_category', 'category'=>$value['id'])) . ' ('.$num.')';
 
         if (empty($value['description'])) {
             $tpl['DESCRIPTION'] = '';
         } else {
-            $tpl['DESCRIPTION'] = substr(ltrim(strip_tags(str_replace('<br />', ' ', \core\Text::parseOutput($value['description'])))), 0, 120) . ' ...';
+            $tpl['DESCRIPTION'] = substr(ltrim(strip_tags(str_replace('<br />', ' ', PHPWS_Text::parseOutput($value['description'])))), 0, 120) . ' ...';
         }
 
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $tpl['ICON'] = Cabinet::getTag($value['icon']);
 
         return $tpl;
@@ -535,7 +539,7 @@ class Rolodex_Forms {
 
     public function advSearchForm()
     {
-        $form = new \core\Form('rolodex_adv_search');
+        $form = new PHPWS_Form('rolodex_adv_search');
 
         $form->setMethod('get');
         $form->addHidden('module', 'rolodex');
@@ -547,15 +551,15 @@ class Rolodex_Forms {
         $tpl = $form->getTemplate();
 
         $tpl['ALPHA_CLICK'] = $this->rolodex->alpha_click();
-        if (core\Settings::get('rolodex', 'use_locations')) {
+        if (PHPWS_Settings::get('rolodex', 'use_locations')) {
             $tpl['LOCATION_SELECT'] = $this->rolodex->getItemSelect('location', null, 'locations');
             $tpl['LOCATION_LABEL'] = dgettext('rolodex', 'Location(s)');
         }
-        if (core\Settings::get('rolodex', 'use_features')) {
+        if (PHPWS_Settings::get('rolodex', 'use_features')) {
             $tpl['FEATURE_SELECT'] = $this->rolodex->getItemSelect('feature', null, 'features');
             $tpl['FEATURE_LABEL'] = dgettext('rolodex', 'Feature(s)');
         }
-        if (core\Settings::get('rolodex', 'use_categories')) {
+        if (PHPWS_Settings::get('rolodex', 'use_categories')) {
             $tpl['CATEGORY_SELECT'] = $this->rolodex->getCatSelect(null, 'categories');
             $tpl['CATEGORY_LABEL'] = dgettext('rolodex', 'Category(s)');
         }
@@ -564,8 +568,8 @@ class Rolodex_Forms {
         $tpl['TIP_SELECT'] = dgettext('rolodex', 'Select one or more of the available options below to filter a list of members. It is possible to get too specific. If your search returns an empty list, try selecting fewer criteria.');
         $tpl['TIP_MULTI'] = dgettext('rolodex', 'To select more than one itme from any given list, click on the first item then hold your control key and click on the next. Use shift-click to select a range of items. Mac users, use command-click and shift-click.');
 
-        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Advanced Search'), \core\Settings::get('rolodex', 'module_title'));
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'adv_search_form.tpl');
+        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Advanced Search'), PHPWS_Settings::get('rolodex', 'module_title'));
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'adv_search_form.tpl');
 
     }
 
@@ -573,225 +577,225 @@ class Rolodex_Forms {
     public function editSettings()
     {
 
-        $form = new \core\Form('rolodex_settings');
+        $form = new PHPWS_Form('rolodex_settings');
         $form->addHidden('module', 'rolodex');
         $form->addHidden('aop', 'post_settings');
 
-        $form->addText('module_title', \core\Settings::get('rolodex', 'module_title'));
+        $form->addText('module_title', PHPWS_Settings::get('rolodex', 'module_title'));
         $form->setSize('module_title', 30);
         $form->setLabel('module_title', dgettext('rolodex', 'The display title for this module, eg. Members, or Businesses, or Contacts'));
 
         $form->addCheckbox('allow_anon', 1);
-        $form->setMatch('allow_anon', \core\Settings::get('rolodex', 'allow_anon'));
+        $form->setMatch('allow_anon', PHPWS_Settings::get('rolodex', 'allow_anon'));
         $form->setLabel('allow_anon', dgettext('rolodex', 'Allow anonymous viewing'));
 
         $form->addRadio('sortby', array(0, 1));
         $form->setLabel('sortby', array(dgettext('rolodex', 'Business name'), dgettext('rolodex', 'Last name')));
-        $form->setMatch('sortby', \core\Settings::get('rolodex', 'sortby'));
+        $form->setMatch('sortby', PHPWS_Settings::get('rolodex', 'sortby'));
 
         $form->addCheckbox('req_approval', 1);
-        $form->setMatch('req_approval', \core\Settings::get('rolodex', 'req_approval'));
+        $form->setMatch('req_approval', PHPWS_Settings::get('rolodex', 'req_approval'));
         $form->setLabel('req_approval', dgettext('rolodex', 'Require approval for new profiles'));
 
         $form->addCheckbox('send_notification', 1);
-        $form->setMatch('send_notification', \core\Settings::get('rolodex', 'send_notification'));
+        $form->setMatch('send_notification', PHPWS_Settings::get('rolodex', 'send_notification'));
         $form->setLabel('send_notification', dgettext('rolodex', 'Send notification of pending applications'));
 
         $form->addCheckbox('notify_all_saves', 1);
-        $form->setMatch('notify_all_saves', \core\Settings::get('rolodex', 'notify_all_saves'));
+        $form->setMatch('notify_all_saves', PHPWS_Settings::get('rolodex', 'notify_all_saves'));
         $form->setLabel('notify_all_saves', dgettext('rolodex', 'Send notification upon all member edits (not those done by an admin)'));
 
-        $form->addText('admin_contact', \core\Settings::get('rolodex', 'admin_contact'));
+        $form->addText('admin_contact', PHPWS_Settings::get('rolodex', 'admin_contact'));
         $form->setSize('admin_contact', 30);
         $form->setLabel('admin_contact', dgettext('rolodex', 'The admin contact email address for this module'));
 
         $form->addCheckbox('use_categories', 1);
-        $form->setMatch('use_categories', \core\Settings::get('rolodex', 'use_categories'));
+        $form->setMatch('use_categories', PHPWS_Settings::get('rolodex', 'use_categories'));
         $form->setLabel('use_categories', dgettext('rolodex', 'Enable Categories (uses core Categories)'));
 
         $form->addCheckbox('use_locations', 1);
-        $form->setMatch('use_locations', \core\Settings::get('rolodex', 'use_locations'));
+        $form->setMatch('use_locations', PHPWS_Settings::get('rolodex', 'use_locations'));
         $form->setLabel('use_locations', dgettext('rolodex', 'Enable Locations'));
 
         $form->addCheckbox('use_features', 1);
-        $form->setMatch('use_features', \core\Settings::get('rolodex', 'use_features'));
+        $form->setMatch('use_features', PHPWS_Settings::get('rolodex', 'use_features'));
         $form->setLabel('use_features', dgettext('rolodex', 'Enable Features'));
 
         $form->addCheckbox('comments_enable', 1);
-        $form->setMatch('comments_enable', \core\Settings::get('rolodex', 'comments_enable'));
+        $form->setMatch('comments_enable', PHPWS_Settings::get('rolodex', 'comments_enable'));
         $form->setLabel('comments_enable', dgettext('rolodex', 'Enable comment settings on profiles (required for the rest of the Comments Settings)'));
 
         $form->addCheckbox('comments_enforce', 1);
-        $form->setMatch('comments_enforce', \core\Settings::get('rolodex', 'comments_enforce'));
+        $form->setMatch('comments_enforce', PHPWS_Settings::get('rolodex', 'comments_enforce'));
         $form->setLabel('comments_enforce', dgettext('rolodex', 'Force comments enabled, on all profiles'));
 
         $form->addCheckbox('comments_anon_enable', 1);
-        $form->setMatch('comments_anon_enable', \core\Settings::get('rolodex', 'comments_anon_enable'));
+        $form->setMatch('comments_anon_enable', PHPWS_Settings::get('rolodex', 'comments_anon_enable'));
         $form->setLabel('comments_anon_enable', dgettext('rolodex', 'Enable anonymous comment settings on profiles (required for the next Force anonymous setting)'));
 
         $form->addCheckbox('comments_anon_enforce', 1);
-        $form->setMatch('comments_anon_enforce', \core\Settings::get('rolodex', 'comments_anon_enforce'));
+        $form->setMatch('comments_anon_enforce', PHPWS_Settings::get('rolodex', 'comments_anon_enforce'));
         $form->setLabel('comments_anon_enforce', dgettext('rolodex', 'Force anonymous comments enabled, on all profiles'));
 
         $form->addRadio('contact_type', array(0, 1));
         $form->setLabel('contact_type', array(dgettext('rolodex', 'Email link'), dgettext('rolodex', 'Web form')));
-        $form->setMatch('contact_type', \core\Settings::get('rolodex', 'contact_type'));
+        $form->setMatch('contact_type', PHPWS_Settings::get('rolodex', 'contact_type'));
 
         $form->addRadio('privacy_contact', array(0, 1, 2));
         $form->setLabel('privacy_contact', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_contact', \core\Settings::get('rolodex', 'privacy_contact'));
+        $form->setMatch('privacy_contact', PHPWS_Settings::get('rolodex', 'privacy_contact'));
 
         $form->addRadio('privacy_web', array(0, 1, 2));
         $form->setLabel('privacy_web', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_web', \core\Settings::get('rolodex', 'privacy_web'));
+        $form->setMatch('privacy_web', PHPWS_Settings::get('rolodex', 'privacy_web'));
 
         $form->addRadio('privacy_home_phone', array(0, 1, 2));
         $form->setLabel('privacy_home_phone', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_home_phone', \core\Settings::get('rolodex', 'privacy_home_phone'));
+        $form->setMatch('privacy_home_phone', PHPWS_Settings::get('rolodex', 'privacy_home_phone'));
 
         $form->addRadio('privacy_bus_phone', array(0, 1, 2));
         $form->setLabel('privacy_bus_phone', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_bus_phone', \core\Settings::get('rolodex', 'privacy_bus_phone'));
+        $form->setMatch('privacy_bus_phone', PHPWS_Settings::get('rolodex', 'privacy_bus_phone'));
 
         $form->addRadio('privacy_home', array(0, 1, 2));
         $form->setLabel('privacy_home', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_home', \core\Settings::get('rolodex', 'privacy_home'));
+        $form->setMatch('privacy_home', PHPWS_Settings::get('rolodex', 'privacy_home'));
 
         $form->addRadio('privacy_business', array(0, 1, 2));
         $form->setLabel('privacy_business', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_business', \core\Settings::get('rolodex', 'privacy_business'));
+        $form->setMatch('privacy_business', PHPWS_Settings::get('rolodex', 'privacy_business'));
 
         $form->addRadio('privacy_export', array(0, 1, 2));
         $form->setLabel('privacy_export', array(dgettext('rolodex', 'Public'), dgettext('rolodex', 'Members only'), dgettext('rolodex', 'Restricted users')));
-        $form->setMatch('privacy_export', \core\Settings::get('rolodex', 'privacy_export'));
+        $form->setMatch('privacy_export', PHPWS_Settings::get('rolodex', 'privacy_export'));
 
         $form->addRadio('privacy_use_search', array(0, 1));
         $form->setLabel('privacy_use_search', array(dgettext('rolodex', 'No'), dgettext('rolodex', 'Yes')));
-        $form->setMatch('privacy_use_search', \core\Settings::get('rolodex', 'privacy_use_search'));
+        $form->setMatch('privacy_use_search', PHPWS_Settings::get('rolodex', 'privacy_use_search'));
 
         $form->addCheckbox('enable_expiry', 1);
-        $form->setMatch('enable_expiry', \core\Settings::get('rolodex', 'enable_expiry'));
+        $form->setMatch('enable_expiry', PHPWS_Settings::get('rolodex', 'enable_expiry'));
         $form->setLabel('enable_expiry', dgettext('rolodex', 'Enable expiry on member profiles'));
 
-        $form->addText('expiry_interval', \core\Settings::get('rolodex', 'expiry_interval'));
+        $form->addText('expiry_interval', PHPWS_Settings::get('rolodex', 'expiry_interval'));
         $form->setSize('expiry_interval', 4, 4);
         $form->setLabel('expiry_interval', dgettext('rolodex', 'Default expiry interval (in days), if expiry is enabled'));
 
         $form->addCheckbox('use_captcha', 1);
-        $form->setMatch('use_captcha', \core\Settings::get('rolodex', 'use_captcha'));
+        $form->setMatch('use_captcha', PHPWS_Settings::get('rolodex', 'use_captcha'));
         $form->setLabel('use_captcha', dgettext('rolodex', 'Use graphical confirmation on contact form (CAPTCHA)'));
 
         $form->addRadio('list_address', array(0, 1, 2, 3));
         $form->setLabel('list_address', array(dgettext('rolodex', 'None'), dgettext('rolodex', 'Business'), dgettext('rolodex', 'Home'), dgettext('rolodex', 'Both')));
-        $form->setMatch('list_address', \core\Settings::get('rolodex', 'list_address'));
+        $form->setMatch('list_address', PHPWS_Settings::get('rolodex', 'list_address'));
 
         $form->addCheckbox('list_phone', 1);
-        $form->setMatch('list_phone', \core\Settings::get('rolodex', 'list_phone'));
+        $form->setMatch('list_phone', PHPWS_Settings::get('rolodex', 'list_phone'));
         $form->setLabel('list_phone', dgettext('rolodex', 'Display phone numbers'));
 
         $form->addCheckbox('list_categories', 1);
-        $form->setMatch('list_categories', \core\Settings::get('rolodex', 'list_categories'));
+        $form->setMatch('list_categories', PHPWS_Settings::get('rolodex', 'list_categories'));
         $form->setLabel('list_categories', dgettext('rolodex', 'Display categories'));
 
         $form->addCheckbox('list_locations', 1);
-        $form->setMatch('list_locations', \core\Settings::get('rolodex', 'list_locations'));
+        $form->setMatch('list_locations', PHPWS_Settings::get('rolodex', 'list_locations'));
         $form->setLabel('list_locations', dgettext('rolodex', 'Display locations'));
 
         $form->addCheckbox('list_features', 1);
-        $form->setMatch('list_features', \core\Settings::get('rolodex', 'list_features'));
+        $form->setMatch('list_features', PHPWS_Settings::get('rolodex', 'list_features'));
         $form->setLabel('list_features', dgettext('rolodex', 'Display features'));
 
-        $form->addTextField('max_img_width', \core\Settings::get('rolodex', 'max_img_width'));
+        $form->addTextField('max_img_width', PHPWS_Settings::get('rolodex', 'max_img_width'));
         $form->setLabel('max_img_width', dgettext('rolodex', 'Maximum image width (50-600)'));
         $form->setSize('max_img_width', 4,4);
 
-        $form->addTextField('max_img_height', \core\Settings::get('rolodex', 'max_img_height'));
+        $form->addTextField('max_img_height', PHPWS_Settings::get('rolodex', 'max_img_height'));
         $form->setLabel('max_img_height', dgettext('rolodex', 'Maximum image height (50-600)'));
         $form->setSize('max_img_height', 4,4);
 
-        $form->addTextField('max_thumb_width', \core\Settings::get('rolodex', 'max_thumb_width'));
+        $form->addTextField('max_thumb_width', PHPWS_Settings::get('rolodex', 'max_thumb_width'));
         $form->setLabel('max_thumb_width', dgettext('rolodex', 'Maximum thumbnail width (40-200)'));
         $form->setSize('max_thumb_width', 4,4);
 
-        $form->addTextField('max_thumb_height', \core\Settings::get('rolodex', 'max_thumb_height'));
+        $form->addTextField('max_thumb_height', PHPWS_Settings::get('rolodex', 'max_thumb_height'));
         $form->setLabel('max_thumb_height', dgettext('rolodex', 'Maximum thumbnail height (40-200)'));
         $form->setSize('max_thumb_height', 4,4);
 
-        $form->addTextField('other_img_width', \core\Settings::get('rolodex', 'other_img_width'));
+        $form->addTextField('other_img_width', PHPWS_Settings::get('rolodex', 'other_img_width'));
         $form->setLabel('other_img_width', dgettext('rolodex', 'Maximum image width for locations/features (20-400)'));
         $form->setSize('other_img_width', 4,4);
 
-        $form->addTextField('other_img_height', \core\Settings::get('rolodex', 'other_img_height'));
+        $form->addTextField('other_img_height', PHPWS_Settings::get('rolodex', 'other_img_height'));
         $form->setLabel('other_img_height', dgettext('rolodex', 'Maximum image height for locations/features (20-400)'));
         $form->setSize('other_img_height', 4,4);
 
         $form->addCheckbox('show_block', 1);
-        $form->setMatch('show_block', \core\Settings::get('rolodex', 'show_block'));
+        $form->setMatch('show_block', PHPWS_Settings::get('rolodex', 'show_block'));
         $form->setLabel('show_block', dgettext('rolodex', 'Show rolodex block'));
 
         $form->addRadio('block_order_by_rand', array(0, 1));
         $form->setLabel('block_order_by_rand', array(dgettext('rolodex', 'Most recent'), dgettext('rolodex', 'Random')));
-        $form->setMatch('block_order_by_rand', \core\Settings::get('rolodex', 'block_order_by_rand'));
+        $form->setMatch('block_order_by_rand', PHPWS_Settings::get('rolodex', 'block_order_by_rand'));
 
         $form->addCheckbox('block_on_home_only', 1);
-        $form->setMatch('block_on_home_only', \core\Settings::get('rolodex', 'block_on_home_only'));
+        $form->setMatch('block_on_home_only', PHPWS_Settings::get('rolodex', 'block_on_home_only'));
         $form->setLabel('block_on_home_only', dgettext('rolodex', 'Show on home only'));
 
-        $form->addText('custom1_name', \core\Settings::get('rolodex', 'custom1_name'));
+        $form->addText('custom1_name', PHPWS_Settings::get('rolodex', 'custom1_name'));
         $form->setLabel('custom1_name', dgettext('rolodex', 'Custom field one name'));
         $form->setSize('custom1_name', 30);
 
-        $form->addText('custom2_name', \core\Settings::get('rolodex', 'custom2_name'));
+        $form->addText('custom2_name', PHPWS_Settings::get('rolodex', 'custom2_name'));
         $form->setLabel('custom2_name', dgettext('rolodex', 'Custom field two name'));
         $form->setSize('custom2_name', 30);
 
-        $form->addText('custom3_name', \core\Settings::get('rolodex', 'custom3_name'));
+        $form->addText('custom3_name', PHPWS_Settings::get('rolodex', 'custom3_name'));
         $form->setLabel('custom3_name', dgettext('rolodex', 'Custom field three name'));
         $form->setSize('custom3_name', 30);
 
-        $form->addText('custom4_name', \core\Settings::get('rolodex', 'custom4_name'));
+        $form->addText('custom4_name', PHPWS_Settings::get('rolodex', 'custom4_name'));
         $form->setLabel('custom4_name', dgettext('rolodex', 'Custom field four name'));
         $form->setSize('custom4_name', 30);
 
-        $form->addText('custom5_name', \core\Settings::get('rolodex', 'custom5_name'));
+        $form->addText('custom5_name', PHPWS_Settings::get('rolodex', 'custom5_name'));
         $form->setLabel('custom5_name', dgettext('rolodex', 'Custom field five name (internal use only)'));
         $form->setSize('custom5_name', 30);
 
-        $form->addText('custom6_name', \core\Settings::get('rolodex', 'custom6_name'));
+        $form->addText('custom6_name', PHPWS_Settings::get('rolodex', 'custom6_name'));
         $form->setLabel('custom6_name', dgettext('rolodex', 'Custom field six name (internal use only)'));
         $form->setSize('custom6_name', 30);
 
-        $form->addText('custom7_name', \core\Settings::get('rolodex', 'custom7_name'));
+        $form->addText('custom7_name', PHPWS_Settings::get('rolodex', 'custom7_name'));
         $form->setLabel('custom7_name', dgettext('rolodex', 'Custom field seven name (internal use only)'));
         $form->setSize('custom7_name', 30);
 
-        $form->addText('custom8_name', \core\Settings::get('rolodex', 'custom8_name'));
+        $form->addText('custom8_name', PHPWS_Settings::get('rolodex', 'custom8_name'));
         $form->setLabel('custom8_name', dgettext('rolodex', 'Custom field eight name (internal use only)'));
         $form->setSize('custom8_name', 30);
 
         $form->addCheckbox('custom1_list', 1);
-        $form->setMatch('custom1_list', \core\Settings::get('rolodex', 'custom1_list'));
+        $form->setMatch('custom1_list', PHPWS_Settings::get('rolodex', 'custom1_list'));
 
         $form->addCheckbox('custom2_list', 1);
-        $form->setMatch('custom2_list', \core\Settings::get('rolodex', 'custom2_list'));
+        $form->setMatch('custom2_list', PHPWS_Settings::get('rolodex', 'custom2_list'));
 
         $form->addCheckbox('custom3_list', 1);
-        $form->setMatch('custom3_list', \core\Settings::get('rolodex', 'custom3_list'));
+        $form->setMatch('custom3_list', PHPWS_Settings::get('rolodex', 'custom3_list'));
 
         $form->addCheckbox('custom4_list', 1);
-        $form->setMatch('custom4_list', \core\Settings::get('rolodex', 'custom4_list'));
+        $form->setMatch('custom4_list', PHPWS_Settings::get('rolodex', 'custom4_list'));
 
         $form->addCheckbox('custom5_list', 1);
-        $form->setMatch('custom5_list', \core\Settings::get('rolodex', 'custom5_list'));
+        $form->setMatch('custom5_list', PHPWS_Settings::get('rolodex', 'custom5_list'));
 
         $form->addCheckbox('custom6_list', 1);
-        $form->setMatch('custom6_list', \core\Settings::get('rolodex', 'custom6_list'));
+        $form->setMatch('custom6_list', PHPWS_Settings::get('rolodex', 'custom6_list'));
 
         $form->addCheckbox('custom7_list', 1);
-        $form->setMatch('custom7_list', \core\Settings::get('rolodex', 'custom7_list'));
+        $form->setMatch('custom7_list', PHPWS_Settings::get('rolodex', 'custom7_list'));
 
         $form->addCheckbox('custom8_list', 1);
-        $form->setMatch('custom8_list', \core\Settings::get('rolodex', 'custom8_list'));
+        $form->setMatch('custom8_list', PHPWS_Settings::get('rolodex', 'custom8_list'));
 
 
 
@@ -821,20 +825,20 @@ class Rolodex_Forms {
         $tpl['FIELDS_LIST_LABEL'] = dgettext('rolodex', 'Select checkbox to also include field in list view');
 
         $this->rolodex->title = dgettext('rolodex', 'Settings');
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'edit_settings.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'edit_settings.tpl');
     }
 
 
     public function selectUser()
     {
 
-        $form = new \core\Form('rolodex_user');
+        $form = new PHPWS_Form('rolodex_user');
         $form->addHidden('module', 'rolodex');
         $form->addHidden('aop', 'edit_member');
 
 // I don't seem to need the class
-//        \core\Core::initModClass('users', 'Users.php');
-        $db = new \core\DB('users');
+//        PHPWS_Core::initModClass('users', 'Users.php');
+        $db = new PHPWS_DB('users');
         $db->addColumn('id');
         $db->addColumn('username');
         $db->addColumn('display_name');
@@ -857,14 +861,14 @@ class Rolodex_Forms {
         $tpl['USER_ID_GROUP_LABEL'] = dgettext('rolodex', 'User options');
 
         $this->rolodex->title = dgettext('rolodex', 'New member step one');
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'select_user.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'select_user.tpl');
     }
 
 
     public function editMember($admin=true)
     {
 //print_r($this->rolodex->member);
-        $form = new \core\Form('rolodex_member');
+        $form = new PHPWS_Form('rolodex_member');
         $member = & $this->rolodex->member;
 
         $form->addHidden('module', 'rolodex');
@@ -880,7 +884,7 @@ class Rolodex_Forms {
         }
 
         if ($member->isNew()) {
-            if (core\Settings::get('rolodex', 'req_approval')) {
+            if (PHPWS_Settings::get('rolodex', 'req_approval')) {
                 $form->addSubmit('save', dgettext('rolodex', 'Submit'));
                 $this->rolodex->title = dgettext('rolodex', 'Submit member profile');
             } else {
@@ -1014,16 +1018,16 @@ class Rolodex_Forms {
         $form->setSize('business_zip_code', 10);
         $form->setLabel('business_zip_code', dgettext('rolodex', 'Postal/Zip code'));
 
-        if (core\Settings::get('rolodex', 'comments_enable')) {
-            if (core\Settings::get('rolodex', 'comments_enforce')) {
+        if (PHPWS_Settings::get('rolodex', 'comments_enable')) {
+            if (PHPWS_Settings::get('rolodex', 'comments_enforce')) {
                 $form->addHidden('allow_comments', 1);
             } else {
                 $form->addCheckbox('allow_comments', 1);
                 $form->setMatch('allow_comments', $member->allow_comments);
                 $form->setLabel('allow_comments', dgettext('rolodex', 'Enable comments'));
             }
-            if (core\Settings::get('rolodex', 'comments_anon_enable')) {
-                if (core\Settings::get('rolodex', 'comments_anon_enforce')) {
+            if (PHPWS_Settings::get('rolodex', 'comments_anon_enable')) {
+                if (PHPWS_Settings::get('rolodex', 'comments_anon_enforce')) {
                     $form->addHidden('allow_anon', 1);
                 } else {
                     $form->addCheckbox('allow_anon', 1);
@@ -1054,66 +1058,66 @@ class Rolodex_Forms {
         $form->setMatch('email_privacy', $member->email_privacy);
         $form->setLabel('email_privacy', dgettext('rolodex', 'Hide Email/Contact link from everyone, except admins'));
 
-        if (core\Settings::get('rolodex', 'custom1_name')) {
+        if (PHPWS_Settings::get('rolodex', 'custom1_name')) {
             $form->addText('custom1', $member->custom1);
             $form->setSize('custom1', 40);
-            $form->setLabel('custom1', \core\Settings::get('rolodex', 'custom1_name'));
+            $form->setLabel('custom1', PHPWS_Settings::get('rolodex', 'custom1_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom2_name')) {
+        if (PHPWS_Settings::get('rolodex', 'custom2_name')) {
             $form->addText('custom2', $member->custom2);
             $form->setSize('custom2', 40);
-            $form->setLabel('custom2', \core\Settings::get('rolodex', 'custom2_name'));
+            $form->setLabel('custom2', PHPWS_Settings::get('rolodex', 'custom2_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom3_name')) {
+        if (PHPWS_Settings::get('rolodex', 'custom3_name')) {
             $form->addText('custom3', $member->custom3);
             $form->setSize('custom3', 40);
-            $form->setLabel('custom3', \core\Settings::get('rolodex', 'custom3_name'));
+            $form->setLabel('custom3', PHPWS_Settings::get('rolodex', 'custom3_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom4_name')) {
+        if (PHPWS_Settings::get('rolodex', 'custom4_name')) {
             $form->addText('custom4', $member->custom4);
             $form->setSize('custom4', 40);
-            $form->setLabel('custom4', \core\Settings::get('rolodex', 'custom4_name'));
+            $form->setLabel('custom4', PHPWS_Settings::get('rolodex', 'custom4_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom5_name') && Current_User::allow('rolodex', 'edit_member')) {
+        if (PHPWS_Settings::get('rolodex', 'custom5_name') && Current_User::allow('rolodex', 'edit_member')) {
             $form->addText('custom5', $member->custom5);
             $form->setSize('custom5', 40);
-            $form->setLabel('custom5', \core\Settings::get('rolodex', 'custom5_name'));
+            $form->setLabel('custom5', PHPWS_Settings::get('rolodex', 'custom5_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom6_name') && Current_User::allow('rolodex', 'edit_member')) {
+        if (PHPWS_Settings::get('rolodex', 'custom6_name') && Current_User::allow('rolodex', 'edit_member')) {
             $form->addText('custom6', $member->custom6);
             $form->setSize('custom6', 40);
-            $form->setLabel('custom6', \core\Settings::get('rolodex', 'custom6_name'));
+            $form->setLabel('custom6', PHPWS_Settings::get('rolodex', 'custom6_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom7_name') && Current_User::allow('rolodex', 'edit_member')) {
+        if (PHPWS_Settings::get('rolodex', 'custom7_name') && Current_User::allow('rolodex', 'edit_member')) {
             $form->addText('custom7', $member->custom7);
             $form->setSize('custom7', 40);
-            $form->setLabel('custom7', \core\Settings::get('rolodex', 'custom7_name'));
+            $form->setLabel('custom7', PHPWS_Settings::get('rolodex', 'custom7_name'));
         }
 
-        if (core\Settings::get('rolodex', 'custom8_name') && Current_User::allow('rolodex', 'edit_member')) {
+        if (PHPWS_Settings::get('rolodex', 'custom8_name') && Current_User::allow('rolodex', 'edit_member')) {
             $form->addText('custom8', $member->custom8);
             $form->setSize('custom8', 40);
-            $form->setLabel('custom8', \core\Settings::get('rolodex', 'custom8_name'));
+            $form->setLabel('custom8', PHPWS_Settings::get('rolodex', 'custom8_name'));
         }
 
 
         $tpl = $form->getTemplate();
 
-        if (core\Settings::get('rolodex', 'use_categories')) {
+        if (PHPWS_Settings::get('rolodex', 'use_categories')) {
             $tpl['CATEGORIES'] = Categories::getForm($match=$member->get_categories(), $select_name='categories', $multiple=true);
             $tpl['CATEGORIES_LABEL'] = dgettext('rolodex', 'Category(s)');
         }
-        if (core\Settings::get('rolodex', 'use_locations')) {
+        if (PHPWS_Settings::get('rolodex', 'use_locations')) {
             $tpl['LOCATIONS'] = $this->rolodex->getItemForm('location', $match=$member->get_locations(), $select_name='locations', $multiple=true);
             $tpl['LOCATIONS_LABEL'] = dgettext('rolodex', 'Location(s)');
         }
-        if (core\Settings::get('rolodex', 'use_features')) {
+        if (PHPWS_Settings::get('rolodex', 'use_features')) {
             $tpl['FEATURES'] = $this->rolodex->getItemForm('feature', $match=$member->get_features(), $select_name='features', $multiple=true);
             $tpl['FEATURES_LABEL'] = dgettext('rolodex', 'Feature(s)');
         }
@@ -1136,28 +1140,28 @@ class Rolodex_Forms {
         $tpl['HOME_LABEL'] = dgettext('rolodex', 'Home address');
         $tpl['BUSINESS_LABEL'] = dgettext('rolodex', 'Business address');
         $tpl['SETTINGS_GROUP_LABEL'] = dgettext('rolodex', 'Settings');
-        if (core\Settings::get('rolodex', 'use_categories') || \core\Settings::get('rolodex', 'use_locations') || \core\Settings::get('rolodex', 'use_features')) {
+        if (PHPWS_Settings::get('rolodex', 'use_categories') || PHPWS_Settings::get('rolodex', 'use_locations') || PHPWS_Settings::get('rolodex', 'use_features')) {
             $tpl['SELECT_LIST_TIP'] = dgettext('rolodex', 'To use the category, location, or feature lists, select an item from the list and click on the "+" symbol to add the selection to this profile. To remove a selection, click on the name of the item in the box below the select menu.');
         }
-        if (core\Settings::get('rolodex', 'custom1_name') || 
-            \core\Settings::get('rolodex', 'custom2_name') || 
-            \core\Settings::get('rolodex', 'custom3_name') || 
-            \core\Settings::get('rolodex', 'custom4_name') || 
-            (core\Settings::get('rolodex', 'custom5_name') && Current_User::allow('rolodex', 'edit_member')) || 
-            (core\Settings::get('rolodex', 'custom6_name') && Current_User::allow('rolodex', 'edit_member')) || 
-            (core\Settings::get('rolodex', 'custom7_name') && Current_User::allow('rolodex', 'edit_member')) || 
-            (core\Settings::get('rolodex', 'custom8_name') && Current_User::allow('rolodex', 'edit_member')) 
+        if (PHPWS_Settings::get('rolodex', 'custom1_name') || 
+            PHPWS_Settings::get('rolodex', 'custom2_name') || 
+            PHPWS_Settings::get('rolodex', 'custom3_name') || 
+            PHPWS_Settings::get('rolodex', 'custom4_name') || 
+            (PHPWS_Settings::get('rolodex', 'custom5_name') && Current_User::allow('rolodex', 'edit_member')) || 
+            (PHPWS_Settings::get('rolodex', 'custom6_name') && Current_User::allow('rolodex', 'edit_member')) || 
+            (PHPWS_Settings::get('rolodex', 'custom7_name') && Current_User::allow('rolodex', 'edit_member')) || 
+            (PHPWS_Settings::get('rolodex', 'custom8_name') && Current_User::allow('rolodex', 'edit_member')) 
            ) {
             $tpl['META_GROUP_LABEL'] = dgettext('rolodex', 'Extra');
         }
 
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'edit_member.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'edit_member.tpl');
     }
 
 
     public function editLocation()
     {
-        $form = new \core\Form('rolodex_location');
+        $form = new PHPWS_Form('rolodex_location');
         $location = & $this->rolodex->location;
 
         $form->addHidden('module', 'rolodex');
@@ -1166,10 +1170,10 @@ class Rolodex_Forms {
         if ($location->id) {
             $form->addHidden('id', $location->id);
             $form->addSubmit(dgettext('rolodex', 'Update'));
-            $this->rolodex->title = sprintf(dgettext('rolodex', 'Update %s location'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', 'Update %s location'), PHPWS_Settings::get('rolodex', 'module_title'));
         } else {
             $form->addSubmit(dgettext('rolodex', 'Create'));
-            $this->rolodex->title = sprintf(dgettext('rolodex', 'Create %s location'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', 'Create %s location'), PHPWS_Settings::get('rolodex', 'module_title'));
         }
 
         $form->addText('title', $location->title);
@@ -1181,11 +1185,11 @@ class Rolodex_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('rolodex', 'Description'));
 
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $location->image_id);
         $manager->imageOnly();
-        $manager->maxImageWidth(core\Settings::get('rolodex', 'other_img_width'));
-        $manager->maxImageHeight(core\Settings::get('rolodex', 'other_img_height'));
+        $manager->maxImageWidth(PHPWS_Settings::get('rolodex', 'other_img_width'));
+        $manager->maxImageHeight(PHPWS_Settings::get('rolodex', 'other_img_height'));
 
         if ($manager) {
             $form->addTplTag('FILE_MANAGER', $manager->get());
@@ -1194,14 +1198,14 @@ class Rolodex_Forms {
         $tpl = $form->getTemplate();
         $tpl['DETAILS_LABEL'] = dgettext('rolodex', 'Details');
 
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'edit_location.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'edit_location.tpl');
 
     }
 
 
     public function editFeature()
     {
-        $form = new \core\Form('rolodex_feature');
+        $form = new PHPWS_Form('rolodex_feature');
         $feature = & $this->rolodex->feature;
 
         $form->addHidden('module', 'rolodex');
@@ -1210,10 +1214,10 @@ class Rolodex_Forms {
         if ($feature->id) {
             $form->addHidden('id', $feature->id);
             $form->addSubmit(dgettext('rolodex', 'Update'));
-            $this->rolodex->title = sprintf(dgettext('rolodex', 'Update %s feature'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', 'Update %s feature'), PHPWS_Settings::get('rolodex', 'module_title'));
         } else {
             $form->addSubmit(dgettext('rolodex', 'Create'));
-            $this->rolodex->title = sprintf(dgettext('rolodex', 'Create %s feature'), \core\Settings::get('rolodex', 'module_title'));
+            $this->rolodex->title = sprintf(dgettext('rolodex', 'Create %s feature'), PHPWS_Settings::get('rolodex', 'module_title'));
         }
 
         $form->addText('title', $feature->title);
@@ -1225,11 +1229,11 @@ class Rolodex_Forms {
         $form->setCols('description', '40');
         $form->setLabel('description', dgettext('rolodex', 'Description'));
 
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $manager = Cabinet::fileManager('image_id', $feature->image_id);
         $manager->imageOnly();
-        $manager->maxImageWidth(core\Settings::get('rolodex', 'other_img_width'));
-        $manager->maxImageHeight(core\Settings::get('rolodex', 'other_img_height'));
+        $manager->maxImageWidth(PHPWS_Settings::get('rolodex', 'other_img_width'));
+        $manager->maxImageHeight(PHPWS_Settings::get('rolodex', 'other_img_height'));
 
         if ($manager) {
             $form->addTplTag('FILE_MANAGER', $manager->get());
@@ -1238,7 +1242,7 @@ class Rolodex_Forms {
         $tpl = $form->getTemplate();
         $tpl['DETAILS_LABEL'] = dgettext('rolodex', 'Details');
 
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'edit_feature.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'edit_feature.tpl');
 
     }
 
@@ -1265,7 +1269,7 @@ class Rolodex_Forms {
         } else {
             $_POST['message'] = null;
         }
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'rolodex');
         $form->addHidden('uop', 'send_message');
         $form->addHidden('user_id', $this->rolodex->member->user_id);
@@ -1290,10 +1294,10 @@ class Rolodex_Forms {
         $form->addText('confirm_phrase');
         $form->setLabel('confirm_phrase', dgettext('rolodex', 'Confirm text'));
 
-        if (core\Settings::get('rolodex', 'use_captcha') && extension_loaded('gd')) {
+        if (PHPWS_Settings::get('rolodex', 'use_captcha') && extension_loaded('gd')) {
             $result = $this->confirmGraphic();
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
             } else {
                 $form->addTplTag('GRAPHIC', $result);
             }
@@ -1306,13 +1310,14 @@ class Rolodex_Forms {
         $tpl['FORM_INSTRUCTION'] = dgettext('rolodex', 'All fields are required.');
         $tpl['LINKS'] = implode(' | ', Rolodex::navLinks());
 
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'message_member.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'message_member.tpl');
     }
 
 
     public function confirmGraphic()
     {
-                return Captcha::get();
+        PHPWS_Core::initCoreClass('Captcha.php');
+        return Captcha::get();
     }
 
 
@@ -1324,26 +1329,26 @@ class Rolodex_Forms {
         $tpl['SEARCH_GROUP_LABEL'] = dgettext('rolodex', 'Search utilities');
         $tpl['COMMENTS_GROUP_LABEL'] = dgettext('rolodex', 'Comments utilities');
 
-        $tpl['EXPORT_CSV'] = \core\Text::moduleLink(dgettext('rolodex', 'Export records to csv'), 'rolodex', array('uop'=>'export'));
+        $tpl['EXPORT_CSV'] = PHPWS_Text::moduleLink(dgettext('rolodex', 'Export records to csv'), 'rolodex', array('uop'=>'export'));
 
-        $tpl['RESET_EXPIRED'] = \core\Text::secureLink(sprintf(dgettext('rolodex', 'Reset all expiry dates to %s days from now'), \core\Settings::get('rolodex', 'expiry_interval')), 'rolodex', array('aop'=>'reset_expired'));
+        $tpl['RESET_EXPIRED'] = PHPWS_Text::secureLink(sprintf(dgettext('rolodex', 'Reset all expiry dates to %s days from now'), PHPWS_Settings::get('rolodex', 'expiry_interval')), 'rolodex', array('aop'=>'reset_expired'));
             $vars['aop'] = 'delete_expired';
-            $js['ADDRESS'] = \core\Text::linkAddress('rolodex', $vars, true);
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('rolodex', $vars, true);
             $js['QUESTION'] = dgettext('rolodex', 'Are you sure you want to delete all expired members?\nEach user\'s demographic information will be retained for other modules, but all Rolodex information will be permanently removed.');
             $js['LINK'] = dgettext('rolodex', 'Delete all expired members');
         $tpl['DELETE_EXPIRED'] = javascript('confirm', $js);
 
-        $tpl['SEARCH_INDEX_ALL'] = \core\Text::secureLink(dgettext('rolodex', 'Register all current rolodex records to the search module'), 'rolodex', array('aop'=>'search_index_all'));
-        $tpl['SEARCH_REMOVE_ALL'] = \core\Text::secureLink(dgettext('rolodex', 'Remove all current rolodex records from the search module'), 'rolodex', array('aop'=>'search_remove_all'));
+        $tpl['SEARCH_INDEX_ALL'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Register all current rolodex records to the search module'), 'rolodex', array('aop'=>'search_index_all'));
+        $tpl['SEARCH_REMOVE_ALL'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Remove all current rolodex records from the search module'), 'rolodex', array('aop'=>'search_remove_all'));
 
 
-        $tpl['ALL_COMMENTS_YES'] = \core\Text::secureLink(dgettext('rolodex', 'Reset "Allow comments" on all records to yes'), 'rolodex', array('aop'=>'all_comments_yes'));
-        $tpl['ALL_COMMENTS_NO'] = \core\Text::secureLink(dgettext('rolodex', 'Reset "Allow comments" on all records to no'), 'rolodex', array('aop'=>'all_comments_no'));
-        $tpl['ALL_ANON_YES'] = \core\Text::secureLink(dgettext('rolodex', 'Reset "Allow anonymous comments" on all records to yes'), 'rolodex', array('aop'=>'all_anon_yes'));
-        $tpl['ALL_ANON_NO'] = \core\Text::secureLink(dgettext('rolodex', 'Reset "Allow anonymous comments" on all records to no'), 'rolodex', array('aop'=>'all_anon_no'));
+        $tpl['ALL_COMMENTS_YES'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Reset "Allow comments" on all records to yes'), 'rolodex', array('aop'=>'all_comments_yes'));
+        $tpl['ALL_COMMENTS_NO'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Reset "Allow comments" on all records to no'), 'rolodex', array('aop'=>'all_comments_no'));
+        $tpl['ALL_ANON_YES'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Reset "Allow anonymous comments" on all records to yes'), 'rolodex', array('aop'=>'all_anon_yes'));
+        $tpl['ALL_ANON_NO'] = PHPWS_Text::secureLink(dgettext('rolodex', 'Reset "Allow anonymous comments" on all records to no'), 'rolodex', array('aop'=>'all_anon_no'));
 
-        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Utilities'), \core\Settings::get('rolodex', 'module_title'));
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'utilities.tpl');
+        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Utilities'), PHPWS_Settings::get('rolodex', 'module_title'));
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'utilities.tpl');
     }
 
 
@@ -1364,7 +1369,7 @@ class Rolodex_Forms {
         $tpl['DONATE'] = sprintf(dgettext('rolodex', 'If you would like to help out with the ongoing development of Rolodex, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=Rolodex%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->rolodex->title = dgettext('rolodex', 'Read me');
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'info.tpl');
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'info.tpl');
     }
 
 
@@ -1375,8 +1380,8 @@ class Rolodex_Forms {
         $tpl['ALPHA_CLICK'] = $this->rolodex->alpha_click();
         $tpl['CATLIST'] = Categories::getCategoryList('rolodex');
 
-        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Categories'), \core\Settings::get('rolodex', 'module_title'));
-        $this->rolodex->content = \core\Template::process($tpl, 'rolodex', 'categories.tpl');
+        $this->rolodex->title = sprintf(dgettext('rolodex', '%s Categories'), PHPWS_Settings::get('rolodex', 'module_title'));
+        $this->rolodex->content = PHPWS_Template::process($tpl, 'rolodex', 'categories.tpl');
     }
 
 

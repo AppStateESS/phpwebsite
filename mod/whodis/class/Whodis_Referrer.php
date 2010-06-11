@@ -21,19 +21,19 @@ class Whodis_Referrer {
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             return html_entity_decode($this->url, ENT_QUOTES, 'UTF-8');
         } else {
-            return \core\Text::decode_entities($this->url);
+            return PHPWS_Text::decode_entities($this->url);
         }
     }
 
     public function save($url)
     {
         $this->setUrl($url);
-        $db = new \core\DB('whodis');
+        $db = new PHPWS_DB('whodis');
         $db->addWhere('url', $this->url);
         $result = $db->select('row');
 
         $db->reset();
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 

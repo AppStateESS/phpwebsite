@@ -7,8 +7,8 @@
 
 function users_register($module, &$content)
 {
-    \core\Core::initModClass('users', 'Permission.php');
-    \core\Core::initModClass('users', 'My_Page.php');
+    PHPWS_Core::initModClass('users', 'Permission.php');
+    PHPWS_Core::initModClass('users', 'My_Page.php');
 
     $no_permissions = $no_my_page = FALSE;
 
@@ -18,16 +18,16 @@ function users_register($module, &$content)
         PHPWS_Boost::addLog('users', dgettext('users', 'Permissions file not implemented.'));
         $content[] =  dgettext('users', 'Permissions file not implemented.');
         $no_permissions = TRUE;
-    } elseif (core\Error::isError($result)) {
+    } elseif (PHPWS_Error::isError($result)) {
         $content[] = dgettext('users', 'Permissions table not created successfully.');
-        \core\Error::log($result);
+        PHPWS_Error::log($result);
         return FALSE;
     } else {
         $content[] = dgettext('users', 'Permissions table created successfully.');
     }
 
     $result = My_Page::registerMyPage($module);
-    if (core\Error::isError($result)){
+    if (PHPWS_Error::isError($result)){
         PHPWS_Boost::addLog('users', dgettext('users', 'A problem occurred when trying to register this module to My Page.'));
         $content[] = dgettext('users', 'A problem occurred when trying to register this module to My Page.');
         return FALSE;

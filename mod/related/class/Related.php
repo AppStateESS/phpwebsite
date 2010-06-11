@@ -8,8 +8,8 @@
  */
 
 
-core\Core::configRequireOnce('related', 'config.php');
-core\Core::initModClass('related', 'Action.php');
+PHPWS_Core::configRequireOnce('related', 'config.php');
+PHPWS_Core::initModClass('related', 'Action.php');
 
 class Related {
 
@@ -30,22 +30,22 @@ class Related {
 
         $this->setId($id);
         $result = $this->init();
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
         }
     }
 
     public function init()
     {
-        $db = new \core\DB('related_main');
+        $db = new PHPWS_DB('related_main');
         $result = $db->loadObject($this);
 
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (!$result) {
             $this->id = NULL;
         } else {
-            $this->_key = new \core\Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
 
     }
@@ -57,12 +57,12 @@ class Related {
 
     public function setKey($key)
     {
-        if (core\Key::isKey($key)) {
+        if (Key::isKey($key)) {
             $this->_key = $key;
             $this->key_id = $key->id;
         } elseif (is_numeric($key)) {
             $this->key_id = $key;
-            $this->_key = new \core\Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
 
         if (empty($this->title)) {
@@ -78,7 +78,7 @@ class Related {
     public function getUrl($clickable=FALSE)
     {
         if ($clickable) {
-            return sprintf('<a href="%s">%s</a>', \core\Text::fixAmpersand($this->_key->url), $this->title);
+            return sprintf('<a href="%s">%s</a>', PHPWS_Text::fixAmpersand($this->_key->url), $this->title);
         }
         else {
             return $this->_key->url;
@@ -116,13 +116,13 @@ class Related {
             return NULL;
         }
 
-        $db = new \core\DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $db->addOrder('rating');
         $db->addColumn('friend_id');
         $result = $db->select('col');
 
-        if (core\Error::isError($result) || empty($result)) {
+        if (PHPWS_Error::isError($result) || empty($result)) {
             return $result;
         }
 
@@ -236,10 +236,10 @@ class Related {
 
     public function load(){
         if (!isset($this->id)) {
-            $db = new \core\DB('related_main');
+            $db = new PHPWS_DB('related_main');
             $db->addWhere('key_id', $this->key_id);
             $result = $db->loadObject($this);
-            if (core\Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
 
@@ -249,8 +249,9 @@ class Related {
 
     public function show($allowEdit=TRUE)
     {
-        
-        $key = \core\Key::getCurrent();
+        PHPWS_Core::initCoreClass('Module.php');
+
+        $key = Key::getCurrent();
 
         if (empty($key) || $key->isDummy() || empty($key->title) || empty($key->url)) {
             return NULL;
@@ -297,10 +298,10 @@ class Related {
 
     public function save()
     {
-        $db = new \core\DB('related_main');
+        $db = new PHPWS_DB('related_main');
         $result = $db->saveObject($this);
 
-        if (core\Error::isError($result))
+        if (PHPWS_Error::isError($result))
         return $result;
 
         if (!is_array($this->friends))
@@ -326,13 +327,13 @@ class Related {
     }
 
     public function clearRelated(){
-        $db = new \core\DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $result = $db->delete();
     }
 
     public function clearFriends(){
-        $db = new \core\DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addWhere('friend_id', $this->id);
         $result = $db->delete();
     }
@@ -340,13 +341,13 @@ class Related {
     public function kill(){
         $this->clearRelated();
         $this->clearFriends();
-        $db = new \core\DB('related_main');
+        $db = new PHPWS_DB('related_main');
         $db->addWhere('id', $this->id);
         $db->delete();
     }
 
     public function addRelation($id, $rating){
-        $db = new \core\DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addValue('source_id', $this->id);
         $db->addValue('friend_id', $id);
         $db->addValue('rating', $rating);

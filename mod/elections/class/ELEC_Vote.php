@@ -46,9 +46,9 @@ class Elections_Vote {
 
     public function init()
     {
-        $db = new \core\DB('elections_votes');
+        $db = new PHPWS_DB('elections_votes');
         $result = $db->loadObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -74,7 +74,7 @@ class Elections_Vote {
         }
 
         if ($print) {
-            \core\Core::initModClass('elections', 'ELEC_Ballot.php');
+            PHPWS_Core::initModClass('elections', 'ELEC_Ballot.php');
             $ballot = new Elections_Ballot($this->ballot_id);
             return $ballot->viewLink();
         } else {
@@ -86,16 +86,16 @@ class Elections_Vote {
     public function view()
     {
         if (!$this->id) {
-            \core\Core::errorPage(404);
+            PHPWS_Core::errorPage(404);
         }
 
 
         $tpl['BALLOT_LINKS'] = $this->ballotLinks();
         $tpl['TITLE'] = $this->getTitle(true);
-        $tpl['DESCRIPTION'] = \core\Text::parseTag($this->getDescription(true));
+        $tpl['DESCRIPTION'] = PHPWS_Text::parseTag($this->getDescription(true));
 
 
-        return \core\Template::process($tpl, 'elections', 'view_vote.tpl');
+        return PHPWS_Template::process($tpl, 'elections', 'view_vote.tpl');
     }
 
 
@@ -107,7 +107,7 @@ class Elections_Vote {
         if (Current_User::allow('elections')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_ballot';
-            $links[] = \core\Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('elections', 'Edit ballot'), 'elections', $vars);
         }
 
         if (is_array(Election::navLinks())) {
@@ -125,9 +125,9 @@ class Elections_Vote {
             return;
         }
 
-        $db = new \core\DB('elections_votes');
+        $db = new PHPWS_DB('elections_votes');
         $db->addWhere('id', $this->id);
-        \core\Error::logIfError($db->delete());
+        PHPWS_Error::logIfError($db->delete());
     }
 
 
@@ -138,9 +138,9 @@ class Elections_Vote {
 
         if (Current_User::isUnrestricted('elections')) {
             $vars['aop'] = 'delete_vote';
-            $js['ADDRESS'] = \core\Text::linkAddress('elections', $vars, true);
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('elections', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('elections', 'Are you sure you want to delete the vote %s? This will not take back the votes, just remove this record from the log.'), $this->id);
-            $js['LINK'] = \core\Icon::show('delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -157,10 +157,10 @@ class Elections_Vote {
 
     public function save()
     {
-        $db = new \core\DB('elections_votes');
+        $db = new PHPWS_DB('elections_votes');
 
         $result = $db->saveObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
     }
@@ -168,7 +168,8 @@ class Elections_Vote {
 
     public function viewLink($bare=false)
     {
-                $link = new \core\Link($this->id, 'elections', array('ballot'=>$this->id));
+        PHPWS_Core::initCoreClass('Link.php');
+        $link = new PHPWS_Link($this->id, 'elections', array('ballot'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

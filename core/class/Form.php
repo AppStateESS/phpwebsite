@@ -1,11 +1,10 @@
 <?php
-namespace core;
 /**
  * Creates HTML form elements and/or an entire form
  *
  * This class is stand alone. You must construct an object within your
  * function to get it to work:
- * $form = new Form;
+ * $form = new PHPWS_Form;
  *
  * This class allows you to easily create a form and then fetch elements of
  * that form. It also allows you to export a template of the form that you
@@ -29,11 +28,11 @@ namespace core;
  *
  */
 
-Core::configRequireOnce('core', 'formConfig.php', true);
-Core::initCoreClass('Editor.php');
+PHPWS_Core::configRequireOnce('core', 'formConfig.php', true);
+PHPWS_Core::initCoreClass('Editor.php');
 
-class Form {
-    public $id = 'Form';
+class PHPWS_Form {
+    public $id = 'phpws_form';
 
     /**
      * Array of form elements
@@ -340,7 +339,7 @@ class Form {
     {
         foreach ($dup as $name=>$value) {
             $result = $this->add($name, $type, $value);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -493,11 +492,11 @@ class Form {
     public function add($name, $type=null, $value=null)
     {
         if (preg_match('/[^\[\]\w]+/i', $name)) {
-            return Error::get(Form_BAD_NAME, 'core', 'Form::add', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_BAD_NAME, 'core', 'PHPWS_Form::add', array($name));
         }
-        $result = Form::createElement($name, $type, $value);
+        $result = PHPWS_Form::createElement($name, $type, $value);
 
-        if (Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -540,7 +539,7 @@ class Form {
     public function useEditor($name, $value=true, $limited=false, $width=0, $height=0, $force_name=null)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::useEditor', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::useEditor', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
@@ -562,12 +561,12 @@ class Form {
     public function setValue($name, $value)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setValue', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setValue', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setValue($value);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -580,12 +579,12 @@ class Form {
     public function setDisabled($name, $value=true)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setDisabled', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setDisabled', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setDisabled($value);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -594,13 +593,13 @@ class Form {
     public function setAutoComplete($name, $value=false)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setAutoComplete', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setAutoComplete', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             if($this->_elements[$name][$key]->type == 'password') {
                 $result = $this->_elements[$name][$key]->setAutoComplete($value);
-                if (Error::isError($result)) {
+                if (PHPWS_Error::isError($result)) {
                     return $result;
                 }
             }
@@ -614,12 +613,12 @@ class Form {
     public function setReadOnly($name, $value=true)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setReadonly', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setReadonly', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setReadOnly($value);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -636,7 +635,7 @@ class Form {
     public function setOptgroup($name, $value, $label)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setOptgroup', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setOptgroup', array($name));
         }
 
         foreach ($this->_elements[$name] as $key => $element) {
@@ -645,7 +644,7 @@ class Form {
             }
             $result = $this->_elements[$name][$key]->setOptgroup($value, $label);
 
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -654,7 +653,7 @@ class Form {
     public function setLabel($name, $label=null)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setLabel', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setLabel', array($name));
         }
 
         if (empty($label)) {
@@ -668,7 +667,7 @@ class Form {
                 $result = $this->_elements[$name][$key]->setLabel($label);
             }
 
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -681,19 +680,19 @@ class Form {
     {
         if (is_array($name)) {
             foreach ($name as $sub) {
-                Error::logIfError($this->setRequired($sub, $required));
+                PHPWS_Error::logIfError($this->setRequired($sub, $required));
             }
             return true;
         }
 
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setLabel', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setLabel', array($name));
         }
 
         foreach ($this->_elements[$name] as $key => $element){
             $result = $this->_elements[$name][$key]->setRequired($required);
 
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -739,12 +738,12 @@ class Form {
     public function setExtra($name, $extra)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setExtra', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setExtra', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setExtra($extra);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -766,12 +765,12 @@ class Form {
     public function setWidth($name, $width)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setWidth', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setWidth', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setWidth($width);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -795,12 +794,12 @@ class Form {
     public function setHeight($name, $height)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setHeight', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setHeight', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setHeight($height);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -819,12 +818,12 @@ class Form {
     public function setRows($name, $rows)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setRows', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setRows', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setRows($rows);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -844,12 +843,12 @@ class Form {
     public function setTitle($name, $title)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setTitle', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setTitle', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTitle($title);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -868,12 +867,12 @@ class Form {
     public function setCols($name, $cols)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setCols', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setCols', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setCols($cols);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -885,7 +884,7 @@ class Form {
      *
      * Tab indexing allows use of the tab key to move among
      * form elements (like Windows). Just give the name of the element
-     * and what order you want it in. Form does not check your settings
+     * and what order you want it in. PHPWS_Form does not check your settings
      * so be careful you don't use the same number more than once.
      *
      * @author               Matthew McNaney <mcnaney at gmail dot com>
@@ -895,12 +894,12 @@ class Form {
     public function setTab($name, $order)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setTab', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setTab', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTab($order);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -918,18 +917,18 @@ class Form {
     public function setSize($name, $size, $maxsize=null)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setSize', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setSize', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setSize((int)$size);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
             if (!empty($maxsize)) {
                 $result = $this->_elements[$name][$key]->setMaxSize((int)$maxsize);
             }
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -942,12 +941,12 @@ class Form {
     public function allowValue($name)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setSize', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setSize', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->allowValue();
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -968,12 +967,12 @@ class Form {
     public function setTag($name, $tag)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setTag', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setTag', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTag($tag);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -986,7 +985,7 @@ class Form {
      *
      * Example:
      * $list = array('apple', 'orange', 'peach', 'banana');
-     * $form = new Form;
+     * $form = new PHPWS_Form;
      * $form->add('testing', 'multiple', $list);
      * $form->reindexValue('testing');
      * $form->setMatch('testing', array('orange', 'banana'));
@@ -999,11 +998,11 @@ class Form {
     public function reindexValue($name)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::reindexValue', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::reindexValue', array($name));
         }
 
         if ($this->types[$name] != 'multiple' && $this->types[$name] != 'select') {
-            return Error::get(Form_WRONG_ELMT_TYPE, 'core', 'Form::reindexValue');
+            return PHPWS_Error::get(PHPWS_FORM_WRONG_ELMT_TYPE, 'core', 'PHPWS_Form::reindexValue');
         }
 
         foreach ($this->_elements[$name] as $key=>$element) {
@@ -1037,11 +1036,11 @@ class Form {
     public function setMatch($name, $match, $optionMatch=false)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setMatch', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMatch', array($name));
         }
 
         if ($this->types[$name] == 'multiple' && !is_array($match)) {
-            return Error::get(Form_WRONG_ELMT_TYPE, 'core', 'Form::reindexValue');
+            return PHPWS_Error::get(PHPWS_FORM_WRONG_ELMT_TYPE, 'core', 'PHPWS_Form::reindexValue');
         }
 
         foreach ($this->_elements[$name] as $key=>$element) {
@@ -1049,7 +1048,7 @@ class Form {
                 continue;
             }
             $result = $this->_elements[$name][$key]->setMatch($match);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1058,12 +1057,12 @@ class Form {
     public function setClass($name, $class_name)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setClass', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setClass', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setClass($class_name);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1072,12 +1071,12 @@ class Form {
     public function setId($name, $id_name)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setId', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setId', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setId($id_name);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1087,12 +1086,12 @@ class Form {
     public function setStyle($name, $style_name)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setStyle', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setStyle', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setStyle($style_name);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1108,12 +1107,12 @@ class Form {
     public function setMaxSize($name, $maxsize)
     {
         if (!$this->testName($name)) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::setMaxSize', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMaxSize', array($name));
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setMaxSize($maxsize);
-            if (Error::isError($result)) {
+            if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1264,7 +1263,7 @@ class Form {
                 break;
 
             default:
-                $error = Error::get(Form_UNKNOWN_TYPE, 'core', 'Form::createElement');
+                $error = PHPWS_Error::get(PHPWS_FORM_UNKNOWN_TYPE, 'core', 'PHPWS_Form::createElement');
                 return $error;
                 break;
         }
@@ -1290,7 +1289,7 @@ class Form {
     public function get($name, $all=false)
     {
         if (!isset($this->_elements[$name])) {
-            return Error::get(Form_MISSING_NAME, 'core', 'Form::get', array($name));
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::get', array($name));
         }
 
         if (count($this->_elements[$name]) > 1) {
@@ -1355,11 +1354,11 @@ class Form {
     public function getTemplate($phpws=true, $helperTags=true, $template=null)
     {
         if (count($this->_elements) < 1) {
-            return Error::get(Form_NO_ELEMENTS, 'core', 'Form::getTemplate');
+            return PHPWS_Error::get(PHPWS_FORM_NO_ELEMENTS, 'core', 'PHPWS_Form::getTemplate');
         }
 
         if (!is_null($template) && !is_array($template)) {
-            return Error::get(Form_NO_TEMPLATE, 'core', 'Form::getTemplate');
+            return PHPWS_Error::get(PHPWS_FORM_NO_TEMPLATE, 'core', 'PHPWS_Form::getTemplate');
         }
 
         if ($helperTags) {
@@ -1378,7 +1377,7 @@ class Form {
 
         unset($this->_elements['authkey']);
         if (class_exists('Current_User') && $this->use_auth_key) {
-            if ($authkey = \Current_User::getAuthKey()) {
+            if ($authkey = Current_User::getAuthKey()) {
                 $this->addHidden('authkey', $authkey);
             }
         }
@@ -1593,7 +1592,7 @@ class Form {
     public function plugIn($values)
     {
         if (is_object($values)) {
-            $aVal = Core::stripObjValues($values);
+            $aVal = PHPWS_Core::stripObjValues($values);
         } else {
             $aVal = & $values;
         }
@@ -1624,7 +1623,7 @@ class Form {
         }
     }
 
-}// End of Form Class
+}// End of PHPWS_Form Class
 
 
 class Form_TextField extends Form_Element {
@@ -1779,7 +1778,7 @@ class Form_TextArea extends Form_Element {
     public function setRows($rows)
     {
         if (!is_numeric($rows) || $rows < 1 || $rows > 100) {
-            return Error::get(PHPWS_INVALID_VALUE, 'core', 'Form::setRows');
+            return PHPWS_Error::get(PHPWS_INVALID_VALUE, 'core', 'PHPWS_Form::setRows');
         }
 
         $this->rows = $rows;
@@ -1799,7 +1798,7 @@ class Form_TextArea extends Form_Element {
     public function setCols($cols)
     {
         if (!is_numeric($cols) || $cols < 1 || $cols > 100) {
-            return Error::get(PHPWS_INVALID_VALUE, 'core', 'Form::setCols');
+            return PHPWS_Error::get(PHPWS_INVALID_VALUE, 'core', 'PHPWS_Form::setCols');
         }
 
         $this->cols = $cols;
@@ -1831,7 +1830,7 @@ class Form_TextArea extends Form_Element {
         $breaker = null;
 
         if ($this->use_editor && Editor::willWork()) {
-            $text = Text::decodeText($this->value);
+            $text = PHPWS_Text::decodeText($this->value);
 
             $editor = new Editor($this->name, $text, $this->id, $this->_force_name);
 
@@ -2485,5 +2484,5 @@ class Form_Element {
         }
     }
 }
-class PHPWS_Form extends Form{}
+
 ?>

@@ -23,7 +23,7 @@
  */
 
 
-core\Core::initModClass('skeleton', 'Skeleton_Runtime.php');
+PHPWS_Core::initModClass('skeleton', 'Skeleton_Runtime.php');
 Skeleton_Runtime::showBlock();
 
 ?>

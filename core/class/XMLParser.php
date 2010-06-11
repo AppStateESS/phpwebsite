@@ -1,5 +1,4 @@
 <?php
-namespace core;
 /**
  * Copied from php.net
  * http://us2.php.net/manual/en/ref.xml.php
@@ -45,7 +44,7 @@ class XMLParser {
 
         $result = $this->parse($xml_file, $die_on_error);
 
-        if (Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->error = $result;
         }
     }
@@ -55,7 +54,7 @@ class XMLParser {
         $file_contents = @file($xml_file);
 
         if (empty($file_contents)) {
-            return Error::get(File_NOT_FOUND, 'core', 'XMLParser:parse', $xml_file);
+            return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'XMLParser:parse', $xml_file);
         }
 
         foreach ($file_contents as $data) {
@@ -68,7 +67,7 @@ class XMLParser {
                     xml_get_current_line_number($this->xml)));
                     xml_parser_free($this->xml);
                 } else {
-                    return Error::get(PHPWS_WRONG_TYPE, 'core', 'XMLParset:parse', $xml_file);
+                    return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'XMLParset:parse', $xml_file);
                 }
             }
         }

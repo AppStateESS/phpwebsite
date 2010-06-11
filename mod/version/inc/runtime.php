@@ -1,7 +1,7 @@
 <?php
 /*
  // come back to this
- \core\Core::initModClass('version', 'Version.php');
+ PHPWS_Core::initModClass('version', 'Version.php');
  Version::checkApproval();
  */
 ?>

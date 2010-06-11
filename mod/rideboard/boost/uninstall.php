@@ -6,9 +6,9 @@
 
 function rideboard_uninstall(&$content) {
     $content[] = dgettext('rideboard', 'Removing ride.');
-    \core\Error::logIfError(core\DB::dropTable('rb_ride'));
+    PHPWS_Error::logIfError(PHPWS_DB::dropTable('rb_ride'));
     $content[] = dgettext('rideboard', 'Removing location table.');
-    \core\Error::logIfError(core\DB::dropTable('rb_location'));
+    PHPWS_Error::logIfError(PHPWS_DB::dropTable('rb_location'));
 
     return true;
 }

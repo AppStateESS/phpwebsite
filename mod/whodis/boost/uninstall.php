@@ -6,8 +6,8 @@
 
 function whodis_uninstall()
 {
-    \core\DB::dropTable('whodis');
-    \core\DB::dropTable('whodis_filters');
+    PHPWS_DB::dropTable('whodis');
+    PHPWS_DB::dropTable('whodis_filters');
     return true;
 }
 

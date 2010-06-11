@@ -18,16 +18,16 @@ class Profiler_Division {
 
         $this->id = (int)$id;
         $result =  $this->init();
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->error = $result;
         } elseif (!$result) {
-            $this->error = \core\Error::get(core\DB_EMPTY_SELECT, 'core', 'Profiler_Division::constructor', 'ID: ' . $id);
+            $this->error = PHPWS_Error::get(PHPWS_DB_EMPTY_SELECT, 'core', 'Profiler_Division::constructor', 'ID: ' . $id);
         }
     }
 
     public function init()
     {
-        $db = new \core\DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         $db->addWhere('id', $this->id);
         return $db->loadObject($this);
     }
@@ -61,7 +61,7 @@ class Profiler_Division {
             $this->title = preg_replace('/[^\w\s]/u', '', $_POST['title']);
         }
 
-        $db = new \core\DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         $db->addWhere('title', $this->title);
         $db->addWhere('id', $this->id, '!=');
         if ($db->select('one')) {
@@ -76,7 +76,7 @@ class Profiler_Division {
 
     public function save()
     {
-        $db = new \core\DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         return $db->saveObject($this);
     }
 
@@ -84,17 +84,17 @@ class Profiler_Division {
     {
         $vars['user_cmd'] = 'view_div';
         $vars['div_id'] = $this->id;
-        return \core\Text::moduleLink($this->title, 'profiler', $vars);
+        return PHPWS_Text::moduleLink($this->title, 'profiler', $vars);
     }
 
     public function delete()
     {
-        $db = new \core\DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         $db->addWhere('id', $this->id);
-        if (!core\Error::logIfError($db->delete())) {
-            $db = new \core\DB('profiles');
+        if (!PHPWS_Error::logIfError($db->delete())) {
+            $db = new PHPWS_DB('profiles');
             $db->addWhere('profile_type', $this->id);
-            return !core\Error::logIfError($db->delete());
+            return !PHPWS_Error::logIfError($db->delete());
         }
     }
 

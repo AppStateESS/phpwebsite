@@ -8,7 +8,7 @@
 
 function phatform_uninstall(&$content) {
 
-    $db = new \core\DB('mod_phatform_forms');
+    $db = new PHPWS_DB('mod_phatform_forms');
     $db->addColumn('id');
     $db->addColumn('archiveTableName');
     $db->addWhere('saved', 1);
@@ -18,25 +18,25 @@ function phatform_uninstall(&$content) {
         foreach ($result as $form) {
             if (empty($form['archiveTableName'])) {
                 $table = 'mod_phatform_form_' . $form['id'];
-                if (core\DB::isTable($table)) {
-                    \core\DB::dropTable($table);
+                if (PHPWS_DB::isTable($table)) {
+                    PHPWS_DB::dropTable($table);
                 }
             } else {
                 $table = $form['archiveTableName'];
-                \core\DB::dropTable($table);
+                PHPWS_DB::dropTable($table);
             }
         }
         $content[] = dgettext('phatform', 'Removed all dynamic Form Generator tables.');
     }
 
-    \core\DB::dropTable('mod_phatform_forms');
-    \core\DB::dropTable('mod_phatform_options');
-    \core\DB::dropTable('mod_phatform_textfield');
-    \core\DB::dropTable('mod_phatform_textarea');
-    \core\DB::dropTable('mod_phatform_dropbox');
-    \core\DB::dropTable('mod_phatform_multiselect');
-    \core\DB::dropTable('mod_phatform_radiobutton');
-    \core\DB::dropTable('mod_phatform_checkbox');
+    PHPWS_DB::dropTable('mod_phatform_forms');
+    PHPWS_DB::dropTable('mod_phatform_options');
+    PHPWS_DB::dropTable('mod_phatform_textfield');
+    PHPWS_DB::dropTable('mod_phatform_textarea');
+    PHPWS_DB::dropTable('mod_phatform_dropbox');
+    PHPWS_DB::dropTable('mod_phatform_multiselect');
+    PHPWS_DB::dropTable('mod_phatform_radiobutton');
+    PHPWS_DB::dropTable('mod_phatform_checkbox');
     $content[] = dgettext('phatform', 'All Form Generator static tables removed.');
 
     return TRUE;

@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
-<!DOCTYPE dependency PUBLIC "-//phpwebsite//dependency structure//EN" "http://phpwebsite.appstate.edu/dependency.dtd">
 <dependency>
-    <module>
-        <title>core</title>
-        <properName>phpWebSite Core</properName>
-        <version>1.9.5</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
-    </module>
-    <module>
-        <title>boost</title>
-        <properName>Boost</properName>
-        <version>2.3.2</version>
-        <url>http://phpwebsite.appstate.edu/downloads/modules/boost/</url>
-    </module>
+	<module>
+		<title>core</title>
+		<properName>phpWebSite Core</properName>
+		<version>1.9.5</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
+	</module>
+	<module>
+		<title>boost</title>
+		<properName>Boost</properName>
+		<version>2.3.2</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/boost/</url>
+	</module>
 </dependency>

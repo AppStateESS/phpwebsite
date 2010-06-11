@@ -13,9 +13,9 @@ function calendar_update(&$content, $version)
             return false;
 
         case version_compare($version, '1.3.0', '<'):
-            $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/calendar/boost/sql_update_130.sql');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/calendar/boost/sql_update_130.sql');
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = '+ Unable to import new suggestion table.';
                 return false;
             } else {
@@ -92,9 +92,9 @@ function calendar_update(&$content, $version)
 + Added a sync dates button on the edit event form.';
 
         case version_compare($version, '1.5.0', '<'):
-            $db = new \core\DB('calendar_schedule');
+            $db = new PHPWS_DB('calendar_schedule');
             $result = $db->addTableColumn('show_upcoming', 'SMALLINT NOT NULL DEFAULT 0');
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $content[] = '--- Could not create show_upcoming column in calendar_schedule table.';
                 return false;
             }
@@ -125,10 +125,10 @@ function calendar_update(&$content, $version)
 </pre>';
 
         case version_compare($version, '1.5.1', '<'):
-            $db = new \core\DB('calendar_schedule');
+            $db = new PHPWS_DB('calendar_schedule');
             if (!$db->isTableColumn('show_upcoming')) {
                 $result = $db->addTableColumn('show_upcoming', 'SMALLINT NOT NULL DEFAULT 0');
-                if (core\Error::logIfError($result)) {
+                if (PHPWS_Error::logIfError($result)) {
                     $content[] = '--- Could not create show_upcoming column in calendar_schedule table.</pre>';
                     return false;
                 }
@@ -216,19 +216,19 @@ function calendar_update(&$content, $version)
 + Added missing pager navigation tags to schedule listing.</pre>';
 
         case version_compare($version, '1.7.0', '<'):
-            $db = new \core\DB('calendar_schedule');
+            $db = new PHPWS_DB('calendar_schedule');
             $db->addColumn('id');
             $schedules = $db->select('col');
             if (!empty($schedules)) {
                 foreach ($schedules as $id) {
-                    $event_db = new \core\DB('calendar_event_' . $id);
+                    $event_db = new PHPWS_DB('calendar_event_' . $id);
                     $event_db->addColumn('key_id');
                     $keys = $event_db->select('col');
                     if (!empty($keys)) {
-                        $key_db = new \core\DB('phpws_key');
+                        $key_db = new PHPWS_DB('phpws_key');
                         $key_db->addWhere('id', $keys);
                         $key_db->addValue('item_name', 'event' . $id);
-                        \core\Error::logIfError($key_db->update());
+                        PHPWS_Error::logIfError($key_db->update());
                     }
                 }
             }

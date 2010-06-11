@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::initModClass('checkin', 'Checkin.php');
+PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
 define('CO_FT_LAST_NAME',  1);
 define('CO_FT_REASON',     2);
@@ -45,7 +45,7 @@ class Checkin_Admin extends Checkin {
         } elseif ($_REQUEST['tab']) {
             $cmd = $_REQUEST['tab'];
         } else {
-            \core\Core::errorPage('404');
+            PHPWS_Core::errorPage('404');
         }
 
         $js = false;
@@ -54,27 +54,27 @@ class Checkin_Admin extends Checkin {
 
             case 'finish_meeting':
                 $this->finishMeeting();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'start_meeting':
                 $this->startMeeting();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'sendback':
                 $this->sendBack();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'unavailable':
                 $this->unavailable();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'available':
                 $this->available();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
 
@@ -96,10 +96,10 @@ class Checkin_Admin extends Checkin {
                     if (isset($_GET['staff_id']) && $_GET['staff_id'] >= 0  && isset($_GET['visitor_id'])) {
                         $this->loadVisitor($_GET['visitor_id']);
                         $staff_id = $this->visitor->assigned;
-                        $db = new \core\DB('checkin_visitor');
+                        $db = new PHPWS_DB('checkin_visitor');
                         $db->addValue('assigned', (int)$_GET['staff_id']);
                         $db->addWhere('id', (int)$_GET['visitor_id']);
-                        \core\Error::logIfError($db->update());
+                        PHPWS_Error::logIfError($db->update());
                         printf('staff_id %s, visitor_id %s', $_GET['staff_id'], $_GET['visitor_id']);
                         $this->loadStaff($staff_id);
                         if ($this->staff->status == 3) {
@@ -113,18 +113,18 @@ class Checkin_Admin extends Checkin {
 
             case 'move_up':
                 if (Current_User::allow('checkin', 'assign_visitors')) {
-                    $db = new \core\DB('checkin_staff');
+                    $db = new PHPWS_DB('checkin_staff');
                     $db->moveRow('view_order', 'id', $_GET['staff_id'], 'up');
                 }
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'move_down':
                 if (Current_User::allow('checkin', 'assign_visitors')) {
-                    $db = new \core\DB('checkin_staff');
+                    $db = new PHPWS_DB('checkin_staff');
                     $db->moveRow('view_order', 'id', $_GET['staff_id'], 'down');
                 }
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'assign':
@@ -137,32 +137,32 @@ class Checkin_Admin extends Checkin {
             case 'post_note':
                 $this->loadVisitor();
                 $this->saveNote();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'hide_panel':
-                \core\Cookie::write('checkin_hide_panel', 1);
-                \core\Core::goBack();
+                PHPWS_Cookie::write('checkin_hide_panel', 1);
+                PHPWS_Core::goBack();
                 break;
 
             case 'show_panel':
-                \core\Cookie::delete('checkin_hide_panel');
-                \core\Core::goBack();
+                PHPWS_Cookie::delete('checkin_hide_panel');
+                PHPWS_Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->assign();
                 break;
 
             case 'hide_sidebar':
-                \core\Cookie::write('checkin_hide_sidebar', 1);
-                \core\Core::goBack();
+                PHPWS_Cookie::write('checkin_hide_sidebar', 1);
+                PHPWS_Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->use_sidebar = false;
                 $this->assign();
                 break;
 
             case 'show_sidebar':
-                \core\Cookie::delete('checkin_hide_sidebar');
-                \core\Core::goBack();
+                PHPWS_Cookie::delete('checkin_hide_sidebar');
+                PHPWS_Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->assign();
                 break;
@@ -187,7 +187,7 @@ class Checkin_Admin extends Checkin {
                 if (Current_User::allow('checkin', 'remove_visitors')) {
                     $this->removeVisitor();
                 }
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
 
             case 'settings':
@@ -209,7 +209,7 @@ class Checkin_Admin extends Checkin {
                     $this->loadReason();
                     if ($this->postReason()) {
                         $this->reason->save();
-                        \core\Core::reroute('index.php?module=checkin&tab=reasons');
+                        PHPWS_Core::reroute('index.php?module=checkin&tab=reasons');
                     } else {
                         $this->editReason();
                     }
@@ -251,7 +251,7 @@ class Checkin_Admin extends Checkin {
                     // save post
                     $this->staff->save();
                     $this->staff->saveReasons();
-                    \core\Core::reroute('index.php?module=checkin&tab=staff');
+                    PHPWS_Core::reroute('index.php?module=checkin&tab=staff');
                 } else {
                     // post failed
                     $this->loadStaff();
@@ -266,7 +266,7 @@ class Checkin_Admin extends Checkin {
                     $this->postSettings();
                 }
 
-                \core\Core::reroute('index.php?module=checkin&tab=settings');
+                PHPWS_Core::reroute('index.php?module=checkin&tab=settings');
                 break;
 
             case 'edit_reason':
@@ -277,7 +277,7 @@ class Checkin_Admin extends Checkin {
             case 'delete_reason':
                 $this->loadReason();
                 $this->reason->delete();
-                \core\Core::goBack();
+                PHPWS_Core::goBack();
                 break;
         }
 
@@ -289,7 +289,7 @@ class Checkin_Admin extends Checkin {
             $tpl['TITLE'] = & $this->title;
             $tpl['CONTENT'] = & $this->content;
             $tpl['MESSAGE'] = & $this->message;
-            $content = \core\Template::process($tpl, 'checkin', 'main.tpl');
+            $content = PHPWS_Template::process($tpl, 'checkin', 'main.tpl');
             Layout::nakedDisplay($content, $this->title);
         } else {
             if (is_array($this->message)) {
@@ -307,7 +307,7 @@ class Checkin_Admin extends Checkin {
                 $tpl['CONTENT'] = & $this->content;
                 $tpl['MESSAGE'] = & $this->message;
 
-                Layout::add(core\Template::process($tpl, 'checkin', 'main.tpl'));
+                Layout::add(PHPWS_Template::process($tpl, 'checkin', 'main.tpl'));
             }
         }
     }
@@ -412,27 +412,27 @@ class Checkin_Admin extends Checkin {
         $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
         $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=assign">%s</a>', dgettext('checkin', 'Refresh'));
 
-        $this->content = \core\Template::process($tpl, 'checkin', 'visitors.tpl');
-        Layout::metaRoute('index.php?module=checkin&aop=assign', \core\Settings::get('checkin', 'assign_refresh'));
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitors.tpl');
+        Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
     }
 
     public function hideSidebarLink()
     {
-        if (core\Cookie::read('checkin_hide_sidebar') || $this->use_sidebar == false) {
+        if (PHPWS_Cookie::read('checkin_hide_sidebar') || $this->use_sidebar == false) {
             $this->use_sidebar = false;
-            return \core\Text::moduleLink(dgettext('checkin', 'Show sidebar'), 'checkin', array('aop'=>'show_sidebar'));
+            return PHPWS_Text::moduleLink(dgettext('checkin', 'Show sidebar'), 'checkin', array('aop'=>'show_sidebar'));
         } else {
-            return \core\Text::moduleLink(dgettext('checkin', 'Hide sidebar'), 'checkin', array('aop'=>'hide_sidebar'));
+            return PHPWS_Text::moduleLink(dgettext('checkin', 'Hide sidebar'), 'checkin', array('aop'=>'hide_sidebar'));
         }
     }
 
     public function hidePanelLink()
     {
-        if (core\Cookie::read('checkin_hide_panel') || $this->use_panel == false) {
+        if (PHPWS_Cookie::read('checkin_hide_panel') || $this->use_panel == false) {
             $this->use_panel = false;
-            return \core\Text::moduleLink(dgettext('checkin', 'Show panel'), 'checkin', array('aop'=>'show_panel'));
+            return PHPWS_Text::moduleLink(dgettext('checkin', 'Show panel'), 'checkin', array('aop'=>'show_panel'));
         } else {
-            return \core\Text::moduleLink(dgettext('checkin', 'Hide panel'), 'checkin', array('aop'=>'hide_panel'));
+            return PHPWS_Text::moduleLink(dgettext('checkin', 'Hide panel'), 'checkin', array('aop'=>'hide_panel'));
         }
     }
 
@@ -451,7 +451,7 @@ class Checkin_Admin extends Checkin {
         $row['NAME_LABEL'] = dgettext('checkin', 'Name / Reason / Note');
         $row['WAITING_LABEL'] = dgettext('checkin', 'Time arrived/waiting');
         $row['ACTION_LABEL'] = dgettext('checkin', 'Action');
-        return \core\Template::process($row, 'checkin', 'queue.tpl');
+        return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
 
     public function waiting($small_view=false)
@@ -471,7 +471,7 @@ class Checkin_Admin extends Checkin {
         // No visitors found, load all the visitors that are unassigned.
         if (empty($this->visitor_list)) {
             $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
-            if (core\Settings::get('checkin', 'unassigned_seen')) {
+            if (PHPWS_Settings::get('checkin', 'unassigned_seen')) {
                 $this->loadVisitorList(0);
                 if (!empty($this->visitor_list)) {
                     $this->unassigned_only = true;
@@ -499,27 +499,27 @@ class Checkin_Admin extends Checkin {
         if ($small_view) {
             $tpl['REDUCE'] = 'small-view';
             $tpl['CLOSE'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', dgettext('checkin', 'Close'));
-            Layout::metaRoute('index.php?module=checkin&aop=small_wait', \core\Settings::get('checkin', 'waiting_refresh'));
+            Layout::metaRoute('index.php?module=checkin&aop=small_wait', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         } else {
             $tpl['HIDE_PANEL'] = $this->hidePanelLink();
             $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
             $tpl['SMALL_VIEW'] = $this->smallViewLink();
             $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=waiting">%s</a>', dgettext('checkin', 'Refresh'));
-            Layout::metaRoute('index.php?module=checkin&aop=waiting', \core\Settings::get('checkin', 'waiting_refresh'));
+            Layout::metaRoute('index.php?module=checkin&aop=waiting', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         }
 
 
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name / Notes');
         $tpl['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
         $tpl['SENDBANK'] = 'what what';
-        $this->content = \core\Template::process($tpl, 'checkin', 'waiting.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
 
     }
 
     public function smallViewLink()
     {
         $vars['aop'] = 'small_wait';
-        $js['address'] = \core\Text::linkAddress('checkin', $vars, true);
+        $js['address'] = PHPWS_Text::linkAddress('checkin', $vars, true);
         $js['label']   = dgettext('checkin', 'Small view');
         $js['width'] = '640';
         $js['height'] = '480';
@@ -578,28 +578,28 @@ class Checkin_Admin extends Checkin {
         $vars['visitor_id'] = $this->current_visitor->id;
         $vars['staff_id'] = $this->current_staff->id;
         $title = sprintf(dgettext('checkin', 'Finish meeting with %s %s'), $this->current_visitor->firstname, $this->current_visitor->lastname);
-        return \core\Text::secureLink($title, 'checkin', $vars, null, $title, 'finish-button action-button');
+        return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'finish-button action-button');
     }
 
     public function unavailableLink()
     {
         $vars['aop'] = 'unavailable';
         $vars['staff_id'] = $this->current_staff->id;
-        return \core\Text::secureLink(dgettext('checkin', 'Unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Unavailable for meeting'), 'unavailable-button action-button');
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Unavailable for meeting'), 'unavailable-button action-button');
     }
 
     public function sendBackLink()
     {
         $vars['aop'] = 'sendback';
         $vars['staff_id'] = $this->current_staff->id;
-        return \core\Text::secureLink(dgettext('checkin', 'Send back'), 'checkin', $vars, null, dgettext('checkin', sprintf('Send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Send back'), 'checkin', $vars, null, dgettext('checkin', sprintf('Send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
     }
 
     public function availableLink()
     {
         $vars['aop'] = 'available';
         $vars['staff_id'] = $this->current_staff->id;
-        return \core\Text::secureLink(dgettext('checkin', 'Available'), 'checkin', $vars, null, dgettext('checkin', 'Available for meeting'), 'available-button action-button');
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Available'), 'checkin', $vars, null, dgettext('checkin', 'Available for meeting'), 'available-button action-button');
     }
 
     public function startMeetingLink()
@@ -612,17 +612,18 @@ class Checkin_Admin extends Checkin {
         } else {
             $title = sprintf(dgettext('checkin', 'Start meeting w/ %s'), $this->current_visitor->getName());
         }
-        return \core\Text::secureLink($title, 'checkin', $vars, null, $title, 'meet-button action-button');
+        return PHPWS_Text::secureLink($title, 'checkin', $vars, null, $title, 'meet-button action-button');
     }
 
     public function staff()
     {
-                \core\Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
 
         $page_tags['ADD_STAFF']    = $this->addStaffLink();
         $page_tags['FILTER_LABEL'] = dgettext('checkin', 'Filter');
 
-        $pager = new \core\DBPager('checkin_staff', 'Checkin_Staff');
+        $pager = new DBPager('checkin_staff', 'Checkin_Staff');
         $pager->setTemplate('staff.tpl');
         $pager->setModule('checkin');
         $pager->addRowTags('row_tags');
@@ -639,7 +640,7 @@ class Checkin_Admin extends Checkin {
 
     public function editStaff()
     {
-        $form = new \core\Form('edit-staff');
+        $form = new PHPWS_Form('edit-staff');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'post_staff');
         if (!$this->staff->id) {
@@ -661,7 +662,7 @@ class Checkin_Admin extends Checkin {
         $reasons = $this->getReasons();
 
         if (empty($reasons)) {
-            $form->addTplTag('REASONS', \core\Text::moduleLink(dgettext('checkin', 'No reasons found.'), 'checkin',
+            $form->addTplTag('REASONS', PHPWS_Text::moduleLink(dgettext('checkin', 'No reasons found.'), 'checkin',
             array('aop'=>'reasons')));
             $form->addTplTag('REASONS_LABEL',  dgettext('checkin', 'Reasons'));
             $form->addRadioAssoc('filter_type', array(0               =>dgettext('checkin', 'None'),
@@ -685,18 +686,19 @@ class Checkin_Admin extends Checkin {
 
         $tpl['FILTER_LEGEND'] = dgettext('checkin', 'Visitor filter');
 
-        $this->content = \core\Template::process($tpl, 'checkin', 'edit_staff.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
 
     public function reasons()
     {
-                \core\Core::initModClass('checkin', 'Reasons.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('checkin', 'Reasons.php');
 
         $pt['MESSAGE_LABEL'] = dgettext('checkin', 'Submission message');
-        $pt['ADD_REASON'] = \core\Text::secureLink(dgettext('checkin', 'Add reason'), 'checkin',
+        $pt['ADD_REASON'] = PHPWS_Text::secureLink(dgettext('checkin', 'Add reason'), 'checkin',
         array('aop'=>'edit_reason'));
 
-        $pager = new \core\DBPager('checkin_reasons', 'Checkin_Reasons');
+        $pager = new DBPager('checkin_reasons', 'Checkin_Reasons');
         $pager->setModule('checkin');
         $pager->setTemplate('reasons.tpl');
         $pager->addPageTags($pt);
@@ -713,7 +715,7 @@ class Checkin_Admin extends Checkin {
     {
         $reason =  & $this->reason;
 
-        $form = new \core\Form('edit-reason');
+        $form = new PHPWS_Form('edit-reason');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'post_reason');
         $form->addHidden('reason_id', $reason->id);
@@ -735,40 +737,40 @@ class Checkin_Admin extends Checkin {
             $form->addSubmit('go', dgettext('checkin', 'Add'));
         }
         $template = $form->getTemplate();
-        $this->content = \core\Template::process($template, 'checkin', 'edit_reason.tpl');
+        $this->content = PHPWS_Template::process($template, 'checkin', 'edit_reason.tpl');
     }
 
     public function settings()
     {
         $this->title = dgettext('checkin', 'Settings');
         javascript('jquery');
-        $form = new \core\Form('settings');
+        $form = new PHPWS_Form('settings');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'post_settings');
         $form->addCheck('front_page', 1);
-        $form->setMatch('front_page', \core\Settings::get('checkin', 'front_page'));
+        $form->setMatch('front_page', PHPWS_Settings::get('checkin', 'front_page'));
         $form->setLabel('front_page', dgettext('checkin', 'Show public sign-in on front page'));
 
-        $form->addText('assign_refresh', \core\Settings::get('checkin', 'assign_refresh'));
+        $form->addText('assign_refresh', PHPWS_Settings::get('checkin', 'assign_refresh'));
         $form->setSize('assign_refresh', '3');
         $form->setLabel('assign_refresh', dgettext('checkin', 'Assignment page refresh rate (in seconds)'));
 
-        $form->addText('waiting_refresh', \core\Settings::get('checkin', 'waiting_refresh'));
+        $form->addText('waiting_refresh', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         $form->setSize('waiting_refresh', '3');
         $form->setLabel('waiting_refresh', dgettext('checkin', 'Waiting page refresh rate (in seconds)'));
 
         $form->addCheck('collapse_signin', 1);
         $form->setLabel('collapse_signin', dgettext('checkin', 'Hide sidebar for visitors'));
-        $form->setMatch('collapse_signin', \core\Settings::get('checkin', 'collapse_signin'));
+        $form->setMatch('collapse_signin', PHPWS_Settings::get('checkin', 'collapse_signin'));
 
         $form->addCheck('unassigned_seen', 1);
         $form->setLabel('unassigned_seen', dgettext('checkin', 'Staff see unassigned visitors'));
-        $form->setMatch('unassigned_seen', \core\Settings::get('checkin', 'unassigned_seen'));
+        $form->setMatch('unassigned_seen', PHPWS_Settings::get('checkin', 'unassigned_seen'));
 
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();
 
-        $this->content = \core\Template::process($tpl, 'checkin', 'setting.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'setting.tpl');
     }
 
     public function postSettings()
@@ -780,28 +782,28 @@ class Checkin_Admin extends Checkin {
             }
         }
 
-        \core\Settings::set('checkin', 'unassigned_seen', (int)isset($_POST['unassigned_seen']));
-        \core\Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
-        \core\Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
+        PHPWS_Settings::set('checkin', 'unassigned_seen', (int)isset($_POST['unassigned_seen']));
+        PHPWS_Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
+        PHPWS_Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
 
         $seconds = (int)$_POST['assign_refresh'];
         if ($seconds < 1) {
             $seconds = 15;
         }
-        \core\Settings::set('checkin', 'assign_refresh', $seconds);
+        PHPWS_Settings::set('checkin', 'assign_refresh', $seconds);
 
         $seconds = (int)$_POST['waiting_refresh'];
         if ($seconds < 1) {
             $seconds = 15;
         }
-        \core\Settings::set('checkin', 'waiting_refresh', $seconds);
+        PHPWS_Settings::set('checkin', 'waiting_refresh', $seconds);
 
-        \core\Settings::save('checkin');
+        PHPWS_Settings::save('checkin');
     }
 
     public function addStaffLink()
     {
-        return \core\Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'edit_staff'));
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop'=>'edit_staff'));
     }
 
 
@@ -810,7 +812,7 @@ class Checkin_Admin extends Checkin {
         if (!Current_User::isLogged()) {
             exit();
         }
-        $db = new \core\DB('users');
+        $db = new PHPWS_DB('users');
         if (empty($_GET['q'])) {
             exit();
         }
@@ -819,7 +821,7 @@ class Checkin_Admin extends Checkin {
         $db->addWhere('username', "$username%", 'like');
         $db->addColumn('username');
         $result = $db->select('col');
-        if (!empty($result) && !core\Error::logIfError($result)) {
+        if (!empty($result) && !PHPWS_Error::logIfError($result)) {
             echo implode("\n", $result);
         }
         exit();
@@ -827,9 +829,9 @@ class Checkin_Admin extends Checkin {
 
     public function addReason($reason)
     {
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         $db->addValue('summary', $reason);
-        return !core\Error::logIfError($db->insert());
+        return !PHPWS_Error::logIfError($db->insert());
     }
 
     /**
@@ -841,7 +843,7 @@ class Checkin_Admin extends Checkin {
             return false;
         }
 
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('id', (int)$reason_id);
         return $db->delete();
     }
@@ -852,10 +854,10 @@ class Checkin_Admin extends Checkin {
             return;
         }
 
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('id', (int)$_GET['reason_id']);
         $db->addValue('summary', strip_tags($_GET['reason']));
-        return !core\Error::logIfError($db->update());
+        return !PHPWS_Error::logIfError($db->update());
     }
 
     public function postStaff()
@@ -872,12 +874,12 @@ class Checkin_Admin extends Checkin {
             }
 
             // Test user name, make sure exists
-            $db = new \core\DB('checkin_staff');
+            $db = new PHPWS_DB('checkin_staff');
             $db->addWhere('user_id', 'users.id');
             $db->addWhere('users.username', $user_name);
             $db->addColumn('id');
             $result = $db->select('one');
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $this->message = dgettext('checkin', 'Problem saving user.');
                 return false;
             } elseif ($result) {
@@ -886,11 +888,11 @@ class Checkin_Admin extends Checkin {
             }
 
             // user is allowed and new, get user_id to create staff
-            $db = new \core\DB('users');
+            $db = new PHPWS_DB('users');
             $db->addWhere('username', $user_name);
             $db->addColumn('id');
             $user_id = $db->select('one');
-            if (core\Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
                 $this->message = dgettext('checkin', 'Problem saving user.');
                 return false;
             }
@@ -934,13 +936,13 @@ class Checkin_Admin extends Checkin {
     public function assignmentLink()
     {
         $vars['aop'] = 'assign';
-        return \core\Text::secureLink(dgettext('checkin', 'Assignment page'), 'checkin', $vars);
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Assignment page'), 'checkin', $vars);
     }
 
     public function waitingLink()
     {
         $vars['aop'] = 'waiting';
-        return \core\Text::secureLink(dgettext('checkin', 'Waiting page'), 'checkin', $vars);
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Waiting page'), 'checkin', $vars);
     }
 
     public function menu()
@@ -948,15 +950,15 @@ class Checkin_Admin extends Checkin {
         $tpl['WAITING'] = $this->waitingLink();
         $tpl['ASSIGN_PAGE'] = $this->assignmentLink();
         $tpl['TITLE'] = dgettext('checkin', 'Checkin Menu');
-        $content = \core\Template::process($tpl, 'checkin', 'menu.tpl');
+        $content = PHPWS_Template::process($tpl, 'checkin', 'menu.tpl');
         Layout::add($content, 'checkin', 'checkin-admin');
     }
 
     public function loadCurrentStaff()
     {
-        \core\Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
         if (empty($this->current_staff)) {
-            $db = new \core\DB('checkin_staff');
+            $db = new PHPWS_DB('checkin_staff');
             $db->addWhere('user_id', Current_User::getId());
             $db->addColumn('id');
             $id = $db->select('one');
@@ -971,7 +973,7 @@ class Checkin_Admin extends Checkin {
     public function saveNote()
     {
         $this->visitor->note = strip_tags(trim($_POST['note_body']));
-        \core\Error::logIfError($this->visitor->save());
+        PHPWS_Error::logIfError($this->visitor->save());
     }
 
     public function startMeeting()
@@ -1028,15 +1030,15 @@ class Checkin_Admin extends Checkin {
 
     public function visitorReport($print=false)
     {
-        \core\Core::initModClass('checkin', 'Staff.php');
-        \core\Core::initModClass('checkin', 'Visitors.php');
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $visitor = new Checkin_Visitor($_GET['vis_id']);
         if (!$visitor->id) {
             $this->content = dgettext('checkin', 'Visitor not found');
             return;
         }
 
-        $db = new \core\DB('checkin_visitor');
+        $db = new PHPWS_DB('checkin_visitor');
         $db->addWhere('firstname', strtolower($visitor->firstname) . '%', 'like');
         $db->addWhere('lastname', strtolower($visitor->lastname), 'like');
         $db->addOrder('arrival_time');
@@ -1083,25 +1085,25 @@ class Checkin_Admin extends Checkin {
         $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
         $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
         $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
-        $tpl['PRINT_LINK'] = \core\Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
         array('aop'=>'visitor_report', 'print'=>1, 'vis_id'=>$visitor->id));
 
         $tpl['NAME_NOTE'] = dgettext('checkin', 'Please note: if a visitor typed in a different or misspelled name, they may not appear on this list. Also, different people may have the same name.');
-        $this->content = \core\Template::process($tpl, 'checkin', 'visitor_report.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitor_report.tpl');
         $this->title = sprintf('Visits from ' . $visitor->getName());
     }
 
     public function monthReport($print=false)
     {
-        \core\Core::initModClass('checkin', 'Staff.php');
-        \core\Core::initModClass('checkin', 'Visitors.php');
+        PHPWS_Core::initModClass('checkin', 'Staff.php');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $staff = new Checkin_Staff((int)$_GET['staff_id']);
         if (!$staff->id) {
             $this->content = dgettext('checkin', 'Staff member not found.');
         }
 
         $date = (int)$_GET['date'];
-        $db = new \core\DB('checkin_visitor');
+        $db = new PHPWS_DB('checkin_visitor');
 
         $start_date = mktime(0,0,0, date('m', $date), 1, date('Y', $date));
         $end_date = mktime(0,-1,0, date('m', $date) + 1, 1, date('Y', $date));
@@ -1126,7 +1128,7 @@ class Checkin_Admin extends Checkin {
                 $spent = $vis->end_meeting - $vis->start_meeting;
                 $day = strftime('%A, %e %b', $vis->arrival_time);
 
-                $row = (array('VIS_NAME' => \core\Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
+                $row = (array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
                                          'REASON'   => $reasons[$vis->reason],
                                          'ARRIVAL'  => strftime('%r', $vis->arrival_time),
                                          'NOTE'     => $vis->note,
@@ -1162,15 +1164,16 @@ class Checkin_Admin extends Checkin {
         $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
         $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
         $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
-        $tpl['PRINT_LINK'] = \core\Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
         array('aop'=>'month_report', 'print'=>'1', 'staff_id'=>$staff->id, 'date'=>$start_date));
-        $this->content = \core\Template::process($tpl, 'checkin', 'monthly_report.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'monthly_report.tpl');
 
     }
 
     public function report($print=false)
     {
-                $this->loadStaffList();
+        PHPWS_Core::initCoreClass('Link.php');
+        $this->loadStaffList();
         if (empty($this->staff_list)) {
             $this->content = dgettext('checkin', 'No staff have been created.');
             return;
@@ -1189,7 +1192,7 @@ class Checkin_Admin extends Checkin {
         $this->title = sprintf(dgettext('checkin', 'Report for %s'), strftime('%e %B, %Y', $udate));
 
         if (!$print) {
-            $form = new \core\Form('report-date');
+            $form = new PHPWS_Form('report-date');
             $form->setMethod('get');
             $form->addHidden('module', 'checkin');
             $form->addText('cdate', $current_date);
@@ -1202,12 +1205,12 @@ class Checkin_Admin extends Checkin {
             javascript('datepicker', $js);
 
 
-            $tpl['PRINT_LINK'] = \core\Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
+            $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
             array('aop'=>'report', 'print'=>1, 'udate'=>$udate));
-            $tpl['REPEAT_VISITS'] = \core\Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop'=>'repeats', 'date'=>$udate));
+            $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop'=>'repeats', 'date'=>$udate));
         }
 
-        $tObj = new \core\Template('checkin');
+        $tObj = new PHPWS_Template('checkin');
         $tObj->setFile('report.tpl');
 
         $this->loadStaffList();
@@ -1216,8 +1219,8 @@ class Checkin_Admin extends Checkin {
             $reasons[0] = dgettext('checkin', 'No reason');
         }
 
-        \core\Core::initModClass('checkin', 'Visitors.php');
-        $db = new \core\DB('checkin_visitor');
+        PHPWS_Core::initModClass('checkin', 'Visitors.php');
+        $db = new PHPWS_DB('checkin_visitor');
         $db->addWhere('start_meeting', $udate, '>=');
         $db->addWhere('end_meeting', $udate + 86400, '<');
         $db->addWhere('finished', 1);
@@ -1244,7 +1247,7 @@ class Checkin_Admin extends Checkin {
                     }
 
                     $tObj->setCurrentBlock('subrow');
-                    $tObj->setData(array('VIS_NAME' => \core\Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
+                    $tObj->setData(array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
                                          'REASON'   => $reason,
                                          'ARRIVAL'  => strftime('%r', $vis->arrival_time),
                                          'NOTE'     => $vis->note,
@@ -1270,7 +1273,7 @@ class Checkin_Admin extends Checkin {
             }
 
             $tObj->setCurrentBlock('row');
-            $link = new \core\Link($staff->display_name, 'checkin', array('aop'=>'month_report', 'staff_id'=>$staff->id, 'date'=>$udate), true);
+            $link = new PHPWS_Link($staff->display_name, 'checkin', array('aop'=>'month_report', 'staff_id'=>$staff->id, 'date'=>$udate), true);
             $link->setTitle(dgettext('checkin', 'See monthly totals'));
             $row['DISPLAY_NAME'] = $link->get();
             $row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
@@ -1299,7 +1302,8 @@ class Checkin_Admin extends Checkin {
 
     public function repeats()
     {
-                $end_date = (int)$_GET['date'];
+        PHPWS_Core::initCoreClass('DB2.php');
+        $end_date = (int)$_GET['date'];
         $start_date = mktime(0,0,0, date('m', $end_date) - 1, date('d', $end_date));
         $this->title = sprintf(dgettext('checkin', 'Multiple visits made between %s and %s'),
         strftime('%b %e', $start_date), strftime('%b %e', $end_date));
@@ -1340,7 +1344,7 @@ class Checkin_Admin extends Checkin {
             return;
         }
 
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->setMethod('get');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'repeats');
@@ -1352,12 +1356,12 @@ class Checkin_Admin extends Checkin {
         $tpl = $form->getTemplate();
 
         foreach ($result as $visit) {
-            $rows['NAME'] = \core\Text::moduleLink(sprintf('%s, %s', $visit['lastname'], $visit['firstname']), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$visit['id']));
+            $rows['NAME'] = PHPWS_Text::moduleLink(sprintf('%s, %s', $visit['lastname'], $visit['firstname']), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$visit['id']));
             $rows['VISITS'] = $visit['num'];
             $tpl['visitors'][] = $rows;
         }
 
-        $this->content = \core\Template::process($tpl, 'checkin', 'repeats.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'repeats.tpl');
     }
 }
 

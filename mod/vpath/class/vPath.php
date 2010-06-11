@@ -47,7 +47,7 @@ class vPath {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('vpath', 'vPath settings saved.'));
-                    \core\Core::reroute('index.php?module=vpath&aop=menu');
+                    PHPWS_Core::reroute('index.php?module=vpath&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -69,9 +69,9 @@ class vPath {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(core\Template::process($tpl, 'vpath', 'main_admin.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'vpath', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(core\Template::process($tpl, 'vpath', 'main_admin.tpl'));
+            $this->panel->setContent(PHPWS_Template::process($tpl, 'vpath', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -94,14 +94,14 @@ class vPath {
             if (isset($_SESSION['VP_Message']['title'])) {
                 $this->title = $_SESSION['VP_Message']['title'];
             }
-            \core\Core::killSession('VP_Message');
+            PHPWS_Core::killSession('VP_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        \core\Core::initModClass('vpath', 'vPath_Forms.php');
+        PHPWS_Core::initModClass('vpath', 'vPath_Forms.php');
         $this->forms = new vPath_Forms;
         $this->forms->vpath = & $this;
         $this->forms->get($type);
@@ -110,7 +110,7 @@ class vPath {
 
     public function loadPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('vpath-panel');
         $link = 'index.php?module=vpath&aop=menu';
 
@@ -128,49 +128,49 @@ class vPath {
     {
 
         isset($_POST['enable_path']) ?
-            \core\Settings::set('vpath', 'enable_path', 1) :
-            \core\Settings::set('vpath', 'enable_path', 0);
+            PHPWS_Settings::set('vpath', 'enable_path', 1) :
+            PHPWS_Settings::set('vpath', 'enable_path', 0);
 
         isset($_POST['show_on_home']) ?
-            \core\Settings::set('vpath', 'show_on_home', 1) :
-            \core\Settings::set('vpath', 'show_on_home', 0);
+            PHPWS_Settings::set('vpath', 'show_on_home', 1) :
+            PHPWS_Settings::set('vpath', 'show_on_home', 0);
 
-        \core\Settings::set('vpath', 'menu_id', $_POST['menu_id']);
-        \core\Settings::set('vpath', 'divider', $_POST['divider']);
+        PHPWS_Settings::set('vpath', 'menu_id', $_POST['menu_id']);
+        PHPWS_Settings::set('vpath', 'divider', $_POST['divider']);
 
         isset($_POST['divider_space']) ?
-            \core\Settings::set('vpath', 'divider_space', 1) :
-            \core\Settings::set('vpath', 'divider_space', 0);
+            PHPWS_Settings::set('vpath', 'divider_space', 1) :
+            PHPWS_Settings::set('vpath', 'divider_space', 0);
 
         isset($_POST['link_current']) ?
-            \core\Settings::set('vpath', 'link_current', 1) :
-            \core\Settings::set('vpath', 'link_current', 0);
+            PHPWS_Settings::set('vpath', 'link_current', 1) :
+            PHPWS_Settings::set('vpath', 'link_current', 0);
 
         isset($_POST['show_sub_menu']) ?
-            \core\Settings::set('vpath', 'show_sub_menu', 1) :
-            \core\Settings::set('vpath', 'show_sub_menu', 0);
+            PHPWS_Settings::set('vpath', 'show_sub_menu', 1) :
+            PHPWS_Settings::set('vpath', 'show_sub_menu', 0);
 
         isset($_POST['show_peer_menu']) ?
-            \core\Settings::set('vpath', 'show_peer_menu', 1) :
-            \core\Settings::set('vpath', 'show_peer_menu', 0);
+            PHPWS_Settings::set('vpath', 'show_peer_menu', 1) :
+            PHPWS_Settings::set('vpath', 'show_peer_menu', 0);
 
         if (!empty($_POST['path_prefix'])) {
-            \core\Settings::set('vpath', 'path_prefix', \core\Text::parseInput($_POST['path_prefix']));
+            PHPWS_Settings::set('vpath', 'path_prefix', PHPWS_Text::parseInput($_POST['path_prefix']));
         } else {
-            \core\Settings::set('vpath', 'path_prefix', null);
+            PHPWS_Settings::set('vpath', 'path_prefix', null);
         }
 
         if (!empty($_POST['path_suffix'])) {
-            \core\Settings::set('vpath', 'path_suffix', \core\Text::parseInput($_POST['path_suffix']));
+            PHPWS_Settings::set('vpath', 'path_suffix', PHPWS_Text::parseInput($_POST['path_suffix']));
         } else {
-            \core\Settings::set('vpath', 'path_suffix', null);
+            PHPWS_Settings::set('vpath', 'path_suffix', null);
         }
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (core\Settings::save('vpath')) {
+            if (PHPWS_Settings::save('vpath')) {
                 return true;
             } else {
                 return falsel;
@@ -185,11 +185,11 @@ class vPath {
         static $redirect_url = null;
 
         if (!$current_url) {
-            $current_url = preg_quote(core\Core::getCurrentUrl(true,false));
+            $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
         }
 
         if (!$redirect_url) {
-            $redirect_url = preg_quote(core\Core::getCurrentUrl());
+            $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
         }
 
         if ( preg_match("@$current_url$@", $url) ||
@@ -205,16 +205,16 @@ class vPath {
     {
 
         /* get all links for the menu_id */
-        $db = new \core\DB('menu_links');
+        $db = new PHPWS_DB('menu_links');
         $db->addWhere('menu_id', $menu_id);
         $db->addOrder('link_order asc');
         $links = $db->select();
-        if (empty($links) || \core\Error::logIfError($links)) {
+        if (empty($links) || PHPWS_Error::logIfError($links)) {
             return NULL;
         }
 
         /* get the current key */
-        $current_key = \core\Key::getCurrent();
+        $current_key = Key::getCurrent();
 
         /* if there is a key */
         if (!empty($current_key)) {
@@ -233,11 +233,11 @@ class vPath {
             static $redirect_url = null;
 
             if (!$current_url) {
-                $current_url = preg_quote(core\Core::getCurrentUrl(true,false));
+                $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true,false));
             }
 
             if (!$redirect_url) {
-                $redirect_url = preg_quote(core\Core::getCurrentUrl());
+                $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
             }
 
         } */
@@ -252,7 +252,7 @@ class vPath {
                  vPath::isCurrentUrl($link['url'] == true)
           ) {
                 /* add it's title to the crumb list */
-                if (core\Settings::get('vpath', 'link_current')) {
+                if (PHPWS_Settings::get('vpath', 'link_current')) {
                     $list[] = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);
                 } else {
                     $list[] = $link['title'];
@@ -262,7 +262,7 @@ class vPath {
                     vPath::getCrumbs($links, $list, $link['parent']);
                 }
                 /* print the sub-menu if enabled */
-                if (core\Settings::get('vpath', 'show_sub_menu')) {
+                if (PHPWS_Settings::get('vpath', 'show_sub_menu')) {
                     $title = sprintf('<a href="%s">%s</a>', $link['url'], $link['title']);
                     vPath::buildSub($links, $link['id'], $title);
                 }
@@ -270,13 +270,13 @@ class vPath {
 
 
                 /* if peer-menu is enabled and if it has no children, print peer-menu  */
-                if (core\Settings::get('vpath', 'show_peer_menu')) {
-                    $db = new \core\DB('menu_links');
+                if (PHPWS_Settings::get('vpath', 'show_peer_menu')) {
+                    $db = new PHPWS_DB('menu_links');
                     $db->addWhere('parent', $link['id']);
                     $subs = $db->select();
-                    \core\Error::logIfError($subs);
+                    PHPWS_Error::logIfError($subs);
                     if (empty($subs)) {
-                        $db = new \core\DB('menu_links');
+                        $db = new PHPWS_DB('menu_links');
                         $db->addWhere('id', $link['parent']);
                         $parent = $db->select();
                         $title = sprintf('<a href="%s">%s</a>', $parent[0]['url'], $parent[0]['title']);
@@ -297,8 +297,8 @@ class vPath {
             } else {
                 $title = $_SESSION['Layout_Settings']->getPageTitle();
             }
-            if (core\Settings::get('vpath', 'link_current')) {
-                $list[0] = sprintf('<a href="%s">%s</a>', \core\Core::getCurrentUrl(), $title);
+            if (PHPWS_Settings::get('vpath', 'link_current')) {
+                $list[0] = sprintf('<a href="%s">%s</a>', PHPWS_Core::getCurrentUrl(), $title);
             } else {
                 $list[0] = $title;
             }
@@ -308,17 +308,17 @@ class vPath {
         $list = array_reverse($list);
 
         /* put it all together */
-        $tpl['PREFIX'] = \core\Settings::get('vpath', 'path_prefix');
-        $tpl['SUFFIX'] = \core\Settings::get('vpath', 'path_suffix');
+        $tpl['PREFIX'] = PHPWS_Settings::get('vpath', 'path_prefix');
+        $tpl['SUFFIX'] = PHPWS_Settings::get('vpath', 'path_suffix');
         require(PHPWS_SOURCE_DIR . 'mod/vpath/inc/dividers.php');
-        $divider = $vpath_dividers[core\Settings::get('vpath', 'divider')];
-        if (core\Settings::get('vpath', 'divider_space')) {
+        $divider = $vpath_dividers[PHPWS_Settings::get('vpath', 'divider')];
+        if (PHPWS_Settings::get('vpath', 'divider_space')) {
             $divider = ' ' . $divider . ' ';
         }
         $tpl['PATH'] = implode($list, $divider);
 
         if (!empty($tpl)) {
-            $content = \core\Template::process($tpl, 'vpath', 'path.tpl');
+            $content = PHPWS_Template::process($tpl, 'vpath', 'path.tpl');
             Layout::add($content, 'vpath', 'view');
         }
 
@@ -355,7 +355,7 @@ class vPath {
         }
         if ($tpl['LINKS']) {
             $tpl['TITLE'] = $title;
-            $content = \core\Template::process($tpl, 'vpath', 'sub.tpl');
+            $content = PHPWS_Template::process($tpl, 'vpath', 'sub.tpl');
             Layout::add($content, 'vpath', 'sub');
         }
     }

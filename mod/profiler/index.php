@@ -10,14 +10,14 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 if (isset($_REQUEST['user_cmd'])) {
-    \core\Core::initModClass('profiler', 'Profiler.php');
+    PHPWS_Core::initModClass('profiler', 'Profiler.php');
     Profiler::user();
 } else {
     if (!Current_User::authorized('profiler')) {
         Current_User::disallow();
     }
 
-    \core\Core::initModClass('profiler', 'Profiler.php');
+    PHPWS_Core::initModClass('profiler', 'Profiler.php');
     Profiler::admin();
 }
 

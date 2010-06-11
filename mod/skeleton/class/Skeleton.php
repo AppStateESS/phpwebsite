@@ -22,8 +22,8 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-core\Core::requireInc('skeleton', 'errordefines.php');
-core\Core::requireConfig('skeleton');
+PHPWS_Core::requireInc('skeleton', 'errordefines.php');
+PHPWS_Core::requireConfig('skeleton');
 
 class Skeleton {
     public $forms      = null;
@@ -67,12 +67,12 @@ class Skeleton {
                     Current_User::disallow();
                 }
                 if ($this->postSkeleton()) {
-                    if (core\Error::logIfError($this->skeleton->save())) {
+                    if (PHPWS_Error::logIfError($this->skeleton->save())) {
                         $this->forwardMessage(dgettext('skeleton', 'Error occurred when saving skeleton.'));
-                        \core\Core::reroute('index.php?module=skeleton&aop=menu');
+                        PHPWS_Core::reroute('index.php?module=skeleton&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('skeleton', 'Skeleton saved successfully.'));
-                        \core\Core::reroute('index.php?module=skeleton&aop=menu');
+                        PHPWS_Core::reroute('index.php?module=skeleton&aop=menu');
                     }
                 } else {
                     $this->loadForm('edit_skeleton');
@@ -102,12 +102,12 @@ class Skeleton {
                     Current_User::disallow();
                 }
                 if ($this->postBone()) {
-                    if (core\Error::logIfError($this->bone->save())) {
+                    if (PHPWS_Error::logIfError($this->bone->save())) {
                         $this->forwardMessage(dgettext('skeleton', 'Error occurred when saving bone.'));
-                        \core\Core::reroute('index.php?module=skeleton&aop=menu');
+                        PHPWS_Core::reroute('index.php?module=skeleton&aop=menu');
                     } else {
                         $this->forwardMessage(dgettext('skeleton', 'Bone saved successfully.'));
-                        \core\Core::reroute('index.php?module=skeleton&skeleton='.$this->bone->skeleton_id);
+                        PHPWS_Core::reroute('index.php?module=skeleton&skeleton='.$this->bone->skeleton_id);
                     }
                 } else {
                     $this->loadForm('edit_bone');
@@ -131,7 +131,7 @@ class Skeleton {
                 }
                 if ($this->postSettings()) {
                     $this->forwardMessage(dgettext('skeleton', 'Skeleton settings saved.'));
-                    \core\Core::reroute('index.php?module=skeleton&aop=menu');
+                    PHPWS_Core::reroute('index.php?module=skeleton&aop=menu');
                 } else {
                     $this->loadForm('settings');
                 }
@@ -144,9 +144,9 @@ class Skeleton {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(core\Template::process($tpl, 'skeleton', 'main_admin.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'skeleton', 'main_admin.tpl'));
         } else {
-            $this->panel->setContent(core\Template::process($tpl, 'skeleton', 'main_admin.tpl'));
+            $this->panel->setContent(PHPWS_Template::process($tpl, 'skeleton', 'main_admin.tpl'));
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
@@ -158,7 +158,7 @@ class Skeleton {
         $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
-                \core\Core::errorPage('404');
+                PHPWS_Core::errorPage('404');
             }
 
             $action = $_REQUEST['uop'];
@@ -182,7 +182,7 @@ class Skeleton {
                 break;
 
             case 'list_skeletons':
-                \core\Core::initModClass('skeleton', 'Skeleton_Forms.php');
+                PHPWS_Core::initModClass('skeleton', 'Skeleton_Forms.php');
                 $this->forms = new Skeleton_Forms;
                 $this->forms->skeleton = & $this;
                 $this->forms->listSkeletons();
@@ -195,9 +195,9 @@ class Skeleton {
         $tpl['MESSAGE'] = $this->message;
 
         if ($javascript) {
-            Layout::nakedDisplay(core\Template::process($tpl, 'skeleton', 'main_user.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'skeleton', 'main_user.tpl'));
         } else {
-            Layout::add(core\Template::process($tpl, 'skeleton', 'main_user.tpl'));
+            Layout::add(PHPWS_Template::process($tpl, 'skeleton', 'main_user.tpl'));
         }
 
     }
@@ -219,14 +219,14 @@ class Skeleton {
             if (isset($_SESSION['Skeleton_Message']['title'])) {
                 $this->title = $_SESSION['Skeleton_Message']['title'];
             }
-            \core\Core::killSession('Skeleton_Message');
+            PHPWS_Core::killSession('Skeleton_Message');
         }
     }
 
 
     public function loadForm($type)
     {
-        \core\Core::initModClass('skeleton', 'Skeleton_Forms.php');
+        PHPWS_Core::initModClass('skeleton', 'Skeleton_Forms.php');
         $this->forms = new Skeleton_Forms;
         $this->forms->skeleton = & $this;
         $this->forms->get($type);
@@ -235,7 +235,7 @@ class Skeleton {
 
     public function loadSkeleton($id=0)
     {
-        \core\Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
+        PHPWS_Core::initModClass('skeleton', 'Skeleton_Skeleton.php');
 
         if ($id) {
             $this->skeleton = new Skeleton_Skeleton($id);
@@ -253,7 +253,7 @@ class Skeleton {
 
     public function loadBone($id=0)
     {
-        \core\Core::initModClass('skeleton', 'Skeleton_Bone.php');
+        PHPWS_Core::initModClass('skeleton', 'Skeleton_Bone.php');
 
         if ($id) {
             $this->bone = new Skeleton_Bone($id);
@@ -278,7 +278,7 @@ class Skeleton {
 
     public function loadPanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('skeleton-panel');
         $link = 'index.php?module=skeleton&aop=menu';
 
@@ -384,42 +384,42 @@ class Skeleton {
     {
 
         isset($_POST['enable_sidebox']) ?
-            \core\Settings::set('skeleton', 'enable_sidebox', 1) :
-            \core\Settings::set('skeleton', 'enable_sidebox', 0);
+            PHPWS_Settings::set('skeleton', 'enable_sidebox', 1) :
+            PHPWS_Settings::set('skeleton', 'enable_sidebox', 0);
 
         isset($_POST['sidebox_homeonly']) ?
-            \core\Settings::set('skeleton', 'sidebox_homeonly', 1) :
-            \core\Settings::set('skeleton', 'sidebox_homeonly', 0);
+            PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 1) :
+            PHPWS_Settings::set('skeleton', 'sidebox_homeonly', 0);
 
         if (!empty($_POST['sidebox_text'])) {
-            \core\Settings::set('skeleton', 'sidebox_text', \core\Text::parseInput($_POST['sidebox_text']));
+            PHPWS_Settings::set('skeleton', 'sidebox_text', PHPWS_Text::parseInput($_POST['sidebox_text']));
         } else {
-            \core\Settings::set('skeleton', 'sidebox_text', null);
+            PHPWS_Settings::set('skeleton', 'sidebox_text', null);
         }
 
         if (isset($_POST['enable_files'])) {
-            \core\Settings::set('skeleton', 'enable_files', 1);
+            PHPWS_Settings::set('skeleton', 'enable_files', 1);
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 600 ) {
-                    \core\Settings::set('skeleton', 'max_width', $max_width);
+                    PHPWS_Settings::set('skeleton', 'max_width', $max_width);
                 }
             }
             if ( !empty($_POST['max_height']) ) {
                 $max_height = (int)$_POST['max_height'];
                 if ($max_height >= 50 && $max_height <= 600 ) {
-                    \core\Settings::set('skeleton', 'max_height', $max_height);
+                    PHPWS_Settings::set('skeleton', 'max_height', $max_height);
                 }
             }
         } else {
-            \core\Settings::set('skeleton', 'enable_files', 0);
+            PHPWS_Settings::set('skeleton', 'enable_files', 0);
         }
 
         if (isset($errors)) {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            if (core\Settings::save('skeleton')) {
+            if (PHPWS_Settings::save('skeleton')) {
                 return true;
             } else {
                 return falsel;
@@ -432,9 +432,9 @@ class Skeleton {
     public function navLinks()
     {
 
-        $links[] = \core\Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
+        $links[] = PHPWS_Text::moduleLink(dgettext('skeleton', 'List all skeletons'), 'skeleton', array('uop'=>'list_skeletons'));
         if (Current_User::allow('skeleton', 'settings', null, null, true) && !isset($_REQUEST['aop'])){
-            $links[] = \core\Text::moduleLink(dgettext('skeleton', 'Settings'), "skeleton",  array('aop'=>'menu', 'tab'=>'settings'));
+            $links[] = PHPWS_Text::moduleLink(dgettext('skeleton', 'Settings'), "skeleton",  array('aop'=>'menu', 'tab'=>'settings'));
         }
 
         return $links;

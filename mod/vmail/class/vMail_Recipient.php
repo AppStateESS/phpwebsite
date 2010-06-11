@@ -50,9 +50,9 @@ class vMail_Recipient {
 
     public function init()
     {
-        $db = new \core\DB('vmail_recipients');
+        $db = new PHPWS_DB('vmail_recipients');
         $result = $db->loadObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = & $result;
             $this->id = 0;
         } elseif (!$result) {
@@ -68,7 +68,7 @@ class vMail_Recipient {
 
     public function setAddress($address)
     {
-        if (core\Text::isValidInput($address, 'email')) {
+        if (PHPWS_Text::isValidInput($address, 'email')) {
             $this->address = $address;
             return true;
         } else {
@@ -88,7 +88,7 @@ class vMail_Recipient {
 
     public function setSubmit_message($submit_message)
     {
-        $this->submit_message = \core\Text::parseInput($submit_message);
+        $this->submit_message = PHPWS_Text::parseInput($submit_message);
     }
 
 
@@ -99,7 +99,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return \core\Text::parseOutput($this->label);
+            return PHPWS_Text::parseOutput($this->label);
         } else {
             return $this->label;
         }
@@ -112,7 +112,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return \core\Text::parseOutput($this->address);
+            return PHPWS_Text::parseOutput($this->address);
         } else {
             return $this->address;
         }
@@ -125,7 +125,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return \core\Text::parseOutput($this->prefix);
+            return PHPWS_Text::parseOutput($this->prefix);
         } else {
             return $this->prefix;
         }
@@ -138,7 +138,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return \core\Text::parseOutput($this->subject);
+            return PHPWS_Text::parseOutput($this->subject);
         } else {
             return $this->subject;
         }
@@ -151,7 +151,7 @@ class vMail_Recipient {
         }
 
         if ($print) {
-            return \core\Text::parseOutput($this->submit_message);
+            return PHPWS_Text::parseOutput($this->submit_message);
         } else {
             return $this->submit_message;
         }
@@ -162,12 +162,12 @@ class vMail_Recipient {
         $tpl['ITEM_LINKS'] = $this->links();
         $tpl['RECIPIENT'] = $this->getLabel(true);
         if ($this->getSubmit_message()) {
-            $tpl['SUBMIT_MESSAGE'] = \core\Text::parseTag($this->getSubmit_message(true));
+            $tpl['SUBMIT_MESSAGE'] = PHPWS_Text::parseTag($this->getSubmit_message(true));
         } else {
             $tpl['SUBMIT_MESSAGE'] = dgettext('vmail', 'Your message was sent to');
         }
 
-        return \core\Template::process($tpl, 'vmail', 'submit_message.tpl');
+        return PHPWS_Template::process($tpl, 'vmail', 'submit_message.tpl');
     }
 
 
@@ -178,7 +178,7 @@ class vMail_Recipient {
         if (Current_User::allow('vmail', 'edit_recipient')) {
             $vars['id'] = $this->id;
             $vars['aop']  = 'edit_recipient';
-            $links[] = \core\Text::secureLink(dgettext('vmail', 'Edit recipient'), 'vmail', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('vmail', 'Edit recipient'), 'vmail', $vars);
         }
 
         $links = array_merge($links, vMail::navLinks());
@@ -194,11 +194,11 @@ class vMail_Recipient {
         }
 
         /* delete the recipient */
-        $db = new \core\DB('vmail_recipients');
+        $db = new PHPWS_DB('vmail_recipients');
         $db->addWhere('id', $this->id);
-        \core\Error::logIfError($db->delete());
+        PHPWS_Error::logIfError($db->delete());
 
-        \core\Key::drop($this->key_id);
+        Key::drop($this->key_id);
 
     }
 
@@ -210,14 +210,14 @@ class vMail_Recipient {
 
         if (Current_User::allow('vmail', 'edit_recipient')) {
             $vars['aop']  = 'edit_recipient';
-            $label = \core\Icon::show('edit');
-            $links[] = \core\Text::secureLink($label, 'vmail', $vars);
+            $label = Icon::show('edit');
+            $links[] = PHPWS_Text::secureLink($label, 'vmail', $vars);
         }
         if (Current_User::allow('vmail', 'delete_recipient')) {
             $vars['aop'] = 'delete_recipient';
-            $js['ADDRESS'] = \core\Text::linkAddress('vmail', $vars, true);
+            $js['ADDRESS'] = PHPWS_Text::linkAddress('vmail', $vars, true);
             $js['QUESTION'] = sprintf(dgettext('vmail', 'Are you sure you want to delete the recipient %s?'), $this->getLabel());
-            $js['LINK'] = \core\Icon::show('delete');
+            $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -232,12 +232,12 @@ class vMail_Recipient {
         if (Current_User::allow('vmail', 'edit_recipient')) {
             if ($this->active) {
                 $vars['aop'] = 'deactivate_recipient';
-                $label = \core\Icon::show('active', dgettext('rolodex', 'Deactivate'));
-                $active = \core\Text::secureLink($label, 'vmail', $vars);
+                $label = Icon::show('active', dgettext('rolodex', 'Deactivate'));
+                $active = PHPWS_Text::secureLink($label, 'vmail', $vars);
             } else {
                 $vars['aop'] = 'activate_recipient';
-                $label = \core\Icon::show('inactive', dgettext('rolodex', 'Activate'));
-                $active = \core\Text::secureLink($label, 'vmail', $vars);
+                $label = Icon::show('inactive', dgettext('rolodex', 'Activate'));
+                $active = PHPWS_Text::secureLink($label, 'vmail', $vars);
             }
             $links[] = $active;
         }
@@ -251,10 +251,10 @@ class vMail_Recipient {
 
     public function save()
     {
-        $db = new \core\DB('vmail_recipients');
+        $db = new PHPWS_DB('vmail_recipients');
 
         $result = $db->saveObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -266,11 +266,11 @@ class vMail_Recipient {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new \core\Key;
+            $key = new Key;
         } else {
-            $key = new \core\Key($this->key_id);
-            if (core\Error::isError($key->_error)) {
-                $key = new \core\Key;
+            $key = new Key($this->key_id);
+            if (PHPWS_Error::isError($key->_error)) {
+                $key = new Key;
             }
         }
 
@@ -283,16 +283,16 @@ class vMail_Recipient {
         $key->setTitle($this->label);
         $key->setSummary($this->subject);
         $result = $key->save();
-        if (core\Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return false;
         }
 
         if (!$this->key_id) {
             $this->key_id = $key->id;
-            $db = new \core\DB('vmail_recipients');
+            $db = new PHPWS_DB('vmail_recipients');
             $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
-            \core\Error::logIfError($db->update());
+            PHPWS_Error::logIfError($db->update());
         }
         return true;
     }
@@ -301,7 +301,7 @@ class vMail_Recipient {
 
     public function viewLink($bare=false)
     {
-        $link = new \core\Link($this->label, 'vmail', array('recipient'=>$this->id));
+        $link = new PHPWS_Link($this->label, 'vmail', array('recipient'=>$this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {

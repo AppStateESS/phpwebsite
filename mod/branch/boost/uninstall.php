@@ -6,8 +6,8 @@
 
 function branch_uninstall(&$content)
 {
-    \core\DB::dropTable('branch_sites');
-    \core\DB::dropTable('branch_mod_limit');
+    PHPWS_DB::dropTable('branch_sites');
+    PHPWS_DB::dropTable('branch_mod_limit');
     return TRUE;
 }
 

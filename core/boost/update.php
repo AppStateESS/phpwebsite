@@ -97,7 +97,7 @@ function core_update(&$content, $version) {
         case version_compare($version, '1.6.1', '<'):
             $content[] = '<pre>';
 
-            if (PHPWS_Boost::inBranch() || core\Core::isBranch()) {
+            if (PHPWS_Boost::inBranch() || PHPWS_Core::isBranch()) {
                 $yui_destination = $home_directory . 'javascript/editors/yui';
                 $yui_source = PHPWS_SOURCE_DIR . 'javascript/editors/yui';
 
@@ -145,9 +145,9 @@ function core_update(&$content, $version) {
         case version_compare($version, '1.6.3', '<'):
             $content[] = '<pre>';
 
-            $db = new core\DB('registered');
+            $db = new PHPWS_DB('registered');
             if (!$db->isTableColumn('registered_to')) {
-                if (core\Error::logIfError($db->renameTableColumn('registered', 'registered_to'))) {
+                if (PHPWS_Error::logIfError($db->renameTableColumn('registered', 'registered_to'))) {
                     $content[] = '--- Could not rename registered table\'s registered column to registered_to.</pre>';
                     return false;
                 } else {
@@ -234,7 +234,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
                 $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_8_0.txt');
             }
 
-            if (core\Core::isBranch() || PHPWS_Boost::inBranch()) {
+            if (PHPWS_Core::isBranch() || PHPWS_Boost::inBranch()) {
                 $files = array('javascript/ajax/requester.js', 'javascript/captcha/freecap/freecap.php', 'javascript/check_all/head.js',
                            'javascript/confirm/default.php', 'javascript/jquery/head.js', 'javascript/jquery/jquery.js',
                            'javascript/jquery/jquery.selectboxes.js', 'javascript/multiple_select/body.js',
@@ -267,7 +267,7 @@ You will need to make your hub/branch home directory writable if the file doesn\
 
         case version_compare($version, '1.8.2', '<'):
             $content[] = '<pre>';
-            $db = new core\DB('phpws_key');
+            $db = new PHPWS_DB('phpws_key');
             if (!$db->isTableColumn('show_after')) {
                 $db->addTableColumn('show_after', "int NOT NULL default 0");
                 $db->addTableColumn('hide_after', "int NOT NULL default 2147400000");
@@ -441,7 +441,7 @@ Editors
 ------------------
 + Patch# 2800703 - fixed checkBranch for newer php5. Thanks Andrew Patterson.
 + addValues in Link.php accepts arrays of values now
-+ Added second parameter to core\Core::stripObjValues - strip_null.
++ Added second parameter to PHPWS_Core::stripObjValues - strip_null.
   If true, then null values will not be added to array. False will
   include them.
 + Removed pass-by reference check from Setup.
@@ -476,14 +476,14 @@ Editors
 -----------------
 + Updated Pear library.
 + Added new class DB2.
-+ core\DB:
++ PHPWS_DB:
   o changed count to accommodate group by and single col pulls
   o Added code to prevent multiple identical joins.
 + Text : Fixed bug in fixAnchors that didn\'t allow it to work with hyphenated ids
 + DBPager : fixed a problem with multiple joinResult calls to same table.</pre>';
 
         case version_compare($version, '2.0.0', '<'):
-            if (core\Core::isBranch()) {
+            if (PHPWS_Core::isBranch()) {
                 $content[] = 'This update can only be performed on the hub.';
                 return false;
             }
@@ -496,7 +496,7 @@ Editors
                     return false;
                 }
 
-                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", core\Core::getHomeHttp());
+                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", PHPWS_CORE::getHomeHttp());
                 if (!file_put_contents($config_dir . 'source.php', $source_http)) {
                     $content[] = '<p>Could not create config/core/source.php file.</p>';
                     return false;

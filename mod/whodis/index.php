@@ -7,7 +7,7 @@
 
 
 if (Current_User::allow('whodis')) {
-    \core\Core::initModClass('whodis', 'Whodis.php');
+    PHPWS_Core::initModClass('whodis', 'Whodis.php');
     Whodis::admin();
 }
 

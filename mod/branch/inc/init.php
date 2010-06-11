@@ -4,6 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
-    \core\Core::initModClass('boost', 'Boost.php');
+    PHPWS_Core::initModClass('boost', 'Boost.php');
 }
 ?>

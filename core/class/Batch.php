@@ -1,5 +1,5 @@
 <?php
-namespace core;
+
 /**
  * Separates work into batches to prevent memory caps or timeouts
  *
@@ -126,7 +126,7 @@ class Batches {
 
     public function getAddress()
     {
-        $url = Core::getCurrentUrl();
+        $url = PHPWS_Core::getCurrentUrl();
         $url = preg_replace('/&batch=\d+$/Ui', '', $url);
         $new_url = $url . '&amp;batch=' . $this->current_batch;
 

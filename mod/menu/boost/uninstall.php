@@ -9,9 +9,9 @@
 
 function menu_uninstall(&$content)
 {
-    \core\DB::dropTable('menu_links');
-    \core\DB::dropTable('menus');
-    \core\DB::dropTable('menu_assoc');
+    PHPWS_DB::dropTable('menu_links');
+    PHPWS_DB::dropTable('menus');
+    PHPWS_DB::dropTable('menu_assoc');
 
     $content[] = dgettext('menu', 'Menu tables removed.');
 

@@ -6,7 +6,7 @@
  * Stores an integer type and string content.
  */
 
-core\Core::initModClass('notification', 'Notification.php');
+PHPWS_Core::initModClass('notification', 'Notification.php');
 
 class SimpleNotification extends Notification
 {

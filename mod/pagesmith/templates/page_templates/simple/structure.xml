@@ -1,29 +1,28 @@
 <?xml version="1.0"?>
-<!DOCTYPE template SYSTEM "../../../inc/page.dtd">
 <template>
-    <title>Simple</title>
-    <summary>A very basic layout with one large text area and a floating,
-        right block.</summary>
-    <thumbnail>simple.png</thumbnail>
-    <style>page.css</style>
-    <structure>
-        <section>
-            <name>header1</name>
-            <type>header</type>
-        </section>
-        <section>
-            <name>text1</name>
-            <type>text</type>
-        </section>
-        <section>
-            <name>block1</name>
-            <type>block</type>
-            <width>300</width>
-            <height>300</height>
-        </section>
-    </structure>
-    <folders>
-        <name>one-column</name>
-        <name>one-image</name>
-    </folders>
+	<title>Simple</title>
+	<summary>A very basic layout with one large text area and a floating,
+		right block.</summary>
+	<thumbnail>simple.png</thumbnail>
+	<style>page.css</style>
+	<folders>
+		<name>one-column</name>
+		<name>one-image</name>
+	</folders>
+	<structure>
+		<section>
+			<name>header1</name>
+			<type>header</type>
+		</section>
+		<section>
+			<name>text1</name>
+			<type>text</type>
+		</section>
+		<section>
+			<name>block1</name>
+			<type>block</type>
+			<width>300</width>
+			<height>300</height>
+		</section>
+	</structure>
 </template>

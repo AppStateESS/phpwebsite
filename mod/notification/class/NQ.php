@@ -1,8 +1,8 @@
 <?php
 
-core\Core::initModClass('notification', 'SimpleNotification.php');
-core\Core::initModClass('notification', 'NotificationQueue.php');
-core\Core::initModClass('notification', 'Notification.php');
+PHPWS_Core::initModClass('notification', 'SimpleNotification.php');
+PHPWS_Core::initModClass('notification', 'NotificationQueue.php');
+PHPWS_Core::initModClass('notification', 'Notification.php');
 
 class NQ
 {

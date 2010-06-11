@@ -1,5 +1,5 @@
 <?php
-namespace core;
+
 /**
  * Creates a session to hold module settings.
  * Prevents modules from having to load their config tables
@@ -9,17 +9,17 @@ namespace core;
  * @version $Id$
  */
 
-class Settings {
+class PHPWS_Settings {
 
     /**
      * Returns the value of a setting or false if not set
      */
     public static function get($module, $setting=null)
     {
-        if (empty($setting) && Settings::is_set($module)) {
-            return $GLOBALS['Settings'][$module];
-        } elseif (Settings::is_set($module, $setting)) {
-            return $GLOBALS['Settings'][$module][$setting];
+        if (empty($setting) && PHPWS_Settings::is_set($module)) {
+            return $GLOBALS['PHPWS_Settings'][$module];
+        } elseif (PHPWS_Settings::is_set($module, $setting)) {
+            return $GLOBALS['PHPWS_Settings'][$module][$setting];
         } else {
             return null;
         }
@@ -33,18 +33,18 @@ class Settings {
      */
     public static function is_set($module, $setting=null)
     {
-        if (!isset($GLOBALS['Settings'][$module])) {
-            $result = Settings::load($module);
-            if (Error::isError($result)) {
-                Error::log($result);
+        if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
+            $result = PHPWS_Settings::load($module);
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 return false;
             }
         }
 
-        if (is_array($GLOBALS['Settings'][$module])) {
+        if (is_array($GLOBALS['PHPWS_Settings'][$module])) {
             if (empty($setting)) {
                 return true;
-            } elseif (isset($GLOBALS['Settings'][$module][$setting])) {
+            } elseif (isset($GLOBALS['PHPWS_Settings'][$module][$setting])) {
                 return true;
             } else {
                 return false;
@@ -56,10 +56,10 @@ class Settings {
 
     public static function in_array($module, $setting, $value)
     {
-        if (!Settings::is_set($module, $setting)) {
+        if (!PHPWS_Settings::is_set($module, $setting)) {
             return false;
         }
-        return in_array($value, $GLOBALS['Settings'][$module][$setting]);
+        return in_array($value, $GLOBALS['PHPWS_Settings'][$module][$setting]);
     }
 
     /**
@@ -73,12 +73,12 @@ class Settings {
 
         if (is_array($setting)) {
             foreach ($setting as $key => $subval) {
-                Settings::set($module, $key, $subval);
+                PHPWS_Settings::set($module, $key, $subval);
             }
             return true;
         }
 
-        $GLOBALS['Settings'][$module][$setting] = $value;
+        $GLOBALS['PHPWS_Settings'][$module][$setting] = $value;
         return true;
     }
 
@@ -90,18 +90,18 @@ class Settings {
     {
         if (is_array($setting)) {
             foreach ($setting as $key => $subval) {
-                $result = Settings::append($module, $key, $subval);
+                $result = PHPWS_Settings::append($module, $key, $subval);
                 if (!$result) {
                     return false;
                 }
             }
             return true;
-        } elseif ( isset($GLOBALS['Settings'][$module][$setting]) &&
-        !is_array($GLOBALS['Settings'][$module][$setting])) {
+        } elseif ( isset($GLOBALS['PHPWS_Settings'][$module][$setting]) &&
+        !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
             return false;
         }
 
-        $GLOBALS['Settings'][$module][$setting][] = $value;
+        $GLOBALS['PHPWS_Settings'][$module][$setting][] = $value;
         return true;
     }
 
@@ -111,23 +111,23 @@ class Settings {
      */
     public static function save($module)
     {
-        if (!Settings::is_set($module)) {
+        if (!PHPWS_Settings::is_set($module)) {
             return false;
         }
 
-        $db = new DB('mod_settings');
+        $db = new PHPWS_DB('mod_settings');
 
         $db->addWhere('module', $module);
-        $db->addWhere('setting_name', array_keys($GLOBALS['Settings'][$module]));
+        $db->addWhere('setting_name', array_keys($GLOBALS['PHPWS_Settings'][$module]));
         $db->delete();
         $db->reset();
 
-        foreach ($GLOBALS['Settings'][$module] as $key => $value) {
+        foreach ($GLOBALS['PHPWS_Settings'][$module] as $key => $value) {
             if (empty($key)) {
                 continue;
             }
 
-            $type = Settings::getType($value);
+            $type = PHPWS_Settings::getType($value);
             $db->addValue('module', $module);
             $db->addValue('setting_name', $key);
             $db->addValue('setting_type', $type);
@@ -149,15 +149,15 @@ class Settings {
                     break;
             }
             $result = $db->insert();
-            if (Error::isError($result)) {
-                unset($GLOBALS['Settings'][$module]);
-                Settings::load($module);
+            if (PHPWS_Error::isError($result)) {
+                unset($GLOBALS['PHPWS_Settings'][$module]);
+                PHPWS_Settings::load($module);
                 return $result;
             }
             $db->reset();
         }
-        unset($GLOBALS['Settings'][$module]);
-        Settings::load($module);
+        unset($GLOBALS['PHPWS_Settings'][$module]);
+        PHPWS_Settings::load($module);
     }
 
     public static function loadConfig($module)
@@ -173,16 +173,16 @@ class Settings {
 
     public static function reset($module, $value)
     {
-        $default = Settings::loadConfig($module);
+        $default = PHPWS_Settings::loadConfig($module);
         if (!$default) {
-            return Error::get(SETTINGS_MISSING_FILE, 'core', 'Settings::reset', $module);
+            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::reset', $module);
         }
 
         include $default;
 
         if (isset($settings[$value])) {
-            Settings::set($module, $value, $settings[$value]);
-            $result = Settings::save($module);
+            PHPWS_Settings::set($module, $value, $settings[$value]);
+            $result = PHPWS_Settings::save($module);
             return true;
         } else {
             return false;
@@ -195,23 +195,23 @@ class Settings {
      */
     public static function load($module)
     {
-        $default = Settings::loadConfig($module);
+        $default = PHPWS_Settings::loadConfig($module);
         if (!$default) {
-            $GLOBALS['Settings'][$module] = 1;
-            return Error::get(SETTINGS_MISSING_FILE, 'core', 'Settings::load', $module);
+            $GLOBALS['PHPWS_Settings'][$module] = 1;
+            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
         }
 
         include $default;
-        Settings::set($module, $settings);
+        PHPWS_Settings::set($module, $settings);
 
-        $db = new DB('mod_settings');
+        $db = new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         $result = $db->select();
 
-        if (Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         } elseif (empty($result)) {
-            Settings::save($module);
+            PHPWS_Settings::save($module);
         } else {
             foreach ($result as $key => $value) {
                 switch ($value['setting_type']) {
@@ -229,7 +229,7 @@ class Settings {
                         break;
                 }
 
-                Settings::set($module, $value['setting_name'], $setval);
+                PHPWS_Settings::set($module, $value['setting_name'], $setval);
             }
         }
         return true;
@@ -254,7 +254,7 @@ class Settings {
             case 'double':
             case 'string':
                 if (strpos($value, '.') === false && is_numeric($value)) {
-                    return Settings::getType((int)$value);
+                    return PHPWS_Settings::getType((int)$value);
                 }
                 if (strlen($value) < 100) {
                     return 3;
@@ -278,7 +278,7 @@ class Settings {
      */
     public static function unregister($module)
     {
-        $db = new DB('mod_settings');
+        $db = new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         return $db->delete();
     }
@@ -288,11 +288,9 @@ class Settings {
      */
     public static function clear()
     {
-        unset($GLOBALS['Settings']);
+        unset($GLOBALS['PHPWS_Settings']);
     }
 
 }
-
-class PHPWS_Settings extends Settings {}
 
 ?>

@@ -47,55 +47,55 @@ class vPath_Forms {
     public function editSettings()
     {
 
-        $form = new \core\Form('vpath_settings');
+        $form = new PHPWS_Form('vpath_settings');
         $form->addHidden('module', 'vpath');
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('enable_path', 1);
-        $form->setMatch('enable_path', \core\Settings::get('vpath', 'enable_path'));
+        $form->setMatch('enable_path', PHPWS_Settings::get('vpath', 'enable_path'));
         $form->setLabel('enable_path', dgettext('vpath', 'Enable vpath'));
 
         $form->addCheckbox('show_on_home', 1);
-        $form->setMatch('show_on_home', \core\Settings::get('vpath', 'show_on_home'));
+        $form->setMatch('show_on_home', PHPWS_Settings::get('vpath', 'show_on_home'));
         $form->setLabel('show_on_home', dgettext('vpath', 'Display path on home'));
 
-        $db = new \core\DB('menus');
+        $db = new PHPWS_DB('menus');
         $db->addOrder('title asc');
         $result = $db->select();
         foreach ($result as $menu) {
             $menus[$menu['id']] = $menu['title'];
         }
         $form->addSelect('menu_id', $menus);
-        $form->setMatch('menu_id', \core\Settings::get('vpath', 'menu_id'));
+        $form->setMatch('menu_id', PHPWS_Settings::get('vpath', 'menu_id'));
         $form->setLabel('menu_id', dgettext('vpath', 'Menu to follow'));
 
         require(PHPWS_SOURCE_DIR . 'mod/vpath/inc/dividers.php');
         $form->addSelect('divider', $vpath_dividers);
-        $form->setMatch('divider', \core\Settings::get('vpath', 'divider'));
+        $form->setMatch('divider', PHPWS_Settings::get('vpath', 'divider'));
         $form->setLabel('divider', dgettext('vpath', 'Divider'));
 
         $form->addCheckbox('divider_space', 1);
-        $form->setMatch('divider_space', \core\Settings::get('vpath', 'divider_space'));
+        $form->setMatch('divider_space', PHPWS_Settings::get('vpath', 'divider_space'));
         $form->setLabel('divider_space', dgettext('vpath', 'Use space around divider'));
 
-        $form->addText('path_prefix', \core\Settings::get('vpath', 'path_prefix'));
+        $form->addText('path_prefix', PHPWS_Settings::get('vpath', 'path_prefix'));
         $form->setSize('path_prefix', 30);
         $form->setLabel('path_prefix', dgettext('vpath', 'Text before the path, eg. You are here:'));
 
-        $form->addText('path_suffix', \core\Settings::get('vpath', 'path_suffix'));
+        $form->addText('path_suffix', PHPWS_Settings::get('vpath', 'path_suffix'));
         $form->setSize('path_suffix', 30);
         $form->setLabel('path_suffix', dgettext('vpath', 'Text after the path'));
 
         $form->addCheckbox('link_current', 1);
-        $form->setMatch('link_current', \core\Settings::get('vpath', 'link_current'));
+        $form->setMatch('link_current', PHPWS_Settings::get('vpath', 'link_current'));
         $form->setLabel('link_current', dgettext('vpath', 'Make current location (end of path) clickable'));
 
         $form->addCheckbox('show_sub_menu', 1);
-        $form->setMatch('show_sub_menu', \core\Settings::get('vpath', 'show_sub_menu'));
+        $form->setMatch('show_sub_menu', PHPWS_Settings::get('vpath', 'show_sub_menu'));
         $form->setLabel('show_sub_menu', dgettext('vpath', 'Display sub menu for current location'));
 
         $form->addCheckbox('show_peer_menu', 1);
-        $form->setMatch('show_peer_menu', \core\Settings::get('vpath', 'show_peer_menu'));
+        $form->setMatch('show_peer_menu', PHPWS_Settings::get('vpath', 'show_peer_menu'));
         $form->setLabel('show_peer_menu', dgettext('vpath', 'Display peer menu if current location has no subs'));
 
         $form->addSubmit('save', dgettext('vpath', 'Save settings'));
@@ -104,7 +104,7 @@ class vPath_Forms {
         $tpl['GENERAL_LABEL'] = dgettext('vpath', 'General Settings');
 
         $this->vpath->title = dgettext('vpath', 'Settings');
-        $this->vpath->content = \core\Template::process($tpl, 'vpath', 'edit_settings.tpl');
+        $this->vpath->content = PHPWS_Template::process($tpl, 'vpath', 'edit_settings.tpl');
     }
 
 
@@ -125,7 +125,7 @@ class vPath_Forms {
         $tpl['DONATE'] = sprintf(dgettext('vpath', 'If you would like to help out with the ongoing development of vpath, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window).'), '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donations%40verdon%2eca&item_name=vPath%20Module%20Development&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8" target="new">', '</a>');
 
         $this->vpath->title = dgettext('vpath', 'Read me');
-        $this->vpath->content = \core\Template::process($tpl, 'vpath', 'info.tpl');
+        $this->vpath->content = PHPWS_Template::process($tpl, 'vpath', 'info.tpl');
     }
 
 

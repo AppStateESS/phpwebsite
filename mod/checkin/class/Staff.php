@@ -35,7 +35,7 @@ class Checkin_Staff {
 
     public function init()
     {
-        $db = new \core\DB('checkin_staff');
+        $db = new PHPWS_DB('checkin_staff');
         $db->addJoin('left', 'checkin_staff', 'users', 'user_id', 'id');
         $db->addColumn('users.display_name');
         $db->addColumn('*');
@@ -44,7 +44,7 @@ class Checkin_Staff {
 
     public function loadReasons($include_summary=false)
     {
-        $db = new \core\DB('checkin_reasons');
+        $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('checkin_rtos.staff_id', $this->id);
         $db->addWhere('id', 'checkin_rtos.reason_id');
         $db->addColumn('id');
@@ -55,7 +55,7 @@ class Checkin_Staff {
 
         $result = $db->select('col');
 
-        if (!core\Error::logIfError($result)) {
+        if (!PHPWS_Error::logIfError($result)) {
             $this->_reasons = & $result;
         }
     }
@@ -170,12 +170,12 @@ class Checkin_Staff {
         }
         $vars['staff_id'] = $this->id;
         $vars['aop'] = 'edit_staff';
-        $links[] = \core\Text::secureLink(core\Icon::show('edit'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'checkin', $vars);
 
         $vars['aop'] = 'move_up';
-        $links[] = \core\Text::secureLink(core\Icon::show('up'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('up'), 'checkin', $vars);
         $vars['aop'] = 'move_down';
-        $links[] = \core\Text::secureLink(core\Icon::show('down'), 'checkin', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('down'), 'checkin', $vars);
 
         $tpl['VIEW_ORDER'] = $this->view_order;
         $tpl['ACTION'] = implode('', $links);
@@ -184,7 +184,7 @@ class Checkin_Staff {
 
     public function save($new=false)
     {
-        $db = new \core\DB('checkin_staff');
+        $db = new PHPWS_DB('checkin_staff');
 
         if (!$this->id) {
             $db->addColumn('view_order', 'max');
@@ -193,13 +193,13 @@ class Checkin_Staff {
             $db->reset();
         }
 
-        return !core\Error::logIfError($db->saveObject($this));
+        return !PHPWS_Error::logIfError($db->saveObject($this));
     }
 
     public function saveReasons()
     {
         // Save reason assignments
-        $db = new \core\DB('checkin_rtos');
+        $db = new PHPWS_DB('checkin_rtos');
         $db->addWhere('staff_id', $this->id);
         $db->delete();
         if ($this->filter_type == CO_FT_REASON) {
@@ -207,7 +207,7 @@ class Checkin_Staff {
                 $db->reset();
                 $db->addValue('staff_id', $this->id);
                 $db->addValue('reason_id', $rid);
-                \core\Error::logIfError($db->insert());
+                PHPWS_Error::logIfError($db->insert());
             }
         }
     }

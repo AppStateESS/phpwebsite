@@ -41,22 +41,18 @@ MDB2/Manager/mysql.php
 ---------------------------
 pass-by-references removed
 
-MDB2.php
----------------------------
-errorMessage mad public static
-
 
 DB.php
 ---------------------------
 functions made static:
  connect
- parseDSN
-
+ parseDSN 
+ 
 
 File.php
 ---------------------------
 Made public static:
- _File
+ _File 
  closeAll
 
 PEAR.php
@@ -69,12 +65,3 @@ Functions made public static:
 HTTP/Upload.php
 HTTP_Upload_Error::raiseError - made compatible with PEAR::raiseError
 HTTP_Upload_File::isError - changed name of function is "hasError"
-
-XML/Parser.php
----------------------------
-Removed php4 constructor
-Made raiseError duplicate PEAR version
-
-XML/Util.php
----------------------------
-isValidName made public static

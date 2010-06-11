@@ -26,7 +26,7 @@
 function my_page()
 {
 
-    \core\Core::initModClass('rolodex', 'RDX_Mypage.php');
+    PHPWS_Core::initModClass('rolodex', 'RDX_Mypage.php');
     $content = Rolodex_Mypage::main();
 
     return $content;

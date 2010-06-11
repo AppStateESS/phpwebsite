@@ -7,8 +7,8 @@
 
 function related_uninstall(&$content)
 {
-    \core\DB::dropTable('related_friends');
-    \core\DB::dropTable('related_main');
+    PHPWS_DB::dropTable('related_friends');
+    PHPWS_DB::dropTable('related_main');
     $content[] = dgettext('related', 'Related tables removed.');
     return true;
 }

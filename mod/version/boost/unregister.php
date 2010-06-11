@@ -26,7 +26,7 @@ function version_unregister($module, &$content)
             continue;
         }
 
-        $table_name = \core\DB::extractTableName($sql);
+        $table_name = PHPWS_DB::extractTableName($sql);
 
         if (empty($table_name)) {
             continue;
@@ -35,13 +35,13 @@ function version_unregister($module, &$content)
         $version_table = $table_name . '_version';
         $version_table_seq = $version_table . '_seq';
 
-        if (!core\DB::isTable($version_table)) {
+        if (!PHPWS_DB::isTable($version_table)) {
             continue;
         }
 
-        $result = \core\DB::dropTable($version_table);
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        $result = PHPWS_DB::dropTable($version_table);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
             $content[] = dgettext('version', 'There was an error removing a version table.');
         } else {
             $content[] = sprintf(dgettext('version', 'Version table removed: %s'), $version_table);

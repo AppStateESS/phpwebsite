@@ -49,32 +49,32 @@ class UNI_Div extends UNI_Element {
 
         $tpl['LABEL'] = $this->getTitle();
 
-        return \core\Template::processTemplate($tpl, 'vlist', 'elements/view_div.tpl');
+        return PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/view_div.tpl');
     }
 
 
     function edit()
     {
-        $elements[0] =  \core\Form::formHidden('module', 'vlist') . 
-                        \core\Form::formHidden('aop', 'post_element') . 
-                        \core\Form::formHidden('type', 'Div') ;
+        $elements[0] =  PHPWS_Form::formHidden('module', 'vlist') . 
+                        PHPWS_Form::formHidden('aop', 'post_element') . 
+                        PHPWS_Form::formHidden('type', 'Div') ;
         if ($this->id) {
-            $elements[0] .=  \core\Form::formHidden('id', $this->id) ;
+            $elements[0] .=  PHPWS_Form::formHidden('id', $this->id) ;
         }
 
         $tpl['LABEL_LABEL'] = dgettext('vlist', 'Label/name');
-        $tpl['LABEL_INPUT'] = \core\Form::formTextField('label', $this->getTitle(), UNI_DEFAULT_SIZE, UNI_DEFAULT_MAXSIZE);
+        $tpl['LABEL_INPUT'] = PHPWS_Form::formTextField('label', $this->getTitle(), UNI_DEFAULT_SIZE, UNI_DEFAULT_MAXSIZE);
 
         $tpl['ACTIVE_LABEL'] = dgettext('vlist', 'Active');
-        $tpl['ACTIVE_INPUT'] = \core\Form::formCheckBox('active', 1, $this->active);
+        $tpl['ACTIVE_INPUT'] = PHPWS_Form::formCheckBox('active', 1, $this->active);
         $tpl['SORT_LABEL'] = dgettext('vlist', 'Sort order');
-        $tpl['SORT_INPUT'] = \core\Form::formTextField('sort', $this->sort, 5, 3);
+        $tpl['SORT_INPUT'] = PHPWS_Form::formTextField('sort', $this->sort, 5, 3);
 
-        $tpl['NEXT_BUTTON'] = \core\Form::formSubmit(dgettext('vlist', 'Save Div Field'));
+        $tpl['NEXT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('vlist', 'Save Div Field'));
 
-        $elements[0] .= \core\Template::processTemplate($tpl, 'vlist', 'elements/edit_div.tpl');
+        $elements[0] .= PHPWS_Template::processTemplate($tpl, 'vlist', 'elements/edit_div.tpl');
 
-        return \core\Form::makeForm('UNI_Div_edit', 'index.php', $elements, 'post', null, null);
+        return PHPWS_Form::makeForm('UNI_Div_edit', 'index.php', $elements, 'post', null, null);
     }
 
 

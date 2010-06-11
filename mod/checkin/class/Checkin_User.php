@@ -5,12 +5,12 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-core\Core::initModClass('checkin', 'Checkin.php');
+PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
 class Checkin_User extends Checkin {
 
     public function checkinForm() {
-        $form = new \core\Form('checkin');
+        $form = new PHPWS_Form('checkin');
         $form->addHidden('module', 'checkin');
         $form->addHidden('uop', 'post_checkin');
 
@@ -36,8 +36,8 @@ class Checkin_User extends Checkin {
 
         $tpl = $form->getTemplate();
         $this->title =  dgettext('checkin', 'Please check in using the form below');
-        $this->content = \core\Template::process($tpl, 'checkin', 'signin.tpl');
-        if (!Current_User::isLogged() && \core\Settings::get('checkin', 'collapse_signin')) {
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'signin.tpl');
+        if (!Current_User::isLogged() && PHPWS_Settings::get('checkin', 'collapse_signin')) {
             Layout::collapse();
         }
     }
@@ -53,7 +53,7 @@ class Checkin_User extends Checkin {
 
         $tpl['CONTENT'] = & $this->content;
 
-        return \core\Template::process($tpl, 'checkin', 'main.tpl');
+        return PHPWS_Template::process($tpl, 'checkin', 'main.tpl');
     }
 
     public function process($command=null)
@@ -82,10 +82,10 @@ class Checkin_User extends Checkin {
 
             case 'post_checkin':
                 if ($this->postCheckin()) {
-                    if (core\Error::logIfError($this->visitor->save())) {
-                        \core\Core::reroute('index.php?module=checkin&uop=error');
+                    if (PHPWS_Error::logIfError($this->visitor->save())) {
+                        PHPWS_Core::reroute('index.php?module=checkin&uop=error');
                     } else {
-                        \core\Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
+                        PHPWS_Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
                     }
                 } else {
                     $this->checkinForm();
@@ -93,7 +93,7 @@ class Checkin_User extends Checkin {
                 break;
 
             default:
-                \core\Core::errorPage('404');
+                PHPWS_Core::errorPage('404');
         }
         Layout::add($this->main());
     }

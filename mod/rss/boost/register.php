@@ -7,7 +7,7 @@
 
 function rss_register($module, &$content)
 {
-    \core\Core::initModClass('rss', 'RSS.php');
+    PHPWS_Core::initModClass('rss', 'RSS.php');
     return RSS::registerModule($module, $content);
 }
 

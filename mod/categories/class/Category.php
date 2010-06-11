@@ -7,7 +7,7 @@
  * @package categories
  */
 
-core\Core::configRequireOnce('categories', 'config.php');
+PHPWS_Core::configRequireOnce('categories', 'config.php');
 
 class Category {
     public $id          = NULL;
@@ -31,16 +31,16 @@ class Category {
 
         $this->setId($id);
         $result = $this->init();
-        if (core\Error::isError($result)) {
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)) {
+            PHPWS_Error::log($result);
         }
     }
 
     public function init()
     {
-        $db = new \core\DB('categories');
+        $db = new PHPWS_DB('categories');
         $result = $db->loadObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -69,12 +69,12 @@ class Category {
 
     public function setDescription($description)
     {
-        $this->description = \core\Text::parseInput($description);
+        $this->description = PHPWS_Text::parseInput($description);
     }
 
     public function getDescription()
     {
-        return \core\Text::parseOutput($this->description);
+        return PHPWS_Text::parseOutput($this->description);
     }
 
     public function setParent($parent)
@@ -120,7 +120,7 @@ class Category {
 
     public function getIcon()
     {
-        \core\Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return Cabinet::getTag($this->icon);
     }
 
@@ -130,7 +130,7 @@ class Category {
             return;
         }
 
-        $db = new \core\DB('categories');
+        $db = new PHPWS_DB('categories');
         $db->addWhere('parent', $this->id);
         $db->addOrder('title');
         $result = $db->getObjects('Category');
@@ -144,7 +144,7 @@ class Category {
 
     public function save()
     {
-        $db = new \core\DB('categories');
+        $db = new PHPWS_DB('categories');
         $result = $db->saveObject($this);
         return $result;
     }
@@ -154,7 +154,7 @@ class Category {
         if (empty($this->id)) {
             return FALSE;
         }
-        $db = new \core\DB('categories');
+        $db = new PHPWS_DB('categories');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
@@ -169,9 +169,9 @@ class Category {
             $vars['action']  = 'view';
             $vars['id']      = $this->id;
             $vars['ref_mod'] = $module;
-            return \core\Text::moduleLink($label, 'categories', $vars);
+            return PHPWS_Text::moduleLink($label, 'categories', $vars);
         } else {
-            return \core\Text::rewriteLink($label, 'categories', array('id'=>$this->id));
+            return PHPWS_Text::rewriteLink($label, 'categories', array('id'=>$this->id));
         }
     }
 
@@ -202,18 +202,18 @@ class Category {
         $vars['category_id'] = $this->getId();
 
         $vars['subaction'] = 'edit';
-        $links[] = \core\Text::secureLink(core\Icon::show('edit'), 'categories', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'categories', $vars);
 
         if (Current_User::allow('categories', 'delete_categories')) {
             if (javascriptEnabled()) {
                 $js_vars['QUESTION'] = dgettext('categories', 'Are you sure you want to delete this category?');
                 $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' .
                 $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
-                $js_vars['LINK']     = \core\Icon::show('delete');
+                $js_vars['LINK']     = Icon::show('delete');
                 $links[] = Layout::getJavascript('confirm', $js_vars);
             } else {
                 $vars['subaction'] = 'delete';
-                $links[] = \core\Text::secureLink(core\Icon::show('delete'), 'categories', $vars);
+                $links[] = PHPWS_Text::secureLink(Icon::show('delete'), 'categories', $vars);
             }
         }
 

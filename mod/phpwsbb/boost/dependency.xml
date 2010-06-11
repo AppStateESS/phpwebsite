@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<!DOCTYPE dependency PUBLIC "-//phpwebsite//dependency structure//EN" "http://phpwebsite.appstate.edu/dependency.dtd">
 <dependency>
-    <module>
-        <title>comments</title>
-        <properName>Comments</properName>
-        <version>1.2.4</version>
-        <url>http://phpwebsite.appstate.edu/comments</url>
-    </module>
+	<module>
+		<title>comments</title>
+		<properName>Comments</properName>
+		<version>1.2.4</version>
+		<url>http://phpwebsite.appstate.edu/comments</url>
+	</module>
 </dependency>

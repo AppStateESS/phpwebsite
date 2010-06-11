@@ -12,13 +12,13 @@ class My_Page {
         $auth = Current_User::getAuthorization();
 
         if (!Current_User::isLogged() || !$auth->local_user ) {
-            \core\Core::errorPage('403');
+            PHPWS_Core::errorPage('403');
         }
 
         $result = $this->init();
 
-        if (core\Error::isError($result)){
-            \core\Error::log($result);
+        if (PHPWS_Error::isError($result)){
+            PHPWS_Error::log($result);
             Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'The is a problem with My Page.')));
             return;
         } elseif (!$result) {
@@ -37,7 +37,7 @@ class My_Page {
 
         $content = My_Page::userOption($module);
 
-        if (core\Error::isError($content)) {
+        if (PHPWS_Error::isError($content)) {
             $panel->setContent($content->getMessage());
         } else {
             $panel->setContent($content);
@@ -47,11 +47,12 @@ class My_Page {
 
     public function init()
     {
-                $db = new \core\DB('users_my_page_mods');
+        PHPWS_Core::initCoreClass('Module.php');
+        $db = new PHPWS_DB('users_my_page_mods');
         $db->addColumn('mod_title');
         $result = $db->select('col');
 
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -72,7 +73,7 @@ class My_Page {
 
     public function cpanel()
     {
-        \core\Core::initModClass('controlpanel', 'Panel.php');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=user';
 
         foreach ($this->modules as $module){
@@ -95,13 +96,13 @@ class My_Page {
         $final_file = $directory . 'inc/my_page.php';
 
         if (!is_file($final_file)){
-            \core\Error::log(PHPWS_FILE_NOT_FOUND, 'users', 'userOption', $final_file);
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'users', 'userOption', $final_file);
             return dgettext('users', 'There was a problem with this module\'s My Page file.');
         }
 
         include $final_file;
         if (!function_exists('my_page')) {
-            return \core\Error::get(USER_MISSING_MY_PAGE, 'users', 'My_Page::userOption', $module_title);
+            return PHPWS_Error::get(USER_MISSING_MY_PAGE, 'users', 'My_Page::userOption', $module_title);
         }
 
         $content = my_page();
@@ -115,20 +116,20 @@ class My_Page {
             return FALSE;
         }
 
-        $db = new \core\DB('users_my_page_mods');
+        $db = new PHPWS_DB('users_my_page_mods');
         $db->addValue('mod_title', $mod_title);
         return $db->insert();
     }
 
     public static function unregisterMyPage($mod_title)
     {
-        $db = new \core\DB('users_my_page_mods');
+        $db = new PHPWS_DB('users_my_page_mods');
         $db->addWhere('mod_title', $mod_title);
         return $db->delete();
     }
 
 
-    public static function addHidden(core\Form $form, $module)
+    public static function addHidden(PHPWS_Form $form, $module)
     {
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');

@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-core\Core::requireConfig('miniadmin');
+PHPWS_Core::requireConfig('miniadmin');
 
 if (!defined('MINIADMIN_TEMPLATE')) {
     define('MINIADMIN_TEMPLATE', 'mini_admin.tpl');
@@ -29,13 +29,13 @@ class MiniAdmin {
 
     public static function get()
     {
-        $modlist = \core\Core::getModuleNames();
+        $modlist = PHPWS_Core::getModuleNames();
 
         if (!isset($GLOBALS['MiniAdmin'])) {
             return NULL;
         }
 
-        $oTpl = new \core\Template('miniadmin');
+        $oTpl = new PHPWS_Template('miniadmin');
         $oTpl->setFile(MINIADMIN_TEMPLATE);
 
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
@@ -49,7 +49,7 @@ class MiniAdmin {
             foreach ($links['links'] as $link) {
                 $oTpl->setCurrentBlock('links');
                 $oTpl->setData(array('LINE_MODULE' => $modlist[$module],
-                                     'ADMIN_LINK' => \core\Text::fixAmpersand($link)));
+                                     'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
                 $oTpl->parseCurrentBlock();
             }
             $oTpl->setCurrentBlock('module');

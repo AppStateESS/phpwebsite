@@ -15,7 +15,7 @@ if (!Current_User::authorized('block')) {
     return;
 }
 
-core\Core::initModClass('block', 'Block_Admin.php');
+PHPWS_Core::initModClass('block', 'Block_Admin.php');
 Block_Admin::action();
 
 ?>

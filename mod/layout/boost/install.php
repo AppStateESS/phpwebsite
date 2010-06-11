@@ -20,7 +20,7 @@ function layout_install(&$content, $branchInstall=FALSE)
     $default_theme = 'simple';
 
     if (!isset($error)) {
-        $db = new \core\DB('layout_config');
+        $db = new PHPWS_DB('layout_config');
         $db->addValue('default_theme', trim($default_theme));
         $db->addValue('page_title', $page_title);
         $db->update();

@@ -20,7 +20,7 @@ class CP_Action {
                 if (!empty($_POST['title'])) {
                     $tab = new PHPWS_Panel_Tab($_POST['tab_id']);
                     $tab->setTitle($_POST['title']);
-                    \core\Error::logIfError($tab->save());
+                    PHPWS_Error::logIfError($tab->save());
                     $content = javascript('close_refresh');
                     break;
                 }
@@ -39,7 +39,7 @@ class CP_Action {
                     $link = new PHPWS_Panel_Link($_POST['link_id']);
                     $link->setLabel($_POST['label']);
                     $link->setDescription($_POST['description']);
-                    \core\Error::logIfError($link->save());
+                    PHPWS_Error::logIfError($link->save());
                     unset($_SESSION['CP_All_links']);
                     $content = javascript('close_refresh');
                     break;
@@ -89,7 +89,7 @@ class CP_Action {
 
         $template['TITLE'] = dgettext('controlpanel', 'Control Panel Administration');
         $template['CONTENT'] = $content;
-        $final = \core\Template::process($template, 'controlpanel', 'main.tpl');
+        $final = PHPWS_Template::process($template, 'controlpanel', 'main.tpl');
 
         Layout::add(PHPWS_ControlPanel::display($final));
     }
@@ -100,7 +100,7 @@ class CP_Action {
         $tabs = PHPWS_ControlPanel::getAllTabs();
         $links = PHPWS_ControlPanel::getAllLinks();
 
-        $tpl = new \core\Template('controlpanel');
+        $tpl = new PHPWS_Template('controlpanel');
         $tpl->setFile('panelList.tpl');
 
         $tvalues['module'] = $lvalues['module'] = 'controlpanel';
@@ -108,13 +108,13 @@ class CP_Action {
 
         $up_tab_command = dgettext('controlpanel', 'Move tab order up');
         $down_tab_command = dgettext('controlpanel', 'Move tab order down');
-        $up_tab = \core\Icon::show('sort-up', $up_tab_command);
-        $down_tab = \core\Icon::show('sort-down', $down_tab_command);
+        $up_tab = Icon::show('sort-up', $up_tab_command);
+        $down_tab = Icon::show('sort-down', $down_tab_command);
 
         $up_link_command = dgettext('controlpanel', 'Move link order up');
         $down_link_command = dgettext('controlpanel', 'Move link order down');
-        $up_link = \core\Icon::show('sort-up', $up_link_command);
-        $down_link = \core\Icon::show('sort-down', $down_link_command);
+        $up_link = Icon::show('sort-up', $up_link_command);
+        $down_link = Icon::show('sort-down', $down_link_command);
 
         if (count($tabs) > 1)
         $move_tabs = TRUE;
@@ -134,14 +134,14 @@ class CP_Action {
                     if ($move_links){
                         $lvalues['link_id'] = $link_obj->id;
                         $lvalues['command'] = 'link_up';
-                        $laction[] = \core\Text::moduleLink($up_link, 'controlpanel', $lvalues);
+                        $laction[] = PHPWS_Text::moduleLink($up_link, 'controlpanel', $lvalues);
 
                         $lvalues['command'] = 'link_down';
-                        $laction[] = \core\Text::moduleLink($down_link, 'controlpanel', $lvalues);
+                        $laction[] = PHPWS_Text::moduleLink($down_link, 'controlpanel', $lvalues);
                     }
 
                     $lvalues['command'] = 'edit_link';
-                    $jslink['address'] = \core\Text::linkAddress('controlpanel', $lvalues);
+                    $jslink['address'] = PHPWS_Text::linkAddress('controlpanel', $lvalues);
                     $jslink['label'] = dgettext('controlpanel', 'Edit');
                     $jslink['width'] = 360;
                     $jslink['height'] = 350;
@@ -157,14 +157,14 @@ class CP_Action {
             if ($move_tabs){
                 $tvalues['tab_id'] = $tab_obj->id;
                 $tvalues['command'] = 'tab_up';
-                $taction[] = \core\Text::secureLink($up_tab, 'controlpanel', $tvalues);
+                $taction[] = PHPWS_Text::secureLink($up_tab, 'controlpanel', $tvalues);
 
                 $tvalues['command'] = 'tab_down';
-                $taction[] = \core\Text::secureLink($down_tab, 'controlpanel', $tvalues);
+                $taction[] = PHPWS_Text::secureLink($down_tab, 'controlpanel', $tvalues);
             }
 
             $tvalues['command'] = 'edit_tab_title';
-            $jstab['address'] = \core\Text::linkAddress('controlpanel', $tvalues);
+            $jstab['address'] = PHPWS_Text::linkAddress('controlpanel', $tvalues);
             $jstab['label'] = dgettext('controlpanel', 'Edit');
             $jstab['width'] = 260;
             $jstab['height'] = 180;
@@ -184,7 +184,7 @@ class CP_Action {
         if (!$tab->id) {
             return false;
         }
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'controlpanel');
         $form->addHidden('command', 'post_tab');
         $form->addHidden('action', 'admin');
@@ -198,7 +198,7 @@ class CP_Action {
 
         $tpl['CLOSE'] = javascript('close_window');
         $tpl['FORM_TITLE'] = dgettext('controlpanel', 'Edit tab');
-        return \core\Template::process($tpl, 'controlpanel', 'tab_form.tpl');
+        return PHPWS_Template::process($tpl, 'controlpanel', 'tab_form.tpl');
     }
 
     public function editLink($link)
@@ -206,7 +206,7 @@ class CP_Action {
         if (!$link->id) {
             return false;
         }
-        $form = new \core\Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'controlpanel');
         $form->addHidden('command', 'post_link');
         $form->addHidden('action', 'admin');
@@ -223,7 +223,7 @@ class CP_Action {
 
         $tpl['CLOSE'] = javascript('close_window');
         $tpl['FORM_TITLE'] = dgettext('controlpanel', 'Edit link');
-        return \core\Template::process($tpl, 'controlpanel', 'link_form.tpl');
+        return PHPWS_Template::process($tpl, 'controlpanel', 'link_form.tpl');
     }
 }
 

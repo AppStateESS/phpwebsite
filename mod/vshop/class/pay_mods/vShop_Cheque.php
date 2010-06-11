@@ -43,7 +43,7 @@ class vShop_Cheque {
 
 
     public function form () {
-        $form = new \core\Form('vshop_payment');
+        $form = new PHPWS_Form('vshop_payment');
         $form->addSubmit(dgettext('vshop', 'Confirm & Finish'));
         $form->addHidden('module', 'vshop');
         $form->addHidden('order_id', $this->_orderID);

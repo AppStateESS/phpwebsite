@@ -1,6 +1,6 @@
 <?php
-core\Core::initModClass('phpwsbb', 'Topic.php');
-core\Core::initModClass('phpwsbb', 'Forum.php');
+PHPWS_Core::initModClass('phpwsbb', 'Topic.php');
+PHPWS_Core::initModClass('phpwsbb', 'Forum.php');
 
 /**
  * This class controls the display of all editing forms.
@@ -23,9 +23,9 @@ class PHPWSBB_Forms
      */
     public function edit_configuration ()
     {
-        $form = new \core\Form('Config');
+        $form = new PHPWS_Form('Config');
         $form->setAction('index.php?module=phpwsbb&op=config');
-        $val = \core\Settings::get('phpwsbb');
+        $val = PHPWS_Settings::get('phpwsbb');
 
         /* Section Headers */
         $tags['ANON_HEADER'] = dgettext('phpwsbb', 'Anonymous Users');
@@ -87,7 +87,7 @@ class PHPWSBB_Forms
         $form->mergeTemplate($tags);
         $form->addhidden('module', 'phpwsbb');
 
-        return \core\Template::processTemplate($form->getTemplate(),'phpwsbb','config.tpl');
+        return PHPWS_Template::processTemplate($form->getTemplate(),'phpwsbb','config.tpl');
     }
 
 
@@ -108,7 +108,7 @@ class PHPWSBB_Forms
         if (empty($forums))
         return dgettext('phpwsbb', 'There are no available Forums');
 
-        $form = new \core\Form('forum_list');
+        $form = new PHPWS_Form('forum_list');
         $form->addHidden('module', 'phpwsbb');
         $form->addHidden('op', 'move_topic');
         $form->addHidden('popup', $popup);
@@ -148,7 +148,7 @@ class PHPWSBB_Forms
         $form->addTplTag('CLOSE_WINDOW', sprintf('<a href="%s">%s</a>', $url, dgettext('phpwsbb', 'Back to "%s"')));
 
         $template = $form->getTemplate();
-        return \core\Template::process($template, 'phpwsbb', 'assign_forum.tpl');
+        return PHPWS_Template::process($template, 'phpwsbb', 'assign_forum.tpl');
     }
 
 
@@ -166,12 +166,12 @@ class PHPWSBB_Forms
     public function show_dialog($address, $title, $question, $approve = 'Yes', $disapprove = 'No')
     {
         Layout::addPageTitle($title);
-        $form = new \core\Form('confirmation_dialog');
+        $form = new PHPWS_Form('confirmation_dialog');
         $form->setAction($address);
        	$form->addTplTag('QUESTION', $question);
         $form->addSubmit('yes', $approve);
         $form->addSubmit('no', $disapprove);
-        return \core\Template::process($form->getTemplate(), 'phpwsbb', 'confirmation_dialog.tpl');
+        return PHPWS_Template::process($form->getTemplate(), 'phpwsbb', 'confirmation_dialog.tpl');
     }
 
     /**
@@ -192,7 +192,7 @@ class PHPWSBB_Forms
         $c_item = new Comment_Item($comment_ids[0]);
         $oldthread = new Comment_Thread($c_item->getThreadId());
 
-        $form = new \core\Form('forum_list');
+        $form = new PHPWS_Form('forum_list');
         $form->addhidden('module', 'phpwsbb');
         $form->addhidden('op', 'move_comments');
         $form->addhidden('oldthread', $oldthread->id);
@@ -210,7 +210,7 @@ class PHPWSBB_Forms
         $form->addSubmit(dgettext('phpwsbb', 'Move Comments'));
 
         $template = $form->getTemplate();
-        return \core\Template::process($template, 'phpwsbb', 'move_comments.tpl');
+        return PHPWS_Template::process($template, 'phpwsbb', 'move_comments.tpl');
     }
 
     /**
@@ -231,7 +231,7 @@ class PHPWSBB_Forms
         $c_item = new Comment_Item($comment_ids[0]);
         $thread = new Comment_Thread($c_item->getThreadId());
 
-        $form = new \core\Form('forum_list');
+        $form = new PHPWS_Form('forum_list');
         $form->addhidden('module', 'phpwsbb');
         $form->addhidden('op', 'split_comments');
         $form->addhidden('oldthread', $thread->id);
@@ -260,7 +260,7 @@ class PHPWSBB_Forms
         $form->addSubmit(dgettext('phpwsbb', 'Split Comments'));
 
         $template = $form->getTemplate();
-        return \core\Template::process($template, 'phpwsbb', 'split_comments.tpl');
+        return PHPWS_Template::process($template, 'phpwsbb', 'split_comments.tpl');
     }
 
 }

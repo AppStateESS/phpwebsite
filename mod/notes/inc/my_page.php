@@ -7,7 +7,7 @@
 
 function my_page()
 {
-    \core\Core::initModClass('notes', 'My_Page.php');
+    PHPWS_Core::initModClass('notes', 'My_Page.php');
     $my_page = new Notes_My_Page;
     $result = $my_page->main();
 

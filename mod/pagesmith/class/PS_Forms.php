@@ -28,16 +28,16 @@ class PS_Forms {
 
     public function loadTemplates()
     {
-        \core\Core::initModClass('pagesmith', 'PS_Template.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
         if (!empty($this->tpl_list)) {
             return true;
         }
 
         $tpl_dir = $this->ps->pageTplDir();
-        $templates = \core\File::listDirectories($tpl_dir);
+        $templates = PHPWS_File::listDirectories($tpl_dir);
 
         if (empty($templates)) {
-            \core\Error::log(PS_TPL_DIR, 'pagesmith', 'PS_Forms::loadTemplates', $tpl_dir);
+            PHPWS_Error::log(PS_TPL_DIR, 'pagesmith', 'PS_Forms::loadTemplates', $tpl_dir);
             return false;
         }
 
@@ -69,7 +69,7 @@ class PS_Forms {
             }
         }
 
-        $form = new \core\Form('pagesmith');
+        $form = new PHPWS_Form('pagesmith');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_page');
         $form->addHidden('tpl', $page->template);
@@ -107,11 +107,11 @@ class PS_Forms {
         javascriptMod('pagesmith', 'pagetitle', $jsvars);
 
         if (!empty($page->_orphans)) {
-            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', \core\Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
+            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', PHPWS_Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
 
-        $this->ps->content = \core\Template::process($tpl, 'pagesmith', 'page_form.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'page_form.tpl');
     }
 
     private function listOrphans($orphans)
@@ -138,7 +138,7 @@ class PS_Forms {
                     $empty_content = empty($orf['type_id']);
                     break;
             }
-            \core\Core::plugObject($sec, $orf);
+            PHPWS_Core::plugObject($sec, $orf);
 
             if ($empty_content) {
                 $row['CONTENT'] = sprintf('<em>%s</em>', dgettext('pagesmith', 'Empty content. Consider deletion.'));
@@ -152,7 +152,7 @@ class PS_Forms {
             $tpl['orphan-list'][] = $row;
         }
 
-        return \core\Template::process($tpl, 'pagesmith', 'orphans.tpl');
+        return PHPWS_Template::process($tpl, 'pagesmith', 'orphans.tpl');
     }
 
     public function editPageHeader()
@@ -161,7 +161,7 @@ class PS_Forms {
         $pid = $_GET['id'];
 
         $content = @$_SESSION['PS_Page'][$pid][$section_name];
-        $form = new \core\Form('edit');
+        $form = new PHPWS_Form('edit');
         $form->addHidden('pid', $pid);
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
@@ -175,7 +175,7 @@ class PS_Forms {
 
         $tpl['CANCEL'] = javascript('close_window');
         $this->ps->title = dgettext('pagesmith', 'Edit header');
-        $this->ps->content = \core\Template::process($tpl, 'pagesmith', 'edit_header.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'edit_header.tpl');
     }
 
     public function editPageText()
@@ -183,7 +183,7 @@ class PS_Forms {
         $section_name = $_GET['section'];
         $pid = $_GET['id'];
         $content = @$_SESSION['PS_Page'][$pid][$section_name];
-        $form = new \core\Form('edit');
+        $form = new PHPWS_Form('edit');
         $form->addHidden('pid', $pid);
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
@@ -197,18 +197,19 @@ class PS_Forms {
         $tpl = $form->getTemplate();
         $tpl['CANCEL'] = javascript('close_window');
         $this->ps->title = dgettext('pagesmith', 'Edit text');
-        $this->ps->content = \core\Template::process($tpl, 'pagesmith', 'edit_text.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'edit_text.tpl');
     }
 
 
     public function pageList()
     {
         Layout::addStyle('pagesmith');
-                \core\Core::initModClass('pagesmith', 'PS_Page.php');
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
 
         $pgtags['ACTION_LABEL']  = dgettext('pagesmith', 'Action');
 
-        $pager = new \core\DBPager('ps_page', 'PS_Page');
+        $pager = new DBPager('ps_page', 'PS_Page');
         $pager->cacheQueries();
         $pager->addPageTags($pgtags);
         $pager->setModule('pagesmith');
@@ -227,7 +228,7 @@ class PS_Forms {
     }
 
 
-    public function pageTemplateForm(core\Form $form)
+    public function pageTemplateForm(PHPWS_Form $form)
     {
         $page = $this->ps->page;
 
@@ -270,7 +271,7 @@ class PS_Forms {
             if ($edit_button) {
                 $vars['section'] = $name;
                 $js['label']   = PS_EDIT;
-                $js['address'] = \core\Text::linkAddress('pagesmith', $vars, 1);
+                $js['address'] = PHPWS_Text::linkAddress('pagesmith', $vars, 1);
                 $tpl[$name . '_edit'] = javascript('open_window', $js);
             }
         }
@@ -283,7 +284,7 @@ class PS_Forms {
             $tpl['page_title'] = $page->title;
         }
 
-        $pg_tpl =  \core\Template::process($tpl, 'pagesmith', $template_file);
+        $pg_tpl =  PHPWS_Template::process($tpl, 'pagesmith', $template_file);
 
         $form->addTplTag('PAGE_TEMPLATE', $pg_tpl);
     }
@@ -307,8 +308,8 @@ class PS_Forms {
             $tpl['page-templates'][] = $pgtpl->pickTpl($this->ps->page->parent_page);
         }
 
-        $tpl['BACK'] = \core\Text::secureLink(dgettext('pagesmith', 'Back to style selection'), 'pagesmith', array('aop'=>'menu', 'tab'=>'new'));
-        $this->ps->content = \core\Template::process($tpl, 'pagesmith', 'pick_template.tpl');
+        $tpl['BACK'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Back to style selection'), 'pagesmith', array('aop'=>'menu', 'tab'=>'new'));
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_template.tpl');
     }
 
     public function pickFolder()
@@ -334,50 +335,50 @@ class PS_Forms {
             if (!$image) {
                 $image = 'folder_contents.png';
             }
-            $link = \core\Text::linkAddress('pagesmith', $vars, true);
+            $link = PHPWS_Text::linkAddress('pagesmith', $vars, true);
             $tpl['folders'][] = array('TITLE' => ucwords(str_replace('-', '&nbsp;', $name)),
                                       'IMAGE' => sprintf('<a href="%s"><img src="%smod/pagesmith/img/folder_icons/%s" /></a>', $link, PHPWS_SOURCE_HTTP, $image),
                                       'COUNT' => sprintf(dngettext('pagesmith', '%s template', '%s templates', $count), $count));
         }
 
         $this->ps->title = dgettext('pagesmith', 'Choose a style');
-        $this->ps->content = \core\Template::process($tpl, 'pagesmith', 'pick_folder.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_folder.tpl');
     }
 
     public function settings()
     {
-        $form = new \core\Form('ps-settings');
+        $form = new PHPWS_Form('ps-settings');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_settings');
         $form->addSubmit(dgettext('pagesmith', 'Save'));
 
         $form->addCheck('auto_link', 1);
-        $form->setMatch('auto_link', \core\Settings::get('pagesmith', 'auto_link'));
+        $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
         $form->setLabel('auto_link', dgettext('pagesmith', 'Add menu link for new pages.'));
         
         $form->addCheck('back_to_top', 1);
-        $form->setMatch('back_to_top', \core\Settings::get('pagesmith', 'back_to_top'));
+        $form->setMatch('back_to_top', PHPWS_Settings::get('pagesmith', 'back_to_top'));
         $form->setLabel('back_to_top', dgettext('pagesmith', 'Add "Back to top" links at page bottom.'));
         
 
         $vars['aop'] = 'shorten_links';
-        $form->addTplTag('SHORTEN_MENU_LINKS', \core\Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', $vars));
+        $form->addTplTag('SHORTEN_MENU_LINKS', PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', $vars));
         $form->addTplTag('SHORT_EXAMPLE', 'index.php?module=pagesmith&uop=view_page&id=2 => pagesmith/2');
 
         $vars['aop'] = 'lengthen_links';
-        $form->addTplTag('LENGTHEN_MENU_LINKS',  \core\Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', $vars));
+        $form->addTplTag('LENGTHEN_MENU_LINKS',  PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', $vars));
         $form->addTplTag('LENGTH_EXAMPLE', 'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');
 
 
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
-        $this->ps->content = \core\Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
+        $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
     }
 
     public function uploadTemplates()
     {
         javascript('jquery');
         javascriptMod('pagesmith', 'confirm_delete',
-        array('address'=>core\Text::linkAddress('pagesmith', array('aop'=>'delete_template'), true, false, false)));
+        array('address'=>PHPWS_Text::linkAddress('pagesmith', array('aop'=>'delete_template'), true, false, false)));
 
         $this->ps->title = dgettext('pagesmith', 'Upload template');
 
@@ -389,8 +390,8 @@ class PS_Forms {
             return;
         }
 
-        $dirs = \core\File::listDirectories($template_dir);
-        $sdirs = \core\File::listDirectories($source_dir);
+        $dirs = PHPWS_File::listDirectories($template_dir);
+        $sdirs = PHPWS_File::listDirectories($source_dir);
 
         $fdirs = array_diff($dirs, $sdirs);
 
@@ -402,7 +403,7 @@ class PS_Forms {
         }
 
 
-        $form = new \core\Form('upload-templates');
+        $form = new PHPWS_Form('upload-templates');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_templates');
         $form->addText('template_name', @$_POST['template_name']);
@@ -431,7 +432,7 @@ class PS_Forms {
 
         $template = $form->getTemplate();
 
-        $this->ps->content = \core\Template::process($template, 'pagesmith', 'upload_template.tpl');
+        $this->ps->content = PHPWS_Template::process($template, 'pagesmith', 'upload_template.tpl');
     }
 }
 

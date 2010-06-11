@@ -43,9 +43,9 @@ class Signup_Peep {
 
     public function init()
     {
-        $db = new \core\DB('signup_peeps');
+        $db = new PHPWS_DB('signup_peeps');
         $result = $db->loadObject($this);
-        if (core\Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $this->_error = $result;
         } elseif (!$result) {
             $this->id = 0;
@@ -81,13 +81,13 @@ class Signup_Peep {
 
     public function save()
     {
-        $db = new \core\DB('signup_peeps');
+        $db = new PHPWS_DB('signup_peeps');
         return $db->saveObject($this);
     }
 
     public function delete()
     {
-        $db = new \core\DB('signup_peeps');
+        $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('id', $this->id);
         $db->delete();
     }
@@ -105,17 +105,17 @@ class Signup_Peep {
 
     public function getExtra1()
     {
-        return \core\Text::parseOutput($this->extra1);
+        return PHPWS_Text::parseOutput($this->extra1);
     }
 
     public function getExtra2()
     {
-        return \core\Text::parseOutput($this->extra2);
+        return PHPWS_Text::parseOutput($this->extra2);
     }
 
     public function getExtra3()
     {
-        return \core\Text::parseOutput($this->extra3);
+        return PHPWS_Text::parseOutput($this->extra3);
     }
 
     public function setExtra1($extra)
@@ -135,7 +135,7 @@ class Signup_Peep {
 
     public function setExtraX($extra, &$key)
     {
-        $key = \core\Text::parseInput(trim(strip_tags($extra)));
+        $key = PHPWS_Text::parseInput(trim(strip_tags($extra)));
     }
 }
 

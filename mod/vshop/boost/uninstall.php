@@ -24,10 +24,10 @@
 
 function vshop_uninstall(&$content) {
 
-    \core\DB::dropTable('vshop_depts');
-    \core\DB::dropTable('vshop_items');
-    \core\DB::dropTable('vshop_taxes');
-    \core\DB::dropTable('vshop_orders');
+    PHPWS_DB::dropTable('vshop_depts');
+    PHPWS_DB::dropTable('vshop_items');
+    PHPWS_DB::dropTable('vshop_taxes');
+    PHPWS_DB::dropTable('vshop_orders');
     $content[] = dgettext('vshop', 'vShop tables dropped.');
 
     return true;

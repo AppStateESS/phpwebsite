@@ -105,9 +105,9 @@ function podcaster_update(&$content, $currentVersion)
 
 
         case version_compare($currentVersion, '1.0.5', '<'):
-            $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/podcaster/boost/sql_update_105.sql');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/podcaster/boost/sql_update_105.sql');
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = '+ Unable to import new iTunes categories table.';
                 return false;
             } else {
@@ -129,9 +129,9 @@ function podcaster_update(&$content, $currentVersion)
 
 
         case version_compare($currentVersion, '1.1.0', '<'):
-            $result = \core\DB::importFile(PHPWS_SOURCE_DIR . 'mod/podcaster/boost/sql_update_110.sql');
-            if (core\Error::isError($result)) {
-                \core\Error::log($result);
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/podcaster/boost/sql_update_110.sql');
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
                 $content[] = '+ Unable to upgrade the channel table.';
                 return false;
             } else {
@@ -149,7 +149,7 @@ function podcaster_update(&$content, $currentVersion)
                            'templates/info.tpl'
                            );
                 podcasterUpdateFiles($files, $content);
-                \core\Core::initModClass('filecabinet', 'Cabinet.php');
+                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
                 if (Cabinet::convertImagesToFileAssoc('podcaster_channel', 'image_id')) {
                     $content[] = '--- Converted channel images to new File Cabinet format.';
                 } else {
@@ -177,7 +177,7 @@ function podcaster_update(&$content, $currentVersion)
 + Fixed a bug in episode delete
 + Fixed a bug in channel delete
 + Implemented short urls for episodes (if mod_rewrite is true)
-+ Implimented \core\Text::rewriteLink() for episode view links
++ Implimented PHPWS_Text::rewriteLink() for episode view links
   now that it handles multiple vars
 
 </pre>';
@@ -208,17 +208,17 @@ It has been replaced with mod/podcaster/inc/runtime.php
 
             /* update channel keys */
             $error = false;
-            \core\Core::initModClass('podcaster', 'PCR_Channel.php');
-            $db = new \core\DB('podcaster_channel');
+            PHPWS_Core::initModClass('podcaster', 'PCR_Channel.php');
+            $db = new PHPWS_DB('podcaster_channel');
             $channels = $db->getObjects('Podcaster_Channel');
-            if (core\Error::isError($channels)) {
-                \core\Error::log($channels);
+            if (PHPWS_Error::isError($channels)) {
+                PHPWS_Error::log($channels);
                 $error = true;
             }
             foreach ($channels as $channel) {
                 $result = $channel->saveKey();
-                if (core\Error::isError($result)) {
-                    \core\Error::log($result);
+                if (PHPWS_Error::isError($result)) {
+                    PHPWS_Error::log($result);
                     $error = true;
                 }
             }
@@ -231,17 +231,17 @@ Please save each channel to force an update of the key file.';
 
             /* update episode keys */
             $error = false;
-            \core\Core::initModClass('podcaster', 'PCR_Episode.php');
-            $db = new \core\DB('podcaster_episode');
+            PHPWS_Core::initModClass('podcaster', 'PCR_Episode.php');
+            $db = new PHPWS_DB('podcaster_episode');
             $episodes = $db->getObjects('Podcaster_Episode');
-            if (core\Error::isError($episodes)) {
-                \core\Error::log($episodes);
+            if (PHPWS_Error::isError($episodes)) {
+                PHPWS_Error::log($episodes);
                 $error = true;
             }
             foreach ($episodes as $episode) {
                 $result = $episode->saveKey();
-                if (core\Error::isError($result)) {
-                    \core\Error::log($result);
+                if (PHPWS_Error::isError($result)) {
+                    PHPWS_Error::log($result);
                     $error = true;
                 }
             }
