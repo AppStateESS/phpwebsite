@@ -102,10 +102,12 @@ class Checkin_Admin extends Checkin {
                         PHPWS_Error::logIfError($db->update());
                         printf('staff_id %s, visitor_id %s', $_GET['staff_id'], $_GET['visitor_id']);
                         $this->loadStaff($staff_id);
+                        /*
                         if ($this->staff->status == 3) {
                             $this->staff->status = 0;
                             $this->staff->save();
                         }
+                        */
                     }
                 }
                 exit();
