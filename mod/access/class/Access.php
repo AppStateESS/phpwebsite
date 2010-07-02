@@ -585,7 +585,7 @@ class Access {
         return;
     }
 
-    public function comparePermissions($permission_array, $ip)
+    public static function comparePermissions($permission_array, $ip)
     {
         if (empty($permission_array)) {
             return false;
