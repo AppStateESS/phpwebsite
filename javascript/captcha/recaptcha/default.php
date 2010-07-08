@@ -5,7 +5,7 @@
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  */
 
-require_once('recaptchalib.php'); // The ReCaptcha library supplied by rechaptcha.net
+require_once(PHPWS_SOURCE_DIR . 'javascript/captcha/recaptcha/recaptchalib.php'); // The ReCaptcha library supplied by rechaptcha.net
 
 // Check for recaptcha_settings.php, show an error if it doesn't exist
 $settings_file = PHPWS_SOURCE_DIR . 'javascript/captcha/recaptcha/recaptcha_settings.php';

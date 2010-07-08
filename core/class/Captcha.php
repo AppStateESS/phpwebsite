@@ -16,7 +16,7 @@ class Captcha {
     {
         $dirname = 'captcha/' . CAPTCHA_NAME . '/';
 
-        if (is_dir('javascript/' . $dirname)) {
+        if (is_dir(PHPWS_SOURCE_DIR . 'javascript/' . $dirname)) {
             return javascript($dirname);
         } else {
             return null;
@@ -25,7 +25,7 @@ class Captcha {
 
     public function verify($return_value=false)
     {
-        $file = 'javascript/captcha/' . CAPTCHA_NAME . '/verify.php';
+        $file = PHPWS_SOURCE_DIR . 'javascript/captcha/' . CAPTCHA_NAME . '/verify.php';
 
         if (!is_file($file)) {
             return true;
