@@ -45,7 +45,7 @@ class PHAT_Checkbox extends PHAT_Element {
         if($this->isRequired())
         $viewTags['REQUIRED_FLAG'] = '&#42;';
 
-        $viewTags['BLURB'] = $this->getBlurb();
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
         $viewTags['CHECK_BOXES'] = '';
 
         $optionText = $this->getOptionText();
