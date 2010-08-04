@@ -10,11 +10,11 @@
  */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
-	define('PHPWS_SOURCE_DIR', str_replace('core/class', '', dirname(__FILE__)));
+    define('PHPWS_SOURCE_DIR', str_replace('core/class', '', dirname(__FILE__)));
 }
 
 if (!defined('PHPWS_SOURCE_HTTP')) {
-	define('PHPWS_SOURCE_HTTP', './');
+    define('PHPWS_SOURCE_HTTP', './');
 }
 
 /**
@@ -24,21 +24,20 @@ if (!defined('PHPWS_SOURCE_HTTP')) {
  * check tries to prevent a redeclaration.
  **/
 if (!defined('DB_ALLOW_TABLE_INDEX')) {
-	require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
+    require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
 }
 require_once PHPWS_SOURCE_DIR . 'core/conf/language.php';
 
 if (defined('DATE_SET_SERVER_TIME_ZONE')) {
-	date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+    date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
 }
 
-
 if (!defined('PHPWS_HOME_DIR')) {
-	define('PHPWS_HOME_DIR', './');
+    define('PHPWS_HOME_DIR', './');
 }
 
 if (!defined('IGNORE_BROWSER_LANGUAGE')) {
-	define('IGNORE_BROWSER_LANGUAGE', false);
+    define('IGNORE_BROWSER_LANGUAGE', false);
 }
 initializei18n();
 loadBrowserInformation();
@@ -52,15 +51,15 @@ define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 function __autoload($class_name)
 {
-	if (preg_match('/\W/', $class_name)) {
-		return;
-	}
-	$class_name = str_replace('PHPWS_', '', $class_name);
+    if (preg_match('/\W/', $class_name)) {
+        return;
+    }
+    $class_name = str_replace('PHPWS_', '', $class_name);
 
-	$class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
-	if (is_file($class_file)) {
-		require_once $class_file;
-	}
+    $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
+    if (is_file($class_file)) {
+        require_once $class_file;
+    }
 }
 
 PHPWS_Core::initCoreClass('Database.php');
@@ -75,76 +74,76 @@ PHPWS_Core::initCoreClass('Security.php');
 PHPWS_Core::initCoreClass('Icon.php');
 
 if (!defined('USE_ROOT_CONFIG')) {
-	define('USE_ROOT_CONFIG', FALSE);
+    define('USE_ROOT_CONFIG', FALSE);
 }
 
 function initializei18n()
 {
-	/* Initialize language settings */
-	if (DISABLE_TRANSLATION || !function_exists('bindtextdomain')) {
-		define('CURRENT_LANGUAGE', 'en_US');
-		define('PHPWS_TRANSLATION', FALSE);
+    /* Initialize language settings */
+    if (DISABLE_TRANSLATION || !function_exists('bindtextdomain')) {
+        define('CURRENT_LANGUAGE', 'en_US');
+        define('PHPWS_TRANSLATION', FALSE);
 
-		if (!function_exists('gettext')) {
-			function gettext($mod, $text) {
-				return $text;
-			}
-		}
+        if (!function_exists('gettext')) {
+            function gettext($mod, $text) {
+                return $text;
+            }
+        }
 
-		if (!function_exists('dgettext')) {
-			function dgettext($mod, $text) {
-				return $text;
-			}
-		}
+        if (!function_exists('dgettext')) {
+            function dgettext($mod, $text) {
+                return $text;
+            }
+        }
 
-		if (!function_exists('dngettext')) {
-			function dngettext($mod, $text) {
-				return $text;
-			}
-		}
+        if (!function_exists('dngettext')) {
+            function dngettext($mod, $text) {
+                return $text;
+            }
+        }
 
-		if (!function_exists('_')) {
-			function _($text) {
-				return $text;
-			}
-		}
-	} else {
-		define('PHPWS_TRANSLATION', TRUE);
-		initLanguage();
-		$core_locale = PHPWS_SOURCE_DIR . 'locale';
+        if (!function_exists('_')) {
+            function _($text) {
+                return $text;
+            }
+        }
+    } else {
+        define('PHPWS_TRANSLATION', TRUE);
+        initLanguage();
+        $core_locale = PHPWS_SOURCE_DIR . 'locale';
 
-		bindtextdomain('core', $core_locale);
-		textdomain('core');
+        bindtextdomain('core', $core_locale);
+        textdomain('core');
 
-		$handle = opendir(PHPWS_SOURCE_DIR . "mod/");
+        $handle = opendir(PHPWS_SOURCE_DIR . "mod/");
 
-		while ($mod_name = readdir($handle)) {
-			$localedir = sprintf('%smod/%s/locale/', PHPWS_SOURCE_DIR, $mod_name);
+        while ($mod_name = readdir($handle)) {
+            $localedir = sprintf('%smod/%s/locale/', PHPWS_SOURCE_DIR, $mod_name);
 
-			if (is_dir(PHPWS_SOURCE_DIR . 'mod/' . $mod_name)) {
-				if (file_exists($localedir) && $mod_name != "..") {
-					bindtextdomain($mod_name, $localedir);
-				}
-			}
-		}
-		closedir($handle);
-	}
+            if (is_dir(PHPWS_SOURCE_DIR . 'mod/' . $mod_name)) {
+                if (file_exists($localedir) && $mod_name != "..") {
+                    bindtextdomain($mod_name, $localedir);
+                }
+            }
+        }
+        closedir($handle);
+    }
 }
 
 function setLanguage($language)
 {
-	// putenv may cause problems with safe_mode.
-	// change USE_PUTENV in the language.php config file
-	if (USE_PUTENV) {
-		putenv("LANG=$language");
-		putenv("LANGUAGE=$language");
-	}
+    // putenv may cause problems with safe_mode.
+    // change USE_PUTENV in the language.php config file
+    if (USE_PUTENV) {
+        putenv("LANG=$language");
+        putenv("LANGUAGE=$language");
+    }
 
-	$versions[] = $language . '.UTF-8';
-	$versions[] = $language . '.UTF8';
-	$versions[] = $language;
+    $versions[] = $language . '.UTF-8';
+    $versions[] = $language . '.UTF8';
+    $versions[] = $language;
 
-	return setlocale(LC_ALL, $versions);
+    return setlocale(LC_ALL, $versions);
 }
 
 /**
@@ -154,123 +153,123 @@ function setLanguage($language)
  */
 function initLanguage()
 {
-	if (!defined('DEFAULT_LANGUAGE')) {
-		define('DEFAULT_LANGUAGE', 'en_US');
-	}
+    if (!defined('DEFAULT_LANGUAGE')) {
+        define('DEFAULT_LANGUAGE', 'en_US');
+    }
 
-	if (!defined('CORE_COOKIE_TIMEOUT')) {
-		define('CORE_COOKIE_TIMEOUT', 3600);
-	}
+    if (!defined('CORE_COOKIE_TIMEOUT')) {
+        define('CORE_COOKIE_TIMEOUT', 3600);
+    }
 
-	// Language will ignore user settings if FORCE_DEFAULT_LANGUAGE is true
-	// See language.php configuration file
-	if (!FORCE_DEFAULT_LANGUAGE && isset($_COOKIE['phpws_default_language'])) {
-		$language = $_COOKIE['phpws_default_language'];
-		$locale = setLanguage($language);
+    // Language will ignore user settings if FORCE_DEFAULT_LANGUAGE is true
+    // See language.php configuration file
+    if (!FORCE_DEFAULT_LANGUAGE && isset($_COOKIE['phpws_default_language'])) {
+        $language = $_COOKIE['phpws_default_language'];
+        $locale = setLanguage($language);
 
-		if ($locale == FALSE) {
-			$locale = setLanguage(DEFAULT_LANGUAGE);
-		}
-		$locale = preg_replace('/\.utf8|\.utf-8/i', '', $locale);
-	} else {
-		$locale_found = FALSE;
+        if ($locale == FALSE) {
+            $locale = setLanguage(DEFAULT_LANGUAGE);
+        }
+        $locale = preg_replace('/\.utf8|\.utf-8/i', '', $locale);
+    } else {
+        $locale_found = FALSE;
 
-		if (!FORCE_DEFAULT_LANGUAGE && !IGNORE_BROWSER_LANGUAGE) {
-			$userLang = getBrowserLanguage();
-			foreach ($userLang as $language) {
-				if (strpos($language, '-')) {
-					$testslash =  explode('-', $language);
-					$test[0] = $testslash[0] . '_' . strtoupper($testslash[1]);
-				}
+        if (!FORCE_DEFAULT_LANGUAGE && !IGNORE_BROWSER_LANGUAGE) {
+            $userLang = getBrowserLanguage();
+            foreach ($userLang as $language) {
+                if (strpos($language, '-')) {
+                    $testslash =  explode('-', $language);
+                    $test[0] = $testslash[0] . '_' . strtoupper($testslash[1]);
+                }
 
-				$test[1] = $language;
-				$test[2] = substr($language, 0, 2);
-				$test[3] = $test[2] . '_' . strtoupper($test[2]);
+                $test[1] = $language;
+                $test[2] = substr($language, 0, 2);
+                $test[3] = $test[2] . '_' . strtoupper($test[2]);
 
-				foreach ($test as $langTest){
-					if (setLanguage($langTest)) {
-						$locale_found = TRUE;
-						$locale = $langTest;
-						setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
-						break;
-					}
-				}
+                foreach ($test as $langTest){
+                    if (setLanguage($langTest)) {
+                        $locale_found = TRUE;
+                        $locale = $langTest;
+                        setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
+                        break;
+                    }
+                }
 
-				if ($locale_found) {
-					break;
-				}
-			}
-		}
+                if ($locale_found) {
+                    break;
+                }
+            }
+        }
 
-		if ($locale_found == FALSE) {
-			$locale = setLanguage(DEFAULT_LANGUAGE);
-			setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
-		}
-	}
+        if ($locale_found == FALSE) {
+            $locale = setLanguage(DEFAULT_LANGUAGE);
+            setcookie('phpws_default_language', $locale, time() + CORE_COOKIE_TIMEOUT);
+        }
+    }
 
-	if ($locale != FALSE) {
-		define('CURRENT_LANGUAGE', $locale);
-	}
-	else {
-		define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
-	}
+    if ($locale != FALSE) {
+        define('CURRENT_LANGUAGE', $locale);
+    }
+    else {
+        define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
+    }
 
-	loadLanguageDefaults($locale);
+    loadLanguageDefaults($locale);
 }
 
 
 function loadBrowserInformation()
 {
-	if (!isset($_SERVER['HTTP_USER_AGENT'])) {
-		$GLOBALS['browser'] = NULL;
-		return;
-	}
+    if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+        $GLOBALS['browser'] = NULL;
+        return;
+    }
 
-	$agent = & $_SERVER['HTTP_USER_AGENT'];
+    $agent = & $_SERVER['HTTP_USER_AGENT'];
 
-	if (preg_match('/msie/i', $agent)) {
-		$browser = 'MSIE';
-	} elseif (preg_match('/firefox/i', $agent)) {
-		$browser = 'Firefox';
-	} elseif (preg_match('/opera/i', $agent)) {
-		$browser = 'Opera';
-	} elseif (preg_match('/safari/i', $agent)) {
-		$browser = 'Safari';
-	}
+    if (preg_match('/msie/i', $agent)) {
+        $browser = 'MSIE';
+    } elseif (preg_match('/firefox/i', $agent)) {
+        $browser = 'Firefox';
+    } elseif (preg_match('/opera/i', $agent)) {
+        $browser = 'Opera';
+    } elseif (preg_match('/safari/i', $agent)) {
+        $browser = 'Safari';
+    }
 
-	$GLOBALS['browser'] = & $browser;
+    $GLOBALS['browser'] = & $browser;
 }
 
 
 function getBrowserLanguage()
 {
-	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-		return explode(',', preg_replace("/(;q=\d\.*\d*)/", '', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
-	}
-	else {
-		return array(DEFAULT_LANGUAGE);
-	}
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        return explode(',', preg_replace("/(;q=\d\.*\d*)/", '', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+    }
+    else {
+        return array(DEFAULT_LANGUAGE);
+    }
 }
 
 
 function loadLanguageDefaults($language)
 {
-	$rootDir = PHPWS_SOURCE_DIR . 'core/conf/i18n/';
-	if (is_file($rootDir . $language . '.php')){
-		require_once $rootDir . $language . '.php';
-	} else {
-		$rootLanguage = explode('_', $language);
-		if (is_file($rootDir . $rootLanguage . '_default.php')) {
-			require_once $rootDir . $rootLanguage . '_default.php';
-		} else {
-			require_once $rootDir . 'default.php';
-		}
-	}
+    $rootDir = PHPWS_SOURCE_DIR . 'core/conf/i18n/';
+    if (is_file($rootDir . $language . '.php')){
+        require_once $rootDir . $language . '.php';
+    } else {
+        $rootLanguage = explode('_', $language);
+        if (is_file($rootDir . $rootLanguage . '_default.php')) {
+            require_once $rootDir . $rootLanguage . '_default.php';
+        } else {
+            require_once $rootDir . 'default.php';
+        }
+    }
 }
 
 function doubleLanguage($language)
 {
-	return $language . '_' . strtoupper($language);
+    return $language . '_' . strtoupper($language);
 }
 
 
@@ -279,8 +278,8 @@ function doubleLanguage($language)
  */
 function translateFile($filename)
 {
-	$language = str_ireplace('.utf-8', '', CURRENT_LANGUAGE);
-	return strtolower($language . '_' . $filename);
+    $language = str_ireplace('.utf-8', '', CURRENT_LANGUAGE);
+    return strtolower($language . '_' . $filename);
 }
 
 /**
@@ -294,11 +293,11 @@ function translateFile($filename)
  */
 function getBrowser()
 {
-	if (!isset($GLOBALS['browser'])) {
-		return NULL;
-	} else {
-		return $GLOBALS['browser'];
-	}
+    if (!isset($GLOBALS['browser'])) {
+        return NULL;
+    } else {
+        return $GLOBALS['browser'];
+    }
 }
 
 ?>
