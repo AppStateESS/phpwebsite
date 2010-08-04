@@ -54,7 +54,12 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         $theme = Layout::getThemeDir();
-        return sprintf('%stemplates/%s/', $theme, $module);
+        if (PHPWS_Settings::get('layout', 'use_hub_themes')) {
+            $root = PHPWS_SOURCE_DIR;
+        } else {
+            $root = PHPWS_HOME_DIR;
+        }
+        return sprintf('%s%stemplates/%s/', $root, $theme, $module);
     }
 
     public function setIgnoreCache($ignore=true)
