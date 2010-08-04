@@ -524,6 +524,7 @@ class PHPWS_File {
      */
     public static function scaleImage($source_dir, $dest_dir, $max_width, $max_height)
     {
+
         if (empty($max_width) || empty($max_height)) {
             return false;
         }
@@ -544,6 +545,7 @@ class PHPWS_File {
         $height    = & $size[1];
         $file_type = & $size['mime'];
 
+        // if image is already smaller than the limits, just copy it
         if ($width <= $max_width && $height <= $max_height) {
             if ($source_dir != $dest_dir) {
                 return @copy($source_dir, $dest_dir);
@@ -552,25 +554,17 @@ class PHPWS_File {
             }
         }
 
-        if ($width >= $height) {
-            $diff = $max_width / $width;
-            $new_width = $max_width;
-            $new_height = round($height * $diff);
-        }
-
-        if ($width < $height || $new_height > $max_height) {
+        if ($width < $max_width && $height > $max_height) {
             $diff = $max_height / $height;
-            $new_height = $max_height;
-            $new_width = round($width * $diff);
+        } elseif ($width > $max_width && $height < $max_height) {
+            $diff = $max_width / $width;
+        } elseif ($width >= $height) {
+            $diff = $max_height / $height;
+        } else {
+            $diff = $max_width / $width;
         }
-
-        // Leaving for testing
-        /*
-        printf('<hr>w=%s h=%s<br>mw=%s mh=%s<br>nw=%s nh=%s<hr>',
-        $width, $height, $max_width, $max_height,
-        $new_width, $new_height);
-        */
-
+        $new_width = round($width * $diff);
+        $new_height = round($height * $diff);
         $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
         $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
 
