@@ -554,17 +554,17 @@ class PHPWS_File {
             }
         }
 
-        if ($width < $max_width && $height > $max_height) {
-            $diff = $max_height / $height;
-        } elseif ($width > $max_width && $height < $max_height) {
-            $diff = $max_width / $width;
-        } elseif ($width >= $height) {
-            $diff = $max_height / $height;
-        } else {
-            $diff = $max_width / $width;
-        }
+        $diff = PHPWS_File::getDiff($width, $max_width, $height, $max_height);
+
+
         $new_width = round($width * $diff);
         $new_height = round($height * $diff);
+
+        if ($new_width > $max_width || $new_height > $max_height) {
+            $new_width = round($new_width * $diff);
+            $new_height = round($new_height * $diff);
+        }
+
         $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
         $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
 
@@ -584,6 +584,20 @@ class PHPWS_File {
         chmod($dest_dir, 0644);
         imagedestroy($resampled_image);
         return true;
+    }
+
+    private static function getDiff($w, $mw, $h, $mh)
+    {
+        if ($w < $mw && $h > $mh) {
+            $diff = $mh / $h;
+        } elseif ($w > $mw && $h < $mh) {
+            $diff = $mw / $w;
+        } elseif ($w >= $h) {
+            $diff = $mh / $h;
+        } else {
+            $diff = $mw / $w;
+        }
+        return $diff;
     }
 
     /**
