@@ -106,8 +106,7 @@ class Image extends Tag {
             trigger_error(dgettext('core', 'Src variable is empty'));
             return false;
         }
-
-        $dimen = @getimagesize($this->src);
+        $dimen = @getimagesize(str_replace(PHPWS_SOURCE_HTTP, PHPWS_SOURCE_DIR, $this->src));
         if (!is_array($dimen)) {
             trigger_error(sprintf(dgettext('core', '%s not found'), $this->src));
             $this->src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
