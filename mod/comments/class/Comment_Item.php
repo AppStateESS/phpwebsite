@@ -207,7 +207,7 @@ class Comment_Item {
     public function stampEditor()
     {
         $this->edit_author = Current_User::getDisplayName();
-        $this->edit_time = gmtime();
+        $this->edit_time = gmmktime();
     }
 
 
