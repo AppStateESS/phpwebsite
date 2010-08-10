@@ -588,7 +588,7 @@ class Comments {
         return;
     }
 
-    public function postComment($thread, Comment_Item $cm_item)
+    public static function postComment($thread, Comment_Item $cm_item)
     {
         if (!$thread->id) {
             $cm_item->_error = dgettext('comments', 'Unable to post to this thread.');
