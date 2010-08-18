@@ -6,6 +6,7 @@
 <p><strong>{MAX_DOCUMENT_SIZE_LABEL}</strong> {MAX_DOCUMENT_SIZE}</p>
 <p><strong>{MAX_PINNED_DOCUMENTS_LABEL}</strong>
 {MAX_PINNED_DOCUMENTS}</p>
+<p>{ALLOW_DIRECT_LINKS} <strong>{ALLOW_DIRECT_LINKS_LABEL}</strong></p>
 </fieldset>
 <fieldset><legend><strong>{IMAGE_SETTINGS}</strong></legend>
 <p>{CAPTION_IMAGES} <strong>{CAPTION_IMAGES_LABEL}</strong></p>

@@ -440,6 +440,10 @@ class Cabinet_Form {
         $form->setMatch('caption_images', PHPWS_Settings::get('filecabinet', 'caption_images'));
         $form->setLabel('caption_images', dgettext('filecabinet', 'Caption images'));
 
+        $form->addCheck('allow_direct_links', 1);
+        $form->setMatch('allow_direct_links', PHPWS_Settings::get('filecabinet', 'allow_direct_links'));
+        $form->setLabel('allow_direct_links', dgettext('filecabinet', 'Allow direct links to documents'));
+
         $form->addCheck('force_thumbnail_dimensions', 1);
         $form->setMatch('force_thumbnail_dimensions', PHPWS_Settings::get('filecabinet', 'force_thumbnail_dimensions'));
         $form->setLabel('force_thumbnail_dimensions', dgettext('filecabinet', 'Force thumbnail dimensions on display'));
@@ -753,6 +757,7 @@ If you are sure, type Y-E-S below.'),
         PHPWS_Settings::set('filecabinet', 'auto_link_parent', (int)isset($_POST['auto_link_parent']));
         PHPWS_Settings::set('filecabinet', 'caption_images', (int)isset($_POST['caption_images']));
         PHPWS_Settings::set('filecabinet', 'popup_image_navigation', (int)isset($_POST['popup_image_navigation']));
+        PHPWS_Settings::set('filecabinet', 'allow_direct_links', (int)isset($_POST['allow_direct_links']));
 
         if (empty($_POST['max_thumbnail_size'])) {
             PHPWS_Settings::set('filecabinet', 'max_thumbnail_size', 100);

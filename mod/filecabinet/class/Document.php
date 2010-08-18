@@ -150,11 +150,13 @@ class PHPWS_Document extends File_Common {
 
         $tpl['SIZE'] = $this->getSize(true);
 
-        $dpath = $this->getDownloadPath();
-        if ($dpath) {
-            $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath, $this->file_name);
-        } else {
-            $tpl['FILE_NAME'] = $this->file_name;
+        if (PHPWS_Settings::get('filecabinet', 'allow_direct_links')) {
+            $dpath = $this->getDownloadPath();
+            if ($dpath) {
+                $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath, $this->file_name);
+            } else {
+                $tpl['FILE_NAME'] = $this->file_name;
+            }
         }
 
         $tpl['ICON']      = $this->getViewLink(true, 'small_icon');
