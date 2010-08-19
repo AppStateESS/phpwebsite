@@ -15,7 +15,7 @@ if (PHPWS_Error::isError($config)){
 
 class PHPWS_Help{
 
-    function show_link($module, $help, $label=NULL){
+    public static function show_link($module, $help, $label=NULL){
         if (!isset($label)) {
             $label = DEFAULT_HELP_LABEL;
         }
@@ -28,7 +28,7 @@ class PHPWS_Help{
         return $result;
     }
 
-    function get($module, $help, $label=NULL)
+    public static function get($module, $help, $label=NULL)
     {
         if (!isset($label))
         $label = DEFAULT_HELP_LABEL;
@@ -41,7 +41,7 @@ class PHPWS_Help{
         return $result;
     }
 
-    function show_help(){
+    public static function show_help(){
         if (!isset($_REQUEST['helpMod'])){
             exit();
         }
