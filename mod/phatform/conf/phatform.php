@@ -56,6 +56,8 @@ define('PHAT_MAIL_CONTENT_TYPE', 'text/html');
 
 /* Set to false disables captcha on anonymous pages
  */
-define('PHATFORM_CAPTCHA', true);
+if (!defined('PHATFORM_CAPTCHA')) {
+    define('PHATFORM_CAPTCHA', true);
+}
 
 ?>
