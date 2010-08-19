@@ -1508,14 +1508,14 @@ class PHPWS_Form {
         return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
     }
 
-    public function formTextField($name, $value, $size=30, $maxsize=255, $label=null)
+    public static function formTextField($name, $value, $size=30, $maxsize=255, $label=null)
     {
         $element = new Form_Textfield($name, $value);
         $element->setSize($size, $maxsize);
         return $element->get();
     }
 
-    public function formTextArea ($name, $value=null, $rows=DFLT_ROWS, $cols=DFLT_COLS, $label=null)
+    public static function formTextArea ($name, $value=null, $rows=DFLT_ROWS, $cols=DFLT_COLS, $label=null)
     {
         $element = new Form_TextArea($name, $value);
         $element->setRows($rows);
@@ -1523,27 +1523,27 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    public function formFile($name)
+    public static function formFile($name)
     {
         $element = new Form_File($name);
         $element->get();
     }
 
 
-    public function formRadio($name, $value, $match=null, $match_diff=null, $label=null)
+    public static function formRadio($name, $value, $match=null, $match_diff=null, $label=null)
     {
         $element = new Form_RadioButton($name, $value);
         $element->setMatch($match);
         return $element->get() . ' ' . $label;
     }
 
-    public function formSubmit($value, $name=null, $class=null)
+    public static function formSubmit($value, $name=null, $class=null)
     {
         $element = new Form_Submit($name, $value);
         return $element->get();
     }
 
-    public function formSelect($name, $opt_array, $match = null, $ignore_index = false, $match_to_value = false, $onchange = null, $label = null)
+    public static function formSelect($name, $opt_array, $match = null, $ignore_index = false, $match_to_value = false, $onchange = null, $label = null)
     {
         $element = new Form_Select($name, $opt_array);
         $element->setMatch($match);
@@ -1553,7 +1553,7 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    public function formMultipleSelect($name, $opt_array, $match = null, $ignore_index = false, $match_to_value = false, $onchange = null, $label = null)
+    public static function formMultipleSelect($name, $opt_array, $match = null, $ignore_index = false, $match_to_value = false, $onchange = null, $label = null)
     {
         $element = new Form_Multiple($name, $opt_array);
         $element->setMatch($match);
@@ -1563,13 +1563,13 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    public function formHidden($name, $value=null)
+    public static function formHidden($name, $value=null)
     {
         $element = new Form_Hidden($name, $value);
         return $element->get();
     }
 
-    public function formCheckBox($name, $value = 1, $match = null, $match_diff = null, $label = null)
+    public static function formCheckBox($name, $value = 1, $match = null, $match_diff = null, $label = null)
     {
         $element = new Form_Checkbox($name, $value);
         $element->setMatch($match);
@@ -1577,7 +1577,7 @@ class PHPWS_Form {
     }
 
 
-    public function makeForm($name, $action, $elements, $method='post', $breaks=false, $file=false)
+    public static function makeForm($name, $action, $elements, $method='post', $breaks=false, $file=false)
     {
         return sprintf('<form name="%s" method="%s" action="%s">%s</form>',
         $name, $method, $action, implode("\n", $elements));

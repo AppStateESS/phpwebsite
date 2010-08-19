@@ -12,7 +12,7 @@ if (!defined('CAPTCHA_NAME')) {
 
 class Captcha {
 
-    public function get()
+    public static function get()
     {
         $dirname = 'captcha/' . CAPTCHA_NAME . '/';
 
@@ -23,7 +23,7 @@ class Captcha {
         }
     }
 
-    public function verify($return_value=false)
+    public static function verify($return_value=false)
     {
         $file = PHPWS_SOURCE_DIR . 'javascript/captcha/' . CAPTCHA_NAME . '/verify.php';
 
@@ -40,7 +40,7 @@ class Captcha {
         return verify($return_value);
     }
 
-    public function isGD()
+    public static function isGD()
     {
         return extension_loaded('gd');
     }
