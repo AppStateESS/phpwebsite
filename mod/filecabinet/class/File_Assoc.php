@@ -498,7 +498,7 @@ class FC_File_Assoc {
         return $db->saveObject($this);
     }
 
-    public function updateTag($file_type, $id, $tag)
+    public static function updateTag($file_type, $id, $tag)
     {
         $db = new PHPWS_DB('fc_file_assoc');
         $db->addWhere('ftype', (int)$file_type);

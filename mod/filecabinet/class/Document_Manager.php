@@ -154,7 +154,6 @@ class FC_Document_Manager {
     {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
-
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
@@ -163,7 +162,6 @@ class FC_Document_Manager {
             return dgettext('filecabinet', 'An error occurred when trying to save your document.');
         } elseif ($result) {
             $result = $this->document->save();
-
             if (PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));

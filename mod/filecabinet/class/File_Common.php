@@ -78,7 +78,7 @@ class File_Common {
             return $this->file_type;
         }
     }
-    
+
     public function setMaxSize($max_size)
     {
         $this->_max_size = (int)$max_size;
