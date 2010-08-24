@@ -21,7 +21,7 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 <p><br><div><span><blockquote><map><area>
 <th><tt><img><pre><hr><h1><h2><h3><h4><h5><h6>
 <fieldset><legend><code><em><iframe><embed>
-<object><sup><sub><param><strike><del>');
+<object><sup><sub><param><strike><del><script>');
 
 /***************** HTML ENCODING ********************************
  * Before any user text passed into parseInput and out of
@@ -115,33 +115,33 @@ define('COLLAPSE_LIMIT', 30);
 
 $censor = '*bleep*';
 $words = array(
-		   '[\s-\.]+cock\s'   =>$censor,
-		   'mother\s?fucker'=>$censor,
-		   'fuck'           =>$censor,
-		   'shit'           =>$censor,
-		   'asshole'        =>$censor,
-		   'cunt'           =>$censor,
-		   'nigger.*'       =>'... I am a racist idiot! ',
-		   'faggot.*'       =>'... I have issues with my sexuality! '
-		   );
+           '[\s-\.]+cock\s'   =>$censor,
+           'mother\s?fucker'=>$censor,
+           'fuck'           =>$censor,
+           'shit'           =>$censor,
+           'asshole'        =>$censor,
+           'cunt'           =>$censor,
+           'nigger.*'       =>'... I am a racist idiot! ',
+           'faggot.*'       =>'... I have issues with my sexuality! '
+           );
 
-		   define('ALLOW_PROFANITY', FALSE);
-		   define('PROFANE_WORDS', serialize($words));
-
-
-		   /**
-		    * These defines were originally in the bb filter itself. That would prevent
-		    * branches from setting their site as they wished.
-		    */
-
-		   // If TRUE, then 'smilies' will be parsed.
-		   define('ALLOW_BB_SMILIES', true);
-
-		   // If TRUE, users can post with the [img] tag
-		   define('ALLOW_BB_IMAGES', true);
-
-		   // Either "fieldset" or "blockquote"
-		   define('BBCODE_QUOTE_TYPE', 'fieldset');
+           define('ALLOW_PROFANITY', FALSE);
+           define('PROFANE_WORDS', serialize($words));
 
 
-		   ?>
+           /**
+            * These defines were originally in the bb filter itself. That would prevent
+            * branches from setting their site as they wished.
+            */
+
+           // If TRUE, then 'smilies' will be parsed.
+           define('ALLOW_BB_SMILIES', true);
+
+           // If TRUE, users can post with the [img] tag
+           define('ALLOW_BB_IMAGES', true);
+
+           // Either "fieldset" or "blockquote"
+           define('BBCODE_QUOTE_TYPE', 'fieldset');
+
+
+           ?>
