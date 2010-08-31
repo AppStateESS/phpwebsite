@@ -556,7 +556,6 @@ class PHPWS_File {
 
         $diff = PHPWS_File::getDiff($width, $max_width, $height, $max_height);
 
-
         $new_width = round($width * $diff);
         $new_height = round($height * $diff);
 
@@ -567,6 +566,7 @@ class PHPWS_File {
 
         $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
         $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
+
 
         imagecopyresampled($resampled_image,  $source_image,  0, 0, 0, 0,
         $new_width, $new_height, $width, $height);
@@ -593,9 +593,9 @@ class PHPWS_File {
         } elseif ($w > $mw && $h < $mh) {
             $diff = $mw / $w;
         } elseif ($w >= $h) {
-            $diff = $mh / $h;
-        } else {
             $diff = $mw / $w;
+        } else {
+            $diff = $mh / $h;
         }
         return $diff;
     }
@@ -610,7 +610,7 @@ class PHPWS_File {
     /**
      * Backward compatibility
      */
-    public function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=false) {
+    public static function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=false) {
         $source_dir = $directory . $fileName;
         $new_file   = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $fileName);
         $dest_dir   = $tndirectory . $new_file;
@@ -694,7 +694,7 @@ class PHPWS_File {
      * @param    int    $maxlen Maximun permited string length
      * @return   string Formatted file name
      */
-    public function nameToSafe($name, $maxlen=250)
+    public static function nameToSafe($name, $maxlen=250)
     {
         $noalpha = 'ÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÄËÏÖÜäëïöüÿÃãÕõÅåÑñÇç@°ºª';
         $alpha   = 'AEIOUYaeiouyAEIOUaeiouAEIOUaeiouAEIOUaeiouyAaOoAaNnCcaooa';
