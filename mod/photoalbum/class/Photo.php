@@ -275,14 +275,15 @@ class PHPWS_Photo extends PHPWS_Item {
         }
 
         if($_FILES['Photo']['error'] == 0) {
-            if(isset($this->_name)) {
-                PHPWS_Error::log(PHOTOALBUM_DUPLICATE_IMAGE, 'photoalbum', 'PHPWS_Photo::save', $this->_name);
-                $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'You must remove the image before uploading a new one.');
-                $_REQUEST['PHPWS_Photo_op'] = 'edit';
-                $this->action();
-                return;
-            }
-
+            /*
+             if(isset($this->_name)) {
+             PHPWS_Error::log(PHOTOALBUM_DUPLICATE_IMAGE, 'photoalbum', 'PHPWS_Photo::save', $this->_name);
+             $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'You must remove the image before uploading a new one.');
+             $_REQUEST['PHPWS_Photo_op'] = 'edit';
+             $this->action();
+             return;
+             }
+             */
             $name = PHPWS_File::nameToSafe($_FILES['Photo']['name']);
             $name = strtolower($name);
             $file = PHOTOALBUM_DIR . $this->_album . '/' . $name;
