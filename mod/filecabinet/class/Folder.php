@@ -437,6 +437,7 @@ class Folder {
 
     public function rowTags()
     {
+        PHPWS_Core::requireConfig('filecabinet', 'config.php');
         if (FC_ICON_PAGER_LINKS) {
             $mode = 'icon';
             $spacer = '';
