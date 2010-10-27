@@ -94,7 +94,6 @@ class PS_Text extends PS_Section {
             return $result;
         }
         $search = new Search($key_id);
-        $search->resetKeywords();
         $search->addKeywords($this->content);
         return $search->save();
     }
