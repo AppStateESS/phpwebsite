@@ -4,7 +4,8 @@
  * Main file for loading phpwebsite. Initializes core,
  * checks security, loads modules.
  *
- * @author Matthew McNaney <matt at tux dot appstate edu>
+ * @author Matthew McNaney <matt at tux dot appstate edu>,
+ * @author Hilmar Runge <hi at dc4db dot net>
  * @version $Id$
  */
 ini_set('register_globals', 0);
@@ -35,9 +36,7 @@ include PHPWS_SOURCE_DIR . 'phpws_stats.php';
 // require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 
 ob_start();
-if (is_file(PHPWS_SOURCE_DIR . 'config/core/source.php')) {
-    require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
-}
+require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Forward.php';
 
@@ -59,7 +58,15 @@ PHPWS_Core::runtimeModules();
 PHPWS_Core::checkOverpost();
 PHPWS_Core::runCurrentModule();
 PHPWS_Core::closeModules();
-ob_end_flush();
+
+// BGmode (
+if (isset($_SESSION['BG'])) {
+    ob_end_clean();
+    echo $_SESSION['BG'];
+} else {
+    ob_end_flush();
+}
+// )
 
 PHPWS_DB::disconnect();
 
@@ -68,7 +75,12 @@ PHPWS_Core::setLastPost();
 if (isset($_REQUEST['reset'])) {
     PHPWS_Core::killAllSessions();
 }
-
-show_stats();
+// BGmode(
+if (isset($_SESSION['BG'])) {
+    unset($_SESSION['BG']);
+} else {
+    show_stats();
+}
+// )
 
 ?>
