@@ -826,7 +826,7 @@ class Menu_Admin {
         PHPWS_Settings::save('menu');
     }
 
-    private function JSFlagKey()
+    private static function JSFlagKey()
     {
         if (empty($_GET['key_id']) && empty($_GET['ref_key'])) {
             $key = Key::getHomeKey();
@@ -840,7 +840,7 @@ class Menu_Admin {
     }
 
 
-    private function sortMenuLinks($moved, $parent_id, $under, $menu)
+    private static function sortMenuLinks($moved, $parent_id, $under, $menu)
     {
         if ($under) {
             $under_link = new Menu_Link($under);
@@ -848,16 +848,15 @@ class Menu_Admin {
         } else {
             $link_order = 1;
         }
-
         $db = new PHPWS_DB('menu_links');
         $db->addWhere('parent', $parent_id);
         $db->addWhere('link_order', $link_order, '>=');
-        $db->incrementColumn('link_order');
+        $result = $db->incrementColumn('link_order');
 
         $moved_link = new Menu_Link($moved);
         $moved_link->parent = $parent_id;
         $moved_link->link_order = $link_order;
-        $moved_link->save();
+        $result = $moved_link->save();
         $menu->reorderLinks();
     }
 
