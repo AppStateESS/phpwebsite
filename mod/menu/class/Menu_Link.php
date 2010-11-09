@@ -58,10 +58,7 @@ class Menu_Link {
 
     public function getDB()
     {
-        if (empty($this->_db)) {
-            $this->_db = new PHPWS_DB('menu_links');
-        }
-        $this->_db->reset();
+        $this->_db = new PHPWS_DB('menu_links');
         return $this->_db;
     }
 
