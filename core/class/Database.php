@@ -1130,13 +1130,9 @@ class PHPWS_DB {
                 return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addValue', $column);
             }
 
-            if (!strpos($column, '.')) {
+            if (!empty($this->_join_tables) && !strpos($column, '.')) {
                 if (isset($this->_columnInfo[$column])) {
                     $column = $this->_columnInfo[$column]['table'] . '.' . $column;
-                } elseif (isset($this->_join_tables)) {
-                    foreach ($this->_join_tables as $tbl_info) {
-
-                    }
                 } else {
                     trigger_error('Column name not found', E_USER);
                 }
