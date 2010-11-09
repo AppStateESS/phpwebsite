@@ -1130,11 +1130,12 @@ class PHPWS_DB {
                 return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addValue', $column);
             }
 
-            if (!empty($this->_join_tables) && !strpos($column, '.')) {
-                if (isset($this->_columnInfo[$column])) {
-                    $column = $this->_columnInfo[$column]['table'] . '.' . $column;
+            if (!empty($this->_joined_tables) && !strpos($column, '.')) {
+                $all_columns = $this->getTableColumns(true);
+                if (isset($all_columns[$column])) {
+                    $column = $all_columns[$column]['table'] . '.' . $column;
                 } else {
-                    trigger_error('Column name not found', E_USER);
+                    trigger_error("Column name '$column' not found", E_USER_ERROR);
                 }
             }
             $this->values[$column] = $value;
@@ -1276,7 +1277,11 @@ class PHPWS_DB {
             } elseif(isset($idColumn)) {
                 $check_table = $this->addPrefix($table);
                 $maxID = $GLOBALS['PHPWS_DB']['connection']->nextId($check_table);
-                $values[$idColumn] = $maxID;
+                if (!empty($this->_joined_tables)) {
+                    $values[$check_table . '.' . $idColumn] = $maxID;
+                } else {
+                    $values[$idColumn] = $maxID;
+                }
             }
         }
 
@@ -1286,7 +1291,6 @@ class PHPWS_DB {
         }
 
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
-
         $result = PHPWS_DB::query($query);
 
         if (DB::isError($result)) {
