@@ -602,7 +602,8 @@ class PHPWS_DB {
             }
             return implode(',', $table_list);
         } else {
-            foreach ($this->tables as $table);
+            $table = $this->tables[0];
+            //foreach ($this->tables as $table);
             return $table;
         }
     }
@@ -724,8 +725,8 @@ class PHPWS_DB {
             }
         }
 
-        $source_table = $this->tables[0];
 
+        $source_table = $this->tables[0];
         if (is_string($column)) {
             if (substr_count($column, '.') == 1) {
                 list($join_table, $join_column) = explode('.', $column);
@@ -768,7 +769,6 @@ class PHPWS_DB {
         }
 
     }
-
 
     public static function checkOperator($operator)
     {
@@ -1130,6 +1130,17 @@ class PHPWS_DB {
                 return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addValue', $column);
             }
 
+            if (!strpos($column, '.')) {
+                if (isset($this->_columnInfo[$column])) {
+                    $column = $this->_columnInfo[$column]['table'] . '.' . $column;
+                } elseif (isset($this->_join_tables)) {
+                    foreach ($this->_join_tables as $tbl_info) {
+
+                    }
+                } else {
+                    trigger_error('Column name not found', E_USER);
+                }
+            }
             $this->values[$column] = $value;
         }
     }
@@ -1293,7 +1304,7 @@ class PHPWS_DB {
     {
         PHPWS_DB::touchDB();
 
-        $table = $this->getTable(false);
+        $table = $this->getTable(true);
         if (!$table) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::insert');
         }
