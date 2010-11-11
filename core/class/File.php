@@ -595,16 +595,21 @@ class PHPWS_File {
 
     private static function getDiff($w, $mw, $h, $mh)
     {
+
         if ($w < $mw && $h > $mh) {
-            $diff = $mh / $h;
+            return $mh / $h;
         } elseif ($w > $mw && $h < $mh) {
-            $diff = $mw / $w;
-        } elseif ($w < $h) {
-            $diff = $mw / $w;
+            return $mw / $w;
         } else {
-            $diff = $mh / $h;
+            $wdiff = $mw / $w;
+            $hdiff = $mh / $h;
+
+           if ($wdiff < $hdiff) {
+               return $wdiff;
+           } else {
+               return $hdiff;
+           }
         }
-        return $diff;
     }
 
     /**
