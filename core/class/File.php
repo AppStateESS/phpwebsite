@@ -560,6 +560,13 @@ class PHPWS_File {
         $new_height = round($height * $diff);
 
         if ($new_width > $max_width || $new_height > $max_height) {
+            $diff = PHPWS_File::getDiff($new_width, $max_width, $new_height, $max_height);
+            $new_width = round($width * $diff);
+            $new_height = round($height * $diff);
+
+        }
+
+        if ($new_width > $max_width || $new_height > $max_height) {
             $new_width = round($new_width * $diff);
             $new_height = round($new_height * $diff);
         }
@@ -592,7 +599,7 @@ class PHPWS_File {
             $diff = $mh / $h;
         } elseif ($w > $mw && $h < $mh) {
             $diff = $mw / $w;
-        } elseif ($w >= $h) {
+        } elseif ($w < $h) {
             $diff = $mw / $w;
         } else {
             $diff = $mh / $h;
@@ -622,7 +629,7 @@ class PHPWS_File {
         }
     }
 
-    public function rmdir($dir)
+    public static function rmdir($dir)
     {
         PHPWS_File::appendSlash($dir);
 
