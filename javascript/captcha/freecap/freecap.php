@@ -139,7 +139,6 @@ $morph_bg = true;
 // hope this script saves some spam :-)
 
 
-
 //////////////////////////////////////////////////////
 ////// Create Images + initialise a few things
 //////////////////////////////////////////////////////
@@ -320,7 +319,7 @@ if($use_dict==1)
     $words = @file($dict_location);
     $word = strtolower($words[$rand_func(0,sizeof($words)-1)]);
     // cut off line endings/other possible odd chars
-    $word = ereg_replace("[^a-z]","",$word);
+    $word = preg_replace("/[^a-z]/i","",$word);
     // might be large file so forget it now (frees memory)
     $words = "";
     unset($words);
@@ -594,7 +593,6 @@ $font_pixelwidth = $font_widths[$j];
 
 // for debug:
 //sendImage($im2);
-
 
 
 
