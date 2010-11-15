@@ -1,6 +1,6 @@
 <?php
 
-if (!substr("\'", $data['content'])) {
+if (!strstr("\'", $data['content'])) {
     $data['content'] = str_replace("'", "\'", $data['content']);
 }
 
