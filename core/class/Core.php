@@ -855,9 +855,10 @@ class PHPWS_Core {
             $address[] = '?';
             $address[] = $_SERVER['QUERY_STRING'];
         }
-
-        $address = implode('', $address);
-        return preg_replace('@^/?@', '', $address);
+        if (!empty($address)) {
+            $address = implode('', $address);
+            return preg_replace('@^/?@', '', $address);
+        }
     }
 
     /**
