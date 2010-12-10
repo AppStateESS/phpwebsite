@@ -89,8 +89,8 @@ class Access_Shortcut {
     public function setUrl($module, $url)
     {
         // mod_rewrite link
+        $url = preg_replace('@^./@', '', $url);
         if (preg_match('@/@', $url)) {
-            $url = preg_replace('@^./@', '', $url);
             $aUrl = explode('/', $url);
             $this->url = implode(':', $aUrl);
         } else {

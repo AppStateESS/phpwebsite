@@ -187,7 +187,7 @@ class Access_Forms {
         return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
     }
 
-    public function shortcut_menu()
+    public static function shortcut_menu()
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         @$sc_id = $_REQUEST['sc_id'];
