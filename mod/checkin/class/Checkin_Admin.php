@@ -79,14 +79,24 @@ class Checkin_Admin extends Checkin {
 
 
             case 'report':
+                if (!Current_User::allow('checkin', 'assign_visitors')) {
+                    Current_User::disallow();
+                }
                 $this->report(isset($_GET['print']));
                 break;
 
             case 'month_report':
+                if (!Current_User::allow('checkin', 'assign_visitors')) {
+                    Current_User::disallow();
+                }
+
                 $this->monthReport(isset($_GET['print']));
                 break;
 
             case 'visitor_report':
+                if (!Current_User::allow('checkin', 'assign_visitors')) {
+                    Current_User::disallow();
+                }
                 $this->visitorReport(isset($_GET['print']));
                 break;
 
@@ -103,11 +113,11 @@ class Checkin_Admin extends Checkin {
                         printf('staff_id %s, visitor_id %s', $_GET['staff_id'], $_GET['visitor_id']);
                         $this->loadStaff($staff_id);
                         /*
-                        if ($this->staff->status == 3) {
-                            $this->staff->status = 0;
-                            $this->staff->save();
-                        }
-                        */
+                         if ($this->staff->status == 3) {
+                         $this->staff->status = 0;
+                         $this->staff->save();
+                         }
+                         */
                     }
                 }
                 exit();
@@ -337,9 +347,11 @@ class Checkin_Admin extends Checkin {
             $tabs['settings'] = array('title'=>dgettext('checkin', 'Settings'),
                                       'link'=>$link);
         }
-
-        $tabs['report'] = array('title'=>dgettext('checkin', 'Report'),
+        if (Current_User::allow('checkin', 'assign_visitors')) {
+            $tabs['report'] = array('title'=>dgettext('checkin', 'Report'),
                                 'link'=>$link);
+        }
+
 
         $this->panel = new PHPWS_Panel('check-admin');
         $this->panel->quickSetTabs($tabs);
