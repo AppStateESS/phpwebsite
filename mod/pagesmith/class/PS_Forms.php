@@ -60,7 +60,7 @@ class PS_Forms {
         $page = $this->ps->page;
 
         $pg_tpl_name = & $page->_tpl->name;
-        $this->ps->killSaved();
+        $this->ps->killSaved($page->id);
         if (!empty($page->_content)) {
             foreach ($page->_content as $key=>$cnt) {
                 if (!PageSmith::checkLorum($cnt)) {
@@ -355,11 +355,11 @@ class PS_Forms {
         $form->addCheck('auto_link', 1);
         $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
         $form->setLabel('auto_link', dgettext('pagesmith', 'Add menu link for new pages.'));
-        
+
         $form->addCheck('back_to_top', 1);
         $form->setMatch('back_to_top', PHPWS_Settings::get('pagesmith', 'back_to_top'));
         $form->setLabel('back_to_top', dgettext('pagesmith', 'Add "Back to top" links at page bottom.'));
-        
+
 
         $vars['aop'] = 'shorten_links';
         $form->addTplTag('SHORTEN_MENU_LINKS', PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', $vars));

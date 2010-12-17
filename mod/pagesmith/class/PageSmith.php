@@ -72,7 +72,6 @@ class PageSmith {
                 break;
 
             case 'edit_page':
-                $this->killSaved();
                 $this->loadPage();
                 if (!$this->page->id) {
                     $this->title = dgettext('pagesmith', 'Sorry');
@@ -80,6 +79,8 @@ class PageSmith {
                     break;
                 }
                 $this->loadForms();
+
+                $this->killSaved($this->page->id);
                 if (!Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
                     Current_User::disallow();
                 }
@@ -88,11 +89,12 @@ class PageSmith {
                 break;
 
             case 'pick_template':
-                $this->killSaved();
                 $this->loadForms();
                 $this->loadPage();
                 $this->page->loadTemplate();
                 $this->page->loadSections(true);
+
+                $this->killSaved($this->page->id);
                 $this->forms->editPage();
                 break;
 
@@ -152,7 +154,8 @@ class PageSmith {
                         break;
 
                     case 1:
-                        $this->killSaved();
+
+                        $this->killSaved($this->page->id);
                         PHPWS_Cache::clearCache();
                         if (isset($_POST['save_so_far'])) {
                             PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
@@ -432,10 +435,9 @@ class PageSmith {
         }
     }
 
-    public function killSaved()
+    public function killSaved($page_id)
     {
-        $_SESSION['PS_Page'] = null;
-        PHPWS_Core::killSession('PS_Page');
+        $_SESSION['PS_Page'][$page_id] = null;
     }
 
     public function postHeader()
@@ -486,7 +488,7 @@ class PageSmith {
     {
         PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
         PHPWS_Settings::set('pagesmith', 'back_to_top', isset($_POST['back_to_top']));
-        
+
         PHPWS_Settings::save('pagesmith');
         PHPWS_Cache::clearCache();
     }
