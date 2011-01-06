@@ -55,9 +55,7 @@ class PHPWS_User {
 		$this->setId($id);
 		$result = $this->init();
 
-		if (PHPWS_Error::isError($result)) {
-			PHPWS_Error::log($result);
-		}
+		PHPWS_Error::logIfError($result);
 
 		if ($result) {
 			$this->loadScript();
@@ -69,7 +67,7 @@ class PHPWS_User {
 		$db = new PHPWS_DB('users');
 		$result = $db->loadObject($this);
 
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			$this->id = 0;
 			return $result;
 		}
@@ -119,7 +117,7 @@ class PHPWS_User {
 		}
 
 		$result = $DB->select('one');
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -136,7 +134,7 @@ class PHPWS_User {
 
 		$result = $DB->select('one');
 
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -152,7 +150,7 @@ class PHPWS_User {
 		}
 
 		$result = $DB->select('one');
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -171,7 +169,7 @@ class PHPWS_User {
 		}
 
 		$result = $DB->select('one');
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		} else {
 			return (bool)$result;
@@ -411,8 +409,7 @@ class PHPWS_User {
 	{
 		$group = $this->getUserGroup();
 
-		if (PHPWS_Error::isError($group)){
-			PHPWS_Error::log($group);
+		if (PHPWS_Error::logIfError($group)){
 			return false;
 		}
 
@@ -423,8 +420,7 @@ class PHPWS_User {
 		$DB->addColumn('group_id');
 		$result = $DB->select('col');
 
-		if (PHPWS_Error::isError($group)){
-			PHPWS_Error::log($group);
+		if (PHPWS_Error::logIfError($result)){
 			return false;
 		}
 
@@ -520,7 +516,7 @@ class PHPWS_User {
 		$this->isDuplicateDisplayName($this->username, $this->id) ||
 		$this->isDuplicateUsername($this->display_name, $this->id) ||
 		$this->isDuplicateDisplayName($this->display_name, $this->id)) ? true : false;
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		}
 
@@ -529,7 +525,7 @@ class PHPWS_User {
 		}
 
 		$result = $this->isDuplicateEmail();
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		}
 
@@ -538,7 +534,7 @@ class PHPWS_User {
 		}
 
 		$result = $this->isDuplicateGroup($this->username, $this->id);
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		}
 
@@ -563,16 +559,15 @@ class PHPWS_User {
 		$db = new PHPWS_DB('users');
 		$result = $db->saveObject($this);
 
-		if (PHPWS_Error::isError($result)){
-			PHPWS_Error::log($result);
+		if (PHPWS_Error::logIfError($result)){
 			return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
 		}
 
 		if ($this->authorize > 0) {
 			if ($this->authorize == PHPWS_Settings::get('users', 'local_script')) {
 				$result = $this->saveLocalAuthorization();
-				if (PHPWS_Error::isError($result)) {
-					PHPWS_Error::log($result);
+				if (PHPWS_Error::logIfError($result)) {
+                    return $result;
 				}
 			}
 		}
@@ -590,8 +585,7 @@ class PHPWS_User {
 		$db = new PHPWS_DB('users');
 		$result = $db->saveObject($this);
 
-		if (PHPWS_Error::isError($result)){
-			PHPWS_Error::log($result);
+		if (PHPWS_Error::logIfError($result)){
 			return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
 		}
 
@@ -647,7 +641,7 @@ class PHPWS_User {
 		$group->setActive($this->isActive());
 		$result = $group->save();
 
-		if (PHPWS_Error::isError($result)){
+		if (PHPWS_Error::logIfError($result)){
 			PHPWS_Error::log($result);
 			$this->kill();
 			return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
@@ -664,7 +658,7 @@ class PHPWS_User {
 		$db->addColumn('id');
 		$result = $db->select('one');
 
-		if (PHPWS_Error::isError($result)){
+		if (PHPWS_Error::logIfError($result)){
 			PHPWS_Error::log($result);
 			return PHPWS_Error::get(USER_ERROR, 'users', 'updateGroup');
 		}
@@ -680,8 +674,7 @@ class PHPWS_User {
 		$group->setActive($this->isActive());
 
 		$result = $group->save();
-		if (PHPWS_Error::isError($result)){
-			PHPWS_Error::log($result);
+		if (PHPWS_Error::logIfError($result)){
 			$this->kill();
 			return PHPWS_Error::get(USER_ERROR, 'users', 'updateGroup');
 		} else {
@@ -702,7 +695,7 @@ class PHPWS_User {
 
 		$result = $db->select('one');
 
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		} elseif (!isset($result)) {
 			return PHPWS_Error::get(USER_ERR_MISSING_GROUP, 'users', 'getUserGroup', $this->getId());
@@ -757,7 +750,7 @@ class PHPWS_User {
 		$db = new PHPWS_DB('users');
 		$db->addWhere('id', $this->id);
 		$result = $db->delete();
-		if (PHPWS_Error::isError($result)) {
+		if (PHPWS_Error::logIfError($result)) {
 			return $result;
 		}
 
@@ -767,7 +760,7 @@ class PHPWS_User {
 			$db2 = new PHPWS_DB('user_authorization');
 			$db2->addWhere('username', $this->username);
 			$result = $db2->delete();
-			if (PHPWS_Error::isError($result)) {
+			if (PHPWS_Error::logIfError($result)) {
 				return $result;
 			}
 		}
