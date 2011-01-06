@@ -71,7 +71,7 @@ class Setup {
     {
         $this->initConfigSet();
 
-        if ($_SESSION['configSettings']['database'] == false) {
+        if (!isset($_SESSION['configSettings']['database']) || $_SESSION['configSettings']['database'] == false) {
             $this->databaseConfig();
         } else {
             $configDir = PHPWS_SOURCE_DIR . 'config/';
