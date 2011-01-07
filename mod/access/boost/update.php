@@ -174,11 +174,17 @@ function access_update(&$content, $version)
 ---------------
 + Added link check on url setting to prevent ./ from suffixing and
   breaking storage.</pre>';
-            
+
         case version_compare($version, '1.1.7', '<'):
             $content[] = '<pre>1.1.7 changes
 ---------------
 + Code changes to make PHP 5 strict compatible.</pre>';
+
+            case version_compare($version, '1.1.8', '<'):
+            $content[] = '<pre>1.1.8 changes
+---------------
++ Fixed shortcuts not working with some older pages
++ Pager links added to shortcut list</pre>';
     }
 
     return true;
