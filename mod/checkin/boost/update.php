@@ -76,6 +76,11 @@ function checkin_update(&$content, $current_version) {
 + Added monthly and student reports
 + Added report for number of times a visitor has visited within 30 days.
 + PHP 5 Strict changes</pre>';
+
+        case version_compare($current_version, '1.1.1', '<'):
+            $content[] = '<pre>1.1.1 changes
+---------------------
++ Reports limited to admins</pre>';
     }
     return true;
 }
