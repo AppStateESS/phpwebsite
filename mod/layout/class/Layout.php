@@ -1236,7 +1236,7 @@ class Layout {
 
 function javascriptEnabled()
 {
-    return $_SESSION['javascript_enabled'];
+    return @$_SESSION['javascript_enabled'];
 }
 
 
