@@ -453,7 +453,7 @@ class Key {
         $GLOBALS['Current_Flag'] = $this;
     }
 
-    public function drop($key_id)
+    public static function drop($key_id)
     {
         $key = new Key($key_id);
         return $key->delete();
