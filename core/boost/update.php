@@ -547,6 +547,24 @@ EOT;
                 mkdir(PHPWS_SOURCE_DIR . 'images/ckeditor/');
             }
 
+        case version_compare($version, '2.0.1', '<'):
+            $content[] = <<<UPDATES
+            <pre>2.0.1 changes
+----------------------
++ Fixed captcha trying to pull from branch directory.
++ Fixed templates ignoring use_hub_themes setting.
++ Image class will accept tilde in source directory.
++ Database fix for insert and update on multiple tables.
++ Powerpoint types added to file check.
++ Background mode added to index (allows for selective loading on Ajax calls)
++ Freecap ereg_replace updated to preg_replace
++ Fix for js_calendar
++ Fix for javascript alert script
++ Fixes for Fckeditor and Tinymce
++ Inclusion of ngBackup
+</pre>
+UPDATES;
+
     }
     return true;
 }
