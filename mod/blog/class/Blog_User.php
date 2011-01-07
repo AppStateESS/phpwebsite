@@ -6,11 +6,13 @@
  * @version $Id$
  */
 
-define('BLOG_CACHE_KEY', 'front_blog_page');
-if (!defined('MAX_BLOG_CACHE_PAGES')) {
-    define('MAX_BLOG_CACHE_PAGES', 3);
-}
+/*
+ define('BLOG_CACHE_KEY', 'front_blog_page');
 
+ if (!defined('MAX_BLOG_CACHE_PAGES')) {
+ define('MAX_BLOG_CACHE_PAGES', 3);
+ }
+ */
 
 class Blog_User {
 
@@ -272,22 +274,25 @@ class Blog_User {
             $offset = ($page - 1) * $limit;
         }
 
-        if ($page == 0) {
-            $cache_key = BLOG_CACHE_KEY . '1';
-        } else {
-            $cache_key = BLOG_CACHE_KEY . $page;
-        }
+        /* Updated 1/7/2010 no longer caching. Unable to get previous blog entries
+         * to work properly with current code order.
+         */
+        /*
+         if ($page == 0) {
+         $cache_key = BLOG_CACHE_KEY . '1';
+         } else {
+         $cache_key = BLOG_CACHE_KEY . $page;
+         }
 
-        // we are only caching the first three pages
-        if ($page <= MAX_BLOG_CACHE_PAGES &&
-        !Current_User::isLogged() &&
-        !Current_User::allow('blog') &&
-        PHPWS_Settings::get('blog', 'cache_view') &&
-        $content = PHPWS_Cache::get($cache_key)) {
-            Layout::getCacheHeaders($cache_key);
-            return $content;
-        }
-
+         if ($page <= MAX_BLOG_CACHE_PAGES &&
+         !Current_User::isLogged() &&
+         !Current_User::allow('blog') &&
+         PHPWS_Settings::get('blog', 'cache_view') &&
+         $content = PHPWS_Cache::get($cache_key)) {
+         Layout::getCacheHeaders($cache_key);
+         return $content;
+         }
+         */
         Layout::addStyle('blog');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
@@ -353,12 +358,15 @@ class Blog_User {
         $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
 
         // again only caching first pages
+        /*
         if ($page <= MAX_BLOG_CACHE_PAGES &&
         !Current_User::isLogged() && !Current_User::allow('blog') &&
         PHPWS_Settings::get('blog', 'cache_view')) {
-            PHPWS_Cache::save($cache_key, $content);
-            Layout::cacheHeaders($cache_key);
-        } elseif (Current_User::allow('blog', 'edit_blog')) {
+        PHPWS_Cache::save($cache_key, $content);
+        Layout::cacheHeaders($cache_key);
+        }
+        */
+        if (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
             $vars['tab'] = 'new';

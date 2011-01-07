@@ -136,7 +136,7 @@ class Blog_Admin {
                 $version->setSource($blog);
                 $version->setApproved(TRUE);
                 $result = $version->save();
-                Blog_Admin::resetCache();
+                //Blog_Admin::resetCache();
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                     Blog_Admin::setForward(dgettext('blog', 'An error occurred when saving your version.'), 'approval');
@@ -166,7 +166,7 @@ class Blog_Admin {
                 break;
 
             case 'delete':
-                Blog_Admin::resetCache();
+                //Blog_Admin::resetCache();
                 $result = $blog->delete();
                 Blog_Admin::setForward(dgettext('blog', 'Blog entry deleted.'), 'list');
                 break;
@@ -207,7 +207,7 @@ class Blog_Admin {
                     Current_User::disallow();
                     return;
                 }
-                Blog_Admin::resetCache();
+                //Blog_Admin::resetCache();
                 Blog_Admin::restoreBlog($_REQUEST['version_id']);
                 Blog_Admin::setForward(dgettext('blog', 'Blog entry restored.'), 'list');
                 break;
@@ -242,7 +242,7 @@ class Blog_Admin {
                     }
 
                     $result = $blog->save();
-                    Blog_Admin::resetCache();
+                    //Blog_Admin::resetCache();
 
                     if (PHPWS_Error::isError($result)) {
                         $message = dgettext('blog', 'An error occurred when trying to save your entry. Please check your logs.');
@@ -318,9 +318,11 @@ class Blog_Admin {
         PHPWS_Settings::set('blog', 'anonymous_comments', 1) :
         PHPWS_Settings::set('blog', 'anonymous_comments', 0);
 
-        isset($_POST['cache_view']) ?
-        PHPWS_Settings::set('blog', 'cache_view', 1) :
-        PHPWS_Settings::set('blog', 'cache_view', 0);
+        /*
+         isset($_POST['cache_view']) ?
+         PHPWS_Settings::set('blog', 'cache_view', 1) :
+         PHPWS_Settings::set('blog', 'cache_view', 0);
+         */
 
         isset($_POST['captcha_submissions']) ?
         PHPWS_Settings::set('blog', 'captcha_submissions', 1) :

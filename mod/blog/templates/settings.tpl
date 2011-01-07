@@ -1,6 +1,6 @@
 {START_FORM}
 <fieldset><legend><strong>{VIEW_LABEL}</strong></legend>
-<p>{CACHE_VIEW} {CACHE_VIEW_LABEL} <span class="smaller">({RESET_CACHE})</span></p>
+
 <p>{HOME_PAGE_DISPLAY} {HOME_PAGE_DISPLAY_LABEL}</p>
 <p>{BLOG_LIMIT_LABEL} {BLOG_LIMIT}</p>
 <p>{PAST_ENTRIES_LABEL} {PAST_ENTRIES}<br />

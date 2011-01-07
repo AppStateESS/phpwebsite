@@ -241,20 +241,20 @@ class Blog_Form {
         $form->setLabel('show_recent', dgettext('blog', 'Show recent entries'));
         $form->setMatch('show_recent', PHPWS_Settings::get('blog', 'show_recent'));
 
-
-        $cache_view = PHPWS_Settings::get('blog', 'cache_view');
-        $form->addCheck('cache_view', 1);
-        $form->setLabel('cache_view', dgettext('blog', 'Cache anonymous view'));
-        $form->setMatch('cache_view', $cache_view);
-        if (!ALLOW_CACHE_LITE) {
-            $form->setDisabled('cache_view');
-            $form->addTplTag('RESET_CACHE', dgettext('blog', 'System caching disabled.'));
-        } else {
-            if ($cache_view) {
-                $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
-            }
-        }
-
+        /*
+         $cache_view = PHPWS_Settings::get('blog', 'cache_view');
+         $form->addCheck('cache_view', 1);
+         $form->setLabel('cache_view', dgettext('blog', 'Cache anonymous view'));
+         $form->setMatch('cache_view', $cache_view);
+         if (!ALLOW_CACHE_LITE) {
+         $form->setDisabled('cache_view');
+         $form->addTplTag('RESET_CACHE', dgettext('blog', 'System caching disabled.'));
+         } else {
+         if ($cache_view) {
+         $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
+         }
+         }
+         */
         $form->addCheck('allow_anonymous_submits', 1);
         $form->setLabel('allow_anonymous_submits', dgettext('blog', 'Allow anonymous submissions'));
         $form->setMatch('allow_anonymous_submits', PHPWS_Settings::get('blog', 'allow_anonymous_submits'));
