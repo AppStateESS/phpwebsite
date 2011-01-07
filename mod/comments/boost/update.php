@@ -405,6 +405,11 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + Javascript calls moved to javascriptMod
 + PHP 5 strict fixes.
 + Icon substitution.</pre>';
+
+        case version_compare($currentVersion, '1.3.1', '<'):
+            $content[] = '<pre>1.3.1 changes
+-----------------------
++ mktime function calls updated</pre>';
     }
 
     return true;
