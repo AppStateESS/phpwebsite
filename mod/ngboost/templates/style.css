@@ -1,0 +1,49 @@
+#ngmsg td {
+	padding: 0px 1px 0px 1px;
+	line-height: 1em;
+	background-color: #ffffff;
+}
+
+#ngmsg a {
+	font-variant: small-caps;
+	color: #a00;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 1.1em;
+}
+.ngpseudo {
+	font-variant: small-caps;
+	text-transform: capitalize;
+	color: #777;
+}
+
+#ngbstcpbody {
+	line-height: 1em;
+}
+
+#ngbstcpbody a {
+	font-weight: normal;
+	font-variant: small-caps;
+	text-transform: capitalize;
+	color: #a00;
+}
+
+#ngbstcptab1, #ngbstcptab2 {
+	padding: 0px 4px;
+}
+#ngbstcptab5, #ngbstcptab6 {
+	padding: 0;
+}
+
+.ngtable {
+	width: 99%;
+}
+.ngtbody {
+	height: 288px;
+	min-height: 32px;
+	max-height: 288px;
+	overflow: auto;
+	overflow-x: hidden;
+}
+.ngtrfoot {
+	background-color: #ddd;
+}

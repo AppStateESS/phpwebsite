@@ -1,0 +1,6 @@
+Just to do:
+	updateCore (has to become multiparts base*.tar.gz sources)
+	
+	using ngBoost on branches:
+		references to site javascript and img
+			

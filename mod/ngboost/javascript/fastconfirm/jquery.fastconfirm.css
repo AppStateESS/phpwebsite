@@ -1,0 +1,220 @@
+@charset "utf-8";
+
+/*********************/
+/* Can't touch this! */
+/*********************/
+
+.fast_confirm {
+	position: absolute;
+	
+	/* Position off-screen, show only when everything is ready */
+	top: -500px;
+	left: -500px;
+}
+/* IE6 */
+.fast_confirm {
+    _border-left-color: pink;
+    _border-bottom-color: pink;
+    _border-right-color: pink;
+    _filter: chroma(color=pink);
+}
+
+
+/*******************************/
+/* You can configure from here */
+/*******************************/
+
+/* BOX */
+
+.fast_confirm {
+	background-color: #fff;
+	font-size: 14px;
+	text-align: center;
+	padding: 6px;
+	
+	border: 1px solid #aaa;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	
+	-moz-box-shadow: 0 0 4px #000;
+	-webkit-box-shadow: 0 0 4px #000;
+	box-shadow: 0 0 4px #000;
+}
+
+
+/* ARROWS */
+
+/* Top arrow */
+.fast_confirm .fast_confirm_top.fast_confirm_arrow {
+	position: absolute;
+	top: -10px;
+	
+	border-color: transparent transparent #fff;
+	border-style: solid;
+	border-width: 0 10px 10px;
+	height: 0;
+	width: 0;
+}
+.fast_confirm .fast_confirm_top.fast_confirm_arrow_border {
+	position: absolute;
+	top: -12px;
+	
+	border-color: transparent transparent #aaa;
+	border-style: solid;
+	border-width: 0 12px 12px;
+	height: 0;
+	width: 0;
+}
+
+/* Right arrow */
+.fast_confirm .fast_confirm_right.fast_confirm_arrow {
+	position: absolute;
+	right: -10px;
+	
+	border-color: transparent transparent transparent #fff;
+	border-style: solid;
+	border-width: 10px 0 10px 10px;
+	height: 0;
+	width: 0;
+}
+.fast_confirm .fast_confirm_right.fast_confirm_arrow_border {
+	position: absolute;
+	right: -12px;
+	
+	border-color: transparent transparent transparent #aaa;
+	border-style: solid;
+	border-width: 12px 0 12px 12px;
+	height: 0;
+	width: 0;
+}
+
+/* Bottom arrow */
+.fast_confirm .fast_confirm_bottom.fast_confirm_arrow {
+	position: absolute;
+	bottom: -10px;
+	
+	border-color: #fff transparent transparent;
+	border-style: solid;
+	border-width: 10px 10px 0 10px;
+	height: 0;
+	width: 0;
+}
+.fast_confirm .fast_confirm_bottom.fast_confirm_arrow_border {
+	position: absolute;
+	bottom: -12px;
+	
+	border-color: #aaa transparent transparent;
+	border-style: solid;
+	border-width: 12px 12px 0 12px;
+	height: 0;
+	width: 0;
+}
+
+/* Left arrow */
+.fast_confirm .fast_confirm_left.fast_confirm_arrow {
+	position: absolute;
+	left: -10px;
+	
+	border-color: transparent #fff transparent transparent;
+	border-style: solid;
+	border-width: 10px 10px 10px 0;
+	height: 0;
+	width: 0;
+}
+.fast_confirm .fast_confirm_left.fast_confirm_arrow_border {
+	position: absolute;
+	left: -12px;
+	
+	border-color: transparent #aaa transparent transparent;
+	border-style: solid;
+	border-width: 12px 12px 12px 0;
+	height: 0;
+	width: 0;
+}
+
+
+/* BUTTONS */
+
+.fast_confirm button {
+	margin: 10px;
+	padding: 5px 10px;
+    
+    font-weight: bold;
+    
+    color: #fff;
+    
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+/* Proceed button */
+.fast_confirm button.fast_confirm_proceed {
+    border: 1px solid #128123;
+    
+    color: #fff;
+    
+    text-shadow: 0 -1px 0 hsla(120,100%,0%,.5);
+    
+    background: #00aa00;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(.2, #00aa00), color-stop(1, #006600) );
+    background: -moz-linear-gradient( center top, #00aa00 20%, #006600 100% );
+    
+    -webkit-box-shadow:
+		inset 0 1px 1px hsla(0,100%,100%,.4),
+		inset 0 -1px 0 hsla(0,100%,100%,.3),
+		0 2px 0 hsla(120,77%,26%,1),
+		0 4px 2px hsla(122,100%,0%,.5);
+    
+    -moz-box-shadow:
+		inset 0 1px 1px hsla(0,100%,100%,.4),
+		inset 0 -1px 0 hsla(0,100%,100%,.3),
+		0 2px 0 hsla(120,77%,26%,1),
+		0 4px 2px hsla(122,100%,0%,.5);
+    
+    box-shadow:
+		inset 0 1px 1px hsla(0,100%,100%,.4),
+		inset 0 -1px 0 hsla(0,100%,100%,.3),
+		0 2px 0 hsla(122,77%,26%,1),
+		0 4px 2px hsla(122,100%,0%,.5);
+}
+.fast_confirm button.fast_confirm_proceed:hover {
+	background: -webkit-gradient( linear, left top, left bottom, color-stop(.2, #00dd00), color-stop(1, #00aa00) );
+    background: -moz-linear-gradient( center top, #00dd00 20%, #00aa00 100% );
+}
+
+/* Cancel button */
+.fast_confirm button.fast_confirm_cancel {
+    border: 1px solid #128123;
+    
+    color: #fff;
+    
+    text-shadow: 0 -1px 0 hsla(0,100%,0%,.5);
+    
+    background: #ff2222;
+    background: -webkit-gradient( linear, left top, left bottom, color-stop(.2, #ff2222), color-stop(1, #aa0000) );
+    background: -moz-linear-gradient( center top, #ff2222 20%, #aa0000 100% );
+    
+    -webkit-box-shadow:
+		inset 0 1px 1px hsla(0,100%,100%,.4),
+		inset 0 -1px 0 hsla(0,100%,100%,.3),
+		0 2px 0 hsla(0,77%,26%,1),
+		0 4px 2px hsla(2,100%,0%,.5);
+    
+    -moz-box-shadow:
+		inset 0 1px 1px hsla(0,100%,100%,.4),
+		inset 0 -1px 0 hsla(0,100%,100%,.3),
+		0 2px 0 hsla(0,77%,26%,1),
+		0 4px 2px hsla(2,100%,0%,.5);
+    
+    box-shadow:
+		inset 0 1px 1px hsla(0,100%,100%,.4),
+		inset 0 -1px 0 hsla(0,100%,100%,.3),
+		0 2px 0 hsla(0,77%,26%,1),
+		0 4px 2px hsla(2,100%,0%,.5);
+}
+.fast_confirm button.fast_confirm_cancel:hover {
+	background: -webkit-gradient( linear, left top, left bottom, color-stop(.2, #ff6666), color-stop(1, #ff2222) );
+    background: -moz-linear-gradient( center top, #ff6666 20%, #ff2222 100% );
+}

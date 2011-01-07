@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<dependency>
+	<module>
+		<title>core</title>
+		<properName>phpWebSite Core</properName>
+		<version>2.0.0</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
+	</module>
+	<module>
+		<title>boost</title>
+		<properName>Boost</properName>
+		<version>2.3.4</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/boost/</url>
+	</module>
+	<module>
+		<title>controlpanel</title>
+		<properName>Control Panel</properName>
+		<version>2.2.0</version>
+		<url>http://phpwebsite.appstate.edu/downloads/modules/controlpanel/</url>
+	</module>
+</dependency>
