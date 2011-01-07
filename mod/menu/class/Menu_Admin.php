@@ -344,7 +344,7 @@ class Menu_Admin {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
-    public function addPinLink()
+    public static function addPinLink()
     {
         $pin_id = &$_POST['links'];
         $link_id = &$_POST['link_id'];
@@ -379,14 +379,14 @@ class Menu_Admin {
         }
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['Menu_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
-    public function pinPageForm($url, $error=false)
+    public static function pinPageForm($url, $error=false)
     {
         $form = new PHPWS_Form('menu');
         $form->addText('title');
@@ -403,7 +403,7 @@ class Menu_Admin {
         return PHPWS_Template::process($tpl, 'menu', 'admin/offsite.tpl');
     }
 
-    public function pinPage()
+    public static function pinPage()
     {
         if (isset($_GET['key_id'])) {
             $key = new Key($_GET['key_id']);
@@ -426,7 +426,7 @@ class Menu_Admin {
         Layout::nakedDisplay($content);
     }
 
-    public function pinMenu()
+    public static function pinMenu()
     {
         if (!isset($_REQUEST['key_id']) || !isset($_REQUEST['menu_id'])) {
             return;
@@ -445,7 +445,7 @@ class Menu_Admin {
         return $db->insert();
     }
 
-    public function unpinMenu(Menu_Item $menu)
+    public static function unpinMenu(Menu_Item $menu)
     {
         if (!isset($_REQUEST['key_id']) && !isset($_REQUEST['pin_all'])) {
             return;
@@ -473,7 +473,7 @@ class Menu_Admin {
         return $message;
     }
 
-    public function addLink(Menu_Item $menu, $key_id, $parent=0)
+    public static function addLink(Menu_Item $menu, $key_id, $parent=0)
     {
         $result = $menu->addLink($key_id, $parent);
         if (PHPWS_Error::isError($result)) {
@@ -485,7 +485,7 @@ class Menu_Admin {
     }
 
 
-    public function addRawLink(Menu_Item $menu, $title, $url, $parent=0)
+    public static function addRawLink(Menu_Item $menu, $title, $url, $parent=0)
     {
         $result = $menu->addRawLink($title, $url, $parent);
         if (PHPWS_Error::isError($result)) {
@@ -556,7 +556,7 @@ class Menu_Admin {
     }
 
 
-    public function editLinkTitle($link_id, $title)
+    public static function editLinkTitle($link_id, $title)
     {
         if (empty($title)) {
             return true;
@@ -588,7 +588,7 @@ class Menu_Admin {
         return $content;
     }
 
-    public function pickLink()
+    public static function pickLink()
     {
         $menu_id = (int)$_GET['menu_id'];
         if (isset($_GET['link_id'])) {
@@ -714,7 +714,7 @@ class Menu_Admin {
         Layout::nakedDisplay($content);
     }
 
-    public function postSiteLink(Menu_Link $link)
+    public static function postSiteLink(Menu_Link $link)
     {
         if (empty($_POST['title'])) {
             $error[] = dgettext('menu', 'Missing title.');
@@ -744,7 +744,7 @@ class Menu_Admin {
         }
     }
 
-    public function quickPinLink()
+    public static function quickPinLink()
     {
         if (empty($_SESSION['Menu_Pin_Links'])) {
             return;
@@ -768,7 +768,7 @@ class Menu_Admin {
         unset($_SESSION['Menu_Pin_Links']);
     }
 
-    public function popupLinkAdmin()
+    public static function popupLinkAdmin()
     {
         $link = new Menu_Link($_GET['link_id']);
 
@@ -801,7 +801,7 @@ class Menu_Admin {
         }
     }
 
-    public function saveSettings()
+    public static function saveSettings()
     {
         if ($_POST['admin_mode'] == 'on') {
             $_SESSION['Menu_Admin_Mode'] = true;
@@ -860,7 +860,7 @@ class Menu_Admin {
         $menu->reorderLinks();
     }
 
-    private function buildMenuOrder(&$current_list, $link)
+    private static function buildMenuOrder(&$current_list, $link)
     {
         if ($link->view()) {
             $current_list[] = array('id'=>$link->id,
@@ -873,7 +873,7 @@ class Menu_Admin {
         }
     }
 
-    private function indentLink($link_id, $menu)
+    private static function indentLink($link_id, $menu)
     {
         $link = new Menu_Link($link_id);
         if ($link->link_order == 1) {
@@ -891,7 +891,7 @@ class Menu_Admin {
         $menu->reorderLinks();
     }
 
-    private function outdentLink($link_id, $menu)
+    private static function outdentLink($link_id, $menu)
     {
         $link = new Menu_Link($link_id);
 
