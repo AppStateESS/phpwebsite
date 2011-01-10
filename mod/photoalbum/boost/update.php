@@ -78,7 +78,7 @@ function photoalbum_update(&$content, $version) {
 + Fixed path to icon in SlideShow.
 + Fixes attempted for batch upload.
 + Removed html tags and newline calls causing javascript errors.
-+ Fixed: photoalbum was calling hub config file instead of local version 
++ Fixed: photoalbum was calling hub config file instead of local version
 </pre>';
 
         case version_compare($version, '1.4.5', '<'):
@@ -112,6 +112,13 @@ this module.
 -------------
 + Icon class implemented.
 + PHP 5 strict fixes.
+</pre>';
+
+            case version_compare($version, '1.4.9', '<'):
+            $content[] = '<pre>
+1.4.9 changes
+-------------
++ Removed code that prevented image update
 </pre>';
 
     }
