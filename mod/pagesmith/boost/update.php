@@ -241,7 +241,7 @@ function pagesmith_update(&$content, $currentVersion)
                        'templates/style.css',
                        'templates/sublist.tpl',
                        'templates/upload_template.tpl',
-                       'img/add.png', 'img/delete.png', 
+                       'img/add.png', 'img/delete.png',
                        'img/back.png', 'img/front.png'
                        );
                        pagesmithUpdateFiles($files, $content);
@@ -320,6 +320,11 @@ function pagesmith_update(&$content, $currentVersion)
 + Added option to turn off "Back to top" links.
 + Added default installation page.
 + PHP 5 strict fixes.</pre>';
+
+            case version_compare($currentVersion, '1.4.1', '<'):
+            $content[] = '<pre>1.4.1 changes
+-------------
+Fixed bug causing blank editors on edit.</pre>';
 
     } // end switch
 
