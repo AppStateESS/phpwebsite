@@ -96,6 +96,12 @@ function phatform_update(&$content, $version)
 + Fixed element deletion.
 + Some PHP 5 strict fixes.</pre>';
 
+            case version_compare($version, '3.1.6', '<'):
+            $content[] = '<pre>
+3.1.6 changes
+-------------
++ Introduction passed through text parser</pre>';
+
     }
     return true;
 }

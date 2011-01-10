@@ -51,7 +51,7 @@ function search_update(&$content, $currentVersion)
 -------------
 + Updated translation functions.
 + Added German translation files.
-</pre>';        
+</pre>';
 
         case version_compare($currentVersion, '0.2.3', '<'):
             $content[] = '<pre>';
@@ -59,7 +59,7 @@ function search_update(&$content, $currentVersion)
             $content[] = '0.2.3 Changes
 -------------
 + Changed h1 headers to h2
-</pre>';        
+</pre>';
 
         case version_compare($currentVersion, '0.3.0', '<'):
             $content[] = '<pre>';
@@ -67,7 +67,7 @@ function search_update(&$content, $currentVersion)
             $content[] = '0.3.0 changes
 -------------
 + Added ability to put search radio buttons on search bar.
-</pre>';        
+</pre>';
 
         case version_compare($currentVersion, '0.3.1', '<'):
             $content[] = '<pre>';
@@ -76,14 +76,14 @@ function search_update(&$content, $currentVersion)
 + Foreign chanacters properly checked
 + Moved a character check higher to prevent possible XSS
   (Thanks Audun Larsen).
-</pre>';        
+</pre>';
 
         case version_compare($currentVersion, '0.3.2', '<'):
             $content[] = '<pre>0.3.2 changes
 -------------
 + Changed REQUEST references to GET.
 + More parsing of words added.
-+ Search modules available shows only modules currently containing data.</pre>';        
++ Search modules available shows only modules currently containing data.</pre>';
 
         case version_compare($currentVersion, '0.4.0', '<'):
             $content[] = '<pre>0.4.0 changes
@@ -91,12 +91,17 @@ function search_update(&$content, $currentVersion)
 + Added a group by to prevent errors in postgresql.
 + Fixed: wrong class name to key registration
 + PHP 5 formatted.
-</pre>';        
+</pre>';
 
             case version_compare($currentVersion, '0.4.1', '<'):
             $content[] = '<pre>0.4.1 changes
 -------------
-+ PHP 5 strict formatted.</pre>';        
++ PHP 5 strict formatted.</pre>';
+
+            case version_compare($currentVersion, '0.4.2', '<'):
+            $content[] = '<pre>0.4.2 changes
+-------------
++ Using a less strict ignore list.</pre>';
     }
 
     return TRUE;

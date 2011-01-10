@@ -258,6 +258,12 @@ Please download 1.2.1.</pre>';
 + Icon class used.
 + PHP 5 strict fixes</pre>
 ';
+
+        case version_compare($currentVersion, '1.6.4', '<'):
+            $content[] = '<pre>1.6.4 changes
+---------------
++ Bug fix with database initialization</pre>
+';
     }
     return true;
 }
