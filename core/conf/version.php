@@ -6,5 +6,5 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-$version = '1.7.0';
+$version = '1.7.1';
 ?>
