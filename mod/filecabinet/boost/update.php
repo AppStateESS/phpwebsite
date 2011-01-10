@@ -568,6 +568,12 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Lightbox option for public folders.
 + Image carousel switched to jcarousel with Lightbox usage.
 + Updated to work with core updates.</pre>';
+
+            case version_compare($version, '2.3.1', '<'):
+            $content[] = '<pre>2.3.1 changes
+---------------------
++ Setting added to allow direct links to documents
++ Fixed captioned image template</pre>';
             return true;
     }
 }
