@@ -5,39 +5,13 @@
  * @author Hilmar Runge <ngwebsite.net>
  */
 
-class Boost_Form {
-
-    function __construct()
-    {
-    }
-
-    public static function boostTab(PHPWS_Panel $panel)
-    {
-        if (!isset($_REQUEST['tab'])) {
-            return $panel->getCurrentTab();
-        }  else {
-            return $_REQUEST['tab'];
-        }
-    }
-
-    public static function setTabs(PHPWS_Panel $panel)
-    {
-        $link = 'index.php?module=boost&amp;action=admin';
-
-        $core_links['title'] = dgettext('boost', 'Core Modules');
-        $other_links['title'] = dgettext('boost', 'Other Modules');
-
-        $other_links['link'] = $core_links['link']  = $link;
-
-        $tabs['core_mods'] = $core_links;
-        $tabs['other_mods'] = $other_links;
-
-        $panel->quickSetTabs($tabs);
-    }
+class ngBoost_Form {
 
     public static function listModules($type)
     {
+	
         Layout::addStyle('boost');
+		
         PHPWS_Core::initCoreClass('Module.php');
         PHPWS_Core::initCoreClass('Text.php');
         PHPWS_Core::initCoreClass('File.php');
@@ -78,107 +52,80 @@ class Boost_Form {
             $template['TITLE']   = $core_db->proper_name;
             $template['VERSION'] = $core_db->version;
 
-            // H 20101126.2 (
-            PHPWS_Core::isBranch()
-                ?$alnk=''
-                :$alnk = '<a href="javascript:ngBu(\'core\')">Backup</a>';
-            $template['VERSION'] .= NGSP3 . '<span id="ngmsgt11'.'core'.'">'
-                . $alnk
-                . '</span>';
-            // )
+            PHPWS_Core::isBranch() ? $alnk='' 
+			: $alnk = '<a href="javascript:ngBu(\'core\')">'.dgettext('ngboost','Backup').'</a>';
+            $template['VERSION'] .= NGSP3 . '<span id="ngmsgt11'.'core'.'">' . $alnk . '</span>';
 
+			// (
             if (isset($_SESSION['Boost_Needs_Update']['core'])) {
                 $link_title = $_SESSION['Boost_Needs_Update']['core'];
                 if (version_compare($core_file->version, $_SESSION['Boost_Needs_Update']['core'], '<')) {
-                    $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
+                    $link_title = sprintf(dgettext('ngboost', '%s - New'), $link_title);
                 }
+			// )
             } else {
-                $link_title = dgettext('boost', 'Check');
+                $link_title = dgettext('ngboost', 'Check');
             }
 
             if ($core_file->isAbout()) {
-                $address = PHPWS_Text::linkAddress('boost',
-                array('action' => 'aboutView', 'aboutmod'=> $core_file->title),
-                true);
-                $aboutView = array('label'=>dgettext('boost', 'About'), 'address'=>$address);
-                $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
-                // H 20101108.3 (
-                $alnk='<a href="javascript:ngAbout(\''.$core_file->title.'\')">about</a>';
+                $alnk='<a href="javascript:ngAbout(\''.$core_file->title.'\')">'.dgettext('ngboost','about').'</a>';
                 $template['ABOUT'] = $alnk;
-                // )
             }
 
 
             $link_command['opmod'] = 'core';
             $link_command['action'] = 'check';
             if (ini_get('allow_url_fopen')) {
-
-                $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
-
-            // H 20101105.1 (	builds the check link for core mods - core
-                // only for observation
-                $lnk = new PHPWS_Link();
-                $lnk->title = $link_title;
-                $lnk->module = 'ngboost';
-                $lnk->secure = true;
-                $lnk->addValues($link_command);
-                // test($lnk->getAddress());
-                // index.php?module=ngboost&amp;opmod=core&amp;action=check&amp;authkey=94c119dd554b2b592a4c4edc56a24121
-            // )
-            // H 20101108.2 (
-                    $template['LATEST'] = '<a href="javascript:ngCheck(\'core\')">'
-                        .'<span id="ngchk'.'core'.'">'.$link_title.'</span></a>';
-            // )
-
+                $template['LATEST'] = '<a href="javascript:ngCheck(\'core\')">'
+                .'<span id="ngchk'.'core'.'">'.$link_title.'</span></a>';
             } else {
-                $template['LATEST'] = dgettext('boost', 'Check disabled');
+                $template['LATEST'] = dgettext('ngboost', 'Check disabled');
             }
 
+			// (
             if (version_compare($core_db->version, $core_file->version, '<')) {
                 if ($core_file->checkDependency()) {
                     if ($allow_update) {
                         $link_command['action'] = 'update_core';
-                        $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Update'), 'boost', $link_command);
+                        $core_links[] = PHPWS_Text::secureLink(dgettext('ngboost', 'Update'), 'boost', $link_command);
                     } else {
-                        $core_links[] = dgettext('boost', 'Update');
+                        $core_links[] = dgettext('ngboost', 'Update');
                     }
-                    $tpl['WARNING'] = dgettext('boost', 'The Core requires updating! You should do so before any modules.');
+                    $tpl['WARNING'] = dgettext('ngboost', 'The Core requires updating! You should do so before any modules.');
                     $core_update_needed = true;
                 } else {
                     $link_command['action'] = 'show_dependency';
-                    $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Missing dependency'), 'boost', $link_command);
-
-                    // H 20101107.2 (
-                    //	$alnk='<a href="javascript:about(\''.$mod->title.'\',\''.Current_User::getAuthKey().'\')">about</a>';
-                    // )
-
+                    $core_links[] = PHPWS_Text::secureLink(dgettext('ngboost', 'Missing dependency'), 'boost', $link_command);
                 }
 
                 $template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version);
-                $template['COMMAND'] = implode(' | ', $core_links);
+                $template['COMMAND'] = ltrim(implode(' ', $core_links));
             } else {
-                $template['COMMAND'] = dgettext('boost', 'None');
+                $template['COMMAND'] = dgettext('ngboost', 'None');
             }
-
+			// )
 
             $template['ROW']     = 1;
             $tpl['mod-row'][] = $template;
+			
         } else {
+		
+			// OTHER MODS
             $allowUninstall = true;
             $modList = $dir_mods;
         }
 
-        $tpl['TITLE_LABEL']   = dgettext('boost', 'Module Title');
-        $tpl['COMMAND_LABEL'] = dgettext('boost', 'Commands');
-        $tpl['ABOUT_LABEL']   = dgettext('boost', 'More information');
-        $tpl['VERSION_LABEL'] = dgettext('boost', 'Current version');
+        $tpl['TITLE_LABEL']   = dgettext('ngboost', 'Module Title');
+        $tpl['COMMAND_LABEL'] = dgettext('ngboost', 'Commands');
+        $tpl['ABOUT_LABEL']   = dgettext('ngboost', 'More information');
+        $tpl['VERSION_LABEL'] = dgettext('ngboost', 'Current version');
 
         if ($type == 'core_mods' && Current_User::isDeity() && NG_DEITIES_CAN_UNINSTALL) {
-            $tpl['WARNING'] = dgettext('boost', 'WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
+            $tpl['WARNING'] = dgettext('ngboost', 'WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
         }
 
         if (empty($modList)) {
-            return dgettext('boost', 'No modules available.');
+            return dgettext('ngboost', 'No modules available.');
         }
 
         sort($modList);
@@ -198,16 +145,10 @@ class Boost_Form {
             if (!isset($proper_name)) {
                 $proper_name = $title;
             }
-
             $template['VERSION'] = $mod->version;
-            // H 20101124.3 (
-            PHPWS_Core::isBranch()
-            ?$alnk = ''
-            :$alnk = '<a href="javascript:ngBu(\''.$title.'\')">Backup</a>';
-            $template['VERSION'] .= NGSP3 . '<span id="ngmsgt11'.$title.'">'
-                . $alnk
-                . '</span>';
-            // )
+            PHPWS_Core::isBranch() ? $alnk = ''
+			: $alnk = '<a href="javascript:ngBu(\''.$title.'\')">'.dgettext('ngboost','Backup').'</a>';
+            $template['VERSION'] .= NGSP3 . '<span id="ngmsgt11'.$title.'">' . $alnk . '</span>';
             $template['TITLE'] = $proper_name;
             $template['ROW'] = ($count % 2) + 1;
 
@@ -217,67 +158,45 @@ class Boost_Form {
                 if (isset($_SESSION['Boost_Needs_Update'][$mod->title])) {
                     $link_title = $_SESSION['Boost_Needs_Update'][$mod->title];
                     if (version_compare($mod->version, $_SESSION['Boost_Needs_Update'][$mod->title], '<')) {
-                        $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
+                        $link_title = sprintf(dgettext('ngboost', '%s - New'), $link_title);
                     }
                 } else {
-                    $link_title = dgettext('boost', 'Check');
+                    $link_title = dgettext('ngboost', 'Check');
                 }
 
                 $link_command['action'] = 'check';
                 if (ini_get('allow_url_fopen')) {
-                    $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
-                    // H 20101107.5 (
                     $template['LATEST'] = '<a href="javascript:ngCheck(\''.$mod->title.'\')">'
-                        .'<span id="ngchk'.$mod->title.'">'.$link_title.'</span></a>';
-                    // )
+                    .	'<span id="ngchk'.$mod->title.'">'.$link_title.'</span></a>';
                 } else {
-                    $template['LATEST'] = dgettext('boost', 'Check disabled');
+                    $template['LATEST'] = dgettext('ngboost', 'Check disabled');
                 }
             }
 
             if (!$mod->isInstalled()) {
                 if ($mod->checkDependency()) {
-                    $link_title = dgettext('boost', 'Install');
-                    $link_command['action'] = 'install';
-                    // H 20101108.5 (
-                    $ngALnk11085 = '<a id="ngin'.$mod->title.'" href="javascript:ngInstall(\''.$mod->title.'\')">'
-                        .dgettext('boost', 'Install').'</a>';
-                    // )
+ 					$link_title = dgettext('boost', 'Install');
+					$link_command['action'] = 'install';
+					$ngALnk11085 = '<a id="ngin'.$mod->title.'" href="javascript:ngInstall(\''.$mod->title.'\')">'
+                    .	dgettext('ngboost', 'Install').'</a>';
                 } else {
-                    $link_title = dgettext('boost', 'Missing dependency');
-
-                    $link_command['action'] = 'show_dependency';
-                    // H 20101107.1 (
-                    $ngALnk11071 = '<a href="javascript:ngShowDep(\''.$mod->title.'\')">'
-                        .dgettext('boost', 'Missing dependency').'</a>';
-                    // )
-
+ 					$link_title = dgettext('boost', 'Missing dependency');
+					$link_command['action'] = 'show_dependency';
+					$ngALnk11071 = '<a href="javascript:ngShowDep(\''.$mod->title.'\')">'
+                    .	dgettext('ngboost', 'Missing dependency').'</a>';
                 }
 
                 if ($GLOBALS['Boost_Ready']) {
-                    if (javascriptEnabled()) {
-                        $js['width'] = 640;
-                        $js['height'] = 480;
-                        $js['address'] = PHPWS_Text::linkAddress('boost', $link_command, true);
-                        $js['label'] = $link_title;
-                        // H20101107.1 (
-                        if (isset($ngALnk11071) && isset($ngALnk11085)) {
-                            $links[] = @$ngALnk11071 . @$ngALnk11085;
-                            unset($ngALnk11071);
-                            unset($ngALnk11085);
-                        } else {
-                        // )
-                            $links[] = javascript('open_window', $js);
-                        // (
-                        }
-                        // )
-                        unset($js);
-                    } else {
-                        $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+					// if either or !!!
+                    if (isset($ngALnk11071) || isset($ngALnk11085)) {
+                        $links[] = @$ngALnk11071 . @$ngALnk11085;
+                        unset($ngALnk11071);
+                        unset($ngALnk11085);
                     }
                 } else {
                     $links[] = & $link_title;
                 }
+				
             } else {
                 if ($mod->needsUpdate()) {
                     $db_mod = new PHPWS_Module($mod->title, false);
@@ -285,31 +204,21 @@ class Boost_Form {
 
                     if ($mod->checkDependency()) {
                         if ($title == 'boost' && !$core_update_needed) {
-                            $tpl['WARNING'] = dgettext('boost', 'Boost requires updating! You should do so before any other module!');
+                            $tpl['WARNING'] = dgettext('ngboost',
+							'Boost requires updating! You should do so before any other module!');
                         }
-                        $link_title = dgettext('boost', 'Update');
+                        $link_title = dgettext('ngboost', 'Update');
                         $link_command['action'] = 'update';
-                    // H 20101109.2 (
-                    $ngALnk11092 = '<a id="ngup'.$mod->title.'" href="javascript:ngUpdate(\''.$mod->title.'\')">'
-                        .dgettext('boost', 'Update').'</a>';
-                    // )
+						$ngALnk11092 = '<a id="ngup'.$mod->title.'" href="javascript:ngUpdate(\''.$mod->title.'\')">'
+						.	dgettext('ngboost', 'Update').'</a>';
                     } else {
-                        $link_title = dgettext('boost', 'Missing dependency');
+                        $link_title = dgettext('ngboost', 'Missing dependency');
                         $link_command['action'] = 'show_dependency';
                     }
                     if ($allow_update) {
-                        $js['width'] = 640;
-                        $js['height'] = 480;
-                        $js['address'] = PHPWS_Text::linkAddress('boost', $link_command, true);
-                        $js['label'] = $link_title;
-                        // H 20101109.2 (
                         if ($ngALnk11092) {
                             $links[] = $ngALnk11092;
                             unset($ngALnk11092);
-                        } else {
-                        // )
-                            $links[] = javascript('open_window', $js);
-                            unset($js);
                         }
                     } else {
                         $links[] = & $link_title;
@@ -319,71 +228,49 @@ class Boost_Form {
                 if ($type != 'core_mods' || Current_User::isDeity() && NG_DEITIES_CAN_UNINSTALL) {
                     if ($dependents = $mod->isDependedUpon()) {
                         $link_command['action'] = 'show_depended_upon';
-                        $depend_warning = sprintf(dgettext('boost', 'This module is depended upon by: %s'), implode(', ', $dependents));
-
-                        // H20101107.4 (
-                        $ngALnk11074 = '<a href="javascript:ngShowDepUpon(\''.$mod->title.'\')">'
-                            .dgettext('boost', 'Depended upon').'</a>';
-                        $links[] = $ngALnk11074;
-                        // - $links[] = PHPWS_Text::secureLink(dgettext('boost', 'Depended upon'), 'boost', $link_command, NULL, $depend_warning);
-                        // )
+                        $depend_warning = sprintf(dgettext('ngboost', 'This module is depended upon by: %s'),
+							implode(', ', $dependents));
+                        $links[] = '<a href="javascript:ngShowDepUpon(\''.$mod->title.'\')">'
+                        .	dgettext('ngboost', 'Depended upon').'</a>';
                     } else {
-                        // H 201011086 (
-                        $ngALnk11086 = '<a id="ngun'.$mod->title.'" href="javascript:ngUnInstall(\''.$mod->title.'\')">'
-                            .dgettext('boost', 'Uninstall').'</a>';
-                        $links[] = $ngALnk11086;
-                        // - $links[] = PHPWS_Boost::uninstallLink($title);
-                        // )
+                        $links[] = '<a id="ngun'.$mod->title.'" href="javascript:ngUnInstall(\''.$mod->title.'\')">'
+                        .	dgettext('ngboost', 'Uninstall').'</a>';
                     }
                 }
             }
 
             if ($mod->isAbout()) {
-                // H 20071105.2
-                // -	$address = PHPWS_Text::linkAddress('boost',
-                // -	array('action' => 'aboutView', 'aboutmod'=> $mod->title),
-                // -	true);
-                // - 	$aboutView = array('label'=>dgettext('boost', 'About'), 'address'=>$address);
-
-                // H 20101105.2 (
-                //	strange ? mod-title has the mod-name
                 $alnk='<a href="javascript:ngAbout(\''.$mod->title.'\')">about</a>';
                 $template['ABOUT'] = $alnk;
-                //)
-
-                // -	$template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
 
             if (!empty($links)) {
-                $template['COMMAND'] = implode(' | ', $links);
+                $template['COMMAND'] = ltrim(implode(' ', $links));
             } else {
-                $template['COMMAND'] = dgettext('boost', 'None');
+                $template['COMMAND'] = dgettext('ngboost', 'None');
             }
 
             $tpl['mod-row'][] = $template;
             $count++;
         }
 
-        $tpl['OLD_MODS'] = Boost_Form::oldModList();
+        $tpl['OLD_MODS'] = ngBoost_Form::oldModList();
 
         if (ini_get('allow_url_fopen')) {
-            $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'ngboost',
-            array('action' => 'check_all', 'tab' => $type));
-            // H 20101108.1 (
             $tpl['CHECK_FOR_UPDATES'] = '<a href="javascript:ngCheckAll()">Check all</a>';
-            // )
-            // H 20101125.5 (
+			
             PHPWS_Core::isBranch()
             ?$alnk =  '<a href="javascript:ngBuBranch()">Backup Branch</a>'
             :$alnk = '<a href="javascript:ngBuAll()">Backup all</a>';
+			
             $tpl['CHECK_FOR_UPDATES'] = $alnk . NGSP3 . $tpl['CHECK_FOR_UPDATES'];
-            // )
+			
         } else {
-            $tpl['CHECK_FOR_UPDATES'] = dgettext('boost', 'Server configuration prevents version checking.');
+            $tpl['CHECK_FOR_UPDATES'] = dgettext('ngboost', 'Server configuration prevents version checking.');
         }
 
 
-        $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
+        $tpl['LATEST_LABEL'] = dgettext('ngboost', 'Latest version');
 
         $release_version = PHPWS_Core::releaseVersion();
         $tpl['PHPWS_VERSION'] = $release_version;
@@ -391,6 +278,7 @@ class Boost_Form {
         $result = PHPWS_Template::process($tpl, 'ngboost', 'module_list.tpl');
         return $result;
     }
+	
 
     public static function ngTabRepo()
     {
@@ -431,6 +319,13 @@ class Boost_Form {
         return $alnk;
     }
 
+    public static function ngTabTune()
+    {
+        $alnk = '<a href="javascript:ngPlain(\'ts\')">Distro</a>'
+        .		'<p id="ngmsgt71"></p>';
+        return $alnk;
+    }
+
     public function ngTabListTable($mod,$table)
     {
         $tc = md5($table);
@@ -457,8 +352,8 @@ class Boost_Form {
 
         $old_mods = & $GLOBALS['Boost_Old_Mods'];
 
-        $content[] = dgettext('boost', 'The following modules are from an earlier version of phpWebSite and will not function.');
-        $content[] = dgettext('boost', 'Please remove them from the mod directory.');
+        $content[] = dgettext('ngboost', 'The following modules are from an earlier version of phpWebSite and will not function.');
+        $content[] = dgettext('ngboost', 'Please remove them from the mod directory.');
         foreach ($old_mods as $mod) {
             include sprintf('%smod/%s/conf/boost.php', PHPWS_SOURCE_DIR, $mod);
             $directory = sprintf('%smod/%s/', PHPWS_SOURCE_DIR, $mod);

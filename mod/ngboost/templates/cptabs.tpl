@@ -6,6 +6,7 @@
         <li><a href="#ngbstcptab4" class="ngbsttab"><span>New</span></a></li>
         <li><a href="#ngbstcptab5" class="ngbsttab"><span>Repository</span></a></li>
         <li><a href="#ngbstcptab6" class="ngbsttab"><span>Database</span></a></li>
+        <li><a href="#ngbstcptab7" class="ngbsttab"><span>Tune</span></a></li>
     </ul>
 	<div id="ngbstcpbody">
 		<div id="ngbstcptab1">
@@ -26,7 +27,10 @@
 		<div id="ngbstcptab6">
 			{DBAC}
 		</div>
+		<div id="ngbstcptab7">
+			{TUNE}
+		</div>
 	</div>
-	<div id="ngbstcpfoot" style="max-height:180px; overflow:auto;">
+	<div id="ngbstcpfoot">
 	</div>
 </div>

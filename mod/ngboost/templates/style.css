@@ -34,6 +34,14 @@
 	padding: 0;
 }
 
+#ngbstcpfoot {
+	max-height: 180px;
+	overflow: auto;
+}
+
+.jqmWindow {
+	background-color: #ffc;
+}
 .ngtable {
 	width: 99%;
 }

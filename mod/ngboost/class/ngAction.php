@@ -5,131 +5,200 @@
  * @author Hilmar Runge <ngwebsite.net>
  */
 
-PHPWS_Core::initModClass('boost', 'Boost.php');
+    define('NGANYHELP', '<div style="text-align:right;">'
+                    . '<img class="ngAnyHelp" src="'.PHPWS_SOURCE_HTTP
+                    . 'mod/ngboost/img/help.16.gif" alt=" ? " />'
+                    . '</div>');
+    define('NGJQMCLOSE', '<div style="text-align:right;">'
+                    .  '<img id="ngjqmclose" class="jqmClose" src="'.PHPWS_SOURCE_HTTP
+                    .  'mod/ngboost/img/close.16.gif" alt=" X " />'
+                    .  '</div>');
+    define('NGSAYOK', '<img id="ngok" src="'.PHPWS_SOURCE_HTTP.'mod/ngboost/img/ok.10.gif" alt=" ok " />');
+    define('NGSAYKO', '<img id="ngko" src="'.PHPWS_SOURCE_HTTP.'mod/ngboost/img/ko.10.gif" alt=" fail " />');
+    define('NGSP3',	'&nbsp;&nbsp;&nbsp;');
+    define('NGBR',	'<br />');
+	
+	define('BYASU', 'http://phpwebsite.appstate.edu/downloads/modules/');
+	define('BYNGWS','http://ngwebsite.net/distro/distro7829/modules/');
+	define('BYSF',  'http://downloads.sourceforge.net/project/ngwebsite/phpWebSite/modules/');
+
 
 class ngBoost_Action {
 
-    function __construct()
+    public function __construct()
     {
+	
+		PHPWS_Core::initModClass('ngboost', 'ngForm.php');
+		PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+					
+		PHPWS_Core::initModClass('boost', 'Boost.php');
+	}
+
+    public function index()
+    {
+		if ($this) {
+			switch ($_REQUEST['action']){
+			case 'admin':
+				if (isset($_REQUEST['xaop'])) {
+					$this->indexBG();
+				} else {
+					$this->main();
+				}
+				break;
+			case 'check_all':
+				$this->ngCheckAll();
+				break;
+			}
+		}
     }
 
-    public static function index()
+    protected function main()
     {
-        if (!isset($_REQUEST['xaop'])) {
-            return;
-        }
+		if ($this) {
+			// FG interactive
+			$boostPanel = new PHPWS_Panel('ngboost');
+			$boostPanel->enableSecure();
+
+			javascriptMod('ngboost', 'ng');
+			Layout::addStyle('ngboost','style.css');
+
+			$tpl['MOCO'] = NGANYHELP.ngBoost_Form::listModules('core_mods');
+			$tpl['MOOT'] = NGANYHELP.ngBoost_Form::listModules('other_mods');
+			$tpl['MONO'] = NGANYHELP.'Modules not suitable for this version - to do';
+			$tpl['MONE'] = NGANYHELP.'New and community modules available for this version - to do';
+			$tpl['MORE'] = NGANYHELP.ngBoost_Form::ngTabRepo();
+			$tpl['DBAC'] = NGANYHELP.ngBoost_Form::ngTabDB();
+			$tpl['TUNE'] = NGANYHELP.ngBoost_Form::ngTabTune();
+
+			Layout::add(PHPWS_ControlPanel::display('<h2>Modules</h2>
+			<div id="ngmsg" style="font-family: monospace;" class="jqmWindow">&nbsp;</div>
+			<div id="ngpar" class="jqmWindow">&nbsp;</div>'
+			. PHPWS_Template::process($tpl, 'ngboost', 'cptabs.tpl') ));
+		}
+	}
+	
+    protected function indexBG()
+    {
+		// BG actions
         switch ($_REQUEST['xaop']) {
-            // The BG actions
-            case 'a':
-                ngBoost_Action::ngShowAbout($_REQUEST['p']);
-                return;
-                break;
-            case 'bm':
-                ngBoost_Action::ngBU($_REQUEST['p']);
-                return;
-                break;
-            case 'B':
-                ngBoost_Action::ngBuAll();
-                return;
-                break;
-            case 'Br':
-                ngBoost_Action::ngBuBranch();
-                return;
-                break;
-            case 'bt':
-                ngBoost_Action::ngBuTbl($_REQUEST['tn']);
-                return;
-                break;
-            case 'btn':
-                ngBoost_Action::ngBuTblAll($_REQUEST['rs']);
-                return;
-                break;
-            case 'btm':
-                ngBoost_Action::ngBuTblMod($_REQUEST['rs']);
-                return;
-                break;
-            case 'bt1':
-                ngBoost_Action::ngBuTbl1($_REQUEST['rs']);
-                return;
-                break;
-            case 'c':
-                ngBoost_Action::ngCheck($_REQUEST['p']);
-                return;
-                break;
-            case 'C':
-                ngBoost_Action::ngCheckAll();
-                return;
-                break;
-            case 'crp':
-                ngBoost_Action::ngCheckRepo();
-                return;
-                break;
-            case 'd':
-                ngBoost_Action::ngShowDep($_REQUEST['p']);
-                return;
-                break;
-            case 'h':
-                ngBoost_Action::ngAnyHelp($_REQUEST['h']);
-                return;
-                break;
-            case 'dy':
-                ngBoost_Action::ngBuDel($_REQUEST['fn']);
-                return;
-                break;
-            case 'in':
-                ngBoost_Action::ngInstall($_REQUEST['p']);
-                return;
-                break;
-            case 'ldb':
-                ngBoost_Action::ngListDB();
-                return;
-                break;
-            case 'lrp':
-                ngBoost_Action::ngListRepo();
-                return;
-                break;
-            case 'ltar':
-                ngBoost_Action::ngListTar($_REQUEST['fn']);
-                return;
-                break;
-            case 're':
-                $fn=$_SESSION['FG']['ngfn'][$_REQUEST['fn']];
-                if (substr($fn,-4)=='.tgz' || substr($fn,-7)=='.tar.gz') {
-                    ngBoost_Action::ngReTar($_REQUEST['fn']);
+        case 'a':
+            $this->ngShowAbout($_REQUEST['p']);
+            return;
+            break;
+        case 'bm':
+            $this->ngBU($_REQUEST['p']);
+            return;
+            break;
+        case 'B':
+            $this->ngBuAll();
+            return;
+            break;
+        case 'Br':
+            $this->ngBuBranch();
+            return;
+            break;
+        case 'bt':
+            $this->ngBuTbl($_REQUEST['tn']);
+            return;
+            break;
+        case 'btn':
+            $this->ngBuTblAll($_REQUEST['rs']);
+            return;
+            break;
+        case 'btm':
+            $this->ngBuTblMod($_REQUEST['rs']);
+            return;
+            break;
+        case 'bt1':
+            $this->ngBuTbl1($_REQUEST['rs']);
+            return;
+            break;
+        case 'c':
+            $this->ngCheck($_REQUEST['p']);
+            return;
+            break;
+        case 'C':
+            $this->ngCheckAll();
+            return;
+            break;
+        case 'crp':
+            $this->ngCheckRepo();
+            return;
+            break;
+        case 'd':
+            $this->ngShowDep($_REQUEST['p']);
+            return;
+            break;
+        case 'h':
+            $this->ngAnyHelp($_REQUEST['h']);
+            return;
+            break;
+        case 'dy':
+            $this->ngBuDel($_REQUEST['fn']);
+            return;
+            break;
+        case 'in':
+            $this->ngInstall($_REQUEST['p']);
+            return;
+            break;
+        case 'ldb':
+            $this->ngListDB();
+            return;
+            break;
+        case 'lrp':
+            $this->ngListRepo();
+            return;
+            break;
+        case 'ltar':
+            $this->ngListTar($_REQUEST['fn']);
+            return;
+            break;
+        case 're':
+            $fn=$_SESSION['FG']['ngfn'][$_REQUEST['fn']];
+            if (substr($fn,-4)=='.tgz' || substr($fn,-7)=='.tar.gz') {
+                $this->ngReTar($_REQUEST['fn']);
+            } else {
+                if (substr($fn,-5)=='.data') {
+					$this->ngReTbl($_REQUEST['fn']);
                 } else {
-                    if (substr($fn,-5)=='.data') {
-                        ngBoost_Action::ngReTbl($_REQUEST['fn']);
-                    } else {
-                        $_SESSION['BG']=dgettext('ngboost','invalid file type');
-                    }
+                    $_SESSION['BG']=dgettext('ngboost','invalid file type');
                 }
-                return;
-                break;
-            case 'un':
-                ngBoost_Action::ngUnInstall($_REQUEST['p']);
-                return;
-                break;
-            case 'uc':
-                // JUST TO WORK OUT - - -
-                ngBoost_Action::ngUpdateCore();
-                return;
-                break;
-            case 'up':
-                ngBoost_Action::ngUpdate($_REQUEST['p']);
-                return;
-                break;
-            case 'u':
-                ngBoost_Action::ngShowDepUpon($_REQUEST['p']);
-                return;
-                break;
-            case 'tget':
-                ngBoost_Action::ngPickupTgz($_REQUEST['m']);
-                return;
-                break;
+            }
+            return;
+            break;
+        case 'ts':
+			$this->ngTuneSources();
+            return;
+            break;
+        case 'tS':
+			$this->ngTuneSourceSet();
+            return;
+            break;
+        case 'un':
+            $this->ngUnInstall($_REQUEST['p']);
+            return;
+            break;
+        case 'uc':
+            // JUST TO WORK OUT - - -
+            ngBoost_Action::ngUpdateCore();
+            return;
+            break;
+        case 'up':
+            $this->ngUpdate($_REQUEST['p']);
+            return;
+            break;
+        case 'u':
+            $this->ngShowDepUpon($_REQUEST['p']);
+            return;
+            break;
+        case 'tget':
+            $this->ngPickupTgz($_REQUEST['m']);
+            return;
+            break;
         }
     }
 
-    public function ngShowAbout($mod)
+    protected function ngShowAbout($mod)
     {
         if ($mod == 'core') {
             $c1 = file_get_contents(PHPWS_SOURCE_DIR.'core/boost/about.html');
@@ -142,17 +211,17 @@ class ngBoost_Action {
         $_SESSION['BG'] = NGJQMCLOSE.'<h1>' . str_replace('onclick="window.close()"', 'class="jqmClose"',$c3[0]);
     }
 
-    public function ngShowDep($mod)
+    protected function ngShowDep($mod)
     {
         $_SESSION['BG'] = NGJQMCLOSE.ngBoost_Action::showDependency($mod);
     }
 
-    public function ngShowDepUpon($mod)
+    protected function ngShowDepUpon($mod)
     {
         $_SESSION['BG'] = NGJQMCLOSE.ngBoost_Action::showDependedUpon($mod);
     }
 
-    public function ngCheck($mod)
+    protected function ngCheck($mod)
     {
         $cnt = ngBoost_Action::checkupdate($mod);
 
@@ -164,21 +233,20 @@ class ngBoost_Action {
             . NGJQMCLOSE.$cnt;
     }
 
-    public function ngCheckAll()
+    protected function ngCheckAll()
     {
-        $mods = implode('--', PHPWS_Boost::getAllMods());
-
-        $_SESSION['BG'] = 'core'.'--'.$mods;
+			$mods = implode('--', PHPWS_Boost::getAllMods());
+			$_SESSION['BG'] = 'core'.'--'.$mods;
     }
 
-    public function ngCheckRepo()
+    protected function ngCheckRepo()
     {
-        $rp=ngBoost_Action::ngGetRepositoryPath();
+        $rp=$this->ngGetRepositoryPath();
         $_SESSION['BG']='State of repository path ';
         $rp ? $_SESSION['BG'] .= NGSAYOK : $_SESSION['BG'] .= NGSAYKO;
     }
 
-    public function ngInstall($mod)
+    protected function ngInstall($mod)
     {
         $result = ngBoost_Action::installModule($_REQUEST['p']);
 
@@ -197,7 +265,7 @@ class ngBoost_Action {
         $_SESSION['BG'] = implode('',$content);
     }
 
-    public function ngUnInstall($mod)
+    protected function ngUnInstall($mod)
     {
         if (@$_REQUEST['confirm'] == $_REQUEST['p']) {
             // 1st status feedback, 2nd mod, 3rd flip action translated
@@ -211,10 +279,10 @@ class ngBoost_Action {
         $_SESSION['BG'] = implode('', $content);
     }
 
-    public static function ngUpdate($mod)
+    protected function ngUpdate($mod)
     {
         $boost = new PHPWS_Boost;
-        $boost->loadModules(array($mod), FALSE);
+		$boost->loadModules(array($mod), FALSE);
 
         $results = array();
 
@@ -233,15 +301,15 @@ class ngBoost_Action {
         // just TO DO !!!!!!!!!!!!!!
     }
 
-    public static function ngGetRepositoryPath()
+    protected function ngGetRepositoryPath()
     {
         PHPWS_Core::initCoreClass('ngBackup.php');
         return ngBackup::getRepositoryPath();
     }
 
-    public function ngListRepo()
+    protected function ngListRepo()
     {
-                $rp=ngBoost_Action::ngGetRepositoryPath();
+                $rp=$this->ngGetRepositoryPath();
                 $_SESSION['BG']='<b>'.dgettext('ngboost','Content of repository').'</b><br />';
                 $filenames=array();
                 $dir=opendir($rp);
@@ -269,7 +337,7 @@ class ngBoost_Action {
                         $szsum=$szsum + $sz;
                         $_SESSION['BG'] .= '<tr class="'.$cl.'"><td>' . $f . '</td>'
                         . '<td style="text-align:right;">' . sprintf("%u",$sz) . '</td>'
-                        . '<td id="ngop'.md5($f).'">' . Boost_Form::ngTabLTar($f) . '</td></tr>';
+                        . '<td id="ngop'.md5($f).'">' . ngBoost_Form::ngTabLTar($f) . '</td></tr>';
                     }
                     $_SESSION['BG'] .= '</tbody><tr class="ngtrfoot"><td style="text-align:right;">'
                     . $fct . ' ' . dgettext('ngboost','files') . '</td>'
@@ -281,7 +349,7 @@ class ngBoost_Action {
 
     }
 
-    public function ngListDB()
+    protected function ngListDB()
     {
         // associate tables to mods
         $mods=PHPWS_Boost::getAllMods();
@@ -322,6 +390,7 @@ class ngBoost_Action {
         .	' </th></tr></thead><tbody class="ngtbody">';
         unset($_SESSION['FG']['ngtn']);
         unset($_SESSION['FG']['ngtm']);
+		
         foreach ($ar as $mod => $tbs) {
             if (count($tbs)==0) {
             } else {
@@ -335,7 +404,7 @@ class ngBoost_Action {
 
                     $_SESSION['FG']['ngtm'][md5($mod)]=$mod;
 
-                    $_SESSION['BG'] .= '<td>' . Boost_Form::ngTabListTables('m',$mod,$tbs) . '</td>';
+                    $_SESSION['BG'] .= '<td>' . ngBoost_Form::ngTabListTables('m',$mod,$tbs) . '</td>';
                 } else {
                     $_SESSION['BG'] .= '<td>' . 'Module not installed' . '</td>';
                 }
@@ -347,7 +416,7 @@ class ngBoost_Action {
                 $_SESSION['BG'] .= '<td>' . $tb . '</td>';
                 $_SESSION['BG'] .= '<td>';
                 if (in_array($tb,$tl)) {
-                    $_SESSION['BG'] .= Boost_Form::ngTabListTable($mod,$tb);
+                    $_SESSION['BG'] .= ngBoost_Form::ngTabListTable($mod,$tb);
                 } else {
                     $_SESSION['BG'] .= 'not available';
                 }
@@ -356,30 +425,13 @@ class ngBoost_Action {
                 $_SESSION['BG'] .= '</tr>';
             }
         }
-        $_SESSION['BG'] .= '</tbody></table><hr />'
-        .	'<div style="text-align:center;">'
-        .	'<a href="javascript:ngBuTs1(\'n\',\''.md5('all').'\')">BackupAllTables</a>'
-        .	'</div>';
-        return;
-        if ($tl) {
-            if (is_array($tl)) {
-                $_SESSION['BG'] = '<div style="width:99%; max-height:228px; overflow:auto;"><table>';
-                foreach ($tl as $tn) {
-                    $cl=='bgcolor1'?$cl='bgcolor2':$cl='bgcolor1';
-                    $_SESSION['BG'] .= '<tr class="'.$cl.'"><td>'.$tn.'</td>'
-                    .	'<td>' . Boost_Form::ngTabLTabs($tn) . '</td>'
-                    .	'<td><span id="ngt6'.md5($tn).'"></span></td>'
-                    .	'</tr>';
-                }
-                $_SESSION['BG'] .= '</table></div>';
-                return;
-            }
-        }
-
-        $_SESSION['BG'] = 'Error accessing db tables';
+        $_SESSION['BG'] .= 	'</tbody></table><hr />'
+						.	'<div style="text-align:center;">'
+						.	'<a href="javascript:ngBuTs1(\'n\',\''.md5('all').'\')">BackupAllTables</a>'
+						.	'</div>';
     }
 
-    public function ngListTar($fnc)
+    protected function ngListTar($fnc)
     {
         $_SESSION['BG']='';
         if (isset($_SESSION['FG']['ngfn'][$fnc])) {
@@ -397,7 +449,7 @@ class ngBoost_Action {
         }
     }
 
-    public function ngReTar($fnc)
+    protected function ngReTar($fnc)
     {
         $_SESSION['BG']='';
         if (isset($_SESSION['FG']['ngfn'][$fnc])) {
@@ -415,7 +467,7 @@ class ngBoost_Action {
         }
     }
 
-    public function ngBU($mod)
+    protected function ngBU($mod)
     {
         PHPWS_Core::initCoreClass('ngBackup.php');
         $ngbu = new ngBackup();
@@ -431,18 +483,18 @@ class ngBoost_Action {
         }
     }
 
-    public function ngBuAll($mod)
+    protected function ngBuAll($mod)
     {
         $mods = 'core--' . implode('--', PHPWS_Boost::getAllMods());
         $_SESSION['BG'] = $mods;
     }
 
-    public function ngBuDel($fnc)
+    protected function ngBuDel($fnc)
     {
         $_SESSION['BG']=' ';
         if (isset($_SESSION['FG']['ngfn'][$fnc])) {
             $fn=$_SESSION['FG']['ngfn'][$fnc];
-            $cc=@unlink(ngBoost_Action::ngGetRepositoryPath().$fn);
+            $cc=@unlink($this->ngGetRepositoryPath().$fn);
             if ($cc) {
                 $_SESSION['BG'] = '#ngop'.$fnc.'--purged--' . NGJQMCLOSE . $fn. ' ' . 'purged' . ' ' . NGSAYOK;
             } else {
@@ -451,7 +503,7 @@ class ngBoost_Action {
         }
     }
 
-    public function ngBuTbl($tnc)
+    protected function ngBuTbl($tnc)
     {
         $_SESSION['BG']=' ';
         if (isset($_SESSION['FG']['ngtn'][$tnc])) {
@@ -464,19 +516,19 @@ class ngBoost_Action {
         }
     }
 
-    public function ngBuTblMod($mod)
+    protected function ngBuTblMod($mod)
     {
         $_SESSION['BG'] .= $mod;
         foreach ($_SESSION['FG']['ngtn']['0m'.$mod] as $tb) {
             $_SESSION['BG'] .= '--' . md5($tb);
         }
     }
-    public function ngBuTblAll($rs)
+    protected function ngBuTblAll($rs)
     {
         $_SESSION['BG']=implode('--',array_keys($_SESSION['FG']['ngtm']));
     }
 
-    public function ngReTbl($fnc)
+    protected function ngReTbl($fnc)
     {
         $_SESSION['BG']='';
         if (isset($_SESSION['FG']['ngfn'][$fnc])) {
@@ -494,9 +546,45 @@ class ngBoost_Action {
         }
     }
 
-    public function ngPickupTgz($mod)
+    protected function ngTuneSources()
     {
-        $repo = ngBoost_Action::ngGetRepositoryPath();
+		$chka = $chkn = $chks = '';
+		$in = ''.PHPWS_Settings::get('ngboost', 'distro');
+		switch ($in) {
+		case 'asu':
+			$chka=' checked="checked" ';
+			break;
+		case 'ngws':
+			$chkn=' checked="checked" ';
+			break;
+		case 'sf':
+			$chks=' checked="checked" ';
+			break;
+		}
+
+		$cnt = '<h4>Distro selection</h4>';
+		$onc = ' type="radio" name="distro" onclick="javascript:ngOnC()" ';
+		
+		$cnt.='<label><input'.$onc.$chka.'value="asu"  />' .htmlentities(BYASU) . '</label>' . NGBR
+		.	 '<label><input'.$onc.$chkn.'value="ngws" />' .htmlentities(BYNGWS). '</label>' . NGBR
+		.	 '<label><input'.$onc.$chks.'value="sf"   />' .htmlentities(BYSF)  . '</label>';
+		$_SESSION['BG'] = $cnt;
+	}
+	
+    protected function ngTuneSourceSet()
+    {
+		$_SESSION['BG'] = ' ';
+		$p	= urlencode($_REQUEST['p']);
+		if ($p=='asu' || $p=='ngws' || $p=='sf') {
+			PHPWS_Settings::set('ngboost', 'distro', $p);
+			PHPWS_Settings::save('ngboost');
+			$_SESSION['BG'] = dgettext('ngboost','Distro set to') . ' ' . $p;
+		}
+	}
+	
+    protected function ngPickupTgz($mod)
+    {
+        $repo = $this->ngGetRepositoryPath();
         if (isset($_SESSION['FG'][$mod])) {
             $tgzf = array_pop(explode('/', $_SESSION['FG'][$mod]));
             if ($repo) {
@@ -520,28 +608,31 @@ class ngBoost_Action {
         }
     }
 
-    public function ngAnyHelp($help)
+    protected function ngAnyHelp($help)
     {
         $helpfile = false;
         switch ($help) {
-            case 'ngbstcptab1':
-                $helpfile = 'cp.core.html';
-                break;
-            case 'ngbstcptab2':
-                $helpfile = 'cp.app.html';
-                break;
-            case 'ngbstcptab3':
-                $helpfile = 'cp.obs.txt';
-                break;
-            case 'ngbstcptab4':
-                $helpfile = 'cp.new.txt';
-                break;
-            case 'ngbstcptab5':
-                $helpfile = 'cp.repo.html';
-                break;
-            case 'ngbstcptab6':
-                $helpfile = 'cp.db.txt';
-                break;
+        case 'ngbstcptab1':
+            $helpfile = 'cp.core.html';
+            break;
+        case 'ngbstcptab2':
+            $helpfile = 'cp.app.html';
+            break;
+        case 'ngbstcptab3':
+            $helpfile = 'cp.obs.txt';
+            break;
+        case 'ngbstcptab4':
+            $helpfile = 'cp.new.txt';
+            break;
+        case 'ngbstcptab5':
+            $helpfile = 'cp.repo.html';
+            break;
+        case 'ngbstcptab6':
+            $helpfile = 'cp.db.txt';
+            break;
+        case 'ngbstcptab7':
+            $helpfile = 'cp.tune.html';
+            break;
         }
 
         $_SESSION['BG'] = NGJQMCLOSE . '<div style="max-height:360px; overflow:auto">';
@@ -652,11 +743,8 @@ class ngBoost_Action {
     public static function uninstallModule($module_title)
     {
         $boost = new PHPWS_Boost;
-        $boost->loadModules(array($module_title));
-
-        $content = $boost->uninstall();
-
-        return $content;
+		$boost->loadModules(array($module_title));
+        return $boost->uninstall();
     }
 
     public function updateCore()
@@ -694,7 +782,6 @@ class ngBoost_Action {
 
     public static function updateModule($module_title)
     {
-        PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title), FALSE);
 
@@ -774,19 +861,6 @@ class ngBoost_Action {
         return PHPWS_Template::process($template, 'boost', 'dependency.tpl');
     }
 
-  /**
-     * deprecated
-     */
-    public function copyLocal($module_title)
-    {
-        return true;
-    }
-
-    // deprecated
-    public function copyCore()
-    {
-        return true;
-    }
 }
 
 ?>

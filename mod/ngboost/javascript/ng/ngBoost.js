@@ -1,7 +1,7 @@
 
 /**
-  * @author Hilmar Runge <hi at dc4db dot net>
-  * @version 20110106
+  * @author Hilmar Runge <ngwebsite.net>
+  * @version 20110108
   */
 	
 	var ngaximg = '<img src="' + source_http + 'mod/ngboost/img/ajax10red.gif" alt="..." />';
@@ -10,7 +10,7 @@
 	var ngkoimg = '<img src="' + source_http + 'mod/ngboost/img/ko.10.gif" alt="ko" />';
 	var ngnoimg = '<img src="' + source_http + 'mod/ngboost/img/no.10.gif" alt="no" />';
 	var ngclose = '<div style="text-align:right;">'
-				+ '<img id="ngjqmclose" class="jqmClose" src="' + source_http + 'mod/ngboost/img/cancel.16.gif" alt=" X " />'
+				+ '<img id="ngjqmclose" class="jqmClose" src="' + source_http + 'mod/ngboost/img/close.16.gif" alt=" X " />'
 				+ '</div>';
 
 	var ngprobar = 0;
@@ -34,7 +34,6 @@
 
 	});
 	
-		
 	function ngAbout(mod) {
 		ngUniCS(mod,'a');
 	}
@@ -231,6 +230,11 @@
 		$(wo).html(cnt + ' ' + ngokimg + '<br /><br />');
 	}
 
+	function ngSetSrc(reply) {
+		var wo = '#ngbstcpfoot';
+		$(wo).html(reply);
+	}
+
 	function ngUniCS(ref,op) {
 		var url = 'ngboost/action/admin/xaop/';
 		switch (op) {
@@ -269,6 +273,9 @@
 				break;
 			case 'wg':
 				url = url + 'tget/m/';
+				break;
+			case 'ws':
+				url = url + 'tS/p/';
 				break;
 			default:
 				return;
@@ -315,6 +322,9 @@
 							case 'wg':
 								ngPickupSC(reply);
 							break;
+							case 'ws':
+								ngSetSrc(reply);
+							break;
 						}
 					}
 		});
@@ -350,8 +360,13 @@
 	}
 	function ngPlainCS(op) {
 		var fb = '#ngmsgt51';
-		if (op == 'ldb') {
+		switch (op) {
+		case 'ldb':
 			fb = '#ngmsgt61';
+			break;
+		case 'ts':
+			fb = '#ngmsgt71';
+			break;
 		}
 		$.ajax({
 			type: "GET",
@@ -484,6 +499,11 @@
 		}
 	}
 	
+	function ngOnC() {
+		var sel = $('input[name=distro]:radio:checked').attr('value');
+		ngUniCS(sel,'ws');
+	}
+		
 	function ngVerReply(reply) {
 		if (reply == '') {
 			return false;

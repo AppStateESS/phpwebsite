@@ -1,0 +1,3 @@
+<FilesMatch "\.(php|htm|html|css|js|gif|jpg|png)$">
+	ForceType application/octet-stream
+</FilesMatch>
