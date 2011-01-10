@@ -2515,7 +2515,7 @@ class PHPWS_DB {
     /**
      * Crutch function from old database
      */
-    public function sqlFriendlyName($name) {
+    public static function sqlFriendlyName($name) {
         if (!PHPWS_DB::allowed($name)) {
             return false;
         }
