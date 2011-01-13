@@ -120,7 +120,7 @@ class ngBoost_Form {
         $tpl['ABOUT_LABEL']   = dgettext('ngboost', 'More information');
         $tpl['VERSION_LABEL'] = dgettext('ngboost', 'Current version');
 
-        if ($type == 'core_mods' && Current_User::isDeity() && NG_DEITIES_CAN_UNINSTALL) {
+        if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
             $tpl['WARNING'] = dgettext('ngboost', 'WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
         }
 
@@ -225,7 +225,7 @@ class ngBoost_Form {
                     }
                 }
 
-                if ($type != 'core_mods' || Current_User::isDeity() && NG_DEITIES_CAN_UNINSTALL) {
+                if ($type != 'core_mods' || Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
                     if ($dependents = $mod->isDependedUpon()) {
                         $link_command['action'] = 'show_depended_upon';
                         $depend_warning = sprintf(dgettext('ngboost', 'This module is depended upon by: %s'),
@@ -321,7 +321,10 @@ class ngBoost_Form {
 
     public static function ngTabTune()
     {
-        $alnk = '<a href="javascript:ngPlain(\'ts\')">Distro</a>'
+        $alnk = '<a href="javascript:ngPlain(\'ts\')">Distro</a>' .NGSP3
+		.		'<a href="javascript:ngPatos()">Patos</a>'
+		//	.	NGSP3
+		//	.	'<a href="javascript:ngPlain(\'fs\')">FS.perms</a>'
         .		'<p id="ngmsgt71"></p>';
         return $alnk;
     }

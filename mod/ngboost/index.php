@@ -17,8 +17,10 @@
     }
 
     PHPWS_Core::requireConfig('ngboost');
+	// &&
+	PHPWS_Core::requireConfig('boost');
 
-    if (NG_DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
+    if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
         Current_User::disallow();
     }
     if (!Current_User::authorized('ngboost')) {

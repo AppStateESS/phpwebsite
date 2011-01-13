@@ -88,7 +88,9 @@
 		var ret = reply.split('--',3);
 		var mod = ret[0];
 		var vsn = ret[1];
-		var cnt = ret[2];
+		// H 20110111
+		var opl = ret[0].length + ret[1].length + 4;
+		var cnt = reply.substr(opl);
 		var wo1 = '#ngchk' + mod;
 		$(wo1).text(vsn);
 		ngUniJqSC(cnt,'#ngmsg');
@@ -219,6 +221,9 @@
 	function ngShowDepUpon(mod) {
 		ngUniCS(mod,'su');
 	}
+	function ngPatos() {
+		ngUniCS('','pas');
+	}
 	function ngPickup(mod) {
 		ngUniCS(mod,'wg');
 	}	
@@ -227,7 +232,13 @@
 		var mod = ret[0];
 		var cnt = ret[1];
 		var wo = '#ngpickup' + mod;
-		$(wo).html(cnt + ' ' + ngokimg + '<br /><br />');
+		var cc = cnt.substr(0,2);
+		if (cc == 'OK') {
+			var pic = ngokimg;
+		} else {
+			var pic = ngkoimg;
+		}
+		$(wo).html(cnt + ' ' + pic + '<br /><br />');
 	}
 
 	function ngSetSrc(reply) {
@@ -261,6 +272,12 @@
 				break;
 			case 'i':
 				url = url + 'in/p/';
+				break;
+			case 'po':
+				url = url + 'po/p/';
+				break;
+			case 'pas':
+				url = url + 'pas';
 				break;
 			case 'sd':
 				url = url + 'd/p/';
@@ -309,6 +326,12 @@
 							break;
 							case 'i':
 								ngInstallSC(reply);
+							break;
+							case 'pas':
+								ngPlainSC(reply,'#ngmsgt71');
+							break;
+							case 'po':
+								ngPlainSC(reply,'#ngpatx' + ref);
 							break;
 							case 'sd':
 								ngUniJqSC(reply,'#ngmsg');
@@ -364,7 +387,7 @@
 		case 'ldb':
 			fb = '#ngmsgt61';
 			break;
-		case 'ts':
+		case 'ts': case 'fs': case 'fsd':
 			fb = '#ngmsgt71';
 			break;
 		}
@@ -502,6 +525,16 @@
 	function ngOnC() {
 		var sel = $('input[name=distro]:radio:checked').attr('value');
 		ngUniCS(sel,'ws');
+	}
+		
+	function ngPatoDesc(pat) {
+		ngUniCS(pat,'po');
+	}
+		
+	function ngPatoLdesc(pat) {
+		var wo = '#ngpat' + pat;
+		$('.ngpat').hide();
+		$(wo).toggle();
 	}
 		
 	function ngVerReply(reply) {

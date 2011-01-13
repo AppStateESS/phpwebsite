@@ -11,7 +11,7 @@
 {NO_UPDATE}
 <!-- BEGIN update -->
 
-<h2><b>{UPDATE_AVAILABLE}</b></h2><br />
+<h2><b>{UPDATE_AVAILABLE}</b></h2>
 <p class="b">
 {PU_LINK_LABEL}: {PU_LINK}&nbsp;
 {DL_PATH_LABEL}:<br /> {DL_PATH}
@@ -37,11 +37,10 @@
 </table>
 <hr />
 <!-- END dependency-listing -->
-<h2>{CHANGES_LABEL}</h2>
-<pre>{CHANGES}</pre>
+<b>{CHANGES_LABEL}</b>
+<pre style="height: 80px; width:99%; overflow:auto;">{CHANGES}</pre>
 <hr />
-<h2>{MD5_LABEL}</h2>
-<p>
+<b>{MD5_LABEL}</b>
+<br />
 {MD5}
-</p>
 <!-- END update -->

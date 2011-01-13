@@ -18,10 +18,6 @@
     define('NGSP3',	'&nbsp;&nbsp;&nbsp;');
     define('NGBR',	'<br />');
 	
-	define('BYASU', 'http://phpwebsite.appstate.edu/downloads/modules/');
-	define('BYNGWS','http://ngwebsite.net/distro/distro7829/modules/');
-	define('BYSF',  'http://downloads.sourceforge.net/project/ngwebsite/phpWebSite/modules/');
-
 
 class ngBoost_Action {
 
@@ -129,6 +125,14 @@ class ngBoost_Action {
             $this->ngShowDep($_REQUEST['p']);
             return;
             break;
+        case 'fs':
+			$this->ngTuneFS();
+            return;
+            break;
+        case 'fsd':
+			$this->ngTuneFSdispl();
+            return;
+            break;
         case 'h':
             $this->ngAnyHelp($_REQUEST['h']);
             return;
@@ -151,6 +155,14 @@ class ngBoost_Action {
             break;
         case 'ltar':
             $this->ngListTar($_REQUEST['fn']);
+            return;
+            break;
+        case 'pas':
+            $this->ngListPatos();
+            return;
+            break;
+        case 'po':
+            $this->ngListPato($_REQUEST['p']);
             return;
             break;
         case 're':
@@ -431,6 +443,84 @@ class ngBoost_Action {
 						.	'</div>';
     }
 
+    protected function ngListPato($pato)
+    {
+				$distro = ''.PHPWS_Settings::get('ngboost', 'distro');
+				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
+				$xmlfile = $distropath . $pato . '/pato.xml';
+				$xml = @simplexml_load_file($xmlfile);
+				if ($xml) {
+					if (is_object($xml)) {
+						$_SESSION['BG']=strip_tags($xml->pato->longdesc, '<br>');
+						$_SESSION['BG'].=NGBR.'<i>Author: </i>'.strip_tags($xml->pato->author);
+						$_SESSION['BG'].=NGBR.'<i>Supplies to:</i><pre>'.strip_tags($xml->pato->relate).'</pre>';
+						$_SESSION['BG'].='<i>Dependencies:</i>';
+						foreach ($xml->pato->dependency->scope as $dep) {
+							$_SESSION['BG'].=NGBR.strip_tags($dep->title);
+							$_SESSION['BG'].=' <i>Scope:</i> '.strip_tags($dep->type);
+							$_SESSION['BG'].=' <i>Resource:</i> '.strip_tags($dep->path);
+							if ($dep->version) {
+								$_SESSION['BG'].=' <i>Version:</i> '.strip_tags($dep->version);
+							}
+						}
+					}
+				}
+	}
+
+    protected function ngListPatos()
+    {
+				$_SESSION['BG']='';
+				$distro = ''.PHPWS_Settings::get('ngboost', 'distro');
+				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
+				$xdirfile = $distropath . 'patos.xml';
+				$xdir = @simplexml_load_file($xdirfile);
+				if ($xdir) {
+					if (is_object($xdir)) {
+					
+						$_SESSION['BG'] .= '<table class="ngtable">'
+						.	'<thead class="ngthead"><tr>'
+						.	'<th>' . dgettext('ngboost','PatchOption') . '</th>'
+						.	'<th>' . dgettext('ngboost','Scope') . '</th>'
+						.	'<th>' . dgettext('ngboost','Distro') . '</th>'
+						.	'<th>' . dgettext('ngboost','Version') .'</th>'
+						.	'<th>' . dgettext('ngboost','Description') .'</th>'
+						.	'<th>' . dgettext('ngboost','Commands') .'</th>'
+						.	'</tr></thead>'
+						.	'<tbody class="ngtbody">';
+						$cl='bgcolor1';
+						foreach ($xdir->entry as $patdir) {
+							$xmlfile = $distropath . $patdir . '/pato.xml';
+							$xml = @simplexml_load_file($xmlfile);
+							$cl=='bgcolor1' ? $cl='bgcolor2' : $cl='bgcolor1';
+							if ($xml) {
+								if (is_object($xml)) {
+									$alnk = '<a href="javascript:ngPatoDesc(\''.$xml->pato->title.'\')">more</a>';
+									$_SESSION['BG'].='<tr class="'.$cl.'">'
+									.	'<td>'.strip_tags($xml->pato->title).'</td>'
+									.	'<td>'.strip_tags($xml->pato->scope).'</td>'
+									.	'<td>'.$distro.'</td>'
+									.	'<td>'.strip_tags($xml->pato->version).'</td>'
+									.	'<td>'.strip_tags($xml->pato->shortdesc) . NGSP3 . $alnk
+									.		'<p id="ngpat'.$patdir.'" class="ngpat" style="display:none;">'
+							//		.		strip_tags($xml->pato->longdesc, '<br>')
+									.		'</p><p id="ngpatx'.$patdir.'"></p></td>'
+									.	'<td>'.'Apply'.'</td></tr>';
+								}
+							} else {
+								$_SESSION['BG'].='<tr class="'.$cl.'">'
+								.	'<td>'.$patdir.'</td><td>'.$distro.'</td><td>---</td><td>---</td><td>'
+								.	dgettext('ngboost','not available').'</td><td></td></tr>';
+							}
+						}
+						
+						$_SESSION['BG'] .= '</tbody></table>';
+						
+						
+					}
+				}
+				
+	}
+	
     protected function ngListTar($fnc)
     {
         $_SESSION['BG']='';
@@ -460,7 +550,7 @@ class ngBoost_Action {
             $cc=substr($r,0,1);
             $re=substr($r,1);
             if ($cc==0) {
-                $_SESSION['BG'] = NGJQMCLOSE . $re . NGSAYOK;
+                $_SESSION['BG'] = NGJQMCLOSE . $re . NGSAYOK ;
             } else {
                 $_SESSION['BG'] = NGJQMCLOSE . 'Restore' . NGSAYKO . $cc . ',' . $re;
             }
@@ -546,6 +636,33 @@ class ngBoost_Action {
         }
     }
 
+    protected function ngTuneFS()
+    {
+		$cnt = '<h4>File system permissions'.NGSP3
+        .	'<a href="javascript:ngPlain(\'fsd\')">Display</a>'
+		.	'</h4>'
+        .	'<p id="ngmsgt71"></p>';
+		$_SESSION['BG'] = $cnt;
+	}
+
+    protected function ngTuneFSdispl()
+    {
+		if (1==2) {
+        PHPWS_Core::initCoreClass('ngBackup.php');
+        $ngbu = new ngBackup();
+        $r=$ngbu->backupMod('');
+        $cc=substr($r,0,1);
+        $re=substr($r,1);
+		$_SESSION['BG'] = $r;
+		}
+		if (1==2) {
+		$_SESSION['FG']['ngfn']['.sysbu'] = '.sysbu.20110111-132843.fs.tgz';
+		$this->ngListTar('.sysbu');
+		}
+		$_SESSION['BG'] = 'FFU';
+		
+	}
+	
     protected function ngTuneSources()
     {
 		$chka = $chkn = $chks = '';
@@ -581,24 +698,39 @@ class ngBoost_Action {
 			$_SESSION['BG'] = dgettext('ngboost','Distro set to') . ' ' . $p;
 		}
 	}
-	
+
     protected function ngPickupTgz($mod)
     {
         $repo = $this->ngGetRepositoryPath();
         if (isset($_SESSION['FG'][$mod])) {
             $tgzf = array_pop(explode('/', $_SESSION['FG'][$mod]));
             if ($repo) {
-                if (file_exists($repo.'/'.$tgzf)) {
-                    $_SESSION['BG'] = $mod.'--Info: '.$tgzf . ' just exists in repository';
-                } else {
+                if (!file_exists($repo.'/'.$tgzf)) {
                     $cc = @copy($_SESSION['FG'][$mod], $repo.'/'.$tgzf);
                     if ($cc) {
-                        $_SESSION['BG'] = $mod.'--OK: ' . $tgzf . 'successfully copied';
-                        // to compare chekcsum <<<>>>
-                    } else {
+						$msg = dgettext('ngboost','successfully copied');
+					} else {
                         $_SESSION['BG'] = $mod.'--Fail: '.$_SESSION['FG'][$mod] . ' to ' . $repo . '/' . $tgzf;
-                    }
-                }
+						return;
+					}
+                } else {
+                    $msg = dgettext('ngboost', 'just exists in repository');
+				}
+				$tgzmd5=@md5_file($repo.'/'.$tgzf);
+				$xmlfile = ngBoost_Action::ngGetDistro() . $mod . '/check.xml';
+				$xml = @simplexml_load_file($xmlfile);
+				if ($xml) {
+					if (is_object($xml)) {
+						if (strtoupper($tgzmd5)==strtoupper($xml->module->md5sum)) {
+							$_SESSION['BG'] = $mod.'--OK: ' . $tgzf 
+							. ' ' . $msg . ', ' . dgettext('ngboost', 'verified');
+						} else {
+							@unlink($repo.'/'.$tgzf);
+							$_SESSION['BG'] = $mod.'--KO: ' . $tgzf 
+							. ' ' . dgettext('ngboost', 'checksum verification error');
+						}
+					}
+				}
             } else {
                 $_SESSION['BG'] = $mod.'--Repository error ' . $mod;
             }
@@ -608,6 +740,25 @@ class ngBoost_Action {
         }
     }
 
+    public function ngGetDistro()
+    {
+		$in = ''.PHPWS_Settings::get('ngboost', 'distro');
+		switch ($in) {
+		case 'asu':
+			$thatfile = BYASU;
+			break;
+		case 'ngws':
+			$thatfile = BYNGWS;
+			break;
+		case 'sf':
+			$thatfile = BYSF;
+			break;
+		default:
+			$thatfile = '';
+		}
+		return $thatfile;
+	}
+	
     protected function ngAnyHelp($help)
     {
         $helpfile = false;
@@ -654,24 +805,32 @@ class ngBoost_Action {
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($mod_title);
-
+		
         $file = $module->getVersionHttp();
+		// H 20110110 (
+		// $file just refers to the check.xml
+		
+		$thatfile = ngBoost_Action::ngGetDistro();
+		if (!empty($thatfile)) {
+			$file = $thatfile.$mod_title.'/check.xml';
+		}
+		// H)
+		
         if (empty($file)) {
-            return dgettext('boost', 'Update check file not found.');
+            return dgettext('ngboost', 'Update check file not found.');
         }
 
         $full_xml_array = PHPWS_Text::xml2php($file, 2);
 
         if (empty($full_xml_array)) {
-            return dgettext('boost', 'Update check file not found.');
+            return dgettext('ngboost', 'Update check file not found.');
         }
         $version_info = PHPWS_Text::tagXML($full_xml_array);
-
-        $template['LOCAL_VERSION_LABEL'] = dgettext('boost', 'Local version');
+        $template['LOCAL_VERSION_LABEL'] = dgettext('ngboost', 'Local version');
         $template['LOCAL_VERSION'] = $module->getVersion();
-        $template['STABLE_VERSION_LABEL'] = dgettext('boost', 'Current stable version');
+        $template['STABLE_VERSION_LABEL'] = dgettext('ngboost', 'Current stable version');
         if (!isset($version_info['VERSION'])) {
-            $template['STABLE_VERSION'] = dgettext('boost', 'Source XML error');
+            $template['STABLE_VERSION'] = dgettext('ngboost', 'Source XML error');
             $version_info['VERSION'] = $module->getVersion();
         } else {
             $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
@@ -679,56 +838,61 @@ class ngBoost_Action {
         }
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
-            $template['CHANGES_LABEL'] = dgettext('boost', 'Changes');
+            $template['CHANGES_LABEL'] = dgettext('ngboost', 'Changes');
             $template['CHANGES'] = htmlspecialchars($version_info['CHANGES']);
-            $template['UPDATE_AVAILABLE'] = dgettext('boost', 'An update is available');
-            $template['PU_LINK_LABEL'] = dgettext('boost', 'Copy into repository');
+            $template['UPDATE_AVAILABLE'] = dgettext('ngboost', 'An update is available');
+            $template['PU_LINK_LABEL'] = dgettext('ngboost', 'Copy into repository');
             // H 20101111 (
                 $tgz = array_pop(explode('/', $version_info['DOWNLOAD']));
-                // prevent passing url as js/request parameter
-                $_SESSION['FG'][$module->title] = $version_info['DOWNLOAD'];
+                // H 20110110 (
+				if (!empty($thatfile)) {
+					$_SESSION['FG'][$module->title] = $thatfile . $module->title . '/' . $tgz;
+				// )
+				} else {
+					$_SESSION['FG'][$module->title] = $version_info['DOWNLOAD'];
+				}
                 $lnk = '<a href="javascript:ngPickup(\''.$module->title.'\')">'
                         .$tgz . '</a><div id="ngpickup'.$module->title.'"></div>';
             // )
             $template['PU_LINK'] = $lnk;
-            $template['DL_PATH_LABEL'] = dgettext('boost', 'or download by yourself from here');
-            $template['DL_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';
-            $template['MD5_LABEL'] = dgettext('boost', 'MD5 Sum');
+            $template['DL_PATH_LABEL'] = dgettext('ngboost', 'or download by yourself from here');
+            $template['DL_PATH'] = '<a href="' . $_SESSION['FG'][$module->title] . '">' . $_SESSION['FG'][$module->title] . '</a>';
+            $template['MD5_LABEL'] = dgettext('ngboost', 'MD5 Sum');
             $template['MD5'] = $version_info['MD5SUM'];
 
             if (isset($version_info['DEPENDENCY'][0]['MODULE'])) {
-                $template['DEPENDENCY_LABEL'] = dgettext('boost', 'Dependencies');
-                $template['DEP_TITLE_LABEL'] = dgettext('boost', 'Module title');
-                $template['DEP_VERSION_LABEL'] = dgettext('boost', 'Version required');
-                $template['DEP_STATUS_LABEL'] = dgettext('boost', 'Status');
+                $template['DEPENDENCY_LABEL'] = dgettext('ngboost', 'Dependencies');
+                $template['DEP_TITLE_LABEL'] = dgettext('ngboost', 'Module title');
+                $template['DEP_VERSION_LABEL'] = dgettext('ngboost', 'Version required');
+                $template['DEP_STATUS_LABEL'] = dgettext('ngboost', 'Status');
 
                 foreach ($version_info['DEPENDENCY'][0]['MODULE'] as $dep_mod) {
                     $check_mod = new PHPWS_Module($dep_mod['TITLE'], false);
 
                     if ($check_mod->_error) {
-                        $status = dgettext('boost', 'Not installed');
+                        $status = dgettext('ngboost', 'Not installed');
                         $row['DEP_STATUS_CLASS'] = 'red';
                     } elseif (version_compare($check_mod->version, $dep_mod['VERSION'], '<')) {
-                        $status = dgettext('boost', 'Needs upgrading');
+                        $status = dgettext('ngboost', 'Needs upgrading');
                         $row['DEP_STATUS_CLASS'] = 'red';
                     } else {
-                        $status = dgettext('boost', 'Passed!');
+                        $status = dgettext('ngboost', 'Passed!');
                         $row['DEP_STATUS_CLASS'] = 'green';
                     }
                     $row['DEP_TITLE'] = $dep_mod['PROPERNAME'];
                     $row['DEP_VERSION'] = $dep_mod['VERSION'];
                     $row['DEP_ADDRESS'] = sprintf('<a href="%s">%s</a>',
-                    $dep_mod['URL'], dgettext('boost', 'Download'));
+                    $dep_mod['URL'], dgettext('ngboost', 'Download'));
                     $row['DEP_STATUS'] = $status;
                     $template['dependent-mods'][] = $row;
                 }
             }
         }
         else {
-            $template['NO_UPDATE'] = dgettext('boost', 'No update required.');
+            $template['NO_UPDATE'] = dgettext('ngboost', 'No update required.');
         }
 
-        $template['TITLE'] = dgettext('boost', 'Module') . ': ' . $module->getProperName(TRUE);
+        $template['TITLE'] = dgettext('ngboost', 'Module') . ': ' . $module->getProperName(TRUE);
         // mod ref tpl process !!!
         return PHPWS_Template::process($template, 'ngboost', 'check_update.tpl');
     }
@@ -750,13 +914,13 @@ class ngBoost_Action {
     public function updateCore()
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
-        $content[] = dgettext('boost', 'Updating core');
+        $content[] = dgettext('ngboost', 'Updating core');
 
         require_once PHPWS_SOURCE_DIR . 'core/boost/update.php';
 
         $ver_info = PHPWS_Core::getVersionInfo(false);
 
-        $content[] = dgettext('boost', 'Processing update file.');
+        $content[] = dgettext('ngboost', 'Processing update file.');
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
@@ -766,15 +930,15 @@ class ngBoost_Action {
             $result = $db->update();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                $content[] = dgettext('boost', 'An error occurred updating the core.');
+                $content[] = dgettext('ngboost', 'An error occurred updating the core.');
             } else {
-                $content[] = dgettext('boost', 'Core successfully updated.');
+                $content[] = dgettext('ngboost', 'Core successfully updated.');
             }
         } elseif (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = dgettext('boost', 'An error occurred updating the core.');
+            $content[] = dgettext('ngboost', 'An error occurred updating the core.');
         } else {
-            $content[] = dgettext('boost', 'An error occurred updating the core.');
+            $content[] = dgettext('ngboost', 'An error occurred updating the core.');
         }
 
         return implode('<br />', $content);
@@ -798,12 +962,12 @@ class ngBoost_Action {
         $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
         if (empty($dependents)) {
-            return dgettext('boost', 'This module does not have dependents.');
+            return dgettext('ngboost', 'This module does not have dependents.');
         }
 
-        $template['TITLE'] = sprintf(dgettext('boost', '%s Dependencies'), $module->getProperName());
+        $template['TITLE'] = sprintf(dgettext('ngboost', '%s Dependencies'), $module->getProperName());
         // H20101107.4 -	$content[] = PHPWS_Text::backLink() . '<br />';
-        $content[] = dgettext('boost', 'The following modules depend on this module to function:');
+        $content[] = dgettext('ngboost', 'The following modules depend on this module to function:');
         foreach ($dependents as $mod) {
             $dep_module = new PHPWS_Module($mod);
             $content[] = $dep_module->getProperName();
@@ -820,13 +984,13 @@ class ngBoost_Action {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
-        $template['TITLE'] = sprintf(dgettext('boost', '%s Module Dependencies'), $module->getProperName());
+        $template['TITLE'] = sprintf(dgettext('ngboost', '%s Module Dependencies'), $module->getProperName());
 
-        $template['MODULE_NAME_LABEL']     = dgettext('boost', 'Module Needed');
-        $template['VERSION_NEEDED_LABEL']  = dgettext('boost', 'Version required');
-        $template['CURRENT_VERSION_LABEL'] = dgettext('boost', 'Current Version');
-        $template['URL_LABEL']             = dgettext('boost', 'Module Web Site');
-        $template['STATUS_LABEL']          = dgettext('boost', 'Status');
+        $template['MODULE_NAME_LABEL']     = dgettext('ngboost', 'Module Needed');
+        $template['VERSION_NEEDED_LABEL']  = dgettext('ngboost', 'Version required');
+        $template['CURRENT_VERSION_LABEL'] = dgettext('ngboost', 'Current Version');
+        $template['URL_LABEL']             = dgettext('ngboost', 'Module Web Site');
+        $template['STATUS_LABEL']          = dgettext('ngboost', 'Status');
 
         foreach ($depend['MODULE'] as $module) {
             $pass = TRUE;
@@ -841,19 +1005,19 @@ class ngBoost_Action {
                 $tpl['CURRENT_VERSION'] = $mod_obj->getVersion();
             } else {
                 $pass = FALSE;
-                $tpl['CURRENT_VERSION'] = dgettext('boost', 'Not installed');
+                $tpl['CURRENT_VERSION'] = dgettext('ngboost', 'Not installed');
             }
 
             if ($pass && version_compare($module['VERSION'], $mod_obj->getVersion(), '>')) {
                 $pass = FALSE;
             }
 
-            $tpl['URL'] = sprintf('<a href="%s" target="_blank">%s</a>', $module['URL'], dgettext('boost', 'More info'));
+            $tpl['URL'] = sprintf('<a href="%s" target="_blank">%s</a>', $module['URL'], dgettext('ngboost', 'More info'));
 
             if ($pass) {
-                $tpl['STATUS_GOOD'] = dgettext('boost', 'Passed!');
+                $tpl['STATUS_GOOD'] = dgettext('ngboost', 'Passed!');
             } else {
-                $tpl['STATUS_BAD'] = dgettext('boost', 'Failed');
+                $tpl['STATUS_BAD'] = dgettext('ngboost', 'Failed');
             }
             $template['module-row'][] = $tpl;
         }
