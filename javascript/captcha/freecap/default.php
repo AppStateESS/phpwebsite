@@ -9,5 +9,6 @@ if (!Captcha::isGD()) {
 }
 
 $data['question'] = _('Please copy the word in the above image.');
-
+$data['sid'] = md5(SITE_HASH . $_SERVER['REMOTE_ADDR']);
+$_SESSION['ld'] = PHPWS_HOME_DIR;
 ?>

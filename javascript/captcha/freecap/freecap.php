@@ -25,9 +25,9 @@
  \************************************************************/
 ini_set('memory_limit', '32M');
 
-include('../../../config/core/config.php');
-session_name(md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
+session_name($_GET['s']);
 session_start();
+include($_SESSION['ld'] . 'config/core/config.php');
 //////////////////////////////////////////////////////
 ////// User Defined Vars:
 //////////////////////////////////////////////////////

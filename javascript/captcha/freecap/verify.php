@@ -17,6 +17,7 @@ function verify($return_value=false)
     }
 
     $answer = trim($_POST['captcha']);
+
     if(!empty($_SESSION['freecap_word_hash'])) {
         // all freeCap words are lowercase.
         // font #4 looks uppercase, but trust me, it's not...
