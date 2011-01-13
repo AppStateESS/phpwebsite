@@ -11,5 +11,6 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 Menu::show();
 Menu::showPinned();
 Menu::miniadmin();
+unset($GLOBALS['MENU_LINKS']);
 
 ?>

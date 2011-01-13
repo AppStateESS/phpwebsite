@@ -65,8 +65,10 @@ class Menu_Link {
     /**
      * Grabs all the child links under the current link
      */
-    public function loadChildren()
+    public function loadChildren($data,$hash)
     {
+        // If we're doing this the old, inefficient way...
+        if (empty($data) || empty($hash)) {
         $db = $this->getDB();
         $db->addWhere('parent', $this->id);
         $db->addOrder('link_order');
@@ -79,6 +81,19 @@ class Menu_Link {
         foreach ($result as $link) {
             $link->loadChildren();
             $this->_children[$link->id] = $link;
+            }
+        }
+        // otherwise, if this link has no children...
+        elseif (empty($hash[$this->id])) {
+                return;
+        }
+        else {
+            foreach ($hash[$this->id] as $rowId) {
+                $link = new Menu_Link();
+                PHPWS_Core::plugObject($link, $data[$rowId]);
+                $link->loadChildren($data, $hash);
+                $this->_children[$link->id] = $link;
+            }
         }
     }
 

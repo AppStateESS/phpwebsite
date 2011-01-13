@@ -227,34 +227,42 @@ class Menu_Item {
         if (!$this->id) {
             return NULL;
         }
-
+        // Get all records for this menu
         $db = new PHPWS_DB('menu_links');
         $db->setDistinct();
         $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
-        $db->addWhere('parent', $parent, NULL, NULL, 1);
-
         Key::restrictView($db);
         $db->addOrder('link_order');
-
         $db->setIndexBy('id');
-        $result = $db->getObjects('menu_link');
-
-        if (empty($result) || PHPWS_Error::logIfError($result)) {
+        $data = $db->select();
+        if (empty($data) || PHPWS_Error::logIfError($data)) {
             return NULL;
         }
 
-        foreach ($result as $link) {
-            $link->loadChildren();
+        // Create a matrix to index by parent id so we don't have to keep looping through the list
+        $hash = array();
+        foreach ($data as $key => $row) {
+            $hash[$row['parent']][] = $key;
+        }
+        
+        // Locate the desired record(s)
+        if (empty($hash[$parent])) {
+            return NULL;
+        }
+        
+        $final = array();
+        foreach ($hash[$parent] as $rowId) {
+            $link = new Menu_Link();
+            PHPWS_Core::plugObject($link, $data[$rowId]);
+            // Get the children for each parent using the $result data array as reference
+            $link->loadChildren($data, $hash);
             $link->_menu = & $this;
             $final[$link->id] = $link;
         }
 
         $GLOBALS['MENU_LINKS'][$this->id] = $final;
-
         return $final;
     }
-
-
 
     public function getRowTags()
     {
