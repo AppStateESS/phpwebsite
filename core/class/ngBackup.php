@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @version $Id: ngBackup.php 0000 2010-11-24 Hilmar $
+ * @version $Id: ngBackup.php 0000 2011-01-11 Hilmar $
  * @author Hilmar Runge <ngwebsite.net>
  */
 
   // a pear addition
-  require_once 'Tar.php';
+  require_once 'Archive/Tar.php';
  
   // me 
   define (NGBU,'ngBackup');
@@ -144,7 +144,9 @@
 							$tal[]=PHPWS_SOURCE_DIR . 'locale';
 							$tal[]=PHPWS_SOURCE_DIR . 'logs';
 							$tal[]=PHPWS_SOURCE_DIR . 'setup';
+							// 
 							$tal[]=PHPWS_SOURCE_DIR . 'templates';
+							//
 							$tal[]=PHPWS_SOURCE_DIR . 'README';
 							$tal[]=PHPWS_SOURCE_DIR . '.htaccess';
 							$tal[]=PHPWS_SOURCE_DIR . 'index.php';
@@ -165,7 +167,7 @@
 							break;
 						default:
 							$tal[]=PHPWS_SOURCE_DIR . 'mod/' . $mod;
-							$tar->createModify($tal, './', PHPWS_SOURCE_DIR . 'mod');
+							$tar->createModify($tal, './', PHPWS_SOURCE_DIR);
 							break;
 					}
 					@copy($tmp.$tgz,$this->rp.$tgz);
@@ -202,11 +204,7 @@
 					||  ($ftype2=='tar.gz' && $vsn2)) {
 						if (file_exists($this->rp.$fn)) {
 							$tar = new Archive_Tar($this->rp.$fn);
-							if (substr($mod,0,4)=='core') {
-								$cc=$tar->extract(PHPWS_SOURCE_DIR);
-							} else {
-								$cc=$tar->extract(PHPWS_SOURCE_DIR . 'mod/');
-							}
+							$cc=$tar->extract(PHPWS_SOURCE_DIR);
 							if ($cc) {
 								return '0' . $mod . ' ' . 'restored from' . ' ' . $fn;
 							}
