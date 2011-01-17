@@ -245,7 +245,8 @@ class PHPWSBB_Forum
         $pager->db->addWhere('fid', $this->id);
 
         if (!$this->canModerate()) {
-            $pager->db->addWhere('phpws_key.active', 1);
+        	$pager->db->addTable('phpws_key', 'dbp1');
+            $pager->db->addWhere('dbp1.active', 1);
         }
 
         // Filter out the unapproved topics -- total_posts>0 OR is_phpwsbb=0
