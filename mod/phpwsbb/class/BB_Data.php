@@ -18,7 +18,7 @@ class PHPWSBB_Data
      * @param string $format : Format to display date in (optional).
      * @return string : Formatted date string.
      */
-    public function get_long_date($date, $type=null)
+    public static function get_long_date($date, $type=null)
     {
         if (!$type)
         $type = PHPWS_Settings::get('phpwsbb', 'long_date_format');
@@ -35,7 +35,7 @@ class PHPWSBB_Data
      * @param string $format : Format to display date in (optional).
      * @return string : Formatted date string.
      */
-    public function get_short_date($date, $type=null)
+    public static function get_short_date($date, $type=null)
     {
         if (!$type)
         $type = PHPWS_Settings::get('phpwsbb', 'short_date_format');
@@ -52,7 +52,7 @@ class PHPWSBB_Data
      * @param none
      * @return none
      */
-    public function MiniAdmin()
+    public static function MiniAdmin()
     {
         $link = array();
         $link[] = PHPWS_Text::moduleLink(dgettext('phpwsbb', 'List Forums'), 'phpwsbb', array());
@@ -262,7 +262,7 @@ class PHPWSBB_Data
      * @param $force_reload : Flag to delete cache & reload from database
      * @return array
      */
-    public function load_moderators ($force_reload = false)
+    public static function load_moderators ($force_reload = false)
     {
         if (!$force_reload && isset($GLOBALS['Moderators_byForum']))
         return;
