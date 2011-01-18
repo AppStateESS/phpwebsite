@@ -873,7 +873,6 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
-echo $this->db->lastQuery();
         $this->row_query = $this->db->lastQuery();
 
         if (PHPWS_Error::isError($result)) {
