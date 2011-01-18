@@ -607,7 +607,7 @@ class PHPWSBB_Forum
      * @param int $forum_id : Id of the forum to check
      * @return bool : true or false
      */
-    public function isModerator ($user_id = null, $forum_id = null)
+    public static function isModerator ($user_id = null, $forum_id = null)
     {
         if (!$user_id) $user_id = Current_User::getId();
         if (!$forum_id) $forum_id = $this->id;
