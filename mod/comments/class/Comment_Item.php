@@ -425,9 +425,9 @@ class Comment_Item {
         $vars['uop']   = 'post_comment';
         $vars['cm_id'] = $this->id;
         $vars['thread_id'] = $this->thread_id;
-        $str = '<span>' . dgettext('comments', 'Edit') . '</span>';
+        $str = dgettext('comments', 'Edit');
         $title = dgettext('comments', 'Edit this comment');
-        return PHPWS_Text::secureLink($str, 'comments', $vars, null, $title, 'comment_edit_link');
+        return PHPWS_Text::secureButton($str, 'comments', $vars, null, $title, 'comment_edit_link');
     }
 
     public function deleteLink()
@@ -467,9 +467,9 @@ class Comment_Item {
         $vars['thread_id'] = $this->thread_id;
         $vars['cm_parent'] = $this->id;
         $vars['type']      = 'quote';
-        $str = '<span>' . dgettext('comments', 'Quote') . '</span>';
+        $str = dgettext('comments', 'Quote');
         $title = dgettext('comments', 'Quote this comment');
-        return PHPWS_Text::moduleLink($str, 'comments', $vars, null, $title, 'comment_quote_link');
+        return PHPWS_Text::moduleButton($str, 'comments', $vars, null, $title, 'comment_quote_link');
     }
 
     public function replyLink()
@@ -477,9 +477,9 @@ class Comment_Item {
         $vars['uop']   = 'post_comment';
         $vars['thread_id'] = $this->thread_id;
         $vars['cm_parent'] = $this->id;
-        $str = '<span>' . dgettext('comments', 'Reply') . '</span>';
+        $str = dgettext('comments', 'Reply');
         $title = dgettext('comments', 'Reply to this comment');
-        return PHPWS_Text::secureLink($str, 'comments', $vars, null, $title, 'comment_reply_link');
+        return PHPWS_Text::secureButton($str, 'comments', $vars, null, $title, 'comment_reply_link');
     }
 
     public function reportLink()

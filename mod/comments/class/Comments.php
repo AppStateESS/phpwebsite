@@ -72,7 +72,7 @@ class Comments {
         return $GLOBALS['Comment_Users'][$user_id];
     }
 
-    public function updateCommentUser($user_id)
+    public static function updateCommentUser($user_id)
     {
         if (empty($user_id)) {
             return;
@@ -819,7 +819,7 @@ class Comments {
     /*
      * Sends "New Post" notices to all users monitoring the topic
      */
-    public function sendUpdateNotice(&$thread, &$cm_item)
+    public static function sendUpdateNotice(&$thread, &$cm_item)
     {
         if(!PHPWS_Settings::get('comments', 'allow_user_monitors'))
         return;

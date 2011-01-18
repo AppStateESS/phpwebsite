@@ -180,7 +180,7 @@ class Comment_Thread {
         $vars['uop']   = 'post_comment';
         $vars['thread_id']     = $this->id;
         $str = dgettext('comments', 'Post New Comment');
-        return PHPWS_Text::moduleLink('<span>'.$str.'</span>', 'comments', $vars, null, $str, 'comment_postnew_link');
+        return PHPWS_Text::moduleButton($str, 'comments', $vars, null, $str, 'comment_postnew_link');
     }
 
     public function save()
@@ -564,7 +564,7 @@ class Comment_Thread {
     {
         if (isset($GLOBALS['Perms'][$module][$this->id][$function]))
         return $GLOBALS['Perms'][$module][$this->id][$function];
-        $is_moderator = empty($this->phpwsbb_topic) || PHPWSBB_Forum::canModerate(Current_User::getId(), $this->phpwsbb_topic->fid);
+        $is_moderator = empty($this->phpwsbb_topic);// || PHPWSBB_Forum::canModerate(Current_User::getId(), $this->phpwsbb_topic->fid);
         $GLOBALS['Perms'][$module][$this->id][$function] = $this->id && $is_moderator && Current_User::allow($module, $function);
         return $GLOBALS['Perms'][$module][$this->id][$function];
     }

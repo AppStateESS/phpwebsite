@@ -676,7 +676,7 @@ class Comment_User extends Demographics_User {
      * @param int $thread_id : Thread id
      * @return bool : TRUE or FALSE
      */
-    public function subscribe($user_id, $thread_id)
+    public static function subscribe($user_id, $thread_id)
     {
         if (empty($user_id) || empty($thread_id))
         return;
