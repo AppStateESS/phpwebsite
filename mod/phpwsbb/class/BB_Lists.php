@@ -18,7 +18,7 @@ class PHPWSBB_Lists
      * @param none
      * @return none
      */
-    public function list_forums ()
+    public static function list_forums ()
     {
         Layout::addStyle('phpwsbb');
         if (!Current_User::isLogged()) {
@@ -113,7 +113,7 @@ class PHPWSBB_Lists
      * @param none
      * @return none
      */
-    public function search_threads ($type, $var = null)
+    public static function search_threads ($type, $var = null)
     {
         /* Create DBPager object */
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -169,7 +169,6 @@ class PHPWSBB_Lists
         // Filter out the unapproved topics -- total_posts>0 OR is_phpwsbb=0
         $pager->db->addWhere('phpwsbb_topics.total_posts', 0, '>', null, 'approved_group');
         $pager->db->addWhere('phpwsbb_topics.is_phpwsbb', 0, '=', 'or', 'approved_group');
-
         return $pager->get();
     }
 
