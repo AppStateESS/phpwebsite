@@ -3,6 +3,10 @@ div.controlpanel {
     padding: 3px;
 }
 
+#cp-subpanel {
+left : -140px;
+}
+
 .frame {
     margin: 0px 5px 0px 0px;
     background-color: #BFBFBF;
