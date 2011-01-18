@@ -331,6 +331,7 @@ class DBPager {
             $join_array['sc'] == $source_column &&
             $join_array['jc'] == $join_column) {
                 $tbl_idx = $join_array['tbl_idx'];
+                $copy = 'dbp' . $tbl_idx;
             }
         } else {
             $tbl_idx = $index;
@@ -872,7 +873,7 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
-
+echo $this->db->lastQuery();
         $this->row_query = $this->db->lastQuery();
 
         if (PHPWS_Error::isError($result)) {
