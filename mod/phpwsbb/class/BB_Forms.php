@@ -21,7 +21,7 @@ class PHPWSBB_Forms
      * @param none
      * @return none
      */
-    public function edit_configuration ()
+    public static function edit_configuration ()
     {
         $form = new PHPWS_Form('Config');
         $form->setAction('index.php?module=phpwsbb&op=config');
@@ -168,7 +168,7 @@ class PHPWSBB_Forms
         Layout::addPageTitle($title);
         $form = new PHPWS_Form('confirmation_dialog');
         $form->setAction($address);
-       	$form->addTplTag('QUESTION', $question);
+           $form->addTplTag('QUESTION', $question);
         $form->addSubmit('yes', $approve);
         $form->addSubmit('no', $disapprove);
         return PHPWS_Template::process($form->getTemplate(), 'phpwsbb', 'confirmation_dialog.tpl');
