@@ -279,3 +279,23 @@ div.webpage-image, div.entry-image{
 .layout-variable legend {
    font-size : .9em;
 }
+
+/******** button links ***********/
+a.phpws_button {
+    display: block;
+    float: left;
+    margin: 0 .5em;
+    border: 1px solid black;
+    text-align: center;
+    padding: 2px 5px;
+    min-width: 60px;
+    background-color: #bbb;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a.phpws_button:hover {
+    background-color: #cacaca;
+    text-decoration: none;
+}

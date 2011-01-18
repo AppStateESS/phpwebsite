@@ -283,108 +283,22 @@ span#logout-link {
 padding-left : 5px;
 }
 
-/******** comments ***********/
-.comment_edit_link, .comment_reply_link, .comment_quote_link, .comment_postnew_link,
-.comment_supermod_icon, .comment_activemod_icon, .comment_inactivemod_icon
-{
+/******** button links ***********/
+a.phpws_button {
     display: block;
-    background-repeat: no-repeat;
-    background-position: 100%;
-}
-
-.comment-body .admin-links a {
-    display:block;
-    float:left;
-    background-image: url(img/green-right.png);
-    padding-right:8px;
+    float: left;
     margin: 0 .5em;
+    border: 1px solid black;
+    text-align: center;
+    padding: 2px 5px;
+    min-width: 60px;
+    background-color: #bbb;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.comment-body .admin-links a span {
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(img/green-left.png);
-    line-height:30px;
-    color : white;
-}
-
-.comment-body .admin-links a:hover {
-    text-decoration : none;
-    color : yellow;
-}
-
-
-a.comment_delete_link {
-    width: 20px;
-    height: 20px;
-    margin: 0 .5em;
-}
-
-a.comment_delete_link span { display: none; }
-
-a.comment_report_link {
-    float :left;
-    width: 16px;
-    height: 16px;
-    margin: 0 .5em;
-}
-
-a.comment_report_link span { display: none; }
-
-a.comment_fork_link {
-    width: 16px;
-    height: 16px;
-    background-image: url(../../images/mod/comments/fork.png);
-    margin: 0 .5em;
-}
-
-a.comment_fork_link span { display: none; }
-
-a.comment_postnew_link {
-    background-color : inherit;
-    display : block;
-    float : left;
-    border : none;
-    background-image: url(img/green-right.png);
-    padding-right:8px;
-}
-
-a.comment_postnew_link:hover {
-    background-color : inherit;
-}
-
-.comment_postnew_link:hover, .comment-body .admin-links a:hover {
-    background-color : inherit;
-    text-decoration : none;
-}
-
-a.comment_postnew_link:hover span {
-    color : yellow;
-    text-decoration : none;
-}
-a.comment_postnew_link span {
-    display:block;
-    padding:0 10px 0 18px;
-    background:transparent url(img/green-left.png);
-    line-height:30px;
-    color : white;
-}
-
-a.comment_punish_link {
-    float :left;
-    width: 20px;
-    height: 20px;
-    background-image: url(../../images/mod/comments/noentry.png);
-    margin: 0 .5em;
-}
-
-a.comment_punish_link span { display: none; }
-
-a.comment_postnew_link, .comment-body .admin-links a { 
-background-color : inherit;
-border : none;
-}
-
-#cp-subpanel {
-left : -140px;
+a.phpws_button:hover {
+    background-color: #cacaca;
+    text-decoration: none;
 }

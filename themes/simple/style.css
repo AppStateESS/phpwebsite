@@ -203,8 +203,8 @@ div#miniadmin li {
 
 #miniadmin {
     width: 200px;
-    top: 0px;
-    left: 10px;
+    bottom: 0px;
+    right: 10px;
     z-index: 999;
     background: white;
     position: fixed;
@@ -348,6 +348,26 @@ div.controlpanel div.controlpanel .panel-content,div.controlpanel div.controlpan
 .panel-content {
     overflow: auto;
     padding: 5px;
+}
+
+/******** button links ***********/
+a.phpws_button {
+    display: block;
+    float: left;
+    margin: 0 .5em;
+    border: 1px solid black;
+    text-align: center;
+    padding: 2px 5px;
+    min-width: 60px;
+    background-color: #bbb;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a.phpws_button:hover {
+    background-color: #cacaca;
+    text-decoration: none;
 }
 
 /********** blog ***********/
