@@ -524,6 +524,44 @@ class PHPWS_Text {
     }
 
     /**
+     * Returns a module link button with the authkey attached.
+     *
+     * For local links ONLY. It adds the hub web address and index.php automatically.
+     * You supply the name of the module and the variables.
+     * CSS class "button" controls the display features of this link.  
+     * An additional set of <span> tags is added to the HTML so that different button styles can be acheived.
+     * http://www.onextrapixel.com/2009/04/24/5-different-tutorials-of-creating-dynamic-css-round-corners-link-buttons/
+     * 
+     * 
+     * ex: $vars = array('op' => 'create_topic', 'forum' => $this->id);
+     * ex: $str = dgettext('phpwsbb', 'Submit a new topic');
+     * ex: $result = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars);
+     * ex: <a href="index.php?module=phpwsbb&amp;op=create_topic&amp;forum=15" title="Submit a new topic" class="phpws_button"><span>Submit a new topic</span></a>
+     * 
+     * For customization of a specific button, specify a CSS class name.
+     *
+     * @author Eloi George <eloi at bygeorgeware dot com>
+     * @param string subject String to appear as the 'click on' word(s)
+     * @param string module Name of module to access
+     * @param array getVars Associative array of GET variable to append to the link
+     * @param string target The target attribute of the link.
+     * @param string title The title attribute (alt-text) of the link.
+     * @param string class_name String added to css class
+     * @return string The complated link button HTML.
+     */
+    public static function secureButton($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    {
+        if(empty($title)) {
+            $title = $subject;
+        }
+        $subject = '<span>'.$subject.'</span>';
+        $class_name = trim('phpws_button '.$class_name);
+        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        $link->secure = true;
+        return $link->get();
+    }
+    
+    /**
      * Makes the index string for moduleLink. Can also be called alone
      * User module must be in use.
      *
@@ -566,6 +604,43 @@ class PHPWS_Text {
      */
     public static function moduleLink($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
     {
+        $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
+        return $link->get();
+    }// END FUNC moduleLink()
+
+    /**
+     * Creates a css-styled link button for phpWebSite modules.
+     *
+     * For local links ONLY. It adds the hub web address and index.php automatically.
+     * You supply the name of the module and the variables.
+     * CSS class "button" controls the display features of this link.  
+     * An additional set of <span> tags is added to the HTML so that different button styles can be acheived.
+     * http://www.onextrapixel.com/2009/04/24/5-different-tutorials-of-creating-dynamic-css-round-corners-link-buttons/
+     * 
+     * 
+     * ex: $vars = array('op' => 'create_topic', 'forum' => $this->id);
+     * ex: $str = dgettext('phpwsbb', 'Submit a new topic');
+     * ex: $result = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars);
+     * ex: <a href="index.php?module=phpwsbb&amp;op=create_topic&amp;forum=15" title="Submit a new topic" class="phpws_button"><span>Submit a new topic</span></a>
+     * 
+     * For customization of a specific button, specify a CSS class name.
+     *
+     * @author Eloi George <eloi at bygeorgeware dot com>
+     * @param string subject String to appear as the 'click on' word(s)
+     * @param string module Name of module to access
+     * @param array getVars Associative array of GET variable to append to the link
+     * @param string target The target attribute of the link.
+     * @param string title The title attribute (alt-text) of the link.
+     * @param string class_name String added to css class
+     * @return string The complated link button HTML.
+     */
+    public static function moduleButton($subject, $module=null, $getVars=null, $target=null, $title=null, $class_name=null)
+    {
+        if(empty($title)) {
+            $title = $subject;
+        }
+        $subject = '<span>'.$subject.'</span>';
+        $class_name = trim('phpws_button '.$class_name);
         $link = PHPWS_Text::quickLink($subject, $module, $getVars, $target, $title, $class_name);
         return $link->get();
     }// END FUNC moduleLink()
