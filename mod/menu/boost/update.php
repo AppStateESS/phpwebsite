@@ -262,7 +262,8 @@ Please download 1.2.1.</pre>';
         case version_compare($currentVersion, '1.6.4', '<'):
             $content[] = '<pre>1.6.4 changes
 ---------------
-+ Bug fix with database initialization</pre>
++ Bug fix with database initialization
++ Added code from Eloi George reducing DB queries</pre>
 ';
     }
     return true;
