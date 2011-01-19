@@ -79,7 +79,7 @@ class Checkin_Admin extends Checkin {
 
 
             case 'report':
-                if (!Current_User::allow('checkin', 'assign_visitors')) {
+                if (!PHPWS_Settings::get('checkin', 'staff_see_reports') && !Current_User::allow('checkin', 'assign_visitors')) {
                     Current_User::disallow();
                 }
                 $this->report(isset($_GET['print']));
@@ -347,7 +347,8 @@ class Checkin_Admin extends Checkin {
             $tabs['settings'] = array('title'=>dgettext('checkin', 'Settings'),
                                       'link'=>$link);
         }
-        if (Current_User::allow('checkin', 'assign_visitors')) {
+
+        if (PHPWS_Settings::get('checkin', 'staff_see_reports') || Current_User::allow('checkin', 'assign_visitors')) {
             $tabs['report'] = array('title'=>dgettext('checkin', 'Report'),
                                 'link'=>$link);
         }
@@ -765,6 +766,10 @@ class Checkin_Admin extends Checkin {
         $form->setMatch('front_page', PHPWS_Settings::get('checkin', 'front_page'));
         $form->setLabel('front_page', dgettext('checkin', 'Show public sign-in on front page'));
 
+        $form->addCheck('staff_see_reports', 1);
+        $form->setMatch('staff_see_reports', PHPWS_Settings::get('checkin', 'staff_see_reports'));
+        $form->setLabel('staff_see_reports', dgettext('checkin', 'Staff can see reports'));
+
         $form->addText('assign_refresh', PHPWS_Settings::get('checkin', 'assign_refresh'));
         $form->setSize('assign_refresh', '3');
         $form->setLabel('assign_refresh', dgettext('checkin', 'Assignment page refresh rate (in seconds)'));
@@ -796,6 +801,7 @@ class Checkin_Admin extends Checkin {
             }
         }
 
+        PHPWS_Settings::set('checkin', 'staff_see_reports', (int)isset($_POST['staff_see_reports']));
         PHPWS_Settings::set('checkin', 'unassigned_seen', (int)isset($_POST['unassigned_seen']));
         PHPWS_Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
         PHPWS_Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
