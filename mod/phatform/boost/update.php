@@ -100,7 +100,8 @@ function phatform_update(&$content, $version)
             $content[] = '<pre>
 3.1.6 changes
 -------------
-+ Introduction passed through text parser</pre>';
++ Introduction passed through text parser
++ Timed out session give warning instead of forcing login</pre>';
 
     }
     return true;
