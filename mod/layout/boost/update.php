@@ -170,6 +170,12 @@ function layout_update(&$content, $currentVersion)
 + Default theme is now simple.
 + Allow admin to use hub or local themes.
 </pre>';
+
+        case version_compare($currentVersion, '2.5.1', '<'):
+            $content[] = '<pre>2.5.1 changes
+---------------------
++ Eloi George javascript patch applied
+</pre>';
     }
     return true;
 }

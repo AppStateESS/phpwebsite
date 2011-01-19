@@ -534,14 +534,14 @@ class Layout {
                 $data = $default;
             }
         }
-        $data['source_http'] = PHPWS_SOURCE_HTTP;
-        $data['source_dir'] = PHPWS_SOURCE_DIR;
-        $data['home_http'] = PHPWS_Core::getHomeHttp();
-        $data['home_dir'] = PHPWS_HOME_DIR;
 
         Layout::loadJavascriptFile($headfile, $directory, $data);
         if (is_file($bodyfile)) {
-            if (isset($data)) {
+            if (!empty($data)) {
+                $data['source_http'] = PHPWS_SOURCE_HTTP;
+                $data['source_dir'] = PHPWS_SOURCE_DIR;
+                $data['home_http'] = PHPWS_Core::getHomeHttp();
+                $data['home_dir'] = PHPWS_HOME_DIR;
                 return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
             } else {
                 return file_get_contents($bodyfile);
@@ -712,10 +712,10 @@ class Layout {
 
     public function getModuleJavascript($module, $script_name, $data=NULL)
     {
-        $base = PHPWS_SOURCE_DIR . "mod/$module";
+        $base = "mod/$module/";
         $dir_check = "/javascript/$script_name";
 
-        if (!is_dir($base . $dir_check)) {
+        if (!is_dir(PHPWS_SOURCE_DIR . $base . $dir_check)) {
             return FALSE;
         }
 
@@ -1236,7 +1236,7 @@ class Layout {
 
 function javascriptEnabled()
 {
-    return @$_SESSION['javascript_enabled'];
+    return $_SESSION['javascript_enabled'];
 }
 
 
