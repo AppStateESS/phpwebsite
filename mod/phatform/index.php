@@ -5,7 +5,6 @@
  *
  * @version $Id$
  */
-
 $GLOBALS['CNT_phatform']['title'] = $GLOBALS['CNT_phatform']['content'] = NULL;
 $GLOBALS['CNT_phatform']['message'] = NULL;
 if(!defined('PHPWS_SOURCE_DIR')) {
@@ -39,7 +38,6 @@ if(isset($_REQUEST['EXPORT_OP'])) {
 } else if(isset($_REQUEST['ARCHIVE_OP'])) {
     $_SESSION['PHAT_advViews']->archiveActions();
 }
-
 /* Check for PHAT_Form operation */
 if(isset($_REQUEST['PHAT_FORM_OP'])) {
     check_session();
@@ -60,7 +58,10 @@ if(isset($_REQUEST['PHAT_REPORT_OP'])) {
 
 function check_session() {
     if(!isset($_SESSION['PHAT_FormManager']->form)) {
-        header('Location: ./admin');
+        $info = sprintf('<p style="text-align : center; margin: 50% auto">%s</p>',
+        dgettext('phatform', 'Session timeout'),
+        dgettext('phatform', 'We are sorry, but your session timed out. You will need to click the Back button on your browser to return to the previous page.'));
+        echo Layout::wrap($info);
         exit();
     }
 }
