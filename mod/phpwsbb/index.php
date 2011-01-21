@@ -136,9 +136,14 @@ elseif (!empty($_REQUEST['op'])) {
                 break;
             }
             $topic = new PHPWSBB_Topic();
-            if ($topic->create($forum->id) !== true) {
+            if ($topic->create($forum->id, @$_POST['cm_subject'], @$_POST['cm_entry']) !== true) {
                 $message = $topic->_error;
+                if ($topic->id) {
                 $title = sprintf(dgettext('phpwsbb', 'Editing Topic "%s"'), $topic->get_title());
+                }
+                else {
+                	$title = sprintf(dgettext('phpwsbb', 'Create a New Topic in Forum "%s"'), $forum->get_title());
+                }
                 $content = $topic->edit();
                 break;
             }

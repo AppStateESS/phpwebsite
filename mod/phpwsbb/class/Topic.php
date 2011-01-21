@@ -416,9 +416,15 @@ class PHPWSBB_Topic
             Security::log($this->_error);
             return false;
         }
-        if (!empty($title))
+        if (empty($title)) {
+            $this->_error = dgettext('phpwsbb', 'A title is required.');
+            return false;
+        }
+        if (empty($summary)) {
+            $this->_error = dgettext('phpwsbb', 'You appear to have nothing to say.  Please enter some text.');
+            return false;
+        }
         $this->title = $title;
-        if (!empty($summary))
         $this->summary = $summary;
 
         // Determine the id to use
@@ -445,8 +451,10 @@ class PHPWSBB_Topic
         // If there's a Comment Post attempt, check it
         if (!empty($_POST['cm_subject']) && !empty($_POST['cm_entry'])) {
             $c_item = new Comment_Item;
-            if (!Comments::postComment($thread, $c_item))
-            return $c_item->_error;
+            if (!Comments::postComment($thread, $c_item)) {
+            	$this->_error = $c_item->_error;
+            	return false;
+            }
             $result = $c_item->save();
             if (PHPWS_Error::logIfError($result)) {
                 $this->_error = dgettext('phpwsbb', 'ERROR: Could not save comment.  Please alert the site administrator.');
