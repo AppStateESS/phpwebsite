@@ -22,106 +22,140 @@
 require_once PHPWS_SOURCE_DIR . 'core/class/Image.php';
 
 class Icon extends Image {
+    /**
+     * @var string
+     */
+    var $module;
 
-    public static function get($type)
+    public static function get($type, $module='core')
     {
         static $icon_objects = null;
-
-        if (!isset($icon_objects[$type])) {
-            Icon::loadIcon($type, $icon_objects);
+        if (!isset($icon_objects[$module][$type])) {
+            Icon::loadIcon($module, $type, $icon_objects);
         }
-        return clone($icon_objects[$type]);
+        return clone($icon_objects[$module][$type]);
     }
 
     public function __toString()
     {
-        Icon::includeStyle();
+        Icon::includeStyle($this->module);
         return parent::__toString();
     }
 
-    public static function show($type, $alt=null)
+    public static function show($type, $alt=null, $module='core')
     {
-        $icon = Icon::get($type);
+        $icon = Icon::get($type, $module);
         if ($alt) {
             $icon->setAlt($alt);
         }
-        Icon::includeStyle();
         return $icon->__toString();
     }
 
-    public static function setIconSource($source)
+    public static function getIconSets($module='core')
     {
-        $GLOBALS['Icon_Source'] = $source;
-    }
-
-    public static function getIconSource()
-    {
-        if (!isset($GLOBALS['Icon_Source'])) {
-            $GLOBALS['Icon_Source'] = 'default';
+        $data = array();
+        // Check for theme-based icons
+        if (class_exists('Layout')) {
+            $themeDir = Layout::getTheme();
+            $sourceDir = "themes/$themeDir/templates/$module/icons/";
+            if (is_file($sourceDir.'icons.php')) {
+                $data[] = array('source' => $sourceDir
+                                , 'icons'  => Icon::getIconArray($sourceDir)
+                            );
+            }
         }
-
-        return 'images/icons/' . $GLOBALS['Icon_Source'] . '/';
+        // Get distro icon address
+        if ($module == 'core') {
+            $sourceDir = 'images/icons/default/';
+        }
+        else {
+            $sourceDir = "mod/$module/templates/icons/";
+        }
+        if (is_file($sourceDir.'icons.php')) {
+            $data[] = array('source' => $sourceDir
+                            , 'icons'  => Icon::getIconArray($sourceDir)
+                        );
+        }
+        return $data;
     }
 
-    public static function getIconArray()
+    public static function getIconArray($sourceDir)
     {
-        $filename = Icon::getIconSource() . 'icons.php';
-        include PHPWS_SOURCE_DIR . $filename;
+        include $sourceDir . 'icons.php';
         if (empty($icons)) {
             trigger_error(dgettext('core', 'An icons variable was not found.'));
             exit();
         }
-        return $icons;
+        return $icons;;
     }
 
     /**
      * Loads the current icons setup.
      * @return array Array of icon parameters, used by loadIcon
      */
-    public static function getParams()
+    public static function getParams($module='core')
     {
         static $params = null;
-        if (!empty($params)) {
+        if (!empty($params[$module])) {
             return $params;
         }
 
-        $icons = Icon::getIconArray();
-
-        $params['source'] = Icon::getIconSource();
-
-        $params['icons'] = & $icons;
-        if (isset($default_icon)) {
-            $params['default_icon'] = $default_icon;
-        }
-
+        $params[$module] = Icon::getIconSets($module);
         return $params;
     }
 
-    public static function includeStyle()
+    public static function includeStyle($module)
     {
         static $included = false;
-        if ($included) {
+        if (!empty($included[$module])) {
             return;
         }
-
-        $css = Icon::getIconSource() . 'icon.css';
-        Layout::addToStyleList($css);
-        $included = true;
+        // Mark this module's css as included
+        $included[$module] = true;
+        // Check for theme-based style.css 
+        if (class_exists('Layout')) {
+            $themeDir = Layout::getTheme();
+            $filename = "themes/$themeDir/templates/$module/icons/icon.css";
+            if (is_file($filename)) {
+                Layout::addToStyleList($filename);
+                $included[$module] = true;
+                return;
+            }
+        }
+        // Get distro style.css
+        if ($module == 'core') {
+            $filename = 'images/icons/default/icon.css';
+        }
+        else {
+            $filename = "mod/$module/templates/icons/icon.css";
+        }
+        if (is_file($filename)) {
+            Layout::addToStyleList($filename);
+        }
     }
 
 
-    private static function loadIcon($type, &$icon_objects)
+    private static function loadIcon($module, $type, &$icon_objects)
     {
-        $params = Icon::getParams();
+        $params = Icon::getParams($module);
 
-        $icon = & $params['icons'][$type];
+        // Check both sources for the icon. First hit wins.
+        foreach ($params[$module] AS $key => $iconSet) {
+            if (!empty($iconSet['icons'][$type])) {
+                $icon = $iconSet['icons'][$type];
+                $src = PHPWS_SOURCE_HTTP . $iconSet['source'] . $icon['src'];
+                break;
+            }
+        }
+
         if (empty($icon)) {
-            trigger_error(sprintf(dgettext('core', 'Icon type not found: %s'), $type));
+            trigger_error(sprintf(dgettext('core', 'Icon type not found: %1$s::%2$s'), $module, $type));
             $src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
         } else {
-            $src = PHPWS_SOURCE_HTTP . $params['source'] . $icon['src'];
+            $src = PHPWS_SOURCE_HTTP . $iconSet['source'] . $icon['src'];
         }
         $o = new Icon($src);
+        $o->module = $module;
 
         if (isset($icon['class'])) {
             $o->setClass($icon['class']);
@@ -142,21 +176,27 @@ class Icon extends Image {
         if (isset($icon['label'])) {
             $o->setAlt($icon['label']);
         }
-        $icon_objects[$type] = $o;
+        $icon_objects[$module][$type] = $o;
 
         return true;
     }
 
-    public static function demo()
+    public static function demo($module='core')
     {
         if (!class_exists('Layout')) {
             trigger_error(dgettext('core', 'Layout class not enabled'), E_USER_ERROR);
         }
-        $icons = Icon::getIconArray();
-        $icon_list = array_keys($icons);
+        $params = Icon::getParams($module);
 
-        foreach ($icon_list as $item) {
-            $content[] = Icon::show($item) . " $item";
+        foreach ($params[$module] AS $iconSet) {
+            $subcontent = array();
+            $icon_list = array_keys($iconSet['icons']);
+            foreach ($icon_list as $item) {
+                $subcontent[] = Icon::show($item, null, $module) . ' '. $item;
+            }
+            $content[] = sprintf(dgettext('core', '<strong>Module %1$s icons stored at %2$s</strong>')
+                            , $module, $iconSet['source'])
+                        . '<br />' . implode('<br />', $subcontent);
         }
 
         $final =  implode('<br />', $content);
