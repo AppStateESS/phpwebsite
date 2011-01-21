@@ -139,7 +139,7 @@ class PHPWSBB_Forum
                 $tags['FORUM_LASTPOST_DATE_LONG'] = PHPWSBB_Data::get_long_date($lastthread->lastpost_date);
                 $tags['FORUM_LASTPOST_DATE_SHORT'] = PHPWSBB_Data::get_short_date($lastthread->lastpost_date);
                 $tags['FORUM_LASTPOST_DATE_REL'] = PHPWS_Time::relativeTime(PHPWS_Time::getUserTime($lastthread->lastpost_date));
-                $str = dgettext('phpwsbb', 'View the last post');
+                $str = Icon::show('go_new_message', null, 'phpwsbb');
                 $link = PHPWS_Text::quickLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$lastthread->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_forum_new_message_link');
                 $link->rewrite = true;
                 $link->setAnchor('cm_'.$lastthread->lastpost_post_id);
@@ -148,16 +148,13 @@ class PHPWSBB_Forum
                 $tags['BY'] = dgettext('phpwsbb', 'by');
                 // Forum Status Icon
                 if ($lastthread->lastpost_date > @$_SESSION['phpwsbb_last_on'])
-                $tags['FORUM_HAS_NEW'] = sprintf('<div class="%1$s" title="%2$s"><span>%3$s</span></div>'
-                , 'phpwsbb_forum_new_messages', dgettext('phpwsbb', 'Forum Contains New Posts'), dgettext('phpwsbb', 'New Posts'));
+                $tags['FORUM_HAS_NEW'] = Icon::show('new_messages', dgettext('phpwsbb', 'Forum Contains New Posts'), 'phpwsbb');
                 else
-                $tags['FORUM_HAS_NEW'] = sprintf('<div class="%1$s" title="%2$s"><span>%3$s</span></div>'
-                , 'phpwsbb_forum_no_new_messages', dgettext('phpwsbb', 'Forum Contains No New Posts'), dgettext('phpwsbb', 'No New Posts'));
+                $tags['FORUM_HAS_NEW'] = Icon::show('no_new_messages', dgettext('phpwsbb', 'Forum Contains No New Posts'), 'phpwsbb');
             }
             else {
                 $tags['FORUM_LASTPOST_POST_LINK'] = dgettext('phpwsbb', 'None');
-                $tags['FORUM_HAS_NEW'] = sprintf('<div class="%1$s" title="%2$s"><span>%3$s</span></div>'
-                , 'phpwsbb_forum_no_new_messages', dgettext('phpwsbb', 'Forum Contains No New Posts'), dgettext('phpwsbb', 'No New Posts'));
+                $tags['FORUM_HAS_NEW'] = Icon::show('no_new_messages', dgettext('phpwsbb', 'Forum Contains No New Posts'), 'phpwsbb');
             }
         }
 
@@ -167,13 +164,11 @@ class PHPWSBB_Forum
         else
         $tags['FORUM_MODERATORS'] = implode(', ', $GLOBALS['Moderators_byForum'][$this->id]);
         if ($this->locked)
-        $tags['FORUM_LOCKED'] = sprintf('<div class="%1$s" title="%2$s"><span>%2$s</span></div>'
-        , 'phpwsbb_forum_locked', dgettext('phpwsbb', 'Closed Forum'));
+            $tags['FORUM_LOCKED'] = Icon::show('locked', dgettext('phpwsbb', 'Closed Forum'));
         if ($this->can_post()) {
-            $str = dgettext('comments', 'Submit a new topic');
-            $link = 'index.php?module=phpwsbb&amp;op=create_topic&amp;forum=' . $this->id;
-            $tags['FORUM_ADD_TOPIC_BTN'] = sprintf('<a href="%1$s" class="%2$s" title="%3$s"><span>%4$s</span></a>'
-            , $link, 'phpwsbb_add_topic_link', $str, $str);
+            $vars = array('op' => 'create_topic', 'forum' => $this->id);
+            $str = dgettext('phpwsbb', 'Submit a new topic');
+            $tags['FORUM_ADD_TOPIC_BTN'] = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars, null, $str, 'phpwsbb_add_topic_link');
         }
 
         /* Show Category links & icons */

@@ -181,10 +181,7 @@ class PHPWSBB_Topic
             $tags['THREAD_LASTPOST_AUTHOR'] .=  ' '.COMMENT_ANONYMOUS_TAG;
             $tags['THREAD_LASTPOST_DATE'] = PHPWSBB_Data::get_short_date($this->lastpost_date);
 
-            $str = dgettext('comments', 'View the last post');
-            //            $link = sprintf('index.php?module=phpwsbb&amp;view=topic&amp;id=%1$s&amp;pg=last#cm_%2$s', $this->id, $this->lastpost_post_id);
-            //			$image_tag = sprintf('<a href="%1$s" class="%2$s" title="%3$s"><span>%4$s</span></a>'
-            //                         , $link, 'phpwsbb_go_new_message_link', $str, $str);
+            $str = Icon::show('go_new_message', null, 'phpwsbb');
             $link = PHPWS_Text::quickLink('<span>'.$str.'</span>', 'phpwsbb', array('view'=>'topic', 'id'=>$this->id, 'pg'=>'last'), null, $str, 'phpwsbb_go_new_message_link');
             $link->rewrite = true;
             $link->setAnchor('cm_'.$this->lastpost_post_id);
@@ -196,23 +193,18 @@ class PHPWSBB_Topic
         }
         // Topic Status Icons
         if ($this->lastpost_date >= @$_SESSION['phpwsbb_last_on']) {
-            $tags['TOPIC_HAS_NEW'] = sprintf('<div class="%1$s" title="%2$s"><span>%2$s</span></div>'
-            , 'phpwsbb_new_messages', dgettext('phpwsbb', 'New Posts'));
+            $tags['TOPIC_HAS_NEW'] = Icon::show('new_messages', null, 'phpwsbb');
         } else {
-            $tags['TOPIC_HAS_NEW'] = sprintf('<div class="%1$s" title="%2$s"><span>%2$s</span></div>'
-            , 'phpwsbb_no_new_messages', dgettext('phpwsbb', 'No New Posts'));
+            $tags['TOPIC_HAS_NEW'] = Icon::show('no_new_messages', null, 'phpwsbb');
         }
 
         if ($this->total_posts > 20 || $this->times_viewed > 100)
-        $tags['TOPIC_IS_HOT'] = sprintf('<div class="%1$s" title="%2$s"><span>%2$s</span></div>'
-        , 'phpwsbb_hot_topic', dgettext('phpwsbb', 'Popular topic'));
+            $tags['TOPIC_IS_HOT'] = Icon::show('hot_topic', dgettext('phpwsbb', 'Popular topic'), 'phpwsbb');
 
         if ($this->locked)
-        $tags['TOPIC_LOCKED'] = sprintf('<div class="%1$s" title="%2$s"><span>%2$s</span></div>'
-        , 'phpwsbb_locked', dgettext('comments', 'Closed topic'));
+            $tags['TOPIC_LOCKED'] = Icon::show('locked', dgettext('comments', 'Closed topic'));
         if ($this->sticky)
-        $tags['TOPIC_STICKY'] = sprintf('<div class="%1$s" title="%2$s"><span>%2$s</span></div>'
-        , 'phpwsbb_sticky', dgettext('phpwsbb', 'Read This!'));
+            $tags['TOPIC_STICKY'] = Icon::show('sticky', dgettext('phpwsbb', 'Read This!'));
 
         // If this isn't a phpwsbb-generated topic...
         if (!$this->is_phpwsbb) {
@@ -406,7 +398,7 @@ class PHPWSBB_Topic
     /**
      * Creates a new empty topic & associated Comment thread & Key.
      *
-     * @author Eloi George <elo$titlei@NOSPAM.bygeorgeware.com>
+     * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
      * @module phpwsBB
      * @param int $fid : Forum Id
      * @param string $title : Topic title

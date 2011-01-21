@@ -3,6 +3,7 @@
 ========================
 Changes in version 2.0.4
 ========================
++ Icons are now themable via the core Icon class
 + Fixed inefficient query generated when listing topics in a forum.
 + PHP5 fixes
 + (24 August 2009) Fixed problems with the forum listing
