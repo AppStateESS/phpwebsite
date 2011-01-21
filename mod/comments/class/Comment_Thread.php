@@ -233,7 +233,7 @@ class Comment_Thread {
 
     public function priorReport()
     {
-        return sprintf('<img src="%smod/comments/img/reported.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Reported!'));
+        return Icon::show('reported', null, 'comments');
     }
 
     public function setReturnUrl($url)

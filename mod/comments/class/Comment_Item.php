@@ -310,14 +310,7 @@ class Comment_Item {
             $template['DELETE_LINK']     = $this->deleteLink();
             // If phpwsbb is installed && we have moderation & forking privileges
             if (isset($GLOBALS['Modules']['phpwsbb']) && $thread->userCan('fork_messages', 'phpwsbb')) {
-                $vars = array();
-                $vars['op'] = 'split_topic';
-                $vars['split_point'] = $this->create_time;
-                $vars['topic'] = $this->thread_id;
-                $str = dgettext('comments', 'Split topic from this position');
-                $str = '<span>' . dgettext('comments', 'Split Topic') . '</span>';
-                $title = dgettext('comments', 'Split topic from this position');
-                $template['FORK_THIS'] = PHPWS_Text::secureLink($str, 'phpwsbb', $vars, null, $title, 'comment_fork_link');
+                $template['FORK_THIS'] = $this->forkLink();
             }
         }
         $template['VIEW_LINK']       = $this->viewLink();
@@ -350,7 +343,8 @@ class Comment_Item {
 
         $template['ANCHOR'] = sprintf('<a name="cm_%s"></a>', $this->id);
         $str = dgettext('comments', 'Back to Top');
-        $template['TO_TOP'] = sprintf('<a href="%s#comments"><img src="%smod/comments/img/back_to_top.png" title="%s" border="0" height="16" width="16"> %s</a>', $_SERVER['REQUEST_URI'], PHPWS_SOURCE_HTTP, $str, $str);
+        $template['TO_TOP'] = sprintf('<a href="%s#comments">%s %s</a>'
+                                    , $_SERVER['REQUEST_URI'], Icon::show('to_top', null, 'comments'), $str);
         $template['COMMENT_ID'] = $this->id;
 
         if ($thread->userCan('delete_comments')) {
@@ -441,6 +435,18 @@ class Comment_Item {
         return Layout::getJavascript('confirm', $vars);
     }
 
+    public function forkLink()
+    {
+        $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to split the topic from this position?');
+        $vars['ADDRESS'] = 'index.php?module=comments&amp;op=split_topic&amp;split_point=' . $this->create_time 
+                            . '&amp;topic=' . $this->thread_id 
+                            . '&amp;authkey=' . Current_User::getAuthKey();
+        $vars['LINK'] = Icon::show('cut', 'Split this topic');
+        $vars['CLASS'] = 'comment_fork_link';
+        $vars['TITLE'] = dgettext('comments', 'Split topic from this position');
+        return Layout::getJavascript('confirm', $vars);
+    }
+    
     public function clearReportLink()
     {
         $link = Icon::show('clear');
@@ -454,8 +460,8 @@ class Comment_Item {
         PHPWS_Core::initModClass('comments', 'Comment_Forms.php');
         $punish_form = Comment_Forms::punishForm($this);
         if ($punish_form) {
-            return sprintf('<span class="comment-punish"><img src="%smod/comments/img/noentry.png" title="%s" /><div class="comment-punish-list">%s</div></span>',
-            PHPWS_SOURCE_HTTP, dgettext('comments', 'Punish this user'), $punish_form);
+            return sprintf('<span class="comment-punish">%s<div class="comment-punish-list">%s</div></span>'
+                            , Icon::show('forbidden', dgettext('comments', 'Punish this user')), $punish_form);
         } else {
             return null;
         }
@@ -487,7 +493,7 @@ class Comment_Item {
         $str = sprintf('<img src="%smod/comments/img/report.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Report'));
         $title = dgettext('comments', 'Report this comment to an administrator');
         return sprintf('<a href="#" class="%s" onclick="report(%s, this); return false" title="%s">%s</a>',
-                       'comment_report_link', $this->id, $title, $str);
+                       'comment_report_link', $this->id, $title, Icon::show('report',null,'comments'));
     }
 
     public function viewLink()

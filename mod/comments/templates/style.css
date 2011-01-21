@@ -34,6 +34,10 @@
     
 }
 
+.comment-header img {
+    margin: 0 .5em;
+}
+
 .comment-table {
     margin-bottom: 20px;
     width: 95%;
@@ -48,75 +52,6 @@
 .comments .avatar {
     text-align: left;
     margin-right: 5px
-}
-
-a.comment_postnew_link,.comment-body .admin-links a {
-    display: block;
-    float: left;
-    margin: 0 .5em;
-    border: 1px solid black;
-    text-align: center;
-    padding: 2px 5px;
-    min-width: 60px;
-    background-color: #bbb;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 10px;
-}
-
-.comment_postnew_link:hover,.comment-body .admin-links a:hover {
-    background-color: #cacaca;
-    text-decoration: none;
-}
-
-a.comment_fork_link {
-    float: left;
-    width: 16px;
-    height: 16px;
-    background-image: url(../../images/mod/comments/fork.png);
-    margin: 0 .5em;
-}
-
-a.comment_fork_link:hover {
-    background-color: #00ff00;
-}
-
-a.comment_fork_link span {
-    display: none;
-}
-
-.comment_supermod_icon {
-    width: 105px;
-    height: 21px;
-    background-image: url(../../images/mod/comments/Global-Mod.gif);
-    margin: 0;
-}
-
-.comment_supermod_icon span {
-    display: none;
-}
-
-.comment_activemod_icon {
-    width: 105px;
-    height: 21px;
-    background-image: url(../../images/mod/comments/Moderator.gif);
-    margin: 0;
-}
-
-.comment_activemod_icon span {
-    display: none;
-}
-
-.comment_inactivemod_icon {
-    width: 105px;
-    height: 21px;
-    background-image: url(../../images/mod/comments/Support-staff.gif);
-    margin: 0;
-}
-
-.comment_inactivemod_icon span {
-    display: none;
 }
 
 .comment-punish {

@@ -576,16 +576,15 @@ class Comment_User extends Demographics_User {
 
         // If user is a supermoderator, show that rank
         if ($this->securitylevel == 2) {
-            $titles[] = $str = dgettext('comments', 'Super Moderator');
-            $images[] = $composites[] = '<div class="comment_supermod_icon"><span>'.$str."</span></div>\n";
+            $images[] = $composites[] = Icon::show('supermod', null, 'comments'). "<br />\n";
         }     // otherwise, check for admin status
         elseif ($this->securitylevel == 1) {
             $titles[] = $str = dgettext('comments', 'Moderator');
             // if user is a moderator of this specific forum or unattached thread...
             if ($isModerator) {
-                $images[] = $composites[] = '<div class="comment_activemod_icon"><span>'.$str."</span></div>\n";
+                $images[] = $composites[] = Icon::show('activemod', null, 'comments'). "<br />\n";
             } else {
-                $images[] = $composites[] = '<div class="comment_inactivemod_icon"><span>'.$str."</span></div>\n";
+                $images[] = $composites[] = Icon::show('inactivemod', null, 'comments'). "<br />\n";
             }
         }
 
