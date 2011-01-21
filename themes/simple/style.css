@@ -6,7 +6,7 @@ html,body,div,h1,h2,h3,h4,ul {
 }
 
 td {
-    vertical-align : top;
+    vertical-align: top;
 }
 
 ul {
@@ -35,6 +35,13 @@ h1 {
     font-style: italic;
 }
 
+#body-content h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.8em;
+    font-style: normal;
+    margin: 1em 0;
+}
+
 h2 {
     font-size: 1.2em;
 }
@@ -57,7 +64,7 @@ div#wrapper {
     width: 1003px;
     background: transparent url("images/vert_tile.png") repeat-y scroll
         center top;
-        overflow: auto;
+    overflow: auto;
 }
 
 div#container {
@@ -149,7 +156,7 @@ div.box {
 /********* users **********/
 #css-user-login {
     margin-bottom: 12px;
-    padding : 5px;
+    padding: 5px;
 }
 
 #user-panel span {
@@ -301,8 +308,8 @@ li.menu-link ul li a.menu-link-href {
 
 /******* controlpanel ******/
 #body-content ul.tabmenu {
-    margin : 2px 0px;
-    }
+    margin: 2px 0px;
+}
 
 #body-content ul.tabmenu li {
     margin: 0px;
