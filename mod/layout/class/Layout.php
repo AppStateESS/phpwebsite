@@ -738,9 +738,7 @@ class Layout {
     public static function loadTheme($theme, $template)
     {
         $tpl = new PHPWS_Template;
-        if (PHPWS_Settings::get('layout', 'use_hub_themes')) {
-            $tpl->setRoot(PHPWS_SOURCE_DIR);
-        }
+        $tpl->setRoot(PHPWS_SOURCE_DIR);
         $themeDir = Layout::getThemeDir();
 
         if (PHPWS_Error::isError($themeDir)) {
@@ -779,20 +777,12 @@ class Layout {
 
     public static function getThemeDirRoot()
     {
-        if (PHPWS_Settings::get('layout', 'use_hub_themes')) {
-            return PHPWS_SOURCE_DIR . 'themes/';
-        } else {
-            return PHPWS_HOME_DIR . 'themes/';
-        }
+        return PHPWS_SOURCE_DIR . 'themes/';
     }
 
     public static function getThemeHttpRoot()
     {
-        if (PHPWS_Settings::get('layout', 'use_hub_themes')) {
-            return PHPWS_SOURCE_HTTP . 'themes/';
-        } else {
-            return 'themes/';
-        }
+        return PHPWS_SOURCE_HTTP . 'themes/';
     }
 
 

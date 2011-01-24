@@ -196,7 +196,6 @@ class Layout_Admin {
                     PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
                 } else {
                     PHPWS_Settings::set('layout', 'include_css_order', (int)$_POST['include_css_order']);
-                    PHPWS_Settings::set('layout', 'use_hub_themes', isset($_POST['use_hub_themes']));
                     PHPWS_Settings::save('layout');
 
                     $title = dgettext('layout', 'Themes');
@@ -307,10 +306,6 @@ class Layout_Admin {
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postTheme');
 
-        $form->addCheck('use_hub_themes', 1);
-        $form->setLabel('use_hub_themes', dgettext('layout', 'Use hub themes only'));
-        $form->setMatch('use_hub_themes', PHPWS_Settings::get('layout', 'use_hub_themes'));
-
         $form->addSubmit('update', dgettext('layout', 'Update Theme Settings'));
         $themeList = Layout_Admin::getThemeList();
         if (PHPWS_Error::isError($themeList)){
@@ -318,23 +313,10 @@ class Layout_Admin {
             return dgettext('layout', 'There was a problem reading the theme directories.');
         }
 
-        if (empty($themeList)) {
-            if (!PHPWS_Core::isBranch() && PHPWS_Settings::get('layout', 'use_hub_themes')) {
-                $form->addTplTag('DEFAULT_THEME', dgettext('layout', 'Could not find any themes on the hub.'));
-            } else {
-                $form->addTplTag('DEFAULT_THEME', dgettext('layout', 'Could not find any themes on this branch. Switching back to hub.'));
-                PHPWS_Settings::set('layout', 'use_hub_themes', 1);
-                PHPWS_Settings::set('layout', 'default_theme', 'simple');
-                PHPWS_Settings::save('layout');
-                Layout::reset('simple');
-            }
-            $form->addTplTag('DEFAULT_THEME_LABEL', dgettext('layout', 'Default Theme'));
-        } else {
-            $form->addSelect('default_theme', $themeList);
-            $form->reindexValue('default_theme');
-            $form->setMatch('default_theme', Layout::getDefaultTheme());
-            $form->setLabel('default_theme', dgettext('layout', 'Default Theme'));
-        }
+        $form->addSelect('default_theme', $themeList);
+        $form->reindexValue('default_theme');
+        $form->setMatch('default_theme', Layout::getDefaultTheme());
+        $form->setLabel('default_theme', dgettext('layout', 'Default Theme'));
 
         $include_order[0] = dgettext('layout', 'Do not include module style sheets');
         $include_order[1] = dgettext('layout', 'Modules before theme');
