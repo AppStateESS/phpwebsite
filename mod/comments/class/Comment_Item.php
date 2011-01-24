@@ -344,7 +344,7 @@ class Comment_Item {
         $template['ANCHOR'] = sprintf('<a name="cm_%s"></a>', $this->id);
         $str = dgettext('comments', 'Back to Top');
         $template['TO_TOP'] = sprintf('<a href="%s#comments">%s %s</a>'
-                                    , $_SERVER['REQUEST_URI'], Icon::show('to_top', null, 'comments'), $str);
+                                    , $_SERVER['REQUEST_URI'], Icon::show('to-top'), $str);
         $template['COMMENT_ID'] = $this->id;
 
         if ($thread->userCan('delete_comments')) {
@@ -438,15 +438,15 @@ class Comment_Item {
     public function forkLink()
     {
         $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to split the topic from this position?');
-        $vars['ADDRESS'] = 'index.php?module=comments&amp;op=split_topic&amp;split_point=' . $this->create_time 
-                            . '&amp;topic=' . $this->thread_id 
+        $vars['ADDRESS'] = 'index.php?module=comments&amp;op=split_topic&amp;split_point=' . $this->create_time
+                            . '&amp;topic=' . $this->thread_id
                             . '&amp;authkey=' . Current_User::getAuthKey();
         $vars['LINK'] = Icon::show('cut', 'Split this topic');
         $vars['CLASS'] = 'comment_fork_link';
         $vars['TITLE'] = dgettext('comments', 'Split topic from this position');
         return Layout::getJavascript('confirm', $vars);
     }
-    
+
     public function clearReportLink()
     {
         $link = Icon::show('clear');
