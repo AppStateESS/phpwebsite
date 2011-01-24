@@ -93,6 +93,7 @@ $icons['stop-play'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-62
 $icons['subtract'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-242', 'y'=>'-150', 'label'=>dgettext('core', 'Subtract'));
 $icons['time'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-452', 'y'=>'-2', 'label'=>dgettext('core', 'Time'));
 $icons['tools'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-422', 'y'=>'-212', 'label'=>dgettext('core', 'Tools'));
+$icons['to-top'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-452', 'y'=>'-122', 'label'=>dgettext('core', 'To top'));
 $icons['trash-empty'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-512', 'y'=>'-242', 'label'=>dgettext('core', 'Trash - empty'));
 $icons['trash-full'] = array('src'=>'blank.png', 'class'=>'tango-icon', 'x'=>'-482', 'y'=>'-242', 'label'=>dgettext('core', 'Trash - full'));
 $icons['unapproved'] = array('src'=>'unapproved.png', 'label'=>dgettext('core', 'Unapproved'));
