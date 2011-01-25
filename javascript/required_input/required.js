@@ -5,7 +5,7 @@ function check(form_button)
 
     $(':input', form).each(function() {
         var class = $(this).attr('class');
-
+        form_id = $(form).attr('id');
         if (class == 'input-required' && $(this).val() == '') {
             var type = this.type;
             switch(type) {
@@ -25,7 +25,7 @@ function check(form_button)
         }
 
     });
-    
+
     if (!form_ok) {
         $(form).submit(function() {
             return false;
