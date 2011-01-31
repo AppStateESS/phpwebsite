@@ -628,7 +628,7 @@ class PHPWS_Form {
     public function makeLabel($element, $label)
     {
         $required = $element->getRequired();
-        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $element->type, $element->name, $element->id, $label, $required);
+        return sprintf('<label class="%s-label" id="%s-label" for="%s">%s</label>%s', $element->type, $element->id, $element->id, $label, $required);
     }
 
 
@@ -2228,7 +2228,8 @@ class Form_Element {
 
                 if ($tagMode) {
                     if (empty($this->_form)) {
-                        test($this);
+                        trigger_error('Error in Form::getLabel');
+                        return null;
                     }
                     return $this->_form->makeLabel($this, $label);
                 } else {
