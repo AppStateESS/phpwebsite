@@ -3,7 +3,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-$data['source_http'] = PHPWS_SOURCE_HTTP;
 if (!isset($data['form_name'])) {
     $data['form_name'] = 'phpws_form';
 } else {
