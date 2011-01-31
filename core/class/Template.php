@@ -53,13 +53,8 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return PHPWS_SOURCE_DIR . "mod/$module/templates/";
         }
 
-        $theme = Layout::getThemeDir();
-        if (PHPWS_Settings::get('layout', 'use_hub_themes')) {
-            $root = PHPWS_SOURCE_DIR;
-        } else {
-            $root = PHPWS_HOME_DIR;
-        }
-        return sprintf('%s%stemplates/%s/', $root, $theme, $module);
+        $theme = Layout::getThemeDirRoot() . Layout::getTheme();
+        return sprintf('%s/templates/%s/', $theme, $module);
     }
 
     public function setIgnoreCache($ignore=true)
@@ -125,7 +120,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public static function getTemplateHttp($module, $directory=NULL)
     {
-        $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
+        $theme_dir  = PHPWS_Template::getTplHTTP($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_HTTP, $module, $directory);
         if (FORCE_THEME_TEMPLATES) {
             return $theme_dir;
