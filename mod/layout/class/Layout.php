@@ -500,10 +500,6 @@ class Layout {
      */
     public static function getJavascript($directory, array $data=NULL, $base=NULL)
     {
-        $data['source_http'] = PHPWS_SOURCE_HTTP;
-        $data['source_dir'] = PHPWS_SOURCE_DIR;
-        $data['home_http'] = PHPWS_Core::getHomeHttp();
-        $data['home_dir'] = PHPWS_HOME_DIR;
         // previously a choice, now mandated. Leaving this in for backwards
         // compatibility
         if(preg_match('/^modules\//', $directory)) {
@@ -538,6 +534,11 @@ class Layout {
                 $data = $default;
             }
         }
+
+        $data['source_http'] = PHPWS_SOURCE_HTTP;
+        $data['source_dir'] = PHPWS_SOURCE_DIR;
+        $data['home_http'] = PHPWS_Core::getHomeHttp();
+        $data['home_dir'] = PHPWS_HOME_DIR;
 
         Layout::loadJavascriptFile($headfile, $directory, $data);
         if (is_file($bodyfile)) {
