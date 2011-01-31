@@ -528,16 +528,16 @@ class PHPWS_Text {
      *
      * For local links ONLY. It adds the hub web address and index.php automatically.
      * You supply the name of the module and the variables.
-     * CSS class "button" controls the display features of this link.  
+     * CSS class "button" controls the display features of this link.
      * An additional set of <span> tags is added to the HTML so that different button styles can be acheived.
      * http://www.onextrapixel.com/2009/04/24/5-different-tutorials-of-creating-dynamic-css-round-corners-link-buttons/
-     * 
-     * 
+     *
+     *
      * ex: $vars = array('op' => 'create_topic', 'forum' => $this->id);
      * ex: $str = dgettext('phpwsbb', 'Submit a new topic');
      * ex: $result = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars);
      * ex: <a href="index.php?module=phpwsbb&amp;op=create_topic&amp;forum=15" title="Submit a new topic" class="phpws_button"><span>Submit a new topic</span></a>
-     * 
+     *
      * For customization of a specific button, specify a CSS class name.
      *
      * @author Eloi George <eloi at bygeorgeware dot com>
@@ -560,7 +560,7 @@ class PHPWS_Text {
         $link->secure = true;
         return $link->get();
     }
-    
+
     /**
      * Makes the index string for moduleLink. Can also be called alone
      * User module must be in use.
@@ -613,16 +613,16 @@ class PHPWS_Text {
      *
      * For local links ONLY. It adds the hub web address and index.php automatically.
      * You supply the name of the module and the variables.
-     * CSS class "button" controls the display features of this link.  
+     * CSS class "button" controls the display features of this link.
      * An additional set of <span> tags is added to the HTML so that different button styles can be acheived.
      * http://www.onextrapixel.com/2009/04/24/5-different-tutorials-of-creating-dynamic-css-round-corners-link-buttons/
-     * 
-     * 
+     *
+     *
      * ex: $vars = array('op' => 'create_topic', 'forum' => $this->id);
      * ex: $str = dgettext('phpwsbb', 'Submit a new topic');
      * ex: $result = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars);
      * ex: <a href="index.php?module=phpwsbb&amp;op=create_topic&amp;forum=15" title="Submit a new topic" class="phpws_button"><span>Submit a new topic</span></a>
-     * 
+     *
      * For customization of a specific button, specify a CSS class name.
      *
      * @author Eloi George <eloi at bygeorgeware dot com>
