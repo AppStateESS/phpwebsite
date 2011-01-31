@@ -674,6 +674,7 @@ class Layout {
 
     public static function getTheme()
     {
+        Layout::checkSettings();
         return $_SESSION['Layout_Settings']->current_theme;
     }
 
