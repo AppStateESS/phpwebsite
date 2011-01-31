@@ -1057,7 +1057,7 @@ class Comments {
         if ($author_id) {
             $db = new PHPWS_DB('comments_users');
             $db->addWhere('user_id', $author_id);
-            $db->setValue('comments_made', 0);
+            $db->addValue('comments_made', 0);
             PHPWS_Error::logIfError($db->update());
         }
 
