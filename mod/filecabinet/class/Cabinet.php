@@ -1253,7 +1253,7 @@ class Cabinet {
      * Called from the three file type managers. Adds a file listing
      * to move files from one folder to another
      */
-    public function moveToForm(PHPWS_Form $form, $folder)
+    public static function moveToForm(PHPWS_Form $form, $folder)
     {
         $db = new PHPWS_DB('folders');
         $db->addWhere('id', $folder->id, '!=');
