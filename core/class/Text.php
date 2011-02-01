@@ -440,7 +440,8 @@ class PHPWS_Text {
                 break;
 
             case 'url':
-                if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=~])+$/i', $userEntry)) return true;
+                // copied from here: http://regexlib.com/REDetails.aspx?regexp_id=96
+                if (preg_match('@http(s)?:\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,\@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?@i', $userEntry)) return true;
                 else return false;
                 break;
 
