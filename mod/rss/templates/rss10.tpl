@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns="http://purl.org/rss/1.0/"
->
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/">
     <channel rdf:about="{CHANNEL_ADDRESS}">
     <title>{CHANNEL_TITLE}</title>
     <description> {CHANNEL_DESCRIPTION} </description>
