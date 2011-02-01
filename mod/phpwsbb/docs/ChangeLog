@@ -3,6 +3,7 @@
 ========================
 Changes in version 2.0.5
 ========================
++ UI improvement: "Create New Topic" button is now always visible regardless of authorization
 + phpwsbb now uses the core errorPages function for display of error messages
 + Added error messages when a new topic is missing a title or body text
 + Topic editing screen now distnguishes between "Editing" or "Creating" in the title 
