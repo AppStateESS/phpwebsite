@@ -419,7 +419,7 @@ class Comments {
 
 
             default:
-                PHPWS_Core::errorPage('404');
+                PHPWS_Core::errorPage('400');
         }
         $panel->setContent($content);
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
@@ -447,7 +447,7 @@ class Comments {
                     $title = dgettext('comments', 'Post Comment');
                     $content[] = Comment_Forms::form($thread, $c_item);
                 } else {
-                    PHPWS_Core::errorPage('404');
+                    PHPWS_Core::errorPage('403');
                 }
                 break;
 
