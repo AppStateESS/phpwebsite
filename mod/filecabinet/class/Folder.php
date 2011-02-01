@@ -266,7 +266,9 @@ class Folder {
         }
 
         $this->ftype = $_POST['ftype'];
-        $this->max_image_dimension = (int)$_POST['max_image_dimension'];
+        if (isset($_POST['max_image_dimension'])) {
+            $this->max_image_dimension = (int)$_POST['max_image_dimension'];
+        }
         $this->public_folder = $_POST['public_folder'];
         return true;
     }
@@ -306,6 +308,8 @@ class Folder {
                         if (!$result) {
                             @rmdir($full_dir);
                             return false;
+                        } else {
+                            file_put_contents($thumb_dir . '.htaccess', 'Allow from all');
                         }
                     }
                 }
@@ -315,7 +319,6 @@ class Folder {
                 return false;
             }
         }
-
         return $this->saveKey($new_folder);
     }
 
