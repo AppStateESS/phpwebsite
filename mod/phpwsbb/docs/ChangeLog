@@ -1,8 +1,9 @@
 # ChangeLog for phpwsbb
 # $Id: ChangeLog,v 1.1 2008/08/23 04:19:22 adarkling Exp $
 ========================
-Changes in version 2.0.4
+Changes in version 2.0.5
 ========================
++ phpwsbb now uses the core errorPages function for display of error messages
 + Added error messages when a new topic is missing a title or body text
 + Topic editing screen now distnguishes between "Editing" or "Creating" in the title 
 + Icons are now themable via the core Icon class

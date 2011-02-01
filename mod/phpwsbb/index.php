@@ -129,12 +129,6 @@ elseif (!empty($_REQUEST['op'])) {
             break;
 
         case 'save_topic':
-            // Make sure that we can save this topic
-            if (empty($forum) || !$forum->can_post()) {
-                $message = dgettext('phpwsbb', 'You are not authorized to save topics in this forum.');
-                Security::log($GLOBALS['BB_message']);
-                break;
-            }
             $topic = new PHPWSBB_Topic();
             if ($topic->create($forum->id, @$_POST['cm_subject'], @$_POST['cm_entry']) !== true) {
                 $message = $topic->_error;

@@ -299,9 +299,7 @@ class PHPWSBB_Topic
         // Get parent Forum Info
         $forum = $this->get_forum();
         if (!$forum->can_post()) {
-            $message = dgettext('phpwsbb', 'You are not authorized to create topics here.');
-            Security::log($message);
-            return $message;
+            PHPWS_Core::errorPage('403');
         }
 
         /* Construct editform tags */
@@ -412,9 +410,7 @@ class PHPWSBB_Topic
         $forum = $this->get_forum();
         // Make sure that we can save this topic
         if (!$forum->can_post()) {
-            $this->_error = dgettext('phpwsbb', 'You are not authorized to save this topic.');
-            Security::log($this->_error);
-            return false;
+            PHPWS_Core::errorPage('403');
         }
         if (empty($title)) {
             $this->_error = dgettext('phpwsbb', 'A title is required.');
