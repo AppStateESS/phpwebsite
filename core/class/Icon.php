@@ -56,10 +56,10 @@ class Icon extends Image {
         $data = array();
         // Check for theme-based icons
         if (class_exists('Layout')) {
-            $themeDir = Layout::getTheme();
-            $sourceDir = PHPWS_SOURCE_DIR . "themes/$themeDir/templates/$module/icons/";
-            if (is_file($sourceDir . 'icons.php')) {
-                $data[] = array('source' => $sourceDir, 'icons'  => Icon::getIconArray($sourceDir));
+            $sourceHttp = Layout::getThemeDir() . "templates/$module/icons/";
+            $sourceDir = PHPWS_SOURCE_DIR . $sourceHttp;
+            if (is_file($sourceDir)) {
+                $data[] = array('source' => $sourceHttp, 'icons'  => Icon::getIconArray($sourceDir));
             }
         }
         // Get distro icon address
