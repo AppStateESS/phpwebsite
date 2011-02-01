@@ -294,9 +294,9 @@ class Comment_Item {
         $template['ENTRY']	     = $this->getEntry(TRUE);
         $template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime();
+        $template['QUOTE_LINK']  = $this->quoteLink();
+        $template['REPLY_LINK']  = $this->replyLink();
         if ($can_post) {
-            $template['QUOTE_LINK']  = $this->quoteLink();
-            $template['REPLY_LINK']  = $this->replyLink();
             if (Current_User::isLogged()) {
                 if (empty($_SESSION['Users_Reported_Comments'][$this->id])) {
                     $template['REPORT_LINK'] = $this->reportLink();
@@ -490,7 +490,6 @@ class Comment_Item {
 
     public function reportLink()
     {
-        $str = sprintf('<img src="%smod/comments/img/report.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('comments', 'Report'));
         $title = dgettext('comments', 'Report this comment to an administrator');
         return sprintf('<a href="#" class="%s" onclick="report(%s, this); return false" title="%s">%s</a>',
                        'comment_report_link', $this->id, $title, Icon::show('report',null,'comments'));

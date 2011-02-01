@@ -357,10 +357,12 @@ class Comment_Thread {
             $page_tags['MOD_FORM_END'] = '</form>';
         }
 
-        if ($this->canComment())
+        if ($this->locked) {
+            $page_tags['NEW_POST_LINK'] = dgettext('comments', 'This topic is locked.  No more comments');
+        }
+        else {
         $page_tags['NEW_POST_LINK'] = $this->postLink();
-        elseif ($this->locked)
-        $page_tags['NEW_POST_LINK'] = dgettext('comments', 'This topic is locked.  No more comments');
+        }
 
         $pager->setModule('comments');
         $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
@@ -408,8 +410,18 @@ class Comment_Thread {
         if (isset($GLOBALS['Perms']['canComment'][$this->id]))
         return $GLOBALS['Perms']['canComment'][$this->id];
 
+        // If this thread is assigned to a forum, check forum permissions
+        $canPostInForum = true;
+        if (!empty($this->phpwsbb_topic)) {
+            $forum = $this->phpwsbb_topic->get_forum();
+            $canPostInForum = $forum->can_post();
+        }
+        
         $user = Comments::getCommentUser(Current_User::getId());
-        $result =  (!$this->locked || $this->userCan()) && !$user->locked && (Current_User::isLogged() || $this->allow_anon);
+        $result =  (!$this->locked || $this->userCan()) 
+                    && !$user->locked 
+                    && $canPostInForum
+                    && (Current_User::isLogged() || $this->allow_anon);
         $GLOBALS['Perms']['canComment'][$this->id] = $result;
         return $GLOBALS['Perms']['canComment'][$this->id];
     }
@@ -564,7 +576,7 @@ class Comment_Thread {
     {
         if (isset($GLOBALS['Perms'][$module][$this->id][$function]))
         return $GLOBALS['Perms'][$module][$this->id][$function];
-        $is_moderator = empty($this->phpwsbb_topic);// || PHPWSBB_Forum::canModerate(Current_User::getId(), $this->phpwsbb_topic->fid);
+        $is_moderator = empty($this->phpwsbb_topic) || PHPWSBB_Forum::canModerate(Current_User::getId(), $this->phpwsbb_topic->fid);
         $GLOBALS['Perms'][$module][$this->id][$function] = $this->id && $is_moderator && Current_User::allow($module, $function);
         return $GLOBALS['Perms'][$module][$this->id][$function];
     }
