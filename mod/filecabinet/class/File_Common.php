@@ -315,11 +315,7 @@ class File_Common {
 
             $moved = $this->_upload->moveTo($directory);
             if (!PHPWS_Error::isError($moved)) {
-                if ($public) {
-                    chmod($directory . '/' . $moved, 0644);
-                } else {
-                    chmod($directory . '/' . $moved, 0640);
-                }
+                chmod($directory . '/' . $moved, 0644);
                 return $moved;
             }
         }
