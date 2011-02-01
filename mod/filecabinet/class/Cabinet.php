@@ -788,7 +788,7 @@ class Cabinet {
         $this->title = $this->folder->title;
         $this->loadForms();
         $kids = PHPWS_Settings::get('filecabinet', 'no_kids');
-        $this->forms->folderContents($this->folder, false, $kids);
+        $this->forms->folderContents($this->folder);
     }
 
     public function viewFolder()

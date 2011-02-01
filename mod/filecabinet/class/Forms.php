@@ -278,7 +278,7 @@ class Cabinet_Form {
      * @param object $folder
      * @param boolean $pick_image
      */
-    public function folderContents($folder, $pick_image=false)
+    public function folderContents($folder)
     {
         PHPWS_Core::bookmark();
         Layout::addStyle('filecabinet');
@@ -347,7 +347,7 @@ class Cabinet_Form {
         $pager->setOrder('title', 'asc', true);
         $pager->setModule('filecabinet');
         $pager->addPageTags($pagetags);
-        $pager->addRowTags('rowTags', $pick_image);
+        $pager->addRowTags('rowTags');
         $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
         $pager->addSortHeader('file_name', dgettext('filecabinet', 'File name'));
         $pager->addSortHeader('file_type', dgettext('filecabinet', 'File type'));

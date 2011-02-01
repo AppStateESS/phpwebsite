@@ -146,11 +146,16 @@ class PHPWS_Document extends File_Common {
 
     public function rowTags()
     {
+        static $folder = null;
+
+        if (empty($folder)) {
+            $folder = new Folder($this->folder_id);
+        }
         $links = null;
 
         $tpl['SIZE'] = $this->getSize(true);
 
-        if (PHPWS_Settings::get('filecabinet', 'allow_direct_links')) {
+        if (PHPWS_Settings::get('filecabinet', 'allow_direct_links') && $folder->public_folder) {
             $dpath = $this->getDownloadPath();
             if ($dpath) {
                 $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath, $this->file_name);
@@ -159,7 +164,7 @@ class PHPWS_Document extends File_Common {
             }
         }
 
-        $tpl['ICON']      = $this->getViewLink(true, 'small_icon');
+        $tpl['ICON'] = $this->getViewLink(true, 'small_icon');
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
 

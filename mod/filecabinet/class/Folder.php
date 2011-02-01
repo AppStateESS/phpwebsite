@@ -292,8 +292,8 @@ class Folder {
             return false;
         }
 
+        $full_dir = $this->getFullDirectory();
         if ($new_folder) {
-            $full_dir = $this->getFullDirectory();
             if (!is_dir($full_dir)) {
                 $result = @mkdir($full_dir);
             } else {
@@ -317,6 +317,14 @@ class Folder {
                 PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'Folder:save', $full_dir);
                 $this->delete();
                 return false;
+            }
+        }
+
+        if ($this->ftype == DOCUMENT_FOLDER) {
+            if ($this->public_folder) {
+                unlink($full_dir . '.htaccess');
+            } else {
+                file_put_contents($full_dir . '.htaccess', 'Deny from all');
             }
         }
         return $this->saveKey($new_folder);
