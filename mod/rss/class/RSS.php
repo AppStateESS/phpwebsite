@@ -7,7 +7,7 @@
 
 class RSS {
 
-    public function registerModule($module, &$content)
+    public static function registerModule($module, &$content)
     {
         $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
 
@@ -75,7 +75,7 @@ class RSS {
         Layout::add(implode('', $listing), 'rss', 'feeds');
     }
 
-    public function viewChannel($module)
+    public static function viewChannel($module)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
@@ -86,7 +86,6 @@ class RSS {
         if (empty($channel->id) || $channel->_error) {
             return NULL;
         }
-
         header('Content-type: text/xml');
         echo $channel->view();
         exit();
