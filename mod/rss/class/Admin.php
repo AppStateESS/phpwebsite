@@ -182,7 +182,7 @@ class RSS_Admin {
         return $panel;
     }
 
-    public function editChannel(RSS_Channel $channel)
+    public static function editChannel(RSS_Channel $channel)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'rss');
