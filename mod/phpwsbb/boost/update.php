@@ -61,12 +61,34 @@ Changes in version 2.0.4
 + "Create Topic" form now only asks for an anonymous name if both Comments & the Forum settings allow it.
 </pre>';
 
-                   case version_compare($currentVersion, '2.0.4', '<'):
+                   case version_compare($currentVersion, '2.0.5', '<'):
             $content[] = '<pre>
 2.0.5 changes
 --------------
 + Fixed NOT NULL constraints in install sql.
-+ Fixed problems with forum listing displays.</pre>';
++ (24 August 2009) Fixed problems with the forum listing
++ (9 June 2009) Patch #2795892 - Fixed translation typo. Thanks HanV</pre>';
+
+        case version_compare($currentVersion, '2.0.6', '<'):
+
+            $db = new PHPWS_DB();
+            $db->query('ALTER TABLE phpwsbb_topics DROP views');
+            $content[] = '+ Deleted obsolete column "views" from phpwsbb_topics table';
+            
+            $content[] = '<pre>
+========================
+Changes in version 2.0.6
+========================
++ Got rid of obsolete phpwsbb_topics.views column
++ Topic now uses Key->times_viewed to store pageviews
++ UI improvement: "Create New Topic" button is now always visible regardless of authorization
++ phpwsbb now uses the core errorPages function for display of error messages
++ Added error messages when a new topic is missing a title or body text
++ Topic editing screen now distnguishes between "Editing" or "Creating" in the title 
++ Icons are now themable via the core Icon class
++ Fixed inefficient query generated when listing topics in a forum.
++ PHP5 fixes
+</pre>';
             
 
     } // end of switch

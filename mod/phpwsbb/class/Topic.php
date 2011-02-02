@@ -17,7 +17,6 @@
  * @var int sticky : Sticky Flag
  * @var int locked : Locked Flag.  No more posts are allowed.
  * @var int total_posts : # of posts in this thread
- * @var int views : Keeps track of how many times this thread was viewed
  * @var int lastpost_post_id : ID of the last post
  * @var int lastpost_date : unix timestamp of last post
  * @var int lastpost_author_id : Id# of the last poster (0 if guest)

@@ -1,8 +1,10 @@
 # ChangeLog for phpwsbb
 # $Id: ChangeLog,v 1.1 2008/08/23 04:19:22 adarkling Exp $
 ========================
-Changes in version 2.0.5
+Changes in version 2.0.6
 ========================
++ Got rid of obsolete phpwsbb_topics.views column
++ Topic now uses Key->times_viewed to store pageviews
 + UI improvement: "Create New Topic" button is now always visible regardless of authorization
 + phpwsbb now uses the core errorPages function for display of error messages
 + Added error messages when a new topic is missing a title or body text
@@ -10,6 +12,11 @@ Changes in version 2.0.5
 + Icons are now themable via the core Icon class
 + Fixed inefficient query generated when listing topics in a forum.
 + PHP5 fixes
+
+========================
+Changes in version 2.0.5
+========================
++ Fixed NOT NULL constraints in install sql.
 + (24 August 2009) Fixed problems with the forum listing
 + (9 June 2009) Patch #2795892 - Fixed translation typo. Thanks HanV.
 

@@ -24,7 +24,6 @@ CREATE TABLE phpwsbb_topics (
  sticky smallint NOT NULL default 0,
  locked smallint NOT NULL default 0,
  total_posts int NOT NULL default 0,
- views int NOT NULL default 0,
  lastpost_post_id int NOT NULL default 0,
  lastpost_date int NOT NULL default 0,
  lastpost_author_id int NOT NULL default 0,
