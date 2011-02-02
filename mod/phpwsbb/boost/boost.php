@@ -9,7 +9,7 @@
  */
 
 $proper_name  = 'Bulletin Board';
-$version      = '2.0.5';
+$version      = '2.0.6';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
