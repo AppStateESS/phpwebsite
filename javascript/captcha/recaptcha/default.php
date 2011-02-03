@@ -16,10 +16,11 @@ if(file_exists($settings_file)){
     exit;
 }
 
+$ssl = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
 
 $error = '';
 
-$default['content']	= recaptcha_get_html(RECAPTCHA_PUBLIC_KEY, $error);
+$default['content']	= recaptcha_get_html(RECAPTCHA_PUBLIC_KEY, $error, $ssl);
 $default['theme']	= RECAPTCHA_THEME;
 
 ?>
