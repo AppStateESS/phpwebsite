@@ -21,8 +21,4 @@ if ($is_video) {
     $tpl['HEIGHT'] = 20;
     $tpl['WIDTH'] = 260;
 }
-
-
-
-
 ?>
