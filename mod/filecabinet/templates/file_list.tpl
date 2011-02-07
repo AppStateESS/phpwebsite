@@ -15,8 +15,7 @@
     <!-- BEGIN listrows -->
     <tr{TOGGLE}>
         <td class="fc-title">{TITLE} - <i>{FILE_NAME}</i></td>
-        <td class="fc-file-type">
-        {FILE_TYPE}</td>
+        <td class="fc-file-type">{FILE_TYPE}</td>
         <td class="fc-size">{SIZE}</td>
         <!-- BEGIN download-col -->
         <td>{DOWNLOADED}</td>
