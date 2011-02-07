@@ -66,7 +66,7 @@ define('FC_NO_RIGHTS', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/no_file_select.p
 /**
  * Helps FC determine if a file is a video
  */
-define('FC_VIDEO_TYPES', 'flv,swf,avi,mov,mpeg,mpg,mpe,asf,wmv');
+define('FC_VIDEO_TYPES', 'flv,avi,mov,mpeg,mpg,mpe,asf,wmv,mp4,m4v,qt');
 
 define('FC_ICON_PAGER_LINKS', true);
 
