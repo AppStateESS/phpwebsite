@@ -41,7 +41,7 @@ function voila(foo) {
         <td>{LINK_LABEL}</td>
         <td>{LINK}</td>
     </tr>
-    <tr style="display: { VISIBLE" id="link-url">
+    <tr style="display: {VISIBLE}" id="link-url">
         <td>{URL_LABEL}</td>
         <td>{URL}</td>
     </tr>
