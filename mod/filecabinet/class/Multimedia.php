@@ -76,7 +76,6 @@ class PHPWS_Multimedia extends File_Common {
     public function loadDimensions()
     {
         $fileinfo = $this->getID3();
-
         if (isset($fileinfo['video']['resolution_x'])) {
             $this->width = & $fileinfo['video']['resolution_x'];
             $this->height = & $fileinfo['video']['resolution_y'];
@@ -260,6 +259,7 @@ class PHPWS_Multimedia extends File_Common {
     public function getTag($embed=false)
     {
         $filter = $this->getFilter();
+        $is_video = preg_match('/^audio/i', $this->file_type) ? false : true;
         $tpl['WIDTH']  = $this->width;
         $tpl['HEIGHT'] = $this->height;
         $tpl['IMAGE']  = $this->getThumbnail(null, false);
@@ -269,6 +269,7 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['ID'] = 'media' . $this->id;
+        $tpl['source_http'] = $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
 
         // check for filter file
         if ($this->embedded) {
@@ -278,9 +279,9 @@ class PHPWS_Multimedia extends File_Common {
             $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/$filter.tpl";
             if ($embed) {
                 if ($filter == 'media') {
-                    $filter_tpl = "filters/media_embed.tpl";
+                    $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/media_embed.tpl";
                 } elseif ($filter == 'shockwave') {
-                    $filter_tpl = "filters/shockwave_embed.tpl";
+                    $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/shockwave_embed.tpl";
                 }
             }
             if (is_file($filter_exe)) {
@@ -288,7 +289,6 @@ class PHPWS_Multimedia extends File_Common {
             }
 
         }
-
         return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl, true);
     }
 
