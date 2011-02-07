@@ -423,3 +423,7 @@ div#sidepanel td.day-current {
 div#sidepanel td.day-current a {
     color: black;
 }
+
+.required-input {
+    color: red;
+}
