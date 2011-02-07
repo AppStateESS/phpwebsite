@@ -81,6 +81,20 @@ class File_Common {
 
     public function setMaxSize($max_size)
     {
+        static $sizes = null;
+        if (empty($sizes)) {
+            $sizes = Cabinet::getMaxSizes();
+        }
+
+        $max_size = $sizes[$this->_classtype];
+        foreach ($sizes as $k=>$v) {
+            if (in_array($k, array('document', 'image', 'multimedia'))) {
+                continue;
+            }
+            if ($max_size > $v) {
+                $max_size = $v;
+            }
+        }
         $this->_max_size = (int)$max_size;
     }
 
