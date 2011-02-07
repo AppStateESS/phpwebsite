@@ -4,15 +4,13 @@
 {BASE_DOC_DIRECTORY} <br />
 {FIX_DIRECTORIES}</p>
 <p><strong>{MAX_DOCUMENT_SIZE_LABEL}</strong> {MAX_DOCUMENT_SIZE}</p>
-<p><strong>{MAX_PINNED_DOCUMENTS_LABEL}</strong>
-{MAX_PINNED_DOCUMENTS}</p>
+<p><strong>{MAX_PINNED_DOCUMENTS_LABEL}</strong> {MAX_PINNED_DOCUMENTS}</p>
 <p>{ALLOW_DIRECT_LINKS} <strong>{ALLOW_DIRECT_LINKS_LABEL}</strong></p>
 </fieldset>
 <fieldset><legend><strong>{IMAGE_SETTINGS}</strong></legend>
 <p>{CAPTION_IMAGES} <strong>{CAPTION_IMAGES_LABEL}</strong></p>
 <p>{POPUP_IMAGE_NAVIGATION} <strong>{POPUP_IMAGE_NAVIGATION_LABEL}</strong></p>
-<p><strong>{MAX_IMAGE_DIMENSION_LABEL}</strong>
-{MAX_IMAGE_DIMENSION}</p>
+<p><strong>{MAX_IMAGE_DIMENSION_LABEL}</strong> {MAX_IMAGE_DIMENSION}</p>
 <p><strong>{MAX_IMAGE_SIZE_LABEL}</strong> {MAX_IMAGE_SIZE}</p>
 <p><strong>{MAX_PINNED_IMAGES_LABEL}</strong> {MAX_PINNED_IMAGES}</p>
 <p><strong>{CROP_THRESHOLD_LABEL}</strong> {CROP_THRESHOLD}</p>
@@ -31,8 +29,7 @@
 <p>{FCK_ALLOW_MEDIA} <strong>{FCK_ALLOW_MEDIA_LABEL}</strong></p>
 </fieldset>
 <fieldset><legend><strong>{MULTIMEDIA_SETTINGS}</strong></legend>
-<p><strong>{MAX_MULTIMEDIA_SIZE_LABEL}</strong>
-{MAX_MULTIMEDIA_SIZE}</p>
+<p><strong>{MAX_MULTIMEDIA_SIZE_LABEL}</strong> {MAX_MULTIMEDIA_SIZE}</p>
 <p>{USE_FFMPEG} <strong>{USE_FFMPEG_LABEL}</strong></p>
 <p><strong>{FFMPEG_DIRECTORY_LABEL}</strong> {FFMPEG_DIRECTORY}</p>
 </fieldset>
