@@ -310,6 +310,8 @@ class PHPWS_Multimedia extends File_Common {
 
             case 'qt':
             case 'mov':
+            case 'mp4':
+            case 'm4v':
                 return 'quicktime';
                 break;
 
