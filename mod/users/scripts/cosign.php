@@ -19,12 +19,27 @@ class cosign_authorization extends User_Authorization {
     // Link to the cosign logout
     public $logout_link     = '';
 
+    public function __construct(PHPWS_User $user)
+    {
+        parent::__construct($user);
+        $login_url = $this->getLocalCosignLink('login');
+    }
+
     public function authenticate()
     {
         if (!isset($_SERVER['REMOTE_USER'])) {
             return false;
         }
-        return strtolower($_SERVER['REMOTE_USER']) == strtolower($this->user->username);
+        
+        if(strtolower($_SERVER['REMOTE_USER']) != strtolower($this->user->username)) {
+            return false;
+        }
+
+        if(!Current_User::allowUsername($this->user->username)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function forceLogin()
@@ -48,6 +63,29 @@ class cosign_authorization extends User_Authorization {
     // Run before a new user is created.
     public function createUser(){}
 
-    public function logout(){}
+    public function logout()
+    {
+        setCookie("cosign-{$_SERVER['SERVER_NAME']}", '');
+        PHPWS_Core::killAllSessions();
+        $this->user->_logged = 0;
+        PHPWS_Core::reroute('https://cosign.example.com/cosign-bin/logout');
+    }
+
+    private function getLocalCosignLink($append = 'login')
+    {
+        $parts = split('/', $_SERVER['REQUEST_URI']);
+
+        reset($parts);
+        array_pop($parts);
+
+        $path = '/';
+        foreach($parts as $part) {
+            if(empty($part)) continue;
+            $path .= "$part/";
+        }
+        $path .= $append;
+
+        return (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['SERVER_NAME'] . $path;
+    }
 }
 ?>
