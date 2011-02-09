@@ -24,7 +24,7 @@ class cosign_authorization extends User_Authorization {
         if (!isset($_SERVER['REMOTE_USER'])) {
             return false;
         }
-        return $_SERVER['REMOTE_USER'] == $this->user->username;
+        return strtolower($_SERVER['REMOTE_USER']) == strtolower($this->user->username);
     }
 
     public function forceLogin()
@@ -42,7 +42,7 @@ class cosign_authorization extends User_Authorization {
             return false;
         }
 
-        return $this->user->username == $_SERVER['REMOTE_USER'];
+        return strtolower($this->user->username) == strtolower($_SERVER['REMOTE_USER']);
     }
 
     // Run before a new user is created.
