@@ -17,9 +17,9 @@
     }
 
     PHPWS_Core::requireConfig('ngboost');
-	// &&
+	
+	// && also take classical boost conditions
 	PHPWS_Core::requireConfig('boost');
-
     if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
         Current_User::disallow();
     }

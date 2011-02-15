@@ -1,4 +1,4 @@
-<h4>phpWebSite {PHPWS_VERSION}</h4>
+<h4>Release {PHPWS_VERSION}</h4>
 <!-- BEGIN directories -->
 <div
     style="height: 80px; overflow: auto; border: 1px solid black; padding: 3px"
@@ -16,17 +16,19 @@
         <th>{VERSION_LABEL}</th>
         <th>{LATEST_LABEL}</th>
         <th>{COMMAND_LABEL}</th>
+        <th>{ELSE_LABEL}</th>
         <th>{ABOUT_LABEL}</th>
-    </tr>
+   </tr>
   </thead>
   <tbody class="ngtbody">
     <!-- BEGIN mod-row -->
-    <tr class="bgcolor{ROW}">
+    <tr id="ngmltr{MOD}" class="bgcolor{ZEBRA}">
         <td>{TITLE}</td>
-        <td>{VERSION}</td>
-        <td>{LATEST}</td>
+        <td id="{VERSION_ID}">{VERSION}</td>
+        <td id="{LATEST_ID}">{LATEST}</td>
         <td>{COMMAND} <!-- BEGIN uninstall -->&nbsp;&nbsp;{UNINSTALL}<!-- END uninstall -->
         </td>
+        <td>{ELSE}</td>
         <td>{ABOUT}</td>
     </tr>
     <!-- END mod-row -->

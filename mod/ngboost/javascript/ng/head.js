@@ -4,7 +4,6 @@ var source_http = '{source_http}';
 var authkey = '{authkey}';
 //]]>
 </script>
-<script type="text/javascript" src="{source_http}javascript/jquery/jquery.js"></script>
 <script type="text/javascript" src="{source_http}javascript/jquery_tab/ui.core.js"></script>
 <script type="text/javascript" src="{source_http}javascript/jquery_tab/ui.tabs.js"></script>
 <script type="text/javascript" src="{source_http}mod/ngboost/javascript/ng/jqModal.js"></script>

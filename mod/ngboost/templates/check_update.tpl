@@ -1,19 +1,18 @@
-<h1>{TITLE}</h1>
+{TITLE}
 <table cellpadding="2">
   <tr>
-    <td>{LOCAL_VERSION_LABEL}:</td><td>{LOCAL_VERSION}</td>
+    <td>{LOCAL_VERSION_LABEL} =</td><td>{LOCAL_VERSION}</td>
   </tr>
   <tr>
-    <td>{STABLE_VERSION_LABEL}:</td><td>{STABLE_VERSION}</td>
+    <td>{STABLE_VERSION_LABEL} =</td><td>{STABLE_VERSION}</td>
   </tr>
 </table>
-<br />
 {NO_UPDATE}
 <!-- BEGIN update -->
-
 <h2><b>{UPDATE_AVAILABLE}</b></h2>
-<p class="b">
-{PU_LINK_LABEL}: {PU_LINK}&nbsp;
+<p style="line-height:1em;" class="b">
+{PU_LINK_LABEL}:
+{PU_LINK}&nbsp;
 {DL_PATH_LABEL}:<br /> {DL_PATH}
 </p>
 <hr />
@@ -41,6 +40,5 @@
 <pre style="height: 80px; width:99%; overflow:auto;">{CHANGES}</pre>
 <hr />
 <b>{MD5_LABEL}</b>
-<br />
-{MD5}
+<div style="line-height:1em;">{MD5}</div>
 <!-- END update -->

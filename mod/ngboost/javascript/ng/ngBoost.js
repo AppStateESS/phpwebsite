@@ -1,7 +1,7 @@
 
 /**
   * @author Hilmar Runge <ngwebsite.net>
-  * @version 20110108
+  * @version 20110117
   */
 	
 	var ngaximg = '<img src="' + source_http + 'mod/ngboost/img/ajax10red.gif" alt="..." />';
@@ -9,9 +9,6 @@
 	var ngohimg = '<img src="' + source_http + 'mod/ngboost/img/oh.10.gif" alt="oh" />';
 	var ngkoimg = '<img src="' + source_http + 'mod/ngboost/img/ko.10.gif" alt="ko" />';
 	var ngnoimg = '<img src="' + source_http + 'mod/ngboost/img/no.10.gif" alt="no" />';
-	var ngclose = '<div style="text-align:right;">'
-				+ '<img id="ngjqmclose" class="jqmClose" src="' + source_http + 'mod/ngboost/img/close.16.gif" alt=" X " />'
-				+ '</div>';
 
 	var ngprobar = 0;
 	
@@ -41,17 +38,25 @@
 		ngUniCS(id,'h');
 	}
 	function ngBu(mod) {
-		var wo = '#ngmsgt11' + mod;
+		var wo = '#ngmsgbu' + mod;
 		$(wo).html(ngaximg);
 		ngUniCS(mod,'b');
 	}
+	function ngBuTbls(mod) {
+		// silent
+		ngUniCS(mod,'bmt');
+	}
 	function ngBuSC(reply) {
-		var ret = reply.split('--',2);
+		var ret = reply.split('--',3);
 		var mod = ret[0];
-		var cnt = ret[1] + '<br />';
-		var wo = '#ngmsgt11' + mod;
-		$(wo).html('Backup' + ngokimg);
-		$('#ngbstcpfoot').append(cnt);
+		var cci = ret[1];
+		var msg = ret[2];
+		var wo = '#ngmsgbu' + mod;
+		$(wo).html(cci);
+		$('#ngbstcpfoot').append(msg);
+	}
+	function ngBuSCmod(reply) {
+		$('#ngbstcpfoot').append(reply);
 	}
 	function ngBuAll() {
 		ngUniCS('','B');
@@ -62,19 +67,20 @@
 		var ret = reply.split('--');
 		ngprobar = ret.length;
 		for (x in ret) {
-			var wo = '#ngmsgt11' + ret[x];
+			var wo = '#ngmsgbu' + ret[x];
 			$(wo).html(ngaximg);
 			ngUniCS(ret[x],'B2');
 		}
 	}
 	function ngBuAllSC(reply) {
-		var ret = reply.split('--',2);
+		var ret = reply.split('--',3);
 		var mod = ret[0];
-		var cnt = ret[1];
-		var wo1 = '#ngmsgt11' + mod;
+		var cci = ret[1];
+		var msg = ret[2];
+		var wo1 = '#ngmsgbu' + mod;
 		ngPro();
-		$(wo1).html('Backup' + ngokimg);
-		$('#ngbstcpfoot').append(cnt + '<br />');
+		$(wo1).html(cci);
+		$('#ngbstcpfoot').append(msg);
 	}
 	function ngBuBranch() {
 		ngUniCS('core1v1','Br');
@@ -88,12 +94,10 @@
 		var ret = reply.split('--',3);
 		var mod = ret[0];
 		var vsn = ret[1];
-		// H 20110111
-		var opl = ret[0].length + ret[1].length + 4;
+		var opl = ret[0].length + ret[1].length + 4; // x
 		var cnt = reply.substr(opl);
-		var wo1 = '#ngchk' + mod;
-		$(wo1).text(vsn);
-		ngUniJqSC(cnt,'#ngmsg');
+		$('#ngmsg').html(cnt);
+		ngJqShow('#ngmsg',true);
 	}
 	function ngCheckAll() {
 		ngUniCS('','C');
@@ -125,27 +129,27 @@
 		var cnt = ret[2];
 		var wo1 = '#ngchk' + mod;
 		ngPro();
-		$(wo1).text(vsn);
+		if (ngprobar > 0) {
+			$(wo1).text(vsn);
+		} else {
+			ngUniCS('','ml');
+		}
 	}
+		
 	function ngInstall(mod) {
 		ngUniCS(mod,'i');
 	}	
 	function ngInstallSC(reply) {
-		var ret = reply.split('--',4);
+		var ret = reply.split('--',3);
 		var cc = ret[0];
 		var mod = ret[1];
-		var flip = ret[2];
-		var cnt = ret[3];
+		var cnt = ret[2];
 		var wo = '#ngin' + mod;
-		var oldhref = $(wo).attr('href');
-		var newhref = oldhref.replace('ngInstall','ngUnInstall');
 		$('#ngmsg').html(cnt);
-		$('#ngmsg').jqm();
-		$('#ngmsg').jqmShow();
 		if (cc == 'ok') {
-			$(wo).text(flip);
-			$(wo).attr('href', newhref);
-			$(wo).attr('id', 'ngun' + mod);
+			ngJqShow('#ngmsg',true);
+		} else {
+			ngJqShow('#ngmsg',false);
 		}
 	}
 	function ngUnInstall(p) {
@@ -161,18 +165,18 @@
 	function ngUnInstallReplied(p,answer) {
 		if (answer) {
 			// .. bu fs
+			ngBu(p);
 			// .. bu db
-			ngUnInstallCS(p);
+			ngBuTbls(p)
+			ngUnInstallCS(p,p);
 		} else {
-			$('#ngmsg').html('<b>' + p + '</b> not uninstalled');
-			$('#ngmsg').jqm();
-			$('#ngmsg').jqmShow();
+			ngUnInstallCS(p,'void');
 		}
 	}
-	function ngUnInstallCS(mod) {
+	function ngUnInstallCS(mod,confirm) {
 		$.ajax({
 			type: "GET",
-			url: "ngboost/action/admin/xaop/un/p/" + mod + '/confirm/' + mod + '/authkey/' + authkey,
+			url: "ngboost/action/admin/xaop/un/p/" + mod + '/confirm/' + confirm + '/authkey/' + authkey,
 			success: function(reply) {
 						ngUnInstallSC(reply);
 					}
@@ -186,14 +190,10 @@
 		var cnt = ret[3];
 		var wo = '#ngun' + mod;
 		$('#ngmsg').html(cnt);
-		$('#ngmsg').jqm();
-		$('#ngmsg').jqmShow();
 		if (cc == 'ok') {
-			var oldhref = $(wo).attr('href');
-			var newhref = oldhref.replace('ngUnInstall','ngInstall');
-			$(wo).text(flip);
-			$(wo).attr('href', newhref);
-			$(wo).attr('id', 'ngin' + mod);
+			ngJqShow('#ngmsg',true);
+		} else {
+			ngJqShow('#ngmsg',false);
 		}
 	}
 	function ngUpdate(mod) {
@@ -203,16 +203,14 @@
 		var ret = reply.split('--',3);
 		var cc = ret[0];
 		var mod = ret[1];
-		var cnt = ret[2];
+		var opl = ret[0].length + ret[1].length + 4;
+		var cnt = reply.substr(opl);
 		var wo = '#ngup' + mod;
 		$('#ngmsg').html(cnt);
-		$('#ngmsg').jqm();
-		$('#ngmsg').jqmShow();
 		if (cc == 'ok') {
-			// need removal of update
-			// cannot be tested yet ..........TODO
-			// $(wo + ":contains('|')").empty();
-			$(wo).remove();
+			ngJqShow('#ngmsg',true);
+		} else {
+			ngJqShow('#ngmsg',false);
 		}
 	}
 	function ngShowDep(mod) {
@@ -224,29 +222,90 @@
 	function ngPatos() {
 		ngUniCS('','pas');
 	}
-	function ngPickup(mod) {
-		ngUniCS(mod,'wg');
+	function ngListLog() {
+		ngUniCS('','lbl');
+	}
+	function ngPickup(mod,x) {
+		for (var i=0; i<x; i++) {
+			var wom = '#ngpickuprm' + i + mod;
+			var wop = '#ngpickuprp' + i + mod;
+			$(wom).html('receive ');
+			$(wop).html(ngaximg);
+			ngUniCS(mod,'wgr',i);
+		}
 	}	
 	function ngPickupSC(reply) {
-		var ret = reply.split('--',2);
-		var mod = ret[0];
-		var cnt = ret[1];
-		var wo = '#ngpickup' + mod;
-		var cc = cnt.substr(0,2);
-		if (cc == 'OK') {
+		var ret = reply.split('--',5);
+		var ix = ret[0];
+		var ac = ret[1];
+		var cc = ret[2];
+		var mod = ret[3];
+		var msg = ret[4];
+		var wop = '#ngpickup' + ac + 'p' + ix + mod;
+		var wom = '#ngpickup' + ac + 'm' + ix + mod;
+		if (cc == '0') {
 			var pic = ngokimg;
 		} else {
 			var pic = ngkoimg;
 		}
-		$(wo).html(cnt + ' ' + pic + '<br /><br />');
+		$(wop).html(pic);
+		if (cc=='0') {
+			switch (ac) {
+				case 'r':
+					// from receive trigger check
+					wom = '#ngpickupcm' + ix + mod;
+					wop = '#ngpickupcp' + ix + mod;
+					$(wom).html(' ' + msg + ' ');
+					$(wop).html(ngaximg);
+					ngUniCS(mod,'wgc',ix);			
+				break
+				case 'c':
+					// from check trigger decompress
+					wom = '#ngpickupxm' + ix + mod;
+					wop = '#ngpickupxp' + ix + mod;
+					$(wom).html(' ' + msg + ' ');
+					$(wop).html(ngaximg);
+					ngUniCS(mod,'wgx',ix);			
+				break
+				case 'x':
+					// from decompress trigger expand
+					wom = '#ngpickupum' + ix + mod;
+					wop = '#ngpickupup' + ix + mod;
+					$(wom).html(' ' + msg + ' ');
+					$(wop).html(ngaximg);
+					ngUniCS(mod,'wgu',ix);			
+				break
+				case 'u':
+					// from decompress done
+					wom = '#ngpickupzz' + ix + mod;
+					$(wom).html(' ' + msg + ' ');
+					var woa = '#ngpickupa' + mod;
+					$(woa).html('');
+				break
+			}
+		} else {
+			wom = '#ngpickupzz' + ix + mod;
+			$(wom).html(' ' + msg + ' ');
+		}
 	}
 
 	function ngSetSrc(reply) {
 		var wo = '#ngbstcpfoot';
 		$(wo).html(reply);
 	}
+	
+	function ngNewMLtrSC(reply) {
+		var ret = reply.split("\n");
+		var x = ret.length - 1;
+		for (x in ret) {
+			var row = ret[x].split('--',2);
+			var wo = '#ngmltr' + row[0];
+			$(wo).html(row[1]);
+		}
+	}
 
-	function ngUniCS(ref,op) {
+
+	function ngUniCS(ref,op,i) {
 		var url = 'ngboost/action/admin/xaop/';
 		switch (op) {
 			case 'a':
@@ -254,6 +313,9 @@
 				break;
 			case 'b': case 'B2':
 				url = url + 'bm/p/';
+				break;
+			case 'bmt':
+				url = url + 'bmt/p/';
 				break;
 			case 'B':
 				url = url + 'B';
@@ -273,6 +335,15 @@
 			case 'i':
 				url = url + 'in/p/';
 				break;
+			case 'lbl':
+				url = url + 'lbl';
+				break;
+			case 'ml':
+				url = url + 'ml';
+				break;
+			case 'pa':
+				url = url + 'pa/p/';
+				break;
 			case 'po':
 				url = url + 'po/p/';
 				break;
@@ -288,8 +359,17 @@
 			case 'up':
 				url = url + 'up/p/';
 				break;
-			case 'wg':
-				url = url + 'tget/m/';
+			case 'wgr':
+				url = url + 'tget/x/' + i + '/m/';
+				break;
+			case 'wgc':
+				url = url + 'tchk/x/' + i + '/m/';
+				break;
+			case 'wgx':
+				url = url + 'tdec/x/' + i + '/m/';
+				break;
+			case 'wgu':
+				url = url + 'texp/x/' + i + '/m/';
 				break;
 			case 'ws':
 				url = url + 'tS/p/';
@@ -309,6 +389,9 @@
 							case 'b': case 'Br':
 								ngBuSC(reply);
 							break;
+							case 'bmt':
+								ngBuSCmod(reply);
+							break;
 							case 'B':
 								ngBuAllSCx(reply);
 							break;
@@ -327,8 +410,17 @@
 							case 'i':
 								ngInstallSC(reply);
 							break;
+							case 'lbl':
+								ngPlainSC(reply,'#ngmsgt61');
+							break;
+							case 'ml':
+								ngNewMLtrSC(reply);
+							break;
+							case 'pa':
+								ngPlainSC(reply,'#ngpato' + ref);
+							break;
 							case 'pas':
-								ngPlainSC(reply,'#ngmsgt71');
+								ngPlainSC(reply,'#ngmsgt61');
 							break;
 							case 'po':
 								ngPlainSC(reply,'#ngpatx' + ref);
@@ -342,7 +434,7 @@
 							case 'up':
 								ngUpdateSC(reply);
 							break;
-							case 'wg':
+							case 'wgr': case 'wgc': case 'wgx': case 'wgu':
 								ngPickupSC(reply);
 							break;
 							case 'ws':
@@ -355,40 +447,54 @@
 	function ngUniJqSC(reply,to) {
 		if (ngVerReply(reply)) {
 			$(to).html(reply);
-			$(to).jqm();
-			$(to).jqmShow();
-		}
-	}
-		
-	function ngPro() {
-		if (ngprobar > 1 ) {
-			ngprobar = ngprobar - 1;
-			$('#ngmsg').removeClass('jqmWindow');
-			$('#ngmsg').attr('style', 'display:inline');
-			$('#ngmsg').html(ngaximg + ' just <b>' + ngprobar + '</b> modules to process');
-		} else {
-			ngprobar = 0;
-			$('#ngmsg').attr('style', 'display:none');
-			$('#ngmsg').addClass('jqmWindow');
-			$('#ngmsg').html(' ');
+			ngJqShow(to,false);
 		}
 	}
 	
-
-
-
-
+	function ngJqShow(at,posttf) {
+		var ngjqclose=function(hash) {
+			hash.w.hide();
+			hash.o.remove();
+			ngJqClose(at,posttf);
+			};
+		$(at).jqm({onHide: ngjqclose});
+		$(at).jqmShow();
+	}
+	function ngJqClose(at,posttf) {
+		if (posttf==true) {
+			ngUniCS('','ml');
+		}
+	}
+	
+	function ngPro() {
+		if (ngprobar > 1 ) {
+			ngprobar = ngprobar - 1;
+		//	$('#ngmsg').removeClass('jqmWindow');
+			$('.ngallmsg').attr('style', 'display:inline');
+			$('.ngallmsg').html(' ' + ngaximg + ' just <b>' + ngprobar + '</b> modules to process');
+		} else {
+			ngprobar = 0;
+			$('.ngallmsg').attr('style', 'display:none');
+			$('.ngallmsg').html('&nbsp;');
+		//	$('#ngmsg').addClass('jqmWindow');
+		}
+	}
+	
 	function ngPlain(op) {
 		ngPlainCS(op);
 	}
 	function ngPlainCS(op) {
-		var fb = '#ngmsgt51';
+		var fb = '#ngmsgt41';
 		switch (op) {
 		case 'ldb':
-			fb = '#ngmsgt61';
+			document.body.style.cursor = 'wait';
+			fb = '#ngmsgt51';
 			break;
-		case 'ts': case 'fs': case 'fsd':
-			fb = '#ngmsgt71';
+		case 'ts': case 'tsl':
+			fb = '#ngmsgt31';
+			break;
+		case'fs': case 'fsd':
+			fb = '#ngmsgt61';
 			break;
 		}
 		$.ajax({
@@ -401,6 +507,7 @@
 	}
 	function ngPlainSC(reply,wo) {
 		$(wo).html(reply);
+		document.body.style.cursor = 'auto';
 	}
 
 	function ngPop(op,k,v) {
@@ -448,6 +555,7 @@
 		$('#ngmsg').html(cnt);
 		$('#ngmsg').jqm();
 		$('#ngmsg').jqmShow();
+		//	$('#ngbstcpfoot').append(cnt);
 	}
 
 	
@@ -529,14 +637,38 @@
 		
 	function ngPatoDesc(pat) {
 		ngUniCS(pat,'po');
+		$('.ngpat').hide();
+		$('.ngpata' ).text('more');
+		var wo = '#ngpata' + pat;
+		$(wo).attr('href','javascript:ngPatoLdesc(\'' + pat + '\')');
+		$(wo).text('less');
+		wo = '#ngpatx' + pat;
+		$(wo).html(ngaximg);
+		$(wo).addClass('ngpat');
 	}
 		
 	function ngPatoLdesc(pat) {
-		var wo = '#ngpat' + pat;
+		var wo = '#ngpatx' + pat;
+		$(wo).removeClass('ngpat');
 		$('.ngpat').hide();
+		$('.ngpata' ).text('more');
 		$(wo).toggle();
+		$(wo).addClass('ngpat');
+		var st = $(wo).css('display');
+		wo = '#ngpata' + pat;
+		if (st == 'none') {
+			$(wo).text('more');
+		} else {
+			$(wo).text('less');
+		}
 	}
-		
+
+	function ngPatoApply(pat) {
+		var wo = '#ngpato' + pat;
+		$(wo).html(ngaximg);
+		ngUniCS(pat,'pa');
+	}
+	
 	function ngVerReply(reply) {
 		if (reply == '') {
 			return false;
@@ -547,4 +679,3 @@
 		return true;
 	}
 	
-
