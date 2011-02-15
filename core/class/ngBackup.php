@@ -21,7 +21,7 @@
 		$this->context=PHPWS_Core::getCurrentModule();
 	}
 
-	public static function getRepositoryPath()
+	public function getRepositoryPath()
 	{
 		// API	string|false=ngBackup::getRepositoryPath();
 		
@@ -41,7 +41,7 @@
 		return false;
 	}
 	
-	function getTableList($returnprefixed=true)
+	public function getTableList($returnprefixed=true)
 	{
 		// API:	$object = new ngBackup();
 		//		array|false = $object->getTableList();
@@ -76,7 +76,7 @@
 		return false;
 	}
 	
-	function backupMod($mod)
+	public function backupMod($mod)
 	{
 		// API:	$object = new ngBackup();
 		//		cc = $object->backupMod(module|'core');
@@ -108,7 +108,7 @@
 		return 1;
 	}
 			
-	function _backupFS($mod) {
+	public function _backupFS($mod) {
 		if (isset($this)) {
 			// if (Current_User::allow(NGBU, 'com_export')) { }
 			if (1==1) {
@@ -184,7 +184,7 @@
 		}
 	}
 
-	function restoreMod($fn) {
+	public function restoreMod($fn) {
 		if (isset($this)) {
 			if (1==1) {
 				$this->rp=ngBackup::getRepositoryPath();				
@@ -228,7 +228,7 @@
 		return 1;
 	}
 	
-	function exportTable($table,$filestamp=false) {
+	public function exportTable($table,$filestamp=false) {
 		if (isset($this)) {
 			if (Current_User::allow('ngboost')) {
 				$this->prefix=PHPWS_DB::getPrefix();
@@ -285,7 +285,7 @@
 		return $msg;
 	}
 
-	function importTable($filename) {
+	public function importTable($filename) {
 		if (isset($this)) {
 			//	if (! Current_User::allow(NGCOM, 'fio_import')) {
 			//		return $this->uniMsg(NGCOM::BR.'E222 '.NGCOM::MISS);
@@ -295,7 +295,7 @@
 			if ($bupath) {
 				$ar=@file($bupath.$filename);
 				if ($ar) {
-					$msg='0,'.dgettext('ngboost','Import start').' '. $filename;
+					$msg='0,'.dgettext('ngboost','Import start with').' '. $filename;
 					$cc0=$cc1=$cc2=$cc3=0;
 					foreach ($ar as $rec) {
 						$parts=explode('--#',$rec,2);
@@ -345,7 +345,7 @@
 		return $msg;
 	}
 
-	function tarList($fn)
+	public function tarList($fn)
 	{
 		if (isset($this)) {
 			if (1==1) {
@@ -355,11 +355,16 @@
 						if (file_exists($rp.$fn)) {
 							$tar = new Archive_Tar($rp.$fn);
 							$ar=$tar->listContent();
+							// return '0<pre style="height:400px; overflow:auto;">'.print_r($ar,true).'</pre>';
 							if ($ar) {
 								$sumsize=0;
 								$content='<h3>'.$fn.'</h3><div style="height:400px; overflow:auto;"><table>';
 								foreach ($ar as $v) {
-									$strperms=$this->_cvFilePerms($v['mode']);
+									if ($v['typeflag']==5) {$be=(int)0x4000;}
+									elseif ($v['typeflag']==2) {$be=(int)0xa000;}
+									elseif ($v['typeflag']==0) {$be=(int)0x8000;}
+									else {$be=(int)0x0000;}
+									$strperms=$this->_cvFilePerms($be + (int)$v['mode']);
 									$strfname=rtrim($v['filename'],"\x00..\x1F");
 									$content .= '<tr>'
 									. '<td nowrap>'.date("Y-m-d H:i",$v['mtime']).'</td>'
@@ -384,7 +389,7 @@
 		return 1;
 	}
 
-	function _getInstallSql($module) {
+	public function _getInstallSql($module) {
 		return;
 		// just drafty
                 $file = $mod->getDirectory() . 'boost/install.sql';
@@ -393,7 +398,7 @@
 	}			
 
 	
-	function _cvFilePerms($perms)
+	public function _cvFilePerms($perms)
 	{
 		// format unix perms
 		if (($perms & 0xC000) == 0xC000) {$info = 's'; } 	 // Socket
