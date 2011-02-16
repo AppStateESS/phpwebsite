@@ -184,6 +184,11 @@ class Access {
                         Current_User::disallow();
                     }
                     break;
+
+                case 'menu_fix':
+                    Access::menuFix();
+                    PHPWS_Core::goBack();
+                    break;
             }
         }
 
@@ -807,6 +812,26 @@ class Access {
         }
         if (!empty($htaccess)) {
             file_put_contents('.htaccess', implode('', $htaccess));
+        }
+    }
+
+    public static function menuFix()
+    {
+        $db = new PHPWS_DB('access_shortcuts');
+        $sc = $db->select();
+        if (empty($sc)) {
+            return;
+        }
+
+        $menu_db = new PHPWS_DB('menu_links');
+        foreach ($sc as $shortcut) {
+            extract($shortcut);
+            $url = str_replace(':', '/', $url);
+            $menu_db->addWhere('url', $url);
+            $menu_db->addWhere('url', "./$url", '=', 'or');
+            $menu_db->addValue('url', './' . $keyword);
+            $menu_db->update();
+            $menu_db->reset();
         }
     }
 }

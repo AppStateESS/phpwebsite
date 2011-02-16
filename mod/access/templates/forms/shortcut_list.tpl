@@ -1,3 +1,4 @@
+{MENU_FIX} (<i>{MENU_WARNING}</i>)
 {START_FORM}
 <table width="99%" cellpadding="3">
     <tr>
@@ -21,6 +22,6 @@
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
 <!-- END empty -->
-{CHECK_ALL_SHORTCUTS}
-<div class="align-center">{LIST_ACTION} {SUBMIT}</div>
+<div style="float : right">{SEARCH}</div>
+<div>{CHECK_ALL_SHORTCUTS}<br /> {LIST_ACTION} {SUBMIT}</div>
 {END_FORM}

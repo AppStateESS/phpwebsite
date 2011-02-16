@@ -24,6 +24,7 @@ class Access_Forms {
         $pager->setTemplate('forms/shortcut_list.tpl');
         $pager->setLink('index.php?module=access&amp;tab=shortcuts');
         $pager->addToggle('class="bgcolor1"');
+        $pager->setSearch('keyword');
 
         $form = new PHPWS_Form('shortcut_list');
         $form->addHidden('module', 'access');
@@ -40,9 +41,11 @@ class Access_Forms {
 
         $page_tags = $form->getTemplate();
 
-        $page_tags['URL_LABEL']      = dgettext('access', 'Url');
+        $page_tags['MENU_FIX']     = PHPWS_Text::secureLink(dgettext('access', 'Update menu links'), 'access', array('command'=>'menu_fix'));
+        $page_tags['MENU_WARNING'] = dgettext('menu', 'This change is irreversable. Please backup menu_links prior to running it.');
+        $page_tags['URL_LABEL']    = dgettext('access', 'Url');
         $page_tags['ACTIVE_LABEL'] = dgettext('access', 'Active?');
-        $page_tags['ACTION_LABEL']   = dgettext('access', 'Action');
+        $page_tags['ACTION_LABEL'] = dgettext('access', 'Action');
         $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all', array('checkbox_name' => 'shortcut[]'));
 
         $js_vars['value']        = dgettext('access', 'Go');
