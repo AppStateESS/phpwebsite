@@ -398,7 +398,7 @@ class Blog_User {
     /**
      * Displays current blog entries to side box
      */
-    public function showSide()
+    public static function showSide()
     {
         switch(PHPWS_Settings::get('blog', 'show_recent')) {
             case 0:
