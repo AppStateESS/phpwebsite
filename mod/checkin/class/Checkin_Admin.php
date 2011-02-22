@@ -291,6 +291,22 @@ class Checkin_Admin extends Checkin {
                 $this->reason->delete();
                 PHPWS_Core::goBack();
                 break;
+
+            case 'deactivate_staff':
+                PHPWS_Core::initModClass('checkin', 'Staff.php');
+                $staff = new Checkin_Staff($_GET['id']);
+                $staff->active = 0;
+                $staff->save();
+                PHPWS_Core::goBack();
+                break;
+
+            case 'activate_staff':
+                PHPWS_Core::initModClass('checkin', 'Staff.php');
+                $staff = new Checkin_Staff($_GET['id']);
+                $staff->active = 1;
+                $staff->save();
+                PHPWS_Core::goBack();
+                break;
         }
 
         if (empty($this->content)) {
@@ -365,10 +381,10 @@ class Checkin_Admin extends Checkin {
         javascriptMod('checkin', 'reassign', array('authkey'=>Current_User::getAuthKey()));
         $this->title = dgettext('checkin', 'Assignment');
         $this->loadVisitorList(null, true);
-        $this->loadStaffList();
+        $this->loadStaffList(true);
 
         // id and name only for drop down menu
-        $staff_list = $this->getStaffList(false,true);
+        $staff_list = $this->getStaffList(false,true,true);
         $staff_list = array_reverse($staff_list, true);
         $staff_list[0] = dgettext('checkin', 'Unassigned');
         $staff_list[-1] = dgettext('checkin', '-- Move visitor --');
@@ -394,7 +410,6 @@ class Checkin_Admin extends Checkin {
         $backcount = -1;
         // Go through staff and list assignments
         foreach ($this->staff_list as $staff) {
-
             $row = array();
             $this->current_staff = & $staff;
             $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
@@ -416,7 +431,6 @@ class Checkin_Admin extends Checkin {
                 $count++;
             }
         }
-
         ksort($tpl['rows']);
 
         $tpl['VISITORS_LABEL'] = dgettext('checkin', 'Visitors');
@@ -546,7 +560,6 @@ class Checkin_Admin extends Checkin {
         switch ($this->current_staff->status) {
             case 0:
                 // Available
-
                 if (!empty($this->visitor_list) && $this->current_visitor) {
                     $tpl['MEET'] = $this->startMeetingLink();
                     $tpl['SENDBACK'] = $this->sendBackLink();

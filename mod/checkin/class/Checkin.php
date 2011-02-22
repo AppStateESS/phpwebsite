@@ -40,13 +40,16 @@ class Checkin {
     }
 
 
-    public function loadStaffList()
+    public function loadStaffList($active_only=false)
     {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
         $db = new PHPWS_DB('checkin_staff');
+        if ($active_only) {
+        }
         $db->addColumn('users.display_name');
         $db->addColumn('checkin_staff.*');
         $db->addWhere('user_id', 'users.id');
+            $db->addWhere('active', 1);
         $db->addOrder('checkin_staff.view_order');
         $result = $db->getObjects('Checkin_Staff');
         if (!PHPWS_Error::logIfError($result)) {
@@ -114,13 +117,17 @@ class Checkin {
         }
     }
 
-    public function getStaffList($as_object=false, $available_only=false)
+    public function getStaffList($as_object=false, $available_only=false, $active_only=false)
     {
         $db = new PHPWS_DB('checkin_staff');
         if ($available_only) {
             $db->addWhere('status', 1, '!=');
         }
+
         $db->addWhere('user_id', 'users.id');
+        if ($active_only) {
+            $db->addWhere('active',1);
+        }
         $db->addColumn('users.display_name');
         if ($as_object) {
             PHPWS_Core::initModClass('checkin', 'Staff.php');

@@ -19,6 +19,7 @@ class Checkin_Staff {
     public $visitor_id    = 0;
     public $display_name  = null;
     public $view_order    = 0;
+    public $active        = 1;
     public $_reasons      = null;
 
     public function __construct($id=0)
@@ -168,7 +169,16 @@ class Checkin_Staff {
                 $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
                 break;
         }
+
         $vars['staff_id'] = $this->id;
+
+
+        if ($this->active) {
+            $links[] = \PHPWS_Text::secureLink(\Icon::show('active', 'Click to deactivate'), 'checkin', array('aop'=>'deactivate_staff', 'id'=>$this->id));
+        } else {
+            $links[] = \PHPWS_Text::secureLink(\Icon::show('inactive', 'Click to activate'), 'checkin', array('aop'=>'activate_staff', 'id'=>$this->id));
+        }
+
         $vars['aop'] = 'edit_staff';
         $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'checkin', $vars);
 

@@ -81,6 +81,14 @@ function checkin_update(&$content, $current_version) {
             $content[] = '<pre>1.1.1 changes
 ---------------------
 + Reports limited to admins</pre>';
+
+        case version_compare($current_version, '1.2', '<'):
+            $db = new PHPWS_DB('checkin_staff');
+            $db->addTableColumn('active', 'smallint not null default 1');
+            $content[] = '<pre>1.2 changes
+--------------
++ Fixed blue button on admin menu
++ Staff can now be deactivated so they appear on reports but do not receive visitors</pre>';
     }
     return true;
 }
