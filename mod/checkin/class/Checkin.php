@@ -45,11 +45,11 @@ class Checkin {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
         $db = new PHPWS_DB('checkin_staff');
         if ($active_only) {
+            $db->addWhere('active', 1);
         }
         $db->addColumn('users.display_name');
         $db->addColumn('checkin_staff.*');
         $db->addWhere('user_id', 'users.id');
-            $db->addWhere('active', 1);
         $db->addOrder('checkin_staff.view_order');
         $result = $db->getObjects('Checkin_Staff');
         if (!PHPWS_Error::logIfError($result)) {
