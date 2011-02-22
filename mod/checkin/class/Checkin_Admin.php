@@ -557,12 +557,15 @@ class Checkin_Admin extends Checkin {
 
     public function statusButtons(&$tpl)
     {
+        $sendback = PHPWS_Settings::get('checkin', 'sendback');
         switch ($this->current_staff->status) {
             case 0:
                 // Available
                 if (!empty($this->visitor_list) && $this->current_visitor) {
                     $tpl['MEET'] = $this->startMeetingLink();
-                    $tpl['SENDBACK'] = $this->sendBackLink();
+                    if ($sendback) {
+                        $tpl['SENDBACK'] = $this->sendBackLink();
+                    }
                 }
                 $tpl['UNAVAILABLE'] = $this->unavailableLink();
                 $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently available for meeting.');
@@ -570,7 +573,7 @@ class Checkin_Admin extends Checkin {
                 break;
 
             case 1:
-                if ($this->current_visitor) {
+                if ($this->current_visitor && $sendback) {
                     $tpl['SENDBACK'] = $this->sendBackLink();
                 }
                 $tpl['AVAILABLE'] = $this->availableLink();
@@ -799,6 +802,10 @@ class Checkin_Admin extends Checkin {
         $form->setLabel('unassigned_seen', dgettext('checkin', 'Staff see unassigned visitors'));
         $form->setMatch('unassigned_seen', PHPWS_Settings::get('checkin', 'unassigned_seen'));
 
+        $form->addCheck('sendback', 1);
+        $form->setLabel('sendback', dgettext('checkin', 'Use send back button'));
+        $form->setMatch('sendback', PHPWS_Settings::get('checkin', 'sendback'));
+
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();
 
@@ -818,6 +825,7 @@ class Checkin_Admin extends Checkin {
         PHPWS_Settings::set('checkin', 'unassigned_seen', (int)isset($_POST['unassigned_seen']));
         PHPWS_Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
         PHPWS_Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
+        PHPWS_Settings::set('checkin', 'sendback', (int)isset($_POST['sendback']));
 
         $seconds = (int)$_POST['assign_refresh'];
         if ($seconds < 1) {
