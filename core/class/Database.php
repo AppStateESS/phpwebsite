@@ -509,7 +509,6 @@ class PHPWS_DB {
         }
 
         $join_info['tables'] = array();
-
         foreach ($this->_join_tables as $join_array) {
             $dup = md5(serialize($join_array));
             if (isset($dup_list) && in_array($dup, $dup_list)) {
@@ -537,11 +536,17 @@ class PHPWS_DB {
             }
 
             if (isset($this->table_as[$join_to])) {
+                $join_tables[] = $this->table_as[$join_to];
                 $join_to = sprintf('%s as %s', $this->table_as[$join_to], $join_to);
+            } else {
+                $join_tables[] = $join_to;
             }
 
             if (isset($this->table_as[$join_from])) {
                 $join_from = sprintf('%s as %s', $this->table_as[$join_from], $join_from);
+                $join_tables[] = $this->table_as[$join_from];
+            } else {
+                $join_tables[] = $join_from;
             }
 
             if (in_array($join_from, $join_info['tables'])) {
@@ -562,12 +567,10 @@ class PHPWS_DB {
                 $join_on);
             }
 
-            $join_info['tables'][] = $join_from;
-            $join_info['tables'][] = $join_to;
+            $join_info['tables'] = $join_tables;
         }
 
         $join_info['join'] = implode(' ', $allJoin);
-
         return $join_info;
     }
 
@@ -584,7 +587,6 @@ class PHPWS_DB {
 
         if ($format == true) {
             $join_info = $this->getJoin();
-
             foreach ($this->tables as $table) {
                 if ($join_info && in_array($table, $join_info['tables'])) {
                     continue;
@@ -2921,11 +2923,6 @@ class PHPWS_DB_Where {
     public $operator   = '=';
     public $conj       = 'AND';
     public $join       = false;
-
-    public function setJoinTable($table)
-    {
-        $this->join_table = $table;
-    }
 
     public function setColumn($column)
     {
