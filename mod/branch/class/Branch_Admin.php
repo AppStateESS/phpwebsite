@@ -255,7 +255,6 @@ class Branch_Admin {
         file_put_contents($this->branch->directory . 'phpws_stats.php', $stats);
         file_put_contents($this->branch->directory . 'index.php', $index_file);
 
-        file_put_contents($this->branch->directory . 'files/.htaccess', 'Deny from all');
         file_put_contents($this->branch->directory . 'config/.htaccess', 'Deny from all');
 
 
