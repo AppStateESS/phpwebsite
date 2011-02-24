@@ -60,6 +60,10 @@ function forwardInfo()
 
     while(isset($aUrl[$i])) {
         $key = $aUrl[$i];
+        if (!$i && is_numeric($key)) {
+            $_GET['id'] = $key;
+            return;
+        }
         $i++;
         if (isset($aUrl[$i])) {
             $value = $aUrl[$i];
