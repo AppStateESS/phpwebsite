@@ -136,7 +136,6 @@ class Block_Admin {
             case 'postBlock':
                 Block_Admin::postBlock($block);
                 $result = $block->save();
-                exit();
                 Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
                 break;
 
