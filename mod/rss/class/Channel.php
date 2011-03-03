@@ -25,6 +25,13 @@ class RSS_Channel {
     public $_feeds          = NULL;
     public $_error          = NULL;
 
+    public function rssDate($timestamp=null)
+    {
+        /*** set the timestamp ***/
+        $timestamp = ($timestamp==null) ? time() : $timestamp;
+        /*** Mon, 02 Jul 2009 11:36:45 +0000 ***/
+        return date(DATE_RSS, $timestamp);
+    }
 
     public function __construct($id=NULL)
     {
@@ -178,7 +185,7 @@ class RSS_Channel {
         $template['WEBMASTER'] = PHPWS_Settings::get('rss', 'webmaster');
         $template['MANAGING_EDITOR'] = PHPWS_Settings::get('rss', 'editor');
 
-        $template['LAST_BUILD_DATE'] = $this->_last_build_date;
+        //        $template['LAST_BUILD_DATE'] = $this->_last_build_date;
 
         $timezone = strftime('%z');
         $timezone = substr($timezone, 0, 3) . ':' . substr($timezone, 3, 2);
@@ -195,8 +202,8 @@ class RSS_Channel {
 
                 $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim($this->EncodeString($key->summary)));
                 $itemTpl['ITEM_AUTHOR']       = $key->creator;
-                $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M');
-
+                //              $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%Y-%m-%d %H:%M:%S CST');
+                $itemTpl['ITEM_PUBDATE'] = $this->rssDate($key->create_date);
                 $itemTpl['ITEM_DC_DATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M:%S') . $timezone;
                 $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
                 $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
