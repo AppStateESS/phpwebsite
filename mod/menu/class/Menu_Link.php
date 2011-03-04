@@ -65,7 +65,7 @@ class Menu_Link {
     /**
      * Grabs all the child links under the current link
      */
-    public function loadChildren($data,$hash)
+    public function loadChildren($data = null,$hash = null)
     {
         // If we're doing this the old, inefficient way...
         if (empty($data) || empty($hash)) {
