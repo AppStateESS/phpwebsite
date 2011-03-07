@@ -1,0 +1,90 @@
+phpWebSite Analytics module
+by Jeff Tickle <jtickle at tux dot appstate dot edu>
+-----------------------------------
+
+I whipped this thing together a few months ago so that we could offer some
+delicious Google Analytics action to various websites that we host, and in
+my haste, I never added an admin interface, only a database table.  Then,
+at the insistance of trf000 on IRC, I added a rudimentary admin interface.
+
+Right now, Analytics only officially supports Google Analytics, although it
+is somewhat extensible to other cloud-based analytics systems.  First, I'll
+talk about how to use it for Google Analytics, and then a few brief notes
+on extending it for other analytics systems.
+
+-----------------------------------
+
+TEMPLATE TAG
+
+In your theme template, add an ANALYTICS_END_BODY tag at the very end of your
+BODY tag.  This can be put pretty much anywhere in the page, and if you don't
+put it in your theme.tpl, things will still work.  HOWEVER: if you've ever
+been to a web page that is slow to load and you see "Wating for Google
+Analytics," it is because they did not put the script at the end of their
+BODY, but rather at the top or in the HEAD.  So please, do us all a favor
+and put it at the end of your BODY tag.
+
+-----------------------------------
+
+GOOGLE ANALYTICS WITH THE PHPWEBSITE ANALYTICS MODULE
+
+Go to the New Tracker tab.
+
+"Friendly Name" is just a name you can use to identify
+it besides "GoogleAnalyticsTracker."  I don't know why you would ever need
+more than one Google Analytics tracker on a website, or even if that is
+allowed by Google's TOS, but this thing will allow you to set up
+multiple instances and have them be active simultaneously.
+
+"Currently Active" is whether or not the tracker is active.  Checked means
+it will show up in ever page, unchecked means it won't.
+
+Account Identifier is the unique ID for your analytics account, and it can
+be found like so:
+
+1. Log in to Google Analytics
+2. Select your website
+3. Your unique ID will appear next to your host name.  For example:
+
+http://website.com UA-12345678-9
+
+The "UA-12345678-9" part is your unique ID.  You don't need the 'UA-' part,
+so in the "Account Identifier" box, you would enter: 12345678-9
+
+-----------------------------------
+
+CUSTOM ANALYTICS ENGINES WITH THE PHPWEBSITE ANALYTICS MODULE
+
+The Analytics module should make adding your own cloud-based Analytics
+engine easy.  If it's a popular service, please send us your Tracker
+class, and we will consider adding it to the phpWebSite distribution.
+
+Have a look at class/trackers/GoogleAnalyticsTracker to get an idea
+for how this works.  All Trackers extend the Tracker class and implement
+two functions: track() and trackerType().
+
+trackerType() simply returns the name of the class.  This could probably be
+better done with reflection, but I didn't think about it at the time.
+
+track() is called at runtime to add the javascript for your tracker engine
+to the end of the body.  In the case of GoogleAnalyticsTracker, I am just
+putting the TRACKER_ID into the GoogleAnalytics.tpl template, and using the
+self::addEndBody($string) utility to make sure it ends up in the right
+place in the main page template.
+
+Another thing you could do here is directly ping a remote script that would
+keep track of certain information and never actually place anything into
+the body.  I don't know of any service that offers this sort of interface
+but should one come up, go for it!
+
+-----------------------------------
+
+FUTURE IMPROVEMENTS
+
+Unfortunately, right now the Analytics module only lets you store one string
+to uniquely identify your tracker script.  This may be all that anyone ever
+needs, but it would be better for the Tracker child classes to decide what
+types of information that they need from the user.  If anyone would like to
+tackle this and submit a patch, we would be grateful.
+
+Thanks!
