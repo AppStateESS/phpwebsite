@@ -375,10 +375,10 @@ class PageSmith {
             $menu_link = false;
         }
 
-        if (!$tpl_set) {
+        //if (!$tpl_set) {
             $this->page->save();
             PHPWS_Cache::clearCache();
-        }
+        //}
 
         if ($menu_link && PHPWS_Core::moduleExists('menu')) {
             if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
