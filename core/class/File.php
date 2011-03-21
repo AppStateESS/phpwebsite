@@ -593,7 +593,7 @@ class PHPWS_File {
         return true;
     }
 
-    private static function getDiff($w, $mw, $h, $mh)
+    public static function getDiff($w, $mw, $h, $mh)
     {
 
         if ($w < $mw && $h > $mh) {
