@@ -398,7 +398,7 @@ class DB2 extends Data {
      * @param string $name Word to verify.
      * @return boolean True if allowed, false if restricted.
      */
-    public function allowedIdentifier($name)
+    public static function allowedIdentifier($name)
     {
         static $reserved = array('add', 'all', 'alter', 'analyze', 'and', 'any', 'array', 'as', 'asc', 'asensitive',
 'asymmetric', 'authorization', 'before', 'between', 'bigint', 'binary', 'blob', 'both',
@@ -712,7 +712,7 @@ class DB2 extends Data {
      * @param string $value - String of table, field, etc. we are checking.
      * @access public
      */
-    public function allowed($value)
+    public static function allowed($value)
     {
         if (!is_string($value)) {
             return false;
