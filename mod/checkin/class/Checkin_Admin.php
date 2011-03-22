@@ -616,21 +616,21 @@ class Checkin_Admin extends Checkin {
     {
         $vars['aop'] = 'unavailable';
         $vars['staff_id'] = $this->current_staff->id;
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Unavailable for meeting'), 'unavailable-button action-button');
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Make unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Click to make unavailable for meeting'), 'unavailable-button action-button');
     }
 
     public function sendBackLink()
     {
         $vars['aop'] = 'sendback';
         $vars['staff_id'] = $this->current_staff->id;
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Send back'), 'checkin', $vars, null, dgettext('checkin', sprintf('Send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Send back'), 'checkin', $vars, null, dgettext('checkin', sprintf('Click to send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
     }
 
     public function availableLink()
     {
         $vars['aop'] = 'available';
         $vars['staff_id'] = $this->current_staff->id;
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Available'), 'checkin', $vars, null, dgettext('checkin', 'Available for meeting'), 'available-button action-button');
+        return PHPWS_Text::secureLink(dgettext('checkin', 'Make available'), 'checkin', $vars, null, dgettext('checkin', 'Click to make available for meeting'), 'available-button action-button');
     }
 
     public function startMeetingLink()
