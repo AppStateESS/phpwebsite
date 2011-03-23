@@ -5,7 +5,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 $proper_name  = 'Checkin';
-$version      = '1.2';
+$version      = '1.3';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;

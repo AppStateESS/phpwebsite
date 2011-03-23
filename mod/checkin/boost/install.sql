@@ -23,6 +23,7 @@ CREATE TABLE checkin_visitor (
   id int NOT NULL default 0,
   firstname varchar(80) NOT NULL default '',
   lastname varchar(80) NOT NULL default '',
+  email varchar(255) NULL,
   reason smallint NOT NULL default 0,
   arrival_time int NOT NULL default 0,
   start_meeting int NOT NULL default 0,

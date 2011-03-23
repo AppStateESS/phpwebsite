@@ -29,7 +29,7 @@
             <!-- END message -->
             <!-- BEGIN subrow -->
             <tr>
-                <td width="60%"><strong>{VIS_NAME}</strong><br />
+                <td width="60%"><strong>{VIS_NAME}</strong> <!-- BEGIN email --> - {EMAIL}<!-- END email --><br />
                 {REASON}<br />
                 <em>{NOTE}</em></td>
                 <td class="smaller">{ARRIVAL}</td>

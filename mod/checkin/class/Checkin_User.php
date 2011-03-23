@@ -22,6 +22,11 @@ class Checkin_User extends Checkin {
         $form->setLabel('last_name', dgettext('checkin', 'Last name'));
         $form->setRequired('last_name');
 
+        if (PHPWS_Settings::get('checkin', 'email')) {
+            $form->addText('email', @trim($_POST['email']));
+            $form->setLabel('email', dgettext('checkin', 'Email address'));
+        }
+
         $reasons = $this->getReasons();
 
         if (!empty($reasons)) {
@@ -119,6 +124,11 @@ class Checkin_User extends Checkin {
         if (empty($this->visitor->lastname)) {
             $this->message[] = dgettext('checkin', 'Please enter your last name.');
         }
+
+        if (!empty($_POST['email'])) {
+            $this->visitor->email = strip_tags(trim($_POST['email']));
+        }
+
         $this->visitor->assign();
 
         return empty($this->message);

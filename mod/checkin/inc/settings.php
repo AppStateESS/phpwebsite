@@ -12,4 +12,5 @@ $settings['collapse_signin'] = 0;
 $settings['time_format']     = '%r';
 $settings['unassigned_seen'] = 0;
 $settings['sendback'] = 1;
+$settings['email'] = 0;
 ?>

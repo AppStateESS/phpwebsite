@@ -806,6 +806,10 @@ class Checkin_Admin extends Checkin {
         $form->setLabel('sendback', dgettext('checkin', 'Use send back button'));
         $form->setMatch('sendback', PHPWS_Settings::get('checkin', 'sendback'));
 
+        $form->addCheck('email', 1);
+        $form->setLabel('email', dgettext('checkin', 'Request email address'));
+        $form->setMatch('email', PHPWS_Settings::get('checkin', 'email'));
+
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();
 
@@ -826,6 +830,7 @@ class Checkin_Admin extends Checkin {
         PHPWS_Settings::set('checkin', 'front_page', (int)isset($_POST['front_page']));
         PHPWS_Settings::set('checkin', 'collapse_signin', (int)isset($_POST['collapse_signin']));
         PHPWS_Settings::set('checkin', 'sendback', (int)isset($_POST['sendback']));
+        PHPWS_Settings::set('checkin', 'email', (int)isset($_POST['email']));
 
         $seconds = (int)$_POST['assign_refresh'];
         if ($seconds < 1) {
@@ -1288,12 +1293,18 @@ class Checkin_Admin extends Checkin {
                     }
 
                     $tObj->setCurrentBlock('subrow');
-                    $tObj->setData(array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
+                    $data = array('VIS_NAME' => PHPWS_Text::moduleLink($vis->getName(), 'checkin', array('aop'=>'visitor_report', 'vis_id'=>$vis->id)),
                                          'REASON'   => $reason,
                                          'ARRIVAL'  => strftime('%r', $vis->arrival_time),
                                          'NOTE'     => $vis->note,
                                          'WAITED'   => Checkin::timeWaiting($wait),
-                                         'SPENT'    => Checkin::timeWaiting($spent)));
+                                         'SPENT'    => Checkin::timeWaiting($spent));
+
+                    if (!empty($vis->email)) {
+                        $data['EMAIL'] = '<a href="mailto:' . $vis->email . '">' . $vis->email . '</a>';
+                    }
+
+                    $tObj->setData($data);
                     $tObj->parseCurrentBlock();
                     if ($spent >= 0) {
                         $count++;

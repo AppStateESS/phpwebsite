@@ -8,6 +8,7 @@ class Checkin_Visitor {
     public $id            = 0;
     public $firstname     = null;
     public $lastname      = null;
+    public $email         = null;
     public $reason        = 0;
     public $arrival_time  = 0;
     public $start_meeting = 0;

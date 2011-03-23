@@ -89,6 +89,13 @@ function checkin_update(&$content, $current_version) {
 --------------
 + Fixed blue button on admin menu
 + Staff can now be deactivated so they appear on reports but do not receive visitors</pre>';
+
+        case version_compare($current_version, '1.3', '<'):
+            $db = new PHPWS_DB('checkin_visitor');
+            $db->addTableColumn('email', 'varchar(255) NULL');
+            $content[] = '<pre>1.3 changes
+---------------
++ Option to collect visitor email addresses.</pre>';
     }
     return true;
 }
