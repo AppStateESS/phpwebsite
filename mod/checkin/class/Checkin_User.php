@@ -25,6 +25,7 @@ class Checkin_User extends Checkin {
         if (PHPWS_Settings::get('checkin', 'email')) {
             $form->addText('email', @trim($_POST['email']));
             $form->setLabel('email', dgettext('checkin', 'Email address'));
+            $form->setRequired('email');
         }
 
         $reasons = $this->getReasons();
