@@ -785,7 +785,6 @@ class Access {
 
     public static function getHtaccess()
     {
-        $current_directory = dirname($_SERVER['PHP_SELF']);
         if (!is_file('.htaccess') || !is_readable('.htaccess') || !is_writable('.htaccess')) {
             return;
         }
@@ -800,7 +799,7 @@ class Access {
             return null;
         }
 
-        $current_directory = preg_replace("/index\.php/","", $_SERVER['SCRIPT_NAME']);
+        $current_directory = dirname($_SERVER['PHP_SELF']);
 
         $base_found = false;
         foreach ($htaccess as $key=>$val) {
