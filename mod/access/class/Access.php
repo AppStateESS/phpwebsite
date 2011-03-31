@@ -799,6 +799,9 @@ class Access {
         if (empty($htaccess)) {
             return null;
         }
+
+        $current_directory = preg_replace("/index\.php/","", $_SERVER['SCRIPT_NAME']);
+
         $base_found = false;
         foreach ($htaccess as $key=>$val) {
             if (preg_match('/^rewritebase/i', trim($val))) {
