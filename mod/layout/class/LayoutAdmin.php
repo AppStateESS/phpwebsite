@@ -500,7 +500,7 @@ class Layout_Admin {
     /**
      * Receives the post results of the box change form.
      */
-    public function moveBox()
+    public static function moveBox()
     {
         PHPWS_Core::initModClass('layout', 'Box.php');
         $box = new Layout_Box($_GET['box_source']);
