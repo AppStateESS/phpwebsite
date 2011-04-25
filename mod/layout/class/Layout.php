@@ -540,7 +540,12 @@ class Layout {
         $data['home_http'] = PHPWS_Core::getHomeHttp();
         $data['home_dir'] = PHPWS_HOME_DIR;
 
-        Layout::loadJavascriptFile($headfile, $directory, $data);
+        try {
+            Layout::loadJavascriptFile($headfile, $directory, $data);
+        }catch(Exception $e){
+            trigger_error($e->getMessage(), E_USER_ERROR);
+        }
+
         if (is_file($bodyfile)) {
             if (!empty($data)) {
                 return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
@@ -691,8 +696,14 @@ class Layout {
         return $_SESSION['Layout_Settings']->isMoveBox();
     }
 
-    // Loads a javascript file into the header of the theme
-    // index is the name of javascript. prevents repeats
+    /*
+     * Loads a javascript file into the header of the theme.
+     *
+     * @param $filename String - The file name of the javascript to be included
+     * @param $index String - The name of javascript. prevents repeats
+     * @param $data
+     * @throws Exception
+     */
     public static function loadJavascriptFile($filename, $index, $data=NULL)
     {
         if (!is_file($filename)) {
