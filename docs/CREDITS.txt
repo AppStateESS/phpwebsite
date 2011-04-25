@@ -154,6 +154,9 @@ JSmin
 Ryan Grove & Douglas Crockford
 http://code.google.com/p/jsmin-php/
 
+phpqrcode
+Dominik Dzienia
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
