@@ -696,6 +696,8 @@ class Layout {
     public static function loadJavascriptFile($filename, $index, $data=NULL)
     {
         if (!is_file($filename)) {
+            // Throw an exception because the file is missing.
+            throw new Exception("Missing javascript file: $filename");
             return FALSE;
         }
 
