@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Description
+ * A sample Pulse process that repeats by re-scheduling itself.
+ *
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
