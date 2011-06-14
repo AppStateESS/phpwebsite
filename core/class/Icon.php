@@ -191,9 +191,9 @@ class Icon extends Image {
             foreach ($icon_list as $item) {
                 $subcontent[] = Icon::show($item, null, $module) . ' '. $item;
             }
-            $content[] = sprintf(dgettext('core', '<strong>Module %1$s icons stored at %2$s</strong>')
+            $content[] = '<strong>' . sprintf(dgettext('core', '<strong>Module %1$s icons stored at %2$s')
             , $module, $iconSet['source'])
-            . '<br />' . implode('<br />', $subcontent);
+            . '</strong><br />' . implode('<br />', $subcontent);
         }
 
         $final =  implode('<br />', $content);
