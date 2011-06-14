@@ -740,7 +740,8 @@ class Setup {
         $memory_limit = (int)ini_get('memory_limit');
 
         $test['memory']['pass'] = ($memory_limit > 8);
-        $test['memory']['fail'] = dgettext('core','Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level. We suggest raising the limit in your php.ini file or uncommenting the "ini_set(\'memory_limit\', \'10M\');" line in your config/core/config.php file after installation.');
+        $test['memory']['fail'] = dgettext('core','Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level.');
+        $test['memory']['fail'] .= dgettext('core', 'We suggest raising the limit in your php.ini file or uncommenting the "ini_set(\'memory_limit\', \'10M\');" line in your config/core/config.php file after installation.');
         $test['memory']['name'] = dgettext('core','Memory limit exceeded');
         $test['memory']['crit'] = false;
 
