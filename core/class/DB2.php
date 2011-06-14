@@ -735,7 +735,7 @@ class DB2 extends Data {
      * Normally you would receive array(0=>array('id'=>4, 'name'=>'Ted'))
      * with an index set you would instead get array(4=>array('id'=>4, 'name'=>'Ted'))
      *
-     * @param DB2_Field $field
+     * @param \DB2_Field $field
      * @return void
      */
     public function setIndexBy(DB2_Field $field)
@@ -907,7 +907,7 @@ class DB2 extends Data {
      * echo $query2->selectQuery();
      * // Echoes
      * // SELECT (foo_result.*) FROM (SELECT foo.* FROM foo) as foo_result;
-     * @param DB2 $query
+     * @param \DB2 $query
      * @return void
      */
     public function addSubSelect(DB2 $db2, $alias)
