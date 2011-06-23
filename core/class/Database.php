@@ -2629,6 +2629,9 @@ class PHPWS_DB {
         $sql = preg_replace('/[\n\r]/', ' ', $sql);
         $command = substr($sql, 0,strpos($sql, ' '));
 
+        $matches = null;
+        $tables = array();
+
         switch(strtolower($command)) {
             case 'alter':
                 if (!preg_match('/alter table/i', $sql)) {
@@ -2649,6 +2652,13 @@ class PHPWS_DB {
                     $table = $aTable[2];
                 }
                 $tables[] = trim(preg_replace('/\W/', '', $table));
+
+                // Find any tables used in foreign key contstraints
+                if(preg_match_all('/references (\S*)\s*\(\S*\)/i',$sql, $matches)){
+                    foreach($matches[1] as $match){
+                        $tables[] = $match;
+                    }
+                }
                 break;
 
             case 'delete':
