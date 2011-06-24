@@ -410,6 +410,11 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
             $content[] = '<pre>1.3.1 changes
 -----------------------
 + mktime function calls updated</pre>';
+        case version_compare($currentVersion, '1.3.2', '<'):
+            $content[] = '<pre>1.3.2 changes
+-----------------------
++ Using templating from Eloi.
++ Fixed icons</pre>';
     }
 
     return true;
