@@ -131,6 +131,13 @@ function controlpanel_update(&$content, $currentVersion)
 ------------------
 + Links reindexed for core changes.</pre>';
 
+		case version_compare($currentVersion, '2.3.1', '<'):
+                $content[] = '<pre>2.3.1 changes
+-------------------
++ Icon templating from Eloi.
+</pre>';
+
+
 	}
 	return true;
 }
