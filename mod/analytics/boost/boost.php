@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Analytics';
-$version      = '0.0.1';
+$version      = '1.0.0';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
