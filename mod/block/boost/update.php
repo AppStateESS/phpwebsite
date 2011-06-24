@@ -98,6 +98,11 @@ Please download version 1.1.2.</pre>';
 + Using Icon class.
 + Id added to each block.
 </pre>';
+        case version_compare($currentVersion, '1.3.4', '<'):
+            $content[] = '<pre>1.3.4 changes
+--------------
++ Removed exit call.
+</pre>';
     }
     return TRUE;
 }
