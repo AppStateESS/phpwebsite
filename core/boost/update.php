@@ -564,7 +564,28 @@ EOT;
 + Inclusion of ngBackup
 </pre>
 UPDATES;
-
+ case version_compare($version, '2.0.2', '<'):
+         $content[] = <<<UPDATES
+<pre>2.0.2 changes
+----------------------
++ Added To top icon
++ Fixed table bug where names used in foreign key constrains (in CREATE TABLE statements) were not prefixed correctly
++ Removed HTML from some translations.
++ Fixed bug causing a table name to be repeated in a JOIN statement
++ Fixed some PHP notice errors.
++ Fixed some hub icon directory problems (Thanks Eloi).
++ Image resizing reworked to correct problems with irregular images.
++ ngBackup updates.
++ Fixed some templating issues (Thanks Tommy, Eloi).
++ URL validity checking in Text was made more robust.
++ Fixed some label id issues in form.
++ Fixed a loadDimensions error in Image (Thanks Eloi)
++ Fixed DBPager duplicating table insertions (Thanks Eloi)
++ Fixed some PEAR PHP 5 warnings.
++ Changed URL forwarding - if first value after the module is numeric, it is cast as an id.
++ Removed deny-all .htaccess file from file directory.
+</pre>
+UPDATES;
     }
     return true;
 }
