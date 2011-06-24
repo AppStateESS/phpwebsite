@@ -102,7 +102,7 @@ abstract class DB2_Conditional extends Data {
      * @param string|DB2_Field $column
      * @param string|DB2_Conditional_Value $value
      * @param string|DB2_Expression $operator
-     * @param DB2_Table|DB2_SubSelect $resource
+     * @param \DB2_Table|DB2_SubSelect $resource
      * @return void
      */
     public function __construct($column, $value, $operator=null, $resource)
@@ -141,7 +141,7 @@ abstract class DB2_Conditional extends Data {
      * @param string $column
      * @param unknown_type $value
      * @param string $operator
-     * @param DB2_Table|DB2 $resource
+     * @param \DB2_Table|DB2 $resource
      * @return unknown_type
      */
     static public function factory($column, $value, $operator=null, $resource)
