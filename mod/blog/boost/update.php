@@ -296,7 +296,11 @@ function blog_update(&$content, $currentVersion)
 ---------------------
 + Hub/Branch changes.
 + Updated code to conform to php 5 strict standards.</pre>';
-
+        case version_compare($currentVersion, '1.8.4', '<'):
+            $content[] = '<pre>1.8.4 changes
+---------------------
++ Removed caching to correct previous blog entries problems
+</pre>';
     } // end of switch
     return true;
 }
