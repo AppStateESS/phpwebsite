@@ -491,7 +491,7 @@ abstract class DB2_Table extends DB2_Resource implements Factory_Table {
      * Query:
      * insert into foo (foo_id) SELECT bar.id FROM bar;
      *
-     * @param DB2 $db2 The database object from which we grab a select result
+     * @param \DB2 $db2 The database object from which we grab a select result
      * @param array $column_names Names of columns to insert into
      * @return void
      */
