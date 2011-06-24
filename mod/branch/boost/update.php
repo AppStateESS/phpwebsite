@@ -116,6 +116,11 @@ function branch_update(&$content, $version)
 + PHP 5 strict fixes.
 + Branches no longer create local file versions.</pre>';
 
+        case version_compare($version, '1.3.1', '<'):
+            $content[] = '<pre>1.3.1 Changes
+-------------
++ htaccess copying to file directories was removed.</pre>';
+
     }
     return true;
 }
