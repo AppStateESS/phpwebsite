@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function access_update(&$content, $version)
 {
     switch (1) {
@@ -41,9 +40,9 @@ function access_update(&$content, $version)
 0.2.0 changes
 ---------------';
             $files = array('conf/error.php',
-                       'templates/forms/administrator.tpl',
-                       'templates/forms/update_file.tpl',
-                       'img/access.png');
+                'templates/forms/administrator.tpl',
+                'templates/forms/update_file.tpl',
+                'img/access.png');
             if (PHPWS_Boost::updateFiles($files, 'access')) {
                 $content[] = '+ The following files were updated successfully.';
             } else {
@@ -74,10 +73,10 @@ function access_update(&$content, $version)
         case version_compare($version, '0.2.2', '<'):
             $content[] = '<pre>';
             $files = array('conf/error.php',
-                       'templates/forms/administrator.tpl',
-                       'templates/forms/update_file.tpl',
-                       'img/access.png',
-                       'conf/config.php');
+                'templates/forms/administrator.tpl',
+                'templates/forms/update_file.tpl',
+                'img/access.png',
+                'conf/config.php');
             if (PHPWS_Boost::updateFiles($files, 'access')) {
                 $content[] = '+ The following files were updated successfully.';
             } else {
@@ -180,11 +179,16 @@ function access_update(&$content, $version)
 ---------------
 + Code changes to make PHP 5 strict compatible.</pre>';
 
-            case version_compare($version, '1.1.8', '<'):
+        case version_compare($version, '1.1.8', '<'):
             $content[] = '<pre>1.1.8 changes
 ---------------
 + Fixed shortcuts not working with some older pages
 + Pager links added to shortcut list</pre>';
+
+        case version_compare($version, '1.1.9', '<'):
+            $content[] = '<pre>1.1.9 changes
+---------------
++ Fixed a bug in Access module which was causing the RewriteBase? to be set to the empty string</pre>';
     }
 
     return true;
