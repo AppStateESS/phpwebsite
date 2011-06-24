@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @author Matthew McNaney
  * @version $Id$
  */
-
 function filecabinet_update(&$content, $version)
 {
     $home_dir = PHPWS_Boost::getHomeDir();
@@ -63,7 +63,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
 
             $source_dir = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/';
-            $dest_dir   = $home_dir . 'templates/filecabinet/filters/';
+            $dest_dir = $home_dir . 'templates/filecabinet/filters/';
 
             if (!is_dir($dest_dir)) {
                 if (!PHPWS_File::copy_directory($source_dir, $dest_dir)) {
@@ -73,9 +73,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
 
             $files = array('templates/manager/pick.tpl', 'templates/classify_file.tpl',
-                       'templates/classify_list.tpl', 'templates/image_edit.tpl',
-                       'templates/multimedia_edit.tpl', 'templates/multimedia_grid.tpl',
-                       'templates/style.css', 'templates/settings.tpl', 'conf/config.php');
+                'templates/classify_list.tpl', 'templates/image_edit.tpl',
+                'templates/multimedia_edit.tpl', 'templates/multimedia_grid.tpl',
+                'templates/style.css', 'templates/settings.tpl', 'conf/config.php');
 
             if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
                 $content[] = '--- Copied the following files:';
@@ -134,15 +134,15 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '1.2.0', '<'):
             $content[] = '<pre>';
             $files = array('img/no_image.png', 'conf/config.php', 'conf/video_types.php',
-                       'conf/embedded.php',
-                       'javascript/folder_contents/head.js',
-                       'javascript/clear_image/head.js',
-                       'javascript/clear_image/body.js',
-                       'javascript/pick_image/head.js',
-                       'templates/image_folders.tpl', 'templates/settings.tpl',
-                       'templates/style.css', 'templates/image_view.tpl',
-                       'templates/multimedia_view.tpl', 'templates/style.css',
-                       'img/video_generic.png', 'templates/image_edit.tpl', 'conf/error.php');
+                'conf/embedded.php',
+                'javascript/folder_contents/head.js',
+                'javascript/clear_image/head.js',
+                'javascript/clear_image/body.js',
+                'javascript/pick_image/head.js',
+                'templates/image_folders.tpl', 'templates/settings.tpl',
+                'templates/style.css', 'templates/image_view.tpl',
+                'templates/multimedia_view.tpl', 'templates/style.css',
+                'img/video_generic.png', 'templates/image_edit.tpl', 'conf/error.php');
 
             fc_updatefiles($files, $content);
 
@@ -227,11 +227,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
             $content[] = '';
             $files = array('conf/error.php', 'conf/config.php',
-                       'templates/filters/flash.tpl', 'templates/file_list.tpl',
-                       'templates/multimedia_edit.tpl', 'templates/settings.tpl',
-                       'templates/style.css', 'templates/thumbnail.tpl', 'templates/image_edit.tpl',
-                       'javascript/pick_image/head.js', 'templates/folder_list.tpl',
-                       'templates/manager/pick.tpl', 'img/delete.png');
+                'templates/filters/flash.tpl', 'templates/file_list.tpl',
+                'templates/multimedia_edit.tpl', 'templates/settings.tpl',
+                'templates/style.css', 'templates/thumbnail.tpl', 'templates/image_edit.tpl',
+                'javascript/pick_image/head.js', 'templates/folder_list.tpl',
+                'templates/manager/pick.tpl', 'img/delete.png');
 
             fc_updatefiles($files, $content);
             if (!PHPWS_Boost::inBranch()) {
@@ -242,13 +242,13 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '1.4.0', '<'):
             $content[] = '<pre>';
             $files = array('javascript/folder_contents/head.js',
-                       'javascript/folder_contents/scripts.js',
-                       'javascript/pick_image/head.js',
-                       'javascript/pick_image/scripts.js',
-                       'javascript/clear_image/body.js',
-                       'javascript/clear_image/head.js',
-                       'templates/style.css',
-                       'templates/settings.tpl');
+                'javascript/folder_contents/scripts.js',
+                'javascript/pick_image/head.js',
+                'javascript/pick_image/scripts.js',
+                'javascript/clear_image/body.js',
+                'javascript/clear_image/head.js',
+                'templates/style.css',
+                'templates/settings.tpl');
             fc_updatefiles($files, $content);
             if (!PHPWS_Boost::inBranch()) {
                 $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_4_0.txt');
@@ -378,11 +378,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '2.1.0', '<'):
             $content[] = '<pre>';
             $files = array('templates/image_view.tpl', 'templates/settings.tpl',
-                       'javascript/pick_file/head.js', 'javascript/pick_file/scripts.js',
-                       'javascript/update_file/head.js', 'templates/file_manager/placeholder.tpl',
-                       'templates/document_edit.tpl', 'templates/image_edit.tpl', 'templates/multimedia_edit.tpl',
-                       'templates/edit_folder.tpl', 'templates/embed_edit.tpl', 'templates/style.css',
-                       'templates/file_manager/folder_content_view.tpl', 'templates/file_manager/resize.tpl');
+                'javascript/pick_file/head.js', 'javascript/pick_file/scripts.js',
+                'javascript/update_file/head.js', 'templates/file_manager/placeholder.tpl',
+                'templates/document_edit.tpl', 'templates/image_edit.tpl', 'templates/multimedia_edit.tpl',
+                'templates/edit_folder.tpl', 'templates/embed_edit.tpl', 'templates/style.css',
+                'templates/file_manager/folder_content_view.tpl', 'templates/file_manager/resize.tpl');
             fc_updatefiles($files, $content);
 
             $db = new PHPWS_DB('folders');
@@ -448,37 +448,37 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = 'Unregister flag set in modules table.';
 
             $files = array('javascript/jcaro_lite/',
-                       'javascript/shutter/',
-                       'javascript/pick_file/',
-                       'javascript/update_file/head.js',
-                       'javascript/update_file/default.php',
-                       'javascript/clear_file/body.js',
-                       'javascript/clear_file/head.js',
-                       'javascript/clear_file/default.php',
-                       'templates/image_view.tpl',
-                       'templates/carousel_horz.tpl',
-                       'templates/carousel_vert.tpl',
-                       'templates/classify_list.tpl',
-                       'templates/ss_box.tpl',
-                       'templates/file_manager/carousel_pick.tpl',
-                       'templates/file_manager/folder_content_view.tpl',
-                       'templates/settings.tpl',
-                       'templates/style.css',
-                       'templates/file_list.tpl',
-                       'templates/folder_list.tpl',
-                       'templates/pinned.tpl',
-                       'img/add.png',
-                       'img/arrow_left.png',
-                       'img/arrow_right.png',
-                       'conf/icons.php',
-                       'conf/config.php'
-                       );
+                'javascript/shutter/',
+                'javascript/pick_file/',
+                'javascript/update_file/head.js',
+                'javascript/update_file/default.php',
+                'javascript/clear_file/body.js',
+                'javascript/clear_file/head.js',
+                'javascript/clear_file/default.php',
+                'templates/image_view.tpl',
+                'templates/carousel_horz.tpl',
+                'templates/carousel_vert.tpl',
+                'templates/classify_list.tpl',
+                'templates/ss_box.tpl',
+                'templates/file_manager/carousel_pick.tpl',
+                'templates/file_manager/folder_content_view.tpl',
+                'templates/settings.tpl',
+                'templates/style.css',
+                'templates/file_list.tpl',
+                'templates/folder_list.tpl',
+                'templates/pinned.tpl',
+                'img/add.png',
+                'img/arrow_left.png',
+                'img/arrow_right.png',
+                'conf/icons.php',
+                'conf/config.php'
+            );
 
-                       fc_updatefiles($files, $content);
+            fc_updatefiles($files, $content);
 
-                       if (!PHPWS_Boost::inBranch()) {
-                           $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_2_0.txt');
-                       }
+            if (!PHPWS_Boost::inBranch()) {
+                $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/2_2_0.txt');
+            }
 
         case version_compare($version, '2.2.1', '<'):
             $content[] = '<pre>
@@ -491,7 +491,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '2.2.2', '<'):
             $content[] = '<pre>';
             $files = array('img/mime_types/', 'templates/document_download.tpl', 'templates/file_view.css',
-                       'templates/multi_doc_download.tpl');
+                'templates/multi_doc_download.tpl');
             fc_updatefiles($files, $content);
             $content[] = '2.2.2 changes
 -----------------------
@@ -511,14 +511,14 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '2.2.4', '<'):
             $content[] = '<pre>';
             $files = array('templates/fckeditor.tpl',
-                       'templates/fckdocuments.tpl',
-                       'templates/fck.css',
-                       'templates/fckimages.tpl',
-                       'templates/fckfolders.tpl',
-                       'templates/folder_list.tpl',
-                       'templates/settings.tpl',
-                       'img/folder.gif',
-                       'javascript/fckeditor/');
+                'templates/fckdocuments.tpl',
+                'templates/fck.css',
+                'templates/fckimages.tpl',
+                'templates/fckfolders.tpl',
+                'templates/folder_list.tpl',
+                'templates/settings.tpl',
+                'img/folder.gif',
+                'javascript/fckeditor/');
             fc_updatefiles($files, $content);
             $content[] = '2.2.4 changes
 -----------------------
@@ -569,11 +569,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Image carousel switched to jcarousel with Lightbox usage.
 + Updated to work with core updates.</pre>';
 
-            case version_compare($version, '2.3.1', '<'):
+        case version_compare($version, '2.3.1', '<'):
             $content[] = '<pre>2.3.1 changes
 ---------------------
 + Setting added to allow direct links to documents
 + Fixed captioned image template</pre>';
+        case version_compare($version, '2.3.2', '<'):
+            $content[] = '<pre>2.3.2 changes
+---------------------
++ Changing public flag to private on document folders creates .htaccess file preventing world access
++ Added mp4/m4v to multimedia class.
+</pre>';
             return true;
     }
 }
@@ -622,4 +628,5 @@ function fc_update_parent_links()
     // remove superfluous column
     PHPWS_Error::logIfError($db->dropTableColumn('parent_id'));
 }
+
 ?>
