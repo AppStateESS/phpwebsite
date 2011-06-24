@@ -273,6 +273,10 @@ function calendar_update(&$content, $version)
 ------------------
 + Fixed empty events check in Upcoming Events
 + PHP 5 strict fixes.</pre>';
+        case version_compare($version, '1.7.4', '<'):
+            $content[] = '<pre>1.7.4 changes
+------------------
++ RSS added.</pre>';
     } // end of switch
 
     return true;
