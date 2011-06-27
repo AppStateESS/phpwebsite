@@ -359,6 +359,14 @@ timeout INT NOT NULL default 0,
 + Icon class implemented.
 + Strict PHP 5 changes made.
 </pre>';
+
+        case version_compare($currentVersion, '2.7.1', '<'):
+            $content[] = '<pre>2.7.1 changes
+-------------------------
++ Improved cosign script
++ Fixed errors getting dropped without logging.
+</pre>';
+
             
     } // End of switch statement
 

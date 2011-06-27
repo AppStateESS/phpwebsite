@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 function rss_update(&$content, $version)
 {
     switch ($version) {
@@ -143,6 +143,11 @@ function rss_update(&$content, $version)
 0.3.4 changes
 --------------
 + PHP 5 strict changes</pre>';
+        case version_compare($version, '0.3.5', '<'):
+            $content[] = '<pre>
+0.3.5 changes
+--------------
++ RSS feed date fix from Tommy de Jesus</pre>';
     }
 
     return true;
