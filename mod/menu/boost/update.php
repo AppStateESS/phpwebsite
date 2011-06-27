@@ -265,6 +265,12 @@ Please download 1.2.1.</pre>';
 + Bug fix with database initialization
 + Added code from Eloi George reducing DB queries</pre>
 ';
+        case version_compare($currentVersion, '1.6.5', '<'):
+            $content[] = '<pre>1.6.5 changes
+----------------
++ Patch from Eloi that reduces database calls on menu creation.
++ Fixed notice bugs from link movement
+</pre>';
     }
     return true;
 }

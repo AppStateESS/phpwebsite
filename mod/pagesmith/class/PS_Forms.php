@@ -118,9 +118,10 @@ class PS_Forms {
     {
         javascript('jquery');
         javascriptMod('pagesmith', 'delete_orphan');
+        $tpl = array();
         $tpl['TITLE'] = dgettext('pagesmith', 'Orphaned content');
-
         foreach ($orphans as $orf) {
+            $row = array();
             switch ($orf['sectype']) {
                 case 'text':
                 case 'header':

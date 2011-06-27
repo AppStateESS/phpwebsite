@@ -414,7 +414,8 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
             $content[] = '<pre>1.3.2 changes
 -----------------------
 + Using templating from Eloi.
-+ Fixed icons</pre>';
++ Fixed icons
++ Fixed bug #73 - Fatal error when saving Comment to a monitored thread</pre>';
     }
 
     return true;
