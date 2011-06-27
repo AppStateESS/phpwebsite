@@ -542,7 +542,7 @@ class Layout {
 
         try {
             Layout::loadJavascriptFile($headfile, $directory, $data);
-        }catch(Exception $e){
+        } catch(Exception $e){
             trigger_error($e->getMessage(), E_USER_ERROR);
         }
 

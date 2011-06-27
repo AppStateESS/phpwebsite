@@ -176,6 +176,14 @@ function layout_update(&$content, $currentVersion)
 ---------------------
 + Eloi George javascript patch applied
 </pre>';
+        case version_compare($currentVersion, '2.5.2', '<'):
+            $content[] = '<pre>2.5.2 changes
+---------------------
++ Eloi George templating patch added.
++ Fixed silent javascript failure.
+</pre>';
+
+
     }
     return true;
 }
