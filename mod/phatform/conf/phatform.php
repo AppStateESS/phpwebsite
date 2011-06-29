@@ -47,7 +47,7 @@ define('PHAT_ENTRY_LIST_LIMIT', 20);
 define('PHAT_ENTRY_LIST_TTL', 300);
 
 /* Maximum number of characters for a textarea */
-define('PHAT_MAX_CHARS_TEXT_ENTRY', 3000);
+define('PHAT_MAX_CHARS_TEXT_ENTRY', 15000);
 
 /* Set outcoming mail preference.
  Available Options: text/plain, text/html
