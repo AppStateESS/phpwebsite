@@ -49,8 +49,6 @@ function finc_update(&$content, $currentVersion)
 + PHP strict fixes
 + Some code tidy up
 + Implemented Icon class
-
-
 </pre>';
 
 
