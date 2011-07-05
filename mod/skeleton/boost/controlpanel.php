@@ -28,7 +28,7 @@ $link[] = array(
         'url'           => 'index.php?module=skeleton&amp;aop=menu',
         'description'   => 'Create your own skeletons.',
         'image'         => 'skeleton.png',
-        'tab'           => 'content'
+        'tab'           => 'developer'
         );
 
 ?>
