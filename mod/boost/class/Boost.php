@@ -149,7 +149,9 @@ class PHPWS_Boost {
                 $this->setStatus($title, BOOST_START);
             }
 
-            $content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
+				// H0120
+				$mod_content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
+		//	$content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
 
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
@@ -193,8 +195,13 @@ class PHPWS_Boost {
         }
 
         if ($last_mod->title == $title) {
-            $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
-            $content[] = dgettext('boost', 'Installation complete!');
+				// H0120
+				$mod_content[] = dgettext('boost', 'Installation complete!');
+				$this->addLog($title, str_replace("\n\n\n","\n",implode("\n", str_replace('<br />', "\n", $mod_content))));
+            // $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
+				// H 0120 display also the msgs for log 
+				$content[] = str_replace('<br /><br /><br />','<br />',implode('<br />', $mod_content));
+			// $content[] = dgettext('boost', 'Installation complete!');
         }
 
         return implode('<br />', $content);
@@ -270,7 +277,9 @@ class PHPWS_Boost {
                 $this->setStatus($title, BOOST_START);
             }
 
-            $content[] = '<b>' . dgettext('boost', 'Uninstalling') . ' - ' . $mod->getProperName() .'</b>';
+			// H 0120
+            $content[] = dgettext('boost', 'Uninstalling') . ' - ' . $mod->getProperName();
+            // $content[] = '<b>' . dgettext('boost', 'Uninstalling') . ' - ' . $mod->getProperName() .'</b>';
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
                 $uninstall_file = $mod->getDirectory() . 'boost/uninstall.sql';
@@ -302,7 +311,8 @@ class PHPWS_Boost {
                 $this->unregisterModule($mod, $content);
                 $this->removeDependencies($mod);
                 $this->removeKeys($mod);
-                $content[] = '<hr />';
+				// H 0120
+                // $content[] = '<hr />';
                 $content[] = dgettext('boost', 'Finished uninstalling module!');
                 break;
             }
@@ -325,6 +335,8 @@ class PHPWS_Boost {
             }
 
         }
+			// H 0120 + place into boost log also
+            $this->addLog($title, implode("\n", str_replace('<br />', "\n", $content)));
         return implode('<br />', $content);
     }
 

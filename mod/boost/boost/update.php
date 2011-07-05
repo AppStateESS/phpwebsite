@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function boost_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
@@ -101,12 +100,19 @@ Please download update 2.1.1.</pre>';
 + Hub/Branch changes.
 + PHP strict changes.</pre>';
 
+        case version_compare($currentVersion, '2.3.5', '<'):
+            $content[] = '<pre>
+2.3.5 changes
+----------------
++ Patches from Hilmar applied.
+</pre>';
     }
 
     return TRUE;
 }
 
-function update_boost_files($files, &$content) {
+function update_boost_files($files, &$content)
+{
     if (PHPWS_Boost::updateFiles($files, 'boost')) {
         $content[] = '--- The following files were updated successfully:';
     } else {
