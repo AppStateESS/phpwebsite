@@ -122,7 +122,7 @@ class javascript_flowplayer extends Javascript {
     {
         $this->id = rand();
         $this->addInclude('flowplayer.js');
-        $this->setHeadScript('<link rel="stylesheet" type="text/css" href="javascript/flowplayer/style.css">');
+        $this->setHeadScript(sprintf('<link rel="stylesheet" type="text/css" href="%sjavascript/flowplayer/style.css">', PHPWS_SOURCE_HTTP));
         $this->loadBody();
     }
 
