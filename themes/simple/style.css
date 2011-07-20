@@ -262,14 +262,14 @@ div#miniadmin li {
 li.menu-link {
     font-size: 12px;
     background-repeat: no-repeat;
-    background-image: url('../images/menu_bg.gif');
+    background-image: url('images/menu_bg.gif');
     border-bottom: 1px solid white;
     color: white;
     margin: 0px;
 }
 
 li.current-link,li.menu-link:hover {
-    background-image: url('../images/menu_bg_hover.gif');
+    background-image: url('images/menu_bg_hover.gif');
 }
 
 li.menu-link a.menu-link-href {
@@ -291,7 +291,7 @@ li.menu-link a.menu-link-href {
 }
 
 .menu ul li ul li.current-link,.menu ul li ul li.menu-link:hover {
-    background-image: url('../images/menu_bg_hover_lvl2.gif');
+    background-image: url('images/menu_bg_hover_lvl2.gif');
 }
 
 li.menu-link ul li a.menu-link-href {
