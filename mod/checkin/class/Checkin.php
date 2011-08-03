@@ -255,7 +255,7 @@ class Checkin {
         $mins = floor( $rel / 60);
 
         if ($hours) {
-            $waiting[] = sprintf(dgettext('checkin', '%s hour'), $hours);
+            $waiting[] = sprintf(dngettext('checkin', '%s hour', '%s hours', (int)$hours), $hours);
         }
 
         if ($mins) {

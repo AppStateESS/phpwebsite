@@ -80,14 +80,19 @@ class Checkin_Admin extends Checkin {
                 if (!PHPWS_Settings::get('checkin', 'staff_see_reports') && !Current_User::allow('checkin', 'assign_visitors')) {
                     Current_User::disallow();
                 }
-                $this->report(isset($_GET['print']));
+                if (isset($_GET['daily_report'])) {
+                    $this->dailyReport(isset($_GET['print']));
+                } elseif (isset($_GET['summary_report'])) {
+                    $this->summaryReport();
+                } else {
+                    $this->report();
+                }
                 break;
 
             case 'daily_report':
                 if (!PHPWS_Settings::get('checkin', 'staff_see_reports') && !Current_User::allow('checkin', 'assign_visitors')) {
                     Current_User::disallow();
                 }
-                $this->dailyReport(isset($_GET['print']));
                 break;
 
             case 'month_report':
@@ -1213,25 +1218,38 @@ class Checkin_Admin extends Checkin {
     public function report()
     {
         $udate = mktime(0, 0, 0);
+        $week_end = $udate + 86400;
         $current_date = strftime('%m/%d/%Y', $udate);
         $form = new PHPWS_Form('report-date');
         $form->setMethod('get');
         $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'report');
         $form->addText('cdate', $current_date);
         $form->setExtra('cdate', 'class="datepicker"');
-        $form->addHidden('aop', 'daily_report');
-        $form->setLabel('cdate', dgettext('checkin', 'Date'));
-        $form->addSubmit(dgettext('checkin', 'Go'));
+        $form->setLabel('cdate', dgettext('checkin', 'Visitor day'));
+        $form->addSubmit('daily_report', dgettext('checkin', 'Daily visit summary'));
+        $form->setSize('cdate', 10);
+
+
+        $form->addText('start_date', $current_date);
+        $form->setLabel('start_date', 'Start date');
+        $form->setSize('start_date', 10);
+        $form->setExtra('start_date', 'class="datepicker"');
+        $form->addText('end_date', strftime('%m/%d/%Y', $week_end));
+        $form->setLabel('end_date', 'End date');
+        $form->setSize('end_date', 10);
+        $form->setExtra('end_date', 'class="datepicker"');
+        $form->addSubmit('summary_report', dgettext('checkin', 'Summary report'));
+
+
         $tpl = $form->getTemplate();
-        $js['id'] = 'report-date_cdate';
-        javascript('datepicker', $js);
+        javascript('datepicker');
 
 
         $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate));
         $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop' => 'repeats', 'date' => $udate));
 
-
-        $this->content = 'report';
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'report.tpl');
     }
 
     public function dailyReport($print=false)
@@ -1265,8 +1283,7 @@ class Checkin_Admin extends Checkin {
             $form->setLabel('cdate', dgettext('checkin', 'Date'));
             $form->addSubmit(dgettext('checkin', 'Go'));
             $tpl = $form->getTemplate();
-            $js['id'] = 'report-date_cdate';
-            javascript('datepicker', $js);
+            javascript('datepicker');
 
 
             $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate));
@@ -1274,7 +1291,7 @@ class Checkin_Admin extends Checkin {
         }
 
         $tObj = new PHPWS_Template('checkin');
-        $tObj->setFile('report.tpl');
+        $tObj->setFile('daily_report.tpl');
 
         $this->loadStaffList();
         $reasons = $this->getReasons();
@@ -1430,6 +1447,68 @@ class Checkin_Admin extends Checkin {
         }
 
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'repeats.tpl');
+    }
+
+    private function summaryReport()
+    {
+        $start_date = strtotime($_GET['start_date']);
+        $end_date = strtotime($_GET['end_date']);
+        if (empty($start_date) || empty($end_date) || $start_date > $end_date) {
+            $this->content = '<a href="index.php?module=checkin&tab=report">Please go back and re-enter your dates</a>';
+            return;
+        }
+        $this->title = 'Visitors from ' . $_GET['start_date'] . ' to ' . $_GET['end_date'];
+
+        $db = new PHPWS_DB('checkin_visitor');
+        $db->addWhere('arrival_time', $start_date, '>=');
+        $db->addWhere('arrival_time', $end_date, '<=');
+        $db->addColumn('id');
+        $db->addColumn('arrival_time');
+        $db->addColumn('start_meeting');
+        $db->addColumn('end_meeting');
+        $result = $db->select();
+
+        $total_visits = 0;
+        $total_wait = 0;
+        $total_meeting = 0;
+
+        $tpl = array();
+        $incomplete_visits = 0;
+        foreach ($result as $visit) {
+            extract($visit);
+            $row = array();
+            if (!$start_meeting || !$end_meeting) {
+                $incomplete_visits++;
+                continue;
+            }
+
+            $total_visits++;
+            $twaited = $start_meeting - $arrival_time;
+            $waited = Checkin::timeWaiting($twaited);
+
+            if ($end_meeting) {
+                $tmeeting = $end_meeting - $start_meeting;
+            }
+            $meeting = Checkin::timeWaiting($tmeeting);
+
+            $row['VISIT'] = "Visit #$total_visits";
+            $row['DATE'] = date('g:ia m.d.Y', $arrival_time);
+            $row['WAITED'] = $waited;
+            $row['MEETING'] = $meeting;
+            $tpl['rows'][] = $row;
+            $total_wait += $twaited;
+            $total_meeting += $tmeeting;
+        }
+        if (isset($tpl)) {
+            $tpl['TOTAL_WAIT'] = Checkin::timeWaiting($total_wait);
+            $tpl['TOTAL_MEETING'] = Checkin::timeWaiting($total_meeting);
+            $tpl['AVG_WAIT'] = Checkin::timeWaiting(round($total_wait / $total_visits));
+            $tpl['AVG_MEETING'] = Checkin::timeWaiting(round($total_meeting / $total_visits));
+            $tpl['INCOMPLETE_MEETINGS'] = $incomplete_visits;
+            $this->content = PHPWS_Template::process($tpl, 'checkin', 'summary_report.tpl');
+        } else {
+            $this->content = 'No visits made between ' . $_GET['start_date'] . ' and ' . $_GET['end_date'];
+        }
     }
 
 }
