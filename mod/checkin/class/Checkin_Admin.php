@@ -1451,64 +1451,118 @@ class Checkin_Admin extends Checkin {
 
     private function summaryReport()
     {
+        javascript('datepicker');
+
+
+        $form = new PHPWS_Form('report-date');
+        $form->setMethod('get');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'report');
+        $form->addHidden('summary_report', 1);
+
+        $form->addText('start_date', $_GET['start_date']);
+        $form->setLabel('start_date', 'Start date');
+        $form->setSize('start_date', 10);
+        $form->setExtra('start_date', 'class="datepicker"');
+        $form->addText('end_date', $_GET['end_date']);
+        $form->setLabel('end_date', 'End date');
+        $form->setSize('end_date', 10);
+        $form->setExtra('end_date', 'class="datepicker"');
+        $form->addSubmit(dgettext('checkin', 'Summary report'));
+
+        $db = new PHPWS_DB('checkin_staff');
+        $db->addColumn('checkin_staff.id');
+        $db->addColumn('users.display_name');
+        $db->addWhere('checkin_staff.user_id', 'users.id');
+        $db->setIndexBy('id');
+        $db->addOrder('users.display_name desc');
+        $assigned = $db->select('col');
+        $assigned[0] = dgettext('checkin', 'Show all');
+        $assigned = array_reverse($assigned, true);
+
+        $form->addSelect('assigned', $assigned);
+        $form->setLabel('assigned', 'By staff');
+        if (isset($_GET['assigned'])) {
+            $staff_id = (int) $_GET['assigned'];
+            $form->setMatch('assigned', $staff_id);
+        } else {
+            $staff_id = 0;
+        }
+
+        $tpl = $form->getTemplate();
+
         $start_date = strtotime($_GET['start_date']);
         $end_date = strtotime($_GET['end_date']);
+
+
         if (empty($start_date) || empty($end_date) || $start_date > $end_date) {
-            $this->content = '<a href="index.php?module=checkin&tab=report">Please go back and re-enter your dates</a>';
-            return;
-        }
-        $this->title = 'Visitors from ' . $_GET['start_date'] . ' to ' . $_GET['end_date'];
-
-        $db = new PHPWS_DB('checkin_visitor');
-        $db->addWhere('arrival_time', $start_date, '>=');
-        $db->addWhere('arrival_time', $end_date, '<=');
-        $db->addColumn('id');
-        $db->addColumn('arrival_time');
-        $db->addColumn('start_meeting');
-        $db->addColumn('end_meeting');
-        $result = $db->select();
-
-        $total_visits = 0;
-        $total_wait = 0;
-        $total_meeting = 0;
-
-        $tpl = array();
-        $incomplete_visits = 0;
-        foreach ($result as $visit) {
-            extract($visit);
-            $row = array();
-            if (!$start_meeting || !$end_meeting) {
-                $incomplete_visits++;
-                continue;
-            }
-
-            $total_visits++;
-            $twaited = $start_meeting - $arrival_time;
-            $waited = Checkin::timeWaiting($twaited);
-
-            if ($end_meeting) {
-                $tmeeting = $end_meeting - $start_meeting;
-            }
-            $meeting = Checkin::timeWaiting($tmeeting);
-
-            $row['VISIT'] = "Visit #$total_visits";
-            $row['DATE'] = date('g:ia m.d.Y', $arrival_time);
-            $row['WAITED'] = $waited;
-            $row['MEETING'] = $meeting;
-            $tpl['rows'][] = $row;
-            $total_wait += $twaited;
-            $total_meeting += $tmeeting;
-        }
-        if (isset($tpl)) {
-            $tpl['TOTAL_WAIT'] = Checkin::timeWaiting($total_wait);
-            $tpl['TOTAL_MEETING'] = Checkin::timeWaiting($total_meeting);
-            $tpl['AVG_WAIT'] = Checkin::timeWaiting(round($total_wait / $total_visits));
-            $tpl['AVG_MEETING'] = Checkin::timeWaiting(round($total_meeting / $total_visits));
-            $tpl['INCOMPLETE_MEETINGS'] = $incomplete_visits;
-            $this->content = PHPWS_Template::process($tpl, 'checkin', 'summary_report.tpl');
+            $tpl['EMPTY'] = 'Please enter your date range again.';
         } else {
-            $this->content = 'No visits made between ' . $_GET['start_date'] . ' and ' . $_GET['end_date'];
+            $this->title = 'Visitors from ' . $_GET['start_date'] . ' to ' . $_GET['end_date'];
+
+            $db = new PHPWS_DB('checkin_visitor');
+            $db->addWhere('arrival_time', $start_date, '>=');
+            $db->addWhere('arrival_time', $end_date, '<=');
+            $db->addColumn('id');
+            $db->addColumn('arrival_time');
+            $db->addColumn('start_meeting');
+            $db->addColumn('end_meeting');
+            if ($staff_id) {
+                $db->addWhere('assigned', $staff_id);
+            }
+            $result = $db->select();
+
+            $total_visits = 0;
+            $total_wait = 0;
+            $total_meeting = 0;
+            $total_days = 0;
+
+            $incomplete_visits = 0;
+            $current_day = null;
+            foreach ($result as $visit) {
+                extract($visit);
+                $arrival_day = date('MdY', $arrival_time);
+                if ($current_day != $arrival_day) {
+                    $current_day = $arrival_day;
+                    $total_days++;
+                }
+                $row = array();
+                if (!$start_meeting || !$end_meeting) {
+                    $incomplete_visits++;
+                    continue;
+                }
+
+                $total_visits++;
+                $twaited = $start_meeting - $arrival_time;
+                $waited = Checkin::timeWaiting($twaited);
+
+                if ($end_meeting) {
+                    $tmeeting = $end_meeting - $start_meeting;
+                }
+                $meeting = Checkin::timeWaiting($tmeeting);
+
+                $row['VISIT'] = "Visit #$total_visits";
+                $row['DATE'] = date('g:ia m.d.Y', $arrival_time);
+                $row['WAITED'] = $waited;
+                $row['MEETING'] = $meeting;
+                $tpl['rows'][] = $row;
+                $total_wait += $twaited;
+                $total_meeting += $tmeeting;
+            }
+            if ($total_visits) {
+                $tpl['TOTAL_DAYS'] = $total_days;
+                $tpl['TOTAL_VISITS'] = $total_visits;
+                $tpl['AVG_VISITS'] = round($total_visits / $total_days, 1);
+                $tpl['TOTAL_WAIT'] = Checkin::timeWaiting($total_wait);
+                $tpl['TOTAL_MEETING'] = Checkin::timeWaiting($total_meeting);
+                $tpl['AVG_WAIT'] = Checkin::timeWaiting(round($total_wait / $total_visits));
+                $tpl['AVG_MEETING'] = Checkin::timeWaiting(round($total_meeting / $total_visits));
+                $tpl['INCOMPLETE_MEETINGS'] = $incomplete_visits;
+            } else {
+                $tpl['EMPTY'] = 'No visits made in this date range.';
+            }
         }
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'summary_report.tpl');
     }
 
 }
