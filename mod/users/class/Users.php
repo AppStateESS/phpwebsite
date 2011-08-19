@@ -45,14 +45,18 @@ class PHPWS_User {
     public $auth_path        = null;
     public $auth_name        = null;
 
-    public function __construct($id=0)
+    public function __construct($id=0,$username=null)
     {
-        if(!$id) {
+        if($id) {
+            $this->setId($id);
+        } else if($username) {
+            $this->setUsername($username);
+        } else {
             $this->authorize = PHPWS_User::getUserSetting('default_authorization');
             $this->loadScript();
             return;
         }
-        $this->setId($id);
+
         $result = $this->init();
 
         PHPWS_Error::logIfError($result);
@@ -65,6 +69,9 @@ class PHPWS_User {
     public function init()
     {
         $db = new PHPWS_DB('users');
+        if(!$this->id && $this->username) {
+            $db->addWhere('username', $this->username);
+        }
         $result = $db->loadObject($this);
 
         if (PHPWS_Error::logIfError($result)) {
