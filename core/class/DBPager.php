@@ -1,8 +1,8 @@
 <?php
 
-define ('DBPAGER_DEFAULT_LIMIT', 25);
-define ('DBPAGER_PAGE_LIMIT', 12);
-define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
+define('DBPAGER_DEFAULT_LIMIT', 25);
+define('DBPAGER_PAGE_LIMIT', 12);
+define('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
 // Note: XML reports are not operational
 define('XML_PARTIAL', 1);
@@ -11,7 +11,7 @@ define('XML_FULL', 3);
 define('CSV_FULL', 4);
 
 if (!defined('UTF8_MODE')) {
-    define ('UTF8_MODE', false);
+    define('UTF8_MODE', false);
 }
 
 /**
@@ -24,8 +24,8 @@ if (!defined('UTF8_MODE')) {
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-
 class DBPager {
+
     /**
      * Name of the class used
      */
@@ -41,7 +41,6 @@ class DBPager {
      * Needed for template purposes
      */
     public $module = null;
-
     public $toggles = null;
 
     /**
@@ -49,35 +48,26 @@ class DBPager {
      * using the object
      */
     public $run_methods = null;
-
     public $run_function = null;
-
     public $toggle_function = null;
-
     public $toggle_func_number = 0;
 
     /**
      * List of methods in class
      */
     private $_methods = null;
-
     private $_class_vars = null;
-
     public $table_columns = null;
-
     // columns returned AS are placed here to allow sorting
     // later
     public $needed_columns = null;
-
     public $page_tags = null;
 
     /**
      * Tags set per row by the object
      */
     public $row_tags = null;
-
     public $page_turner_left = '&lt;';
-
     public $page_turner_right = '&gt;';
 
     /**
@@ -89,18 +79,14 @@ class DBPager {
      * Limit of rows to pull from db
      */
     public $limit = null;
-
     public $default_limit = 0;
-
     public $limitList = array(10, 25, 50);
-
     public $searchColumn = null;
 
     /**
      * Which column to order by
      */
     public $orderby = null;
-
     public $orderby_dir = null;
 
     /**
@@ -108,7 +94,6 @@ class DBPager {
      * orders are selected
      */
     public $default_order = null;
-
     public $default_order_dir = 'asc';
 
     /**
@@ -117,7 +102,6 @@ class DBPager {
      * then you can set the link
      */
     public $link = null;
-
     public $search = null;
 
     /**
@@ -134,7 +118,6 @@ class DBPager {
      * Database object
      */
     public $db = null;
-
     public $current_page = 1;
 
     /**
@@ -146,41 +129,26 @@ class DBPager {
      * Template made before processed
      */
     public $final_template = null;
-
     public $error = null;
-
     public $table = null;
-
     // Record of the sql query used to pull the rows.
     public $row_query = null;
-
     public $anchor = null;
-
     public $sub_result = array();
-
     public $sub_order = array();
-
     public $sub_search = false;
-
     public $total_column = null;
-
     public $clear_button = false;
-
     public $search_button = true;
-
     public $search_label = true;
-
     public $sort_headers = array();
-
     public $convert_date = array();
 
     /**
      * Method name of function to call for xml/csv report
      */
     public $report_row = null;
-
     public $report_type = 0;
-
     public $allow_partial_report = true;
 
     /**
@@ -209,7 +177,7 @@ class DBPager {
             return;
         }
 
-        if(isset($_SESSION['DBPager_Last_View'][$table])) {
+        if (isset($_SESSION['DBPager_Last_View'][$table])) {
             unset($_SESSION['DBPager_Last_View'][$table]);
         }
 
@@ -229,7 +197,7 @@ class DBPager {
         $this->table = & $table;
         $this->db = new PHPWS_DB($table);
 
-        if (PHPWS_Error::isError($this->db)){
+        if (PHPWS_Error::isError($this->db)) {
             $this->error = $this->db;
             $this->db = null;
         }
@@ -253,12 +221,12 @@ class DBPager {
         $this->loadLink();
 
         if (isset($_REQUEST['change_page'])) {
-            $this->current_page = (int)$_REQUEST['change_page'];
+            $this->current_page = (int) $_REQUEST['change_page'];
         } elseif (isset($_REQUEST['pg'])) {
             if ($_REQUEST['pg'] == 'last') {
                 $this->current_page = $_REQUEST['pg'];
             } else {
-                $this->current_page = (int)$_REQUEST['pg'];
+                $this->current_page = (int) $_REQUEST['pg'];
             }
         }
 
@@ -267,7 +235,7 @@ class DBPager {
         }
 
         if (isset($_REQUEST['limit']) && $_REQUEST['limit'] > 0) {
-            $this->limit = (int)$_REQUEST['limit'];
+            $this->limit = (int) $_REQUEST['limit'];
         }
 
         if (isset($_REQUEST['orderby'])) {
@@ -300,14 +268,13 @@ class DBPager {
         $this->search_label = false;
     }
 
-
     /**
      * This function allows you to join the results of two tables in db pager.
      * Example: I want to join the title in table2 to the results of table_1. I also want
      * the column to be named 't1_title'.
      *
      * table_1             table2
-     *---------------      ----------------
+     * ---------------      ----------------
      * t2_id               id    title
      *
      * $pager->joinResult('t2_id', 'table2', 'id', 'title', 't2_title');
@@ -328,8 +295,8 @@ class DBPager {
             $join_array = & $join_match[$join_table];
 
             if ($join_array['jt'] == $join_table &&
-            $join_array['sc'] == $source_column &&
-            $join_array['jc'] == $join_column) {
+                    $join_array['sc'] == $source_column &&
+                    $join_array['jc'] == $join_column) {
                 $tbl_idx = $join_array['tbl_idx'];
                 $copy = 'dbp' . $tbl_idx;
             }
@@ -346,21 +313,21 @@ class DBPager {
         }
 
         $this->sub_result['dbp' . $index] = array('sc' => $source_column,
-                                                  'jt' => $join_table,
-                                                  'jc' => $join_column,
-                                                  'cc' => $content_column,
-                                                  'nn' => $new_name,
-                                                  'srch' => (bool)$searchable,
-                                                  'tbl'  => $copy);
+            'jt' => $join_table,
+            'jc' => $join_column,
+            'cc' => $content_column,
+            'nn' => $new_name,
+            'srch' => (bool) $searchable,
+            'tbl' => $copy);
 
         $this->sub_order[$new_name] = array('dbp' . $tbl_idx, $content_column);
         $this->needed_columns[$new_name] = $new_name;
 
         $join_match[$join_table] = array('jt' => $join_table,
-                                         'sc' => $source_column,
-                                         'jc' => $join_column,
-                                         'idx' => $index,
-                                         'tbl_idx' => $tbl_idx);
+            'sc' => $source_column,
+            'jc' => $join_column,
+            'idx' => $index,
+            'tbl_idx' => $tbl_idx);
         $index++;
     }
 
@@ -404,7 +371,7 @@ class DBPager {
         if ($only_if_empty && !empty($this->orderby)) {
             return;
         }
-        $this->orderby =  preg_replace('/[^\w\.]/', '', $column);
+        $this->orderby = preg_replace('/[^\w\.]/', '', $column);
         if (!preg_match('/asc|desc/i', $direction)) {
             $direction = 'asc';
         }
@@ -426,7 +393,7 @@ class DBPager {
 
     public function setDefaultLimit($limit)
     {
-        $this->default_limit = (int)$limit;
+        $this->default_limit = (int) $limit;
     }
 
     public function setSearch()
@@ -517,7 +484,7 @@ class DBPager {
             return false;
         }
 
-        if (version_compare(phpversion(), '5.0.0',  '<')) {
+        if (version_compare(phpversion(), '5.0.0', '<')) {
             $method = strtolower($method);
         }
 
@@ -529,14 +496,13 @@ class DBPager {
             $variables = null;
         }
 
-        $this->row_tags = array('method'=>$method, 'variable'=>$variables);
+        $this->row_tags = array('method' => $method, 'variable' => $variables);
     }
 
     public function setReportRow($report_row)
     {
         $this->report_row = $report_row;
     }
-
 
     public function setEmptyMessage($message)
     {
@@ -549,19 +515,19 @@ class DBPager {
             return false;
         }
 
-        $this->toggle_func_number = (int)$toggle;
+        $this->toggle_func_number = (int) $toggle;
 
         if (is_string($function) && function_exists($function)) {
             $this->toggle_function = $function;
             return true;
-        } elseif( is_array($function) && class_exists($function[0]) ) {
-            if (version_compare(phpversion(), '5.0.0',  '<')) {
+        } elseif (is_array($function) && class_exists($function[0])) {
+            if (version_compare(phpversion(), '5.0.0', '<')) {
                 $method = strtolower($function[1]);
             } else {
                 $method = & $function[1];
             }
 
-            if ( in_array($method, get_class_methods($function[0])) ) {
+            if (in_array($method, get_class_methods($function[0]))) {
                 $this->toggle_function = $function;
                 return true;
             } else {
@@ -580,14 +546,14 @@ class DBPager {
         if (is_string($function) && function_exists($function)) {
             $this->run_function = $function;
             return true;
-        } elseif( is_array($function) && class_exists($function[0]) ) {
-            if (version_compare(phpversion(), '5.0.0',  '<')) {
+        } elseif (is_array($function) && class_exists($function[0])) {
+            if (version_compare(phpversion(), '5.0.0', '<')) {
                 $method = strtolower($function[1]);
             } else {
                 $method = & $function[1];
             }
 
-            if ( in_array($method, get_class_methods($function[0])) ) {
+            if (in_array($method, get_class_methods($function[0]))) {
                 $this->run_function = $function;
                 return true;
             } else {
@@ -620,11 +586,12 @@ class DBPager {
     public function getLimit()
     {
         if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
-            foreach($this->limitList as $this->limit);
+            foreach ($this->limitList as $this->limit)
+                ;
         }
 
         $start = ($this->current_page - 1) * $this->limit;
-        return array((int)$this->limit, (int)$start);
+        return array((int) $this->limit, (int) $start);
     }
 
     public function setTotalColumn($column)
@@ -649,14 +616,14 @@ class DBPager {
          * if total_column is set, use it to get total rows
          */
         if ($this->total_column) {
-            $order    = $this->db->order;
-            $columns  = $this->db->columns;
+            $order = $this->db->order;
+            $columns = $this->db->columns;
             $group_by = $this->db->group_by;
             $this->db->group_by = $this->db->order = $this->db->columns = null;
             $this->db->addColumn($this->total_column, null, null, true, true);
             $result = $this->db->select('one');
-            $this->db->columns  = $columns;
-            $this->db->order    = $order;
+            $this->db->columns = $columns;
+            $this->db->order = $order;
             $this->db->group_by = $group_by;
             return $result;
         } else {
@@ -702,7 +669,6 @@ class DBPager {
                 }
             }
         }
-
     }
 
     /**
@@ -712,13 +678,13 @@ class DBPager {
     public function fullRowCount()
     {
         $this->db->setDistinct(true);
-        $order    = $this->db->order;
-        $columns  = $this->db->columns;
+        $order = $this->db->order;
+        $columns = $this->db->columns;
         $group_by = $this->db->group_by;
         $this->db->columns = null;
         $result = $this->db->select('count');
         $this->db->columns = $columns;
-        $this->db->order   = $order;
+        $this->db->order = $order;
         $this->db->group_by = $group_by;
         return $result;
     }
@@ -759,12 +725,12 @@ class DBPager {
         }
 
         if (empty($this->limit) && empty($this->orderby) &&
-        empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
+                empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
             extract($_SESSION['DB_Cache'][$this->module][$this->cache_identifier]);
-            $this->limit        = $limit;
-            $this->orderby      = $orderby;
-            $this->orderby_dir  = $orderby_dir;
-            $this->search       = $search;
+            $this->limit = $limit;
+            $this->orderby = $orderby;
+            $this->orderby_dir = $orderby_dir;
+            $this->search = $search;
             $this->current_page = $current_page;
         }
 
@@ -820,8 +786,7 @@ class DBPager {
         if (empty($this->limit)) {
             if ($this->default_limit) {
                 $this->limit = $this->default_limit;
-            }
-            else {
+            } else {
                 $this->limit = DBPAGER_DEFAULT_LIMIT;
             }
         }
@@ -882,10 +847,10 @@ class DBPager {
         $this->display_rows = & $result;
 
         if ($this->cache_queries) {
-            $cache['limit']        = $this->limit;
-            $cache['orderby']      = $this->orderby;
-            $cache['orderby_dir']  = $this->orderby_dir;
-            $cache['search']       = $this->search;
+            $cache['limit'] = $this->limit;
+            $cache['orderby'] = $this->orderby;
+            $cache['orderby_dir'] = $this->orderby_dir;
+            $cache['search'] = $this->search;
             $cache['current_page'] = $this->current_page;
 
             $_SESSION['DB_Cache'][$this->module][$this->cache_identifier] = $cache;
@@ -947,7 +912,7 @@ class DBPager {
                 $divider = DBPAGER_PAGE_LIMIT - 2;
                 if ($current_page != 1) {
                     $divider--;
-                    for ($i=2; $i < $current_page; $i++) {
+                    for ($i = 2; $i < $current_page; $i++) {
                         if ($i != $current_page) {
                             $values['pg'] = 1;
                             $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
@@ -960,7 +925,7 @@ class DBPager {
                 $remaining_pages = $total_pages - $current_page;
                 $skip = floor($remaining_pages / $divider);
 
-                for ($i=0,$j = $current_page + $skip; $i < $divider; $i++,$j += $skip) {
+                for ($i = 0, $j = $current_page + $skip; $i < $divider; $i++, $j += $skip) {
                     $values['pg'] = $j;
                     $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
@@ -982,7 +947,7 @@ class DBPager {
                     $front_skip = round($beginning_pages / $divider);
                     $back_skip = round($remaining_pages / $divider);
                 }
-                for ($i=0,$j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++,$j += $front_skip) {
+                for ($i = 0, $j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++, $j += $front_skip) {
                     $values['pg'] = $j;
                     $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
@@ -990,15 +955,14 @@ class DBPager {
                 $pageList[] = "[$current_page]";
 
                 if ($back_skip) {
-                    for ($i=0,$j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++,$j += $back_skip) {
+                    for ($i = 0, $j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++, $j += $back_skip) {
                         $values['pg'] = $j;
                         $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                     }
                 }
             }
-
         } else {
-            for($i=2; $i < $total_pages; $i++) {
+            for ($i = 2; $i < $total_pages; $i++) {
                 if ($i == $current_page) {
                     $pageList[] = "[$i]";
                 } else {
@@ -1076,13 +1040,13 @@ class DBPager {
 
             $values['orderby'] = $varname;
 
-            if ($this->orderby == $varname){
-                if ($this->orderby_dir == 'desc'){
+            if ($this->orderby == $varname) {
+                if ($this->orderby_dir == 'desc') {
                     unset($values['orderby_dir']);
                     unset($values['orderby']);
                     $alt .= _('Sorted in descending order');
                     $button = Icon::get('sort-down');
-                } elseif ($this->orderby_dir =="asc") {
+                } elseif ($this->orderby_dir == "asc") {
                     $alt .= _('Sorted in ascending order');
                     $values['orderby_dir'] = 'desc';
                     $button = Icon::get('sort-up');
@@ -1142,7 +1106,7 @@ class DBPager {
         if (isset($this->orderby)) {
             $values['orderby'] = $this->orderby;
             if (isset($this->orderby_dir))
-            $values['orderby_dir'] = $this->orderby_dir;
+                $values['orderby_dir'] = $this->orderby_dir;
         }
 
         // pull get values from link setting
@@ -1218,7 +1182,6 @@ class DBPager {
         }
     }
 
-
     public function getLimitList()
     {
         $values = $this->getLinkValues();
@@ -1248,7 +1211,6 @@ class DBPager {
         return implode(' ', $links);
     }
 
-
     /**
      * Pulls variables from the object results. Calls object's formatting function if
      * specified.
@@ -1264,7 +1226,7 @@ class DBPager {
 
         foreach ($this->display_rows as $disp_row) {
             if (!empty($this->convert_date)) {
-                foreach ($this->convert_date as $key=>$format) {
+                foreach ($this->convert_date as $key => $format) {
                     if ($this->class && isset($disp_row->$key)) {
                         $disp_row->$key = strftime($format, $disp_row->$key);
                     } elseif (isset($disp_row[$key])) {
@@ -1272,7 +1234,7 @@ class DBPager {
                     }
                 }
             }
-            if (isset($this->class) && isset($this->run_methods)){
+            if (isset($this->class) && isset($this->run_methods)) {
                 foreach ($this->run_methods as $run_function) {
                     call_user_func(array($disp_row, $run_function));
                 }
@@ -1298,13 +1260,12 @@ class DBPager {
                         $template[$count] = array_merge($template[$count], $row_result);
                     }
                 }
-
             } else {
                 foreach ($disp_row as $key => $value) {
                     $template[$count][strtoupper($key)] = $value;
                 }
 
-                if(isset($this->run_function)) {
+                if (isset($this->run_function)) {
                     $row_result = call_user_func($this->run_function, $disp_row);
                     if (!empty($row_result) && is_array($row_result)) {
                         $template[$count] = array_merge($template[$count], $row_result);
@@ -1359,7 +1320,6 @@ class DBPager {
         return implode("\n", $template);
     }
 
-
     public function getSearchBox()
     {
         static $id_count = 0;
@@ -1408,9 +1368,9 @@ class DBPager {
         } else {
             $total_row = $this->total_rows;
             $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
-            $end_row   = $this->current_page * $this->limit;
+            $end_row = $this->current_page * $this->limit;
             if ($end_row > $total_row)
-            $end_row = $total_row;
+                $end_row = $total_row;
         }
 
         $pages = $this->getPageLinks();
@@ -1419,12 +1379,12 @@ class DBPager {
             return $pages;
         }
 
-        $template['PAGES']       = $pages;
-        $template['PAGE_LABEL']  = _('Page');
+        $template['PAGES'] = $pages;
+        $template['PAGE_LABEL'] = _('Page');
         $template['LIMIT_LABEL'] = _('Limit');
-        $template['PAGE_DROP']   = $this->getPageDrop();
-        $template['TOTAL_ROWS']  = sprintf(_('%s - %s of %s'), $start_row, $end_row, $total_row);
-        $template['LIMITS']      = $this->getLimitList();
+        $template['PAGE_DROP'] = $this->getPageDrop();
+        $template['TOTAL_ROWS'] = sprintf(_('%s - %s of %s'), $start_row, $end_row, $total_row);
+        $template['LIMITS'] = $this->getLimitList();
 
         if (isset($this->searchColumn) || $this->sub_search) {
             $template['SEARCH'] = $this->getSearchBox();
@@ -1455,7 +1415,8 @@ class DBPager {
         $index_set = false;
         $tmp_file = PHPWS_Text::randomString(10) . time();
         $directory = CACHE_DIRECTORY;
-        $file_path = sprintf('%s/%s', $directory, $tmp_file);;
+        $file_path = sprintf('%s/%s', $directory, $tmp_file);
+        ;
         $fp = fopen($file_path, 'w');
 
         foreach ($this->display_rows as $foo) {
@@ -1477,13 +1438,14 @@ class DBPager {
                 fwrite($fp, $row);
                 $index_set = true;
             }
-            $row = self::formatCSVRow($result);
-
-            fwrite($fp, $row);
+            fputcsv($fp, $result);
+            //$row = self::formatCSVRow($result);
+            //fwrite($fp, $row);
         }
-        fclose($fp);
-        $new_file = time() . '_pager.csv';
 
+        fclose($fp);
+
+        $new_file = time() . '_pager.csv';
         require_once 'HTTP/Download.php';
         $dl = new HTTP_Download;
         $dl->setFile($file_path);
@@ -1491,20 +1453,6 @@ class DBPager {
         $dl->setContentType('text/csv');
         $dl->send();
         exit();
-    }
-
-    function formatCSVRow($fields)
-    {
-        $row = '';
-        foreach($fields as $field) {
-            if(strpos($field, ',') !== false || strpos($field, '"') !== false) {
-                $field = '"'.preg_replace('/"/','""',$key).'"';
-            }
-            $row .= "$field,";
-        }
-
-        // Remove trailing comma and add newline
-        return substr($row, 0, strlen($row)-1) . "\n";
     }
 
     /**
@@ -1551,7 +1499,7 @@ class DBPager {
         $this->getSortButtons($template);
 
         if (isset($rows)) {
-            foreach ($rows as $rowitem){
+            foreach ($rows as $rowitem) {
                 if (isset($max_tog)) {
                     if ($max_tog == 1) {
                         if ($count % 2) {
@@ -1574,7 +1522,7 @@ class DBPager {
 
                 $template['listrows'][] = $rowitem;
             }
-        } elseif(!$return_blank_results) {
+        } elseif (!$return_blank_results) {
             return null;
         } else {
             $template['EMPTY_MESSAGE'] = $this->empty_message;
@@ -1590,10 +1538,11 @@ class DBPager {
         return $this->final_template;
     }
 
-    public function plugPageTags(&$template){
-        if (isset($this->page_tags)){
-            foreach ($this->page_tags as $key=>$value)
-            $template[$key] = $value;
+    public function plugPageTags(&$template)
+    {
+        if (isset($this->page_tags)) {
+            foreach ($this->page_tags as $key => $value)
+                $template[$key] = $value;
         }
     }
 
@@ -1625,7 +1574,7 @@ class DBPager {
 
     public function cacheQueries($cache=true)
     {
-        $this->cache_queries = (bool)$cache;
+        $this->cache_queries = (bool) $cache;
     }
 
     public function setCacheIdentifier($str)
@@ -1635,12 +1584,12 @@ class DBPager {
 
     public function setAutoSort($auto)
     {
-        $this->auto_sort = (bool)$auto;
+        $this->auto_sort = (bool) $auto;
     }
 
     public function allowPartialReport($val)
     {
-        $this->allow_partial_report = (bool)$val;
+        $this->allow_partial_report = (bool) $val;
     }
 
 }
