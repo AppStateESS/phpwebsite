@@ -1279,9 +1279,9 @@ class Checkin_Admin extends Checkin {
             $form->addHidden('module', 'checkin');
             $form->addText('cdate', $current_date);
             $form->setExtra('cdate', 'class="datepicker"');
-            $form->addHidden('aop', 'daily_report');
+            $form->addHidden('aop', 'report');
             $form->setLabel('cdate', dgettext('checkin', 'Date'));
-            $form->addSubmit(dgettext('checkin', 'Go'));
+            $form->addSubmit('daily_report', dgettext('checkin', 'Go'));
             $tpl = $form->getTemplate();
             javascript('datepicker');
 
