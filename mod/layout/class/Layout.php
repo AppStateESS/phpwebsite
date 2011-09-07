@@ -1031,6 +1031,7 @@ class Layout {
         }
         $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
         $template['BASE']       = Layout::getBase();
+        $template['HTTP'] = PHPWS_Core::getHttp();
     }
 
     /**
