@@ -1,39 +1,40 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::requireInc('filecabinet', 'defines.php');
 
 class FC_File_Assoc {
-    public $id         = 0;
-    public $file_type  = 0;
-    public $file_id    = 0;
-    public $resize     = null;
-    public $width      = 0;
-    public $height     = 0;
+
+    public $id = 0;
+    public $file_type = 0;
+    public $file_id = 0;
+    public $resize = null;
+    public $width = 0;
+    public $height = 0;
 
     /**
      * Used with carousel, determines direction
      */
-    public $vertical   = 0;
+    public $vertical = 0;
 
     /**
      * Used with carousel, determines number images seen
      */
     public $num_visible = 3;
-
     public $_use_style = true;
+
     /**
      * If the file assoc is an image and no_link is true,
      * the image's default link (if any) will be supressed
      */
-    public $_source        = null;
+    public $_source = null;
     public $_resize_parent = null;
-    public $_link_image    = true;
+    public $_link_image = true;
     public $_allow_caption = true;
-    public $_file_path     = null;
+    public $_file_path = null;
 
     public function __construct($id=0)
     {
@@ -41,7 +42,7 @@ class FC_File_Assoc {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $db = new PHPWS_DB('fc_file_assoc');
         $result = $db->loadObject($this);
         if (!PHPWS_Error::logIfError($result)) {
@@ -108,12 +109,14 @@ class FC_File_Assoc {
             default:
                 return;
         }
-        $this->_file_path = $this->_source->getPath();
+        if ($this->_source) {
+            $this->_file_path = $this->_source->getPath();
+        }
     }
 
     public function parentLinked($thumbnail=false)
     {
-        if ( ($this->file_type != FC_IMAGE_RESIZE && $this->file_type != FC_IMAGE_CROP) || !$this->_resize_parent) {
+        if (($this->file_type != FC_IMAGE_RESIZE && $this->file_type != FC_IMAGE_CROP) || !$this->_resize_parent) {
             $this->_link_image = true;
             if ($thumbnail) {
                 if ($this->_resize_parent) {
@@ -142,14 +145,14 @@ class FC_File_Assoc {
 
     public function allowImageLink($link=true)
     {
-        $this->_link_image = (bool)$link;
+        $this->_link_image = (bool) $link;
     }
 
     public function isImage($include_resize=true)
     {
         if ($include_resize) {
             return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE ||
-            $this->file_type == FC_IMAGE_CROP);
+                    $this->file_type == FC_IMAGE_CROP);
         } else {
             return ($this->file_type == FC_IMAGE);
         }
@@ -177,16 +180,16 @@ class FC_File_Assoc {
 
     public function allowCaption($allow=true)
     {
-        $this->_allow_caption = (bool)$allow;
+        $this->_allow_caption = (bool) $allow;
     }
 
     public function deadAssoc()
     {
         $this->delete();
-        $this->id        = 0;
+        $this->id = 0;
         $this->file_type = 0;
-        $this->file_id   = 0;
-        $this->resize    = null;
+        $this->file_id = 0;
+        $this->resize = null;
     }
 
     public function getFolderType()
@@ -259,7 +262,7 @@ class FC_File_Assoc {
         switch ($this->file_type) {
             case FC_IMAGE:
             case FC_IMAGE_RANDOM:
-                if ($this->_source->id) {
+                if (is_object($this->_source) && $this->_source->id) {
                     if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
                         return $this->_source->captioned(null, $this->_link_image, $base);
                     } else {
@@ -358,7 +361,7 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $tpl['thumbnails'][] = array('IMAGE'=> sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail()));
+                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail()));
             }
 
             $this->loadCarousel($count);
@@ -391,11 +394,10 @@ class FC_File_Assoc {
         $vars['WIDTH'] = $max_size;
         $vars['SCROLL'] = $this->num_visible;
         $vars['VERTICAL'] = $this->vertical ? 'true' : 'false';
-        $vars['ARROW_POSITION'] = floor($max_size/2) + 5;
+        $vars['ARROW_POSITION'] = floor($max_size / 2) + 5;
         $repeats['js-repeat'][] = $vars;
         javascriptMod('filecabinet', 'jcarousel', $repeats);
     }
-
 
     public function getTotalCarouselSize()
     {
@@ -462,14 +464,13 @@ class FC_File_Assoc {
             case FC_MEDIA_RESIZE:
                 return 'multimedia';
         }
-
     }
 
     public function getFolder()
     {
         $db = new PHPWS_DB('folders');
         if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER || $this->file_type == FC_IMAGE_LIGHTBOX
-        || $this->file_type == FC_DOCUMENT_FOLDER) {
+                || $this->file_type == FC_DOCUMENT_FOLDER) {
             $folder = new Folder($this->file_id);
             if (PHPWS_Error::logIfError($folder) || !$folder->id) {
                 return false;
@@ -501,9 +502,9 @@ class FC_File_Assoc {
     public static function updateTag($file_type, $id, $tag)
     {
         $db = new PHPWS_DB('fc_file_assoc');
-        $db->addWhere('ftype', (int)$file_type);
-        $db->addWhere('file_id', (int)$id);
-        $db->addValue('tag',  htmlentities($tag, ENT_QUOTES, 'UTF-8'));
+        $db->addWhere('ftype', (int) $file_type);
+        $db->addWhere('file_id', (int) $id);
+        $db->addValue('tag', htmlentities($tag, ENT_QUOTES, 'UTF-8'));
         $db->update();
     }
 
