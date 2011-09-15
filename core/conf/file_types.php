@@ -179,12 +179,13 @@ $all_file_types['ppt']['mct'][] = 'application/vnd.ms-powerpoint';
 $all_file_types['ppt']['mct'][] = 'application/msword';
 $all_file_types['ppt']['bl']    = true;
 $all_file_types['ppt']['fi'][]  = 'microsoft installer';
-$all_file_types['ppt']['vb']    = 'Microsoft Powerpoint 2003 Presentation';
+$all_file_types['ppt']['vb']    = 'Microsoft Powerpoint Presentation (ppt)';
 
 $all_file_types['pptx']['mct'][] = 'application/x-zip';
+$all_file_types['pptx']['mct'][] = 'application/zip';
 $all_file_types['pptx']['mct'][] = 'application/vnd.openxmlformats';
 $all_file_types['pptx']['fi'][]  = 'zip archive data';
-$all_file_types['pptx']['vb']    = 'Microsoft Powerpoint 2007 Presentation';
+$all_file_types['pptx']['vb']    = 'Microsoft Powerpoint Presentation (pptx)';
 
 $all_file_types['ppsx']['mct'][] = 'application/x-zip';
 $all_file_types['ppsx']['mct'][] = 'application/vnd.openxmlformats';
