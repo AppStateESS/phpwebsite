@@ -1,10 +1,2 @@
-<script>
-//<![CDATA[
-//Custom settings for ReCaptcha
-var RecaptchaOptions = {
-   theme : '{theme}'
-};
-//]>
-</script>
-
+<span style="font-size : 8px">Refresh words by clicking Recycle button</span>
 {content}
