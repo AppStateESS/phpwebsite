@@ -117,6 +117,10 @@ class Analytics
             $tracker->setActive();
         else
             $tracker->setInactive();
+        if(isset($_REQUEST['disable_if_logged'])) 
+            $tracker->setDisableIfLogged(true);
+        else
+            $tracker->setDisableIfLogged(false);
         $tracker->setAccount(PHPWS_Text::parseInput($_REQUEST['account']));
         $tracker->save();
 
@@ -165,6 +169,10 @@ class Analytics
         $form->addCheck('active', 1);
         $form->setMatch('active', $tracker->isActive());
         $form->setLabel('active', dgettext('analytics', 'Currently Active'));
+
+        $form->addCheck('disable_if_logged', 1);
+        $form->setMatch('disable_if_logged', $tracker->getDisableIfLogged());
+        $form->setLabel('disable_if_logged', dgettext('analytics', 'Disable Analytics if a user is logged in'));
 
         $form->addText('account', $tracker->getAccount());
         $form->setLabel('account', dgettext('analytics', 'Account Identifier'));

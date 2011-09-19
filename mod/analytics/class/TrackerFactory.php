@@ -13,6 +13,12 @@ class TrackerFactory
     {
         $db = self::initDb();
         $db->addWhere('active', 1);
+        
+        // Exclude certain trackers if the user is logged in
+        if(Current_User::isLogged()) {
+            $db->addWhere('disable_if_logged', 0);
+        }
+
         return self::runQuery($db);
     }
 

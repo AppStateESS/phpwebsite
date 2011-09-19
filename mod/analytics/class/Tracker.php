@@ -11,6 +11,7 @@ abstract class Tracker
     var $name;
     var $type;
     var $active;
+    var $disable_if_logged;
     var $account;
 
     public function __construct()
@@ -78,6 +79,16 @@ abstract class Tracker
     public function setInactive()
     {
         $this->active = 0;
+    }
+
+    public function setDisableIfLogged($disable)
+    {
+        $this->disable_if_logged = $disable;
+    }
+
+    public function getDisableIfLogged()
+    {
+        return $this->disable_if_logged;
     }
 
     public function getAccount()
