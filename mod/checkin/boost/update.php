@@ -96,6 +96,10 @@ function checkin_update(&$content, $current_version) {
             $content[] = '<pre>1.3 changes
 ---------------
 + Option to collect visitor email addresses.</pre>';
+        case version_compare($current_version, '1.4.0', '<'):
+            $content[] = '<pre>1.4.0 changes
+---------------
++ May now report by visitor name.</pre>';
     }
     return true;
 }
