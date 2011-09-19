@@ -1239,6 +1239,11 @@ class Checkin_Admin extends Checkin {
         $form->setLabel('end_date', 'End date');
         $form->setSize('end_date', 10);
         $form->setExtra('end_date', 'class="datepicker"');
+
+        $name = isset($_GET['visitor_name']) ? $_GET['visitor_name'] : null;
+
+        $form->addText('visitor_name', $name);
+        $form->setLabel('visitor_name', 'Visitor name');
         $form->addSubmit('summary_report', dgettext('checkin', 'Summary report'));
 
 
@@ -1453,7 +1458,6 @@ class Checkin_Admin extends Checkin {
     {
         javascript('datepicker');
 
-
         $form = new PHPWS_Form('report-date');
         $form->setMethod('get');
         $form->addHidden('module', 'checkin');
@@ -1468,6 +1472,14 @@ class Checkin_Admin extends Checkin {
         $form->setLabel('end_date', 'End date');
         $form->setSize('end_date', 10);
         $form->setExtra('end_date', 'class="datepicker"');
+
+        if (!empty($_GET['visitor_name'])) {
+            $name = trim(strip_tags($_GET['visitor_name']));
+        } else {
+            $name = null;
+        }
+        $form->addText('visitor_name', $name);
+        $form->setLabel('visitor_name', 'Visitor name');
         $form->addSubmit(dgettext('checkin', 'Summary report'));
 
         $db = new PHPWS_DB('checkin_staff');
@@ -1505,11 +1517,26 @@ class Checkin_Admin extends Checkin {
             $db->addWhere('arrival_time', $end_date, '<=');
             $db->addColumn('id');
             $db->addColumn('arrival_time');
+            $db->addColumn('firstname');
+            $db->addColumn('lastname');
             $db->addColumn('start_meeting');
             $db->addColumn('end_meeting');
             if ($staff_id) {
                 $db->addWhere('assigned', $staff_id);
             }
+
+
+            if (!empty($name)) {
+                $name = strtolower($name);
+                if (strlen($name) == 1) {
+                    $db->addWhere('firstname', "$name%", 'like', 'and', 'name');
+                    $db->addWhere('lastname', "$name%", 'like', 'or', 'name');
+                } else {
+                    $db->addWhere('firstname', "%$name%", 'like', 'and', 'name');
+                    $db->addWhere('lastname', "%$name%", 'like', 'or', 'name');
+                }
+            }
+
             $result = $db->select();
 
             $total_visits = 0;
@@ -1541,7 +1568,8 @@ class Checkin_Admin extends Checkin {
                 }
                 $meeting = Checkin::timeWaiting($tmeeting);
 
-                $row['VISIT'] = "Visit #$total_visits";
+                $row['VISIT'] = $total_visits;
+                $row['VISITOR'] = "$firstname $lastname";
                 $row['DATE'] = date('g:ia m.d.Y', $arrival_time);
                 $row['WAITED'] = $waited;
                 $row['MEETING'] = $meeting;
