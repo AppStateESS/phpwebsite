@@ -380,9 +380,6 @@ class PHPWS_DB {
 
     public function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null, $ignore_tables=false)
     {
-        if (!preg_match('/left|right/i', $join_type)) {
-            return false;
-        }
         $this->_join_tables[] = array('join_type' => $join_type,
             'join_from' => $join_from,
             'join_to' => $join_to,
