@@ -121,7 +121,7 @@ class PHPWS_AlbumManager {
 
     public function action() {
         if (isset($this->message)) {
-            javascipt('alert', array('content' => $this->message));
+            javascript('alert', array('content' => $this->message));
             unset($this->message);
         }
 

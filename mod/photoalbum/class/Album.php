@@ -386,6 +386,7 @@ class PHPWS_Album extends PHPWS_Item {
         $pager->initialize();
 
         $pager->addRowFunction(array('PHPWS_Photo', 'rowTpl'));
+        $pager->saveLastView();
         $content = $pager->get();
         return $content;
     }
