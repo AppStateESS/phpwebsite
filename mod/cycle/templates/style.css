@@ -1,0 +1,94 @@
+#cycle-full {
+    overflow : hidden;
+    position : relative;
+}
+
+.cycle-pic {
+    background-repeat: no-repeat;
+    width : 600px;
+    height : 250px;
+    position : relative;
+}
+
+.cycle-brief {
+    position :absolute;
+    z-index: 99;
+    background-color: white;
+    width : 200px;
+    height : 100px;
+}
+
+#cycle-box #cycle-thumbnails {
+    border-right : 2px solid white;
+}
+
+#cycle-box #cycle-thumbnails ul {
+    margin : 0px;
+    padding : 0px;
+}
+#cycle-box #cycle-thumbnails ul li {
+    margin : 0px;
+    padding : 0px;
+    margin-bottom: 2px;
+}
+#cycle-box #cycle-thumbnails ul li a.thumb-nav {
+    display : block;
+    width : 100%;
+    height : 60px;
+}
+
+#cycle-box #cycle-thumbnails {
+    width : 140px;
+    padding : 0px;
+    margin : 0px;
+}
+
+#add-new-slot {
+    text-align : center;
+}
+
+#cycle-thumbnails ul#nav {
+    list-style: none none;
+    margin : 0px;
+}
+
+div.cycle-story {
+    max-width : 300px;
+    max-height : 300px;
+    min-width : 100px;
+    min-height : 100px;
+    position : absolute;
+    z-index : 99;
+    background-color: black;
+    color : white;
+    font-size: 12px;
+    font-weight : bold;
+    border : 1px solid white;
+    margin : 0px;
+    padding : 0px;
+}
+
+
+div.cycle-story > p {
+    opacity : 0.3;
+    filter:alpha(opacity=30);
+}
+
+div.cycle-story img  {
+    opacity : 1.0;
+    filter:alpha(opacity=100);
+}
+
+#cycle-box div.cycle-story p,
+#cycle-box div.cycle-story h2 {
+    margin : 3px;
+}
+
+#cycle-cell {
+    position : relative;
+}
+
+#slot-no {
+    float : right;
+    font-size : 300%;
+}
