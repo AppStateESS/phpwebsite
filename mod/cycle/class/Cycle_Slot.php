@@ -99,7 +99,7 @@ class Cycle_Slot {
             $ext = PHPWS_File::getFileExtension($bg_upload['name']);
 
             $filename = 'bg' . $this->slot_order . '.' . $ext;
-            if (!PHPWS_File::scaleImage($bg_upload['tmp_name'], $directory . $filename, 600, 250)) {
+            if (!PHPWS_File::scaleImage($bg_upload['tmp_name'], $directory . $filename, cycle_picture_width, cycle_picture_height)) {
                 throw new Exception('Failed to upload image.');
             }
             $this->background_path = $directory . $filename;
@@ -115,7 +115,7 @@ class Cycle_Slot {
             $ext = PHPWS_File::getFileExtension($ti_upload['name']);
 
             $filename = 'tn' . $this->slot_order . '.' . $ext;
-            if (!PHPWS_File::scaleImage($ti_upload['tmp_name'], $directory . $filename, 140, 60)) {
+            if (!PHPWS_File::scaleImage($ti_upload['tmp_name'], $directory . $filename, cycle_thumb_width, cycle_thumb_height)) {
                 throw new Exception('Failed to upload image.');
             }
 
@@ -126,7 +126,7 @@ class Cycle_Slot {
 
             $bg_file = str_replace('images/cycle/', '', $this->background_path);
 
-            if (!PHPWS_File::scaleImage($this->background_path, $directory . $filename, 140, 60)) {
+            if (!PHPWS_File::scaleImage($this->background_path, $directory . $filename, cycle_thumb_width, cycle_thumb_height)) {
                 exit('thumb fail');
             }
 

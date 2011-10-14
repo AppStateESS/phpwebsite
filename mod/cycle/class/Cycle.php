@@ -81,16 +81,14 @@ class Cycle {
         for ($count = 1; $count < 5; $count++) {
             if (isset($result[$count])) {
                 $slot = $result[$count];
-                $thumb['thumb'] = sprintf('<li><a class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', $count, $slot->thumbnail_path);
+                $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
             } else {
-                $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a class="thumb-nav" href="#" id="goto%s"><img style="margin-top : 12px" src="%s" /></a></li>', $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
+                $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img style="margin-top : 12px" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
             }
             $tpl['thumbnails'][] = $thumb;
         }
 
-        if (!isset($slot)) {
-            $slot = new Cycle_Slot(1);
-        }
+        $slot = new Cycle_Slot(1);
 
         $tpl['form'] = $this->slotForm($slot);
 
@@ -154,23 +152,33 @@ class Cycle {
 
     public static function Display()
     {
-        javascriptMod('cycle', 'cycle');
         $result = self::getSlots();
+        if (empty($result)) {
+            return null;
+        }
+        javascriptMod('cycle', 'cycle');
+
+        $bg_tile = PHPWS_SOURCE_HTTP . 'mod/cycle/img/50-percent.png';
         Layout::addStyle('cycle');
-        if (!empty($result)) {
-            $count = 0;
-            foreach ($result as $slot) {
-                $count++;
-                $thumb['thumb'] = sprintf('<li><a class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', $count, $slot->thumbnail_path);
-                $fullpic['image'] = $slot->background_path;
-                $fullpic['story'] = $slot->feature_text;
-                $fullpic['top'] = $slot->feature_y;
-                $fullpic['left'] = $slot->feature_x;
-                $tpl['fullpic'][] = $fullpic;
-                $tpl['thumbnails'][] = $thumb;
+        $count = 0;
+        foreach ($result as $slot) {
+            $fullpic = $thumb = null;
+            $count++;
+            $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
+            $fullpic['image'] = $slot->background_path;
+            if (!empty($slot->feature_text)) {
+                $top = $slot->feature_y;
+                $left = $slot->feature_x;
+                $fullpic['story'] = <<<EOF
+<div class="cycle-story" style="top : {$top}px; left : {$left}px; background-image : url({$bg_tile})">{$slot->feature_text}</div>
+EOF;
             }
+            $tpl['fullpic'][] = $fullpic;
+            $tpl['thumbnails'][] = $thumb;
         }
 
+        $tpl['pic_width'] = cycle_picture_width;
+        $tpl['pic_height'] = cycle_picture_height;
         return PHPWS_Template::process($tpl, 'cycle', 'cycle_box.tpl');
     }
 
