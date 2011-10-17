@@ -9,6 +9,7 @@ PHPWS_Core::initModClass('cycle', 'Cycle_Slot.php');
 class Cycle {
 
     private $content = null;
+    private $error;
 
     public function get()
     {
@@ -48,7 +49,6 @@ class Cycle {
                 } else {
                     $this->postSlot();
                 }
-                PHPWS_Core::goBack();
                 break;
         }
     }
@@ -67,15 +67,30 @@ class Cycle {
         try {
             $slot->post();
         } catch (Exception $e) {
-            exit($e->getMessage());
+            $this->error = $e->getMessage();
+            $this->main();
         }
-        $slot->save();
+        if (!empty($slot->errors)) {
+            $this->error = implode('<br />', $slot->errors);
+            $this->main();
+        } else {
+            $result = $slot->save();
+            if (PEAR::isError($result)) {
+                test($result);
+
+                $this->error = $result->getMessage();
+                $this->main();
+            } else {
+                PHPWS_Core::goBack();
+            }
+        }
     }
 
     private function main()
     {
         Layout::addStyle('cycle');
         javascriptMod('cycle', 'admin');
+        javascript('required_input');
 
         $result = $this->getSlots();
         for ($count = 1; $count < 5; $count++) {
@@ -91,6 +106,9 @@ class Cycle {
         $slot = new Cycle_Slot(1);
 
         $tpl['form'] = $this->slotForm($slot);
+        if ($this->error) {
+            $tpl['error'] = $this->error;
+        }
 
         Layout::add(PHPWS_Template::process($tpl, 'cycle', 'admin.tpl'));
     }
@@ -104,12 +122,17 @@ class Cycle {
 
         $form->addFile('background_image');
         $form->setLabel('background_image', 'Main image');
+        if (empty($slot->background_path)) {
+            $form->setRequired('background_image');
+        }
 
         $form->addFile('thumbnail_image');
         $form->setLabel('thumbnail_image', 'Thumbnail');
 
         $form->addText('thumbnail_text', $slot->thumbnail_text);
         $form->setLabel('thumbnail_text', 'Thumbnail title');
+        $form->setRequired('thumbnail_text');
+
 
         $form->addTextarea('feature_text', $slot->feature_text);
         $form->useEditor('feature_text');
@@ -123,15 +146,24 @@ class Cycle {
         $form->setLabel('feature_y', 'Y position');
         $form->setSize('feature_y', 3, 3);
 
+        $form->addText('f_width', $slot->f_width);
+        $form->setLabel('f_width', 'Width');
+        $form->setSize('f_width', 3, 3);
+
+        $form->addText('f_height', $slot->f_height);
+        $form->setLabel('f_height', 'Height');
+        $form->setSize('f_height', 3, 3);
+
         $form->addText('destination_url', $slot->destination_url);
         $form->setLabel('destination_url', 'Destination url');
+        $form->setRequired('destination_url');
         $form->setSize('destination_url', 30);
 
         if (!$slot->isNew()) {
-            $form->addSubmit('add', 'Update slot ' . $slot->slot_order);
+            $form->addSubmit('add_new', 'Update slot ' . $slot->slot_order);
             $form->addSubmit('delete', 'Delete slot ' . $slot->slot_order);
         } else {
-            $form->addSubmit('add', 'Add new slot ' . $slot->slot_order);
+            $form->addSubmit('add_new', 'Add new slot ' . $slot->slot_order);
         }
 
 
@@ -176,10 +208,8 @@ EOF;
             $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
             $fullpic['image'] = $slot->background_path;
             if (!empty($slot->feature_text)) {
-                $top = $slot->feature_y;
-                $left = $slot->feature_x;
                 $fullpic['story'] = <<<EOF
-<div class="cycle-story" style="top : {$top}px; left : {$left}px; background-image : url({$bg_tile})">{$slot->feature_text}</div>
+<div class="cycle-story" style="top : {$slot->feature_y}px; left : {$slot->feature_x}px; width : {$slot->f_width}px; height : {$slot->f_height}px; background-image : url({$bg_tile})">{$slot->feature_text}</div>
 EOF;
             }
             $tpl['fullpic'][] = $fullpic;

@@ -13,10 +13,13 @@ class Cycle_Slot {
     public $thumbnail_text;
     public $background_path;
     public $feature_text;
-    public $feature_x = 0;
-    public $feature_y = 0;
+    public $feature_x = 10;
+    public $feature_y = 10;
+    public $f_width = 200;
+    public $f_height = 200;
     public $destination_url;
     private $new_slot = true;
+    public $errors;
 
     public function __construct($slot_order=0)
     {
@@ -47,7 +50,7 @@ class Cycle_Slot {
     {
         $this->destination_url = $dest_url;
         if (!PHPWS_Text::isValidInput($this->destination_url, 'url')) {
-            throw new Exception('Invalid destination url.');
+            throw new Exception('Invalid destination url');
         }
     }
 
@@ -76,16 +79,32 @@ class Cycle_Slot {
         $this->thumbnail_text = trim(strip_tags($text));
     }
 
+    public function setFWidth($width) {
+        $this->f_width = (int)$width;
+    }
+
+    public function setFHeight($height) {
+        $this->f_height = (int)$height;
+    }
+
     public function post()
     {
-        $this->setDestinationUrl($_POST['destination_url']);
+        try {
+            $this->setDestinationUrl($_POST['destination_url']);
+        } catch (Exception $e) {
+            $this->errors[] = $e->getMessage();
+        }
         $this->setFeatureText($_POST['feature_text']);
         $this->setFeatureX($_POST['feature_x']);
         $this->setFeatureY($_POST['feature_y']);
         $this->setThumbnailText($_POST['thumbnail_text']);
+        $this->setFWidth($_POST['f_width']);
+        $this->setFHeight($_POST['f_height']);
+
 
         if (empty($_FILES['background_image']['name']) && empty($this->background_path)) {
-            throw new Exception('Missing background image');
+            $this->errors[] = 'Missing background image';
+            return;
         }
         $directory = 'images/cycle/';
 
@@ -93,7 +112,8 @@ class Cycle_Slot {
             $bg_upload = & $_FILES['background_image'];
 
             if (!in_array($bg_upload['type'], array('image/png', 'image/jpg', 'image/jpeg'))) {
-                throw new Exception('Only images may be uploaded.');
+                $this->errors[] = 'Only images may be uploaded.';
+                return;
             }
 
             $ext = PHPWS_File::getFileExtension($bg_upload['name']);
@@ -109,7 +129,7 @@ class Cycle_Slot {
             $ti_upload = & $_FILES['thumbnail_image'];
 
             if (!in_array($ti_upload['type'], array('image/png', 'image/jpg', 'image/jpeg'))) {
-                throw new Exception('Only images may be uploaded.');
+                $this->errors[] = 'Only images may be uploaded.';
             }
 
             $ext = PHPWS_File::getFileExtension($ti_upload['name']);
@@ -127,7 +147,7 @@ class Cycle_Slot {
             $bg_file = str_replace('images/cycle/', '', $this->background_path);
 
             if (!PHPWS_File::scaleImage($this->background_path, $directory . $filename, cycle_thumb_width, cycle_thumb_height)) {
-                exit('thumb fail');
+                throw new Exception('Thumbnail scale failure.');
             }
 
             $this->thumbnail_path = $directory . $filename;
@@ -141,6 +161,7 @@ class Cycle_Slot {
         $db->delete();
         $vars = get_object_vars($this);
         unset($vars['new_slot']);
+        unset($vars['error']);
 
         $db->addValue($vars);
         return $db->insert();
