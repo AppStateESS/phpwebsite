@@ -163,6 +163,8 @@ class Cycle {
         $count = 0;
         foreach ($result as $slot) {
             $fullpic = $thumb = null;
+            $fullpic['pic_width'] = cycle_picture_width;
+            $fullpic['pic_height'] = cycle_picture_height;
             $count++;
             $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
             $fullpic['image'] = $slot->background_path;
@@ -177,8 +179,6 @@ EOF;
             $tpl['thumbnails'][] = $thumb;
         }
 
-        $tpl['pic_width'] = cycle_picture_width;
-        $tpl['pic_height'] = cycle_picture_height;
         return PHPWS_Template::process($tpl, 'cycle', 'cycle_box.tpl');
     }
 
