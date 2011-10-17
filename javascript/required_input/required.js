@@ -11,6 +11,7 @@ function check(form_button)
             switch(type) {
             case 'text':
             case 'textarea':
+            case 'file':
                 element_id = $(this).attr('id');
                 label_id = '#' + element_id + '-label';
                 label_value = $(label_id).html();
