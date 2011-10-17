@@ -1,9 +1,9 @@
 <div id="slot-no">{TITLE}</div>
 {START_FORM}
 <p>{BACKGROUND_IMAGE_LABEL}<br />
-{BACKGROUND_IMAGE}</p>
+{BACKGROUND_IMAGE} {pic_dimensions}</p>
 <p>{THUMBNAIL_IMAGE_LABEL}<br />
-{THUMBNAIL_IMAGE}</p>
+{THUMBNAIL_IMAGE} {thumb_dimensions}</p>
 <p>{THUMBNAIL_TEXT_LABEL}<br />{THUMBNAIL_TEXT}</p>
 <p>{FEATURE_TEXT_LABEL}<br />
 {FEATURE_TEXT}

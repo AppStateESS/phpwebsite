@@ -134,7 +134,10 @@ class Cycle {
             $form->addSubmit('add', 'Add new slot ' . $slot->slot_order);
         }
 
+
         $tpl = $form->getTemplate();
+        $tpl['thumb_dimensions'] = 'Thumbnail dimensions : ' . cycle_thumb_width . 'x' . cycle_thumb_height;
+        $tpl['pic_dimensions'] = 'Background dimensions : ' . cycle_picture_width . 'x' . cycle_picture_height;
         $tpl['TITLE'] = '#' . $slot->slot_order;
         $tpl['thumbnail_path'] = $slot->thumbnail_path;
         return PHPWS_Template::process($tpl, 'cycle', 'slot_form.tpl');
