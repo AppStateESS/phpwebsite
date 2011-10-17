@@ -1,6 +1,9 @@
 <script type="text/javascript" src="mod/cycle/javascript/cycle/jquery.cycle.all.js"></script>
 <script type="text/javascript">
 
+var url = new Array();
+{urls}
+
 $(function() {
 
     $('#goto1').click(function() {
@@ -18,6 +21,10 @@ $(function() {
     $('#goto4').click(function() {
         $('#cycle-full').cycle(3);
         return false;
+    });
+    $('.cycle-pic').click(function() {
+        id = $(this).attr('id').replace('pic', '');
+        document.location.href = url[id];
     });
 
 

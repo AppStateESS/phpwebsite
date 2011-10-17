@@ -159,7 +159,7 @@ class Cycle {
         if (empty($result)) {
             return null;
         }
-        javascriptMod('cycle', 'cycle');
+
 
         $bg_tile = PHPWS_SOURCE_HTTP . 'mod/cycle/img/50-percent.png';
         Layout::addStyle('cycle');
@@ -168,6 +168,10 @@ class Cycle {
             $fullpic = $thumb = null;
             $fullpic['pic_width'] = cycle_picture_width;
             $fullpic['pic_height'] = cycle_picture_height;
+            $fullpic['id'] = $slot->slot_order;
+            $urls[] = <<<EOF
+url[{$slot->slot_order}] = '{$slot->destination_url}';
+EOF;
             $count++;
             $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
             $fullpic['image'] = $slot->background_path;
@@ -181,6 +185,9 @@ EOF;
             $tpl['fullpic'][] = $fullpic;
             $tpl['thumbnails'][] = $thumb;
         }
+        $js['urls'] = implode("\n", $urls);
+
+        javascriptMod('cycle', 'cycle', $js);
 
         return PHPWS_Template::process($tpl, 'cycle', 'cycle_box.tpl');
     }
