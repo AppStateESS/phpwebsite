@@ -4,9 +4,9 @@ function check(form_button)
     var form_ok = true;
 
     $(':input', form).each(function() {
-        var class = $(this).attr('class');
+        var req_class = $(this).attr('class');
         form_id = $(form).attr('id');
-        if (class == 'input-required' && $(this).val() == '') {
+        if (req_class == 'input-required' && $(this).val() == '') {
             var type = this.type;
             switch(type) {
             case 'text':
