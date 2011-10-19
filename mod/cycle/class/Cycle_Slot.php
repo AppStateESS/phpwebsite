@@ -79,12 +79,14 @@ class Cycle_Slot {
         $this->thumbnail_text = trim(strip_tags($text));
     }
 
-    public function setFWidth($width) {
-        $this->f_width = (int)$width;
+    public function setFWidth($width)
+    {
+        $this->f_width = (int) $width;
     }
 
-    public function setFHeight($height) {
-        $this->f_height = (int)$height;
+    public function setFHeight($height)
+    {
+        $this->f_height = (int) $height;
     }
 
     public function post()

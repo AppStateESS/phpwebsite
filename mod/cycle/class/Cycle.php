@@ -193,7 +193,7 @@ class Cycle {
         }
 
 
-        $bg_tile = PHPWS_SOURCE_HTTP . 'mod/cycle/img/50-percent.png';
+        $bg_tile = PHPWS_SOURCE_HTTP . 'mod/cycle/img/75-percent.png';
         Layout::addStyle('cycle');
         $count = 0;
         foreach ($result as $slot) {
