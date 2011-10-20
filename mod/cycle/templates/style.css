@@ -27,7 +27,8 @@
 #cycle-box #cycle-thumbnails ul li {
     margin : 0px;
     padding : 0px;
-    margin-bottom: 2px;
+    margin-bottom : 2px;
+    line-height : 0px;
 }
 #cycle-box #cycle-thumbnails ul li a.thumb-nav {
     display : block;

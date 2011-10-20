@@ -48,7 +48,8 @@ class Cycle_Slot {
 
     public function setDestinationUrl($dest_url)
     {
-        $this->destination_url = $dest_url;
+        $this->destination_url = PHPWS_Text::checkLink($dest_url);
+
         if (!PHPWS_Text::isValidInput($this->destination_url, 'url')) {
             throw new Exception('Invalid destination url');
         }
@@ -121,9 +122,11 @@ class Cycle_Slot {
             $ext = PHPWS_File::getFileExtension($bg_upload['name']);
 
             $filename = 'bg' . $this->slot_order . '.' . $ext;
-            if (!PHPWS_File::scaleImage($bg_upload['tmp_name'], $directory . $filename, cycle_picture_width, cycle_picture_height)) {
+
+            if (!$this->scaleImage($bg_upload['tmp_name'], $directory . $filename)) {
                 throw new Exception('Failed to upload image.');
             }
+
             $this->background_path = $directory . $filename;
         }
 
@@ -154,6 +157,52 @@ class Cycle_Slot {
 
             $this->thumbnail_path = $directory . $filename;
         }
+    }
+
+    public function scaleImage($source_dir, $dest_dir)
+    {
+        $size = getimagesize($source_dir);
+        if (empty($size)) {
+            return false;
+        }
+
+
+        $width = & $size[0];
+        $height = & $size[1];
+        $file_type = & $size['mime'];
+
+        $wdiff = $width / cycle_picture_width;
+        $hdiff = $height / cycle_picture_height;
+
+        if ($wdiff < $hdiff) {
+            $diff = $wdiff;
+            $new_width = cycle_picture_width;
+            $new_height = floor($height / $diff);
+        } else {
+            $diff = $hdiff;
+            $new_height = cycle_picture_height;
+            $new_width = floor($width / $diff);
+        }
+
+        $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
+        $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
+
+        imagecopyresampled($resampled_image, $source_image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+        imagedestroy($source_image);
+
+
+        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir, $file_type);
+
+        if (!$result) {
+            imagedestroy($resampled_image);
+            return false;
+        }
+
+        chmod($dest_dir, 0644);
+        imagedestroy($resampled_image);
+
+        return PHPWS_File::cropImage($dest_dir, $dest_dir, cycle_picture_width, cycle_picture_height);
     }
 
     public function save()

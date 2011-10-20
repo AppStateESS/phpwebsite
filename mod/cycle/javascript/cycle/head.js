@@ -30,8 +30,8 @@ $(function() {
 
     $('#cycle-full').cycle({
         fx:     'fade',
-        speed:  800,
-        timeout: 6000,
+        speed:  2000,
+        timeout: 10000,
         fit : 1,
         width : '600px',
         height : '250px'

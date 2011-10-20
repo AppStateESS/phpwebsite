@@ -59,6 +59,7 @@ class Cycle {
         unlink($slot->thumbnail_path);
         unlink($slot->background_path);
         $slot->delete();
+        PHPWS_Core::goBack();
     }
 
     private function postSlot()
@@ -68,25 +69,23 @@ class Cycle {
             $slot->post();
         } catch (Exception $e) {
             $this->error = $e->getMessage();
-            $this->main();
+            $this->main($slot);
         }
         if (!empty($slot->errors)) {
             $this->error = implode('<br />', $slot->errors);
-            $this->main();
+            $this->main($slot);
         } else {
             $result = $slot->save();
             if (PEAR::isError($result)) {
-                test($result);
-
                 $this->error = $result->getMessage();
-                $this->main();
+                $this->main($slot);
             } else {
                 PHPWS_Core::goBack();
             }
         }
     }
 
-    private function main()
+    private function main($default_slot=null)
     {
         Layout::addStyle('cycle');
         javascriptMod('cycle', 'admin');
@@ -96,20 +95,22 @@ class Cycle {
         for ($count = 1; $count < 5; $count++) {
             if (isset($result[$count])) {
                 $slot = $result[$count];
-                $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
+                $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, cycle_thumb_width, cycle_thumb_height, $slot->thumbnail_path);
             } else {
                 $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img style="margin-top : 12px" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
             }
             $tpl['thumbnails'][] = $thumb;
         }
 
-        $slot = new Cycle_Slot(1);
+        if (empty($default_slot)) {
+            $default_slot = new Cycle_Slot(1);
+        }
 
-        $tpl['form'] = $this->slotForm($slot);
+        $tpl['form'] = $this->slotForm($default_slot);
         if ($this->error) {
             $tpl['error'] = $this->error;
         }
-
+        $tpl['width'] = cycle_thumb_width + 3;
         Layout::add(PHPWS_Template::process($tpl, 'cycle', 'admin.tpl'));
     }
 
@@ -161,7 +162,6 @@ class Cycle {
 
         if (!$slot->isNew()) {
             $form->addSubmit('add_new', 'Update slot ' . $slot->slot_order);
-            $form->addSubmit('delete', 'Delete slot ' . $slot->slot_order);
         } else {
             $form->addSubmit('add_new', 'Add new slot ' . $slot->slot_order);
         }
@@ -170,7 +170,7 @@ class Cycle {
         $tpl = $form->getTemplate();
         $tpl['thumb_dimensions'] = 'Thumbnail dimensions : ' . cycle_thumb_width . 'x' . cycle_thumb_height;
         $tpl['pic_dimensions'] = 'Background dimensions : ' . cycle_picture_width . 'x' . cycle_picture_height;
-        $tpl['TITLE'] = '#' . $slot->slot_order;
+        $tpl['SORT'] = $slot->slot_order;
         $tpl['thumbnail_path'] = $slot->thumbnail_path;
         return PHPWS_Template::process($tpl, 'cycle', 'slot_form.tpl');
     }
@@ -205,7 +205,7 @@ class Cycle {
 url[{$slot->slot_order}] = '{$slot->destination_url}';
 EOF;
             $count++;
-            $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, $slot->thumbnail_path);
+            $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, cycle_thumb_width, cycle_thumb_height, $slot->thumbnail_path);
             $fullpic['image'] = $slot->background_path;
             if (!empty($slot->feature_text)) {
                 $fullpic['story'] = <<<EOF
