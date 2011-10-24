@@ -58,6 +58,7 @@ $all_file_types['csv']['fi'][]  = 'text/plain';
 $all_file_types['csv']['vb']    = 'Comma Separated Value Text';
 
 $all_file_types['doc']['mct'][] = 'application/msword';
+$all_file_types['doc']['mct'][] = 'application/vnd.ms-office';
 $all_file_types['doc']['fi'][]  = 'microsoft installer';
 $all_file_types['doc']['fi'][]  = 'microsoft office document';
 $all_file_types['doc']['vb']    = 'Microsoft Word Document';
