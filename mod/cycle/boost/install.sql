@@ -9,6 +9,5 @@ CREATE TABLE cycle_slots (
   f_width smallint NOT NULL default 100,
   f_height smallint NOT NULL default 100,
   destination_url text NOT NULL,
-  destination_url text NOT NULL,
   UNIQUE KEY slot_order (slot_order)
 );
