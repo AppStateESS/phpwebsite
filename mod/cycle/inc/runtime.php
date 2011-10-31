@@ -10,8 +10,6 @@
 require_once PHPWS_SOURCE_DIR . 'mod/cycle/inc/defines.php';
 if (PHPWS_Core::atHome()) {
     PHPWS_Core::initModClass('cycle', 'Cycle.php');
-    Layout::add(Cycle::display());
-
-    //Layout::add(javascriptMod('cycle', 'cycle'));
+    Layout::add(Cycle::display(), 'cycle', 'cycle');
 }
 ?>
