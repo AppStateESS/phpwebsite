@@ -866,7 +866,7 @@ class Comments {
 
         // Unset the "send notice" flag so that only one notice is sent
         $db = new PHPWS_DB('comments_monitors');
-        $db->addWhere('thread_id', $thread>id);
+        $db->addWhere('thread_id', $thread->id);
         $db->addWhere('suspended', 0);
         $db->addValue('send_notice', 0);
         PHPWS_Error::logIfError($db->update());
