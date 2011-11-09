@@ -1,6 +1,9 @@
 <script type="text/javascript" src="mod/cycle/javascript/cycle/jquery.cycle.all.js"></script>
 <script type="text/javascript">
 
+var bg_width = '{bg_width}px';
+var bg_height = '{bg_height}px';
+
 var url = new Array();
 {urls}
 
@@ -33,8 +36,8 @@ $(function() {
         speed:  2000,
         timeout: 10000,
         fit : 1,
-        width : '600px',
-        height : '250px'
+        width : bg_width,
+        height : bg_height
     });
 });
 

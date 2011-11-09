@@ -92,10 +92,14 @@ class Cycle_Slot {
 
     public function post()
     {
-        try {
-            $this->setDestinationUrl($_POST['destination_url']);
-        } catch (Exception $e) {
-            $this->errors[] = $e->getMessage();
+        if (empty($_POST['destination_url'])) {
+            $this->destination_url = null;
+        } else {
+            try {
+                $this->setDestinationUrl($_POST['destination_url']);
+            } catch (Exception $e) {
+                $this->errors[] = $e->getMessage();
+            }
         }
         $this->setFeatureText($_POST['feature_text']);
         $this->setFeatureX($_POST['feature_x']);
@@ -104,6 +108,42 @@ class Cycle_Slot {
         $this->setFWidth($_POST['f_width']);
         $this->setFHeight($_POST['f_height']);
 
+        if (isset($_POST['show_thumbnails'])) {
+            PHPWS_Settings::set('cycle', 'show_thumbnails', 1);
+        } else {
+            PHPWS_Settings::set('cycle', 'show_thumbnails', 0);
+        }
+
+        if (!empty($_POST['bg_width']) && !empty($_POST['bg_height'])) {
+            $bg_width = (int) $_POST['bg_width'];
+            $bg_height = (int) $_POST['bg_height'];
+            if ($bg_width < 150 || $bg_height < 100) {
+                $this->errors[] = 'Background dimensions are too small';
+            } else {
+                PHPWS_Settings::set('cycle', 'bg_width', $bg_width);
+                PHPWS_Settings::set('cycle', 'bg_height', $bg_height);
+            }
+        }
+
+        if (!empty($_POST['tn_width']) && !empty($_POST['tn_height'])) {
+            $tn_width = (int) $_POST['tn_width'];
+            $tn_height = (int) $_POST['tn_height'];
+            if ($tn_width < 10 || $tn_height < 10) {
+                $this->errors[] = 'Thumbnail dimensions are too small';
+            } else {
+                PHPWS_Settings::set('cycle', 'tn_width', $tn_width);
+                PHPWS_Settings::set('cycle', 'tn_height', $tn_height);
+            }
+        }
+
+        PHPWS_Settings::save('cycle');
+
+
+        $cycle_thumb_width = PHPWS_Settings::get('cycle', 'tn_width');
+        $cycle_thumb_height = PHPWS_Settings::get('cycle', 'tn_height');
+
+        $cycle_picture_width = PHPWS_Settings::get('cycle', 'bg_width');
+        $cycle_picture_height = PHPWS_Settings::get('cycle', 'bg_height');
 
         if (empty($_FILES['background_image']['name']) && empty($this->background_path)) {
             $this->errors[] = 'Missing background image';
@@ -140,7 +180,7 @@ class Cycle_Slot {
             $ext = PHPWS_File::getFileExtension($ti_upload['name']);
 
             $filename = 'tn' . $this->slot_order . '.' . $ext;
-            if (!PHPWS_File::scaleImage($ti_upload['tmp_name'], $directory . $filename, cycle_thumb_width, cycle_thumb_height)) {
+            if (!PHPWS_File::scaleImage($ti_upload['tmp_name'], $directory . $filename, $cycle_thumb_width, $cycle_thumb_height)) {
                 throw new Exception('Failed to upload image.');
             }
 
@@ -151,7 +191,7 @@ class Cycle_Slot {
 
             $bg_file = str_replace('images/cycle/', '', $this->background_path);
 
-            if (!PHPWS_File::scaleImage($this->background_path, $directory . $filename, cycle_thumb_width, cycle_thumb_height)) {
+            if (!PHPWS_File::scaleImage($this->background_path, $directory . $filename, $cycle_thumb_width, $cycle_thumb_height)) {
                 throw new Exception('Thumbnail scale failure.');
             }
 
@@ -161,6 +201,12 @@ class Cycle_Slot {
 
     public function scaleImage($source_dir, $dest_dir)
     {
+        $cycle_thumb_width = PHPWS_Settings::get('cycle', 'tn_width');
+        $cycle_thumb_height = PHPWS_Settings::get('cycle', 'tn_height');
+
+        $cycle_picture_width = PHPWS_Settings::get('cycle', 'bg_width');
+        $cycle_picture_height = PHPWS_Settings::get('cycle', 'bg_height');
+
         $size = getimagesize($source_dir);
         if (empty($size)) {
             return false;
@@ -171,16 +217,16 @@ class Cycle_Slot {
         $height = & $size[1];
         $file_type = & $size['mime'];
 
-        $wdiff = $width / cycle_picture_width;
-        $hdiff = $height / cycle_picture_height;
+        $wdiff = $width / $cycle_picture_width;
+        $hdiff = $height / $cycle_picture_height;
 
         if ($wdiff < $hdiff) {
             $diff = $wdiff;
-            $new_width = cycle_picture_width;
+            $new_width = $cycle_picture_width;
             $new_height = floor($height / $diff);
         } else {
             $diff = $hdiff;
-            $new_height = cycle_picture_height;
+            $new_height = $cycle_picture_height;
             $new_width = floor($width / $diff);
         }
 
@@ -202,7 +248,7 @@ class Cycle_Slot {
         chmod($dest_dir, 0644);
         imagedestroy($resampled_image);
 
-        return PHPWS_File::cropImage($dest_dir, $dest_dir, cycle_picture_width, cycle_picture_height);
+        return PHPWS_File::cropImage($dest_dir, $dest_dir, $cycle_picture_width, $cycle_picture_height);
     }
 
     public function save()

@@ -87,6 +87,11 @@ class Cycle {
 
     private function main($default_slot=null)
     {
+        $cycle_thumb_width = PHPWS_Settings::get('cycle', 'tn_width');
+        $cycle_thumb_height = PHPWS_Settings::get('cycle', 'tn_height');
+
+        $cycle_picture_width = PHPWS_Settings::get('cycle', 'bg_width');
+        $cycle_picture_height = PHPWS_Settings::get('cycle', 'bg_height');
         Layout::addStyle('cycle');
         javascriptMod('cycle', 'admin');
         javascript('required_input');
@@ -95,9 +100,9 @@ class Cycle {
         for ($count = 1; $count < 5; $count++) {
             if (isset($result[$count])) {
                 $slot = $result[$count];
-                $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, cycle_thumb_width, cycle_thumb_height, $slot->thumbnail_path);
+                $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>', $cycle_thumb_width, $cycle_thumb_height, $count, $cycle_thumb_width, $cycle_thumb_height, $slot->thumbnail_path);
             } else {
-                $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img style="margin-top : 12px" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
+                $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img style="margin-top : 12px" src="%s" /></a></li>', $cycle_thumb_width, $cycle_thumb_height, $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
             }
             $tpl['thumbnails'][] = $thumb;
         }
@@ -110,7 +115,7 @@ class Cycle {
         if ($this->error) {
             $tpl['error'] = $this->error;
         }
-        $tpl['width'] = cycle_thumb_width + 3;
+        $tpl['width'] = $cycle_thumb_width + 3;
         Layout::add(PHPWS_Template::process($tpl, 'cycle', 'admin.tpl'));
     }
 
@@ -157,8 +162,31 @@ class Cycle {
 
         $form->addText('destination_url', $slot->destination_url);
         $form->setLabel('destination_url', 'Destination url');
-        $form->setRequired('destination_url');
+        //$form->setRequired('destination_url');
         $form->setSize('destination_url', 30);
+
+        $form->addText('bg_width', PHPWS_Settings::get('cycle', 'bg_width'));
+        $form->setLabel('bg_width', 'BG width');
+        $form->setSize('bg_width', 4);
+
+        $form->addText('bg_height', PHPWS_Settings::get('cycle', 'bg_height'));
+        $form->setLabel('bg_height', 'BG height');
+        $form->setSize('bg_height', 4);
+
+        $form->addText('tn_width', PHPWS_Settings::get('cycle', 'tn_width'));
+        $form->setLabel('tn_width', 'TN width');
+        $form->setSize('tn_width', 4);
+
+        $form->addText('tn_height', PHPWS_Settings::get('cycle', 'tn_height'));
+        $form->setLabel('tn_height', 'TN height');
+        $form->setSize('tn_height', 4);
+
+
+        $form->addCheck('show_thumbnails', 1);
+        $form->setLabel('show_thumbnails', 'Show thumbnails');
+        $form->setMatch('show_thumbnails', PHPWS_Settings::get('cycle', 'show_thumbnails'));
+
+        $result = PHPWS_Settings::get('cycle', 'show_thumbnails');
 
         if (!$slot->isNew()) {
             $form->addSubmit('add_new', 'Update slot ' . $slot->slot_order);
@@ -166,10 +194,16 @@ class Cycle {
             $form->addSubmit('add_new', 'Add new slot ' . $slot->slot_order);
         }
 
+        $cycle_thumb_width = PHPWS_Settings::get('cycle', 'tn_width');
+        $cycle_thumb_height = PHPWS_Settings::get('cycle', 'tn_height');
+
+        $cycle_picture_width = PHPWS_Settings::get('cycle', 'bg_width');
+        $cycle_picture_height = PHPWS_Settings::get('cycle', 'bg_height');
+
 
         $tpl = $form->getTemplate();
-        $tpl['thumb_dimensions'] = 'Thumbnail dimensions : ' . cycle_thumb_width . 'x' . cycle_thumb_height;
-        $tpl['pic_dimensions'] = 'Background dimensions : ' . cycle_picture_width . 'x' . cycle_picture_height;
+        $tpl['thumb_dimensions'] = 'Thumbnail dimensions : ' . $cycle_thumb_width . 'x' . $cycle_thumb_height;
+        $tpl['pic_dimensions'] = 'Background dimensions : ' . $cycle_picture_width . 'x' . $cycle_picture_height;
         $tpl['SORT'] = $slot->slot_order;
         $tpl['thumbnail_path'] = $slot->thumbnail_path;
         return PHPWS_Template::process($tpl, 'cycle', 'slot_form.tpl');
@@ -192,28 +226,38 @@ class Cycle {
             return null;
         }
 
+        $cycle_thumb_width = PHPWS_Settings::get('cycle', 'tn_width');
+        $cycle_thumb_height = PHPWS_Settings::get('cycle', 'tn_height');
+
+        $cycle_picture_width = PHPWS_Settings::get('cycle', 'bg_width');
+        $cycle_picture_height = PHPWS_Settings::get('cycle', 'bg_height');
 
         $bg_tile = PHPWS_SOURCE_HTTP . 'mod/cycle/img/75-percent.png';
         Layout::addStyle('cycle');
         $count = 0;
         foreach ($result as $slot) {
             $fullpic = $thumb = null;
-            $fullpic['pic_width'] = cycle_picture_width;
-            $fullpic['pic_height'] = cycle_picture_height;
+            $fullpic['pic_width'] = $cycle_picture_width;
+            $fullpic['pic_height'] = $cycle_picture_height;
             $fullpic['id'] = $slot->slot_order;
             $urls[] = <<<EOF
 url[{$slot->slot_order}] = '{$slot->destination_url}';
 EOF;
             $count++;
-            $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>', cycle_thumb_width, cycle_thumb_height, $count, cycle_thumb_width, cycle_thumb_height, $slot->thumbnail_path);
             $fullpic['image'] = $slot->background_path;
+
+            if (PHPWS_Settings::get('cycle', 'show_thumbnails')) {
+                $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>',
+                        $cycle_thumb_width, $cycle_thumb_height, $count, $cycle_thumb_width, $cycle_thumb_height, $slot->thumbnail_path);
+                $tpl['thumbnails'][] = $thumb;
+            }
+
             if (!empty($slot->feature_text)) {
                 $fullpic['story'] = <<<EOF
 <div class="cycle-story" style="top : {$slot->feature_y}px; left : {$slot->feature_x}px; width : {$slot->f_width}px; height : {$slot->f_height}px; background-image : url({$bg_tile})">{$slot->feature_text}</div>
 EOF;
             }
             $tpl['fullpic'][] = $fullpic;
-            $tpl['thumbnails'][] = $thumb;
         }
         $js['urls'] = implode("\n", $urls);
 
