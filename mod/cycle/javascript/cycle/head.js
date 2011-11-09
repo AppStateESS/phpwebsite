@@ -1,4 +1,4 @@
-<script type="text/javascript" src="mod/cycle/javascript/cycle/jquery.cycle.all.js"></script>
+<script type="text/javascript" src="{source_http}mod/cycle/javascript/cycle/jquery.cycle.all.js"></script>
 <script type="text/javascript">
 
 var bg_width = '{bg_width}px';
