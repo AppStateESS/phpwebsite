@@ -14,12 +14,21 @@
 					.  '<div class="ngjqmimg">'
                     .  '<img id="ngjqmclose" class="jqmClose" src="'.PHPWS_SOURCE_HTTP
                     .  'mod/ngboost/img/close.16.gif" alt=" X " /></div></div>');
-    define('NGSAYOK', '<img id="ngok" src="'.PHPWS_SOURCE_HTTP.'mod/ngboost/img/ok.10.gif" alt=" ok " />');
-    define('NGSAYKO', '<img id="ngko" src="'.PHPWS_SOURCE_HTTP.'mod/ngboost/img/ko.10.gif" alt=" fail " />');
-    define('NGSP3',	  '&nbsp;&nbsp;&nbsp;');
-    define('NGBR',	  '<br />');
     define('ISTRUE',  't');
     define('ISFALSE', 'f');
+	// may be shared
+	if (!defined('NGSAYOK')) {
+		define('NGSAYOK', '<img id="ngok" src="'.PHPWS_SOURCE_HTTP.'mod/ngboost/img/ok.10.gif" alt=" ok " />');
+	}
+	if (!defined('NGSAYKO')) {
+		define('NGSAYKO', '<img id="ngko" src="'.PHPWS_SOURCE_HTTP.'mod/ngboost/img/ko.10.gif" alt=" fail " />');
+	}
+	if (!defined('NGSP3')) {
+		define ('NGSP3', '&nbsp;&nbsp;&nbsp;');
+	}
+	if (!defined('NGBR')) {
+		define ('NGBR', '<br />');
+	}
 	
 
 class ngBoost_Action {
@@ -27,6 +36,7 @@ class ngBoost_Action {
 	const PATXAOP = '/[a-zA-Z]*[a-zA-Z]/';
 	const PATXMOD = '/[a-z]*[a-z0-9]/';
 	const PATXA32 = '/[a-z0-9]/';
+	const PATXVSN = '/^[a-z0-9\.]*$/';
 	//const PATSORT = '/[a-zA-Z0-9\.\_\-\ ]/';
 	
 	var $context = '';
@@ -61,6 +71,14 @@ class ngBoost_Action {
 			case 'check_all':
 				$this->ngCheckAll();
 				break;
+			case 'sunset':
+				// will not operate without sunset pato applied
+				if (file_exists(PHPWS_SOURCE_DIR.'mod/ngboost/class/ngUnSet.php')) {
+					PHPWS_Core::initModClass('ngboost', 'ngUnSet.php');
+					$ngunset = new ngBoost_UnSet('ngboost');
+					$ngunset->ngSunSet();
+				}
+				break;
 			}
 		}
     }
@@ -70,7 +88,7 @@ class ngBoost_Action {
 		if ($this) {
 		//if ($this->context==NGBOOST) {}
 
-			javascriptMod('ngboost', 'ng');
+			javascriptMod('ngboost', 'ngboost');
 			Layout::addStyle('ngboost','style.css');
 
 			/** 	general verification of directories (img files log) */
@@ -102,6 +120,7 @@ class ngBoost_Action {
 		$xaop=preg_replace(self::PATXAOP, '', $_REQUEST['xaop'])?'':$_REQUEST['xaop'];
 		$xmod=preg_replace(self::PATXMOD, '', $_REQUEST['p'])?'':$_REQUEST['p'];
 		$xa32=preg_replace(self::PATXA32, '', $_REQUEST['rs'])?'':$_REQUEST['rs'];
+		$xvsn=preg_replace(self::PATXVSN, '', $_REQUEST['v'])?'':$_REQUEST['v'];
         switch ($xaop) {
         case 'a':
             $this->ngShowAbout($xmod);
@@ -143,6 +162,10 @@ class ngBoost_Action {
             $this->ngCheck($xmod);
             return;
             break;
+        case 'cn':
+            $this->ngCheckNew($xmod);
+            return;
+            break;
         case 'C':
             $this->ngCheckAll();
             return;
@@ -160,7 +183,19 @@ class ngBoost_Action {
             return;
             break;
         case 'fsd':
-			$this->ngTuneFSdispl();
+ 			$this->ngTuneFSdispl();
+			return;
+            break;
+        case 'fsp':
+			$this->ngFsPerms();
+            return;
+            break;
+        case 'fspy':
+			$this->ngFsPermsUnlock();
+            return;
+            break;
+        case 'fspz':
+			$this->ngFsPermsLock();
             return;
             break;
         case 'h':
@@ -177,6 +212,10 @@ class ngBoost_Action {
             break;
         case 'lbl':
             $this->ngListBoostLog();
+            return;
+            break;
+        case 'lel':
+            $this->ngListErrorLog();
             return;
             break;
         case 'ldb':
@@ -207,6 +246,10 @@ class ngBoost_Action {
             $this->ngListPato($xmod);
             return;
             break;
+        case 'sr':
+            $this->ngSelRel($xvsn);
+            return;
+            break;
         case 're':
             $fn=$_SESSION['FG']['ngfn'][$_REQUEST['fn']];
             if (substr($fn,-4)=='.tgz' || substr($fn,-7)=='.tar.gz') {
@@ -235,6 +278,11 @@ class ngBoost_Action {
         case 'un':
 			$xconfirm=preg_replace(self::PATXMOD, '', $_REQUEST['confirm'])?'':$_REQUEST['confirm'];
             $this->ngUnInstall($xmod,$xconfirm);
+            return;
+            break;
+        case 'urm':
+			$xconfirm=preg_replace(self::PATXMOD, '', $_REQUEST['confirm'])?'':$_REQUEST['confirm'];
+            $this->ngRemoMod($xmod,$xconfirm);
             return;
             break;
         case 'up':
@@ -275,12 +323,17 @@ class ngBoost_Action {
         } else {
             $c1 = file_get_contents(PHPWS_SOURCE_DIR.'mod/'.$mod.'/boost/about.html');
         }
-
         $c2 = explode('<h1>', $c1);
-        $c3 = explode('</body>',$c2[1]);
-        $c4 = NGJQMCLOSE.'<h1>' . str_replace('onclick="window.close()"', 'class="jqmClose"',$c3[0]);
-		$_SESSION['BG']=str_replace('class="ngjqmtitle">','class="ngjqmtitle">about &#171;'.$mod.'&#187;',$c4);
-
+		if (isset($c2[1])) {
+			$c3 = explode('</body>',$c2[1]);
+			$c4 = NGJQMCLOSE.'<div class="ngscauto">'
+			.	'<h1>' . str_replace('onclick="window.close()"', 'class="jqmClose"',$c3[0]);
+			$_SESSION['BG']=str_replace('class="ngjqmtitle">','class="ngjqmtitle">about &#171;'.$mod.'&#187;',$c4)
+			.	'</div>';
+		} else {
+			$_SESSION['BG']=str_replace('class="ngjqmtitle">','class="ngjqmtitle">about &#171;'.$mod.'&#187;',NGJQMCLOSE)
+			.	'<div class="ngscauto">' . str_replace('onclick="window.close()"', 'class="jqmClose"',$c1);
+		}
     }
 
     protected function ngShowDep($mod)
@@ -313,9 +366,27 @@ class ngBoost_Action {
     {
 		$ngboostform = new ngBoost_Form;
 		$ngboostform->_ngGetModules();
-		$_SESSION['BG'] = 'core'.'--'.implode('--', array_keys($_SESSION[NGBOOST]['ml']));
+		$_SESSION['BG'] = implode('--', array_keys($_SESSION[NGBOOST]['ml']));
     }
 
+    protected function ngCheckNew($mod)
+    {
+        $vsn = $this->_checknew($mod);
+		if ($vsn) {
+			$_SESSION['BG'] =
+			$mod
+			. '--'
+			.$vsn
+			. '--'
+			. '<a href="javascript:ngPickup(\''.$mod.'\',\''.'1'.'\')">get</a>'
+			. $this->ngTplChkUpd('0'.$mod);
+		} else {
+			$_SESSION['BG'] =
+			$mod
+			. '--unknown--check.xml error';
+		}
+	}
+	
     protected function ngCheckRepo()
     {
         $rp=$this->ngGetRepositoryPath();
@@ -335,7 +406,7 @@ class ngBoost_Action {
                         . ' ' . dgettext('ngboost', 'Please check your error logs.');
         } else {
             $content[] = 'ok--'.$mod.'--';
-            $content[] = $jqmclose.$result;
+            $content[] = $jqmclose.'<div class="ngscauto">'.$result.'</div>';
         }
 
         $_SESSION['BG'] = implode('',$content);
@@ -344,11 +415,17 @@ class ngBoost_Action {
     protected function ngUnInstall($mod,$confirm)
     {
 		$jqmclose = $this->_varyJQM($mod,'uninstall');
+		$addmsg='';
 
         if ($confirm === $mod) {
+			if ($mod=='ngboost') {
+				// puh, thats me
+				$addmsg='<div class="ngmsg"><b>*** '
+				.dgettext('ngboost','After 5 seconds going to classic boost').' ***</b></div>';
+			}
             // 1st status feedback, 2nd mod, 3rd flip action translated
             $content[] = 'ok--'.$mod.'--'.dgettext('ngboost', 'Install').'--';
-            $content[] = $jqmclose.$this->_uninstallModule($_REQUEST['p']);
+            $content[] = $jqmclose.$addmsg.'<div class="ngscauto">'.$this->_uninstallModule($_REQUEST['p']).'</div>';
         } else {
             $content[] = 'no--'.$mod.'--'.dgettext('ngboost', 'Uninstall').'--';
             $content[] = $jqmclose.dgettext('ngboost', 'Uninstall not confirmed');
@@ -357,13 +434,34 @@ class ngBoost_Action {
         $_SESSION['BG'] = implode('', $content);
     }
 
+    protected function ngRemoMod($mod,$confirm)
+    {
+        if ($confirm === $mod) {
+			if ($_SESSION[NGBOOST]['ml'][$mod]['in'] === ISFALSE && $this->isbranch==false) {
+				$dir=PHPWS_SOURCE_DIR.'mod/'.$mod.'/';
+				$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir),
+								RecursiveIteratorIterator::CHILD_FIRST);
+				foreach ($iterator as $path) {
+					if ($path->isDir()) {
+						@rmdir($path->__toString());
+					} else {
+						@unlink($path->__toString());
+					}
+				}
+				@rmdir($dir);
+				// 1st status feedback, 2nd mod
+				$_SESSION['BG'] = 'ok--'.$mod.'--0';
+			}
+        }
+    }
+
     protected function ngUpdate($mod)
     {
 		$jqmclose = $this->_varyJQM($mod,'update');
 		$car=$this->_updateModule($mod);
 
         $_SESSION['BG'] = 'ok--'.$mod.'--'
-        . 	$jqmclose.implode('<br />',$car);
+        . 	$jqmclose.'<div class="ngscauto">'.implode('<br />',$car).'</div>';
     }
 
     protected function ngUpdateCore()
@@ -516,6 +614,15 @@ class ngBoost_Action {
         .	$this->_reportMem();
 	}
 
+    protected function ngListErrorLog()
+    {
+		$_SESSION['BG'] = '<h4>Error Log</h4>'
+		.	'<pre class="ngplain">'
+		.	htmlentities(@file_get_contents('logs/error.log'))
+		.	'</pre>'
+        .	$this->_reportMem();
+	}
+
     protected function ngListML()
     {
 		$ngboostform = new ngBoost_Form('ngboost');
@@ -606,6 +713,9 @@ class ngBoost_Action {
 	
     protected function ngApplyPato($pato)
     {
+			if ($this->isbranch) {
+				$_SESSION['BG']='notOnBranch';
+			} else {
 				$distro = ''.PHPWS_Settings::get('ngboost', 'distro');
 				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
 				$xmlfile = $distropath . $pato . '/pato.xml';
@@ -662,6 +772,7 @@ class ngBoost_Action {
 				} else {
 					$_SESSION['BG']='noCheckFile';
 				}
+			}
 	}
 	
     protected function ngListTar($fnc)
@@ -791,6 +902,11 @@ class ngBoost_Action {
         }
     }
 
+    protected function ngSelRel($xvsn)
+    {
+		$_SESSION['FG'][NGBOOST]['xmlrel']=$xvsn;
+	}
+	
     protected function ngTuneFS()
     {
 		$cnt = '<h4>File system permissions'.NGSP3
@@ -848,21 +964,24 @@ class ngBoost_Action {
 	
     protected function ngTuneSourceList()
     {
-		$ngboostform = new ngBoost_Form('ngboost');
-		$in = ''.PHPWS_Settings::get('ngboost', 'distro');
-		switch ($in) {
-		case 'asu':
-			$ngboostform->distro=$in.' @ '.htmlentities(BYASU);
-			break;
-		case 'ngws':
-			$ngboostform->distro=$in.' @ '.htmlentities(BYNGWS);
-			break;
-		case 'sf':
-			$ngboostform->distro=$in.' @ '.htmlentities(BYSF);
-			break;
-		default:
-			$ngboostform->distro='none';
-		}
+		if ($this->isbranch) {
+			$cnt=dgettext('ngboost', 'List distro is not supported in branches');
+		} else {
+			$ngboostform = new ngBoost_Form('ngboost');
+			$in = ''.PHPWS_Settings::get('ngboost', 'distro');
+			switch ($in) {
+			case 'asu':
+				$ngboostform->distro=$in.' @ '.htmlentities(BYASU);
+				break;
+			case 'ngws':
+				$ngboostform->distro=$in.' @ '.htmlentities(BYNGWS);
+				break;
+			case 'sf':
+				$ngboostform->distro=$in.' @ '.htmlentities(BYSF);
+				break;
+			default:
+				$ngboostform->distro='none';
+			}
 			clearstatcache();
 			$xmlfile = ngBoost_Action::ngGetDistro() . 'distros.xml';
 			$xml = @simplexml_load_file($xmlfile);
@@ -872,6 +991,7 @@ class ngBoost_Action {
 			} else {
 				$cnt=dgettext('ngboost', 'this distro server does not have the xml file');
 			}
+		}
 		$_SESSION['BG'] = $cnt;
 	}
 
@@ -884,6 +1004,31 @@ class ngBoost_Action {
 			PHPWS_Settings::save('ngboost');
 			$_SESSION['BG'] = dgettext('ngboost','Distro set to') . ' ' . $p;
 		}
+	}
+
+    protected function ngFsPerms()
+    {
+		$_SESSION['BG'] = '<h4>'.gettext('File System')
+		.	'</h4><pre>'
+		.	'convert ... '.ngBackup::_cvFilePerms(fileperms(PHPWS_SOURCE_DIR.'convert'))
+		.	NGBR
+		.	'setup   ... '.ngBackup::_cvFilePerms(fileperms(PHPWS_SOURCE_DIR.'setup'))
+		.	'</pre>'
+		.	NGSP3.'<a href="javascript:ngFsPermsLock()">lock</a>'
+		.	NGSP3.'<a href="javascript:ngFsPermsUnlock()">unlock</a>'
+		;
+	}
+    protected function ngFsPermsLock()
+    {
+		chmod(PHPWS_SOURCE_DIR.'convert', 0000);
+		chmod(PHPWS_SOURCE_DIR.'setup', 0000);
+		$this->ngFsPerms();
+	}
+    protected function ngFsPermsUnLock()
+    {
+		chmod(PHPWS_SOURCE_DIR.'convert', 0750);
+		chmod(PHPWS_SOURCE_DIR.'setup', 0750);
+		$this->ngFsPerms();
 	}
 
     protected function ngPickupTgz()
@@ -1090,6 +1235,23 @@ class ngBoost_Action {
 	}
 	
     //
+	
+    private function _checknew($mod)
+    {
+		$version=false;
+		$mox = $mod=='core'?'base':$mod;
+		$distropath = ngBoost_Action::ngGetDistro();
+		if (!empty($distropath)) {
+			$file = $distropath.$mox.'/check.xml';
+			$xml = @simplexml_load_file($file);
+			if (is_object($xml)) {
+				$version = (string)$xml->module->version;
+				$tgz = array_pop(explode('/', (string)$xml->module->download));
+				$_SESSION['FG'][$mox]['0'] = $distropath . $mox . '/' . trim($tgz);
+			}
+		}
+		return $version;
+	}
 	
     private function _checkupdate($mod)
     {

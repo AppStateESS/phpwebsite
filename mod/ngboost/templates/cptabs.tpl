@@ -5,7 +5,7 @@
         <li><a href="#ngbstcptab3" class="ngbsttab"><span>Distro</span></a></li>
         <li><a href="#ngbstcptab4" class="ngbsttab"><span>Repository</span></a></li>
         <li><a href="#ngbstcptab5" class="ngbsttab"><span>Database</span></a></li>
-        <li><a href="#ngbstcptab6" class="ngbsttab"><span>Tune</span></a></li>
+        <li><a href="#ngbstcptab6" class="ngbsttab"><span>Misc</span></a></li>
     </ul>
 	<div id="ngbstcpbody">
 		<div id="ngbstcptab1">

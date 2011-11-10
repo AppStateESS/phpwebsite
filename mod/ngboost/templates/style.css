@@ -8,7 +8,7 @@
 	line-height: 1em;
 	font-family: sans-serif;
 }
-#ngmsg a {
+#ngmsg a, .ngmsg {
 	color: #a00;
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 1.1em;
@@ -24,6 +24,11 @@
 .ngallmsg {
 	display: none;
 	background-color: #ddd;
+}
+
+#ngboostrsel {
+	border: 1px dotted #999999;
+	margin-top: 4px;
 }
 
 #ngbstcpbody {
@@ -77,6 +82,9 @@ div .ngjqmimg {
 .ngtable, .ngplain {
 	width: 99%;
 }
+.ngthead {
+	color: #eeeeee;
+}
 .ngtbody, .ngplain {
 	height: 288px;
 	min-height: 32px;
@@ -87,7 +95,13 @@ div .ngjqmimg {
 .ngtrfoot {
 	background-color: #ddd;
 }
+
 .ngplain {
 	font-size: 0.9em;
 	overflow-x: auto;
+}
+
+.ngscauto {
+	max-height: 320px;
+	overflow-y: auto;
 }

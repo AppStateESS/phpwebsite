@@ -31,12 +31,12 @@ class ngBoost_Form extends ngBoost_Action {
 		// echo '<pre>';print_r($_SESSION[NGBOOST]['ml']);echo '</pre>';
 		
         $tpl['PHPWS_VERSION'] = PHPWS_Core::releaseVersion();
-        $tpl['TITLE_LABEL']   = dgettext('ngboost', 'Module');
-        $tpl['VERSION_LABEL'] = dgettext('ngboost', 'Current version');
-        $tpl['LATEST_LABEL']  = dgettext('ngboost', 'Latest version');
-        $tpl['COMMAND_LABEL'] = dgettext('ngboost', 'Commands');
-        $tpl['ELSE_LABEL']    = dgettext('ngboost', 'Action');
-        $tpl['ABOUT_LABEL']   = dgettext('ngboost', 'More information');
+        $tpl['TITLE_LABEL']   = dgettext(NGBOOST, 'Module');
+        $tpl['VERSION_LABEL'] = dgettext(NGBOOST, 'Current version');
+        $tpl['LATEST_LABEL']  = dgettext(NGBOOST, 'Latest version');
+        $tpl['COMMAND_LABEL'] = dgettext(NGBOOST, 'Commands');
+        $tpl['ELSE_LABEL']    = dgettext(NGBOOST, 'Action');
+        $tpl['ABOUT_LABEL']   = dgettext(NGBOOST, 'More information');
 		
 		switch ($type)
 		{
@@ -63,14 +63,14 @@ class ngBoost_Form extends ngBoost_Action {
 			break;
 		}
         if (ini_get('allow_url_fopen')) {
-            $tpl['CHECK_FOR_UPDATES'] = '<a href="javascript:ngCheckAll()">'.dgettext('ngboost','CheckAll').'</a>';
+            $tpl['CHECK_FOR_UPDATES'] = '<a href="javascript:ngCheckAll()">'.dgettext(NGBOOST,'CheckAll').'</a>';
             $this->isbranch
-            ?$alnk =  '<a href="javascript:ngBuBranch()">'.dgettext('ngboost','BackupBranch').'</a>'
-            :$alnk = '<a href="javascript:ngBuAll()">'.dgettext('ngboost','BackupAll').'</a>';
+            ?$alnk =  '<a href="javascript:ngBuBranch()">'.dgettext(NGBOOST,'BackupBranch').'</a>'
+            :$alnk = '<a href="javascript:ngBuAll()">'.dgettext(NGBOOST,'BackupAll').'</a>';
             $tpl['CHECK_FOR_UPDATES'] = $alnk . NGSP3 . $tpl['CHECK_FOR_UPDATES'];
 			
         } else {
-            $tpl['CHECK_FOR_UPDATES'] = dgettext('ngboost', 'Server configuration prevents version checking.');
+            $tpl['CHECK_FOR_UPDATES'] = dgettext(NGBOOST, 'Server configuration prevents version checking.');
         }
 		$tpl['CHECK_FOR_UPDATES'].='<span class="ngallmsg">&nbsp;</span>';
 		
@@ -143,9 +143,11 @@ class ngBoost_Form extends ngBoost_Action {
             $_SESSION[NGBOOST]['ml'][$m]['chk'] = $mod->version_http;
 			$_SESSION[NGBOOST]['ml'][$m]['isa'] = $mod->isAbout() ? ISTRUE : ISFALSE;
 			$tmp = $mod->getDependencies();
-			foreach ($tmp['MODULE'] as $t) {
-				if (is_array($t)) {
-					$_SESSION[NGBOOST]['ml'][$m]['don'][] = array('mo'=>$t['TITLE'],'v'=>$t['VERSION'],'dl'=>$t['URL']);
+			if (isset($tmp['MODULE'])) {
+				foreach ($tmp['MODULE'] as $t) {
+					if (is_array($t)) {
+						$_SESSION[NGBOOST]['ml'][$m]['don'][] = array('mo'=>$t['TITLE'],'v'=>$t['VERSION'],'dl'=>$t['URL']);
+					}
 				}
 			}
 			$tmp = $mod->isDependedUpon();
@@ -171,12 +173,12 @@ class ngBoost_Form extends ngBoost_Action {
 		$template['LATEST_ID']	= 'nglatet12'.$amod;
 
 		if (empty($_SESSION['FG']['ngvx'][$amod])) {
-			$atxt=dgettext('ngboost', 'Check');
+			$atxt=dgettext(NGBOOST, 'Check');
 		} else {
 			$atxt=$_SESSION['FG']['ngvx'][$amod];
 			if (version_compare($_SESSION[NGBOOST]['ml'][$amod]['vfs'], $_SESSION['FG']['ngvx'][$amod], '<')) {
 				if (!$this->isbranch) {
-					$atxt.=' - '.dgettext('ngboost', 'GetNew');
+					$atxt.=' - '.dgettext(NGBOOST, 'GetNew');
 				}
 			}
 		}
@@ -185,26 +187,26 @@ class ngBoost_Form extends ngBoost_Action {
 		ini_get('allow_url_fopen')
         ?'<a href="javascript:ngCheck(\''.$amod.'\')">'
         .'<span id="ngchk'.$amod.'">'.$atxt.'</span></a>'
-        :dgettext('ngboost', 'Check disabled');
+        : dgettext(NGBOOST, 'Check disabled');
 		
 		$acmd=array();
 		if ($_SESSION[NGBOOST]['ml'][$amod]['in']===ISTRUE) {
 			// is installed
 			version_compare($_SESSION[NGBOOST]['ml'][$amod]['vdb'], $_SESSION[NGBOOST]['ml'][$amod]['vfs'], '<')
 			?$acmd[]='<a id="ngup'.$amod.'" href="javascript:ngUpdate(\''.$amod.'\')">'
-			.dgettext('ngboost', 'Update').'</a>'
+			.dgettext(NGBOOST, 'Update').'</a>'
 			:$nop='';
 			// other mods are depended upon me (only important when installed to prevent uninstall)
 			if (isset($_SESSION[NGBOOST]['ml'][$amod]['dme']) && is_array($_SESSION[NGBOOST]['ml'][$amod]['dme'])) {
 				$acmd[]= '<a href="javascript:ngShowDepUpon(\''.$amod.'\')">'
-						.dgettext('ngboost', 'DependedUpon').'</a>';
+						.dgettext(NGBOOST, 'DependedUpon').'</a>';
 			} else {
 				// may be uninstalled
 				if ($_SESSION[NGBOOST]['ml'][$amod]['co']===ISFALSE) {
 					$acmd[]='<a id="ngun'.$amod.'" href="javascript:ngUnInstall(\''.$amod.'\')">'
-						.dgettext('ngboost', 'Uninstall').'</a>';
+						.dgettext(NGBOOST, 'Uninstall').'</a>';
 				} else {
-					$acmd[]=dgettext('ngboost', 'IsInstalled');
+					$acmd[]=dgettext(NGBOOST, 'IsInstalled');
 				}
 			}
  		} else {
@@ -216,32 +218,32 @@ class ngBoost_Form extends ngBoost_Action {
 					||  version_compare($_SESSION[NGBOOST]['ml'][$deps['mo']]['vdb'], $deps['v'], '<')) {
 						$hasd=true;
 						$acmd[]='<a href="javascript:ngShowDep(\''.$amod.'\')">'
-								.dgettext('ngboost', 'MissingDependency').'</a>';
+								.dgettext(NGBOOST, 'MissingDependency').'</a>';
 						// one is enough
 						break;
 					}
 				}
+			}
+			if (!$hasd) {
 				// has no dependencies, may become installed
-				if (!$hasd) {
 				$acmd[]='<a id="ngin'.$amod.'" href="javascript:ngInstall(\''.$amod.'\')">'
-					.dgettext('ngboost', 'Install').'</a>';
-				}
+						.dgettext(NGBOOST, 'Install').'</a>';
 			}
 		}
 			
 		
-		$template['COMMAND']=(count($acmd)==0)?dgettext('ngboost', 'None'):implode(NGSP3,$acmd);
+		$template['COMMAND']=(count($acmd)==0) ? dgettext(NGBOOST, 'None') : implode(NGSP3,$acmd);
 			
         $template['ABOUT'] =
 		$_SESSION[NGBOOST]['ml'][$amod]['isa'] == ISTRUE
-		?'<a href="javascript:ngAbout(\''.$amod.'\')">'.dgettext('ngboost','about').'</a>'
+		?'<a href="javascript:ngAbout(\''.$amod.'\')">'.dgettext(NGBOOST,'about').'</a>'
         :'';
 		$template['ABOUT'] .= '&nbsp;'.$_SESSION[NGBOOST]['ml'][$amod]['t'];
 		
  		$template['ELSE'] = 
 		$this->isbranch
 		?''
-		:'<a href="javascript:ngBu(\''.$amod.'\')">'.dgettext('ngboost','Backup').'</a>';
+		:'<a href="javascript:ngBu(\''.$amod.'\')">'.dgettext(NGBOOST,'Backup').'</a>';
         $template['ELSE'] .= '&nbsp;<span id="ngmsgbu'.$amod.'"></span>';
 			
 			
@@ -260,8 +262,9 @@ class ngBoost_Form extends ngBoost_Action {
 	
     protected static function ngTabDistro()
     {
-        $alnk = '<a href="javascript:ngPlain(\'tsl\')">List</a>' . NGSP3
-        .		'<a href="javascript:ngPlain(\'ts\')">SelectDistro</a>'
+        $alnk = '<a href="javascript:ngPlain(\'ts\')">SelectDistroServer</a>' . NGSP3
+        .		'<a href="javascript:ngPlain(\'tsl\')">ListDistro</a>' . NGSP3
+		.		'<a href="javascript:ngPatos()">ListPatos</a>'
         .		'<p id="ngmsgt31"></p>';
         return $alnk;
 	}
@@ -300,41 +303,76 @@ class ngBoost_Form extends ngBoost_Action {
 
     protected static function ngTabDB()
     {
-        $alnk = '<a href="javascript:ngPlain(\'ldb\')">ListTables</a>'
+        $alnk = NGSP3.'<a href="javascript:ngPlain(\'ldb\')">ListTables</a>'
         .		'<p id="ngmsgt51"></p>';
         return $alnk;
     }
 
     protected static function ngTabTune()
     {
-        $alnk = '<a href="javascript:ngPatos()">Patos</a>' . NGSP3
-		.		'<a href="javascript:ngListLog()">ListBoostLog</a>'
-		//	.	NGSP3
-		//	.	'<a href="javascript:ngPlain(\'fs\')">FS.perms</a>'
-        .		'<p id="ngmsgt61"></p>';
+        $alnk = NGSP3.'<a href="javascript:ngListLog()">ListBoostLog</a>'
+		.		NGSP3.'<a href="javascript:ngListLogE()">ListErrorLog</a>'
+		.		NGSP3.'<a href="javascript:ngFsPerms()">FileSystemPerms</a>'
+		.		'<p id="ngmsgt61"></p>';
         return $alnk;
     }
 
     protected function ngTabListDistros()
     {
-		$tpl['DISTROSERVER'] = dgettext('ngboost', 'DistroServer') . ' ' . $this->distro;
-        $tpl['DISTRO_LABEL']  = dgettext('ngboost', 'Distro');
-        $tpl['MODULE_LABEL']  = dgettext('ngboost', 'Module');
-        $tpl['VERSION_LABEL'] = dgettext('ngboost', 'Version');
-        $tpl['ISHERE_LABEL'] = dgettext('ngboost', 'IsLocal');
-        $tpl['OP_LABEL'] = dgettext('ngboost', 'Commands');
+		if (isset($_SESSION['FG']['ngboost']['xmlrel'])) {
+			$selrel=$_SESSION['FG']['ngboost']['xmlrel'];
+		} else {
+			$selrel='';
+		}
+		$tpl['SELREL']='<select title="select a release" onchange="ngRelSel()" class="inp" id="ngboostrsel">';
 		foreach ($this->xml->distro as $distro) {
-			$zebra=='0'?$zebra='1':$zebra='0';
+			$tpl['SELREL'].='<option value="'.(string)$distro->release.'"';
+			if ((string)$selrel > '' && (string)$distro->release == (string)$selrel) {
+				$tpl['SELREL'].=' selected="selected"';
+			}
+			$tpl['SELREL'].='>'.(string)$distro->title;
+			$tpl['SELREL'].='</option>';
+		}
+		$tpl['SELREL'].='</select>';
+		$tpl['DISTROSERVER'] = dgettext(NGBOOST, 'DistroServer') . ' ' . $this->distro;
+        $tpl['DISTRO_LABEL']  = dgettext(NGBOOST, 'Distro');
+        $tpl['MODULE_LABEL']  = dgettext(NGBOOST, 'Module');
+        $tpl['VERSION_LABEL'] = dgettext(NGBOOST, 'Version');
+        $tpl['ISHERE_LABEL'] = dgettext(NGBOOST, 'IsLocal');
+        $tpl['OP_LABEL'] = dgettext(NGBOOST, 'Commands');
+		foreach ($this->xml->distro as $distro) {
+			if ($selrel > '' && (string)$distro->release <> $selrel) continue;
 			$title=(string)$distro->title;
 			foreach ($distro->modules->module as $modo) {
+				$zebra=='0'?$zebra='1':$zebra='0';
 				$mod = (string)$modo->name;
-				$is=((file_exists('mod/'.$mod) && is_dir('mod/'.$mod)) || $mod=='base')?'Y':'N';
-				$tpl['row'][]=array('DISTRO'=>$title,
+				// is installed?
+				if ($_SESSION[NGBOOST]['ml'][$mod]['in']  == ISTRUE || $mod == 'base') {
+					$is='Y active';
+					$op='';
+				} else {
+					if ((file_exists('mod/'.$mod) && is_dir('mod/'.$mod)) || $mod=='base') {
+						$is='Y';
+						$op='<span id="ngrmna'.$mod
+						.	'"><a href="javascript:ngRemoMod(\''.$mod.'\',\''
+						.	count($_SESSION['FG'])
+						.	'\')">purge</a></span>';
+					} else {
+						$is='N';
+						$op='<span id="ngchna'.$mod
+						.	'"><a href="javascript:ngCheckNew(\''.$mod.'\',\''
+						.	count($_SESSION['FG'])
+						.	'\')">check</a></span>';
+					}
+				}
+				$tpl['row'][]=array('DISTRO'=>'<span id="ngchnf'.$mod.'">'.$title.'</span>',
 									'MODULE'=>$mod,
-									'VERSION'=>(string)$modo->version,
+									'VERSION'=>'<span id="ngchnv'.$mod.'"></span>',
 									'ISHERE'=>$is,
-									'ZEBRA'=>$zebra);
-				$title='';
+									'ZEBRA'=>$zebra,
+									'OP'=>$op);
+				// only show a 1st value
+				// $title='';
 			}
 		}
         return PHPWS_Template::process($tpl, 'ngboost', 'distro_list.tpl');

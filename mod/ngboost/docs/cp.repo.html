@@ -10,13 +10,18 @@ server directly into the repository (that is a server/server transfer). No more 
 Ftp or similar to transfer from server to client and from client to server. ngBoost also
 is able to decomress archives of the tar/tgz formats.
 </p><p>
-To use a repository click the link "VerifyRepositoryPath".
+To use (and create) a repository a very 1st time click the link <b>VerifyRepositoryPath</b>.
+The verification should be ok,
+but may fail in case ngBoost is not able to find a permitted place outsite the web servers public
+scope. In such case, the only one who can help is the system user of the site by manually creating a
+directory named <i>".repository"</i>. Anycase, the repository only can be used when the place
+is offline to the public.
 </p><p>
-To see the content of the repository, click "ListRepository", where actions are offered:
+To see the content of the repository, click <b>ListRepository</b>, where actions are offered:
 <br />
-"Dir" to look into an archive.
+<b>Dir</b> to look into an archive.
 <br />
-"Recover" to restore backed up data.
+<b>Recover</b> to restore backed up data.
 <br />
-"Purge" to delete a backup file if no more needed.
+<b>Purge</b> to delete a backup file if no more needed.
 </p>

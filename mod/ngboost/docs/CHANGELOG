@@ -11,3 +11,36 @@ Version 3.0.3
 
 Version 3.0.4
 2011-01-08 .htaccess for docs
+
+Version 3.0.5
+Version 3.0.6
+Version 3.0.7
+Version 3.0.8
+Version 3.0.9
+
+Version 3.0.10
+2011-07-01 changed tab title tune to misc
+	patos now in tab distro instead of tune (misc)
+	list also error.log beside boost.log (misc)
+	localization of js msgs
+	large modal displays with scrollbar
+	backup restores also empty directories
+	in case ngboost uninstall, redirect to classic boost
+	
+Version 3.0.11
+2011-07-01 js subdir is now ngboost instead of ng
+	enables or disables convert/setup access in tab misc
+	
+Version 3.0.12
+2011-07-05 distros.xml handling modified
+
+Version 3.0.13
+2011-07-06 fixes handling of some about displays
+2011-07-22 attention to distro handling in branches
+	let purge modules not installed from file system (hub)
+	potos now apply only on hub
+	pre-prepare for sunset (ngaction)
+	
+Version 3.0.14
+2011-07-26 ngBackup in class core now pays attention to some
+	shared host sites with the location of the repository

@@ -1,5 +1,14 @@
 <h1>ControlPanel ngBoost Tab "DB"</h1>
 
+<h4>ListTables</h4>
+<p>Shows the database tables of phpWebSite/ngWebSite with the module names they belong to.
+Each single table can be backed up (<b>Backup Table</b>) or all tables of a module (<b>Backup Module Tables</b>).
+To backup all tables of the site, use (<b>BackupAllTables</b>).
+The backup data will be stored with timestamped filenames in the repository, from where tables are eligable to
+recover (Tab Repository).</p>
+<p>Only tables of installed modules will be backed up. Not installed modules do not have database tables in use.
+The table data are backed up together with crc checksums to support integrity 
+verifications in case when restored.</p>
 <h4>Messages with "Recover"</h4>
 Example:
 <pre>Import start with skeleton.sysbu.20110214-095211.db.skeleton_bones.data
@@ -8,4 +17,4 @@ Import done for skeleton_bones, 1 rows, 0 errors, 1 ok, 0 neCRC, 1 eqCRC.</pre>
 the number of rows processed for the table. The recover can be successfully (ok)
 or with errors (error). <b>neSRC</b> tells, how many rows are changed against the native
 backup in the recovery data, while <b>eqCRC</b> confirms the data unchanged. Note, changed
-data do not prevent rows to become restored.</p>
+data do <b>not</b> prevent rows to become restored.</p>

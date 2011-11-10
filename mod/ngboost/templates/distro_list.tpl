@@ -1,4 +1,4 @@
-<h4>{DISTROSERVER}</h4>
+<p>{DISTROSERVER}<br />{SELREL}</p>
 <table class="ngtable">
   <thead class="ngthead">
     <tr>
