@@ -185,7 +185,7 @@ class Cycle_Slot {
             }
 
             $this->thumbnail_path = $directory . $filename;
-        } else {
+        } elseif (empty($this->thumbnail_path)) {
             $ext = PHPWS_File::getFileExtension($this->background_path);
             $filename = 'tn' . $this->slot_order . '.' . $ext;
 

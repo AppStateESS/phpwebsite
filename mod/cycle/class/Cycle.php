@@ -102,7 +102,7 @@ class Cycle {
                 $slot = $result[$count];
                 $thumb['thumb'] = sprintf('<li><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img width="%s" height="%s" src="%s" /></a></li>', $cycle_thumb_width, $cycle_thumb_height, $count, $cycle_thumb_width, $cycle_thumb_height, $slot->thumbnail_path);
             } else {
-                $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img style="margin-top : 12px" src="%s" /></a></li>', $cycle_thumb_width, $cycle_thumb_height, $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
+                $thumb['thumb'] = sprintf('<li style="text-align : center; border : 1px solid black"><a style="width : %spx; height : %spx" class="thumb-nav" href="#" id="goto%s"><img class="new-thumb" src="%s" /></a></li>', $cycle_thumb_width, $cycle_thumb_height, $count, PHPWS_SOURCE_HTTP . 'mod/cycle/img/new_thumb.png');
             }
             $tpl['thumbnails'][] = $thumb;
         }
