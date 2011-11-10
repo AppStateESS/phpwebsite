@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: ngBackup.php 0000 2011-01-11 Hilmar $
+ * @version $Id: ngBackup.php 0002 2011-07-01 Hilmar $
  * @author Hilmar Runge <ngwebsite.net>
  */
 
@@ -26,9 +26,12 @@
 		// API	string|false=ngBackup::getRepositoryPath();
 		
 		$subdir=str_replace($_SERVER['SERVER_NAME'],'',PHPWS_Core::getHomeHttp(false));
-		$htdocs=rtrim(PHPWS_SOURCE_DIR,$subdir);
-		$compath=rtrim($htdocs,strrchr($htdocs,'/'));
+		
+		$u=posix_getpwuid(getmyuid());
+		$compath=$u['dir'];
+		
 		$reposit=$compath.'/.repository'.$subdir;
+		
 		if (file_exists($compath)) {
 			@mkdir($compath.'/.repository',0750);
 			if (!file_exists($reposit)) {
@@ -204,6 +207,11 @@
 					||  ($ftype2=='tar.gz' && $vsn2)) {
 						if (file_exists($this->rp.$fn)) {
 							$tar = new Archive_Tar($this->rp.$fn);
+							
+							// to regard empty dirs in tar
+							$ar=$tar->listContent();
+							$this->_mkDirsIfEmpty($ar);
+							
 							$cc=$tar->extract(PHPWS_SOURCE_DIR);
 							if ($cc) {
 								return '0' . $mod . ' ' . 'restored from' . ' ' . $fn;
@@ -389,6 +397,43 @@
 		return 1;
 	}
 
+	public function _mkDirsIfEmpty($ar) {
+		if (isset($this)) {
+			if ($ar && is_array($ar)) {
+				foreach ($ar as $a) {
+					$fn=rtrim($a['filename']);
+					$flag=(int)$a['typeflag'];
+					$cmod=(int)$a['mode'];
+					if ($flag==5) {$be=(int)0x4000;}
+					elseif ($flag==2) {$be=(int)0xa000;}
+					elseif ($flag==0) {$be=(int)0x8000;}
+					else {$be=(int)0x0000;}
+					$perms=$be + $cmod;
+					$p=0;
+					$p += (($perms & 0x0100) ? 256 : 0);
+					$p += (($perms & 0x0080) ? 128 : 0);
+					$p += (($perms & 0x0040) ?
+						  (($perms & 0x0800) ? 0 : 64 ) :
+						  (($perms & 0x0800) ? 0 : 0));
+					$p += (($perms & 0x0020) ? 32 : 0);
+					$p += (($perms & 0x0010) ? 16 : 0);
+					$p += (($perms & 0x0008) ?
+						  (($p & 0x0400) ? 0 : 8 ) :
+						  (($p & 0x0400) ? 0 : 0));
+					$p += (($perms & 0x0004) ? 4 : 0);
+					$p += (($perms & 0x0002) ? 2 : 0);
+					$p += (($perms & 0x0001) ?
+					(($perms & 0x0200) ? 0 : 1 ) :
+					(($perms & 0x0200) ? 0 : 0));
+					if ($flag==5) {
+						@mkdir($fn);
+						chmod($fn,$p);
+					}
+				}
+			}
+		}
+	}
+	
 	public function _getInstallSql($module) {
 		return;
 		// just drafty
