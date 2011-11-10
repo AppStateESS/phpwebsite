@@ -41,7 +41,7 @@ Lets say the template looked like the following:
 {CONCLUSION}
 
 To have the line item repeat you would put the row array INSIDE the
-row definition. 
+row definition.
 
 This will repeat the 'li' line over and over within the same template.
 Here is an example:
@@ -106,7 +106,7 @@ $tpl->parseCurrentBlock();
 To get your data for presentation call get like so:
 $content = $tpl->get();
 
-Another hint. If you are imbedding repeating rows, the parent row must
+Another hint. If you are embedding repeating rows, the parent row must
 be parsed _after_ the the child rows.
 
 For example, lets say you want a list of families by last name. Inside,
