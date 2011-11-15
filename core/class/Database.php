@@ -43,11 +43,13 @@ class PHPWS_DB {
     public $ignore_dups = false;
     public $group_by = null;
     public $locked = null;
+
     /**
      * Holds module and class file names to be loaded on
      * the success of a loadObject or getObjects select query.
      */
     public $load_class = null;
+
     /**
      * allows you to group together where queries
      */
@@ -957,6 +959,15 @@ class PHPWS_DB {
         return $columns;
     }
 
+    public function checkTableAs($table)
+    {
+        if ($found = array_search($table, $this->table_as)) {
+            return $found;
+        } else {
+            return $table;
+        }
+    }
+
     public function getColumn($format=false)
     {
         if ($format) {
@@ -966,6 +977,8 @@ class PHPWS_DB {
                 foreach ($this->columns as $col) {
                     $as = null;
                     extract($col);
+                    $table = $this->checkTableAs($table);
+
                     if ($count) {
                         if ($distinct) {
                             $table_name = sprintf('count(distinct(%s.%s))', $table, $name);
@@ -1075,7 +1088,7 @@ class PHPWS_DB {
         if ($dbReady) {
             foreach ($this->order as $aOrder) {
                 if (is_array($aOrder)) {
-                    $order_list[] = $aOrder['table'] . '.' . $aOrder['column'];
+                    $order_list[] = $this->checkTableAs($aOrder['table']) . '.' . $aOrder['column'];
                 } else {
                     // for random orders
                     $order_list[] = $aOrder;
@@ -2594,7 +2607,7 @@ class PHPWS_DB {
         $matches = null;
         $tables = array();
 
-        switch(strtolower($command)) {
+        switch (strtolower($command)) {
             case 'alter':
                 if (!preg_match('/alter table/i', $sql)) {
                     return false;
@@ -2616,8 +2629,8 @@ class PHPWS_DB {
                 $tables[] = trim(preg_replace('/\W/', '', $table));
 
                 // Find any tables used in foreign key contstraints
-                if(preg_match_all('/references (\S*)\s*\(\S*\)/i',$sql, $matches)){
-                    foreach($matches[1] as $match){
+                if (preg_match_all('/references (\S*)\s*\(\S*\)/i', $sql, $matches)) {
+                    foreach ($matches[1] as $match) {
                         $tables[] = $match;
                     }
                 }
@@ -2999,7 +3012,7 @@ class PHPWS_DB_Where {
         }
         $value = $this->getValue();
         $operator = &$this->operator;
-        $result =  sprintf('%s %s %s', $column, $operator, $value);
+        $result = sprintf('%s %s %s', $column, $operator, $value);
         return $result;
     }
 
