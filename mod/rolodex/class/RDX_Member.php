@@ -1908,7 +1908,7 @@ class Rolodex_Member extends Demographics_User {
     }
 
 
-    public function isDataVisible($group)
+    public static function isDataVisible($group)
     {
         $visibility = PHPWS_Settings::get('rolodex', $group);
         if ($visibility == 0) {
