@@ -1908,7 +1908,7 @@ class Rolodex_Member extends Demographics_User {
     }
 
 
-    public static function isDataVisible($group)
+    public function isDataVisible($group)
     {
         $visibility = PHPWS_Settings::get('rolodex', $group);
         if ($visibility == 0) {
@@ -1973,22 +1973,22 @@ class Rolodex_Member extends Demographics_User {
         $content .= '"' . dgettext('rolodex', 'Category(s)') . '",';
         $content .= '"' . dgettext('rolodex', 'Location(s)') . '",';
         $content .= '"' . dgettext('rolodex', 'Feature(s)') . '",';
-        if (Rolodex_member::isDataVisible('privacy_contact')) {
+        if ($this->isDataVisible('privacy_contact')) {
             $content .= '"' . dgettext('rolodex', 'E-Mail') . '",';
         }
-        if (Rolodex_member::isDataVisible('privacy_web')) {
+        if ($this->isDataVisible('privacy_web')) {
             $content .= '"' . dgettext('rolodex', 'Website') . '",';
         }
-        if (Rolodex_member::isDataVisible('privacy_bus_phone')) {
+        if ($this->isDataVisible('privacy_bus_phone')) {
             $content .= '"' . dgettext('rolodex', 'Business phone') . '",';
             $content .= '"' . dgettext('rolodex', 'Ext') . '",';
             $content .= '"' . dgettext('rolodex', 'Fax') . '",';
             $content .= '"' . dgettext('rolodex', 'Toll-free phone') . '",';
         }
-        if (Rolodex_member::isDataVisible('privacy_home_phone')) {
+        if ($this->isDataVisible('privacy_home_phone')) {
             $content .= '"' . dgettext('rolodex', 'Home phone') . '",';
         }
-        if (Rolodex_member::isDataVisible('privacy_home')) {
+        if ($this->isDataVisible('privacy_home')) {
             $content .= '"' . dgettext('rolodex', 'Home Address 1') . '",';
             $content .= '"' . dgettext('rolodex', 'Home Address 2') . '",';
             $content .= '"' . dgettext('rolodex', 'Home City') . '",';
@@ -1996,7 +1996,7 @@ class Rolodex_Member extends Demographics_User {
             $content .= '"' . dgettext('rolodex', 'Home Country') . '",';
             $content .= '"' . dgettext('rolodex', 'Home Postal/Zip') . '",';
         }
-        if (Rolodex_member::isDataVisible('privacy_business')) {
+        if ($this->isDataVisible('privacy_business')) {
             $content .= '"' . dgettext('rolodex', 'Business Address 1') . '",';
             $content .= '"' . dgettext('rolodex', 'Business Address 2') . '",';
             $content .= '"' . dgettext('rolodex', 'Business City') . '",';

@@ -636,7 +636,7 @@ class Rolodex {
     {
         PHPWS_Core::initModClass('rolodex', 'RDX_Forms.php');
         $this->forms = new Rolodex_Forms;
-        $this->forms->rolodex = & $this;
+        $this->forms->rolodex = $this;
         $this->forms->get($type);
     }
 
@@ -1016,7 +1016,7 @@ class Rolodex {
     {
         $this->loadMember();
 //        print_r($_POST); exit;
-        
+
         if (isset($_POST['courtesy_title'])) {
             $this->member->setCourtesy_title($_POST['courtesy_title']);
         }
@@ -1511,9 +1511,9 @@ class Rolodex {
     {
 
         PHPWS_Core::initModClass('rolodex', 'RDX_Member.php');
-
+        $member = new RDX_Member;
         $content = null;
-        $content .= Rolodex_Member::printCSVHeader();
+        $content .= $member->printCSVHeader();
 
         $db = new PHPWS_DB('rolodex_member');
         $db->addColumn('demographics.user_id');
