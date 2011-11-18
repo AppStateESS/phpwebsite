@@ -166,16 +166,16 @@ class PHPWSBB_Forum
         else {
             $tags['FORUM_MODERATORS'] = implode(', ', $GLOBALS['Moderators_byForum'][$this->id]);
         }
-        
+
         if ($this->locked) {
-            $tags['FORUM_LOCKED'] = Icon::show('locked', dgettext('phpwsbb', 'Closed Forum'));
+            $tags['FORUM_LOCKED'] = Icon::show('lock', dgettext('phpwsbb', 'Closed Forum'));
         }
         else {
             $vars = array('op' => 'create_topic', 'forum' => $this->id);
             $str = dgettext('phpwsbb', 'Submit a new topic');
             $tags['FORUM_ADD_TOPIC_BTN'] = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars, null, $str, 'phpwsbb_add_topic_link');
         }
-        
+
         /* Show Category links & icons */
         $cat_link = $cat_icon = array();
         $db = new PHPWS_DB('categories');

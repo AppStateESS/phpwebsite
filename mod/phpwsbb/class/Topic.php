@@ -201,7 +201,7 @@ class PHPWSBB_Topic
             $tags['TOPIC_IS_HOT'] = Icon::show('hot_topic', dgettext('phpwsbb', 'Popular topic'), 'phpwsbb');
 
         if ($this->locked)
-            $tags['TOPIC_LOCKED'] = Icon::show('locked', dgettext('comments', 'Closed topic'));
+            $tags['TOPIC_LOCKED'] = Icon::show('lock', dgettext('comments', 'Closed topic'));
         if ($this->sticky)
             $tags['TOPIC_STICKY'] = Icon::show('sticky', dgettext('phpwsbb', 'Read This!'));
 
