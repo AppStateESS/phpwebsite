@@ -1,29 +1,30 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 class PS_Page {
-    public $id            = 0;
-    public $key_id        = 0;
-    public $title         = null;
-    public $template      = null;
-    public $create_date   = 0;
-    public $last_updated  = 0;
-    public $front_page    = 0;
-    public $parent_page   = 0;
-    public $page_order    = 0;
 
-    public $_tpl          = null;
-    public $_sections     = array();
+    public $id = 0;
+    public $key_id = 0;
+    public $title = null;
+    public $template = null;
+    public $create_date = 0;
+    public $last_updated = 0;
+    public $front_page = 0;
+    public $parent_page = 0;
+    public $page_order = 0;
+    public $_tpl = null;
+    public $_sections = array();
+
     /**
      * Contains content left over after change the template
      */
-    public $_orphans       = array();
-    public $_content      = null;
-    public $_error        = null;
-    public $_key          = null;
+    public $_orphans = array();
+    public $_content = null;
+    public $_error = null;
+    public $_key = null;
 
     /**
      * Determines whether the menu link will be updated
@@ -37,7 +38,7 @@ class PS_Page {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $this->init();
     }
 
@@ -56,12 +57,10 @@ class PS_Page {
         }
     }
 
-
     public function getSectionContent($section_name)
     {
         return $this->_sections[$section_name]->content;
     }
-
 
     public function loadSections($form_mode=false, $filler=true)
     {
@@ -119,7 +118,7 @@ class PS_Page {
             $block_sections = $block_db->select();
 
             if (!empty($text_sections)) {
-                foreach ($text_sections as $secname=>$section) {
+                foreach ($text_sections as $secname => $section) {
                     if (isset($this->_sections[$secname])) {
                         PHPWS_Core::plugObject($this->_sections[$secname], $section);
                         // we don't want smarttags parsed
@@ -131,7 +130,7 @@ class PS_Page {
             }
 
             if (!empty($block_sections)) {
-                foreach ($block_sections as $secname=>$section) {
+                foreach ($block_sections as $secname => $section) {
                     if (isset($this->_sections[$secname])) {
                         PHPWS_Core::plugObject($this->_sections[$secname], $section);
                         if ($form_mode && $this->_sections[$secname]->type_id) {
@@ -204,8 +203,7 @@ class PS_Page {
             $children = $db->getObjects('PS_Page');
             $subtpl['ID_LABEL'] = dgettext('pagesmith', 'Id');
             $subtpl['TITLE_LABEL'] = dgettext('pagesmith', 'Title');
-            $subtpl['PAGE_LABEL'] = sprintf('<abbr title="%s">%s</a>', dgettext('pagesmith', 'Page number'),
-            dgettext('pagesmith', 'Pg. No.'));
+            $subtpl['PAGE_LABEL'] = sprintf('<abbr title="%s">%s</a>', dgettext('pagesmith', 'Page number'), dgettext('pagesmith', 'Pg. No.'));
             if (!empty($children)) {
                 foreach ($children as $subpage) {
                     $subtpl['subpages'][] = $subpage->row_tags(true);
@@ -227,18 +225,17 @@ class PS_Page {
             $label = Icon::show('add', $label);
         }
 
-        $vars['pid']  = $this->id;
+        $vars['pid'] = $this->id;
         $vars['aop'] = 'menu';
         $vars['tab'] = 'new';
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
 
-
     public function deleteLink($icon=false)
     {
-        $vars['id']  = $this->id;
+        $vars['id'] = $this->id;
         $vars['aop'] = 'delete_page';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars,true);
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars, true);
         $js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
         if ($icon) {
             $js['LINK'] = Icon::show('delete');
@@ -256,7 +253,7 @@ class PS_Page {
             $label = dgettext('pagesmith', 'Edit');
         }
 
-        $vars['id']  = $this->id;
+        $vars['id'] = $this->id;
         $vars['aop'] = 'edit_page';
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
@@ -266,16 +263,14 @@ class PS_Page {
         if ($this->front_page) {
             $label = dgettext('pagesmith', 'Remove from front');
             if ($icon) {
-                $label = sprintf('<img src="%smod/pagesmith/img/back.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                $label, $label);
+                $label = sprintf('<img src="%smod/pagesmith/img/back.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, $label, $label);
             }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
             $label = dgettext('pagesmith', 'Add to front');
             if ($icon) {
-                $label = sprintf('<img src="%smod/pagesmith/img/front.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP,
-                $label, $label);
+                $label = sprintf('<img src="%smod/pagesmith/img/front.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, $label, $label);
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;
@@ -345,7 +340,7 @@ class PS_Page {
         $key->setUrl($this->url());
 
         foreach ($this->_sections as $sec) {
-            if ($sec->sectype=='text') {
+            if ($sec->sectype == 'text') {
                 $key->setSummary($sec->getContent());
                 break;
             }
@@ -364,11 +359,57 @@ class PS_Page {
             $db->addValue('key_id', $this->key_id);
             PHPWS_Error::logIfError($db->update());
         } elseif ($this->_title_change) {
-            if (PHPWS_Core::moduleExists('menu')){
-                PHPWS_Core::initModClass('menu', 'Menu.php');
-                Menu::updateKeyLink($this->key_id);
-            }
+            PHPWS_Core::initModClass('menu', 'Menu.php');
+            Menu::updateKeyLink($this->key_id);
         }
+        return true;
+    }
+
+    public function createShortcut()
+    {
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        PHPWS_Core::initModClass('menu', 'Menu.php');
+
+        $key = new Key($this->key_id);
+        $shortcut = new Access_Shortcut;
+        $shortcut->setUrl($key->module, $key->url);
+
+        $shortcut = new Access_Shortcut;
+        $shortcut->setUrl('pagesmith', $key->url);
+
+        $result = $shortcut->setKeyword($this->title);
+        if (PHPWS_Error::isError($result) || $result == FALSE) {
+            return $result;
+        }
+        $result = $shortcut->save();
+        if (PHPWS_Error::isError($result) || $result == FALSE) {
+            return $result;
+        }
+
+        if ($this->page->parent_page || !PHPWS_Settings::get('pagesmith', 'auto_link')) {
+            return true;
+        }
+
+        return $this->createMenuShortcut($shortcut, $key);
+    }
+
+    public function createMenuShortcut($shortcut, $key)
+    {
+
+        $menus = Menu::getPinAllMenus();
+        if (PHPWS_Error::logIfError($menus) || empty($menus)) {
+            return $menus;
+        }
+
+        foreach ($menus as $mn) {
+            $link = new Menu_Link;
+            $link->setMenuId($mn->id);
+            $link->setKeyId($key->id);
+            $link->setTitle($key->title);
+            $link->url = './' . $shortcut->keyword;
+            $link->save();
+        }
+
         return true;
     }
 
@@ -408,7 +449,7 @@ class PS_Page {
         $this->flag();
 
         if (!empty($cache)) {
-            // needed for filecabinet
+// needed for filecabinet
             javascript('open_window');
             return $cache;
         }
@@ -492,10 +533,10 @@ class PS_Page {
             $prev_page = 0;
         }
 
-        foreach ($pages as $page_no=>$id) {
+        foreach ($pages as $page_no => $id) {
             if ($page_no == 0 && $prev_page) {
                 $link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith', 'Previous'),
-                                       'pagesmith', array('id'=>$prev_page));
+                                'pagesmith', array('id' => $prev_page));
                 $links[] = $link->get();
             }
 
@@ -507,7 +548,7 @@ class PS_Page {
                     $next_page = null;
                 }
             } else {
-                $link = new PHPWS_Link($page_no + 1, 'pagesmith', array('id'=>$id));
+                $link = new PHPWS_Link($page_no + 1, 'pagesmith', array('id' => $id));
                 $link->setRewrite();
                 $links[] = $link->get();
             }
@@ -558,6 +599,7 @@ class PS_Page {
     {
         $this->title = trim(strip_tags($title, '<em><i><u>'));
     }
+
 }
 
 ?>

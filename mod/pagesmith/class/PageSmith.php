@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
 PHPWS_Core::requireConfig('pagesmith');
 
@@ -15,17 +15,14 @@ if (!defined('PS_CHECK_CHAR_LENGTH')) {
     define('PS_CHECK_CHAR_LENGTH', true);
 }
 
-
 class PageSmith {
-    public $forms   = null;
-    public $panel   = null;
 
-    public $title   = null;
+    public $forms = null;
+    public $panel = null;
+    public $title = null;
     public $message = null;
     public $content = null;
-
-    public $page    = null;
-
+    public $page = null;
 
     public function admin()
     {
@@ -158,7 +155,7 @@ class PageSmith {
                         $this->killSaved($this->page->id);
                         PHPWS_Cache::clearCache();
                         if (isset($_POST['save_so_far'])) {
-                            PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id'=>$this->page->id, 'aop'=>'edit_page'), true));
+                            PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith', array('id' => $this->page->id, 'aop' => 'edit_page'), true));
                         } else {
                             PHPWS_Core::reroute($this->page->url());
                         }
@@ -168,7 +165,7 @@ class PageSmith {
 
             case 'front_page_toggle':
                 $this->loadPage();
-                $this->page->front_page = (bool)$_GET['fp'];
+                $this->page->front_page = (bool) $_GET['fp'];
                 $this->page->save();
                 PHPWS_Cache::clearCache();
                 $this->loadForms();
@@ -233,7 +230,7 @@ class PageSmith {
         }
 
         if ($javascript) {
-            $tpl['TITLE']   = $this->title;
+            $tpl['TITLE'] = $this->title;
             $tpl['CONTENT'] = $this->content;
             $tpl['MESSAGE'] = $this->message;
             Layout::nakedDisplay(PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl'));
@@ -241,7 +238,6 @@ class PageSmith {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
         }
     }
-
 
     public function loadForms()
     {
@@ -262,13 +258,12 @@ class PageSmith {
             }
         }
         if (isset($_REQUEST['pid'])) {
-            $this->page->parent_page = (int)$_REQUEST['pid'];
+            $this->page->parent_page = (int) $_REQUEST['pid'];
         }
 
         if (isset($_REQUEST['porder'])) {
-            $this->page->page_order = (int)$_REQUEST['porder'];
+            $this->page->page_order = (int) $_REQUEST['porder'];
         }
-
     }
 
     public function loadPanel()
@@ -277,14 +272,14 @@ class PageSmith {
         $this->panel = new PHPWS_Panel('pagesmith');
 
         $link = 'index.php?module=pagesmith&amp;aop=menu';
-        $tabs['new']  = array('title'=>dgettext('pagesmith', 'New'), 'link'=>$link);
-        $tabs['list'] = array('title'=>dgettext('pagesmith', 'List'), 'link'=>$link);
+        $tabs['new'] = array('title' => dgettext('pagesmith', 'New'), 'link' => $link);
+        $tabs['list'] = array('title' => dgettext('pagesmith', 'List'), 'link' => $link);
         if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'settings')) {
-            $tabs['settings'] = array('title'=>dgettext('pagesmith', 'Settings'), 'link'=>$link);
+            $tabs['settings'] = array('title' => dgettext('pagesmith', 'Settings'), 'link' => $link);
         }
 
         if (Current_User::allow('pagesmith', 'upload_templates') && Current_User::isUnrestricted('pagesmith')) {
-            $tabs['upload'] = array('title'=>dgettext('pagesmith', 'Upload'), 'link'=>$link);
+            $tabs['upload'] = array('title' => dgettext('pagesmith', 'Upload'), 'link' => $link);
         }
 
         $this->panel->quickSetTabs($tabs);
@@ -293,9 +288,8 @@ class PageSmith {
 
     public static function pageTplDir()
     {
-        return PHPWS_Template::getTemplateDirectory('pagesmith')  . 'page_templates/';
+        return PHPWS_Template::getTemplateDirectory('pagesmith') . 'page_templates/';
     }
-
 
     /**
      * Triggered from aop = post_page
@@ -359,7 +353,7 @@ class PageSmith {
             // If this page is an update, or the section has some content
             // put it in the section list.
 
-            if ($this->page->id || (!empty($section->content) && !(in_array($section->content, array('image', 'document', 'media', 'block')) && !$section->type_id)) ) {
+            if ($this->page->id || (!empty($section->content) && !(in_array($section->content, array('image', 'document', 'media', 'block')) && !$section->type_id))) {
                 $sections[$section_name] = & $section;
             }
         }
@@ -369,22 +363,26 @@ class PageSmith {
             return 0;
         }
 
-        if  (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith', 'auto_link')) {
+        if (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith', 'auto_link')) {
             $menu_link = true;
         } else {
             $menu_link = false;
         }
 
-        //if (!$tpl_set) {
-            $this->page->save();
-            PHPWS_Cache::clearCache();
-        //}
+        $this->page->save();
+        PHPWS_Cache::clearCache();
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
 
-        if ($menu_link && PHPWS_Core::moduleExists('menu')) {
-            if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
-                Menu::quickKeyLink($this->page->key_id);
+        $result = $this->page->createShortcut();
+
+        if (PHPWS_Error::isError($result)) {
+            if ($menu_link) {
+                if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+                    Menu::quickKeyLink($this->page->key_id);
+                }
             }
         }
+
 
         if ($tpl_set) {
             return -1;
@@ -393,11 +391,10 @@ class PageSmith {
         }
     }
 
-
     private function someContent($content)
     {
         $test_content = strip_tags($content, '<img><object>');
-        return !empty($test_content);
+        return!empty($test_content);
     }
 
     public function user()
@@ -409,7 +406,6 @@ class PageSmith {
                 break;
         }
     }
-
 
     public function viewPage()
     {
@@ -425,7 +421,7 @@ class PageSmith {
                     $content .= sprintf('<p class="pagesmith-edit">%s</p>', $this->page->editLink());
                 }
             } else {
-                if  (!Current_User::requireLogin()) {
+                if (!Current_User::requireLogin()) {
                     $content = dgettext('pagesmith', 'Restricted page.');
                 }
             }
@@ -455,7 +451,6 @@ class PageSmith {
         $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
         $vars['hidden_value'] = $section->content;
         Layout::nakedDisplay(javascriptMod('pagesmith', 'update', $vars));
-
     }
 
     public function postText()
@@ -467,7 +462,7 @@ class PageSmith {
         $section = new PS_Text;
         $section->pid = $_POST['pid'];
         $section->secname = $_POST['section_name'];
-        $section->content =  preg_replace("@\r\n|\r|\n@", '', $text);
+        $section->content = preg_replace("@\r\n|\r|\n@", '', $text);
         if (PS_CHECK_CHAR_LENGTH && strlen(PHPWS_Text::parseInput($section->content)) > 65535) {
             $warning = dgettext('pagesmith', "You have exceeded the allowed character limit. The page will not save correctly. Click ok to save the text anyway, cancel to return to previous version.");
         }
@@ -481,7 +476,7 @@ class PageSmith {
             $vars['warning'] = addslashes($warning);
         }
 
-        Layout::nakedDisplay( javascriptMod('pagesmith', 'update', $vars));
+        Layout::nakedDisplay(javascriptMod('pagesmith', 'update', $vars));
     }
 
     public function postSettings()
@@ -535,7 +530,7 @@ class PageSmith {
         } else {
             $ext = PHPWS_File::getFileExtension($_FILES['icon']['name']);
 
-            if ( ($ext != 'png' && $ext != 'jpg' && $ext != 'gif') || !PHPWS_File::checkMimeType($_FILES['icon']['tmp_name'], $ext)) {
+            if (($ext != 'png' && $ext != 'jpg' && $ext != 'gif') || !PHPWS_File::checkMimeType($_FILES['icon']['tmp_name'], $ext)) {
                 $this->message = dgettext('pagesmith', 'Wrong file type for icon file.');
                 return false;
             }
@@ -596,7 +591,7 @@ class PageSmith {
         } else {
             return;
         }
-        $db->addWhere('id', (int)$id[1]);
+        $db->addWhere('id', (int) $id[1]);
         PHPWS_Error::logIfError($db->delete());
     }
 
@@ -670,6 +665,7 @@ class PageSmith {
     {
         return preg_match('/^<!-- lorem -->/', $text);
     }
+
 }
 
 ?>
