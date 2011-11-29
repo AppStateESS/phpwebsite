@@ -1064,7 +1064,7 @@ class PHPWS_DB {
                 $this->addOrder($value);
             }
         } else {
-            $order = preg_replace('/[^\w\s\.]/', '', $order);
+            $order = preg_replace('/[^\w\s\.\(\),]/', '', $order);
 
             if (preg_match('/(random|rand)(\(\))?/i', $order)) {
                 $this->order[] = $GLOBALS['PHPWS_DB']['lib']->randomOrder();
