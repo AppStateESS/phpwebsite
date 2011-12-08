@@ -92,6 +92,7 @@ class Cycle_Slot {
 
     public function post()
     {
+        $background_updated = false;
         if (empty($_POST['destination_url'])) {
             $this->destination_url = null;
         } else {
@@ -168,6 +169,7 @@ class Cycle_Slot {
             }
 
             $this->background_path = $directory . $filename;
+            $this->thumbnail_path = null;
         }
 
         if (!empty($_FILES['thumbnail_image']['name'])) {
