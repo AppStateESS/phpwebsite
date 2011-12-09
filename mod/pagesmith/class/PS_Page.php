@@ -132,7 +132,21 @@ class PS_Page {
             if (!empty($block_sections)) {
                 foreach ($block_sections as $secname => $section) {
                     if (isset($this->_sections[$secname])) {
+                        if ($this->_sections[$secname]->width) {
+                            $default_w = $this->_sections[$secname]->width;
+                        }
+                        if ($this->_sections[$secname]->height) {
+                            $default_h = $this->_sections[$secname]->height;
+                        }
+
                         PHPWS_Core::plugObject($this->_sections[$secname], $section);
+                        
+                        if ($this->_sections[$secname]->width) {
+                            $this->_sections[$secname]->width = $default_w;
+                        }
+                        if ($this->_sections[$secname]->height) {
+                            $this->_sections[$secname]->height = $default_h;
+                        }
                         if ($form_mode && $this->_sections[$secname]->type_id) {
                             //reload the image form if the image is set
                             $this->_sections[$secname]->loadFiller();
