@@ -140,7 +140,7 @@ class PS_Page {
                         }
 
                         PHPWS_Core::plugObject($this->_sections[$secname], $section);
-                        
+
                         if ($this->_sections[$secname]->width) {
                             $this->_sections[$secname]->width = $default_w;
                         }
@@ -400,7 +400,7 @@ class PS_Page {
             return $result;
         }
 
-        if ($this->page->parent_page || !PHPWS_Settings::get('pagesmith', 'auto_link')) {
+        if ($this->parent_page || !PHPWS_Settings::get('pagesmith', 'auto_link')) {
             return true;
         }
 
