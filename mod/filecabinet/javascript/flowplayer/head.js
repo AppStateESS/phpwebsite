@@ -1,1 +1,1 @@
-<script src="{source_http}mod/filecabinet/javascript/flowplayer/flowplayer-3.1.4.min.js"></script>
+<script src="{source_http}javascript/flowplayer/flowplayer-3.2.6.min.js"></script>

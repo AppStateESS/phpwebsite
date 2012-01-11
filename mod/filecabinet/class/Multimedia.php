@@ -106,6 +106,8 @@ class PHPWS_Multimedia extends File_Common {
     {
         if (!$this->thumbnail) {
             return null;
+        } elseif (preg_match('/^http(s)?/', $this->thumbnail)) {
+            return $this->thumbnail;
         }
         return $this->thumbnailDirectory() . $this->thumbnail;
     }
@@ -266,6 +268,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $thumbnail = $this->thumbnailPath();
 
+        $tpl['FILE_DIRECTORY'] = $this->file_directory;
         $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['ID'] = 'media' . $this->id;
@@ -372,7 +375,6 @@ class PHPWS_Multimedia extends File_Common {
         }
 
         $raw_file_name = $this->dropExtension();
-
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') ||
         $this->file_type == 'application/x-shockwave-flash') {
             $this->genericTN($raw_file_name);
@@ -524,7 +526,6 @@ class PHPWS_Multimedia extends File_Common {
                 return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Multimedia::save');
             }
         }
-
         if ($write) {
             $result = $this->write();
             if (PHPWS_Error::isError($result)) {
@@ -543,13 +544,12 @@ class PHPWS_Multimedia extends File_Common {
                 $this->makeAudioThumbnail();
             }
         }
-
         if (empty($this->title)) {
             $this->title = $this->file_name;
         }
-
         $db = new PHPWS_DB('multimedia');
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+        return $result;
     }
 
     /**
