@@ -1312,10 +1312,9 @@ class PHPWS_Form {
 
     public function grab($name)
     {
-        if (count($this->_elements[$name]) > 1) {
+        if (count($this->_elements[$name]) > 1 || !isset($this->_elements[$name][0])) {
             return $this->_elements[$name];
-        }
-        else {
+        } else {
             return $this->_elements[$name][0];
         }
     }
