@@ -12,6 +12,8 @@ function rtmp_import($media)
     if (!preg_match('/^rtmp:/i', $file_path)) {
         return false;
     }
+    $last_slash = strrpos($file_path, '/');
+    $file_only = substr($file_path, $last_slash + 1);
 
     $colon = stripos($file_path, ':', 6);
     if ($colon) {
@@ -23,8 +25,7 @@ function rtmp_import($media)
         $file_directory = substr($file_path, 0, $breakpoint);
         $file_name = substr($file_path, $breakpoint);
     } else {
-        $last_slash = strrpos($file_path, '/');
-        $file_name = substr($file_path, $last_slash + 1);
+        $file_name = $file_only;
         $file_directory = str_replace($file_name, '', $file_path);
     }
 
@@ -33,7 +34,7 @@ function rtmp_import($media)
     $media->width = 400;
     $media->height = 300;
     $media->thumbnail = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg';
-    $media->title = 'Posted ' . strftime('%Y/%m/%d');
+    $media->title = $file_only;
     return true;
 }
 
