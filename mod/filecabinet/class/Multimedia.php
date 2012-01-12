@@ -104,9 +104,10 @@ class PHPWS_Multimedia extends File_Common {
 
     public function thumbnailPath()
     {
+        $add = '@^' . addslashes(PHPWS_SOURCE_HTTP) . '@';
         if (!$this->thumbnail) {
             return null;
-        } elseif (preg_match('/^http(s)?/', $this->thumbnail)) {
+        } elseif (preg_match($add, $this->thumbnail)) {
             return $this->thumbnail;
         }
         return $this->thumbnailDirectory() . $this->thumbnail;
