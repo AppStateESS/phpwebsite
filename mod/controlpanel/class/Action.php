@@ -145,7 +145,7 @@ class CP_Action {
                     $jslink['label'] = dgettext('controlpanel', 'Edit');
                     $jslink['width'] = 360;
                     $jslink['height'] = 350;
-                    $edit_link = javascript('open_window', $jslink, true);
+                    $edit_link = javascript('open_window', $jslink);
 
                     $tpl->setCurrentBlock('link-list');
                     $tpl->setData(array('LINK'=>$link_obj->getLabel(), 'LACTION'=>implode('', $laction),
@@ -168,7 +168,7 @@ class CP_Action {
             $jstab['label'] = dgettext('controlpanel', 'Edit');
             $jstab['width'] = 260;
             $jstab['height'] = 180;
-            $edit_tab = javascript('open_window', $jstab, true);
+            $edit_tab = javascript('open_window', $jstab);
 
             $tpl->setCurrentBlock('tab-list');
             $tpl->setData(array('TAB'=>$tab_obj->getTitle(), 'TACTION'=>implode('', $taction), 'EDIT_TAB' => $edit_tab));
