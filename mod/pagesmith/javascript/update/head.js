@@ -7,6 +7,7 @@
      }
      text.innerHTML = content;
      opener.disable_links();
+     opener.mark_changed();
      window.close();
 //]]>
 </script>

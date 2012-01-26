@@ -74,6 +74,7 @@ class User_Form {
         }
 
         $form = new PHPWS_Form('User_Login_Box');
+        $form->setProtected(false);
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'login');

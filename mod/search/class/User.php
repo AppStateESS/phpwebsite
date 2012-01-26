@@ -39,6 +39,7 @@ class Search_User {
         PHPWS_Core::initCoreClass('Form.php');
 
         $form = new PHPWS_Form('search_box');
+        $form->setProtected(false);
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');

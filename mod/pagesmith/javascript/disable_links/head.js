@@ -14,4 +14,9 @@ function disable_links()
     });
 }
 
+function mark_changed()
+{
+    $('form#pagesmith input').first().change();
+}
+
 </script>
