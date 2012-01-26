@@ -107,6 +107,16 @@ class PHPWS_Form {
     public $use_breaker = false;
 
     /**
+     * Indicates if the form should be protected by Javascript, ie if
+     * they try to leave the page, the browser prompts them.
+     * True by default - this changes functionality, but really most
+     * forms should be protected.  Set to false on things like the
+     * login form, search form, etc where it would be confusing to
+     * accidentally type something and then get an error.
+     */
+    public $protected = true;
+
+    /**
      * Constructor for class
      */
     public function __construct($id=null)
@@ -156,6 +166,16 @@ class PHPWS_Form {
             return;
         }
         $this->max_file_size = (int)$file_size;
+    }
+
+    public function setProtected($protected=true)
+    {
+        $this->protected = $protected == true;
+    }
+
+    public function isProtected()
+    {
+        return $this->protected;
     }
 
     /**
@@ -1504,7 +1524,15 @@ class PHPWS_Form {
             javascript('jquery');
             javascript('required_input');
         }
-        return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
+
+        // Add "Protection" javascript if requested.
+        $protected = '';
+        if (function_exists('javascript') && $this->protected) {
+            javascript('protect_form');
+            $protected = " form-protected";
+        }
+        
+        return '<form class="phpws-form' . $protected . '" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
     }
 
     public static function formTextField($name, $value, $size=30, $maxsize=255, $label=null)
