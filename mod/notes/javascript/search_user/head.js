@@ -1,4 +1,4 @@
-<script type="text/javascript" src="javascript/jquery/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="{source_http}javascript/jquery/jquery.autocomplete.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#send_note_username").autocomplete(
@@ -20,7 +20,7 @@ $(document).ready(function() {
 
 
 function selectItem(li)
-{        
+{
          findValue(li);
 }
 
