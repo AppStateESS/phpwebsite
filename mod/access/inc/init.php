@@ -4,8 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-if (isset($GLOBALS['Forward'])) {
     PHPWS_Core::initModClass('access', 'Access.php');
+if (isset($GLOBALS['Forward'])) {
     Access::forward();
 }
 
