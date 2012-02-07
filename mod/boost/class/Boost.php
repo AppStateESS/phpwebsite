@@ -199,7 +199,7 @@ class PHPWS_Boost {
 				$mod_content[] = dgettext('boost', 'Installation complete!');
 				$this->addLog($title, str_replace("\n\n\n","\n",implode("\n", str_replace('<br />', "\n", $mod_content))));
             // $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
-				// H 0120 display also the msgs for log 
+				// H 0120 display also the msgs for log
 				$content[] = str_replace('<br /><br /><br />','<br />',implode('<br />', $mod_content));
 			// $content[] = dgettext('boost', 'Installation complete!');
         }
