@@ -30,7 +30,7 @@ class cosign_authorization extends User_Authorization {
         if (!isset($_SERVER['REMOTE_USER'])) {
             return false;
         }
-        
+
         if(strtolower($_SERVER['REMOTE_USER']) != strtolower($this->user->username)) {
             return false;
         }
@@ -50,7 +50,7 @@ class cosign_authorization extends User_Authorization {
 
         Current_User::loginUser($_SERVER['REMOTE_USER']);
     }
-     
+
     public function verify()
     {
         if (empty($this->user->username) || empty($_SERVER['REMOTE_USER'])) {
@@ -73,7 +73,7 @@ class cosign_authorization extends User_Authorization {
 
     private function getLocalCosignLink($append = 'login')
     {
-        $parts = split('/', $_SERVER['REQUEST_URI']);
+        $parts = explode('/', $_SERVER['REQUEST_URI']);
 
         reset($parts);
         array_pop($parts);
