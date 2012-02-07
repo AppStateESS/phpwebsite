@@ -1,0 +1,553 @@
+# ngI18n PO generator for ngWebSite and phpWebSite.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ngWebSite/phpWebSite package.
+# FIRST AUTHOR, SEE COMMENTS OF MSG LINES.
+# ngboost 3.0.13
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ngWebsite and phpWebSite 1.7.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-23 11:46 -0400\n"
+"PO-Revision-Date: 2011-07-23 11:46 -0400\n"
+"Last-Translator: see comments of msg lines\n"
+"Language: de\n"
+"Language-Team: ngI18n <ngwebsite.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x99y3
+msgid "about"
+msgstr "über"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x100y4
+msgid "Action"
+msgstr "Aktion"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x101y5
+msgid "Actions, Messages, Feedback"
+msgstr "Aktionen, Meldungen, Feedback"
+
+#, #2011.06.06-09:34:56@ngI18n@Hilmar
+#, ngi18n300db,x102y6
+msgid "After 5 seconds going to classic boost"
+msgstr "Nach 5 Sekunden geht es zum klassischen boost"
+
+#, #2011.06.06-10:11:52@ngI18n@Hilmar
+#, ngi18n300db,x103y7
+msgid "An error occurred updating the core"
+msgstr "Ein Fehler ist beim Aktualisieren vom Kern aufgetreten"
+
+#, #2011.06.06-09:37:00@ngI18n@Hilmar
+#, ngi18n300db,x104y8
+msgid "An error occurred while installing this module."
+msgstr "Fehler aufgetreten bei der Installation dieses Moduls."
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x105y2
+msgid "A new release is available"
+msgstr "Eine neue Version ist verfügbar"
+
+#, #2011.06.23-15:39:33@ngI18n@Hilmar
+#, ngi18n300db,x195y203
+msgid "are you sure to purge"
+msgstr "sind Sie sicher zu löschen"
+
+#, #2011.06.06-09:37:20@ngI18n@Hilmar
+#, ngi18n300db,x106y9
+msgid "are you sure to uninstall"
+msgstr "sind Sie sicher zu deinstallieren"
+
+#, #2011.06.06-10:11:21@ngI18n@Hilmar
+#, ngi18n300db,x107y10
+msgid "Backup"
+msgstr "Sichern"
+
+#, #2011.06.06-10:26:00@ngI18n@Hilmar
+#, ngi18n300db,x108y11
+msgid "BackupAll"
+msgstr "SichernAlle"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x109y12
+msgid "BackupBranch"
+msgstr "BackupBranch"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x110y13
+msgid "Changes"
+msgstr "Änderungen"
+
+#, #2011.06.06-10:26:18@ngI18n@Hilmar
+#, ngi18n300db,x111y14
+msgid "Check"
+msgstr "Prüfen"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x112y17
+msgid "check.xml"
+msgstr "check.xml"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x113y18
+msgid "check.xml not found"
+msgstr "check.xml nicht gefunden"
+
+#, #2011.06.06-10:27:39@ngI18n@Hilmar
+#, ngi18n300db,x114y19
+msgid "CheckAll"
+msgstr "AllePrüfen"
+
+#, #2011.06.06-10:26:29@ngI18n@Hilmar
+#, ngi18n300db,x115y15
+msgid "Check disabled"
+msgstr "Prüfung deaktiviert"
+
+#, #2011.06.06-10:26:57@ngI18n@Hilmar
+#, ngi18n300db,x116y16
+msgid "Check done - further maintenance is supported thru the hub only"
+msgstr "Prüfung erfolgt - weitere Pflege wird nur im Hub unterstützt"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x117y20
+msgid "checksum verification error"
+msgstr "Prüfsummenverifizierung Fehler"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x118y21
+msgid "Commands"
+msgstr "Befehle"
+
+#, #2011.06.06-10:28:45@ngI18n@Hilmar
+#, ngi18n300db,x119y22
+msgid "Content of repository"
+msgstr "Inhalt des Depot"
+
+#, #2011.06.06-10:09:51@ngI18n@Hilmar
+#, ngi18n300db,x120y23
+msgid "Copy from distribution server to my site"
+msgstr "Kopieren von Verteilungsserver auf meine Website"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x121y24
+msgid "Core successfully updated"
+msgstr "Kern erfolgreich aktualisiert"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x122y25
+msgid "Current local version"
+msgstr "Aktuelle lokale Version"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x123y27
+msgid "currently no help available"
+msgstr "derzeit keine Hilfe verfügbar"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x124y26
+msgid "Current version"
+msgstr "Aktuelle Version"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x125y28
+msgid "Database tables of installation"
+msgstr "Datenbanktabellen der Installation"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x126y29
+msgid "decompress"
+msgstr "dekomprimieren"
+
+#, #2011.06.06-10:09:20@ngI18n@Hilmar
+#, ngi18n300db,x127y30
+msgid "DependedUpon"
+msgstr "AbhängigVon"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x128y31
+msgid "Dependencies"
+msgstr "Abhängigkeiten"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x129y32
+msgid "Dependencies of"
+msgstr "Abhängigkeiten von"
+
+#, #2011.06.06-10:39:42@ngI18n@Hilmar
+#, ngi18n300db,x130y33
+msgid "Dependents of"
+msgstr "Abhängige von"
+
+#, #2011.06.06-09:33:22@ngI18n@googleTrans
+#, ngi18n300db,x131y34
+msgid "Description"
+msgstr "Beschreibung"
+
+#, #2011.06.06-10:30:52@ngI18n@Hilmar
+#, ngi18n300db,x132y35
+msgid "Distro"
+msgstr "Verteiler"
+
+#, #2011.06.06-10:30:00@ngI18n@Hilmar
+#, ngi18n300db,x133y37
+msgid "DistroServer"
+msgstr "VerteilServer"
+
+#, #2011.06.06-10:30:43@ngI18n@Hilmar
+#, ngi18n300db,x134y36
+msgid "Distro set to"
+msgstr "Verteiler festgelegt auf"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x135y40
+msgid "done"
+msgstr "erledigt"
+
+#, #2011.06.06-10:31:19@ngI18n@Hilmar
+#, ngi18n300db,x136y38
+msgid "Do you really want to purge the backup file?"
+msgstr "Wollen Sie wirklich diese Sicherungsdatei löschen?"
+
+#, #2011.06.06-09:41:24@ngI18n@Hilmar
+#, ngi18n300db,x137y39
+msgid "Do you really want to restore / overwrite?"
+msgstr "Wollen Sie wirklich wiederherstellen &#47; überschreiben?"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x138y41
+msgid "expand"
+msgstr "erweitern"
+
+#, #2011.06.06-10:08:50@ngI18n@Hilmar
+#, ngi18n300db,x139y42
+msgid "Failed"
+msgstr "Gescheitert"
+
+#, #2011.06.23-15:40:55@ngI18n@Hilmar
+#, ngi18n300db,x196y238
+msgid "Failed installation of module."
+msgstr "Fehlschlag Installation des Moduls."
+
+#, #2011.06.23-15:41:46@ngI18n@Hilmar
+#, ngi18n300db,x197y239
+msgid "Failed to copy file to local directory."
+msgstr "Datei konnte nicht zum lokalen Verzeichnis kopiert werden."
+
+#, #2011.06.23-15:42:32@ngI18n@Hilmar
+#, ngi18n300db,x198y240
+msgid "Failed upgrade of module."
+msgstr "Fehlschlag Modul Aktualisierung."
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x140y43
+msgid "File"
+msgstr "Datei"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x141y45
+msgid "files"
+msgstr "Dateien"
+
+#, #2011.06.06-09:41:51@ngI18n@Hilmar
+#, ngi18n300db,x142y44
+msgid "File System"
+msgstr "Datei System"
+
+#, #2011.06.06-10:31:47@ngI18n@Hilmar
+#, ngi18n300db,x143y46
+msgid "GetNew"
+msgstr "NeuAbholen"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x144y47
+msgid "Install"
+msgstr "Installieren"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x145y48
+msgid "invalid call"
+msgstr "ungültigen Aufruf"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x146y49
+msgid "invalid file type"
+msgstr "ungültiger Dateityp"
+
+#, #2011.06.06-10:07:31@ngI18n@Hilmar
+#, ngi18n300db,x147y50
+msgid "IsInstalled"
+msgstr "IstInstalliert"
+
+#, #2011.06.06-10:07:42@ngI18n@Hilmar
+#, ngi18n300db,x148y51
+msgid "IsLocal"
+msgstr "IstLokal"
+
+#, #2011.06.06-10:32:14@ngI18n@Hilmar
+#, ngi18n300db,x149y52
+msgid "just"
+msgstr "eben"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x150y53
+msgid "Latest distro version"
+msgstr "Neueste Distribution Version"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x151y54
+msgid "Latest version"
+msgstr "Neueste Version"
+
+#, #2011.06.23-15:43:21@ngI18n@Hilmar
+#, ngi18n300db,x199y253
+msgid "List distro is not supported in branches"
+msgstr "List Distribution ist nicht in Branches unterstützt"
+
+#, #2011.06.06-09:42:32@ngI18n@Hilmar
+#, ngi18n300db,x152y55
+msgid "local tar broken"
+msgstr "lokale Tar defekt"
+
+#, #2011.06.06-09:42:48@ngI18n@Hilmar
+#, ngi18n300db,x153y56
+msgid "local tar not found:"
+msgstr "lokales Tar nicht gefunden:"
+
+#, #2011.06.06-09:43:00@ngI18n@Hilmar
+#, ngi18n300db,x154y57
+msgid "local tgz invalid"
+msgstr "lokales Tgz ungültig"
+
+#, #2011.06.06-09:43:11@ngI18n@Hilmar
+#, ngi18n300db,x155y58
+msgid "local tgz not found"
+msgstr "lokales Tgz nicht gefunden"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x156y59
+msgid "MB"
+msgstr "MB"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x157y60
+msgid "MD5 Sum"
+msgstr "MD5 Sum"
+
+#, #2011.06.06-10:06:35@ngI18n@Hilmar
+#, ngi18n300db,x158y61
+msgid "MissingDependency"
+msgstr "FehlendeAbhängigkeit"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x159y62
+msgid "Module"
+msgstr "Modul"
+
+#, #2011.06.06-09:55:17@ngI18n@Hilmar
+#, ngi18n300db,x160y63
+msgid "Module \"%s\" requires module(s) installed with the proper version(s)"
+msgstr "Modul \"%s\" erfordert Module die mit der richtigen Version installiert sind"
+
+#, #2011.06.23-15:43:49@ngI18n@googleTrans
+#, ngi18n300db,x200y263
+msgid "Module is missing register file."
+msgstr "Modul fehlt Register-File."
+
+#, #2011.06.23-15:44:06@ngI18n@googleTrans
+#, ngi18n300db,x201y264
+msgid "Module is missing register function."
+msgstr "Modul fehlt Register-Funktion."
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x161y64
+msgid "Module Needed"
+msgstr "Modul erforderlich"
+
+#, #2011.06.06-09:33:24@ngI18n@googleTrans
+#, ngi18n300db,x162y65
+msgid "Module not installed"
+msgstr "Modul nicht installiert"
+
+#, #2011.06.23-15:44:21@ngI18n@googleTrans
+#, ngi18n300db,x202y268
+msgid "Modules have not been set."
+msgstr "Die Module sind nicht festgelegt."
+
+#, #2011.06.06-09:33:26@ngI18n@googleTrans
+#, ngi18n300db,x163y67
+msgid "modules to process"
+msgstr "Module zu verarbeiten"
+
+#, #2011.06.06-09:33:26@ngI18n@googleTrans
+#, ngi18n300db,x164y66
+msgid "Module title"
+msgstr "Modultitel"
+
+#, #2011.06.06-09:33:26@ngI18n@googleTrans
+#, ngi18n300db,x165y68
+msgid "More information"
+msgstr "Weitere Informationen"
+
+#, #2011.06.06-09:44:10@ngI18n@Hilmar
+#, ngi18n300db,x166y69
+msgid "Needs upgrading"
+msgstr "Erfordert Upgrade"
+
+#, #2011.06.06-09:33:26@ngI18n@googleTrans
+#, ngi18n300db,x167y70
+msgid "ngBoost (boost2.0)"
+msgstr ""
+
+#, #2011.06.06-10:33:06@ngI18n@Hilmar
+#, ngi18n300db,x168y71
+msgid "No change infos provided"
+msgstr "Keine Änderungs Infos zur Verfügung gestellt"
+
+#, #2011.06.06-09:55:46@ngI18n@Hilmar
+#, ngi18n300db,x169y73
+msgid "None"
+msgstr "Keine"
+
+#, #2011.06.06-10:04:59@ngI18n@Hilmar
+#, ngi18n300db,x170y72
+msgid "No new release(s) available"
+msgstr "Keine neuen Releases vorhanden"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x171y74
+msgid "not available"
+msgstr "nicht verfügbar"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x172y75
+msgid "Not installed"
+msgstr "Nicht installiert"
+
+#, #2011.06.23-15:45:15@ngI18n@Hilmar
+#, ngi18n300db,x203y278
+msgid "Object sent to boost was not of the PHPWS_Module class."
+msgstr ""
+
+#, #2011.06.06-10:34:20@ngI18n@Hilmar
+#, ngi18n300db,x173y76
+msgid "or download by yourself from here"
+msgstr "oder von Ihnen von hier herunterladen"
+
+#, #2011.06.06-10:34:45@ngI18n@Hilmar
+#, ngi18n300db,x174y77
+msgid "Passed"
+msgstr "Bestanden"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x175y78
+msgid "PatchOption"
+msgstr "PatchOption"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x176y79
+msgid "Please check your error logs."
+msgstr "Bitte überprüfen Sie Ihre Fehler-Logs."
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x177y80
+msgid "Processing update file."
+msgstr "Verarbeitung Update-Datei."
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x178y81
+msgid "Scope"
+msgstr "Umfang"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x179y82
+msgid "Server configuration prevents version checking."
+msgstr "Server-Konfiguration verhindert Versionsüberprüfung."
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x180y83
+msgid "Size"
+msgstr "Größe"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x181y84
+msgid "Source XML error"
+msgstr "Source XML-Fehler"
+
+#, #2011.06.06-09:33:27@ngI18n@googleTrans
+#, ngi18n300db,x182y85
+msgid "Status"
+msgstr "Status"
+
+#, #2011.06.06-10:04:28@ngI18n@Hilmar
+#, ngi18n300db,x183y86
+msgid "Table(s)"
+msgstr "Tabelle"
+
+#, #2011.06.06-09:33:28@ngI18n@googleTrans
+#, ngi18n300db,x184y87
+msgid "The boost UI for the installation and upgrading of modules."
+msgstr "Die Boost-Benutzeroberfläche für die Installation und Aktualisierung von Modulen."
+
+#, #2011.06.06-10:35:53@ngI18n@Hilmar
+#, ngi18n300db,x185y88
+msgid "The following modules depend on \"%s\" to function"
+msgstr "Die folgenden Module sind abhängig von \"%s\" um zu funktionieren"
+
+#, #2011.06.06-10:36:23@ngI18n@Hilmar
+#, ngi18n300db,x186y89
+msgid "this distro server does not have the xml file"
+msgstr "Dieser Verteilungsserver verfügt nicht über die XML-Datei"
+
+#, #2011.06.06-10:37:00@ngI18n@Hilmar
+#, ngi18n300db,x187y90
+msgid "This module does not have dependents"
+msgstr "Dieses Modul hat keine Abhängigkeiten"
+
+#, #2011.06.06-09:33:28@ngI18n@googleTrans
+#, ngi18n300db,x188y91
+msgid "transfer error"
+msgstr "Übertragungsfehler"
+
+#, #2011.06.23-15:46:01@ngI18n@Hilmar
+#, ngi18n300db,x204y295
+msgid "Unable to locate SQL import file."
+msgstr "Kann SQL Import Datei nicht lokalisieren."
+
+#, #2011.06.23-15:46:36@ngI18n@Hilmar
+#, ngi18n300db,x205y296
+msgid "Unable to make a backup of a local module file."
+msgstr "Kann kein Backup von einer lokalen Modul-Datei zu machen."
+
+#, #2011.06.06-10:37:21@ngI18n@Hilmar
+#, ngi18n300db,x189y92
+msgid "Uninstall"
+msgstr "Deinstallieren"
+
+#, #2011.06.06-10:37:32@ngI18n@Hilmar
+#, ngi18n300db,x190y93
+msgid "Uninstall not confirmed"
+msgstr "Deinstallierung nicht bestätigt"
+
+#, #2011.06.06-10:17:08@ngI18n@Hilmar
+#, ngi18n300db,x191y94
+msgid "Update"
+msgstr "Aktualisieren"
+
+#, #2011.06.06-09:33:28@ngI18n@googleTrans
+#, ngi18n300db,x192y95
+msgid "Updating core"
+msgstr "Aktualisieren Kern"
+
+#, #2011.06.06-09:33:28@ngI18n@googleTrans
+#, ngi18n300db,x193y96
+msgid "Version"
+msgstr "Version"
+
+#, #2011.06.06-09:33:28@ngI18n@googleTrans
+#, ngi18n300db,x194y97
+msgid "Version required"
+msgstr "Version erforderlich"

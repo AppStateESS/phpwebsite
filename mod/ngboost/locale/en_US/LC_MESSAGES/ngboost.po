@@ -1,0 +1,454 @@
+# ngI18n PO generator for ngWebSite and phpWebSite.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ngWebSite/phpWebSite package.
+# FIRST AUTHOR, SEE COMMENTS OF MSG LINES.
+# ngboost 3.0.13
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ngWebsite and phpWebSite 1.7.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-23 11:32 -0400\n"
+"PO-Revision-Date: 2011-07-23 11:32 -0400\n"
+"Last-Translator: see comments of msg lines\n"
+"Language: en\n"
+"Language-Team: ngI18n <ngwebsite.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:239
+msgid "about"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:38
+msgid "Action"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:542
+msgid "Actions, Messages, Feedback"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:424
+msgid "After 5 seconds going to classic boost"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1393
+msgid "An error occurred updating the core"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:405
+msgid "An error occurred while installing this module."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1288
+msgid "A new release is available"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/javascript/ngboost/default.php:9
+msgid "are you sure to purge"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/javascript/ngboost/default.php:8
+msgid "are you sure to uninstall"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:246
+msgid "Backup"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:69
+msgid "BackupAll"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:68
+msgid "BackupBranch"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1282
+msgid "Changes"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1040
+msgid "check"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:176
+msgid "Check"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1082
+msgid "check.xml"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1364
+msgid "check.xml not found"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:66
+msgid "CheckAll"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:190
+msgid "Check disabled"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1361
+msgid "Check done - further maintenance is supported thru the hub only"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1079
+msgid "checksum verification error"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:37:342
+msgid "Commands"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:485
+msgid "Content of repository"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1289
+msgid "Copy from distribution server to my site"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1404
+msgid "Core successfully updated"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1270
+msgid "Current local version"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1220
+msgid "currently no help available"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1448
+msgid "Current Version"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:35
+msgid "Current version"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:537
+msgid "Database tables of installation"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1063:1076
+msgid "decompress"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:202
+msgid "DependedUpon"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1329
+msgid "Dependencies"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:342
+msgid "Dependencies of"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:349
+msgid "Dependents of"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:676
+msgid "Description"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:338
+msgid "Distro"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:337
+msgid "DistroServer"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1005
+msgid "Distro set to"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1147
+msgid "done"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/javascript/ngboost/default.php:6
+msgid "Do you really want to purge the backup file?"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/javascript/ngboost/default.php:7
+msgid "Do you really want to restore / overwrite?"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1099
+msgid "expand"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1472
+msgid "Failed"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:11
+msgid "Failed installation of module."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:16
+msgid "Failed to copy file to local directory."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:12
+msgid "Failed upgrade of module."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:500
+msgid "File"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:515
+msgid "files"
+msgstr ""
+
+#: ngi18n300 _ mod/ngboost/class/ngAction.php:1011
+msgid "File System"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:181
+msgid "GetNew"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:230
+msgid "Install"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1088:1123:1156
+msgid "invalid call"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:261
+msgid "invalid file type"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:209
+msgid "IsInstalled"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:341
+msgid "IsLocal"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/javascript/ngboost/default.php:4
+msgid "just"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1272
+msgid "Latest distro version"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:36
+msgid "Latest version"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:968
+msgid "List distro is not supported in branches"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1150
+msgid "local tar broken"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1153
+msgid "local tar not found:"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1117
+msgid "local tgz invalid"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1085:1120
+msgid "local tgz not found"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:517
+msgid "MB"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1323
+msgid "MD5 Sum"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:221
+msgid "MissingDependency"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:34:339
+msgid "Module"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php
+msgid "Module \"%s\" requires module(s) installed with the proper version(s)"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:13
+msgid "Module is missing register file."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:14
+msgid "Module is missing register function."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1446
+msgid "Module Needed"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:560
+msgid "Module not installed"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:10
+msgid "Modules have not been set."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/javascript/ngboost/default.php:5
+msgid "modules to process"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1330
+msgid "Module title"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:39
+msgid "More information"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1341
+msgid "Needs upgrading"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/boost/controlpanel.php:3
+msgid "ngBoost (boost2.0)"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1286
+msgid "No change infos provided"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:235
+msgid "None"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1354
+msgid "No new release(s) available"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:702
+msgid "not available"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1335:1462
+msgid "Not installed"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:8
+msgid "Object sent to boost was not of the PHPWS_Module class."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1321
+msgid "or download by yourself from here"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1344:1470
+msgid "Passed"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:672
+msgid "PatchOption"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:406
+msgid "Please check your error logs."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1390
+msgid "Processing update file."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:673
+msgid "Scope"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:73
+msgid "Server configuration prevents version checking."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:501
+msgid "Size"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1274
+msgid "Source XML error"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1332:1449
+msgid "Status"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:540
+msgid "Table(s)"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/boost/controlpanel.php:6
+msgid "The boost UI for the installation and upgrading of modules."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php
+msgid "The following modules depend on \"%s\" to function"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:992
+msgid "this distro server does not have the xml file"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1431
+msgid "This module does not have dependents"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1047
+msgid "transfer error"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:9
+msgid "Unable to locate SQL import file."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/conf/error.php:15
+msgid "Unable to make a backup of a local module file."
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:207
+msgid "Uninstall"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:431
+msgid "Uninstall not confirmed"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:197
+msgid "Update"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1384
+msgid "Updating core"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngForm.php:340
+msgid "Version"
+msgstr ""
+
+#: ngi18n300 NGBOOST mod/ngboost/class/ngAction.php:1331:1447
+msgid "Version required"
+msgstr ""
