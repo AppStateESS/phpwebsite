@@ -375,11 +375,9 @@ class PageSmith {
 
         $result = $this->page->createShortcut();
 
-        if (PHPWS_Error::isError($result)) {
-            if ($menu_link) {
-                if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
-                    Menu::quickKeyLink($this->page->key_id);
-                }
+        if (PHPWS_Error::isError($result) && $menu_link) {
+            if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+                Menu::quickKeyLink($this->page->key_id);
             }
         }
 
@@ -394,7 +392,7 @@ class PageSmith {
     private function someContent($content)
     {
         $test_content = strip_tags($content, '<img><object>');
-        return!empty($test_content);
+        return !empty($test_content);
     }
 
     public function user()

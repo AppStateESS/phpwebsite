@@ -32,7 +32,7 @@ class PS_Page {
      */
     public $_title_change = false;
 
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
@@ -62,7 +62,7 @@ class PS_Page {
         return $this->_sections[$section_name]->content;
     }
 
-    public function loadSections($form_mode=false, $filler=true)
+    public function loadSections($form_mode = false, $filler = true)
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
@@ -163,7 +163,7 @@ class PS_Page {
     /**
      * Loads a single template into the page object from the file
      */
-    public function loadTemplate($tpl=null)
+    public function loadTemplate($tpl = null)
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Template.php');
         if (!empty($tpl)) {
@@ -177,7 +177,7 @@ class PS_Page {
         }
     }
 
-    public function row_tags($subpage=false)
+    public function row_tags($subpage = false)
     {
         $vars['uop'] = 'view_page';
         $tpl['ID'] = $vars['id'] = $this->id;
@@ -229,7 +229,7 @@ class PS_Page {
         return $tpl;
     }
 
-    public function addPageLink($label=null, $icon=false)
+    public function addPageLink($label = null, $icon = false)
     {
         if (empty($label)) {
             $label = dgettext('pagesmith', 'Add page');
@@ -245,7 +245,7 @@ class PS_Page {
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
 
-    public function deleteLink($icon=false)
+    public function deleteLink($icon = false)
     {
         $vars['id'] = $this->id;
         $vars['aop'] = 'delete_page';
@@ -259,7 +259,7 @@ class PS_Page {
         return javascript('confirm', $js);
     }
 
-    public function editLink($label=null, $icon=false)
+    public function editLink($label = null, $icon = false)
     {
         if ($icon) {
             $label = Icon::show('edit', dgettext('pagesmith', 'Edit page'));
@@ -272,7 +272,7 @@ class PS_Page {
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
 
-    public function frontPageToggle($icon=false)
+    public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
             $label = dgettext('pagesmith', 'Remove from front');
@@ -379,8 +379,16 @@ class PS_Page {
         return true;
     }
 
+    /**
+     * Creates an Access shortcut and possibly menu link
+     * @return boolean
+     */
     public function createShortcut()
     {
+        // title didn't change (in update or new) then go back
+        if (!$this->_title_change) {
+            return true;
+        }
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         PHPWS_Core::initModClass('menu', 'Menu.php');
 
@@ -409,21 +417,32 @@ class PS_Page {
 
     public function createMenuShortcut($shortcut, $key)
     {
-
         $menus = Menu::getPinAllMenus();
         if (PHPWS_Error::logIfError($menus) || empty($menus)) {
             return $menus;
         }
 
-        foreach ($menus as $mn) {
-            $link = new Menu_Link;
-            $link->setMenuId($mn->id);
-            $link->setKeyId($key->id);
-            $link->setTitle($key->title);
-            $link->url = './' . $shortcut->keyword;
-            $link->save();
-        }
+        $db = new PHPWS_DB('menu_links');
+        $db->addWhere('key_id', $this->key_id);
+        $result = $db->getObjects('Menu_Link');
 
+        if (!empty($result)) {
+            foreach ($result as $link) {
+                $link->setTitle($key->title);
+                $link->url = './' . $shortcut->keyword;
+                $link->save();
+            }
+        } else {
+            foreach ($menus as $mn) {
+                test($mn);
+                $link = new Menu_Link;
+                $link->setMenuId($mn->id);
+                $link->setKeyId($key->id);
+                $link->setTitle($key->title);
+                $link->url = './' . $shortcut->keyword;
+                $link->save();
+            }
+        }
         return true;
     }
 
