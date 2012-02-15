@@ -23,7 +23,6 @@
         
         $('.form-protected').each(function() {
             $(this).find('input').change(function() {
-                alert('changed');
                 doPreventNavigate();
             });
             $(this).submit(function() {
