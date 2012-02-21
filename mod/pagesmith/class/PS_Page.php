@@ -434,7 +434,6 @@ class PS_Page {
             }
         } else {
             foreach ($menus as $mn) {
-                test($mn);
                 $link = new Menu_Link;
                 $link->setMenuId($mn->id);
                 $link->setKeyId($key->id);
