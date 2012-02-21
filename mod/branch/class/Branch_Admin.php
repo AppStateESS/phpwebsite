@@ -902,6 +902,7 @@ class Branch_Admin {
         $pager->addPageTags($page_tags);
         $pager->addToggle('class="toggle1"');
         $pager->addRowTags('getTpl');
+        $pager->setSearch('branch_name');
         $this->title = dgettext('branch', 'Branch List');
         $this->content = $pager->get();
     }
