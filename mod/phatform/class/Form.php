@@ -667,7 +667,7 @@ class PHAT_Form extends PHPWS_Item {
     }// END FUNC view()
 
     function getTableName() {
-        if(isset($this->_archiveTableName)) {
+        if(!empty($this->_archiveTableName)) {
             return $this->_archiveTableName;
         } else {
             return 'mod_phatform_form_' . $this->getId();
@@ -1305,7 +1305,6 @@ class PHAT_Form extends PHPWS_Item {
 
     function loadUserData() {
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id=\'' . $this->_dataId . '\'';
-
         $result = PHPWS_DB::getAll($sql);
         $this->_userData = $result[0];
         $this->_position = 0;
