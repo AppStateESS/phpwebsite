@@ -61,6 +61,7 @@ class PHPWS_Text {
     public $fix_anchors = FIX_ANCHORS;
     public $collapse_urls = COLLAPSE_URLS;
     public $allowed_tags = null;
+    public $text = null;
 
     public function __construct($text=null, $encoded=false)
     {
