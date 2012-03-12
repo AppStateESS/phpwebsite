@@ -1434,8 +1434,7 @@ class DBPager {
 
             if (!$index_set) {
                 $index_keys = array_keys($result);
-                $row = self::formatCSVRow($index_keys);
-                fwrite($fp, $row);
+                $row = fputcsv($fp, $index_keys);
                 $index_set = true;
             }
             fputcsv($fp, $result);
