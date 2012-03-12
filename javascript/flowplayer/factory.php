@@ -141,7 +141,7 @@ class javascript_flowplayer extends Javascript {
 
     private function loadBody()
     {
-        $flowplayer = PHPWS_SOURCE_HTTP . 'javascript/flowplayer/flowplayer.swf';
+        $flowplayer = PHPWS_SOURCE_HTTP . 'javascript/flowplayer/flowplayer-3.2.7.swf';
 
         if ($this->sample) {
             $img_dim = getimagesize($this->sample);
