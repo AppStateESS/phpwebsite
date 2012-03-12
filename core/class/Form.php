@@ -342,7 +342,7 @@ class PHPWS_Form {
         }
 
         $this->add($name, 'check', array_keys($assoc));
-        $this->setLabel($name, array_values($assoc));
+        $this->setLabel($name, $assoc);
     }
 
 
