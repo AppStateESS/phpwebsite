@@ -854,7 +854,7 @@ class Key {
         return $db->select('col');
     }
 
-    public function getKey($module, $item_id, $item_name=null)
+    public static function getKey($module, $item_id, $item_name=null)
     {
         $key = new Key;
         if (empty($item_name)) {
