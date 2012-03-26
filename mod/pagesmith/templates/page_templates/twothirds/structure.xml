@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<template>
+	<title>Two Thirds</title>
+	<summary>66% column with 33% right column</summary>
+	<thumbnail>twothirds.png</thumbnail>
+	<style>page.css</style>
+	<structure>
+		<section>
+			<name>header1</name>
+			<type>header</type>
+		</section>
+		<section>
+			<name>text1</name>
+			<type>text</type>
+		</section>
+		<section>
+			<name>text2</name>
+			<type>text</type>
+		</section>
+	</structure>
+	<folders>
+		<name>two-column</name>
+	</folders>
+</template>
