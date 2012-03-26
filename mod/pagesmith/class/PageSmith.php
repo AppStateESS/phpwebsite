@@ -24,8 +24,7 @@ class PageSmith {
     public $content = null;
     public $page = null;
 
-    public function admin()
-    {
+    public function admin() {
         if (!Current_User::allow('pagesmith')) {
             Current_User::disallow();
         }
@@ -44,6 +43,7 @@ class PageSmith {
 
                 switch ($tab) {
                     case 'new':
+                        $this->clearPageSession();
                         $this->loadPage();
                         $this->forms->editPage();
                         break;
@@ -239,15 +239,13 @@ class PageSmith {
         }
     }
 
-    public function loadForms()
-    {
+    public function loadForms() {
         PHPWS_Core::initModClass('pagesmith', 'PS_Forms.php');
         $this->forms = new PS_Forms;
         $this->forms->ps = & $this;
     }
 
-    public function loadPage()
-    {
+    public function loadPage() {
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
         if (@$_REQUEST['id']) {
             $this->page = new PS_Page($_REQUEST['id']);
@@ -266,8 +264,7 @@ class PageSmith {
         }
     }
 
-    public function loadPanel()
-    {
+    public function loadPanel() {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('pagesmith');
 
@@ -286,16 +283,14 @@ class PageSmith {
         $this->panel->setModule('pagesmith');
     }
 
-    public static function pageTplDir()
-    {
+    public static function pageTplDir() {
         return PHPWS_Template::getTemplateDirectory('pagesmith') . 'page_templates/';
     }
 
     /**
      * Triggered from aop = post_page
      */
-    public function postPage()
-    {
+    public function postPage() {
         $some_content = false;
         $tpl_set = isset($_POST['change_tpl']);
         $this->loadPage();
@@ -389,14 +384,12 @@ class PageSmith {
         }
     }
 
-    private function someContent($content)
-    {
+    private function someContent($content) {
         $test_content = strip_tags($content, '<img><object>');
         return !empty($test_content);
     }
 
-    public function user()
-    {
+    public function user() {
         switch ($_GET['uop']) {
             case 'view_page':
                 Layout::addStyle('pagesmith');
@@ -405,8 +398,7 @@ class PageSmith {
         }
     }
 
-    public function viewPage()
-    {
+    public function viewPage() {
         if (empty($this->page)) {
             $this->loadPage();
         }
@@ -430,13 +422,11 @@ class PageSmith {
         }
     }
 
-    public function killSaved($page_id)
-    {
+    public function killSaved($page_id) {
         $_SESSION['PS_Page'][$page_id] = null;
     }
 
-    public function postHeader()
-    {
+    public function postHeader() {
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
 
@@ -452,8 +442,7 @@ class PageSmith {
         Layout::nakedDisplay(javascriptMod('pagesmith', 'update', $vars));
     }
 
-    public function postText()
-    {
+    public function postText() {
         $warning = null;
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $text = & $_POST['text'];
@@ -478,8 +467,7 @@ class PageSmith {
         Layout::nakedDisplay(javascriptMod('pagesmith', 'update', $vars));
     }
 
-    public function postSettings()
-    {
+    public function postSettings() {
         PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
         PHPWS_Settings::set('pagesmith', 'back_to_top', isset($_POST['back_to_top']));
 
@@ -487,8 +475,7 @@ class PageSmith {
         PHPWS_Cache::clearCache();
     }
 
-    private function postTemplate()
-    {
+    private function postTemplate() {
         if (preg_match('/\W/', $_POST['template_name'])) {
             $this->message = dgettext('pagesmith', 'The template name must contain alphanumeric characters only.');
             return false;
@@ -560,8 +547,7 @@ class PageSmith {
         }
     }
 
-    public function deleteTemplate($tpl)
-    {
+    public function deleteTemplate($tpl) {
         if (preg_match('/\W/', $tpl)) {
             return false;
         }
@@ -569,8 +555,7 @@ class PageSmith {
         return PHPWS_File::rmdir($template_dir);
     }
 
-    public function getTemplateList()
-    {
+    public function getTemplateList() {
         $tpl_list = PHPWS_File::listDirectories(PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/');
 
         foreach ($tpl_list as $name) {
@@ -580,8 +565,7 @@ class PageSmith {
         return $flist;
     }
 
-    private function deleteSection($sec_id)
-    {
+    private function deleteSection($sec_id) {
         $id = explode('-', $sec_id);
         if ($id[0] == 'text') {
             $db = new PHPWS_DB('ps_text');
@@ -594,8 +578,7 @@ class PageSmith {
         PHPWS_Error::logIfError($db->delete());
     }
 
-    private function shortenLinks()
-    {
+    private function shortenLinks() {
         $db = new PHPWS_DB('menu_links');
         $db->addColumn('id');
         $db->addColumn('url');
@@ -628,8 +611,7 @@ class PageSmith {
         }
     }
 
-    private function lengthenLinks()
-    {
+    private function lengthenLinks() {
         $db = new PHPWS_DB('menu_links');
         $db->addColumn('id');
         $db->addColumn('url');
@@ -660,9 +642,12 @@ class PageSmith {
         }
     }
 
-    public static function checkLorum($text)
-    {
+    public static function checkLorum($text) {
         return preg_match('/^<!-- lorem -->/', $text);
+    }
+
+    public function clearPageSession() {
+        unset($_SESSION['PS_Page']);
     }
 
 }
