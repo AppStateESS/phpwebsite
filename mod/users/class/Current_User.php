@@ -460,8 +460,8 @@ final class Current_User {
         }
         PHPWS_Core::bookmark(false);
         $auth = Current_User::getAuthorization();
-        if (!empty($auth->login_url)) {
-            $url = $auth->login_url;
+        if (!empty($auth->login_link)) {
+            $url = $auth->login_link;
         } else {
             $url = 'index.php?module=users&action=user&command=login_page';
         }
