@@ -51,7 +51,9 @@ class FC_Image_Manager {
                 if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                     Current_User::disallow();
                 }
-                $this->postImageUpload();
+                if (!$this->postImageUpload()) {
+                    return 'Failed to upload image. Check directory permissions.';
+                }
                 break;
 
             case 'upload_image_form':
@@ -318,10 +320,12 @@ class FC_Image_Manager {
             $this->updateResizes($this->image);
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
+                return false;
             }
 
             $this->image->moveToFolder();
             javascript('close_refresh');
+            return true;
         } else {
             $this->edit();
             return;
