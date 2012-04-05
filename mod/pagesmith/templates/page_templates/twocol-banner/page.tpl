@@ -1,7 +1,7 @@
 <div id="twocol-banner-page" class="pagesmith-page">
     <div class="box-content">
         <div id="twocol-banner-block1">{block1}</div>
-        <table width="100%" class="wtf">
+        <table width="100%">
             <tr>
                 <td class="twocol-banner-col1">
                     <h1 id="twocol-banner-page-title">{page_title}</h1>
