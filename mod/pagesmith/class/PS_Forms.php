@@ -231,6 +231,7 @@ class PS_Forms {
 
     public function pageTemplateForm(PHPWS_Form $form)
     {
+        $edit_button = false;
         $page = $this->ps->page;
 
         $page->_tpl->loadStyle();
