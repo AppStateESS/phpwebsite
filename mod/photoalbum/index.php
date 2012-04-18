@@ -19,7 +19,7 @@ if (!isset($_SESSION['PHPWS_AlbumManager']) && (isset($_REQUEST['module']) && $_
     $_SESSION['PHPWS_AlbumManager'] = new PHPWS_AlbumManager;
 }
 
-if (!empty($_GET['orderby'])) {
+if (!empty($_GET['orderby']) && $_SESSION['PHPWS_AlbumManager']->album instanceof PHPWS_Album) {
     if ($_GET['orderby_dir'] == 'asc') {
         $_SESSION['PHPWS_AlbumManager']->album->order = 1;
     } else {
