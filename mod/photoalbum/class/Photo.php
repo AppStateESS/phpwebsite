@@ -100,7 +100,6 @@ class PHPWS_Photo extends PHPWS_Item {
             }
 
             $tags['PRINT_EDIT_DELETE_LINKS'] = implode('&#160;|&#160;', $links);
-
             if (is_array($_SESSION['PHPWS_AlbumManager']->album->photos)) {
                 $key = array_search($this->getId(), $_SESSION['PHPWS_AlbumManager']->album->photos);
                 if ($key > 0) {
@@ -108,7 +107,6 @@ class PHPWS_Photo extends PHPWS_Item {
                     $tags['PREV_LINK'][] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_id=' . $this->_album . '&amp;PHPWS_Photo_op=view&amp;PHPWS_Photo_id=' . $_SESSION['PHPWS_AlbumManager']->album->photos[$key - 1] . '">' . dgettext('photoalbum', 'Prev') . '</a>';
                     $tags['PREV_LINK'] = implode('&#160;&#160;', $tags['PREV_LINK']);
                 }
-
                 if ($key != (sizeof($_SESSION['PHPWS_AlbumManager']->album->photos) - 1)) {
                     if (isset($_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1])) {
                         $tags['NEXT_LINK'][] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_id=' . $this->_album . '&amp;PHPWS_Photo_op=view&amp;PHPWS_Photo_id=' . $_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1] . '">' . dgettext('photoalbum', 'Next') . '</a>';
