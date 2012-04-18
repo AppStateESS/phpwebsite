@@ -23,7 +23,7 @@ class PHPWS_Photo extends PHPWS_Item {
     public $_tnheight = NULL;
     public $_blurb = NULL;
 
-    public function PHPWS_Photo($id=NULL)
+    public function PHPWS_Photo($id = NULL)
     {
         $this->setTable('mod_photoalbum_photos');
 
@@ -37,7 +37,7 @@ class PHPWS_Photo extends PHPWS_Item {
         }
     }
 
-    public function _view($showLinks=TRUE)
+    public function _view($showLinks = TRUE)
     {
         $tags = array();
 
@@ -110,9 +110,11 @@ class PHPWS_Photo extends PHPWS_Item {
                 }
 
                 if ($key != (sizeof($_SESSION['PHPWS_AlbumManager']->album->photos) - 1)) {
-                    $tags['NEXT_LINK'][] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_id=' . $this->_album . '&amp;PHPWS_Photo_op=view&amp;PHPWS_Photo_id=' . $_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1] . '">' . dgettext('photoalbum', 'Next') . '</a>';
-                    $tags['NEXT_LINK'][] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_id=' . $this->_album . '&amp;PHPWS_Photo_op=view&amp;PHPWS_Photo_id=' . $_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1] . '">&#62;&#62;</a>';
-                    $tags['NEXT_LINK'] = implode('&#160;&#160;', $tags['NEXT_LINK']);
+                    if (isset($_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1])) {
+                        $tags['NEXT_LINK'][] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_id=' . $this->_album . '&amp;PHPWS_Photo_op=view&amp;PHPWS_Photo_id=' . $_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1] . '">' . dgettext('photoalbum', 'Next') . '</a>';
+                        $tags['NEXT_LINK'][] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_id=' . $this->_album . '&amp;PHPWS_Photo_op=view&amp;PHPWS_Photo_id=' . $_SESSION['PHPWS_AlbumManager']->album->photos[$key + 1] . '">&#62;&#62;</a>';
+                        $tags['NEXT_LINK'] = implode('&#160;&#160;', $tags['NEXT_LINK']);
+                    }
                 }
             }
         }
