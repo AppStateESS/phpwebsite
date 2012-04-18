@@ -460,7 +460,7 @@ class Cabinet {
         $document = new PHPWS_Document($document_id);
 
         if (!empty($document->_errors)) {
-            foreach ($this->_errors as $err) {
+            foreach ($document->_errors as $err) {
                 PHPWS_Error::log($err);
             }
             Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
