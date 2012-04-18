@@ -8,7 +8,7 @@
  */
 class SlideShow {
 
-    function play($photos) {
+    public static function play($photos) {
         $largest_height = 0;
         $filenames = '';
         $names = '';
