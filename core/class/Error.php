@@ -140,7 +140,7 @@ class PHPWS_Error {
 
 	public static function printError($error){
 		$code  = $error->getcode();
-		$message = $error->getuserinfo();
+		$message = $error->getUserInfo();
 
 		if (!isset($message)) {
 			$message = $error->getmessage();
