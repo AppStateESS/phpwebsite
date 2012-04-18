@@ -824,7 +824,7 @@ class PHPWS_Text {
                 }
             } else {
                 $address = $_SERVER['REQUEST_URI'];
-                if ($url = parse_url($address)) {
+                if ($url = @parse_url($address)) {
                     extract($url);
                 } else {
                     $query = null;
