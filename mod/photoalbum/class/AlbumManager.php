@@ -6,7 +6,6 @@
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  */
 
-require_once(PHPWS_SOURCE_DIR . 'mod/photoalbum/class/Album.php');
 PHPWS_Core::initModClass('photoalbum', 'Message.php');
 class PHPWS_AlbumManager {
 
