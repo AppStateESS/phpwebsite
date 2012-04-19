@@ -1,0 +1,34 @@
+20111126 by Hilmar
+		CLEditor XHTML Plugin v1.0.0
+		changed jquery.cleditor.xhtml.js (uncompressed)
+		from
+			#193	results += (unary ? "/" : "") + ">";
+		to
+			#193	results += (unary ? " /" : "") + ">";
+			
+		reason: unary tags expl. <br> should become <br /> instead <br/>
+		
+		I have the bug reported to github.
+		please only use the (modified) uncompressed xhtml.js
+
+20120418 by Hilmar
+		to enable the use of <font> tags offered by cle,
+		core/conf/text_settings.php has to allow that tag.
+		
+20120418 by Hilmar
+		within the pws fc cle interaction, the form data for
+		the editor uses data- attributes that are part of the
+		w3c html5 specifications.
+		At the moment, xhtml complains about such attributes.
+		The data- attributes are used only together with the
+		editor, but not together with the content produced by
+		cleditor. Thus, designed html should be xhtml conform,
+		while the editor self does not. Worth to ignore.
+		
+20120418 by Hilmar
+		Observation:
+		the xhtml cle if is not "instances" save,
+		i.e. if blog is called and the two editors on the page
+		(summary and entry) are not changed both, the untouched
+		editor textarea will not being xhtml styled.
+		Have still to think about what to do.

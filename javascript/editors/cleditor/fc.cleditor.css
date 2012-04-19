@@ -1,0 +1,35 @@
+/* 
+	fc.cleditor.css
+	Hilmar Runge
+	2012.04.17
+ */
+ 
+.nacfcselect {
+	width: 132px;
+}
+
+.nacarea {
+	min-height: 400px;
+}
+
+.naccleblock {
+	border: 1px solid #dddddd;
+	padding: 3px;
+	background: #eeeeee;
+}
+
+.naccleblock a {
+	color: #800;
+	cursor: pointer;
+}
+
+.nacfcthumbs {
+	background-color: #000000;
+	margin: 2px;
+	max-height: 104px;
+	overflow-y: auto;
+}
+
+.nacnodisplay {
+	display: none;
+}
