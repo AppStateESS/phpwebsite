@@ -10,12 +10,11 @@
 }
 </style>
     <a class="{ID}" href="{FILE_NAME}">
-	<img width="{HEIGHT}px" height="{HEIGHT}px" src="{SOURCE_HTTP}mod/filecabinet/img/video_generic.jpg" />
 </a>
 <script type="text/javascript" src="{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.6.min.js"></script>
 <script type="text/javascript">
 $f("a.{ID}", "{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.7.swf", {
-	clip: {provider: 'rtmp'},
+	clip: {provider: 'rtmp', autoPlay : false},
 	plugins: {
 	  rtmp: {
 			url: '{SOURCE_HTTP}javascript/flowplayer/flowplayer.rtmp-3.2.3.swf',
