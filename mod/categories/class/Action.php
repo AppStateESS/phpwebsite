@@ -136,7 +136,7 @@ class Categories_Action {
     }
 
 
-    public function user()
+    public static function user()
     {
         $mod = $id = NULL;
         if (isset($_REQUEST['action'])) {
@@ -313,7 +313,7 @@ class Categories_Action {
     /**
      * The main view page for categories
      */
-    public function viewCategory($id=NULL, $module=NULL)
+    public static function viewCategory($id=NULL, $module=NULL)
     {
         $oMod = $category = NULL;
 
@@ -360,7 +360,7 @@ class Categories_Action {
     }
 
 
-    public function moduleSelect($category=NULL)
+    public static function moduleSelect($category=NULL)
     {
         $db = new PHPWS_DB('category_items');
 
@@ -404,7 +404,7 @@ class Categories_Action {
     /**
      * Listing of all items within a category
      */
-    public function getAllItems(Category $category, $module)
+    public static function getAllItems(Category $category, $module)
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 

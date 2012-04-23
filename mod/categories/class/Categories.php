@@ -355,14 +355,14 @@ class Categories {
         }
     }
 
-    public function getTopLevel()
+    public static function getTopLevel()
     {
         $db = new PHPWS_DB('categories');
         $db->addWhere('parent', 0);
         return $db->getObjects('Category');
     }
 
-    public function cookieCrumb($category=NULL, $module=NULL)
+    public static function cookieCrumb($category=NULL, $module=NULL)
     {
         Layout::addStyle('categories');
 
@@ -410,7 +410,7 @@ class Categories {
         return $content;
     }
 
-    public function getModuleListing($cat_id=NULL)
+    public static function getModuleListing($cat_id=NULL)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $db = new PHPWS_DB('category_items');
