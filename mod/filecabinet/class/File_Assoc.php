@@ -258,7 +258,6 @@ class FC_File_Assoc {
             PHPWS_Core::initModClass('layout', 'Layout.php');
             Layout::addStyle('filecabinet', 'file_view.css');
         }
-
         switch ($this->file_type) {
             case FC_IMAGE:
             case FC_IMAGE_RANDOM:
