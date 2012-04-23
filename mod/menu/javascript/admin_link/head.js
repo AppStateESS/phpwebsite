@@ -10,4 +10,4 @@ var delete_question = '{delete_question}';
 {show_drag_sort}
 <!-- END sort -->
 
-<script type="text/javascript" src="{source_http}/mod/menu/javascript/admin_link/menu.js"></script>
+<script type="text/javascript" src="{source_http}mod/menu/javascript/admin_link/menu.js"></script>
