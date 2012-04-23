@@ -9,22 +9,21 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
 PHPWS_Core::requireConfig('filecabinet');
 
 class Cabinet {
-    public $title          = null;
-    public $message        = null;
-    public $content        = null;
-    public $forms          = null;
-    public $panel          = null;
-    public $folder         = null;
-    public $image_mgr      = null;
-    public $document_mgr   = null;
-    public $multimedia_mgr = null;
-    public $file_manager   = null;
 
+    public $title = null;
+    public $message = null;
+    public $content = null;
+    public $forms = null;
+    public $panel = null;
+    public $folder = null;
+    public $image_mgr = null;
+    public $document_mgr = null;
+    public $multimedia_mgr = null;
+    public $file_manager = null;
 
     /**
      * File manager administrative options.
@@ -78,7 +77,6 @@ class Cabinet {
         Layout::nakedDisplay($this->multimedia_mgr->admin());
     }
 
-
     /**
      * Loads the file manager object into the cabinet variable.
      * Attempts to pull a current sessioned object if available
@@ -97,31 +95,31 @@ class Cabinet {
 
         $this->file_manager = new FC_File_Manager($module, $itemname, $_GET['fid']);
         if (isset($_GET['mw'])) {
-            $this->file_manager->max_width = (int)$_GET['mw'];
+            $this->file_manager->max_width = (int) $_GET['mw'];
         }
 
         if (isset($_GET['mh'])) {
-            $this->file_manager->max_height = (int)$_GET['mh'];
+            $this->file_manager->max_height = (int) $_GET['mh'];
         }
 
         if (isset($_GET['ftype'])) {
-            $this->file_manager->folder_type = (int)$_GET['ftype'];
+            $this->file_manager->folder_type = (int) $_GET['ftype'];
         }
 
         if (isset($_GET['fr'])) {
-            $this->file_manager->force_resize = (bool)$_GET['fr'];
+            $this->file_manager->force_resize = (bool) $_GET['fr'];
         }
 
         if (isset($_GET['ml'])) {
-            $this->file_manager->mod_limit = (bool)$_GET['ml'];
+            $this->file_manager->mod_limit = (bool) $_GET['ml'];
         }
 
         if (isset($_GET['fud'])) {
-            $this->file_manager->force_upload_dimensions = (bool)$_GET['fud'];
+            $this->file_manager->force_upload_dimensions = (bool) $_GET['fud'];
         }
 
         if (!empty($_GET['rf'])) {
-            $this->file_manager->reserved_folder = (int)$_GET['rf'];
+            $this->file_manager->reserved_folder = (int) $_GET['rf'];
             $this->file_manager->loadCurrentFolder($this->file_manager->reserved_folder);
         }
 
@@ -149,7 +147,7 @@ class Cabinet {
             return;
         }
 
-        if ( ($aop != 'edit_image' && $aop != 'get_images') && !Current_User::allow('filecabinet') ){
+        if (($aop != 'edit_image' && $aop != 'get_images') && !Current_User::allow('filecabinet')) {
             Current_User::disallow();
             return;
         }
@@ -165,9 +163,8 @@ class Cabinet {
         }
 
         switch ($aop) {
-            /** File manager functions **/
-            /** end file manager functions **/
-
+            /** File manager functions * */
+            /** end file manager functions * */
             case 'fck_image_data':
                 $this->fckImageResult($_GET['id']);
                 break;
@@ -228,7 +225,7 @@ class Cabinet {
                 break;
 
             case 'add_folder':
-                if (!Current_User::allow('filecabinet', 'edit_folders',null, null, true)) {
+                if (!Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
                     Current_User::disallow();
                 }
                 $javascript = true;
@@ -301,9 +298,9 @@ class Cabinet {
 
             case 'pin_form':
                 $javascript = true;
-                @$key_id = (int)$_GET['key_id'];
+                @$key_id = (int) $_GET['key_id'];
                 if (!$key_id) {
-                    javascript('close_refresh', array('refresh'=>0));
+                    javascript('close_refresh', array('refresh' => 0));
                     break;
                 }
 
@@ -437,7 +434,7 @@ class Cabinet {
                 PHPWS_Core::reroute('index.php?module=filecabinet&tab=settings');
         }
 
-        $template['TITLE']   = &$this->title;
+        $template['TITLE'] = &$this->title;
         $template['MESSAGE'] = &$this->message;
         $template['CONTENT'] = &$this->content;
 
@@ -496,13 +493,13 @@ class Cabinet {
         exit();
     }
 
-    public function user($op=null)
+    public function user($op = null)
     {
         if (empty($op)) {
             $op = & $_REQUEST['uop'];
         }
 
-        switch($op) {
+        switch ($op) {
             case 'view_folder':
                 $this->userViewFolder();
                 break;
@@ -516,7 +513,7 @@ class Cabinet {
                 break;
         }
 
-        $template['TITLE']   = $this->title;
+        $template['TITLE'] = $this->title;
         $template['MESSAGE'] = $this->message;
         $template['CONTENT'] = $this->content;
 
@@ -524,7 +521,7 @@ class Cabinet {
         Layout::add($main);
     }
 
-    public static function fileManager($itemname, $file_id=0, $module=null)
+    public static function fileManager($itemname, $file_id = 0, $module = null)
     {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
@@ -539,7 +536,7 @@ class Cabinet {
         return $manager;
     }
 
-    public function viewImage($id, $view_folder=true)
+    public function viewImage($id, $view_folder = true)
     {
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
@@ -581,10 +578,7 @@ class Cabinet {
 
             if (!empty($next_img)) {
                 $next_link = Icon::show('next', dgettext('filecabinet', 'Next image'));
-                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
-                $next_img[0]->popupAddress(),
-                $next_link);
-
+                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $next_img[0]->popupAddress(), $next_link);
             }
 
             $db->resetWhere();
@@ -596,9 +590,7 @@ class Cabinet {
 
             if (!empty($prev_img)) {
                 $prev_link = Icon::show('previous', dgettext('filecabinet', 'Previous image'));
-                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(),
-                $prev_img[0]->popupAddress(),
-                $prev_link);
+                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $prev_img[0]->popupAddress(), $prev_link);
             }
         }
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
@@ -623,6 +615,7 @@ class Cabinet {
         $tpl['MULTIMEDIA'] = $multimedia->getTag();
         $tpl['DESCRIPTION'] = $multimedia->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
+
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'multimedia_view.tpl');
         Layout::nakedDisplay($content);
     }
@@ -631,11 +624,11 @@ class Cabinet {
     {
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
-            $this->title   = dgettext('filecabinet', 'Create image folder');
+            $this->title = dgettext('filecabinet', 'Create image folder');
         } elseif ($this->folder->ftype == DOCUMENT_FOLDER) {
-            $this->title   = dgettext('filecabinet', 'Create document folder');
+            $this->title = dgettext('filecabinet', 'Create document folder');
         } else {
-            $this->title   = dgettext('filecabinet', 'Create multimedia folder');
+            $this->title = dgettext('filecabinet', 'Create multimedia folder');
         }
 
         if (isset($_GET['module_created'])) {
@@ -653,11 +646,11 @@ class Cabinet {
 
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
-            $this->title   = dgettext('filecabinet', 'Update image folder');
+            $this->title = dgettext('filecabinet', 'Update image folder');
         } elseif ($this->folder->ftype == DOCUMENT_FOLDER) {
-            $this->title   = dgettext('filecabinet', 'Update document folder');
+            $this->title = dgettext('filecabinet', 'Update document folder');
         } else {
-            $this->title   = dgettext('filecabinet', 'Update multimedia folder');
+            $this->title = dgettext('filecabinet', 'Update multimedia folder');
         }
         if (isset($_GET['module_created'])) {
             $this->content = $this->forms->editFolder($this->folder, false);
@@ -665,7 +658,6 @@ class Cabinet {
             $this->content = $this->forms->editFolder($this->folder, true);
         }
     }
-
 
     public function loadImageManager()
     {
@@ -686,7 +678,6 @@ class Cabinet {
         $this->multimedia_mgr = new FC_Multimedia_Manager;
     }
 
-
     public function loadForms()
     {
         if (empty($this->forms)) {
@@ -702,8 +693,8 @@ class Cabinet {
             return;
         }
 
-        $folder_id = (int)$_REQUEST['folder_id'];
-        $key_id    = (int)$_REQUEST['key_id'];
+        $folder_id = (int) $_REQUEST['folder_id'];
+        $key_id = (int) $_REQUEST['key_id'];
 
         $db = new PHPWS_DB('filecabinet_pins');
         $db->addWhere('folder_id', $folder_id);
@@ -717,8 +708,8 @@ class Cabinet {
             return;
         }
 
-        $folder_id = (int)$_POST['folder_id'];
-        $key_id = (int)$_POST['key_id'];
+        $folder_id = (int) $_POST['folder_id'];
+        $key_id = (int) $_POST['key_id'];
 
         $db = new PHPWS_DB('filecabinet_pins');
         $db->addWhere('folder_id', $folder_id);
@@ -742,31 +733,29 @@ class Cabinet {
         exit();
     }
 
-
     public function loadPanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
-        $image_command      = array('title'=>dgettext('filecabinet', 'Image folders'), 'link'=> $link);
-        $document_command   = array('title'=>dgettext('filecabinet', 'Document folders'), 'link'=> $link);
-        $multimedia_command = array('title'=>dgettext('filecabinet', 'Multimedia folders'), 'link'=> $link);
+        $image_command = array('title' => dgettext('filecabinet', 'Image folders'), 'link' => $link);
+        $document_command = array('title' => dgettext('filecabinet', 'Document folders'), 'link' => $link);
+        $multimedia_command = array('title' => dgettext('filecabinet', 'Multimedia folders'), 'link' => $link);
 
-        $tabs['image']      = $image_command;
-        $tabs['document']   = $document_command;
+        $tabs['image'] = $image_command;
+        $tabs['document'] = $document_command;
         $tabs['multimedia'] = $multimedia_command;
 
         if (Current_User::isDeity()) {
-            $tabs['classify']   = array('title'=>dgettext('filecabinet', 'Classify'), 'link'=> $link);
-            $tabs['settings']  = array('title'=> dgettext('filecabinet', 'Settings'), 'link' => $link);
-            $tabs['file_types'] = array('title'=> dgettext('filecabinet', 'File types'), 'link' => $link);
+            $tabs['classify'] = array('title' => dgettext('filecabinet', 'Classify'), 'link' => $link);
+            $tabs['settings'] = array('title' => dgettext('filecabinet', 'Settings'), 'link' => $link);
+            $tabs['file_types'] = array('title' => dgettext('filecabinet', 'File types'), 'link' => $link);
         }
 
         $this->panel = new PHPWS_Panel('filecabinet');
         $this->panel->quickSetTabs($tabs);
         $this->panel->setModule('filecabinet');
     }
-
 
     public function userViewFolder()
     {
@@ -816,7 +805,7 @@ class Cabinet {
             return false;
         }
 
-        foreach ($_POST['file_count'] as $key=>$filename) {
+        foreach ($_POST['file_count'] as $key => $filename) {
             $folder_id = $_POST['folder'][$key];
             $folder = new Folder($folder_id);
 
@@ -919,12 +908,12 @@ class Cabinet {
         $sys_size = $sys_size * 1000000;
         $form = new PHPWS_Form;
 
-        $sizes['system']     = & $sys_size;
-        $sizes['form']       = & $form->max_file_size;
-        $sizes['document']   = PHPWS_Settings::get('filecabinet', 'max_document_size');
-        $sizes['image']      = PHPWS_Settings::get('filecabinet', 'max_image_size');
+        $sizes['system'] = & $sys_size;
+        $sizes['form'] = & $form->max_file_size;
+        $sizes['document'] = PHPWS_Settings::get('filecabinet', 'max_document_size');
+        $sizes['image'] = PHPWS_Settings::get('filecabinet', 'max_image_size');
         $sizes['multimedia'] = PHPWS_Settings::get('filecabinet', 'max_multimedia_size');
-        $sizes['absolute']   = ABSOLUTE_UPLOAD_LIMIT;
+        $sizes['absolute'] = ABSOLUTE_UPLOAD_LIMIT;
 
         return $sizes;
     }
@@ -1001,22 +990,28 @@ class Cabinet {
             return false;
         }
 
-        $image->file_directory = $obj->thumbnailDirectory();
-        $image->file_name = $obj->dropExtension() . '.' . $image->getExtension();
+        if (!$obj->embedded) {
+            $image->file_directory = $obj->thumbnailDirectory();
+            $image->file_name = $obj->dropExtension() . '.' . $image->getExtension();
+        } else {
+            $image->file_directory = 'files/multimedia/folder' . $obj->folder_id . '/tn/';
+        }
+
         $image->write();
+        $image->resize($image->file_directory . $image->file_name, $this->max_width, $this->max_height, true);
 
         if ($obj->_classtype == 'multimedia') {
-            $obj->thumbnail = & $image->file_name;
+            $obj->thumbnail = $image->file_directory . $image->file_name;
             $obj->save(false, false);
         }
         return true;
     }
 
-    public static function listFolders($type=null, $simple=false)
+    public static function listFolders($type = null, $simple = false)
     {
         $db = new PHPWS_DB('folders');
         if ($type) {
-            $db->addWhere('ftype', (int)$type);
+            $db->addWhere('ftype', (int) $type);
             $db->addOrder('title');
         }
         if ($simple) {
@@ -1047,7 +1042,7 @@ class Cabinet {
         return $file_assoc->getTag();
     }
 
-    public function loadFolder($folder_id=0)
+    public function loadFolder($folder_id = 0)
     {
         if (!$folder_id && isset($_REQUEST['folder_id'])) {
             $folder_id = &$_REQUEST['folder_id'];
@@ -1062,7 +1057,7 @@ class Cabinet {
         }
     }
 
-    public function authenticate($admin_only=true)
+    public function authenticate($admin_only = true)
     {
         if (!Current_User::isLogged()) {
             javascript('close_refresh');
@@ -1099,7 +1094,7 @@ class Cabinet {
             return true;
         }
 
-        foreach ($item as $id=>$item_id) {
+        foreach ($item as $id => $item_id) {
             $db->reset();
 
             if (@$file_assoc_id = $item_converted[$item_id]) {
@@ -1138,8 +1133,7 @@ class Cabinet {
         return Cabinet::convertToFileAssoc($table, $column, FC_MEDIA);
     }
 
-
-    public function fileTypeAllowed($ext, $mode='all')
+    public function fileTypeAllowed($ext, $mode = 'all')
     {
         if (strpos($ext, '.')) {
             $ext = PHPWS_File::getFileExtension($ext);
@@ -1149,7 +1143,7 @@ class Cabinet {
         return in_array($ext, $types);
     }
 
-    public function getAllowedTypes($mode='all')
+    public function getAllowedTypes($mode = 'all')
     {
         static $all = array();
 
@@ -1157,7 +1151,7 @@ class Cabinet {
             return $all;
         }
 
-        if ($mode=='all' || $mode=='image') {
+        if ($mode == 'all' || $mode == 'image') {
             $image = PHPWS_Settings::get('filecabinet', 'image_files');
             if ($image) {
                 $image = explode(',', $image);
@@ -1167,8 +1161,8 @@ class Cabinet {
             }
         }
 
-        if ($mode=='all' || $mode=='document') {
-            $docs  = PHPWS_Settings::get('filecabinet', 'document_files');
+        if ($mode == 'all' || $mode == 'document') {
+            $docs = PHPWS_Settings::get('filecabinet', 'document_files');
             if ($docs) {
                 $docs = explode(',', $docs);
             }
@@ -1177,7 +1171,7 @@ class Cabinet {
             }
         }
 
-        if ($mode=='all' || $mode=='media') {
+        if ($mode == 'all' || $mode == 'media') {
             $media = PHPWS_Settings::get('filecabinet', 'media_files');
             if ($media) {
                 $media = explode(',', $media);
@@ -1203,15 +1197,14 @@ class Cabinet {
         return $all;
     }
 
-    public static function getResizes($max_width=0, $add_default=false)
+    public static function getResizes($max_width = 0, $add_default = false)
     {
         if (!$max_width) {
             $max_width = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
         }
 
         if ($add_default) {
-            $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'),
-            PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+            $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'), PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         switch (1) {
@@ -1264,7 +1257,7 @@ class Cabinet {
         $folders = $db->select('col');
 
         if (!empty($folders)) {
-            $folders = array(0=>'') + $folders;
+            $folders = array(0 => '') + $folders;
             $form->addSelect('move_to_folder', $folders);
             $form->setLabel('move_to_folder', dgettext('filecabinet', 'Move to folder'));
         }
@@ -1335,8 +1328,8 @@ class Cabinet {
             $path = $classify_dir . $filename;
             $ext = PHPWS_File::getFileExtension($filename);
             if ($this->fileTypeAllowed($path, $type) &&
-            PHPWS_File::checkMimeType($path) &&
-            in_array($ext, $allowed_types)) {
+                    PHPWS_File::checkMimeType($path) &&
+                    in_array($ext, $allowed_types)) {
                 $file_obj = new $class_name;
                 $file_obj->folder_id = $folder->id;
                 $file_obj->setFilename($filename);
@@ -1366,7 +1359,7 @@ class Cabinet {
         Layout::addStyle('filecabinet', 'fck.css');
 
         javascript('jquery');
-        javascriptMod('filecabinet', 'fckeditor', array('instance'=>$_GET['instance'], 'pick'=>dgettext('filecabinet', 'Pick a media type above.')));
+        javascriptMod('filecabinet', 'fckeditor', array('instance' => $_GET['instance'], 'pick' => dgettext('filecabinet', 'Pick a media type above.')));
 
         $active = false;
 
@@ -1397,7 +1390,7 @@ class Cabinet {
         Layout::nakedDisplay($content);
     }
 
-    public function fckFolders($ftype=IMAGE_FOLDER)
+    public function fckFolders($ftype = IMAGE_FOLDER)
     {
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $ftype);
@@ -1466,14 +1459,13 @@ class Cabinet {
                 foreach ($resizes as $fc_id) {
                     $res = new FC_File_Assoc($fc_id);
                     $title = sprintf(dgettext('filecabinet', 'Alternate size %sx%s'), $res->width, $res->height) . '<br />';
-                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'resize\', \'%s\')">%s</a>', $fc_id,  $title);
+                    $smaller[] = sprintf('<a class="oc" onclick="insertHTML(\'resize\', \'%s\')">%s</a>', $fc_id, $title);
                 }
                 $sub['OTHER'] = implode('<br />', $smaller);
             }
             $sub['TN'] = $image->getThumbnail();
             $sub['PIC'] = sprintf('<a class="oc show-thumb">%s</a>', $mouseover);
-            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'image\', \'%s\')">%s</a> <span class="smaller">(%sx%s)</span>',
-            $image->id, $image->title, $image->width, $image->height);
+            $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'image\', \'%s\')">%s</a> <span class="smaller">(%sx%s)</span>', $image->id, $image->title, $image->width, $image->height);
             $tpl['images'][] = $sub;
         }
 
@@ -1516,18 +1508,17 @@ class Cabinet {
 
         //$media = new PHPWS_Multimedia($id);
         /*
-        FCKEditor does not play nice with embeds objects etc.
-        */
+          FCKEditor does not play nice with embeds objects etc.
+         */
         printf('[filecabinet:media:%s]', $id);
         /*
-         echo sprintf('<img style="border : 2px solid black" class="fck-video-insert" src="%s%s" id="fckvideo-%s" title="%s" />',
-         PHPWS_Core::getHomeHttp(),
-         $media->thumbnailPath(),
-         $id, sprintf(dgettext('filecabinet', 'Click to view video: %s'), $media->getTitle()));
+          echo sprintf('<img style="border : 2px solid black" class="fck-video-insert" src="%s%s" id="fckvideo-%s" title="%s" />',
+          PHPWS_Core::getHomeHttp(),
+          $media->thumbnailPath(),
+          $id, sprintf(dgettext('filecabinet', 'Click to view video: %s'), $media->getTitle()));
          */
         exit();
     }
-
 
     public function fckDocuments()
     {
@@ -1543,13 +1534,11 @@ class Cabinet {
         }
 
         if (empty($result)) {
-            $tpl['documents'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
+            $tpl['documents'][] = array('TITLE' => dgettext('filecabinet', 'Folder empty'));
         } else {
             foreach ($result as $doc) {
-                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>',
-                $doc->id, $doc->title);
-                $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>',
-                $doc->id, $doc->getIconView('small_icon'));
+                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>', $doc->id, $doc->title);
+                $sub['ICON'] = sprintf('<a class="oc" onclick="insertHTML(\'document\', \'%s\')">%s</a>', $doc->id, $doc->getIconView('small_icon'));
 
                 $tpl['documents'][] = $sub;
             }
@@ -1573,11 +1562,10 @@ class Cabinet {
         }
 
         if (empty($result)) {
-            $tpl['multimedia'][] = array('TITLE'=>dgettext('filecabinet', 'Folder empty'));
+            $tpl['multimedia'][] = array('TITLE' => dgettext('filecabinet', 'Folder empty'));
         } else {
             foreach ($result as $mm) {
-                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'media\', \'%s\')">%s</a>',
-                $mm->id, $mm->title);
+                $sub['TITLE'] = sprintf('<a class="oc" onclick="insertHTML(\'media\', \'%s\')">%s</a>', $mm->id, $mm->title);
                 $tpl['multimedia'][] = $sub;
             }
         }
@@ -1630,8 +1618,8 @@ class Cabinet {
                 PHPWS_Error::logIfError($db->update());
             }
         }
-
     }
+
 }
 
 ?>
