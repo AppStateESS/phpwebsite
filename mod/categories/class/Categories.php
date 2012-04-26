@@ -450,7 +450,7 @@ class Categories {
         }
     }
 
-    public function listModuleItems(Category $category)
+    public static function listModuleItems(Category $category)
     {
         $module_list = Categories::getModuleListing($category->getId());
 
