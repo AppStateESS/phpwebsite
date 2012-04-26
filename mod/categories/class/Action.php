@@ -417,7 +417,7 @@ class Categories_Action {
 
         Key::restrictView($pager->db, $module);
         $pager->setModule('categories');
-        $pager->setLimitList(array(10, 25, 50));
+        $pager->setLimitList(array(10, 25, 50, 100));
         $pager->setDefaultLimit(25);
         $pager->setTemplate('category_item_list.tpl');
         $pager->addPageTags($pageTags);
