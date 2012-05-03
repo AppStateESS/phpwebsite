@@ -127,7 +127,7 @@ class Access_Shortcut {
                 }
             }
         }
-        $this->keyword = $keyword;
+        $this->keyword = substr($keyword, 0, 254);
 
         return TRUE;
     }

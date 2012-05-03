@@ -189,6 +189,13 @@ function access_update(&$content, $version)
             $content[] = '<pre>1.1.9 changes
 ---------------
 + Fixed a bug in Access module which was causing the RewriteBase? to be set to the empty string</pre>';
+
+        case version_compare($version, '1.2.0', '<'):
+            $sql = "ALTER TABLE  access_shortcuts CHANGE  keyword  keyword VARCHAR( 255 ) NOT NULL DEFAULT ''";
+            PHPWS_DB::query($sql);
+            $content[] = '<pre>1.2.0 changes
+---------------
++ Shortcut length increased and observed in code.</pre>';
     }
 
     return true;
