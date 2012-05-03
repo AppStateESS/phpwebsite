@@ -397,6 +397,7 @@ class PHPWS_Text {
         $t->useFilters($use_filters);
         $t->useBreaker($use_breaker);
         $text = $t->getPrint();
+        $text = filter_var($text, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
         return $text;
     }
 
