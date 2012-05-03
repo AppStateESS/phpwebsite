@@ -39,6 +39,7 @@
         <exclude name="build/**" />
         <exclude name="build.xml" />
         <exclude name="phpwebsite.spec" />
+        <exclude name="cache.properties" />
     </tarfileset>
 
     <target name="tarball" depends="build" description="Tar it up">
