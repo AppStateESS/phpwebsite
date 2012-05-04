@@ -468,7 +468,7 @@ class User_Form {
         $form->addHidden('command', 'postUser');
         $form->addHidden('module', 'users');
 
-        if (Current_User::isDeity()) {
+        if (Current_User::allow('users', 'settings')) {
             $db = new PHPWS_DB('users_auth_scripts');
             $db->setIndexBy('id');
             $db->addColumn('id');
