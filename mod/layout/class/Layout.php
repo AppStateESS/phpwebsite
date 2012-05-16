@@ -543,7 +543,7 @@ class Layout {
         try {
             Layout::loadJavascriptFile($headfile, $directory, $data);
         } catch(Exception $e){
-            trigger_error($e->getMessage(), E_USER_ERROR);
+            //trigger_error($e->getMessage(), E_USER_ERROR);
         }
 
         if (is_file($bodyfile)) {
@@ -1032,6 +1032,7 @@ class Layout {
         $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
         $template['BASE']       = Layout::getBase();
         $template['HTTP'] = PHPWS_Core::getHttp();
+        $template['HOME_URL'] = PHPWS_Core::getHomeHttp(true,true,true);
     }
 
     /**
