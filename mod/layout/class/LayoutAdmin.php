@@ -474,7 +474,7 @@ class Layout_Admin {
         $form->addHidden('command', 'postMeta');
         $form->addText('page_title', $page_title);
         $form->setSize('page_title', 40);
-        $form->setLabel('page_title', dgettext('layout', 'Page Title'));
+        $form->setLabel('page_title', dgettext('layout', 'Site Name'));
         $form->addTextArea('meta_keywords', $meta_keywords);
         $form->setLabel('meta_keywords', dgettext('layout', 'Keywords'));
         $form->addTextArea('meta_description', $meta_description);
