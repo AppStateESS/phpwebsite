@@ -1029,9 +1029,16 @@ class Layout {
         } else {
             $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
         }
-        $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
-        $template['BASE']       = Layout::getBase();
-        $template['HTTP'] = PHPWS_Core::getHttp();
+
+        $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE); // Depricated
+
+        // The Site's Title, as set in Layout 'Meta Tags' interface.
+        $template['SITE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
+
+        $template['BASE']       = Layout::getBase(); 
+        $template['HTTP'] = PHPWS_Core::getHttp(); // 'http' or 'https'
+
+        // Complete URL of the site's home page
         $template['HOME_URL'] = PHPWS_Core::getHomeHttp(true,true,true);
     }
 
