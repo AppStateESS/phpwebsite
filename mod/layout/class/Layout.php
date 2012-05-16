@@ -1032,8 +1032,8 @@ class Layout {
 
         $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE); // Depricated
 
-        // The Site's Title, as set in Layout 'Meta Tags' interface.
-        $template['SITE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
+        // The Site's Name, as set in Layout 'Meta Tags' interface.
+        $template['SITE_NAME'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
 
         $template['BASE']       = Layout::getBase(); 
         $template['HTTP'] = PHPWS_Core::getHttp(); // 'http' or 'https'
