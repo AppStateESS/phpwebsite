@@ -20,18 +20,24 @@
         <td><strong>{MULTIPLE_LABEL}</strong></td>
         <td>{MULTIPLE}</td>
     </tr>
-    <tr>
-        <td><strong>{EXTRA1_LABEL}</strong></td>
-        <td>{EXTRA1}</td>
-    </tr>
-    <tr>
-        <td><strong>{EXTRA2_LABEL}</strong></td>
-        <td>{EXTRA2}</td>
-    </tr>
-    <tr>
-        <td><strong>{EXTRA3_LABEL}</strong></td>
-        <td>{EXTRA3}</td>
-    </tr>
 </table>
-<p style="text-align: center">{EXTRA_NOTE}</p>
+<fieldset>
+    <legend><strong>Extra Information</strong></legend>
+    <p style="text-align: center">{FIELDSET_NOTE}</p>
+    <table>
+        <tr>
+            <td><strong>{EXTRA1_LABEL}</strong></td>
+            <td>{EXTRA1}</td>
+        </tr>
+        <tr>
+            <td><strong>{EXTRA2_LABEL}</strong></td>
+            <td>{EXTRA2}</td>
+        </tr>
+        <tr>
+            <td><strong>{EXTRA3_LABEL}</strong></td>
+            <td>{EXTRA3}</td>
+        </tr>
+    </table>
+    <p style="text-align: center">{EXTRA_NOTE}</p>
+</fieldset>
 {SUBMIT} {END_FORM}

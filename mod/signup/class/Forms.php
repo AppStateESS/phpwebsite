@@ -60,7 +60,6 @@ class Signup_Forms {
                 $this->emailApplicants();
                 break;
         }
-
     }
 
     public function emailApplicants()
@@ -308,6 +307,7 @@ class Signup_Forms {
         $tpl = $form->getTemplate();
 
         $tpl['EXTRA_NOTE'] = dgettext('signup', 'Blank extra fields will not appear on signup.');
+        $tpl['FIELDSET_NOTE'] = dgettext('signup', 'The signup form already asks for the user\'s first and last name, email address, and phone number. <br>If there is any other information you want to ask for, specify it here. These fields are not required.');
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_sheet.tpl');
     }
@@ -365,6 +365,10 @@ class Signup_Forms {
 
         $page_tags['EXTRA_LABEL'] = dgettext('signup', 'Extra details');
 
+        $vars['aop'] = 'menu';
+        $vars['tab'] = 'list';
+        $page_tags['BACK'] = PHPWS_Text::secureLink(dgettext('signup','Back to Signup Sheets'), 'signup', $vars);
+
         $pager->addPageTags($page_tags);
         $pager->setSearch('last_name', 'first_name', 'organization');
 
@@ -381,6 +385,8 @@ class Signup_Forms {
     public function listSignup()
     {
         $ptags['TITLE_HEADER'] = dgettext('signup', 'Title');
+        $ptags['START_TIME_HEADER'] = dgettext('signup', 'Start Time');
+        $ptags['END_TIME_HEADER'] = dgettext('signup', 'End Time');
 
         PHPWS_Core::initModClass('signup', 'Sheet.php');
         PHPWS_Core::initCoreClass('DBPager.php');

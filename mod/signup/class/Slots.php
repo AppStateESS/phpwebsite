@@ -132,12 +132,17 @@ class Signup_Slot {
             $links[] = javascript('confirm', $jsconf);
         }
 
+        $vars['aop'] = 'move_top';
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'), 'signup', $vars);
 
         $vars['aop'] = 'move_up';
         $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
 
         $vars['aop'] = 'move_down';
         $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
+
+        $vars['aop'] = 'move_bottom';
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Bottom'), 'signup', $vars);
 
         return implode(' | ', $links);
     }
@@ -264,18 +269,21 @@ class Signup_Slot {
         return $tpl;
     }
 
+    public function moveTop()
+    {
+        // If not already at top, move to top
+        while ($this->s_order != 1) {
+            $this->moveUp();
+        }
+    }
+
     public function moveUp()
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
-        $db->addColumn('id', null, null, true);
-        $slot_count = $db->select('one');
 
-        if ($this->s_order == 1) {
-            $db->reduceColumn('s_order', 1);
-            $this->s_order = $slot_count;
-            $this->save();
-        } else {
+        // If not already at top, move up one spot
+        if ($this->s_order != 1) {
             $db->resetColumns();
             $db->addWhere('s_order', $this->s_order - 1);
             $db->addValue('s_order', $this->s_order);
@@ -292,17 +300,26 @@ class Signup_Slot {
         $db->addColumn('id', null, null, true);
         $slot_count = $db->select('one');
 
-        if ($this->s_order == $slot_count) {
-            $db->incrementColumn('s_order', 1);
-            $this->s_order = 1;
-            $this->save();
-        } else {
+        // If not already at bottom, move down one spot
+        if ($this->s_order != $slot_count) {
             $db->resetColumns();
             $db->addWhere('s_order', $this->s_order + 1);
             $db->addValue('s_order', $this->s_order);
             $db->update();
             $this->s_order++;
             $this->save();
+        }
+    }
+
+    public function moveBottom() {
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('sheet_id', $this->sheet_id);
+        $db->addColumn('id', null, null, true);
+        $slot_count = $db->select('one');
+
+        // If not already at bottom, move to bottom
+        while ($this->s_order != $slot_count) {
+            $this->moveDown();
         }
     }
 

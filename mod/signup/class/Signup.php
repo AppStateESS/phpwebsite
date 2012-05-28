@@ -221,6 +221,12 @@ class Signup {
                 PHPWS_Core::goBack();
                 break;
 
+            case 'move_top':
+                $this->loadSlot();
+                $this->slot->moveTop();
+                PHPWS_Core::goBack();
+                break;
+
             case 'move_up':
                 $this->loadSlot();
                 $this->slot->moveUp();
@@ -232,7 +238,12 @@ class Signup {
                 $this->slot->moveDown();
                 PHPWS_Core::goBack();
                 break;
-
+                
+            case 'move_bottom':
+                $this->loadSlot();
+                $this->slot->moveBottom();
+                PHPWS_Core::goBack();
+                break;
 
             case 'delete_slot':
                 $this->loadSlot();
@@ -725,10 +736,15 @@ class Signup {
             $this->peep->email = trim($_POST['email']);
         }
 
-        $this->peep->setPhone($_POST['phone']);
+        $phone = $_POST['phone'];
+        $validPhone = preg_match('/^(\(?[2-9]{1}[0-9]{2}\)?)?[ .-]?[2-9]{1}[0-9]{2}[ .-]?[0-9]{4}[ ]*([ext.#]{1,}[0-9]*)?$/', $phone);
 
-        if (empty($this->peep->phone)) {
+        if (empty($phone)) {
             $errors[] = dgettext('signup', 'Please enter a contact phone number.');
+        } else if (!$validPhone) {
+            $errors[] = dgettext('signup', 'Unsuitable phone number.');
+        } else {
+            $this->peep->setPhone($phone);
         }
 
         if (!empty($_POST['extra1'])) {

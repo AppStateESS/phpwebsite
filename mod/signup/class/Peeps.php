@@ -75,8 +75,7 @@ class Signup_Peep {
 
     public function setPhone($phone)
     {
-        $this->phone = preg_replace('/[^\w\-#\s\.]/', '', $phone);
-
+        $this->phone = trim(preg_replace('/(\d{3})?[ .-]?(\d{3})[ .-]?(\d{4})/', '\1 \2-\3 ', $phone));
     }
 
     public function save()

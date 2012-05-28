@@ -117,8 +117,10 @@ class Signup_Sheet {
         $db = new PHPWS_DB('signup_slots');
         $db->addOrder('s_order');
         $db->addWhere('sheet_id', $this->id);
+        $db->setDistinct('true');   // Prevents a slot from showing up multiple times in the results
 
         if ($search) {
+            $db->addWhere('id', 'signup_peeps.slot_id');    // Limits results to only Slots containing the search query
             $db->addWhere('signup_peeps.sheet_id', $this->id);
             $db->addWhere('signup_peeps.first_name', "$search%", 'like', 'and', 'search');
             $db->addWhere('signup_peeps.last_name', "$search%", 'like', 'or', 'search');
@@ -178,6 +180,8 @@ class Signup_Sheet {
             $links[] = javascript('confirm', $js);
         }
 
+        $tpl['START_TIME'] = strftime("%D %R", $this->start_time);
+        $tpl['END_TIME'] = strftime("%D %R", $this->end_time);
         $tpl['TITLE'] = $this->viewLink();
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
