@@ -75,6 +75,9 @@ class Signup_Peep {
 
     public function setPhone($phone)
     {
+        // Sets $this->phone to a phone number formatted like this: AAA DDD-DDDD.
+        // Where AAA is the optional area code. If AAA is surrounded with (), then the output also has ().
+        // Allows text after the number for extensions, etc.
         $this->phone = trim(preg_replace('/(\d{3})?[ .-]?(\d{3})[ .-]?(\d{4})/', '\1 \2-\3 ', $phone));
     }
 

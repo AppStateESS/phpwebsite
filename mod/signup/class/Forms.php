@@ -307,6 +307,7 @@ class Signup_Forms {
         $tpl = $form->getTemplate();
 
         $tpl['EXTRA_NOTE'] = dgettext('signup', 'Blank extra fields will not appear on signup.');
+        // Explain the purpose of the 'extra' fields to the user.
         $tpl['FIELDSET_NOTE'] = dgettext('signup', 'The signup form already asks for the user\'s first and last name, email address, and phone number. <br>If there is any other information you want to ask for, specify it here. These fields are not required.');
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_sheet.tpl');
@@ -364,7 +365,8 @@ class Signup_Forms {
         $page_tags['EMAIL'] = PHPWS_Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars);
 
         $page_tags['EXTRA_LABEL'] = dgettext('signup', 'Extra details');
-
+        
+        // Add a link that takes the user back to the signup sheets page, skipping all the re-sorts
         $vars['aop'] = 'menu';
         $vars['tab'] = 'list';
         $page_tags['BACK'] = PHPWS_Text::secureLink(dgettext('signup','Back to Signup Sheets'), 'signup', $vars);

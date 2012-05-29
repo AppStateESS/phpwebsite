@@ -180,8 +180,8 @@ class Signup_Sheet {
             $links[] = javascript('confirm', $js);
         }
 
-        $tpl['START_TIME'] = strftime("%D %R", $this->start_time);
-        $tpl['END_TIME'] = strftime("%D %R", $this->end_time);
+        $tpl['START_TIME'] = strftime("%D %R", $this->start_time);  // MM/DD/YY hh:mm 24-hour time format
+        $tpl['END_TIME'] = strftime("%D %R", $this->end_time);      // MM/DD/YY hh:mm 24-hour time format
         $tpl['TITLE'] = $this->viewLink();
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;

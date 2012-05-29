@@ -736,6 +736,13 @@ class Signup {
             $this->peep->email = trim($_POST['email']);
         }
 
+        /**
+         * Regex checks for format (NDD)~NDD~DDDD TEXT. Where the area code and the parenthese around it are both optional;
+         * N is a digit 2-9; 
+         * D is a digit 0-9; 
+         * ~ is a delimiter between pieces of the number and can be a '-', a '.', a ' ', or nothing;
+         * TEXT is an optional extension that begins with atleast 1 character from 'ext.#' and ends with any number of digits 0-9;
+         */
         $phone = $_POST['phone'];
         $validPhone = preg_match('/^(\(?[2-9]{1}[0-9]{2}\)?)?[ .-]?[2-9]{1}[0-9]{2}[ .-]?[0-9]{4}[ ]*([ext.#]{1,}[0-9]*)?$/', $phone);
 
