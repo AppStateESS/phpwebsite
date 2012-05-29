@@ -177,6 +177,7 @@ $all_file_types['png']['fi'][]  = 'png image data';
 $all_file_types['png']['vb']    = 'PNG Image';
 
 $all_file_types['ppt']['mct'][] = 'application/vnd.ms-powerpoint';
+$all_file_types['ppt']['mct'][] = 'application/vnd.ms-office';
 $all_file_types['ppt']['mct'][] = 'application/msword';
 $all_file_types['ppt']['bl']    = true;
 $all_file_types['ppt']['fi'][]  = 'microsoft installer';
