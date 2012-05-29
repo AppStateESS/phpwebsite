@@ -776,8 +776,7 @@ class PHPWS_File {
                     }
                 }
             }
-
-            if (empty($mime_type) && $mct['bl']) {
+            if (empty($mime_type) && isset($file_info['bl'])) {
                 return true;
             }
 
