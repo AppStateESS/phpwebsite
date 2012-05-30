@@ -24,7 +24,8 @@ var am = document.location.pathname.substring(1, document.location.pathname.last
 
 // Set this to the directory you wish to manage.
 //var fileRoot = '/' + am + 'userfiles/';
-var fileRoot = '/beans/fallout/images/';
+//var fileRoot = ck_image_dir;
+var fileRoot = ck_image_dir;
 
 //Path to the manage directory on the HTTP server
 var relPath = window.location.protocol + '//' + document.domain;

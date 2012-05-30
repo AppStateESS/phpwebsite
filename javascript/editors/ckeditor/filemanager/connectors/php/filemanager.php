@@ -13,9 +13,13 @@
  *  @author		Simon Georget <simon (at) linea21 (dot) com>
  *	@copyright	Authors
  */
+$sn = & $_GET['sn'];
+session_name($sn);
+session_start();
 require_once('./inc/filemanager.inc.php');
 require_once('filemanager.config.php');
 require_once('filemanager.class.php');
+
 
 if (isset($config['plugin']) && !empty($config['plugin'])) {
 	$pluginPath = 'plugins' . DIRECTORY_SEPARATOR . $config['plugin'] . DIRECTORY_SEPARATOR;
