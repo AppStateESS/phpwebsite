@@ -3,6 +3,10 @@
 $sn = & $_GET['sn'];
 session_name($sn);
 session_start();
+if (@$_SESSION['ip'] != $_SERVER['REMOTE_ADDR'] || !isset($_SESSION['ck_dir'])) {
+    echo 'You must be logged in to access the file manager.';
+    exit();
+}
 $ck_image_dir = $_SESSION['ck_dir'];
 $ck_image_http = $_SESSION['ck_http'];
 $home_dir = $_SESSION['home_dir'];
@@ -34,6 +38,7 @@ var sn = '$sn'; var fileRoot = '$ck_image_dir';var showThumbs = true; var lang =
 <input id="mode" name="mode" type="hidden" value="add" />
 <input id="currentpath" name="currentpath" type="hidden" />
 <input	id="newfile" name="newfile" type="file" />
+<input id="sn" name="sn" value="$sn" type="hidden" />
 <button id="upload" name="upload" type="submit" value="Upload"></button>
 <button id="newfolder" name="newfolder" type="button" value="New Folder"></button>
 <button id="grid" class="ON" type="button">&nbsp;</button>

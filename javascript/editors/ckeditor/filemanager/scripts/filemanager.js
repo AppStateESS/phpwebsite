@@ -25,7 +25,8 @@ $.urlParam = function(name){
 ---------------------------------------------------------*/
 
 // Sets paths to connectors based on language selection.
-var fileConnector = 'connectors/' + lang + '/filemanager.' + lang;
+//var fileConnector = 'connectors/' + lang + '/filemanager.' + lang;
+var fileConnector = 'connectors/php/filemanager.php';
 
 var capabilities = new Array('select', 'download', 'rename', 'delete');
 
@@ -259,7 +260,7 @@ var setUploader = function(path){
 			if(fname != ''){
 				foldername = cleanString(fname);
 				var d = new Date(); // to prevent IE cache issues
-				$.getJSON(fileConnector + '?mode=addfolder&path=' + $('#currentpath').val() + '&name=' + foldername + '&time=' + d.getMilliseconds(), function(result){
+				$.getJSON(fileConnector + '?sn=' + sn + '&mode=addfolder&path=' + $('#currentpath').val() + '&name=' + foldername + '&time=' + d.getMilliseconds(), function(result){
 					if(result['Code'] == 0){
 						addFolder(result['Parent'], result['Name']);
 						getFolderInfo(result['Parent']);
@@ -319,7 +320,7 @@ var bindToolbar = function(data){
 		$('#fileinfo').find('button#download').hide();
 	} else {
 		$('#fileinfo').find('button#download').click(function(){
-			window.location = fileConnector + '?mode=download&path=' + encodeURIComponent(data['Path']);
+			window.location = fileConnector + '?sn='+sn+'&mode=download&path=' + encodeURIComponent(data['Path']);
 		}).show();
 	}
 }
@@ -409,7 +410,7 @@ var renameItem = function(data){
 		if(rname != ''){
 			var givenName = nameFormat(rname) + '.' + getExtension(data['Filename']);
 			var oldPath = data['Path'];
-			var connectString = fileConnector + '?mode=rename&old=' + data['Path'] + '&new=' + givenName;
+			var connectString = fileConnector + '?sn='+sn+'&mode=rename&old=' + data['Path'] + '&new=' + givenName;
 
 			$.ajax({
 				type: 'GET',
@@ -467,7 +468,7 @@ var deleteItem = function(data){
 
 	var doDelete = function(v, m){
 		if(v != 1) return false;
-		var connectString = fileConnector + '?mode=delete&path=' + encodeURIComponent(data['Path']),
+		var connectString = fileConnector + '?sn='+sn+'&mode=delete&path=' + encodeURIComponent(data['Path']),
         parent        = data['Path'].split('/').reverse().slice(1).reverse().join('/') + '/';
 
 		$.ajax({
@@ -630,7 +631,7 @@ function getContextMenuOptions(elem) {
 // Binds contextual menus to items in list and grid views.
 var setMenus = function(action, path){
 	var d = new Date(); // to prevent IE cache issues
-	$.getJSON(fileConnector + '?mode=getinfo&path=' + path + '&time=' + d.getMilliseconds(), function(data){
+	$.getJSON(fileConnector + '?sn='+sn+'&mode=getinfo&path=' + path + '&time=' + d.getMilliseconds(), function(data){
 		if($('#fileinfo').data('view') == 'grid'){
 			var item = $('#fileinfo').find('img[alt="' + data['Path'] + '"]').parent();
 		} else {
@@ -643,7 +644,7 @@ var setMenus = function(action, path){
 				break;
 
 			case 'download':
-				window.location = fileConnector + '?mode=download&path=' + data['Path'];
+				window.location = fileConnector + '?sn='+sn+'mode=download&path=' + data['Path'];
 				break;
 
 			case 'rename':
@@ -682,7 +683,7 @@ var getFileInfo = function(file){
 
 	// Retrieve the data & populate the template.
 	var d = new Date(); // to prevent IE cache issues
-	$.getJSON(fileConnector + '?mode=getinfo&path=' + encodeURIComponent(file) + '&time=' + d.getMilliseconds(), function(data){
+	$.getJSON(fileConnector + '?sn='+sn+'&mode=getinfo&path=' + encodeURIComponent(file) + '&time=' + d.getMilliseconds(), function(data){
 		if(data['Code'] == 0){
 			$('#fileinfo').find('h1').text(data['Filename']).attr('title', file);
 			$('#fileinfo').find('img').attr('src',data['Preview']);
@@ -722,7 +723,7 @@ var getFolderInfo = function(path){
 
 	// Retrieve the data and generate the markup.
 	var d = new Date(); // to prevent IE cache issues
-	var url = fileConnector + '?path=' + encodeURIComponent(path) + '&mode=getfolder&showThumbs=' + showThumbs + '&time=' + d.getMilliseconds();
+	var url = fileConnector + '?sn='+sn+'&path=' + encodeURIComponent(path) + '&mode=getfolder&showThumbs=' + showThumbs + '&time=' + d.getMilliseconds();
 	if ($.urlParam('type')) url += '&type=' + $.urlParam('type');
 	$.getJSON(url, function(data){
 		var result = '';
@@ -859,7 +860,7 @@ var getFolderInfo = function(path){
 // to the callback function in jqueryFileTree
 var populateFileTree = function(path, callback){
 	var d = new Date(); // to prevent IE cache issues
-	var url = fileConnector + '?path=' + encodeURIComponent(path) + '&mode=getfolder&showThumbs=' + showThumbs + '&time=' + d.getMilliseconds();
+	var url = fileConnector + '?sn='+sn+'&path=' + encodeURIComponent(path) + '&mode=getfolder&showThumbs=' + showThumbs + '&time=' + d.getMilliseconds();
 	if ($.urlParam('type')) url += '&type=' + $.urlParam('type');
 	$.getJSON(url, function(data) {
 		var result = '';

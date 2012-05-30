@@ -20,22 +20,6 @@
 function auth()
 {
     return true;
-    // You can insert your own code over here to check if the user is authorized.
-    // If you use a session variable, you've got to start the session first (session_start())
-    /*
-    include ('../../../../../../config/core/config.php');
-    require_once(PHPWS_SOURCE_DIR . 'core/class/Core.php');
-    require_once(PHPWS_SOURCE_DIR . 'mod/users/class/Users.php');
-    define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
-    session_name(SESSION_NAME);
-    session_start();
-    if (!isset($_SESSION['User']) || !$_SESSION['User']->isLogged()) {
-        return false;
-    } else {
-        return true;
-    }
-     * 
-     */
 }
 
 /**
