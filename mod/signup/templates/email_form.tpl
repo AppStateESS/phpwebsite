@@ -1,4 +1,5 @@
 {START_FORM}
+<p><strong>{WARNING_LABEL}</strong>&nbsp;{WARNING}</p>
 <p><strong>{SUBJECT_LABEL}</strong><br />
 {SUBJECT}</p>
 <p><strong>{FROM_LABEL}</strong><br />

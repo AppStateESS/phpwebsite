@@ -82,7 +82,7 @@ class Signup_Forms {
         $form->addText('from', $email['from']);
         $form->setLabel('from', dgettext('signup', 'From'));
         $form->setSize('from', 30);
-
+        
         $form->addTextArea('message', $email['message']);
         $form->setLabel('message', dgettext('signup', 'Message'));
         $form->setCols('message', 50);
@@ -90,6 +90,11 @@ class Signup_Forms {
         $form->addSubmit(dgettext('signup', 'Send emails'));
 
         $tpl = $form->getTemplate();
+        
+        if (!empty($_REQUEST['search'])) {
+            $tpl['WARNING_LABEL'] = dgettext('signup','Note:');
+            $tpl['WARNING'] = dgettext('signup', 'This email will only go out to the people specified by the prior search');
+        }
 
         $this->signup->title = sprintf(dgettext('signup', 'Email %s applicants'), $this->signup->sheet->title);
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'email_form.tpl');
@@ -362,7 +367,7 @@ class Signup_Forms {
         $page_tags['PRINT'] = javascript('open_window', $js);
 
         $vars['aop'] = 'email_applicants';
-        $page_tags['EMAIL'] = PHPWS_Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars);
+        $page_tags['EMAIL'] = PHPWS_Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars, null, "Email all people in the search results");
 
         $page_tags['EXTRA_LABEL'] = dgettext('signup', 'Extra details');
         

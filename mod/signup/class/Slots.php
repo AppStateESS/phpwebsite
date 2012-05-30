@@ -132,17 +132,25 @@ class Signup_Slot {
             $links[] = javascript('confirm', $jsconf);
         }
 
-        $vars['aop'] = 'move_top';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'), 'signup', $vars);
+        if ($this->s_order > 1) {
+            $vars['aop'] = 'move_top';
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'), 'signup', $vars);
+            
+            $vars['aop'] = 'move_up';
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
+        }
+        
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('sheet_id', $this->sheet_id);
+        $db->addColumn('id', null, null, true);
+        $slot_count = $db->select('one');
+        if ($this->s_order < $slot_count) {
+            $vars['aop'] = 'move_down';
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
 
-        $vars['aop'] = 'move_up';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
-
-        $vars['aop'] = 'move_down';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
-
-        $vars['aop'] = 'move_bottom';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Bottom'), 'signup', $vars);
+            $vars['aop'] = 'move_bottom';
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Bottom'), 'signup', $vars);
+        }
 
         return implode(' | ', $links);
     }
