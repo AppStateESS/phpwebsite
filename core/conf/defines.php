@@ -203,7 +203,7 @@ define ('UTF8_MODE', false);
  * editors supported.php file.
  */
 define('USE_WYSIWYG_EDITOR', true);
-define('DEFAULT_EDITOR_TOOL', 'fckeditor');
+define('DEFAULT_EDITOR_TOOL', 'ckeditor');
 define('FORCE_EDITOR', true);
 
 /************************ Captcha Settings *******************/
