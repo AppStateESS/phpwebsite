@@ -264,12 +264,13 @@ class Signup_Slot {
     {
         $vars['address'] = PHPWS_Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
                                                                    'slot_id'=>$this->id));
-        $vars['label']      = $this->title;
+        $vars['label']      = 'Click to edit'; // click this link to edit the slot
         $vars['width']      = 800;
         $vars['height']     = 600;
         $vars['link_title'] = dgettext('signup', 'Click to view and edit signups for this slot.');
 
-        $tpl['TITLE'] = javascript('open_window', $vars);
+        $tpl['TITLE'] = $this->title;   // Slot name
+        $tpl['EDIT'] = javascript('open_window', $vars);    // Edit link
         $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);
         $left = $this->openings - $this->_filled;
         $tpl['LEFT'] = sprintf(dgettext('signup', 'Slots left: %s'), $left);
