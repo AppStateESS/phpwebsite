@@ -214,38 +214,40 @@ class Filemanager {
 
     $suffix='';
 
+    $old = rawurldecode($this->get['old']);
+    $new = rawurldecode($this->get['new']);
 
-    if(substr($this->get['old'],-1,1)=='/') {
-      $this->get['old'] = substr($this->get['old'],0,(strlen($this->get['old'])-1));
+    if(substr($old,-1,1)=='/') {
+      $old = substr($old,0,(strlen($old)-1));
       $suffix='/';
     }
-    $tmp = explode('/',$this->get['old']);
+    $tmp = explode('/',$old);
     $filename = $tmp[(sizeof($tmp)-1)];
-    $path = str_replace('/' . $filename,'',$this->get['old']);
+    $path = str_replace('/' . $filename,'',$old);
 
-    if(file_exists ($this->getRealPath($path) . '/' . $this->get['new'])) {
-      if($suffix=='/' && is_dir($this->getRealPath($path) . '/' . $this->get['new'])) {
-        $this->error(sprintf($this->lang('DIRECTORY_ALREADY_EXISTS'),$this->get['new']));
+    if(file_exists ($this->getRealPath($path) . '/' . $new)) {
+      if($suffix=='/' && is_dir($this->getRealPath($path) . '/' . $new)) {
+        $this->error(sprintf($this->lang('DIRECTORY_ALREADY_EXISTS'),$new));
       }
-      if($suffix=='' && is_file($this->getRealPath($path) . '/' . $this->get['new'])) {
-        $this->error(sprintf($this->lang('FILE_ALREADY_EXISTS'),$this->get['new']));
+      if($suffix=='' && is_file($this->getRealPath($path) . '/' . $new)) {
+        $this->error(sprintf($this->lang('FILE_ALREADY_EXISTS'),$new));
       }
     }
 
-    if(!rename($this->getRealPath($this->get['old']),$this->getRealPath($path) . '/' . $this->get['new'])) {
-      if(is_dir($this->get['old'])) {
-        $this->error(sprintf($this->lang('ERROR_RENAMING_DIRECTORY'),$filename,$this->get['new']));
+    if(!rename($this->getRealPath($old),$this->getRealPath($path) . '/' . $new)) {
+      if(is_dir($old)) {
+        $this->error(sprintf($this->lang('ERROR_RENAMING_DIRECTORY'),$filename,$new));
       } else {
-        $this->error(sprintf($this->lang('ERROR_RENAMING_FILE'),$filename,$this->get['new']));
+        $this->error(sprintf($this->lang('ERROR_RENAMING_FILE'),$filename,$new));
       }
     }
     $array = array(
 			'Error'=>"",
 			'Code'=>0,
-			'Old Path'=>$this->get['old'],
+			'Old Path'=>$old,
 			'Old Name'=>$filename,
-			'New Path'=>$path . '/' . $this->get['new'].$suffix,
-			'New Name'=>$this->get['new']
+			'New Path'=>$path . '/' . $new.$suffix,
+			'New Name'=>$new
     );
     return $array;
   }

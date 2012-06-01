@@ -408,7 +408,11 @@ var renameItem = function(data){
 		rname = m.children('#rname').val();
 
 		if(rname != ''){
-			var givenName = nameFormat(rname) + '.' + getExtension(data['Filename']);
+            if(getExtension(data['Filename']).length == 0) {
+                var givenName = nameFormat(rname);
+            } else {
+    			var givenName = nameFormat(rname) + '.' + getExtension(data['Filename']);
+            }
 			var oldPath = data['Path'];
 			var connectString = fileConnector + '?sn='+sn+'&mode=rename&old=' + data['Path'] + '&new=' + givenName;
 
