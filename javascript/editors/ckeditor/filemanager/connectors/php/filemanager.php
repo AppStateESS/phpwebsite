@@ -29,6 +29,19 @@ require_once('./inc/filemanager.inc.php');
 require_once('filemanager.config.php');
 require_once('filemanager.class.php');
 
+if(!isset($_SESSION)) {
+    $fp = fopen('php://stderr', 'w');
+    ob_start();
+    var_dump($_REQUEST);
+    $derp = ob_get_contents();
+    ob_end_clean();
+    fwrite($fp, $derp);
+    fclose($fp);
+}
+
+$config['base_url'] = $_SESSION['base_url'];
+$config['doc_root'] = $_SESSION['home_dir'];
+
 if (isset($config['plugin']) && !empty($config['plugin'])) {
     $pluginPath = 'plugins' . DIRECTORY_SEPARATOR . $config['plugin'] . DIRECTORY_SEPARATOR;
     require_once($pluginPath . 'filemanager.' . $config['plugin'] . '.config.php');
