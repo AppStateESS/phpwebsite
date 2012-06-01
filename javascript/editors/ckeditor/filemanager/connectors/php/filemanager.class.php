@@ -102,10 +102,17 @@ class Filemanager {
 
   public function getRealPath($path)
   {
+    // Remove the protocol and hostname from the base url, since it is not compared below
     $base = preg_replace("|https?://{$_SERVER['HTTP_HOST']}|", '', $this->config['base_url']);
+
+    // Grab the doc root
     $root = $this->doc_root;
+
+    // If the last character of the doc root is not /, make it /
     if(substr($root, -1, 1) != '/') $root .= '/';
-    return preg_replace("|$base|", $root, $path);
+
+    // Replace the base URL with the doc root
+    return preg_replace("|^$base|", $root, $path);
   }
 
   public function hasPath()
@@ -115,7 +122,17 @@ class Filemanager {
 
   public function getPath()
   {
-    return rawurldecode($this->get['path']);
+    // Consistently decode the provided path
+    $path = rawurldecode($this->get['path']);
+
+    // Replace two or more slashes with just one slash
+    $path = preg_replace('|//+|', '/', $path);
+
+    // If anyone tries to insert naughty characters and break out of the
+    // web root, let's just go ahead and spoil their fun.
+    $path = preg_replace('|../|', '/', $path);
+
+    return $path;
   }
 
   public function getfolder() {
