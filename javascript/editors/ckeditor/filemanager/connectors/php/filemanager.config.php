@@ -59,7 +59,7 @@ $config['images'] = array('jpg', 'jpeg', 'gif', 'png');
  * 	excluded from filtree
  */
 $config['unallowed_files'] = array('.htaccess');
-$config['unallowed_dirs'] = array('_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers');
+$config['unallowed_dirs'] = array('_thumbs', '.CDN_ACCESS_LOGS', 'cloudservers', 'icons', '.svn');
 
 /**
  * 	FEATURED OPTIONS
