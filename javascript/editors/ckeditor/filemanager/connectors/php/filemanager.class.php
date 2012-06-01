@@ -130,7 +130,7 @@ class Filemanager {
 
     // If anyone tries to insert naughty characters and break out of the
     // web root, let's just go ahead and spoil their fun.
-    $path = preg_replace('|../|', '/', $path);
+    $path = preg_replace('|\.\./|', '/', $path);
 
     return $path;
   }
