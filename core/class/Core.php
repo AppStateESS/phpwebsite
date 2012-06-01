@@ -934,6 +934,13 @@ class PHPWS_Core {
         javascript('secure_pop', array('id'=>$_GET['owpop']));
         return true;
     }
+
+    public static function getBaseURL()
+    {
+        return PHPWS_Core::getHttp()
+        . $_SERVER['HTTP_HOST']
+        . preg_replace('/index.*/', '', $_SERVER['PHP_SELF']);
+    }
 }// End of core class
 
 ?>

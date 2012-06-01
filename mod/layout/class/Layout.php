@@ -957,11 +957,7 @@ class Layout {
 
     public static function getBase()
     {
-        return '<base href="'
-        . PHPWS_Core::getHttp()
-        . $_SERVER['HTTP_HOST']
-        . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
-        . '" />';
+        return '<base href="' . PHPWS_Core::getBaseURL() . '" />';
     }
 
     public function getPageTitle($only_root=FALSE)
