@@ -12,7 +12,6 @@ abstract class Tracker
     var $type;
     var $active;
     var $disable_if_logged;
-    var $account;
 
     public function __construct()
     {
@@ -21,6 +20,24 @@ abstract class Tracker
 
     public abstract function track();
     public abstract function trackerType();
+    public abstract function addForm(PHPWS_Form &$form);
+    public abstract function joinDb(PHPWS_DB &$db);
+    public abstract function getFormTemplate();
+
+    public function processForm(array $values)
+    {
+        $this->setName(PHPWS_Text::parseInput($values['name']));
+
+        if(isset($values['active']))
+            $this->setActive();
+        else
+            $this->setInactive();
+
+        if(isset($values['disable_if_logged']))
+            $this->setDisableIfLogged(true);
+        else
+            $this->setDisableIfLogged(false);
+    }
 
     public function delete()
     {
@@ -89,16 +106,6 @@ abstract class Tracker
     public function getDisableIfLogged()
     {
         return $this->disable_if_logged;
-    }
-
-    public function getAccount()
-    {
-        return $this->account;
-    }
-
-    public function setAccount($account)
-    {
-        $this->account = $account;
     }
 }
 

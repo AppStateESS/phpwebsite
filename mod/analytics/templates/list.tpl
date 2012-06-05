@@ -3,7 +3,6 @@
         <th>{NAME_SORT}</th>
         <th>{TYPE_SORT}</th>
         <th>{ACTIVE_SORT}</th>
-        <th>{ACCOUNT}</th>
         <th>{ACTION}</th>
     </tr>
 <!-- BEGIN listrows -->
@@ -11,7 +10,6 @@
         <td>{NAME}</td>
         <td>{TYPE}</td>
         <td>{ACTIVE}</td>
-        <td>{ACCOUNT}</td>
         <td>{ACTION}</td>
     </tr>
 <!-- END listrows -->

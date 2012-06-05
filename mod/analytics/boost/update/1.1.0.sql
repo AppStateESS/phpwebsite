@@ -1,11 +1,3 @@
-CREATE TABLE analytics_tracker (
-    id                INTEGER NOT NULL PRIMARY KEY,
-    name              VARCHAR(255) NOT NULL,
-    type              VARCHAR(255) NOT NULL,
-    active            SMALLINT NOT NULL DEFAULT 0,
-    disable_if_logged INTEGER NOT NULL DEFAULT 0
-);
-
 CREATE TABLE analytics_tracker_google (
     id      INTEGER NOT NULL PRIMARY KEY,
     account VARCHAR(255)

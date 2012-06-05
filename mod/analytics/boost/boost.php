@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Analytics';
-$version      = '1.0.1';
+$version      = '1.1.0';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
@@ -13,5 +13,5 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/analytics/chec
 $about        = true;
 $priority     = 50;
 $dependency   = false;
-$image_dir    = true;
+$image_dir    = false;
 ?>

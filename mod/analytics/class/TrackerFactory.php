@@ -64,6 +64,8 @@ class TrackerFactory
 
     protected static function runQuery($db)
     {
+        self::joinAll($db);
+        $db->addColumn('analytics_tracker.*');
         $result = $db->select();
         if(PHPWS_Error::logIfError($result)) {
             return FALSE;
@@ -81,6 +83,15 @@ class TrackerFactory
         }
 
         return $trackers;
+    }
+
+    protected static function joinAll(PHPWS_DB &$db)
+    {
+        $trackers = self::getAvailableClasses();
+        foreach($trackers as $tracker) {
+            $t = self::newByType($tracker);
+            $t->joinDb($db);
+        }
     }
 }
 

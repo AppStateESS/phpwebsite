@@ -22,6 +22,21 @@ class GenericTracker extends Tracker
         return 'GenericTracker';
     }
 
+    public function addForm(PHPWS_Form &$form)
+    {
+        throw new Exception('Cannot create or edit a GenericTracker.');
+    }
+
+    public function joinDb(PHPWS_DB &$db)
+    {
+        throw new Exception('Cannot load a GenericTracker like that.');
+    }
+
+    public function getFormTemplate()
+    {
+        throw new Exception('Cannot create or edit a GenericTracker.');
+    }
+
     public function getPagerTags()
     {
         $template['NAME'] = $this->name;

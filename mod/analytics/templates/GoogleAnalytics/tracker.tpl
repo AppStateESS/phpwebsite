@@ -4,6 +4,6 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 </script>
 <script type="text/javascript">
 try {
-    var pageTracker = _gat._getTracker("UA-{TRACKER_ID}");
+    var pageTracker = _gat._getTracker("{TRACKER_ID}");
     pageTracker._trackPageview();
 } catch(err) {}</script>

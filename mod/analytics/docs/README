@@ -7,10 +7,10 @@ delicious Google Analytics action to various websites that we host, and in
 my haste, I never added an admin interface, only a database table.  Then,
 at the insistance of trf000 on IRC, I added a rudimentary admin interface.
 
-Right now, Analytics only officially supports Google Analytics, although it
-is somewhat extensible to other cloud-based analytics systems.  First, I'll
-talk about how to use it for Google Analytics, and then a few brief notes
-on extending it for other analytics systems.
+Analytics supports Google Analytics, Piwik, and Open Web Analytics.  It is
+also extensible to other cloud-based analytics systems - just make a class
+in class/trackers (see GenericTracker.php for an example), and add some
+templates to /templates.  More specificity below.
 
 -----------------------------------
 
@@ -48,8 +48,8 @@ be found like so:
 
 http://website.com UA-12345678-9
 
-The "UA-12345678-9" part is your unique ID.  You don't need the 'UA-' part,
-so in the "Account Identifier" box, you would enter: 12345678-9
+The "UA-12345678-9" part is your unique ID.  As of version 1.1.0, you DO need
+the UA- part, so enter "UA-12345678-9" into the account field.
 
 -----------------------------------
 
@@ -61,12 +61,14 @@ class, and we will consider adding it to the phpWebSite distribution.
 
 Have a look at class/trackers/GoogleAnalyticsTracker to get an idea
 for how this works.  All Trackers extend the Tracker class and implement
-two functions: track() and trackerType().
+five functions: trackerType(), track(), addForm(), processForm(), and joinDb()
 
-trackerType() simply returns the name of the class.  This could probably be
+public function trackerType()
+simply returns the name of the class.  This could probably be
 better done with reflection, but I didn't think about it at the time.
 
-track() is called at runtime to add the javascript for your tracker engine
+public function track()
+is called at runtime to add the javascript for your tracker engine
 to the end of the body.  In the case of GoogleAnalyticsTracker, I am just
 putting the TRACKER_ID into the GoogleAnalytics.tpl template, and using the
 self::addEndBody($string) utility to make sure it ends up in the right
@@ -74,17 +76,46 @@ place in the main page template.
 
 Another thing you could do here is directly ping a remote script that would
 keep track of certain information and never actually place anything into
-the body.  I don't know of any service that offers this sort of interface
-but should one come up, go for it!
+the body.  Piwik does offer something like this, but their PHP script just
+adds the tracking javascript to your website, so I figured let's cut out
+the middleman and do it ourselves.  I trust I will regret that someday.
+
+public function addForm(PHPWS_Form &$form)
+allows you to add fields to the administrative edit form.  For example,
+OpenWebAnalyticsTracker uses this extensively, as there are several options
+that you can pass in on the tracking request other than just the siteID.
+
+public function processForm(array $values)
+gives you the form that was submitted administratively so that you can
+properly save the custom fields provided in addForm() to the database.
+
+public function joinDb(PHPWS_DB &$db)
+lets you add a join on analytics_tracker with your own table.  The key here
+is that your tracker's id should be the same as the analytics_tracker id.
+By definition, that makes it a "sparse" table - not every id will be
+covered by an individual tracker's table.
 
 -----------------------------------
 
 FUTURE IMPROVEMENTS
 
-Unfortunately, right now the Analytics module only lets you store one string
-to uniquely identify your tracker script.  This may be all that anyone ever
-needs, but it would be better for the Tracker child classes to decide what
-types of information that they need from the user.  If anyone would like to
-tackle this and submit a patch, we would be grateful.
+The ability to connect your Analytics trackers to data reporting APIs such
+as what Piwik provides would be nice, so that you can view your tracking
+data from within phpWebSite.  This is very low on my priorities though and
+would require significant additions to the module; however, if you want to
+give it a shot and submit a patch, we would be grateful!
 
-Thanks!
+-----------------------------------
+CHANGELOG
+
+2012 Jun 04 Jeff Tickle <jtickle@tux.appstate.edu> 1.1.0
+* Added database support for trackers to collect whatever information they need;
+  no longer restricted to an arbitrary 'account' field.
+- Update script should properly migrate existing config for Google Analytics.
+* Removed the assumption that Google Analytics accounts begin with 'UA-'.  This
+  was the most confusing thing about Analytics, and it's just an unsafe
+  assumption in general.
+* Added support for Trackers to "add to" the admin form, and take the submitted
+  data and put it in their own table.
+* Added support for Piwik <http://piwik.org>
+* Added support for Open Web Analytics <http://openwebanalytics.com>

@@ -12,6 +12,8 @@ class Analytics
         PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         $trackers = TrackerFactory::getActive();
 
+        if(empty($trackers)) return;
+
         foreach($trackers as $tracker) {
             $tracker->track();
         }
@@ -36,6 +38,10 @@ class Analytics
 
         case 'new':
             $panel->setContent(self::newTracker());
+            break;
+
+        case 'create':
+            $panel->setContent(self::createTracker());
             break;
 
         case 'edit':
@@ -82,8 +88,27 @@ class Analytics
 
     public static function newTracker()
     {
-        PHPWS_Core::initModClass('analytics', 'GenericTracker.php');
-        $tracker = new GenericTracker();
+        $form = new PHPWS_Form('tracker');
+        $form->addHidden('module', 'analytics');
+        $form->addHidden('command', 'create');
+        $form->addSubmit('submit', dgettext('analytics', 'Next'));
+
+        $classes = TrackerFactory::getAvailableClasses();
+        $trackers = array();
+        foreach($classes as $class) {
+            $trackers[$class] = $class;
+        }
+        $form->addSelect('tracker', $trackers);
+        $form->setLabel('tracker', dgettext('analytics', 'Tracker'));
+        $form->setRequired('tracker');
+
+        $tpl = $form->getTemplate();
+        return PHPWS_Template::process($tpl, 'analytics', 'select.tpl');
+    }
+
+    public static function createTracker()
+    {
+        $tracker = TrackerFactory::newByType($_REQUEST['tracker']);
         return self::showEditForm($tracker);
     }
 
@@ -112,16 +137,7 @@ class Analytics
             $tracker = TrackerFactory::newByType($_REQUEST['tracker']);
         }
 
-        $tracker->setName(PHPWS_Text::parseInput($_REQUEST['name']));
-        if(isset($_REQUEST['active']))
-            $tracker->setActive();
-        else
-            $tracker->setInactive();
-        if(isset($_REQUEST['disable_if_logged'])) 
-            $tracker->setDisableIfLogged(true);
-        else
-            $tracker->setDisableIfLogged(false);
-        $tracker->setAccount(PHPWS_Text::parseInput($_REQUEST['account']));
+        $tracker->processForm($_REQUEST);
         $tracker->save();
 
         self::redirectList();
@@ -140,10 +156,16 @@ class Analytics
     {
         $tpl = array();
 
+        $tpl['TRACKER_TYPE'] = $tracker->trackerType();
+
         $form = new PHPWS_Form('tracker');
         $form->addHidden('module', 'analytics');
         $form->addHidden('command', 'save_tracker');
         $form->addSubmit('submit', dgettext('analytics', 'Save Tracker'));
+
+        if(isset($_REQUEST['tracker'])) {
+            $form->addHidden('tracker', $_REQUEST['tracker']);
+        }
 
         if($tracker->getId() > 0) {
             $form->addHidden('tracker_id', $tracker->getId());
@@ -153,19 +175,6 @@ class Analytics
         $form->setLabel('name', dgettext('analytics', 'Friendly Name'));
         $form->setRequired('name');
 
-        if(is_a($tracker, 'GenericTracker')) {
-            $classes = TrackerFactory::getAvailableClasses();
-            $trackers = array();
-            foreach($classes as $class) {
-                $trackers[$class] = $class;
-            }
-            $form->addSelect('tracker', $trackers);
-            $form->setLabel('tracker', dgettext('analytics', 'Tracker'));
-            $form->setRequired('tracker');
-        } else {
-            $tpl['TRACKER_TYPE'] = $tracker->trackerType();
-        }
-
         $form->addCheck('active', 1);
         $form->setMatch('active', $tracker->isActive());
         $form->setLabel('active', dgettext('analytics', 'Currently Active'));
@@ -174,11 +183,11 @@ class Analytics
         $form->setMatch('disable_if_logged', $tracker->getDisableIfLogged());
         $form->setLabel('disable_if_logged', dgettext('analytics', 'Disable Analytics if a user is logged in'));
 
-        $form->addText('account', $tracker->getAccount());
-        $form->setLabel('account', dgettext('analytics', 'Account Identifier'));
-        $form->setRequired('account');
+        $tracker->addForm($form);
 
         $tpl = array_merge($tpl, $form->getTemplate());
+
+        $tpl['TRACKER_FORM'] = PHPWS_Template::process($tpl, 'analytics', $tracker->getFormTemplate());
 
         return PHPWS_Template::process($tpl, 'analytics', 'edit.tpl');
     }
