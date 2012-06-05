@@ -58,7 +58,7 @@ function analytics_update(&$content, $currentVersion)
                 $db->addValue('id', $row['id']);
                 // Adding UA- into the account identifier to reduce confusion
                 $db->addValue('account', 'UA-' . $row['account']);
-                $db->insert();
+                $db->insert(false);
                 $content[] = "--- Migrated Google Analytics configuration for account UA-{$row['account']}";
             }
 
