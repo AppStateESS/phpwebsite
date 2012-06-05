@@ -148,6 +148,7 @@ class OpenWebAnalyticsTracker extends Tracker
 
     public function setOwaUrl($url)
     {
+        if(substr($url, -1, 1) != '/') $url .= '/';
         $this->owa_url = $url;
     }
 

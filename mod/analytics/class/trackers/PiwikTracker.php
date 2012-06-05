@@ -100,6 +100,7 @@ class PiwikTracker extends Tracker
 
     public function setPiwikUrl($url)
     {
+        if(substr($url, -1, 1) != '/') $url .= '/';
         $this->piwik_url = $url;
     }
 
