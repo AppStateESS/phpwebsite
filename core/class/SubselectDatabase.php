@@ -612,9 +612,12 @@ class SubselectDatabase extends PHPWS_DB{
     public function addWhere($column, $value = null, $operator = null, $conj = null, $group = null, $join = false)
     {
         PHPWS_DB::touchDB();
+        
         $where = new PHPWS_DB_Where;
         $where->setJoin($join);
         $operator = strtoupper($operator);
+        
+        // If passed in value was an array, loop over the array and call this method once for each column name
         if (is_array($column)) {
             foreach ($column as $new_column => $new_value) {
                 $result = $this->addWhere($new_column, $new_value, $operator, $conj, $group);
@@ -624,11 +627,13 @@ class SubselectDatabase extends PHPWS_DB{
             }
             return true;
         } else {
+            // Single column name passed in, check column name
             if (!PHPWS_DB::allowed($column) || preg_match('[^\w\.]', $column)) {
                 return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addWhere', $column);
             }
         }
 
+        // If non-empty array of values passed in for this column name
         if (is_array($value) && !empty($value)) {
             if (!empty($operator) && $operator != 'IN' && $operator != 'NOT IN' &&
                     $operator != 'BETWEEN' && $operator != 'NOT BETWEEN') {
@@ -658,6 +663,7 @@ class SubselectDatabase extends PHPWS_DB{
                 return true;
             }
         } else {
+            // Single value passed in
             if (is_null($value) || (is_string($value) && strtoupper($value) == 'NULL')) {
                 if (empty($operator) || ( $operator != 'IS NOT' && $operator != '!=')) {
                     $operator = 'IS';
@@ -680,12 +686,17 @@ class SubselectDatabase extends PHPWS_DB{
                     $source_table = $join_table;
                     $column = & $join_column;
                 } elseif (PHPWS_DB::inDatabase($join_table, $join_column)) {
-                    $column = & $join_column;
                     $source_table = $join_table;
-                    $this->addTable($join_table);
+                    /***
+                     * Commented out because this is trying to work too hard.
+                     * If you (as a developer) haven't selected from or joined 
+                     * the table you're trying to add a 'WHERE' expression for,
+                     * then I can't help you. The query will fail, and you'll figure it out.
+                     */
+                    //$this->addTable($join_table);
                 }
             }
-        }
+        }//TODO what do we do if $column isn't a string?
 
         $where->setColumn($column);
         $where->setTable($source_table);
