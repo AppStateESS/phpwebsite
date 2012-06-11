@@ -1,261 +1,22 @@
 <?php
 
-define('DBPAGER_DEFAULT_LIMIT', 25);
-define('DBPAGER_PAGE_LIMIT', 12);
-define('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
+PHPWS_Core::initCoreClass('DBPager.php');
 
-// Note: XML reports are not operational
-define('XML_PARTIAL', 1);
-define('CSV_PARTIAL', 2);
-define('XML_FULL', 3);
-define('CSV_FULL', 4);
-
-if (!defined('UTF8_MODE')) {
-    define('UTF8_MODE', false);
-}
+// Defines are set in parent class
 
 /**
- * DB Pager differs from other paging methods in that it applies
- * limits and store the object results. Other pagers require you
- * to pull all the data at once.
- * This pager pulls only the data it needs for display.
+ * An extension of the DBPager class which supports Subselects.
  *
- * @version $Id$
- * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-class DBPager {
-
-    /**
-     * Name of the class used
-     */
-    public $class = null;
-
-    /**
-     * Object rows pulled from DB
-     */
-    public $display_rows = null;
-
-    /**
-     * Name of the module using list
-     * Needed for template purposes
-     */
-    public $module = null;
-    public $toggles = null;
-
-    /**
-     * Methods the developer wants to run prior to
-     * using the object
-     */
-    public $run_methods = null;
-    public $run_function = null;
-    public $toggle_function = null;
-    public $toggle_func_number = 0;
-
-    /**
-     * List of methods in class
-     */
-    protected $_methods = null;
-    protected $_class_vars = null;
-    public $table_columns = null;
-    // columns returned AS are placed here to allow sorting
-    // later
-    public $needed_columns = null;
-    public $page_tags = null;
-
-    /**
-     * Tags set per row by the object
-     */
-    public $row_tags = null;
-    public $page_turner_left = '&lt;';
-    public $page_turner_right = '&gt;';
-
-    /**
-     * Template file name and directory
-     */
-    public $template = null;
-
-    /**
-     * Limit of rows to pull from db
-     */
-    public $limit = null;
-    public $default_limit = 0;
-    public $limitList = array(10, 25, 50);
-    public $searchColumn = null;
-
-    /**
-     * Which column to order by
-     */
-    public $orderby = null;
-    public $orderby_dir = null;
-
-    /**
-     * If set, then this order will be used if no other
-     * orders are selected
-     */
-    public $default_order = null;
-    public $default_order_dir = 'asc';
-
-    /**
-     * DBpager will derive the link from the url
-     * If it has problems or you just want to force the link,
-     * then you can set the link
-     */
-    public $link = null;
-    public $search = null;
-
-    /**
-     * Total number of rows in database
-     */
-    public $total_rows = null;
-
-    /**
-     * Total number of pages needed to display data
-     */
-    public $total_pages = null;
-
-    /**
-     * Database object
-     */
-    public $db = null;
-    public $current_page = 1;
-
-    /**
-     * Message echoed if no rows are found
-     */
-    public $empty_message = DBPAGER_DEFAULT_EMPTY_MESSAGE;
-
-    /**
-     * Template made before processed
-     */
-    public $final_template = null;
-    public $error = null;
-    public $table = null;
-    // Record of the sql query used to pull the rows.
-    public $row_query = null;
-    public $anchor = null;
-    public $sub_result = array();
-    public $sub_order = array();
-    public $sub_search = false;
-    public $total_column = null;
-    public $clear_button = false;
-    public $search_button = true;
-    public $search_label = true;
-    public $sort_headers = array();
-    public $convert_date = array();
-
-    /**
-     * Method name of function to call for xml/csv report
-     */
-    public $report_row = null;
-    public $report_type = 0;
-    public $allow_partial_report = true;
-
-    /**
-     * If true, DBPager will cache last user request. This is not defaulted to
-     * true because cache_identifier defaults to the template name. If a module
-     * developer uses the same template for different processes, it could get
-     * confusing. It is up to the dev to enable and set a custom cache identifier.
-     */
-    public $cache_queries = false;
-
-    /**
-     * If set, DBPager will use a custom identifier for this object's
-     * cache instance.
-     */
-    public $cache_identifier = null;
-
-    /**
-     * If true, automatically create sort icons
-     */
-    public $auto_sort = true;
+class SubselectPager extends DBPager {
 
     public function __construct($table, $class=null)
     {
-        if (empty($table)) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
-            return;
-        }
-
-        if (isset($_SESSION['DBPager_Last_View'][$table])) {
-            unset($_SESSION['DBPager_Last_View'][$table]);
-        }
-
-        // XML creation not written yet
-        if (isset($_GET['dbprt'])) {
-            switch ($_GET['dbprt']) {
-                case 'csvp':
-                    $this->report_type = CSV_PARTIAL;
-                    break;
-
-                case 'csva':
-                    $this->report_type = CSV_FULL;
-                    break;
-            }
-        }
-
-        $this->table = & $table;
-        $this->db = new PHPWS_DB($table);
-
-        if (PHPWS_Error::isError($this->db)) {
-            $this->error = $this->db;
-            $this->db = null;
-        }
-
-        if (class_exists($class)) {
-            $this->class = $class;
-            $this->_methods = get_class_methods($class);
-
-            // Remove hidden variables from class variable list
-            $class_var_list = array_keys(get_class_vars($class));
-            foreach ($class_var_list as $key => $varname) {
-                if (substr($varname, 0, 1) == '_') {
-                    unset($class_var_list[$key]);
-                }
-            }
-            $this->_class_vars = $class_var_list;
-        } elseif ($class) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
-        }
-
-        $this->loadLink();
-
-        if (isset($_REQUEST['change_page'])) {
-            $this->current_page = (int) $_REQUEST['change_page'];
-        } elseif (isset($_REQUEST['pg'])) {
-            if ($_REQUEST['pg'] == 'last') {
-                $this->current_page = $_REQUEST['pg'];
-            } else {
-                $this->current_page = (int) $_REQUEST['pg'];
-            }
-        }
-
-        if (!$this->current_page) {
-            $this->current_page = 1;
-        }
-
-        if (isset($_REQUEST['limit']) && $_REQUEST['limit'] > 0) {
-            $this->limit = (int) $_REQUEST['limit'];
-        }
-
-        if (isset($_REQUEST['orderby'])) {
-            $this->orderby = preg_replace('/[^\w.]/', '', $_REQUEST['orderby']);
-        }
-
-        if (isset($_REQUEST['orderby_dir'])) {
-            $this->orderby_dir = preg_replace('/\W/', '', $_REQUEST['orderby_dir']);
-        }
-
-        if (isset($_REQUEST['pager_c_search'])) {
-            if (!empty($_REQUEST['pager_c_search'])) {
-                $this->loadSearch($_REQUEST['pager_c_search']);
-                $this->current_page = 1;
-            } else {
-                $this->search = null;
-            }
-        } elseif (isset($_REQUEST['pager_search'])) {
-            $this->loadSearch($_REQUEST['pager_search']);
-        }
+        parent::__construct($table, $class);
+        
+        // Replace the db instance with an instance of SubselectDatabase
+        $this->db = new SubselectDatabase($table);
     }
 
     public function getError()
@@ -285,6 +46,8 @@ class DBPager {
      */
     public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
     {
+        // TODO: this will break if you have more than one db pager at a time
+        // TODO: make this a private member variable
         static $join_match = null;
         static $index = 1;
         $copy = null;
@@ -586,11 +349,11 @@ class DBPager {
     public function getLimit()
     {
         if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
-            foreach ($this->limitList as $this->limit)
-                ;
+            $this->limit = $this->limitList[sizeof($this->limitList)-1];
         }
 
         $start = ($this->current_page - 1) * $this->limit;
+        
         return array((int) $this->limit, (int) $start);
     }
 
@@ -606,25 +369,33 @@ class DBPager {
         }
     }
 
+    //TODO: Why is this recursive?
     public function getTotalRows()
     {
-        if (isset($this->error)) {
-            return;
-        }
-
         /**
          * if total_column is set, use it to get total rows
          */
         if ($this->total_column) {
+            
+            // Save the order, columns, groupby
             $order = $this->db->order;
             $columns = $this->db->columns;
             $group_by = $this->db->group_by;
-            $this->db->group_by = $this->db->order = $this->db->columns = null;
+            
+            // Reset them
+            $this->db->group_by = null;
+            $this->db->order    = null;
+            $this->db->columns  = null;
+            
+            // Add the $total_column and get a count
             $this->db->addColumn($this->total_column, null, null, true, true);
-            $result = $this->db->select('one');
+            $result = $this->db->count();
+            
+            // Restore the columns, order, and groupby
             $this->db->columns = $columns;
             $this->db->order = $order;
             $this->db->group_by = $group_by;
+            
             return $result;
         } else {
             /**
@@ -695,7 +466,7 @@ class DBPager {
     }
 
     /**
-     * Pulls the appropriate rows from the data base.
+     * Pulls the appropriate rows from the database.
      *
      * This function pulls the database information then plugs
      * the data it gets into the object.
@@ -705,10 +476,16 @@ class DBPager {
     {
         $order_set = false;
         $this->table_columns = $this->db->getTableColumns();
+        
         if (!empty($this->needed_columns)) {
-            $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
+            if(isset($this->table_columns)){
+                $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
+            }else{
+                $this->table_columns = $this->needed_columns;
+            }
         }
-        // if false, prevents
+        
+        // If true, determine which report type to use
         if ($this->report_type) {
             $report = true;
             if ($this->report_type == XML_FULL || $this->report_type == CSV_FULL) {
@@ -717,9 +494,12 @@ class DBPager {
                 $full_report = false;
             }
         } else {
-            $full_report = $report = false;
+            // No report requested
+            $report = false;
+            $full_report = false;
         }
 
+        
         if (empty($this->cache_identifier)) {
             $this->cache_identifier = $this->template;
         }
@@ -734,20 +514,24 @@ class DBPager {
             $this->current_page = $current_page;
         }
 
+        // What would be setting $this->error??
         if (isset($this->error)) {
             return $this->error;
         }
-
+        
+        // Repalce space characters in search string with pipes?
         if ($this->search) {
             $search = preg_replace('/\s/', '|', $this->search);
         } else {
             $search = null;
         }
+        
+        /*
         if (!empty($this->sub_result)) {
             foreach ($this->sub_result as $sub_table => $sub) {
                 if (!$sub['tbl']) {
-                    $this->db->addTable($sub['jt'], $sub_table);
-                    $this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
+                    //$this->db->addTable($sub['jt'], $sub_table);
+                    //$this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
                 }
 
                 if (!empty($search)) {
@@ -758,18 +542,22 @@ class DBPager {
                 }
             }
         }
+        */
 
+        // Add a 'where' clause to the application for search string
         if (!$full_report && !empty($search) && isset($this->searchColumn)) {
             foreach ($this->searchColumn as $column_name) {
                 $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
             }
         }
-
+        
         $count = $this->getTotalRows();
+        
         if (PHPWS_Error::isError($count)) {
-            return $count;
+            throw new Exception($count->toString());
         }
-
+        
+        /*
         $this->db->setDistinct(true);
         if (!empty($this->sub_result)) {
             $this->db->addColumn('*');
@@ -781,7 +569,7 @@ class DBPager {
                 }
             }
         }
-
+        */
 
         if (empty($this->limit)) {
             if ($this->default_limit) {
@@ -805,6 +593,7 @@ class DBPager {
             }
         }
 
+        // If a column name to order by has been set, then add the 'order by' clause 
         if (isset($this->orderby)) {
             if ($pos = strpos($this->orderby, '.')) {
                 $col_name = substr($this->orderby, $pos + 1);
@@ -812,17 +601,17 @@ class DBPager {
                 $col_name = $this->orderby;
             }
 
-            if (in_array($col_name, $this->table_columns)) {
-                $sub_order = @$this->sub_order[$col_name];
-                if (!empty($sub_order)) {
-                    $orderby = implode('.', $sub_order);
-                } else {
-                    $orderby = $this->orderby;
-                }
-
-                $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
-                $order_set = true;
+            $sub_order = @$this->sub_order[$col_name];
+            if (!empty($sub_order)) {
+                $orderby = implode('.', $sub_order);
+            } else {
+                $orderby = $this->orderby;
             }
+
+            $orderby = $this->orderby;
+
+            $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
+            $order_set = true;
         }
 
         if (!$order_set && isset($this->default_order)) {
@@ -832,18 +621,16 @@ class DBPager {
         if (!$load_rows) {
             return true;
         }
-
+        
         if (empty($this->class)) {
             $result = $this->db->select();
         } else {
             $result = $this->db->getObjects($this->class);
         }
         $this->row_query = $this->db->lastQuery();
-
         if (PHPWS_Error::isError($result)) {
             return $result;
         }
-
         $this->display_rows = & $result;
 
         if ($this->cache_queries) {
@@ -1010,6 +797,8 @@ class DBPager {
             $sort_columns = array_keys($this->sort_headers);
         }
 
+        //test($sort_columns);
+        
         foreach ($sort_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
@@ -1076,6 +865,8 @@ class DBPager {
             $template[strtoupper($buttonname)] = $link;
         }
 
+         //test($template,1);
+        
         return $template;
     }
 
@@ -1459,12 +1250,12 @@ class DBPager {
      */
     public function get($return_blank_results=true)
     {
-
         $template = array();
 
         if (empty($this->display_rows)) {
             $result = $this->initialize();
             if (PHPWS_Error::isError($result)) {
+                throw new Exception ($result->toString());
                 return $result;
             }
         }
@@ -1486,6 +1277,7 @@ class DBPager {
         $rows = $this->getPageRows();
 
         if (PHPWS_Error::isError($rows)) {
+            throw new Exception($rows);
             return $rows;
         }
 
@@ -1581,6 +1373,7 @@ class DBPager {
         $this->cache_identifier = $str;
     }
 
+    // What is auto sort??
     public function setAutoSort($auto)
     {
         $this->auto_sort = (bool) $auto;
