@@ -1,17 +1,18 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class FC_Document_Manager {
-    public $folder   = null;
+
+    public $folder = null;
     public $document = null;
     public $max_size = 0;
 
-    public function __construct($document_id=0)
+    public function __construct($document_id = 0)
     {
         $this->loadDocument($document_id);
         $this->loadSettings();
@@ -21,6 +22,7 @@ class FC_Document_Manager {
     /*
      * Expects 'dop' command to direct action.
      */
+
     public function admin()
     {
         switch ($_REQUEST['dop']) {
@@ -47,13 +49,52 @@ class FC_Document_Manager {
 
             case 'clip_document':
                 if ($this->document->id) {
-                    Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true,
-                    sprintf('[filecabinet:doc:%s]', $this->document->id));
+                    Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true, sprintf('[filecabinet:doc:%s]', $this->document->id));
                 }
                 PHPWS_Core::goBack();
                 break;
-        }
 
+            case 'add_access':
+                if (!Current_User::authorized('filecabinet')) {
+                    Current_User::disallow();
+                }
+                $keyword = null;
+
+                $this->loadDocument();
+                // document exists, try making a shortcut
+                if ($this->document->id) {
+
+                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    $shortcut = new Access_Shortcut;
+                    if (isset($_GET['keyword'])) {
+                        $keyword = $_GET['keyword'];
+                    }
+                    
+                    if (empty($keyword)) {
+                        $keyword = $this->document->title;
+                    }
+
+                    $result = $shortcut->setKeyword($keyword);
+                    $new_keyword = $shortcut->keyword;
+                    // if setKeyword returns a false or error, we have them pick a different name
+                    if (!$result || PHPWS_Error::isError($result)) {
+                        $message = dgettext('filecabinet', 'Access shortcut name already in use. Please enter another.');
+                        $success = false;
+                    } else {
+                        $shortcut->setUrl('filecabinet', $this->document->getViewLink());
+                        $shortcut->save();
+                        $success = true;
+                        $message = '<p>' . dgettext('filecabinet', 'Access shortcut successful!') . '</p>';
+                        $message .= '<a href="' . PHPWS_Core::getHomeHttp() . $shortcut->keyword . '">' . PHPWS_Core::getHomeHttp() . $shortcut->keyword . '</a>';
+                    }
+                } else {
+                    $message = dgettext('filecabinet', 'File not found');
+                    // not really a success but prevents a repost prompt
+                    $success = true;
+                }
+                echo json_encode(array('success' => $success, 'message' => $message, 'keyword' => $new_keyword));
+                exit();
+        }
     }
 
     public function authenticate()
@@ -73,9 +114,9 @@ class FC_Document_Manager {
         PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
-        $form->addHidden('module',    'filecabinet');
-        $form->addHidden('dop',       'post_document_upload');
-        $form->addHidden('ms',        $this->max_size);
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('dop', 'post_document_upload');
+        $form->addHidden('ms', $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
 
         $form->addFile('file_name');
@@ -111,8 +152,8 @@ class FC_Document_Manager {
 
         if ($this->document->id) {
             $template['CURRENT_DOCUMENT_LABEL'] = dgettext('filecabinet', 'Current document');
-            $template['CURRENT_DOCUMENT_ICON']  = $this->document->getIconView();
-            $template['CURRENT_DOCUMENT_FILE']  = $this->document->file_name;
+            $template['CURRENT_DOCUMENT_ICON'] = $this->document->getIconView();
+            $template['CURRENT_DOCUMENT_FILE'] = $this->document->file_name;
         }
         $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
 
@@ -120,7 +161,7 @@ class FC_Document_Manager {
 
         $sys_size = $sys_size * 1000000;
 
-        if((int)$sys_size < (int)$this->max_size) {
+        if ((int) $sys_size < (int) $this->max_size) {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes (system wide)'), $sys_size);
         } else {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $this->max_size);
@@ -133,7 +174,7 @@ class FC_Document_Manager {
         return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
     }
 
-    public function loadDocument($document_id=0)
+    public function loadDocument($document_id = 0)
     {
         if (!$document_id && isset($_REQUEST['document_id'])) {
             $document_id = $_REQUEST['document_id'];
@@ -175,9 +216,8 @@ class FC_Document_Manager {
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
-                javascriptMod('filecabinet', 'refresh_manager', array('document_id'=>$this->document->id));
+                javascriptMod('filecabinet', 'refresh_manager', array('document_id' => $this->document->id));
             }
-
         } else {
             return $this->edit();
         }
@@ -185,10 +225,10 @@ class FC_Document_Manager {
 
     public function setMaxSize($size)
     {
-        $this->max_size = (int)$size;
+        $this->max_size = (int) $size;
     }
 
-    public function loadFolder($folder_id=0)
+    public function loadFolder($folder_id = 0)
     {
         if (!$folder_id && isset($_REQUEST['folder_id'])) {
             $folder_id = &$_REQUEST['folder_id'];
@@ -199,6 +239,7 @@ class FC_Document_Manager {
             $this->folder->ftype = DOCUMENT_FOLDER;
         }
     }
+
 }
 
 ?>

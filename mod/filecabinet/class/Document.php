@@ -9,15 +9,15 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 class PHPWS_Document extends File_Common {
+
     public $downloaded = 0;
     public $_classtype = 'document';
 
-    function __construct($id=NULL)
+    function __construct($id = NULL)
     {
         $this->loadAllowedTypes();
         $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_document_size'));
@@ -26,7 +26,7 @@ class PHPWS_Document extends File_Common {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $result = $this->init();
         if (PHPWS_Error::isError($result)) {
             $this->id = 0;
@@ -48,8 +48,7 @@ class PHPWS_Document extends File_Common {
         return $db->loadObject($this);
     }
 
-
-    public function getIconView($mode='icon')
+    public function getIconView($mode = 'icon')
     {
         static $icon_list = NULL;
 
@@ -93,7 +92,7 @@ class PHPWS_Document extends File_Common {
         }
     }
 
-    public function getViewLink($format=false, $type='title', $base=false)
+    public function getViewLink($format = false, $type = 'title', $base = false)
     {
         if (MOD_REWRITE_ENABLED) {
             $link = 'filecabinet/' . $this->id;
@@ -135,7 +134,6 @@ class PHPWS_Document extends File_Common {
         return $document->allowType($type);
     }
 
-
     public function pinTags()
     {
         $tpl['TN'] = $this->getViewLink(true, 'icon');
@@ -169,10 +167,11 @@ class PHPWS_Document extends File_Common {
             $links[] = $this->editLink(true);
 
             $vars['document_id'] = $this->id;
-            $vars['dop']      = 'clip_document';
+            $vars['dop'] = 'clip_document';
             $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip document'));
             $links[] = PHPWS_Text::moduleLink($clip, 'filecabinet', $vars);
             $links[] = $this->deleteLink(true);
+            $links[] = $this->accessLink();
         }
 
         if ($links) {
@@ -187,7 +186,17 @@ class PHPWS_Document extends File_Common {
         return $tpl;
     }
 
-    public function save($write=true)
+    private function accessLink()
+    {
+        javascriptMod('filecabinet', 'document_access');
+        $icon = Icon::show('forbidden', dgettext('filecabinet', 'Access'));
+        $link = <<<EOF
+<a style="cursor:pointer" id="f{$this->id}" class="access-link">$icon</a>
+EOF;
+        return $link;
+    }
+
+    public function save($write = true)
     {
         if (empty($this->file_directory)) {
             if ($this->folder_id) {
@@ -207,7 +216,7 @@ class PHPWS_Document extends File_Common {
         }
 
         if (empty($this->title)) {
-            $this->title = $this->file_name;
+            $this->loadTitleFromFilename();
         }
 
         if ($write) {
@@ -234,8 +243,7 @@ class PHPWS_Document extends File_Common {
         $filename_len = strlen($this->file_name);
 
         if ($filename_len > 20) {
-            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-            PHPWS_Text::shortenUrl($this->file_name, 20));
+            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name, PHPWS_Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }
@@ -249,10 +257,10 @@ class PHPWS_Document extends File_Common {
         return $tpl;
     }
 
-    public function deleteLink($icon=false)
+    public function deleteLink($icon = false)
     {
         $vars['document_id'] = $this->id;
-        $vars['folder_id']   = $this->folder_id;
+        $vars['folder_id'] = $this->folder_id;
         $vars['dop'] = 'delete_document';
         $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
         $link->setSalted(1);
@@ -269,10 +277,10 @@ class PHPWS_Document extends File_Common {
         return javascript('confirm', $js);
     }
 
-    public function editLink($icon=false)
+    public function editLink($icon = false)
     {
         $vars['document_id'] = $this->id;
-        $vars['folder_id']   = $this->folder_id;
+        $vars['folder_id'] = $this->folder_id;
         $vars['dop'] = 'upload_document_form';
         $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
         $link->setSalted(1);
@@ -289,27 +297,26 @@ class PHPWS_Document extends File_Common {
         return javascript('open_window', $js);
     }
 
-
     public function getManagerIcon($fmanager)
     {
         $vars = $fmanager->linkInfo(false);
-        $vars['fop']       = 'pick_file';
+        $vars['fop'] = 'pick_file';
         $vars['file_type'] = FC_DOCUMENT;
-        $vars['id']        = $this->id;
+        $vars['id'] = $this->id;
         $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
     }
 
-    public function getTag($return_tpl=false, $small_icon=false)
+    public function getTag($return_tpl = false, $small_icon = false)
     {
-        $tpl['TITLE']    = $this->getViewLink(true);
-        $tpl['SIZE']     = $this->getSize(true);
+        $tpl['TITLE'] = $this->getViewLink(true);
+        $tpl['SIZE'] = $this->getSize(true);
         if ($small_icon) {
-            $tpl['ICON']     = $this->getViewLink(true, 'small_icon');
+            $tpl['ICON'] = $this->getViewLink(true, 'small_icon');
         } else {
-            $tpl['ICON']     = $this->getViewLink(true, 'icon');
+            $tpl['ICON'] = $this->getViewLink(true, 'icon');
         }
-        $tpl['TYPE']     = $this->getFileType(true);
+        $tpl['TYPE'] = $this->getFileType(true);
         $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
         if ($return_tpl) {

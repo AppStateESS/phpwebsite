@@ -209,7 +209,7 @@ class Cycle {
         return PHPWS_Template::process($tpl, 'cycle', 'slot_form.tpl');
     }
 
-    public function getSlots()
+    public static function getSlots()
     {
         PHPWS_Core::initModClass('cycle', 'Cycle_Slot.php');
 

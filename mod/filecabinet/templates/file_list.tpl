@@ -1,16 +1,17 @@
+<div id="dialog"></div>
 <div id="fc-file-list">
 <p><!-- BEGIN admin-links -->{ADMIN_LINKS}<br />
 <!-- END admin-links --></p>
 <hr />
 <table width="100%" cellpadding="2">
     <tr>
-        <th>{TITLE_SORT} - {FILE_NAME_SORT}</th>
+        <th style="width : 50%">{TITLE_SORT} - {FILE_NAME_SORT}</th>
         <th>{FILE_TYPE_SORT}</th>
         <th>{SIZE_SORT} {SIZE_LABEL}</th>
         <!-- BEGIN download -->
         <th>{DOWNLOADED_SORT}</th>
         <!-- END download -->
-        <th>{ACTION_LABEL}</th>
+        <th style="width : 15%">{ACTION_LABEL}</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr{TOGGLE}>

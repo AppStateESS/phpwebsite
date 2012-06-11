@@ -1,25 +1,26 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::requireConfig('access');
 
 class Access_Shortcut {
-    public $id       = 0;
-    public $keyword  = null;
-    public $url      = null;
-    public $active   = 1;
-    public $_error   = null;
 
-    public function Access_Shortcut($id=0)
+    public $id = 0;
+    public $keyword = null;
+    public $url = null;
+    public $active = 1;
+    public $_error = null;
+
+    public function Access_Shortcut($id = 0)
     {
         if ($id == 0) {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $this->init();
     }
 
@@ -46,7 +47,7 @@ class Access_Shortcut {
         if ($url_count == 1) {
             $_REQUEST['id'] = $_GET['id'] = $url[0];
         } else {
-            for($i = 0; $i < $url_count; $i++) {
+            for ($i = 0; $i < $url_count; $i++) {
                 $key = $url[$i];
                 $i++;
                 if (!isset($url[$i])) {
@@ -73,7 +74,7 @@ class Access_Shortcut {
             if (empty($_POST['key_id'])) {
                 return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
             } else {
-                $key = new Key((int)$_POST['key_id']);
+                $key = new Key((int) $_POST['key_id']);
                 $this->setUrl($key->module, $key->url);
             }
         }
@@ -118,6 +119,7 @@ class Access_Shortcut {
             $db = new PHPWS_DB('access_shortcuts');
             $db->addWhere('keyword', $keyword);
             $result = $db->select();
+            $this->keyword = substr($keyword, 0, 254);
             if (!empty($result)) {
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
@@ -127,7 +129,6 @@ class Access_Shortcut {
                 }
             }
         }
-        $this->keyword = substr($keyword, 0, 254);
 
         return TRUE;
     }
@@ -135,9 +136,7 @@ class Access_Shortcut {
     public function rowTags()
     {
         $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
-        $js['ADDRESS']  = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
-        $this->id,
-        Current_User::getAuthKey());
+        $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s', $this->id, Current_User::getAuthKey());
         $js['LINK'] = dgettext('access', 'Delete');
         $tags[] = javascript('confirm', $js);
 
@@ -179,7 +178,7 @@ class Access_Shortcut {
         return $db->saveObject($this);
     }
 
-    public function getRewrite($full=FALSE, $linkable=TRUE)
+    public function getRewrite($full = FALSE, $linkable = TRUE)
     {
         if ($full) {
             $address[] = PHPWS_Core::getHomeHttp();
