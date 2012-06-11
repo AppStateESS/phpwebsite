@@ -84,7 +84,7 @@ define('FIX_ANCHORS', true);
 /******************* COLLAPSE URLS ***********************/
 
 // if true, parseOutput will collapse long urls into a shorter size
-define('COLLAPSE_URLS', true);
+define('COLLAPSE_URLS', false);
 
 // The collapsed url will ALWAYS contain the root address.
 // You can't set this so low that the root is abbreviated.
