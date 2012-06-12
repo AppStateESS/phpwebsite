@@ -363,11 +363,12 @@ class SubselectDatabase extends PHPWS_DB{
          
         // Grab the SQL and throw parens around it
          
-        $sql = '(' . $db->getTheQuery($type) . ') as ' . $as;
-        //$sql = '(' . $db->getTheDamnQuery($type) . ')';
+        //$sql = '(' . $db->getTheQuery($type) . ') as ' . $as;
+        $sql = '(' . $db->getTheQuery($type) . ')';
          
         // brute force add it to the table list
-        $this->tables[] = $sql;
+        $this->table_as[$as] = $sql;
+        //$this->tables[] = $sql;
     }
     
     public function setIndex($index)

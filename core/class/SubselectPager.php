@@ -595,12 +595,15 @@ class SubselectPager extends DBPager {
 
         // If a column name to order by has been set, then add the 'order by' clause 
         if (isset($this->orderby)) {
+            
+            // Find the column name
             if ($pos = strpos($this->orderby, '.')) {
                 $col_name = substr($this->orderby, $pos + 1);
             } else {
                 $col_name = $this->orderby;
             }
 
+            // Check for "sub order" (??)
             $sub_order = @$this->sub_order[$col_name];
             if (!empty($sub_order)) {
                 $orderby = implode('.', $sub_order);
@@ -609,7 +612,8 @@ class SubselectPager extends DBPager {
             }
 
             $orderby = $this->orderby;
-
+            
+            $this->db->resetOrder();
             $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
             $order_set = true;
         }
