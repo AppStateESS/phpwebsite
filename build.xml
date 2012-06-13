@@ -40,6 +40,8 @@
         <exclude name="build.xml" />
         <exclude name="phpwebsite.spec" />
         <exclude name="cache.properties" />
+        <exclude name="convert/**" />
+        <exclude name="setup/**" />
     </tarfileset>
 
     <target name="tarball" depends="build" description="Tar it up">
