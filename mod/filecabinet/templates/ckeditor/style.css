@@ -1,0 +1,76 @@
+/* Page is 800 x 600 */
+
+body {
+    font-family : arial;
+    font-size : 12px;
+}
+
+th {
+    text-align : left;
+}
+
+
+div#folders {
+    width : 150px;
+    height : 590px;
+    background-color : white;
+    position : absolute;
+    left : 0px;
+    top : 0px;
+    overflow-y: auto;
+    font-size : 10px;
+    padding-left : 3px;
+}
+
+div#files {
+    width : 640px;
+    height : 590px;
+    background-color : white;
+    position : absolute;
+    left : 160px;
+    top : 0px;
+    overflow-y: auto;
+}
+
+div#file-type-buttons {
+    margin : 5px 0px;
+    padding : 0px 10px;
+    border-bottom : 2px solid #ebebeb;
+
+}
+
+div#file-type-buttons img {
+    margin : 0px 5px;
+}
+
+div#folders ul {
+    list-style-type: none;
+    margin : 0px;
+    padding : 0px;
+}
+
+div#folders ul.file-listing {
+    list-style-type: none;
+    margin-left : 8px;
+    padding : 0px;
+}
+
+div#folders li.folder {
+    padding : 3px 3px;
+    cursor : pointer;
+}
+div#folders li.folder div.folder-file-listing {
+    display : none;
+}
+
+div#folders li img {
+    vertical-align: bottom;
+}
+
+div.pick-image {
+    cursor : pointer;
+    padding : 2px;
+}
+div.pick-image:hover {
+    background-color : #ebebeb;
+}

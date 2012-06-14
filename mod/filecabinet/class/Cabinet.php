@@ -165,51 +165,57 @@ class Cabinet {
         switch ($aop) {
             /** File manager functions * */
             /** end file manager functions * */
-            case 'fck_image_data':
-                $this->fckImageResult($_GET['id']);
+            case 'ckeditor':
+                $this->ckEditor();
                 break;
 
-            case 'fck_resize_data':
-                $this->fckResizeResult($_GET['id']);
+            case 'ck_folder_contents':
+                $this->ckFolderContents();
                 break;
+            //case ''
+            /*
+              case 'fck_image_data':
+              $this->fckImageResult($_GET['id']);
+              break;
 
-            case 'fck_document_data':
-                $this->fckDocumentResult($_GET['id']);
-                break;
+              case 'fck_resize_data':
+              $this->fckResizeResult($_GET['id']);
+              break;
 
-            case 'fck_media_data':
-                $this->fckMediaResult($_GET['id']);
-                break;
+              case 'fck_document_data':
+              $this->fckDocumentResult($_GET['id']);
+              break;
+
+              case 'fck_media_data':
+              $this->fckMediaResult($_GET['id']);
+              break;
 
 
-            case 'fckeditor':
-                $this->fckEditor();
-                break;
 
-            case 'fck_img_folders':
-                $this->fckFolders(IMAGE_FOLDER);
-                break;
+              case 'fck_img_folders':
+              $this->fckFolders(IMAGE_FOLDER);
+              break;
 
-            case 'fck_doc_folders':
-                $this->fckFolders(DOCUMENT_FOLDER);
-                break;
+              case 'fck_doc_folders':
+              $this->fckFolders(DOCUMENT_FOLDER);
+              break;
 
-            case 'fck_mm_folders':
-                $this->fckFolders(MULTIMEDIA_FOLDER);
-                break;
+              case 'fck_mm_folders':
+              $this->fckFolders(MULTIMEDIA_FOLDER);
+              break;
 
-            case 'fck_images':
-                $this->fckImages();
-                break;
+              case 'fck_images':
+              $this->fckImages();
+              break;
 
-            case 'fck_documents':
-                $this->fckDocuments();
-                break;
+              case 'fck_documents':
+              $this->fckDocuments();
+              break;
 
-            case 'fck_multimedia':
-                $this->fckMultimedia();
-                break;
-
+              case 'fck_multimedia':
+              $this->fckMultimedia();
+              break;
+             */
             case 'image':
                 $this->panel->setCurrentTab('image');
                 $this->title = dgettext('filecabinet', 'Image folders');
@@ -447,6 +453,18 @@ class Cabinet {
             $finalPanel = $this->panel->display();
             Layout::add(PHPWS_ControlPanel::display($finalPanel));
         }
+    }
+
+    private function ckFolderContents()
+    {
+        $this->loadFolder();
+        $this->folder->loadFiles();
+        $encode['test'] = $this->folder->ftype;
+        foreach($this->folder->_files as $file) {
+            $row[] = $file->getCKRow();
+        }
+        echo '<ul class="file-listing"><li>' . implode('</li><li>', $row) . '</li></ul>';
+        exit();
     }
 
     public function download($document_id)
@@ -1354,43 +1372,54 @@ class Cabinet {
         }
     }
 
-    public function fckEditor()
+    public function ckEditor()
     {
-        Layout::addStyle('filecabinet', 'fck.css');
+        $folder_type = 'image';
+        $tpl = array();
+        $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
+        $tpl['IMAGE_BUTTON'] = sprintf('<img id="image-button" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/image.png');
+        $tpl['DOCUMENT_BUTTON'] = sprintf('<img id="document-button" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/document.png');
+        $tpl['MEDIA_BUTTON'] = sprintf('<img id="media-button" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/media.png');
 
-        javascript('jquery');
-        javascriptMod('filecabinet', 'fckeditor', array('instance' => $_GET['instance'], 'pick' => dgettext('filecabinet', 'Pick a media type above.')));
+        $tpl['FOLDER_LISTING'] = $this->ckFolders();
 
-        $active = false;
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
+        /* Layout::addStyle('filecabinet', 'fck.css');
 
-        if (PHPWS_Settings::get('filecabinet', 'fck_allow_images')) {
-            $active = true;
-            $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="%smod/filecabinet/img/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Images'));
-        }
+          javascript('jquery');
+          javascriptMod('filecabinet', 'fckeditor', array('instance' => $_GET['instance'], 'pick' => dgettext('filecabinet', 'Pick a media type above.')));
 
-        if (PHPWS_Settings::get('filecabinet', 'fck_allow_documents')) {
-            $active = true;
-            $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="%smod/filecabinet/img/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Documents'));
-        }
+          $active = false;
 
-        if (PHPWS_Settings::get('filecabinet', 'fck_allow_media')) {
-            $active = true;
-            $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="%smod/filecabinet/img/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Multimedia'));
-        }
+          if (PHPWS_Settings::get('filecabinet', 'fck_allow_images')) {
+          $active = true;
+          $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="%smod/filecabinet/img/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Images'));
+          }
 
-        if (!$active) {
-            Layout::nakedDisplay(dgettext('filecabinet', 'No File Cabinet file types are enabled.'));
-            exit();
-        }
+          if (PHPWS_Settings::get('filecabinet', 'fck_allow_documents')) {
+          $active = true;
+          $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="%smod/filecabinet/img/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Documents'));
+          }
 
-        $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
+          if (PHPWS_Settings::get('filecabinet', 'fck_allow_media')) {
+          $active = true;
+          $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="%smod/filecabinet/img/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Multimedia'));
+          }
 
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl');
+          if (!$active) {
+          Layout::nakedDisplay(dgettext('filecabinet', 'No File Cabinet file types are enabled.'));
+          exit();
+          }
 
-        Layout::nakedDisplay($content);
+          $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
+
+          $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl'); */
+
+        echo $content;
+        exit();
     }
 
-    public function fckFolders($ftype = IMAGE_FOLDER)
+    private function ckFolders($ftype = IMAGE_FOLDER)
     {
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $ftype);
@@ -1401,33 +1430,30 @@ class Cabinet {
         $result = $db->select();
         if (PHPWS_Error::logIfError($result)) {
             if ($ftype == IMAGE_FOLDER) {
-                echo dgettext('filecabinet', 'Could not pull image folders.');
+                return dgettext('filecabinet', 'Could not pull image folders.');
             } elseif ($ftype == DOCUMENT_FOLDER) {
-                echo dgettext('filecabinet', 'Could not pull document folders.');
+                return dgettext('filecabinet', 'Could not pull document folders.');
             } else {
-                echo dgettext('filecabinet', 'Could not pull multimedia folders.');
+                return dgettext('filecabinet', 'Could not pull multimedia folders.');
             }
-            exit();
         }
 
         if (empty($result)) {
-            echo dgettext('filecabinet', 'No folders found.');
-            exit();
+            return dgettext('filecabinet', 'No folders found.');
         }
 
         foreach ($result as $fldr) {
-            $img = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/folder.gif" />';
-            $sub['FOLDER_NAME'] = sprintf('<a class="oc open-folder" onclick="pull_folder(%s, %s)">%s %s</a>', $fldr['id'], $ftype, $img, $fldr['title']);
-            if ($ftype == DOCUMENT_FOLDER) {
-                $sub['PUBLIC'] = $fldr['public_folder'] ? dgettext('filecabinet', 'Public') : dgettext('filecabinet', 'Private');
-            }
+            $img = '<img class="folder-image" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/directory.png" />';
+            $sub['FOLDER_NAME'] = sprintf('<li class="folder" rel="%s"><span>%s %s</span><div class="folder-file-listing"></div></li>', $fldr['id'], $img, $fldr['title']);
+            /* if ($ftype == DOCUMENT_FOLDER) {
+              $sub['PUBLIC'] = $fldr['public_folder'] ? dgettext('filecabinet', 'Public') : dgettext('filecabinet', 'Private');
+              } */
             $sub['ID'] = $fldr['id'];
             $tpl['folders'][] = $sub;
         }
 
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckfolders.tpl');
-        echo $content;
-        exit();
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckfolders.tpl');
+        return $content;
     }
 
     /**
