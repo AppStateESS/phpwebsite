@@ -92,7 +92,7 @@ class PHPWS_Text {
         }
     }
 
-    public function breakPost($name)
+    public static function breakPost($name)
     {
         $check_name = sprintf('%s_breaker', $name);
         return isset($_POST[$check_name]);
