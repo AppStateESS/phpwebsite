@@ -17,6 +17,7 @@ if ($_REQUEST['module'] != 'layout' || !isset($_REQUEST['action'])) {
 
 if ($_REQUEST['action'] == 'ckeditor') {
     Layout::ckeditor();
+    exit();
 }
 
 if (!Current_User::allow('layout')) {

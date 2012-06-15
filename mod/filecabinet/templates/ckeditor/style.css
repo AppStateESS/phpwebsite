@@ -74,3 +74,8 @@ div.pick-image {
 div.pick-image:hover {
     background-color : #ebebeb;
 }
+
+div#ck-file-info {
+    text-align : center;
+    margin : auto;
+}

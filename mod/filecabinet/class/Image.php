@@ -442,6 +442,39 @@ class PHPWS_Image extends File_Common {
         return sprintf('<div class="pick-image" rel="image" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
     }
 
+    public function ckFileInfo()
+    {
+        $new_width = $this->width;
+        $new_height = $this->height;
+
+        if ($new_width > CK_FILE_INFO_WIDTH) {
+            $resize = $new_width / CK_FILE_INFO_WIDTH;
+            $new_width = CK_FILE_INFO_WIDTH;
+            $new_height = floor($new_height / $resize);
+        }
+
+        if ($new_height > CK_FILE_INFO_HEIGHT) {
+            $resize = $new_height / CK_FILE_INFO_HEIGHT;
+            $new_height = CK_FILE_INFO_HEIGHT;
+            $new_width = floor($new_width / $resize);
+        }
+
+        $margin_top = floor((CK_FILE_INFO_HEIGHT - $new_height) / 2);
+        $link = <<<EOF
+        <img src="{$this->file_directory}{$this->file_name}" style="width : {$new_width}px; height : {$new_height}px" />
+EOF;
+        $data['html'] = <<<EOF
+<div id="ck-file-info" style="margin-top : {$margin_top}px">
+        $link
+        <br>
+        $this->title $this->width x $this->height
+</div>
+EOF;
+
+        $data['insert'] = $link;
+        echo json_encode($data);
+    }
+
     public function getManagerIcon($fmanager)
     {
         if (($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height)) {
@@ -674,7 +707,6 @@ class PHPWS_Image extends File_Common {
             // The request is greater in size than the original.
             return true;
         }
-
         $tmp_file = $this->_upload->upload['tmp_name'];
         $cpy_file = $tmp_file . '.rs';
 

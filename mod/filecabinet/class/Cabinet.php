@@ -172,6 +172,10 @@ class Cabinet {
             case 'ck_folder_contents':
                 $this->ckFolderContents();
                 break;
+
+            case 'ck_file_info':
+                $this->ckFileInfo();
+                break;
             //case ''
             /*
               case 'fck_image_data':
@@ -455,12 +459,28 @@ class Cabinet {
         }
     }
 
+    private function ckFileInfo()
+    {
+        switch ($_GET['ftype']) {
+            case 'image':
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $file = new PHPWS_Image($_GET['file_id']);
+                echo $file->ckFileInfo();
+                break;
+            case 'document':
+                break;
+            case 'multimedia':
+                break;
+        }
+        exit();
+    }
+
     private function ckFolderContents()
     {
         $this->loadFolder();
         $this->folder->loadFiles();
         $encode['test'] = $this->folder->ftype;
-        foreach($this->folder->_files as $file) {
+        foreach ($this->folder->_files as $file) {
             $row[] = $file->getCKRow();
         }
         echo '<ul class="file-listing"><li>' . implode('</li><li>', $row) . '</li></ul>';
