@@ -339,8 +339,9 @@ class PHPWS_User {
 
     public function setEmail($email)
     {
-        $this->email = $email;
-
+        // Trim whitespace and make email address all lowercase
+        $email = strtolower(trim($email));
+        
         if (!PHPWS_Text::isValidInput($email, 'email')) {
             return PHPWS_Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
         }
@@ -349,6 +350,9 @@ class PHPWS_User {
             return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'setEmail');
         }
 
+        // Only if all these tests pass, modify the member variable
+        $this->email = $email;
+        
         return true;
     }
 
