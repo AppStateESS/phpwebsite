@@ -7,7 +7,7 @@ CKEDITOR.plugins.add('filecabinet',
          editor.ui.addButton(
             'Filecabinet',
             {
-               label : "My Plug-in",
+               label : "Filecabinet",
                command : 'filecabinet.cmd',
                icon : mypath + 'images/filecabinet.jpg'
             }
