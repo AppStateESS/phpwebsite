@@ -33,25 +33,26 @@ div#files {
 }
 
 div#file-type-buttons {
-    margin : 5px 0px;
-    padding : 0px 10px;
+    margin : 0px;
+    padding : 0px;
     border-bottom : 2px solid #ebebeb;
 
 }
 
-div#file-type-buttons img {
-    margin : 0px 5px;
-}
-
-div#folders ul {
+div#folders ul, div#file-type-buttons ul {
     list-style-type: none;
     margin : 0px;
     padding : 0px;
 }
 
+div#file-type-buttons ul li {
+    display : inline;
+    padding : 0px 10px;
+}
+
 div#folders ul.file-listing {
     list-style-type: none;
-    margin-left : 8px;
+    margin-left : 10px;
     padding : 0px;
 }
 
@@ -67,11 +68,12 @@ div#folders li img {
     vertical-align: bottom;
 }
 
-div.pick-image {
+div.pick-image, div.pick-document {
     cursor : pointer;
     padding : 2px;
 }
-div.pick-image:hover {
+
+div.pick-image:hover, div.pick-document:hover {
     background-color : #ebebeb;
 }
 
@@ -82,4 +84,8 @@ div#ck-file-info {
 
 img.ftype-change {
     cursor : pointer;
+}
+
+.current-type {
+    background-color : #ebebeb;
 }

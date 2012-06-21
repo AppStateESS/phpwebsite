@@ -29,6 +29,7 @@ var folder_span;
 $(function() {
     readyFolder();
     folderTypeChange();
+    shadeType();
 });
 
 /**
@@ -36,24 +37,31 @@ $(function() {
  */
 function folderTypeChange()
 {
-    $('img.ftype-change').click(function()
-    {
-        switch ($(this).attr('id')) {
-            case 'image-button':
-                folder_type = 'image';
-                break;
-
-            case 'document-button':
-                folder_type = 'document';
-                break;
-
-            case 'media-button':
-                folder_type = 'multimedia';
-                break;
-        }
+    $('select#folder-type').change(function() {
+        folder_type = $(this).find(':selected').attr('value');
         refreshFolder();
+        shadeType();
     });
+}
 
+function shadeType()
+{
+    $('#image-button').parent().removeClass('current-type');
+    $('#document-button').parent().removeClass('current-type');
+    $('#media-button').parent().removeClass('current-type');
+    switch (folder_type) {
+        case 'image':
+            $('#image-button').parent().addClass('current-type');
+            break;
+
+        case 'document':
+            $('#document-button').parent().addClass('current-type');
+            break;
+
+        case 'multimedia':
+            $('#media-button').parent().addClass('current-type');
+            break;
+    }
 }
 
 /**
@@ -93,22 +101,28 @@ function folderContents(folder_line)
             line_div.html(data);
             if ((line_div).is(':hidden')) {
                 line_div.slideDown();
-                line_item.children('img.folder-image').attr('src', folder_open);
+                line_item.find('img.folder-image').attr('src', folder_open);
             } else {
                 line_div.slideUp();
-                line_item.children('img.folder-image').attr('src', folder_closed);
+                line_item.find('img.folder-image').attr('src', folder_closed);
             }
         }
 
-        $('div.pick-image').click(function(){
-            ftype = folder_line.attr('rel');
-            file_id = folder_line.attr('id');
-            var file_link = 'index.php?module=filecabinet&aop=ck_file_info&ftype=' + ftype + '&file_id=' + file_id;
-            $.getJSON(file_link, function(data) {
-                $('div#files').html(data.html);
-                insert_text = data.insert;
-            });
-        });
+        readyFilePick(folder_line);
+    });
+}
 
+function readyFilePick(folder_line)
+{
+    var file_pick_str = 'div.pick-' + folder_type;
+    var file_pick_obj = $(file_pick_str);
+    file_pick_obj.click(function(){
+        ftype = $(this).attr('rel');
+        file_id = $(this).attr('id');
+        var file_link = 'index.php?module=filecabinet&aop=ck_file_info&ftype=' + folder_type + '&file_id=' + file_id;
+        $.getJSON(file_link, function(data) {
+            $('div#files').html(data.html);
+            insert_text = data.insert;
+        });
     });
 }

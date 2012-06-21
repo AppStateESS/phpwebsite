@@ -13,7 +13,12 @@
     <body>
         <div id="folders">
             <div id="file-type-buttons">
-                {IMAGE_BUTTON} {DOCUMENT_BUTTON} {MEDIA_BUTTON}
+                <select id="folder-type">
+                    <option value="image">Images</option>
+                    <option value="document">Documents</option>
+                    <option value="multimedia">Multimedia</option>
+                </select>
+                <!--<ul><li>{IMAGE_BUTTON}</li><li>{DOCUMENT_BUTTON}</li><li>{MEDIA_BUTTON}</li></ul>-->
             </div>
             <div id="folder-listing">
                 {FOLDER_LISTING}

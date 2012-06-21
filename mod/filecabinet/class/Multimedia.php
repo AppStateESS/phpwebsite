@@ -622,6 +622,27 @@ class PHPWS_Multimedia extends File_Common {
         return call_user_func_array($function_name, array($this));
     }
 
+    public function getCKRow()
+    {
+        return sprintf('<div class="pick-multimedia" rel="multimedia" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
+    }
+
+    public function ckFileInfo()
+    {
+        $data['html'] = <<<EOF
+<div id="ck-file-info" style="margin-top : 20%">{$this->getTag(true)}
+    <p>{$this->title}<br />
+        <em>{$this->file_name}<br />
+            {$this->getSize(true)}
+        </em>
+    </p>
+</div>
+EOF;
+
+        $data['insert'] = '[filecabinet:media:' . $this->id . ']';
+        echo json_encode($data);
+    }
+
 }
 
 ?>
