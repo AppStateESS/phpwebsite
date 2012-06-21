@@ -79,3 +79,7 @@ div#ck-file-info {
     text-align : center;
     margin : auto;
 }
+
+img.ftype-change {
+    cursor : pointer;
+}

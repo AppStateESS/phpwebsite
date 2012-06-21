@@ -176,6 +176,22 @@ class Cabinet {
             case 'ck_file_info':
                 $this->ckFileInfo();
                 break;
+
+            case 'ck_folder_listing':
+                switch ($_GET['ftype']) {
+                    case 'image':
+                        $f = IMAGE_FOLDER;
+                        break;
+                    case 'document':
+                        $f = DOCUMENT_FOLDER;
+                        break;
+                    case 'multimedia':
+                        $f = MULTIMEDIA_FOLDER;
+                        break;
+                }
+                echo $this->ckFolders($f);
+                exit();
+                break;
             //case ''
             /*
               case 'fck_image_data':
@@ -465,13 +481,17 @@ class Cabinet {
             case 'image':
                 PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $file = new PHPWS_Image($_GET['file_id']);
-                echo $file->ckFileInfo();
                 break;
             case 'document':
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $file = new PHPWS_Document($_GET['file_id']);
                 break;
             case 'multimedia':
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $file = new PHPWS_Multimedia($_GET['file_id']);
                 break;
         }
+        echo $file->ckFileInfo();
         exit();
     }
 
@@ -479,7 +499,6 @@ class Cabinet {
     {
         $this->loadFolder();
         $this->folder->loadFiles();
-        $encode['test'] = $this->folder->ftype;
         foreach ($this->folder->_files as $file) {
             $row[] = $file->getCKRow();
         }
@@ -1397,9 +1416,9 @@ class Cabinet {
         $folder_type = 'image';
         $tpl = array();
         $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
-        $tpl['IMAGE_BUTTON'] = sprintf('<img id="image-button" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/image.png');
-        $tpl['DOCUMENT_BUTTON'] = sprintf('<img id="document-button" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/document.png');
-        $tpl['MEDIA_BUTTON'] = sprintf('<img id="media-button" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/media.png');
+        $tpl['IMAGE_BUTTON'] = sprintf('<img id="image-button" class="ftype-change" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/image.png');
+        $tpl['DOCUMENT_BUTTON'] = sprintf('<img id="document-button" class="ftype-change" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/document.png');
+        $tpl['MEDIA_BUTTON'] = sprintf('<img id="media-button" class="ftype-change" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/media.png');
 
         $tpl['FOLDER_LISTING'] = $this->ckFolders();
 

@@ -334,6 +334,11 @@ EOF;
         return $db->delete();
     }
 
+    public function ckFileInfo()
+    {
+        return $this->title;
+    }
+
 }
 
 ?>
