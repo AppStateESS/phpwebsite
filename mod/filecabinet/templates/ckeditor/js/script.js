@@ -17,8 +17,6 @@ CKEDITOR.event.implementOn(CKEDITOR.dialog.getCurrent());
 CKEDITOR.dialog.getCurrent().on("ok", okListener);
 CKEDITOR.dialog.getCurrent().on("cancel", cancelListener);
 
-// defaults as an image folder.
-var folder_type = 1;
 
 // span tag inside li.folder that contains the folder icon and name
 var folder_span;
@@ -48,6 +46,7 @@ function folderTypeChange()
 {
     $('select#folder-type').change(function() {
         folder_type = $(this).find(':selected').attr('value');
+        alert('folder_type is now ' + folder_type);
         refreshFolder();
         shadeType();
         $('#folder-form').hide();
@@ -130,19 +129,20 @@ function folderContents(folder_line)
             line_item.find('img.folder-image').attr('src', folder_open);
         }
 
-        readyFilePick(folder_line);
+        fileClick(folder_line);
     });
 }
 
-function readyFilePick(folder_line)
+function fileClick(folder_line)
 {
-    getFolderTypeString();
     var file_pick_str = 'div.pick-' + getFolderTypeString();
     var file_pick_obj = $(file_pick_str);
+
     file_pick_obj.click(function(){
         ftype = $(this).attr('rel');
         file_id = $(this).attr('id');
         var file_link = 'index.php?module=filecabinet&aop=ck_file_info&ftype=' + folder_type + '&file_id=' + file_id;
+
         $.getJSON(file_link, function(data) {
             $('div#files').html(data.html);
             insert_text = data.insert;
@@ -155,12 +155,13 @@ function readyFilePick(folder_line)
 function getFolderTypeString()
 {
     switch(folder_type) {
-        case 1:
-            return 'image';
         case 2:
             return 'document';
         case 3:
             return 'multimedia';
+        case 1:
+        default:
+            return 'image';
     }
 }
 

@@ -531,21 +531,20 @@ class Cabinet {
     private function ckFileInfo()
     {
         switch ($_GET['ftype']) {
-            case 'image':
+            case '1':
                 PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $file = new PHPWS_Image($_GET['file_id']);
                 break;
-            case 'document':
+            case '2':
                 PHPWS_Core::initModClass('filecabinet', 'Document.php');
                 $file = new PHPWS_Document($_GET['file_id']);
                 break;
-            case 'multimedia':
+            case '3':
                 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $file = new PHPWS_Multimedia($_GET['file_id']);
                 break;
         }
         echo $file->ckFileInfo();
-
         exit();
     }
 
@@ -1488,7 +1487,7 @@ class Cabinet {
         $form->addSubmit(dgettext('filecabinet', 'Upload'));
         $tpl = $form->getTemplate();
         $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
-
+        $tpl['FOLDER_TYPE'] = $ftype;
         $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
 
@@ -1500,7 +1499,7 @@ class Cabinet {
     {
         $this->loadfolder();
         $ftype = $this->folder->ftype;
-        
+
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $ftype);
         $db->addColumn('id');

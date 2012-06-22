@@ -485,7 +485,7 @@ EOF;
 EOF;
         $data['title'] = $this->title;
         $data['insert'] = $link;
-        echo json_encode($data);
+        return json_encode($data);
     }
 
     public function getManagerIcon($fmanager)
