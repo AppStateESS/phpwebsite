@@ -484,20 +484,6 @@ class Cabinet_Form {
         $form->setMatch('number_visible', PHPWS_Settings::get('filecabinet', 'number_visible'));
         $form->setLabel('number_visible', dgettext('filecabinet', 'Number of thumbnails visible'));
 
-        /******** FCKeditor settings **************/
-        $form->addCheck('fck_allow_images', 1);
-        $form->setMatch('fck_allow_images', PHPWS_Settings::get('filecabinet', 'fck_allow_images'));
-        $form->setLabel('fck_allow_images', dgettext('filecabinet', 'Allow image selection'));
-
-        $form->addCheck('fck_allow_documents', 1);
-        $form->setMatch('fck_allow_documents', PHPWS_Settings::get('filecabinet', 'fck_allow_documents'));
-        $form->setLabel('fck_allow_documents', dgettext('filecabinet', 'Allow document selection'));
-
-        $form->addCheck('fck_allow_media', 1);
-        $form->setMatch('fck_allow_media', PHPWS_Settings::get('filecabinet', 'fck_allow_media'));
-        $form->setLabel('fck_allow_media', dgettext('filecabinet', 'Allow media selection'));
-
-
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();
 
@@ -507,7 +493,6 @@ class Cabinet_Form {
         $tpl['FORM_LABEL'] = dgettext('filecabinet', 'Form upload limit');
         $tpl['ABSOLUTE_LABEL'] = dgettext('filecabinet', 'Absolute upload limit');
 
-        $tpl['FCK_SETTINGS'] = dgettext('filecabinet', 'FCKeditor plug-in settings');
         $tpl['MAX_SYSTEM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['system']);
         $tpl['MAX_FORM_SIZE']   = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['form']);
         $tpl['ABSOLUTE_SIZE']   = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['absolute']);
@@ -805,10 +790,6 @@ If you are sure, type Y-E-S below.'),
 
         PHPWS_Settings::set('filecabinet', 'vertical_folder', (int) $_POST['jcaro_type']);
         PHPWS_Settings::set('filecabinet', 'number_visible', (int) $_POST['number_visible']);
-
-        PHPWS_Settings::set('filecabinet', 'fck_allow_images', (int)isset($_POST['fck_allow_images']));
-        PHPWS_Settings::set('filecabinet', 'fck_allow_documents', (int)isset($_POST['fck_allow_documents']));
-        PHPWS_Settings::set('filecabinet', 'fck_allow_media', (int)isset($_POST['fck_allow_media']));
 
         PHPWS_Settings::save('filecabinet');
         if (isset($errors)) {
