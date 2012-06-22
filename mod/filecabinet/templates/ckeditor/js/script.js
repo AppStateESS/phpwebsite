@@ -154,11 +154,11 @@ function fileClick(folder_line)
 function getFolderTypeString()
 {
     switch(folder_type) {
-        case 2:
+        case '2':
             return 'document';
-        case 3:
+        case '3':
             return 'multimedia';
-        case 1:
+        case '1':
         default:
             return 'image';
     }
@@ -177,7 +177,8 @@ function readyButtons(title)
                 edit_link = 'index.php?module=filecabinet&aop=ck_edit_file&ftype=' + folder_type + '&file_id=' + file_id;
                 $.get(edit_link, {
                     'title' : new_title
-                }, function() {
+                }, function(data) {
+                    alert(data);
                     folderContents(current_open_folder);
                 });
             }

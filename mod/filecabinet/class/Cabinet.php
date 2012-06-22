@@ -492,17 +492,17 @@ class Cabinet {
     private function ckGetFileType($ftype, $id = 0)
     {
         switch ($ftype) {
-            case 'image':
+            case '1':
                 PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $file = new PHPWS_Image($id);
                 break;
 
-            case 'document':
+            case '2':
                 PHPWS_Core::initModClass('filecabinet', 'Document.php');
                 $file = new PHPWS_Document($id);
                 break;
 
-            case 'multimedia':
+            case '3':
                 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $file = new PHPWS_Multimedia($id);
                 break;
