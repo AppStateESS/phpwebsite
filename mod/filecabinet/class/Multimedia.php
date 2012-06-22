@@ -272,8 +272,9 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['ID'] = 'media' . $this->id;
         $tpl['source_http'] = $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
-
         // check for filter file
+        //test($tpl);
+        //echo $filter;
         if ($this->embedded) {
             $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl', PHPWS_SOURCE_DIR, $filter);
         } else {
@@ -300,13 +301,13 @@ class PHPWS_Multimedia extends File_Common {
         }
         $this->getExtension();
         switch ($this->_ext) {
-            case 'flv':
-                return 'flowplayer';
-                break;
-
             case 'mp3':
             case 'wav':
-                return 'media';
+                return 'flowplayer_audio';
+                break;
+
+            case 'flv':
+                return 'flowplayer';
                 break;
 
             case 'qt':
