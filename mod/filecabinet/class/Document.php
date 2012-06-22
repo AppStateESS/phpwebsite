@@ -336,22 +336,36 @@ EOF;
 
     public function ckFileInfo()
     {
+        $ckbuttons = $this->ckButtons();
         $data['html'] = <<<EOF
 <div id="ck-file-info" style="margin-top : 35%">{$this->getIconView()}
     <p>{$this->title}<br />
         <em>{$this->file_name}<br />
             {$this->getSize(true)}
         </em>
+        <br><br>
+        $ckbuttons
     </p>
 </div>
 EOF;
         $data['insert'] = $this->getViewLink(true);
+        $data['title'] = $this->title;
         echo json_encode($data);
     }
 
     public function getCKRow()
     {
         return sprintf('<div class="pick-document" rel="document" id="%s">%s%s</div>', $this->id, $this->getIconView('small_icon'), $this->title);
+    }
+
+    public function getCKCell()
+    {
+        return <<<EOF
+<div class="pick-document" rel="document" id="{$this->id}">
+{$this->getIconView()}<br>
+{$this->title}
+</div>
+EOF;
     }
 
 }

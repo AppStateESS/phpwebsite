@@ -58,6 +58,6 @@ define('FC_FILE_TYPE_MISMATCH',     -125);
 
 
 define('CK_FILE_INFO_WIDTH', 600);
-define('CK_FILE_INFO_HEIGHT', 560);
+define('CK_FILE_INFO_HEIGHT', 500);
 
 ?>

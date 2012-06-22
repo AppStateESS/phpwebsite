@@ -638,9 +638,14 @@ class PHPWS_Multimedia extends File_Common {
     </p>
 </div>
 EOF;
-
+        $data['title'] = $this->title;
         $data['insert'] = '[filecabinet:media:' . $this->id . ']';
         echo json_encode($data);
+    }
+
+    public function getCKCell()
+    {
+        return 'Media cell here';
     }
 
 }

@@ -9,21 +9,35 @@
         <script src="{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/js/script.js"></script>
         <script>var folder_open = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/folder_open.png';
             var folder_closed = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/directory.png';</script>
+        <!-- BEGIN errors --><script>alert('{ERRORS}');</script> <!-- END errors -->
     </head>
     <body>
         <div id="folders">
             <div id="file-type-buttons">
                 <select id="folder-type">
-                    <option value="image">Images</option>
-                    <option value="document">Documents</option>
-                    <option value="multimedia">Multimedia</option>
+                    <option value="1">Images</option>
+                    <option value="2">Documents</option>
+                    <option value="3">Multimedia</option>
                 </select>
-                <!--<ul><li>{IMAGE_BUTTON}</li><li>{DOCUMENT_BUTTON}</li><li>{MEDIA_BUTTON}</li></ul>-->
             </div>
             <div id="folder-listing">
                 {FOLDER_LISTING}
             </div>
         </div>
-        <div id="files"></div>
+        <div id="tools">
+            <table>
+                <tr>
+                    <td style="width : 200px">Current folder: <span id="current-folder"></span></td>
+                    <td id="folder-form" style="display : none">{START_FORM}
+                        <input type="hidden" id="folder-id" name="folder_id" value="" />
+                        <input type="hidden" id="ftype" name="ftype" value="" />
+                        {FILENAME}
+                        {SUBMIT}
+                        {END_FORM}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="files">{FILE_LISTING}</div>
     </body>
 </html>

@@ -18,10 +18,18 @@ CKEDITOR.dialog.getCurrent().on("ok", okListener);
 CKEDITOR.dialog.getCurrent().on("cancel", cancelListener);
 
 // defaults as an image folder.
-var folder_type = 'image';
+var folder_type = 1;
 
 // span tag inside li.folder that contains the folder icon and name
 var folder_span;
+
+// string containing the name of the currently selected folder
+var folder_title;
+
+// id of currently selected folder
+var folder_id;
+
+var current_open_folder;
 
 /**
  * Script initializer
@@ -32,6 +40,7 @@ $(function() {
     shadeType();
 });
 
+
 /**
  * changes the folder type (image, document, or multimedia when clicked
  */
@@ -41,6 +50,7 @@ function folderTypeChange()
         folder_type = $(this).find(':selected').attr('value');
         refreshFolder();
         shadeType();
+        $('#folder-form').hide();
     });
 }
 
@@ -50,18 +60,25 @@ function shadeType()
     $('#document-button').parent().removeClass('current-type');
     $('#media-button').parent().removeClass('current-type');
     switch (folder_type) {
-        case 'image':
+        case '1':
             $('#image-button').parent().addClass('current-type');
             break;
 
-        case 'document':
+        case '2':
             $('#document-button').parent().addClass('current-type');
             break;
 
-        case 'multimedia':
+        case '3':
             $('#media-button').parent().addClass('current-type');
             break;
     }
+}
+
+
+function closeAllFolders()
+{
+    $('div.folder-file-listing').hide();
+    $('img.folder-image').attr('src', folder_closed);
 }
 
 /**
@@ -70,7 +87,17 @@ function shadeType()
 function readyFolder()
 {
     folder_span = $('li.folder span');
+
+    closeAllFolders();
+
     folder_span.click(function() {
+        current_open_folder = $(this);
+        folder_title = $(this).text();
+        folder_id = $(this).parent().attr('rel');
+        $('#folder-id').val(folder_id);
+        $('#folder-form').show();
+        $('#ftype').val(folder_type);
+        $('#current-folder').html(folder_title);
         folderContents($(this));
     });
 }
@@ -78,7 +105,6 @@ function readyFolder()
 function refreshFolder()
 {
     var refresh_link = 'index.php?module=filecabinet&aop=ck_folder_listing&ftype=' + folder_type;
-
     $.get(refresh_link, function(data) {
         $('div#folder-listing').html(data);
         $('div#files').html('');
@@ -94,18 +120,14 @@ function folderContents(folder_line)
     var line_item = folder_line.parent();
     var folder_id = line_item.attr('rel');
     var folder_link = 'index.php?module=filecabinet&aop=ck_folder_contents&ftype=' + folder_type + '&folder_id=' + folder_id;
-
-    $.get(folder_link, function(data) {
+    $.getJSON(folder_link, function(data) {
         line_div = line_item.children('div');
-        if (data) {
-            line_div.html(data);
-            if ((line_div).is(':hidden')) {
-                line_div.slideDown();
-                line_item.find('img.folder-image').attr('src', folder_open);
-            } else {
-                line_div.slideUp();
-                line_item.find('img.folder-image').attr('src', folder_closed);
-            }
+        if (data.folders) {
+            line_div.html(data.folders);
+            $('#files').html(data.file_listing);
+            closeAllFolders();
+            line_div.show();
+            line_item.find('img.folder-image').attr('src', folder_open);
         }
 
         readyFilePick(folder_line);
@@ -114,7 +136,8 @@ function folderContents(folder_line)
 
 function readyFilePick(folder_line)
 {
-    var file_pick_str = 'div.pick-' + folder_type;
+    getFolderTypeString();
+    var file_pick_str = 'div.pick-' + getFolderTypeString();
     var file_pick_obj = $(file_pick_str);
     file_pick_obj.click(function(){
         ftype = $(this).attr('rel');
@@ -123,6 +146,49 @@ function readyFilePick(folder_line)
         $.getJSON(file_link, function(data) {
             $('div#files').html(data.html);
             insert_text = data.insert;
+            readyButtons(data.title);
         });
+    });
+}
+
+
+function getFolderTypeString()
+{
+    switch(folder_type) {
+        case 1:
+            return 'image';
+        case 2:
+            return 'document';
+        case 3:
+            return 'multimedia';
+    }
+}
+
+function readyButtons(title)
+{
+    $('#ck-file-info input:button').click(function()
+    {
+        var button_name = $(this).attr('name');
+        var file_id = $(this).attr('rel');
+
+        if (button_name == 'edit') {
+            new_title = prompt('Change file title below', title);
+            if (new_title!=null && new_title!='') {
+                edit_link = 'index.php?module=filecabinet&aop=ck_edit_file&ftype=' + folder_type + '&file_id=' + file_id;
+                $.get(edit_link, {
+                    'title' : new_title
+                }, function() {
+                    folderContents(current_open_folder);
+                });
+            }
+        } else if (button_name == 'delete') {
+            confirm = confirm('Are you sure you want to delete this file?');
+            if (confirm == true) {
+                delete_link = 'index.php?module=filecabinet&aop=ck_delete_file&ftype=' + folder_type + '&file_id=' + file_id;
+                $.get(delete_link, function() {
+                    folderContents(current_open_folder);
+                });
+            }
+        }
     });
 }

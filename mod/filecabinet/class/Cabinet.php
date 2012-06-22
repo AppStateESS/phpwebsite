@@ -152,7 +152,7 @@ class Cabinet {
             return;
         }
 
-        // Requires an unrestricted user
+// Requires an unrestricted user
         switch ($aop) {
             case 'pin_folder':
             case 'delete_folder':
@@ -163,8 +163,18 @@ class Cabinet {
         }
 
         switch ($aop) {
-            /** File manager functions * */
-            /** end file manager functions * */
+            case 'ck_edit_file':
+                $this->ckEditFile();
+                break;
+
+            case 'ck_delete_file':
+                $this->ckDeleteFile();
+                break;
+
+            case 'ckupload':
+                $this->ckUpload();
+                break;
+
             case 'ckeditor':
                 $this->ckEditor();
                 break;
@@ -178,21 +188,10 @@ class Cabinet {
                 break;
 
             case 'ck_folder_listing':
-                switch ($_GET['ftype']) {
-                    case 'image':
-                        $f = IMAGE_FOLDER;
-                        break;
-                    case 'document':
-                        $f = DOCUMENT_FOLDER;
-                        break;
-                    case 'multimedia':
-                        $f = MULTIMEDIA_FOLDER;
-                        break;
-                }
-                echo $this->ckFolders($f);
+                echo $this->ckFolderListing($_GET['ftype']);
                 exit();
                 break;
-            //case ''
+//case ''
             /*
               case 'fck_image_data':
               $this->fckImageResult($_GET['id']);
@@ -363,7 +362,7 @@ class Cabinet {
             case 'edit_folder':
                 $javascript = true;
                 $this->loadFolder();
-                // permission check in function below
+// permission check in function below
                 $this->editFolder();
                 break;
 
@@ -475,6 +474,60 @@ class Cabinet {
         }
     }
 
+    private function ckEditFile()
+    {
+        $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
+        $file->setTitle($_GET['title']);
+        $file->save();
+        exit();
+    }
+
+    private function ckDeleteFile()
+    {
+        $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
+        $file->delete();
+        exit();
+    }
+
+    private function ckGetFileType($ftype, $id = 0)
+    {
+        switch ($ftype) {
+            case 'image':
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $file = new PHPWS_Image($id);
+                break;
+
+            case 'document':
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $file = new PHPWS_Document($id);
+                break;
+
+            case 'multimedia':
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $file = new PHPWS_Multimedia($id);
+                break;
+        }
+        return $file;
+    }
+
+    private function ckUpload()
+    {
+        $file = $this->ckGetFileType($_POST['ftype']);
+        $result = $file->importPost('filename');
+        $folder = new Folder($file->folder_id);
+        if ($result) {
+            $file->setDirectory($folder->getFullDirectory());
+            $file->save();
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
+                $file->_errors[] = 'An error prevented your file from being saved on the server.';
+            }
+            $this->ckEditor($file);
+        } else {
+            PHPWS_Core::reroute('index.php?module=filecabinet&aop=ckeditor&folder_id=' . $folder->id);
+        }
+    }
+
     private function ckFileInfo()
     {
         switch ($_GET['ftype']) {
@@ -492,6 +545,7 @@ class Cabinet {
                 break;
         }
         echo $file->ckFileInfo();
+
         exit();
     }
 
@@ -500,9 +554,13 @@ class Cabinet {
         $this->loadFolder();
         $this->folder->loadFiles();
         foreach ($this->folder->_files as $file) {
+            $file_list[] = $file->getCKCell();
             $row[] = $file->getCKRow();
         }
-        echo '<ul class="file-listing"><li>' . implode('</li><li>', $row) . '</li></ul>';
+
+        $data['file_listing'] = implode(' ', $file_list);
+        $data['folders'] = '<ul class="file-listing"><li>' . implode('</li><li>', $row) . '</li></ul>';
+        echo json_encode($data);
         exit();
     }
 
@@ -870,7 +928,7 @@ class Cabinet {
                 $error[$filename] = dgettext('filecabinet', 'Missing title.');
             }
 
-            // initialize a new file object
+// initialize a new file object
             switch ($folder->ftype) {
                 case IMAGE_FOLDER:
                     $file_obj = new PHPWS_Image;
@@ -885,7 +943,7 @@ class Cabinet {
                     break;
             }
 
-            // save the folder id and basic information
+// save the folder id and basic information
 
             $file_obj->folder_id = $folder->id;
             $file_obj->setFilename($filename);
@@ -897,7 +955,7 @@ class Cabinet {
                 $file_obj->setDescription($_POST['file_description'][$key]);
             }
 
-            // move the file from the incoming directory
+// move the file from the incoming directory
             $classify_dir = $this->getClassifyDir();
             if (empty($classify_dir)) {
                 return array(dgettext('filecabinet', 'The web server does not have permission to access files in the classify directory.'));
@@ -915,7 +973,7 @@ class Cabinet {
             $file_obj->file_type = PHPWS_File::getMimeType($file_obj->getPath());
             $file_obj->loadFileSize();
 
-            // if image is getting saved, need to process
+// if image is getting saved, need to process
             if ($folder->ftype == IMAGE_FOLDER) {
                 $file_obj->loadDimensions();
                 $file_obj->save(true, false);
@@ -1107,7 +1165,9 @@ class Cabinet {
 
         $this->folder = new Folder($folder_id);
         if (!$this->folder->id) {
-            $this->folder->ftype = $_REQUEST['ftype'];
+            if (isset($_REQUEST['ftype'])) {
+                $this->folder->ftype = $_REQUEST['ftype'];
+            }
             if (isset($_REQUEST['module_created'])) {
                 $this->folder->module_created = $_REQUEST['module_created'];
             }
@@ -1411,54 +1471,36 @@ class Cabinet {
         }
     }
 
-    public function ckEditor()
+    public function ckEditor($last_file = null)
     {
-        $folder_type = 'image';
-        $tpl = array();
+        $this->loadfolder();
+
+        if ($this->folder->id) {
+            $ftype = $this->folder->ftype;
+        } else {
+            $ftype = IMAGE_FOLDER;
+        }
+
+        $form = new PHPWS_Form('upload');
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('aop', 'ckupload');
+        $form->addFile('filename');
+        $form->addSubmit(dgettext('filecabinet', 'Upload'));
+        $tpl = $form->getTemplate();
         $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
-        /* $tpl['IMAGE_BUTTON'] = sprintf('<img id="image-button" class="ftype-change" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/image.png');
-          $tpl['DOCUMENT_BUTTON'] = sprintf('<img id="document-button" class="ftype-change" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/document.png');
-          $tpl['MEDIA_BUTTON'] = sprintf('<img id="media-button" class="ftype-change" src="%s" />', PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/media.png'); */
-        $tpl['FOLDER_LISTING'] = $this->ckFolders();
 
+        $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
-        /* Layout::addStyle('filecabinet', 'fck.css');
-
-          javascript('jquery');
-          javascriptMod('filecabinet', 'fckeditor', array('instance' => $_GET['instance'], 'pick' => dgettext('filecabinet', 'Pick a media type above.')));
-
-          $active = false;
-
-          if (PHPWS_Settings::get('filecabinet', 'fck_allow_images')) {
-          $active = true;
-          $tpl['IMAGES'] = sprintf('<a class="oc" id="image-nav"><img id="fck-img-type" src="%smod/filecabinet/img/file_manager/file_type/image80.png" width="50" height="50" title="%s" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Images'));
-          }
-
-          if (PHPWS_Settings::get('filecabinet', 'fck_allow_documents')) {
-          $active = true;
-          $tpl['DOCUMENTS'] = sprintf('<a class="oc" id="doc-nav"><img id="fck-doc-type" src="%smod/filecabinet/img/file_manager/file_type/document80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Documents'));
-          }
-
-          if (PHPWS_Settings::get('filecabinet', 'fck_allow_media')) {
-          $active = true;
-          $tpl['MULTIMEDIA'] = sprintf('<a class="oc" id="media-nav"><img id="fck-mm-type" src="%smod/filecabinet/img/file_manager/file_type/media80.png" title="%s" width="50" height="50" /></a>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Multimedia'));
-          }
-
-          if (!$active) {
-          Layout::nakedDisplay(dgettext('filecabinet', 'No File Cabinet file types are enabled.'));
-          exit();
-          }
-
-          $tpl['CLOSE'] = dgettext('filecabinet', 'Cancel');
-
-          $content = PHPWS_Template::process($tpl, 'filecabinet', 'fckeditor.tpl'); */
 
         echo $content;
         exit();
     }
 
-    private function ckFolders($ftype = IMAGE_FOLDER)
+    private function ckFolderListing()
     {
+        $this->loadfolder();
+        $ftype = $this->folder->ftype;
+        
         $db = new PHPWS_DB('folders');
         $db->addWhere('ftype', $ftype);
         $db->addColumn('id');
@@ -1481,7 +1523,11 @@ class Cabinet {
         }
 
         foreach ($result as $fldr) {
-            $img = '<img class="folder-image" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/directory.png" />';
+            if ($this->folder->id == $fldr['id']) {
+                $img = '<img class="folder-image" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/folder_open.png" />';
+            } else {
+                $img = '<img class="folder-image" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/directory.png" />';
+            }
             $sub['FOLDER_NAME'] = sprintf('<li class="folder" rel="%s"><span>%s %s</span><div class="folder-file-listing"></div></li>', $fldr['id'], $img, $fldr['title']);
             /* if ($ftype == DOCUMENT_FOLDER) {
               $sub['PUBLIC'] = $fldr['public_folder'] ? dgettext('filecabinet', 'Public') : dgettext('filecabinet', 'Private');
@@ -1570,7 +1616,7 @@ class Cabinet {
     {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
 
-        //$media = new PHPWS_Multimedia($id);
+//$media = new PHPWS_Multimedia($id);
         /*
           FCKEditor does not play nice with embeds objects etc.
          */
@@ -1668,7 +1714,7 @@ class Cabinet {
             $db->addWhere('id', $doc['id']);
             $old_dir = $doc['file_directory'];
             $old_dir_array = explode('/', $old_dir);
-            // space usually at end of array, but just in case
+// space usually at end of array, but just in case
             $last_dir = array_pop($old_dir_array);
             if (empty($last_dir)) {
                 $last_dir = array_pop($old_dir_array);

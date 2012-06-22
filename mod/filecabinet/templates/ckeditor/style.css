@@ -17,19 +17,34 @@ div#folders {
     position : absolute;
     left : 0px;
     top : 0px;
-    overflow-y: auto;
+    overflow: auto;
     font-size : 10px;
     padding-left : 3px;
+    white-space: nowrap;
 }
 
 div#files {
     width : 640px;
-    height : 590px;
+    height : 550px;
     background-color : white;
     position : absolute;
     left : 160px;
-    top : 0px;
+    top : 30px;
     overflow-y: auto;
+    padding-top : 10px;
+}
+
+div#tools {
+    position : absolute;
+    left : 160px;
+    top : 0px;
+    width : 640px;
+    height : 20px;
+    font-size : 10px;
+}
+
+div#tools input {
+    font-size : 10px;
 }
 
 div#file-type-buttons {
@@ -68,18 +83,37 @@ div#folders li img {
     vertical-align: bottom;
 }
 
-div.pick-image, div.pick-document {
+div#folders div.pick-image, div.pick-document {
     cursor : pointer;
     padding : 2px;
 }
 
-div.pick-image:hover, div.pick-document:hover {
+div#folders div.pick-image:hover, div.pick-document:hover {
     background-color : #ebebeb;
+}
+
+div#files div.pick-image {
+    float : left;
+    width : 150px;
+    height : 150px;
+    margin-left : 10px;
+}
+div#files div.pick-document {
+    float : left;
+    width : 100px;
+    height : 80px;
+    margin-left : 10px;
+    font-size : 10px;
+    text-align : center;
 }
 
 div#ck-file-info {
     text-align : center;
     margin : auto;
+    font-size : 12px;
+}
+div#ck-file-info input {
+    font-size : 10px;
 }
 
 img.ftype-change {
@@ -88,4 +122,9 @@ img.ftype-change {
 
 .current-type {
     background-color : #ebebeb;
+}
+
+div#files div.pick-image {
+    font-size : 10px;
+    text-align : center;
 }

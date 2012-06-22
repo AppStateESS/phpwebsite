@@ -442,6 +442,17 @@ class PHPWS_Image extends File_Common {
         return sprintf('<div class="pick-image" rel="image" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
     }
 
+    public function getCKCell()
+    {
+        $thumb = <<<EOF
+        <div class="pick-image" rel="image" id="{$this->id}">
+        {$this->getThumbnail()}
+            <p>$this->title<br> $this->width x $this->height</p>
+        </div>
+EOF;
+        return $thumb;
+    }
+
     public function ckFileInfo()
     {
         $new_width = $this->width;
@@ -459,6 +470,8 @@ class PHPWS_Image extends File_Common {
             $new_width = floor($new_width / $resize);
         }
 
+        $ckbuttons = $this->ckButtons();
+
         $margin_top = floor((CK_FILE_INFO_HEIGHT - $new_height) / 2);
         $link = <<<EOF
         <img src="{$this->file_directory}{$this->file_name}" style="width : {$new_width}px; height : {$new_height}px" />
@@ -467,10 +480,10 @@ EOF;
 <div id="ck-file-info" style="margin-top : {$margin_top}px">
         $link
         <br>
-        $this->title $this->width x $this->height
+        $this->title ($this->width x $this->height)<br><br>$ckbuttons
 </div>
 EOF;
-
+        $data['title'] = $this->title;
         $data['insert'] = $link;
         echo json_encode($data);
     }
