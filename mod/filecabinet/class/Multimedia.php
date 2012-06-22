@@ -624,7 +624,7 @@ class PHPWS_Multimedia extends File_Common {
 
     public function getCKRow()
     {
-        return sprintf('<div class="pick-multimedia" rel="multimedia" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
+        return sprintf('<div class="pick-multimedia" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
     }
 
     public function ckFileInfo()
@@ -645,7 +645,12 @@ EOF;
 
     public function getCKCell()
     {
-        return 'Media cell here';
+               return <<<EOF
+<div class="pick-multimedia" id="{$this->id}">
+{$this->getThumbnail()}<br>
+{$this->title}
+</div>
+EOF;
     }
 
 }

@@ -107,6 +107,15 @@ div#files div.pick-document {
     text-align : center;
 }
 
+div#files div.pick-multimedia {
+    float : left;
+    width : 120px;
+    height :120px;
+    margin-left : 10px;
+    font-size : 10px;
+    text-align : center;
+}
+
 div#ck-file-info {
     text-align : center;
     margin : auto;

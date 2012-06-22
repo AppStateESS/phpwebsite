@@ -355,13 +355,13 @@ EOF;
 
     public function getCKRow()
     {
-        return sprintf('<div class="pick-document" rel="document" id="%s">%s%s</div>', $this->id, $this->getIconView('small_icon'), $this->title);
+        return sprintf('<div class="pick-document" id="%s">%s%s</div>', $this->id, $this->getIconView('small_icon'), $this->title);
     }
 
     public function getCKCell()
     {
         return <<<EOF
-<div class="pick-document" rel="document" id="{$this->id}">
+<div class="pick-document" id="{$this->id}">
 {$this->getIconView()}<br>
 {$this->title}
 </div>

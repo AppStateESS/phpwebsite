@@ -138,7 +138,6 @@ function fileClick(folder_line)
     var file_pick_obj = $(file_pick_str);
 
     file_pick_obj.click(function(){
-        ftype = $(this).attr('rel');
         file_id = $(this).attr('id');
         var file_link = 'index.php?module=filecabinet&aop=ck_file_info&ftype=' + folder_type + '&file_id=' + file_id;
 
@@ -178,7 +177,6 @@ function readyButtons(title)
                 $.get(edit_link, {
                     'title' : new_title
                 }, function(data) {
-                    alert(data);
                     folderContents(current_open_folder);
                 });
             }

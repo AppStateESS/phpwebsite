@@ -439,13 +439,13 @@ class PHPWS_Image extends File_Common {
 
     public function getCKRow()
     {
-        return sprintf('<div class="pick-image" rel="image" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
+        return sprintf('<div class="pick-image" id="%s"><img src="%smod/filecabinet/templates/ckeditor/images/picture.png" />%s</div>', $this->id, PHPWS_SOURCE_HTTP, $this->title);
     }
 
     public function getCKCell()
     {
         $thumb = <<<EOF
-        <div class="pick-image" rel="image" id="{$this->id}">
+        <div class="pick-image" id="{$this->id}">
         {$this->getThumbnail()}
             <p>$this->title<br> $this->width x $this->height</p>
         </div>
