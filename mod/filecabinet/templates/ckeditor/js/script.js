@@ -46,7 +46,6 @@ function folderTypeChange()
 {
     $('select#folder-type').change(function() {
         folder_type = $(this).find(':selected').attr('value');
-        alert('folder_type is now ' + folder_type);
         refreshFolder();
         shadeType();
         $('#folder-form').hide();
