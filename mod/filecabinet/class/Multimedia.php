@@ -630,14 +630,15 @@ class PHPWS_Multimedia extends File_Common {
     public function ckFileInfo()
     {
         $ckbuttons = $this->ckButtons();
-        $data['html'] = <<<EOF
-        <div id="ck-file-info" style="margin-top : 20%">{$this->getThumbnail()}
+         $data['html'] = <<<EOF
+          <div id="ck-file-info" style="margin-top : 20%">{$this->getJSView(true)}
           <p>{$this->title}<br /><em>{$this->file_name}<br>
           {$this->getSize(true)}
           </em><br>$ckbuttons
           </p>
           </div>
 EOF;
+
         $data['title'] = $this->title;
         $data['insert'] = '[filecabinet:media:' . $this->id . ']';
 

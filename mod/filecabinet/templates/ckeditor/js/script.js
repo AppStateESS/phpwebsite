@@ -140,12 +140,9 @@ function fileClick(folder_line)
         file_id = $(this).attr('id');
         var file_link = 'index.php?module=filecabinet&aop=ck_file_info&ftype=' + folder_type + '&file_id=' + file_id;
 
-
-        /* $.get(file_link, function(data) {
-            alert(data);
-        }); */
         $.getJSON(file_link, function(data) {
             $('div#files').html(data.html);
+
             insert_text = data.insert;
             readyButtons(data.title);
         });
