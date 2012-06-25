@@ -83,7 +83,7 @@ div#folders li img {
     vertical-align: bottom;
 }
 
-div#folders div.pick-image, div.pick-document {
+div#folders div.pick-image, div.pick-document, div.pick-multimedia {
     cursor : pointer;
     padding : 2px;
 }

@@ -273,8 +273,6 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['ID'] = 'media' . $this->id;
         $tpl['source_http'] = $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
         // check for filter file
-        //test($tpl);
-        //echo $filter;
         if ($this->embedded) {
             $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl', PHPWS_SOURCE_DIR, $filter);
         } else {
@@ -345,6 +343,7 @@ class PHPWS_Multimedia extends File_Common {
             $width = 'width="' . $thumb . '"';
             $height = 'height="' . $thumb . '"';
         } else {
+            $height = null;
             $width = null;
         }
         return sprintf('<img src="%s" title="%s" id="multimedia-thumbnail-%s" %s %s />', $this->thumbnailPath(), $this->title, $css_id, $width, $height);
@@ -630,23 +629,24 @@ class PHPWS_Multimedia extends File_Common {
 
     public function ckFileInfo()
     {
+        $ckbuttons = $this->ckButtons();
         $data['html'] = <<<EOF
-<div id="ck-file-info" style="margin-top : 20%">{$this->getTag(true)}
-    <p>{$this->title}<br />
-        <em>{$this->file_name}<br />
-            {$this->getSize(true)}
-        </em>
-    </p>
-</div>
+        <div id="ck-file-info" style="margin-top : 20%">{$this->getThumbnail()}
+          <p>{$this->title}<br /><em>{$this->file_name}<br>
+          {$this->getSize(true)}
+          </em><br>$ckbuttons
+          </p>
+          </div>
 EOF;
         $data['title'] = $this->title;
         $data['insert'] = '[filecabinet:media:' . $this->id . ']';
+
         echo json_encode($data);
     }
 
     public function getCKCell()
     {
-               return <<<EOF
+        return <<<EOF
 <div class="pick-multimedia" id="{$this->id}">
 {$this->getThumbnail()}<br>
 {$this->title}

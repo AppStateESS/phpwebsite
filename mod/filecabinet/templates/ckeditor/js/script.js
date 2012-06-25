@@ -136,10 +136,14 @@ function fileClick(folder_line)
 {
     var file_pick_str = 'div.pick-' + getFolderTypeString();
     var file_pick_obj = $(file_pick_str);
-    file_pick_obj.click(function(){
+    file_pick_obj.click(function() {
         file_id = $(this).attr('id');
         var file_link = 'index.php?module=filecabinet&aop=ck_file_info&ftype=' + folder_type + '&file_id=' + file_id;
 
+
+        /* $.get(file_link, function(data) {
+            alert(data);
+        }); */
         $.getJSON(file_link, function(data) {
             $('div#files').html(data.html);
             insert_text = data.insert;
