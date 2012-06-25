@@ -342,12 +342,12 @@ class PHPWS_Multimedia extends File_Common {
         $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
 
         if ($force_resize) {
-            //$width = 'width="' . FC_THUMBNAIL_WIDTH . '"';
-            $width = 'width="$thumb"';
+            $width = 'width="' . $thumb . '"';
+            $height = 'height="' . $thumb . '"';
         } else {
             $width = null;
         }
-        return sprintf('<img src="%s" title="%s" id="multimedia-thumbnail-%s" %s />', $this->thumbnailPath(), $this->title, $css_id, $width);
+        return sprintf('<img src="%s" title="%s" id="multimedia-thumbnail-%s" %s %s />', $this->thumbnailPath(), $this->title, $css_id, $width, $height);
     }
 
     public function tnFileName()
