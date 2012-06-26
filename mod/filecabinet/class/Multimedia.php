@@ -631,7 +631,7 @@ class PHPWS_Multimedia extends File_Common {
     {
         $ckbuttons = $this->ckButtons();
          $data['html'] = <<<EOF
-          <div id="ck-file-info" style="margin-top : 20%">{$this->getJSView(true)}
+          <div id="ck-file-info" style="margin-top : 20%">{$this->getTag(true)}
           <p>{$this->title}<br /><em>{$this->file_name}<br>
           {$this->getSize(true)}
           </em><br>$ckbuttons

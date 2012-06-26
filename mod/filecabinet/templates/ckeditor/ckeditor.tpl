@@ -7,6 +7,7 @@
         <script src="{SOURCE_HTTP}javascript/jquery/jquery.js" type="text/javascript"></script>
         <script src="{SOURCE_HTTP}javascript/jquery_ui/jquery-ui.js" type="text/javascript"></script>
         <script src="{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/js/script.js"></script>
+        <script src="{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.10.min.js"></script>
         <script>var folder_open = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/folder_open.png';
             var folder_closed = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/directory.png';
             var folder_type = '{FOLDER_TYPE}';
