@@ -36,6 +36,16 @@ $(function() {
     readyFolder();
     folderTypeChange();
     shadeType();
+    if (current_folder_id > 0) {
+        $('#folder-listing li').each(function(index)
+        {
+            if ($(this).attr('rel') == current_folder_id) {
+                line_span = $(this).find('span');
+                openFolder(line_span);
+                return;
+            }
+        });
+    }
 });
 
 
@@ -89,15 +99,19 @@ function readyFolder()
     closeAllFolders();
 
     folder_span.click(function() {
-        current_open_folder = $(this);
-        folder_title = $(this).text();
-        folder_id = $(this).parent().attr('rel');
-        $('#folder-id').val(folder_id);
-        $('#folder-form').show();
-        $('#ftype').val(folder_type);
-        $('#current-folder').html(folder_title);
-        folderContents($(this));
+        openFolder($(this));
     });
+}
+
+function openFolder(folder) {
+    current_open_folder = folder;
+    folder_title = folder.text();
+    folder_id = folder.parent().attr('rel');
+    $('#folder-id').val(folder_id);
+    $('#folder-form').show();
+    $('#ftype').val(folder_type);
+    $('#current-folder').html(folder_title);
+    folderContents(folder);
 }
 
 function refreshFolder()
@@ -181,8 +195,8 @@ function readyButtons(title)
                 });
             }
         } else if (button_name == 'delete') {
-            confirm = confirm('Are you sure you want to delete this file?');
-            if (confirm == true) {
+            confirm_it = confirm('Are you sure you want to delete this file?');
+            if (confirm_it == true) {
                 delete_link = 'index.php?module=filecabinet&aop=ck_delete_file&ftype=' + folder_type + '&file_id=' + file_id;
                 $.get(delete_link, function() {
                     folderContents(current_open_folder);

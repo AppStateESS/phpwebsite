@@ -4,14 +4,16 @@
         <meta charset=utf-8>
         <title>CKEditor Filecabinet</title>
         <link href="{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/style.css" rel="stylesheet" type="text/css">
+        <script>
+            var current_folder_id = {CURRENT_FOLDER};
+            var folder_open = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/folder_open.png';
+            var folder_closed = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/directory.png';
+            var folder_type = '{FOLDER_TYPE}';
+        </script>
         <script src="{SOURCE_HTTP}javascript/jquery/jquery.js" type="text/javascript"></script>
         <script src="{SOURCE_HTTP}javascript/jquery_ui/jquery-ui.js" type="text/javascript"></script>
         <script src="{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/js/script.js"></script>
         <script src="{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.10.min.js"></script>
-        <script>var folder_open = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/folder_open.png';
-            var folder_closed = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/directory.png';
-            var folder_type = '{FOLDER_TYPE}';
-        </script>
         <!-- BEGIN errors --><script>alert('{ERRORS}');</script> <!-- END errors -->
     </head>
     <body>

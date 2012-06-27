@@ -1435,15 +1435,9 @@ class Cabinet {
         }
     }
 
-    public function ckEditor($last_file = null)
+    public function ckEditor()
     {
         $this->loadfolder();
-
-        if ($this->folder->id) {
-            $ftype = $this->folder->ftype;
-        } else {
-            $ftype = IMAGE_FOLDER;
-        }
 
         $form = new PHPWS_Form('upload');
         $form->addHidden('module', 'filecabinet');
@@ -1451,6 +1445,14 @@ class Cabinet {
         $form->addFile('filename');
         $form->addSubmit(dgettext('filecabinet', 'Upload'));
         $tpl = $form->getTemplate();
+
+        if ($this->folder->id) {
+            $ftype = $this->folder->ftype;
+            $tpl['CURRENT_FOLDER'] = $this->folder->id;
+        } else {
+            $tpl['CURRENT_FOLDER'] = 0;
+            $ftype = IMAGE_FOLDER;
+        }
         $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
         $tpl['FOLDER_TYPE'] = $ftype;
         $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
