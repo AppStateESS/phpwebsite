@@ -508,7 +508,15 @@ class Cabinet {
     private function ckFolderContents()
     {
         $this->loadFolder();
+        $data['file_listing'] = $data['folders'] = 'test';
+
         $this->folder->loadFiles();
+        if (empty($this->folder->_files)) {
+            $data['file_listing'] = '<p style="text-align:center;margin-top:20%"><em>Empty folder</em></p>';
+            $data['folders'] = ' ';
+            echo json_encode($data);
+            exit();
+        }
         foreach ($this->folder->_files as $file) {
             $file_list[] = $file->getCKCell();
             $row[] = $file->getCKRow();

@@ -124,7 +124,7 @@ function folderContents(folder_line)
             line_div.html(data.folders);
             $('#files').html(data.file_listing);
             closeAllFolders();
-            line_div.show();
+            line_div.slideDown('200');
             line_item.find('img.folder-image').attr('src', folder_open);
         }
 
