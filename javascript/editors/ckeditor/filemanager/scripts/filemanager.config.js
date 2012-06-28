@@ -15,7 +15,8 @@ var autoload = true;
 var showFullPath = false;
 
 // Browse only - default : false
-var browseOnly = false;
+// defining this in the index.php file
+//var browseOnly = true;
 
 // Set this to the server side language you wish to use.
 var lang = 'php'; // options: php, jsp, lasso, asp, cfm, ashx, asp // we are looking for contributors for lasso, python connectors (partially developed)

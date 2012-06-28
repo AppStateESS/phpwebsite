@@ -19,7 +19,7 @@
  */
 function auth()
 {
-    return true;
+    return $_SESSION['filecab'];
 }
 
 /**

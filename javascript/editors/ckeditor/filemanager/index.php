@@ -11,6 +11,14 @@ $ck_image_dir = $_SESSION['ck_dir'];
 $ck_image_http = $_SESSION['ck_http'];
 $home_dir = $_SESSION['home_dir'];
 $source_http = $_SESSION['source_http'];
+
+
+// File cabinet access REQUIRED to edit and delete material
+if ($_SESSION['filecab']) {
+    $browseonly = 'false';
+} else {
+    $browseonly = 'true';
+}
 echo <<<EOF
 <!DOCTYPE html>
 <html>
@@ -26,7 +34,7 @@ echo <<<EOF
 <![endif]-->
 <script type="text/javascript">
 var sn = '$sn'; var fileRoot = '$ck_image_dir';var showThumbs = true; var lang = 'php'; var home_dir = '$home_dir';var ck_image_dir = '$ck_image_dir';
-            var ck_image_http = '$ck_image_http'; var source_http= '$source_http';
+            var ck_image_http = '$ck_image_http'; var source_http= '$source_http'; var browseOnly=$browseonly;
 </script>
 </head>
 <body>
@@ -37,10 +45,18 @@ var sn = '$sn'; var fileRoot = '$ck_image_dir';var showThumbs = true; var lang =
 <div id="uploadresponse"></div>
 <input id="mode" name="mode" type="hidden" value="add" />
 <input id="currentpath" name="currentpath" type="hidden" />
-<input	id="newfile" name="newfile" type="file" />
 <input id="sn" name="sn" value="$sn" type="hidden" />
+EOF;
+
+if ($_SESSION['filecab']) {
+    echo <<<EOF
+<input	id="newfile" name="newfile" type="file" />
 <button id="upload" name="upload" type="submit" value="Upload"></button>
 <button id="newfolder" name="newfolder" type="button" value="New Folder"></button>
+EOF;
+}
+
+echo <<<EOF
 <button id="grid" class="ON" type="button">&nbsp;</button>
 <button id="list" type="button">&nbsp;</button>
 </form>
@@ -54,8 +70,16 @@ var sn = '$sn'; var fileRoot = '$ck_image_dir';var showThumbs = true; var lang =
 <ul id="itemOptions" class="contextMenu">
 	<li class="select"><a href="#select"></a></li>
 	<li class="download"><a href="#download"></a></li>
+EOF;
+
+if ($_SESSION['filecab']) {
+    echo <<<EOF
 	<li class="rename"><a href="#rename"></a></li>
 	<li class="delete separator"><a href="#delete"></a></li>
+EOF;
+}
+
+echo <<<EOF
 </ul>
 
 <script type="text/javascript" src="{$source_http}scripts/jquery-1.6.1.min.js"></script>

@@ -55,20 +55,7 @@ if (isset($config['plugin']) && !empty($config['plugin'])) {
 if (!$logged) {
     $fm->error($fm->lang('AUTHORIZATION_REQUIRED'));
 }
-/*
-  if (!auth()) {
-  $fm->error($fm->lang('AUTHORIZATION_REQUIRED'));
-  }
- *
- */
 
-
-
-/*
-  if (!empty($sn)) {
-  $fm->error($sn);
-  }
- */
 
 if (!isset($_GET)) {
     $fm->error($fm->lang('INVALID_ACTION'));
