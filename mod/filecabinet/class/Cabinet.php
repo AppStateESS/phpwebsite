@@ -126,6 +126,37 @@ class Cabinet {
         return true;
     }
 
+    private function ckUploadForm($reboot = false)
+    {
+        if (!Current_User::allow('filecabinet')) {
+            echo dgettext('filecabinet', 'Permission not granted');
+            exit();
+        }
+        $ftype = $folder_id = null;
+        if (isset($_POST['ftype'])) {
+            $ftype = $_POST['ftype'];
+        }
+        if (isset($_POST['folder_id'])) {
+            $folder_id = $_POST['folder_id'];
+        }
+        $form = new PHPWS_Form('upload');
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('aop', 'ckupload');
+        $form->addHidden('folder_id', $folder_id);
+        $form->addHidden('ftype', $ftype);
+        $form->setId('folder_id', 'folder-id');
+        $form->setId('ftype', 'ftype');
+        $form->addFile('filename');
+        $form->addSubmit(dgettext('filecabinet', 'Upload'));
+        $tpl = $form->getTemplate();
+        $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
+        if ($reboot) {
+            $tpl['FOLDER_ID'] = $folder_id;
+        }
+        echo PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/upload.tpl');
+        exit();
+    }
+
     /**
      * Handles admin functions outside of file manager.
      * Expects an 'aop' command.
@@ -135,7 +166,6 @@ class Cabinet {
         $javascript = false; // if true, sends to nakedDisplay
 
         $this->loadPanel();
-
         if (isset($_REQUEST['aop'])) {
             $aop = $_REQUEST['aop'];
         } else {
@@ -151,7 +181,6 @@ class Cabinet {
             Current_User::disallow();
             return;
         }
-
 // Requires an unrestricted user
         switch ($aop) {
             case 'pin_folder':
@@ -163,6 +192,10 @@ class Cabinet {
         }
 
         switch ($aop) {
+            case 'ckuploadform':
+                $this->ckUploadForm();
+                break;
+
             case 'ck_edit_file':
                 $this->ckEditFile();
                 break;
@@ -433,16 +466,20 @@ class Cabinet {
 
     private function ckEditFile()
     {
-        $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
-        $file->setTitle($_GET['title']);
-        $file->save();
+        if (Current_User::authorized('filecabinet')) {
+            $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
+            $file->setTitle($_GET['title']);
+            $file->save();
+        }
         exit();
     }
 
     private function ckDeleteFile()
     {
-        $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
-        $file->delete();
+        if (Current_User::authorized('filecabinet')) {
+            $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
+            $file->delete();
+        }
         exit();
     }
 
@@ -469,22 +506,22 @@ class Cabinet {
 
     private function ckUpload()
     {
-        $error=null;
-        $file = $this->ckGetFileType($_POST['ftype']);
-        $result = $file->importPost('filename');
-        $folder = new Folder($file->folder_id);
-        if ($result) {
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
-                $error = urlencode($result->getMessage());
-            } else {
-                $file->setDirectory($folder->getFullDirectory());
-                $file->save();
+        if (Current_User::authorized('filecabinet')) {
+            $error = null;
+            $file = $this->ckGetFileType($_POST['ftype']);
+            $result = $file->importPost('filename');
+            $folder = new Folder($file->folder_id);
+            if ($result) {
+                if (PHPWS_Error::isError($result)) {
+                    PHPWS_Error::log($result);
+                } else {
+                    $file->setDirectory($folder->getFullDirectory());
+                    $file->save();
+                }
             }
-            PHPWS_Core::reroute('index.php?module=filecabinet&aop=ckeditor&error=' . $error . '&folder_id=' . $folder->id);
-        } else {
-            PHPWS_Core::reroute('index.php?module=filecabinet&aop=ckeditor&folder_id=' . $folder->id);
         }
+
+        $this->ckUploadForm(true);
     }
 
     private function ckFileInfo()
@@ -1441,13 +1478,6 @@ class Cabinet {
     {
         $this->loadfolder();
 
-        $form = new PHPWS_Form('upload');
-        $form->addHidden('module', 'filecabinet');
-        $form->addHidden('aop', 'ckupload');
-        $form->addFile('filename');
-        $form->addSubmit(dgettext('filecabinet', 'Upload'));
-        $tpl = $form->getTemplate();
-
         if ($this->folder->id) {
             $ftype = $this->folder->ftype;
             $tpl['CURRENT_FOLDER'] = $this->folder->id;
@@ -1458,6 +1488,7 @@ class Cabinet {
         $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
         $tpl['FOLDER_TYPE'] = $ftype;
         $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
+        $tpl['AUTHKEY'] = Current_User::getAuthKey();
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
 
         echo $content;

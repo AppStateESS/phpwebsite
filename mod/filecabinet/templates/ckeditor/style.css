@@ -137,3 +137,19 @@ div#files div.pick-image {
     font-size : 10px;
     text-align : center;
 }
+
+table#upload-form {
+    width : 100%;
+    font-size : 10px;
+}
+
+#current-folder-listing {
+    position : absolute;
+}
+
+#folder-form {
+    position : absolute;
+    z-index: 100;
+    left : 200px;
+    top : 0px;
+}

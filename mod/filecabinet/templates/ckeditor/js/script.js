@@ -33,6 +33,16 @@ var current_open_folder;
  * Script initializer
  */
 $(function() {
+    initScript();
+});
+
+function setCurrentFolderId(new_folder_id)
+{
+    current_folder_id = new_folder_id;
+}
+
+function initScript()
+{
     readyFolder();
     folderTypeChange();
     shadeType();
@@ -46,8 +56,7 @@ $(function() {
             }
         });
     }
-});
-
+}
 
 /**
  * changes the folder type (image, document, or multimedia when clicked
@@ -107,9 +116,9 @@ function openFolder(folder) {
     current_open_folder = folder;
     folder_title = folder.text();
     folder_id = folder.parent().attr('rel');
-    $('#folder-id').val(folder_id);
+    $('iframe#upload-frame').contents().find('#folder-id').val(folder_id);
+    $('#upload-frame').contents().find('#ftype').val(folder_type);
     $('#folder-form').show();
-    $('#ftype').val(folder_type);
     $('#current-folder').html(folder_title);
     folderContents(folder);
 }
@@ -187,7 +196,7 @@ function readyButtons(title)
         if (button_name == 'edit') {
             new_title = prompt('Change file title below', title);
             if (new_title!=null && new_title!='') {
-                edit_link = 'index.php?module=filecabinet&aop=ck_edit_file&ftype=' + folder_type + '&file_id=' + file_id;
+                edit_link = 'index.php?module=filecabinet&aop=ck_edit_file&ftype=' + folder_type + '&file_id=' + file_id + '&authkey=' + authkey;
                 $.get(edit_link, {
                     'title' : new_title
                 }, function(data) {
@@ -197,7 +206,7 @@ function readyButtons(title)
         } else if (button_name == 'delete') {
             confirm_it = confirm('Are you sure you want to delete this file?');
             if (confirm_it == true) {
-                delete_link = 'index.php?module=filecabinet&aop=ck_delete_file&ftype=' + folder_type + '&file_id=' + file_id;
+                delete_link = 'index.php?module=filecabinet&aop=ck_delete_file&ftype=' + folder_type + '&file_id=' + file_id + '&authkey=' + authkey;
                 $.get(delete_link, function() {
                     folderContents(current_open_folder);
                 });

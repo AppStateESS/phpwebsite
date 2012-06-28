@@ -9,6 +9,7 @@
             var folder_open = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/folder_open.png';
             var folder_closed = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/directory.png';
             var folder_type = '{FOLDER_TYPE}';
+            var authkey = '{AUTHKEY}';
         </script>
         <script src="{SOURCE_HTTP}javascript/jquery/jquery.js" type="text/javascript"></script>
         <script src="{SOURCE_HTTP}javascript/jquery_ui/jquery-ui.js" type="text/javascript"></script>
@@ -30,16 +31,10 @@
             </div>
         </div>
         <div id="tools">
-            <table>
-                <tr>
-                    <td style="width : 200px">Current folder: <span id="current-folder"></span></td>
-                    <td id="folder-form" style="display : none">{START_FORM}
-                        <input type="hidden" id="folder-id" name="folder_id" value="" />
-                        <input type="hidden" id="ftype" name="ftype" value="" />
-                        {FILENAME}
-                        {SUBMIT}
-                        {END_FORM}
-                    </td>
+                    <div id="current-folder_listing">Current folder: <span id = "current-folder"></span></div>
+                    <div id = "folder-form" style = "display : none;">
+                        <iframe id="upload-frame" src="index.php?module=filecabinet&aop=ckuploadform&authkey={AUTHKEY}" frameborder="0" width="400px" height="26px"></iframe>
+                    </div>
                 </tr>
             </table>
         </div>
