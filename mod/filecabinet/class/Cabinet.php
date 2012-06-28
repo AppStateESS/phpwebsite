@@ -469,17 +469,19 @@ class Cabinet {
 
     private function ckUpload()
     {
+        $error=null;
         $file = $this->ckGetFileType($_POST['ftype']);
         $result = $file->importPost('filename');
         $folder = new Folder($file->folder_id);
         if ($result) {
-            $file->setDirectory($folder->getFullDirectory());
-            $file->save();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                $file->_errors[] = 'An error prevented your file from being saved on the server.';
+                $error = urlencode($result->getMessage());
+            } else {
+                $file->setDirectory($folder->getFullDirectory());
+                $file->save();
             }
-            $this->ckEditor($file);
+            PHPWS_Core::reroute('index.php?module=filecabinet&aop=ckeditor&error=' . $error . '&folder_id=' . $folder->id);
         } else {
             PHPWS_Core::reroute('index.php?module=filecabinet&aop=ckeditor&folder_id=' . $folder->id);
         }
