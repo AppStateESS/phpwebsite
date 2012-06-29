@@ -1,7 +1,7 @@
 <?php
 $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-$_SESSION['ck_dir'] = dirname($_SERVER['PHP_SELF']) . '/images/ckeditor/';
-$_SESSION['ck_http'] = dirname($_SERVER['PHP_SELF']) . '/images/ckeditor/';
+$_SESSION['ck_dir'] = dirname($_SERVER['PHP_SELF']) . '/images/filecabinet/';
+$_SESSION['ck_http'] = dirname($_SERVER['PHP_SELF']) . '/images/filecabinet/';
 $_SESSION['home_dir'] = PHPWS_HOME_DIR;
 $_SESSION['source_dir'] = PHPWS_SOURCE_DIR;
 $_SESSION['source_http'] = PHPWS_SOURCE_HTTP . 'javascript/editors/ckeditor/filemanager/';

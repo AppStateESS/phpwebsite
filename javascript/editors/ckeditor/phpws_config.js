@@ -3,9 +3,9 @@ var basePath = CKEDITOR.basePath;
 basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
 
 //load external plugin
-(function() {
+/* (function() {
    CKEDITOR.plugins.addExternal('filecabinet',basePath+'ckeditor/phpws_plugins/filecabinet/', 'plugin.js');
-})();
+})(); */
 
 
 CKEDITOR.editorConfig = function( config )
