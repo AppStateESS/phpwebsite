@@ -36,7 +36,7 @@ class FC_File_Assoc {
     public $_allow_caption = true;
     public $_file_path = null;
 
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
@@ -114,7 +114,7 @@ class FC_File_Assoc {
         }
     }
 
-    public function parentLinked($thumbnail=false)
+    public function parentLinked($thumbnail = false)
     {
         if (($this->file_type != FC_IMAGE_RESIZE && $this->file_type != FC_IMAGE_CROP) || !$this->_resize_parent) {
             $this->_link_image = true;
@@ -143,12 +143,12 @@ class FC_File_Assoc {
         return $this->_resize_parent->getJSView(false, $img);
     }
 
-    public function allowImageLink($link=true)
+    public function allowImageLink($link = true)
     {
         $this->_link_image = (bool) $link;
     }
 
-    public function isImage($include_resize=true)
+    public function isImage($include_resize = true)
     {
         if ($include_resize) {
             return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE ||
@@ -178,7 +178,7 @@ class FC_File_Assoc {
         return ($this->file_type == FC_IMAGE_CROP);
     }
 
-    public function allowCaption($allow=true)
+    public function allowCaption($allow = true)
     {
         $this->_allow_caption = (bool) $allow;
     }
@@ -248,7 +248,24 @@ class FC_File_Assoc {
         }
     }
 
-    public function getTag($embed=false, $base=false)
+    public function getPick()
+    {
+        switch ($this->file_type) {
+            case FC_MEDIA:
+            case FC_MEDIA_RESIZE:
+                if ($this->_source->id) {
+                    return $this->_source->getThumbnail();
+                } else {
+                    $this->deadAssoc();
+                }
+                break;
+
+            default:
+                return $this->getTag();
+        }
+    }
+
+    public function getTag($embed = false, $base = false)
     {
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');

@@ -217,6 +217,7 @@ class FC_File_Manager {
     public function get()
     {
         static $count = 0;
+        javascriptMod('filecabinet', 'flowplayer');
         Layout::addStyle('filecabinet', 'file_view.css');
         Layout::addStyle('filecabinet');
         $this->file_assoc->loadCarousel(3);
@@ -801,7 +802,7 @@ class FC_File_Manager {
 
         if ($file) {
             $vars['id']      = $this->session_id;
-            $vars['data']    = $this->jsReady($file->getTag());
+            $vars['data']    = $this->jsReady($file->getPick());
             $vars['new_id']  = $file->id;
             $vars['vert']    = $file->vertical;
             $vars['vis']     = $file->num_visible;
