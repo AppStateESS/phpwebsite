@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_MyToolbar =
     [
-        ['Source','-','Save','NewPage','Preview','-','Templates'],
+        ['Source','-','Templates'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         '/',
@@ -23,7 +23,7 @@ CKEDITOR.editorConfig = function( config )
         ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
         ['Link','Unlink','Anchor'],
-        ['Image', 'Filecabinet', 'Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+        ['Image', 'Filecabinet', 'Table','HorizontalRule','SpecialChar'],
         '/',
         ['Styles','Format','Font','FontSize'],
         ['TextColor','BGColor'],
