@@ -214,4 +214,11 @@ define('FORCE_EDITOR', true);
 */
 define('ALLOW_CAPTCHA', true);
 define('CAPTCHA_NAME', 'freecap');
+
+/**
+ * If true, <script> tags can be submitted by a user who has scripting permissions.
+ * Generally, leaving this false is the best course.
+ */
+define('ALLOW_SCRIPT_TAGS', false);
+
 ?>
