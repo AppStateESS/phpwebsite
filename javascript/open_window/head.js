@@ -1,13 +1,6 @@
 <script type="text/javascript">
 //<![CDATA[
-var popup = 0;
-function open_window(page, width, height, window_name, center) {
-    if(popup) {if(!popup.closed) {if (popup.focus) {popup.focus();}}}
-    if (center) {x = (640 - width)/2, y = (480 - height)/2;if (screen) {y = (screen.availHeight - height)/2;x = (screen.availWidth - width)/2;}
-    } else {x = 100;y = 100;}
-   popup = window.open(page, window_name, 'toolbar={toolbar},top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',scrollbars={scrollbars},menubar={menubar},location={location},resizable={resizable},width=' + width + ',height=' + height);
-   return false;
-}
+var popup=0;function open_window(c,a,b,d,e){popup&&(popup.closed||popup.focus&&popup.focus());e?(x=(640-a)/2,y=(480-b)/2,screen&&(y=(screen.availHeight-b)/2,x=(screen.availWidth-a)/2)):y=x=100;popup=window.open(c,d,"toolbar={toolbar},top="+y+",left="+x+",screenY="+y+",screenX="+x+",scrollbars={scrollbars},menubar={menubar},location={location},resizable={resizable},width="+a+",height="+b);return!1};
 //]]>
 </script>
 

@@ -16,7 +16,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbar_MyToolbar =
     [
         ['Source','-','Templates'],
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+        ['Cut','Copy','Paste','PasteText','PasteFromWord','-', 'SpellChecker', 'Scayt'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         '/',
         ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
