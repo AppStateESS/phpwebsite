@@ -6,9 +6,16 @@
  * config.php file. That file now contains hub/branch specific
  * information.
  *
+ * PLEASE NOTE: WE DO NOT RECOMMEND EDITING THIS FILE.  If you
+ * need to change it, copy it first to core/conf/defines.php,
+ * and that file will be loaded instead.  Otherwise, next time
+ * you update phpWebSite, this file will be replaced and your
+ * changes lost.
+ *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+
 
 
 /***************** Database ***********************************/

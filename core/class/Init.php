@@ -24,7 +24,17 @@ if (!defined('PHPWS_SOURCE_HTTP')) {
  * check tries to prevent a redeclaration.
  **/
 if (!defined('DB_ALLOW_TABLE_INDEX')) {
-    require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
+    /**
+     * Moving defines.php to defines.dist.php.  This is mainly so
+     * that your cache and captcha settings don't get blown away
+     * whenever you run an update.  If you need to make any
+     * changes to defines.dist.php, copy it to defines.php first.
+     */
+    if(file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
+        require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
+    } else {
+        require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
+    }
 }
 require_once PHPWS_SOURCE_DIR . 'core/conf/language.php';
 
