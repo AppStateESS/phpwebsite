@@ -263,8 +263,8 @@ class PS_Forms {
                     $js['label'] = dgettext('pagesmith', 'Edit text');
                     $js['link_title'] = dgettext('pagesmith', 'Change text');
                     $vars['aop'] = 'edit_page_text';
-                    $js['width'] = 800;
-                    $js['height'] = 600;
+                    $js['width'] = 1000;
+                    $js['height'] = 700;
                     $js['class'] = 'change-link';
                     $edit_button = true;
                     break;
