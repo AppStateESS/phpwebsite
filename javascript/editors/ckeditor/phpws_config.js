@@ -12,6 +12,7 @@ CKEDITOR.editorConfig = function( config )
 {
     config.toolbar = 'MyToolbar';
     config.extraPlugins = 'filecabinet';
+    config.height = 300;
 
     config.toolbar_MyToolbar =
     [
