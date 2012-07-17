@@ -611,7 +611,6 @@ class DBPager {
         if (isset($this->error)) {
             return;
         }
-
         /**
          * if total_column is set, use it to get total rows
          */
@@ -764,9 +763,9 @@ class DBPager {
                 $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
             }
         }
-
         $count = $this->getTotalRows();
         if (PHPWS_Error::isError($count)) {
+            PHPWS_Error::log($count);
             return $count;
         }
 
@@ -839,7 +838,6 @@ class DBPager {
             $result = $this->db->getObjects($this->class);
         }
         $this->row_query = $this->db->lastQuery();
-
         if (PHPWS_Error::isError($result)) {
             return $result;
         }
