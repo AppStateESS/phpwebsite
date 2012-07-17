@@ -946,11 +946,12 @@ class PHPWS_DB {
         $col['count'] = (bool) $count;
         $col['distinct'] = (bool) $distinct;
         $col['coalesce'] = $coalesce;
-        if ($column != '*') {
+        if ($column != '*' || ($count && !empty($as))) {
             $col['as'] = $as;
         }
 
         $this->columns[] = $col;
+
     }
 
     public function getAllColumns()
@@ -982,6 +983,8 @@ class PHPWS_DB {
                     if ($count) {
                         if ($distinct) {
                             $table_name = sprintf('count(distinct(%s.%s))', $table, $name);
+                        } elseif ($count && $name == '*') {
+                            $table_name = sprintf('count(%s)', $name);
                         } else {
                             $table_name = sprintf('count(%s.%s)', $table, $name);
                         }
