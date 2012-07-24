@@ -378,6 +378,8 @@ class Branch {
             return null;
         }
 
+        $branch_id = $branch_id['id'];
+
         Branch::loadHubDB();
 
         $db = new PHPWS_DB('branch_mod_limit');
