@@ -25,8 +25,7 @@ class Cycle {
                 break;
 
             case 'form':
-                $slot = new Cycle_Slot($_GET['sid']);
-                echo $this->slotForm($slot);
+                $this->updateForm();
                 exit();
                 break;
         }
@@ -34,6 +33,22 @@ class Cycle {
         Layout::add($this->content);
     }
 
+    private function updateForm()
+    {
+        $json = array();
+        $slot = new Cycle_Slot($_GET['sid']);
+        
+        $json = get_object_vars($slot);
+        
+        if ($slot->isNew()) {
+            $json['new'] = 1;
+        } else {
+            $json['new'] = 0;
+        }
+        
+        echo json_encode($json);
+    }
+    
     public function post()
     {
         if (isset($_POST['aop'])) {
