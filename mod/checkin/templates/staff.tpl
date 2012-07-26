@@ -3,7 +3,7 @@
     <tr>
         <th>{VIEW_ORDER_SORT}</th>
         <th>{DISPLAY_NAME_SORT}</th>
-        <th>{FILTER_SORT}</th>
+        <th>{LNAME_FILTER_SORT}</th>
         <th>&#160;</th>
     </tr>
     <!-- BEGIN listrows -->

@@ -2,11 +2,11 @@
 <p>{USERNAME_LABEL}<br />
 {USERNAME}</p>
 <fieldset><legend>{FILTER_LEGEND}</legend>
-<p>{FILTER_TYPE_1} {FILTER_TYPE_1_LABEL}</p>
-<p>{FILTER_TYPE_2} {FILTER_TYPE_2_LABEL}<br />
-{LAST_NAME_FILTER}<br />
-{LAST_NAME_FILTER_LABEL}</p>
-<p>{FILTER_TYPE_3} {FILTER_TYPE_3_LABEL}<br />
-<strong>{REASONS_LABEL}</strong> {REASONS}</p>
+<table>
+    <tr><td>{LAST_NAME} {LAST_NAME_LABEL}</td><td>{LAST_NAME_FILTER}</br >{LAST_NAME_FILTER_LABEL}</td></tr>
+    <!-- BEGIN reason --><tr><td>{REASON} {REASON_LABEL}</td><td>{REASON_FILTER}</td></tr><!-- END reason -->
+    <!-- BEGIN gender --><tr><td>{GENDER} {GENDER_LABEL}</td><td>{GENDER_FILTER}</td></tr><!-- END gender -->
+    <!-- BEGIN birthdate --><tr><td>{BIRTHDATE} {BIRTHDATE_LABEL}</td><td>{START_DATE} to {END_DATE}</td></tr><!-- END birthdate -->
+</table>
 </fieldset>
 {SUBMIT} {END_FORM}

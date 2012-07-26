@@ -13,4 +13,6 @@ $settings['time_format']     = '%r';
 $settings['unassigned_seen'] = 0;
 $settings['sendback'] = 1;
 $settings['email'] = 0;
+$settings['gender'] = 0;
+$settings['birthdate'] = 0;
 ?>

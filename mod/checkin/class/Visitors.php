@@ -9,6 +9,8 @@ class Checkin_Visitor {
     public $firstname     = null;
     public $lastname      = null;
     public $email         = null;
+    public $gender        = null;
+    public $birthdate     = null;
     public $reason        = 0;
     public $arrival_time  = 0;
     public $start_meeting = 0;
@@ -39,51 +41,92 @@ class Checkin_Visitor {
         return $db->saveObject($this);
     }
 
-
+    /**
+     * Assigns a visitor to the proper staff member.
+     * 
+     * If the visitor can not be matched to any staff member, then the visitor
+     * is left unassigned. If the visitor can be matched to more than 1 staff 
+     * member, then the visitor is matched with the staff member with the 
+     * fewest visitors waiting.
+     */
     public function assign()
     {
-        if (!$this->reason) {
-            return;
-        }
+        $availableStaff = array();
 
-        $db = new PHPWS_DB('checkin_rtos');
-        $db->addWhere('reason_id', $this->reason);
-        $db->addWhere('staff_id', 'checkin_staff.id', null, null, 'staff');
-        $db->addWhere('checkin_staff.status', 1, '!=', null, 'staff');
-        $db->addColumn('staff_id');
-        // currently only grabbing one staff member
-        $this->assigned = $db->select('one');
+        $db = new PHPWS_DB('checkin_staff');
+        $db->addWhere('active', 1);         // staff is not deactivated
+        $db->addWhere('status', 1, '!=');   // staff is not unavailable
+        $db->addOrder('id asc');
+        $availableStaff = $db->select();
 
-        if (!$this->assigned) {
-            $db = new PHPWS_DB('checkin_staff');
-            $db->addWhere('f_regexp', null, '!=');
-            $db->addColumn('id');
-            $db->addColumn('f_regexp');
-            $db->setIndexBy('id');
-
-            $filters = $db->select('col');
-            if (empty($filters)) {
-                $this->assigned = 0;
-                return;
-            }
-
-            foreach ($filters as $id=>$preg_filter) {
-                if (empty($preg_filter)) {
+        foreach ($availableStaff as $key => $staff) {
+            // Eliminate staff members who don't meet with people of the visitor's gender
+            if ($staff['filter_type'] & GENDER_BITMASK) {
+                if ($staff['gender_filter'] != $this->gender) {
+                    unset($availableStaff[$key]);
                     continue;
                 }
-
-                // preg match requires parens and first character symbol
-                if (preg_match("/^($preg_filter)/i", $this->lastname)) {
-                    $this->assigned = $id;
-                    return;
+            }
+            
+            // Eliminate staff members who don't meet with people with the visitor's last name
+            if ($staff['filter_type'] & LAST_NAME_BITMASK) {
+                $regex = $staff['lname_regexp'];
+                if (!preg_match("/^($regex)/i", $this->lastname)) {
+                    unset($availableStaff[$key]);
+                    continue;
                 }
             }
+            
+            // Eliminate staff members who don't meet with people of the visitor's age
+            if ($staff['filter_type'] & BIRTHDATE_BITMASK) {
+                if ($this->birthdate < $staff['birthdate_filter_start'] || $this->birthdate > $staff['birthdate_filter_end']) {
+                    unset($availableStaff[$key]);
+                    continue;
+                }
+            }
+            
+            // Eliminate staff members who don't meet with people having the visitor's "reason for visit"
+            if ($staff['filter_type'] & REASON_BITMASK) {
+                $rtosDB = new PHPWS_DB('checkin_rtos');
+                $rtosDB->addWhere('staff_id', $staff['id']);
+                $rtosDB->addColumn('reason_id');
+                $reasons = $rtosDB->select('col');
+                $flag = false;
+                foreach ($reasons as $possReason) {
+                    if ($this->reason == $possReason) {
+                        $flag = true;
+                    }
+                }
+                if (!$flag) {
+                    unset($availableStaff[$key]);
+                    continue;
+                }
+            }
+        }
 
+        $availableStaff = array_values($availableStaff);    // reindex the array
+        
+        // Match the visitor to one of the remaining eligible staff members, if any eligible staff members exist.
+        if (count($availableStaff) == 0) {          // no eligible staff members
             $this->assigned = 0;
+        } elseif (count($availableStaff) == 1) {    // one eligible staff member
+            $this->assigned = $availableStaff[0]['id'];
+        } else {                                    // more than one eligible staff member
+            // If multiple staff members remain, assign the visitor to the one who has the fewest waiting visitors.
+            $counts = array();
+            $visitorDB = new PHPWS_DB('checkin_visitor');
+            foreach ($availableStaff as $staff) {
+                $visitorDB->addWhere('assigned', $staff['id']);
+                $visitorDB->addWhere('finished', '0');
+                $visitorDB->addColumn('id', null, null, true);
+                $count = $visitorDB->select();
+                $counts[$staff['id']] = $count;
+                $visitorDB->reset();
+            }
+            $id = array_keys($counts, min($counts));
+            $this->assigned = is_array($id) ? $id[0] : $id;
         }
     }
-
-
 
     public function removeLink()
     {

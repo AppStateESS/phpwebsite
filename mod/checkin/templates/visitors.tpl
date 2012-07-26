@@ -1,4 +1,4 @@
-{HIDE_PANEL} | {HIDE_SIDEBAR} | {REFRESH}
+{HIDE_PANEL} | {HIDE_SIDEBAR} | {REFRESH}<!-- | {UNASSIGN_ALL} | {AUTO_ASSIGN}-->
 <div id="assignment">
 <table border="1" cellpadding="5" style="border-collapse : collapse" width="100%">
 <tr><th width="20%">{DISPLAY_NAME_LABEL}</th>

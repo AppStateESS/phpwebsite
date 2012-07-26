@@ -7,8 +7,10 @@
  */
 PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
-define('CO_FT_LAST_NAME', 1);
-define('CO_FT_REASON', 2);
+define('BIRTHDATE_BITMASK', 0x1);
+define('GENDER_BITMASK', 0x2);
+define('REASON_BITMASK', 0x4);
+define('LAST_NAME_BITMASK', 0x8);
 
 class Checkin_Admin extends Checkin {
 
@@ -317,6 +319,16 @@ class Checkin_Admin extends Checkin {
                 $staff->save();
                 PHPWS_Core::goBack();
                 break;
+            
+            // This is for testing purposes and never happens in actual use
+            case 'unassignAll':
+                $this->unassignAll();
+                break;
+            
+            // This is for testing purposes and never happens in actual use
+            case 'auto_assign':
+                $this->autoAssign();
+                break;
         }
 
         if (empty($this->content)) {
@@ -450,9 +462,46 @@ class Checkin_Admin extends Checkin {
         $tpl['HIDE_PANEL'] = $this->hidePanelLink();
         $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
         $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=assign">%s</a>', dgettext('checkin', 'Refresh'));
+        // UNASSIGN_ALL and AUTO_ASSIGN are links for testing functionality of automatic visitor assignment.
+        //$tpl['UNASSIGN_ALL'] = sprintf('<a href="index.php?module=checkin&aop=unassignAll">%s</a>', dgettext('checkin', 'Unassign All')); // For testing purposes only
+        //$tpl['AUTO_ASSIGN'] = sprintf('<a href="index.php?module=checkin&aop=auto_assign">%s</a>', dgettext('checkin', 'Auto Assign'));   // For testing purposes only
 
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitors.tpl');
         Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
+    }
+
+    /** 
+     * This method is for testing purposes only and is never called in real
+     * world deployment.
+     * This method unassigns all visitors from all staff members to allow them
+     * to be automatically reassigned again.
+     */
+    public function unassignAll()
+    {
+        $db = new PHPWS_DB('checkin_visitor');
+        $db->addValue('assigned', 0);
+        $db->addWhere('finished', 0);
+        $db->update();
+        PHPWS_Core::reroute('index.php?module=checkin&tab=assign');
+    }
+
+    /**
+     * This method is for testing purposes inly and is never called in real
+     * world deployment.
+     * This method attemps to assign all unassigned visitors to a staff member.
+     */
+    public function autoAssign()
+    {
+        $db = new PHPWS_DB('checkin_visitor');
+        $db->addWhere('assigned', 0);
+        $visitors = $db->select('col');
+
+        foreach ($visitors as $visitor) {
+            $this->loadVisitor($visitor);
+            $this->visitor->assign();
+            $this->visitor->save();
+        }
+        PHPWS_Core::reroute('index.php?module=checkin&tab=assign');
     }
 
     public function hideSidebarLink()
@@ -669,7 +718,7 @@ class Checkin_Admin extends Checkin {
         $pager->setEmptyMessage(dgettext('checkin', 'No staff found.'));
         $pager->addPageTags($page_tags);
         $pager->joinResult('user_id', 'users', 'id', 'display_name');
-        $pager->addSortHeader('filter', dgettext('checkin', 'Filter'));
+        $pager->addSortHeader('lname_filter', dgettext('checkin', 'Filter'));
         $pager->addSortHeader('display_name', dgettext('checkin', 'Staff name'));
         $pager->addSortHeader('view_order', dgettext('checkin', 'Order'));
 
@@ -698,31 +747,69 @@ class Checkin_Admin extends Checkin {
             $form->addSubmit(dgettext('checkin', 'Update staff'));
         }
 
-        $reasons = $this->getReasons();
+        // array of values to use with setMatch()
+        $checks = array();
+        $checks['last_name'] = $this->staff->filter_type & LAST_NAME_BITMASK ? 'yes' : 'no';
+        $checks['reason'] = $this->staff->filter_type & REASON_BITMASK ? 'yes' : 'no';
+        $checks['gender'] = $this->staff->filter_type & GENDER_BITMASK ? 'yes' : 'no';
+        $checks['birthdate'] = $this->staff->filter_type & BIRTHDATE_BITMASK ? 'yes' : 'no';
 
-        if (empty($reasons)) {
-            $form->addTplTag('REASONS', PHPWS_Text::moduleLink(dgettext('checkin', 'No reasons found.'), 'checkin', array('aop' => 'reasons')));
-            $form->addTplTag('REASONS_LABEL', dgettext('checkin', 'Reasons'));
-            $form->addRadioAssoc('filter_type', array(0 => dgettext('checkin', 'None'),
-                CO_FT_LAST_NAME => dgettext('checkin', 'Last name')));
-        } else {
-            $form->addMultiple('reasons', $reasons);
-            $form->setMatch('reasons', $this->staff->_reasons);
-            $form->setLabel('reasons', dgettext('checkin', 'Reasons'));
-            $form->addRadioAssoc('filter_type', array(0 => dgettext('checkin', 'None'),
-                CO_FT_LAST_NAME => dgettext('checkin', 'Last name'),
-                CO_FT_REASON => dgettext('checkin', 'Reason')));
-        }
-
-        $form->setMatch('filter_type', $this->staff->filter_type);
-
-        $form->addText('last_name_filter', $this->staff->filter);
+        // Add checkbox for "Last Name" filter
+        $form->addCheck('last_name', 'yes');
+        $form->setMatch('last_name', $checks['last_name']);
+        $form->setLabel('last_name', dgettext('checkin', 'Last Name'));
+        $form->addText('last_name_filter', $this->staff->lname_filter);
         $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
 
+        // Add checkbox for "Reasons" filter
+        $reasons = $this->getReasons();
+        if (!empty($reasons)) {
+            $form->addCheck('reason', 'yes');
+            $form->setMatch('reason', $checks['reason']);
+            $form->setLabel('reason', dgettext('checkin', 'Reason'));
+            $form->addMultiple('reason_filter', $reasons);
+            $form->setMatch('reason_filter', $this->staff->_reasons);
+        }
+
+        // Add checkbox for "Gender" filter
+        if (PHPWS_Settings::get('checkin', 'gender')) {
+            $form->addCheck('gender', 'yes');
+            $form->setMatch('gender', $checks['gender']);
+            $form->setLabel('gender', dgettext('checkin', 'Gender'));
+            $form->addSelect('gender_filter', array('male' => 'Male', 'female' => 'Female'));
+            $form->setMatch('gender_filter', $this->staff->gender_filter);
+        }
+
+        // Add checkbox for "Birthdate" filter
+        if (PHPWS_Settings::get('checkin', 'birthdate')) {
+            javascript('datepicker');
+            $form->addCheck('birthdate', 'yes');
+            $form->setMatch('birthdate', $checks['birthdate']);
+            $form->setLabel('birthdate', dgettext('checkin', 'Birthdate'));
+            
+            // Fill the date picker with the current filter start date if it is set
+            if (isset($this->staff->birthdate_filter_start)) {
+                $form->addText('start_date', date('m/d/Y', $this->staff->birthdate_filter_start));
+            } else {
+                $form->addText('start_date', date('m/d/Y'));
+            }
+
+            $form->setSize('start_date', 10);
+            $form->setExtra('start_date', 'class="datepicker"');
+            
+            // Fill the date picker with the current filter end date if it is set
+            if (isset($this->staff->birthdate_filter_end)) {
+                $form->addText('end_date', date('m/d/Y', $this->staff->birthdate_filter_end));
+            } else {
+                $form->addText('end_date', date('m/d/Y'));
+            }
+
+            $form->setSize('end_date', 10);
+            $form->setExtra('end_date', 'class="datepicker"');
+        }
+
         $tpl = $form->getTemplate();
-
         $tpl['FILTER_LEGEND'] = dgettext('checkin', 'Visitor filter');
-
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
 
@@ -813,6 +900,16 @@ class Checkin_Admin extends Checkin {
         $form->addCheck('email', 1);
         $form->setLabel('email', dgettext('checkin', 'Request email address'));
         $form->setMatch('email', PHPWS_Settings::get('checkin', 'email'));
+        
+        // Checkbox for requesting gender when checking in
+        $form->addCheck('gender', 1);
+        $form->setLabel('gender', dgettext('checkin', 'Request gender'));
+        $form->setMatch('gender', PHPWS_Settings::get('checkin', 'gender'));
+
+        // Checkbox for requesting birthdate when checking in
+        $form->addCheck('birthdate', 1);
+        $form->setLabel('birthdate', dgettext('checkin', 'Request date of birth'));
+        $form->setMatch('birthdate', PHPWS_Settings::get('checkin', 'birthdate'));
 
         $form->addSubmit(dgettext('checkin', 'Save settings'));
         $tpl = $form->getTemplate();
@@ -835,6 +932,26 @@ class Checkin_Admin extends Checkin {
         PHPWS_Settings::set('checkin', 'collapse_signin', (int) isset($_POST['collapse_signin']));
         PHPWS_Settings::set('checkin', 'sendback', (int) isset($_POST['sendback']));
         PHPWS_Settings::set('checkin', 'email', (int) isset($_POST['email']));
+        PHPWS_Settings::set('checkin', 'gender', (int) isset($_POST['gender']));
+        PHPWS_Settings::set('checkin', 'birthdate', (int) isset($_POST['birthdate']));
+
+        // If checkin does not ask for gender, make sure no staff member is filtering by gender
+        if (!isset($_POST['gender'])) {
+            $this->loadStaffList();
+            foreach ($this->staff_list as $staff) {
+                $staff->filter_type = $staff->filter_type & ~GENDER_BITMASK;
+                $staff->save();
+            }
+        }
+
+        // If checkin does not ask for birthdate, make sure no staff member is filtering by birthdate
+        if (!isset($_POST['birthdate'])) {
+            $this->loadstaffList();
+            foreach ($this->staff_list as $staff) {
+                $staff->filter_type = $staff->filter_type & ~BIRTHDATE_BITMASK;
+                $staff->save();
+            }
+        }
 
         $seconds = (int) $_POST['assign_refresh'];
         if ($seconds < 1) {
@@ -953,18 +1070,64 @@ class Checkin_Admin extends Checkin {
             $this->loadStaff();
             $this->staff->user_id = $user_id;
         }
-
-        $this->staff->filter_type = (int) $_POST['filter_type'];
-        $this->staff->parseFilter($_POST['last_name_filter']);
-
-        if (!empty($_POST['reasons'])) {
-            $this->staff->_reasons = $_POST['reasons'];
-        } elseif ($this->staff->filter_type == CO_FT_REASON) {
-            $this->message = dgettext('checkin', 'Please pick one or more reasons.');
-            return false;
+        
+        // Blank filter to begin with
+        $filter = 0x0;
+        
+        // Update last name filter
+        if ($_POST['last_name'] == 'yes') {
+            $filter = $filter | LAST_NAME_BITMASK;
+            if (!empty($_POST['last_name_filter'])) {
+                $this->staff->filter_type = $filter;    // parseFilter() checks filter_type, so it needs to be updated early
+                $this->staff->parseFilter($_POST['last_name_filter']);
+            } else {
+                $this->message[] = dgettext('checkin', 'Please enter a last name filter.');
+            }
+        } else {
+            $this->staff->lname_filter = null;
+            $this->staff->lname_regexp = null;
+        }
+        
+        // Update reason filter
+        if ($_POST['reason'] == 'yes') {
+            $filter = $filter | REASON_BITMASK;
+            if (!empty($_POST['reason_filter'])) {
+                $this->staff->_reasons = $_POST['reason_filter'];
+            } else {
+                $this->message[] = dgettext('checkin', 'Please pick one or more reasons.');
+            }
+        }
+        
+        // Update gender filter
+        if ($_POST['gender'] == 'yes') {
+            $filter = $filter | GENDER_BITMASK;
+            if (isset($_POST['gender_filter'])) {
+                $this->staff->gender_filter = $_POST['gender_filter'];
+            } else {
+                $this->message[] = dgettext('checkin', 'Please choose a gender filter.');
+            }
+        } else {
+            $this->staff->gender_filter = null;
+        }
+        
+        // Update birthdate filter
+        if ($_POST['birthdate'] == 'yes') {
+            $filter = $filter | BIRTHDATE_BITMASK;
+            if (!empty($_POST['start_date']) && !empty($_POST['end_date'])) {
+                $this->staff->birthdate_filter_start = strtotime($_POST['start_date']);
+                $this->staff->birthdate_filter_end = strtotime($_POST['end_date']);
+            } else {
+                $this->message[] = dgettext('checkin', 'Please enter a start and end date.');
+            }
+        } else {
+            $this->staff->birthdate_filter_start = null;
+            $this->staff->birthdate_filter_end = null;
         }
 
-        return true;
+        // Update filter_type
+        $this->staff->filter_type = $filter;
+
+        return empty($this->message) ? true : false;
     }
 
     public function postReason()

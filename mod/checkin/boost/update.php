@@ -100,6 +100,63 @@ function checkin_update(&$content, $current_version) {
             $content[] = '<pre>1.4.0 changes
 ---------------
 + May now report by visitor name.</pre>';
+        case version_compare($current_version, '1.5.0', '<'):
+            $content[] = '<pre>';
+            
+            // Make changes to checkin_visitor table
+            $db = new PHPWS_DB('checkin_visitor');
+            if (PHPWS_Error::logIfError($db->addTableColumn('gender', 'varchar(20) default NULL'))) {
+                $content[] = 'Unable to create checkin_visitor.gender column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created checkin_visitor.gender column.';
+            }
+            if (PHPWS_Error::logIfError($db->addTableColumn('birthdate', 'varchar(20) default NULL'))) {
+                $content[] = 'Unable to create checkin_visitor.birthdate column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created checkin_visitor.birthdate column.';
+            }
+
+            // Make changes to checkin_staff table
+            $db = new PHPWS_DB('checkin_staff');
+            if (PHPWS_Error::logIfError($db->addTableColumn('birthdate_filter_end', 'varchar(20) default NULL', 'f_regexp'))) {
+                $content[] = 'Unable to create checkin_staff.birthdate_filter_end column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created checkin_staff.birthdate_filter_end column.';
+            }
+            if (PHPWS_Error::logIfError($db->addTableColumn('birthdate_filter_start', 'varchar(20) default NULL', 'f_regexp'))) {
+                $content[] = 'Unable to create checkin_staff.birthdate_filter_start column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created checkin_staff.birthdate_filter_start column.';
+            }
+            if (PHPWS_Error::logIfError($db->addTableColumn('gender_filter', 'varchar(20) default NULL', 'f_regexp'))) {
+                $content[] = 'Unable to create checkin_staff.gender_filter column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Created checkin_staff.gender_filter column.';
+            }
+            if (PHPWS_Error::logIfError($db->query('ALTER TABLE checkin_staff CHANGE filter lname_filter varchar(255) default NULL'))) {
+                $content[] = 'Unable to rename checkin_staff.filter column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Renamed checkin_staff.filter to checkin_staff.lname_filter.';
+            }
+            if (PHPWS_Error::logIfError($db->query('ALTER TABLE checkin_staff CHANGE f_regexp lname_regexp varchar(255) default NULL'))) {
+                $content[] = 'Unable to rename checkin_staff.f_regexp column.</pre>';
+                return false;
+            } else {
+                $content[] = 'Renamed checkin_staff.f_regexp to checkin_staff.lname_regexp.';
+            }
+
+            $content[] = '1.5.0 changes
+---------------
++ Option to collect visitor gender.
++ Option to collect visitor birthdate.
++ Added staff filters for gender and birthdate.
++ Staff can now have more than one filter.</pre>';
     }
     return true;
 }

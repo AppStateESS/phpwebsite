@@ -5,22 +5,27 @@
  */
 
 class Checkin_Staff {
-    public $id            = 0;
-    public $user_id       = 0;
-    public $filter        = null;
+    public $id                      = 0;
+    public $user_id                 = 0;
+    public $lname_filter            = null;
+    public $lname_regexp            = null;
+    public $gender_filter           = null;
+    public $birthdate_filter_start  = null;
+    public $birthdate_filter_end    = null;
     /**
-     * 0 = none
-     * CO_FT_LAST_NAME = last name regexp
-     * CO_FT_REASON    = by reason id
+     * $filter_type == 0x0                      -> no filter
+     * $filter_type & LAST_NAME_BITMASK == 1    -> filter by last name regexp
+     * $filter_type & REASON_BITMASK == 1       -> filter by reason id
+     * $filter_type & GENDER_BITMASK == 1       -> filter by gender
+     * $filter_type & BIRTHDATE_BITMASK == 1    -> filter by birthdate
      */
-    public $f_regexp      = null;
-    public $filter_type   = 0;
-    public $status        = 0;
-    public $visitor_id    = 0;
-    public $display_name  = null;
-    public $view_order    = 0;
-    public $active        = 1;
-    public $_reasons      = null;
+    public $filter_type             = 0x0;
+    public $status                  = 0;
+    public $visitor_id              = 0;
+    public $display_name            = null;
+    public $view_order              = 0;
+    public $active                  = 1;
+    public $_reasons                = null;
 
     public function __construct($id=0)
     {
@@ -63,12 +68,12 @@ class Checkin_Staff {
 
     public function parseFilter($filter)
     {
-        if (!$this->filter_type || $this->filter_type == CO_FT_REASON) {
-            $this->filter   = null;
-            $this->f_regexp = null;
+        if ($this->filter_type & LAST_NAME_BITMASK) {
+            $this->lname_filter = $filter;
+            $this->lname_regexp = $this->decodeFilter($filter);
         } else {
-            $this->filter   = $filter;
-            $this->f_regexp = $this->decodeFilter($filter);
+            $this->lname_filter = null;
+            $this->lname_regexp = null;
         }
     }
 
@@ -155,23 +160,18 @@ class Checkin_Staff {
 
     public function row_tags()
     {
-        switch ($this->filter_type) {
-            case 0 :
-                $tpl['FILTER_INFO'] = dgettext('checkin', 'None');
-                break;
-
-            case CO_FT_LAST_NAME:
-                $tpl['FILTER_INFO'] = sprintf(dgettext('checkin', 'Last name: %s'), $this->filter);
-                break;
-
-            case CO_FT_REASON:
-                $this->loadReasons(true);
-                $tpl['FILTER_INFO'] = implode('<br>', $this->_reasons);
-                break;
+        if ($this->filter_type == 0x0) {    // if no filters are selected
+            $tpl['FILTER_INFO'] = dgettext('checkin', 'None');
+        } else {
+            $filterInfo = array();
+            if ($this->filter_type & LAST_NAME_BITMASK) {$filterInfo[] = 'Last Name';}
+            if ($this->filter_type & REASON_BITMASK) {$filterInfo[] = 'Reason';}
+            if ($this->filter_type & GENDER_BITMASK) {$filterInfo[] = 'Gender';}
+            if ($this->filter_type & BIRTHDATE_BITMASK) {$filterInfo[] = 'Birthdate';}
+            $tpl['FILTER_INFO'] = implode('<br>', $filterInfo);
         }
 
         $vars['staff_id'] = $this->id;
-
 
         if ($this->active) {
             $links[] = \PHPWS_Text::secureLink(\Icon::show('active', 'Click to deactivate'), 'checkin', array('aop'=>'deactivate_staff', 'id'=>$this->id));
@@ -212,7 +212,7 @@ class Checkin_Staff {
         $db = new PHPWS_DB('checkin_rtos');
         $db->addWhere('staff_id', $this->id);
         $db->delete();
-        if ($this->filter_type == CO_FT_REASON) {
+        if ($this->filter_type & REASON_BITMASK) {
             foreach ($this->_reasons as $rid) {
                 $db->reset();
                 $db->addValue('staff_id', $this->id);

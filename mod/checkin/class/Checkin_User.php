@@ -28,6 +28,26 @@ class Checkin_User extends Checkin {
             $form->setLabel('email', dgettext('checkin', 'Email address'));
             $form->setRequired('email');
         }
+        
+        // If gender is requested
+        if (PHPWS_Settings::get('checkin', 'gender')) {
+            $sex = array('male'=>'Male', 'female'=>'Female');
+            $form->addRadioAssoc('gender', $sex);
+            $form->addTplTag('GENDER_LABEL', dgettext('checkin', 'Gender'));
+
+        }
+
+        // If birthdate is requested
+        if (PHPWS_Settings::get('checkin', 'birthdate')) {
+            /*
+             * Minimum representable date is 12-13-1901, and instead of doing 
+             * lots of math to ensure that all selected dates in 1901 are after
+             * 12-13-1901, just make the minimum year always be 1902
+             */
+            $yearsPrior = date('Y', time()) - 1902; // current year - minimum full year (1902)
+            $form->dateSelect('birthdate', 0, '%B', $yearsPrior, 0);
+            $form->addTplTag('BIRTHDATE_LABEL', dgettext('checkin', 'Date of birth'));
+        }
 
         $reasons = $this->getReasons();
 
@@ -105,13 +125,31 @@ class Checkin_User extends Checkin {
         Layout::add($this->main());
     }
 
-
     public function postCheckin()
     {
         $this->loadVisitor();
 
         $this->visitor->firstname = ucwords(trim($_POST['first_name']));
         $this->visitor->lastname  = ucwords(trim($_POST['last_name']));
+        
+        // If set to ask for birthdate, save visitor's birthdate
+        if (PHPWS_Settings::get('checkin', 'birthdate')) {
+            if (PHPWS_Form::testDate('birthdate')) {
+                $this->visitor->birthdate = PHPWS_Form::getPostedDate('birthdate');
+            } else {
+                $this->message[] = dgettext('checkin', 'Please enter a valid birthdate');
+            }
+        }
+        
+        // If set to ask for gender, save visitor's gender
+        if (PHPWS_Settings::get('checkin', 'gender')) {
+            if (isset($_POST['gender'])) {
+                $this->visitor->gender = $_POST['gender'];
+            } else {
+                $this->message[] = dgettext('checkin', 'Please enter a gender');
+            }
+        }
+
         if (isset($_POST['reason_id'])) {
             if ($_POST['reason_id'] == 0) {
                 $this->message[] = dgettext('checkin', 'Please enter the reason for your visit.');
