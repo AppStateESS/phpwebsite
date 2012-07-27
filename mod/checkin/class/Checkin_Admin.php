@@ -1454,7 +1454,7 @@ class Checkin_Admin extends Checkin {
             javascript('datepicker');
 
 
-            $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate));
+            $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate, 'daily_report' => 1));
             $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop' => 'repeats', 'date' => $udate));
         }
 

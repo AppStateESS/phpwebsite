@@ -153,6 +153,7 @@ function checkin_update(&$content, $current_version) {
 
             $content[] = '1.5.0 changes
 ---------------
++ Fixed the "print view" for daily reports.
 + Option to collect visitor gender.
 + Option to collect visitor birthdate.
 + Added staff filters for gender and birthdate.
