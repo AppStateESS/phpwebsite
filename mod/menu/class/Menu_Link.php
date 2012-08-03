@@ -134,9 +134,24 @@ class Menu_Link {
         $this->url = preg_replace('/&?authkey=\w{32}/i', '', $url);
     }
 
-    public function getUrl()
+    /**
+     * Returns the fully-formed html anchor tag (<a href="..." ...> ... </a>) for this link.
+     *
+     * @return String Html anchor tag for this link.
+     */
+    public function getAnchorTag($currentLink = false)
     {
         return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->id, $this->title, $this->title);
+    }
+
+    /**
+     * Returns the URL for this link.
+     *
+     * @return String URL for this link
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     public function resetOrder()
@@ -254,7 +269,7 @@ class Menu_Link {
                 $this->_menu->_show_all || $current_link || $this->parent == 0 ||
                 in_array($this->parent, $current_parent)) {
 
-            $link = $this->getUrl();
+            $link = $this->getAnchorTag(); 
 
             $this->_loadAdminLinks($template);
 

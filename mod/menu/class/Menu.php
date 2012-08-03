@@ -313,7 +313,7 @@ class Menu {
         $content[] = '<ol>';
         foreach ($links as $link) {
             $content[] = '<li>';
-            $content[] = $link->getUrl();
+            $content[] = $link->getAnchorTag();
             if (!empty($link->_children)) {
                 Menu::walkLinks($link->_children, $content);
             }
