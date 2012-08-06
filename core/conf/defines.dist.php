@@ -228,4 +228,20 @@ define('CAPTCHA_NAME', 'freecap');
  */
 define('ALLOW_SCRIPT_TAGS', false);
 
+/************************ Cosign Settings *******************/
+/**
+ * If using Cosign for user authentication, please uncomment and
+ * provide the settings below.  Note that you will also need to
+ * configure your web server to provide Cosign protection on
+ * /login relative to your website.  For example, in Apache:
+ *
+ * <Location "/mysite/login">
+ *     CosignAllowPublicAccess off
+ *
+ *     RewriteEngine on
+ *     RewriteRule .* /mysite [R=302]
+ *  </Location>
+ */
+//define('COSIGN_LOGOUT_URL', 'http://cosign.example.com/cosign-bin/logout');
+
 ?>

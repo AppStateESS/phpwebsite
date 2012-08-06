@@ -7,8 +7,8 @@
  * @version $Id$
  */
 
-class cosign_authorization extends User_Authorization {
-    public $create_new_user = true;
+class cosignnocreate_authorization extends User_Authorization {
+    public $create_new_user = false;
     public $show_login_form = false;
 
     // Enter the url to the cosign login page
@@ -39,7 +39,11 @@ class cosign_authorization extends User_Authorization {
             return false;
         }
 
-        return true;
+        $db = new PHPWS_DB('users');
+        $db->addWhere('username', strtolower($this->user->username));
+        $result = $db->select('one');
+
+        return (!PHPWS_Error::logIfError($result) && (bool)$result);
     }
 
     public function forceLogin()
