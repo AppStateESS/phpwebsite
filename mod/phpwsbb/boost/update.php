@@ -74,7 +74,7 @@ Changes in version 2.0.4
             $db = new PHPWS_DB();
             $db->query('ALTER TABLE phpwsbb_topics DROP views');
             $content[] = '+ Deleted obsolete column "views" from phpwsbb_topics table';
-            
+
             $content[] = '<pre>
 ========================
 Changes in version 2.0.6
@@ -84,18 +84,20 @@ Changes in version 2.0.6
 + UI improvement: "Create New Topic" button is now always visible regardless of authorization
 + phpwsbb now uses the core errorPages function for display of error messages
 + Added error messages when a new topic is missing a title or body text
-+ Topic editing screen now distnguishes between "Editing" or "Creating" in the title 
++ Topic editing screen now distnguishes between "Editing" or "Creating" in the title
 + Icons are now themable via the core Icon class
 + Fixed inefficient query generated when listing topics in a forum.
 + PHP5 fixes
 </pre>';
-            
 
-    } // end of switch
-
-    PHPWS_Core::initModClass('phpwsbb', 'BB_Data.php');
-    PHPWSBB_Data::clearCaches();
-    $content[] = 'Cleared all phpwsbb caches';
+        case version_compare($currentVersion, '2.0.7', '<'):
+            $content[] = '<pre>
+========================
+Changes in version 2.0.7
+========================
++ Fixed icon call
+</pre>';
+}
 
     return true;
 }
