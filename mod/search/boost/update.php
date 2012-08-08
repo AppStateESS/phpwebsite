@@ -102,6 +102,11 @@ function search_update(&$content, $currentVersion)
             $content[] = '<pre>0.4.2 changes
 -------------
 + Using a less strict ignore list.</pre>';
+
+                case version_compare($currentVersion, '0.4.3', '<'):
+            $content[] = '<pre>0.4.3 changes
+-------------
++ Form protection turned off</pre>';
     }
 
     return TRUE;
