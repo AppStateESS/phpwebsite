@@ -543,7 +543,7 @@ class Layout {
         try {
             Layout::loadJavascriptFile($headfile, $directory, $data);
         } catch(Exception $e){
-            //trigger_error($e->getMessage(), E_USER_ERROR);
+            trigger_error($e->getMessage(), E_USER_ERROR);
         }
 
         if (is_file($bodyfile)) {
@@ -1031,7 +1031,7 @@ class Layout {
         // The Site's Name, as set in Layout 'Meta Tags' interface.
         $template['SITE_NAME'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
 
-        $template['BASE']       = Layout::getBase(); 
+        $template['BASE']       = Layout::getBase();
         $template['HTTP'] = PHPWS_Core::getHttp(); // 'http' or 'https'
 
         // Complete URL of the site's home page
