@@ -183,6 +183,13 @@ function layout_update(&$content, $currentVersion)
 + Fixed silent javascript failure.
 </pre>';
 
+        case version_compare($currentVersion, '2.5.3', '<'):
+            $content[] = '<pre>2.5.3 changes
+---------------------
++ Added HTTP tag for theming. Assists with http vs https
++ HOME_URL also added for theming.
+</pre>';
+
 
     }
     return true;
