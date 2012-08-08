@@ -137,6 +137,12 @@ function controlpanel_update(&$content, $currentVersion)
 + Icon templating from Eloi.
 </pre>';
 
+		case version_compare($currentVersion, '2.3.2', '<'):
+                $content[] = '<pre>2.3.2 changes
+-------------------
++ Fixed javascript error.
+</pre>';
+
 
 	}
 	return true;
