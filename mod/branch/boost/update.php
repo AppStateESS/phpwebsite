@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function branch_update(&$content, $version)
 {
     switch ($version) {
@@ -121,6 +120,12 @@ function branch_update(&$content, $version)
 -------------
 + htaccess copying to file directories was removed.</pre>';
 
+        case version_compare($version, '1.3.2', '<'):
+            $content[] = '<pre>1.3.2 Changes
+-------------
++ Added ability to search for branches from list.
++ No longer copying fckeditor.
+</pre>';
     }
     return true;
 }
