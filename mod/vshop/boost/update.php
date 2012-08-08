@@ -1,4 +1,5 @@
 <?php
+
 /**
  * vshop - phpwebsite module
  *
@@ -21,7 +22,6 @@
  * @version $Id$
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
-
 function vshop_update(&$content, $currentVersion)
 {
 //    $home_dir = PHPWS_Boost::getHomeDir();
@@ -29,13 +29,13 @@ function vshop_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '0.6.1', '<'):
             $content[] = '<pre>';
-    
-            $files = array('templates/edit_item.tpl', 
-                            'templates/set_status.tpl', 
-                            'templates/edit_settings.tpl'
+
+            $files = array('templates/edit_item.tpl',
+                'templates/set_status.tpl',
+                'templates/edit_settings.tpl'
             );
             vshopUpdateFiles($files, $content);
-            
+
             $content[] = '0.6.1 changes
 ----------------
 + added is_array checks to links() array_merge in dept and item class
@@ -55,19 +55,22 @@ function vshop_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '0.6.2', '<'):
             $content[] = '<pre>';
-    
+
             $content[] = '0.6.2 changes
 ----------------
 + Updated for phpws Core 2.0.0
 + PHP strict fixes
 + Some code tidy up
 + Implemented Icon class
-
-
 </pre>';
 
+        case version_compare($currentVersion, '0.6.3', '<'):
+            $content[] = '<pre>';
 
-
+            $content[] = '0.6.3 changes
+----------------
++ bug fix by Thomas de Jesus
+</pre>';
     } // end switch
     return true;
 }

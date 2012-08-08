@@ -23,7 +23,7 @@
  */
 
 $proper_name  = 'vShop';
-$version      = '0.6.2';
+$version      = '0.6.3';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
