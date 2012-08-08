@@ -32,7 +32,7 @@ function notes_update(&$content, $version) {
         case version_compare($version, '1.0.0', '<'):
             $content[] = '<pre>';
             $files = array('javascript/search_user/head.js', 'templates/note.tpl',
-                       'templates/note_style.css', 'templates/send_note.tpl', 
+                       'templates/note_style.css', 'templates/send_note.tpl',
                        'templates/style.css');
             if (PHPWS_Boost::updateFiles($files, 'notes')) {
                 $content[] = '--- Files updated:';
@@ -83,6 +83,11 @@ function notes_update(&$content, $version) {
 --------------
 + PHP 5 strict fixes.
 + Forcing notes to use theme\'s blank template is available.</pre>';
+
+            case version_compare($version, '1.1.3', '<'):
+            $content[] = '<pre>1.1.3 changes
+--------------
++ Added source directory to javascript call that prevented branch usage.</pre>';
 
     }
 
