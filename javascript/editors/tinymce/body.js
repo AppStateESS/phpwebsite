@@ -1,1 +1,1 @@
-<textarea id="{ID}" name="{NAME}" mceEditor="true" cols="{cols}" rows="{rows}">{VALUE}</textarea>
+<textarea class="tinymce" id="{ID}" name="{NAME}" cols="{cols}" rows="{rows}">{VALUE}</textarea>

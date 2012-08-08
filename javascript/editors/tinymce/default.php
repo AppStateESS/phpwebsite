@@ -6,6 +6,7 @@
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
+
 $rows = 20;
 $cols = 70;
 
@@ -25,5 +26,4 @@ if ($data['LIMITED']) {
 
 $data['rows'] = $rows;
 $data['cols'] = $cols;
-
 ?>
