@@ -367,7 +367,20 @@ timeout INT NOT NULL default 0,
 + Fixed errors getting dropped without logging.
 </pre>';
 
-            
+        case version_compare($currentVersion, '2.7.2', '<'):
+            $content[] = '<pre>2.7.2 changes
+-------------------------
++ Fixed multiple group member bug.
++ Cleaned up cosign authentication.
++ Current_User requireLogin to use login_link instead of login_url
++ New User form now properly respects the "settings" permission for showing
+  user authentication script option.
++ User constuction allow username parameter.
++ Trim whitespace from user email addresses. Don\'t modify the member variable
+  unless all the sanity checks passed.
+</pre>';
+
+
     } // End of switch statement
 
     return TRUE;
