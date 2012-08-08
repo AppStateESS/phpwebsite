@@ -121,6 +121,16 @@ this module.
 + Removed code that prevented image update
 </pre>';
 
+                case version_compare($version, '1.4.10', '<'):
+            $content[] = '<pre>
+1.4.10 changes
+-------------
++ Added a needed requirement for the Album class to prevent a malformed object
+  session
++ Fixed typo preventing messages from being displayed
++ Fixed some pagination issues.
+</pre>';
+
     }
 
     return true;
