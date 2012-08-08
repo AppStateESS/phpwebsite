@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 function signup_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
@@ -43,7 +43,7 @@ function signup_update(&$content, $currentVersion)
             }
 
             $files = array('templates/peep_pop.tpl', 'templates/slot_setup.tpl', 'templates/edit_sheet.tpl',
-                       'templates/peeps.tpl', 'templates/slot_setup.tpl', 'img/edit.png', 'img/delete.png');
+                'templates/peeps.tpl', 'templates/slot_setup.tpl', 'img/edit.png', 'img/delete.png');
             signupUpdateFiles($files, $content);
 
 
@@ -135,7 +135,7 @@ function signup_update(&$content, $currentVersion)
             $db->update();
 
             $files = array('templates/applicants.tpl', 'templates/edit_peep.tpl',
-'templates/peeps.tpl', 'templates/signup_form.tpl');
+                'templates/peeps.tpl', 'templates/signup_form.tpl');
             signupUpdateFiles($files, $content);
             $content[] = '1.3.0 changes
 --------------
@@ -152,6 +152,19 @@ function signup_update(&$content, $currentVersion)
 -------------------
 + PHP 5 strict fixes.
 + Icon class added</pre>';
+
+        case version_compare($currentVersion, '1.3.3', '<'):
+            $content[] = '<pre>1.3.3 changes
+-------------------
++ New additions by Chris Coley
+ - Added move to bottom and top for slot ordering.
+ - Phone number error checked.
+ - Refined slot search, only slots with searched member.
+ - Start and end times order options on sheet listing.
+ - Added clearer instructions to sheet setup.
+ - Emails sent according to last search.
+ - UI additions to ease administration.
+</pre>';
     }
     return true;
 }
@@ -165,6 +178,5 @@ function signupUpdateFiles($files, &$content)
     }
     $content[] = "    " . implode("\n    ", $files);
 }
-
 
 ?>
