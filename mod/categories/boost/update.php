@@ -1,10 +1,9 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
-
 function categories_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
@@ -18,7 +17,7 @@ function categories_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '2.1.7', '<'):
             $files = array('templates/forms/edit.tpl', 'templates/menu_bar.tpl',
-                       'templates/popup_menu.tpl');
+                'templates/popup_menu.tpl');
             $content[] = '<pre>2.1.7 Changes';
             if (PHPWS_Boost::updateFiles($files, 'categories')) {
                 $content[] = '+ Successfully updated the following files:';
@@ -90,7 +89,7 @@ function categories_update(&$content, $currentVersion)
 
             if (!empty($result)) {
                 foreach ($result as $cat) {
-                    $cat['icon'] = (int)$cat['icon'];
+                    $cat['icon'] = (int) $cat['icon'];
                     $db->reset();
                     $db->addValue($cat);
                     PHPWS_Error::logIfError($db->insert(false));
@@ -129,12 +128,18 @@ function categories_update(&$content, $currentVersion)
 + Error notice fixed.
 </pre>';
 
-            case version_compare($currentVersion, '2.3.1', '<'):
+        case version_compare($currentVersion, '2.3.1', '<'):
             $content[] = '<pre>2.3.1 changes
 -----------------
 + Icon class used.
 + PHP 5 Strict changes.</pre>';
 
+        case version_compare($currentVersion, '2.3.2', '<'):
+            $content[] = '<pre>2.3.2 changes
+-----------------
++ Increased category list view to 100
++ Static call fixes.
+</pre>';
     }
     return true;
 }
@@ -148,6 +153,5 @@ function categoryUpdateFiles($files, &$content)
     }
     $content[] = "     " . implode("\n     ", $files);
 }
-
 
 ?>
