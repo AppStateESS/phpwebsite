@@ -4,7 +4,6 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 function phatform_update(&$content, $version)
 {
     switch ($version) {
@@ -96,13 +95,19 @@ function phatform_update(&$content, $version)
 + Fixed element deletion.
 + Some PHP 5 strict fixes.</pre>';
 
-            case version_compare($version, '3.1.6', '<'):
+        case version_compare($version, '3.1.6', '<'):
             $content[] = '<pre>
 3.1.6 changes
 -------------
 + Introduction passed through text parser
 + Timed out session give warning instead of forcing login</pre>';
 
+        case version_compare($version, '3.1.7', '<'):
+            $content[] = '<pre>
+3.1.7 changes
+-------------
++ Fixed isset check that should have used empty
+</pre>';
     }
     return true;
 }
