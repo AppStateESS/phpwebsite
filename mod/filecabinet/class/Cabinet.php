@@ -192,6 +192,10 @@ class Cabinet {
         }
 
         switch ($aop) {
+            case 'ck_add_folder':
+                $this->ckAddFolder();
+                break;
+
             case 'ckuploadform':
                 $this->ckUploadForm();
                 break;
@@ -462,6 +466,19 @@ class Cabinet {
             $finalPanel = $this->panel->display();
             Layout::add(PHPWS_ControlPanel::display($finalPanel));
         }
+    }
+
+    private function ckAddFolder()
+    {
+        $folder = new Folder;
+        $folder->setTitle($_GET['fname']);
+        $folder->setFtype($_GET['ftype']);
+        if ($folder->ftype == DOCUMENT_FOLDER) {
+            $folder->public_folder = 0;
+        }
+        $folder->save();
+        echo json_encode(array('success'=>true));
+        exit();
     }
 
     private function ckEditFile()
@@ -1489,6 +1506,7 @@ class Cabinet {
         $tpl['FOLDER_TYPE'] = $ftype;
         $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
         $tpl['AUTHKEY'] = Current_User::getAuthKey();
+        $tpl['NEW_FOLDER'] = '<input type="button" id="create-folder" name="create-folder" value="'. dgettext('filecabinet', 'Add folder') .'" />';
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
 
         echo $content;

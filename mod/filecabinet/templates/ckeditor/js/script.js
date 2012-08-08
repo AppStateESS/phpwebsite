@@ -44,6 +44,7 @@ function setCurrentFolderId(new_folder_id)
 function initScript()
 {
     readyFolder();
+    readyAddNew();
     folderTypeChange();
     shadeType();
     if (current_folder_id > 0) {
@@ -56,6 +57,32 @@ function initScript()
             }
         });
     }
+}
+
+function readyAddNew()
+{
+    $('#new-folder-form').hide();
+    $('#create-folder').show();
+
+    $('#create-folder').click(function(){
+        $('#create-folder').hide();
+        $('#new-folder-form').show();
+
+        $('#submit-folder').click(function(){
+            fname = $('#folder-name').val().replace(/[^\w\s]/g, '');
+            if (fname == '') {
+                alert('Folder name empty');
+                readyAddNew();
+                return;
+            }
+            $.getJSON('index.php?module=filecabinet&aop=ck_add_folder&ftype=' + folder_type + '&fname='+ fname +'&authkey=' + authkey, function(data){
+                if (data.success) {
+                    refreshFolder();
+                    readyAddNew();
+                }
+            });
+        });
+    });
 }
 
 /**

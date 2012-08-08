@@ -153,3 +153,7 @@ table#upload-form {
     left : 200px;
     top : 0px;
 }
+
+#create-folder, #new-folder-form input {
+    font-size : 10px;
+}

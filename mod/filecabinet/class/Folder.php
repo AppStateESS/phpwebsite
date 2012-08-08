@@ -43,6 +43,13 @@ class Folder {
         }
     }
 
+    public function setFtype($ftype) {
+        if (!in_array($ftype, array(IMAGE_FOLDER, DOCUMENT_FOLDER, MULTIMEDIA_FOLDER))) {
+            return false;
+        }
+        $this->ftype = $ftype;
+    }
+
     public function getPublic()
     {
         if ($this->public_folder) {
@@ -228,7 +235,7 @@ class Folder {
 
     public function setTitle($title)
     {
-        $this->title = strip_tags($title);
+        $this->title = trim(strip_tags($title));
     }
 
     public function viewLink($formatted=true)
@@ -322,7 +329,7 @@ class Folder {
 
         if ($this->ftype == DOCUMENT_FOLDER) {
             if ($this->public_folder) {
-                unlink($full_dir . '.htaccess');
+                @unlink($full_dir . '.htaccess');
             } else {
                 file_put_contents($full_dir . '.htaccess', 'Deny from all');
             }
