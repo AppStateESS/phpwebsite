@@ -6,7 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function menu_update(&$content, $currentVersion)
 {
     $home_directory = PHPWS_Boost::getHomeDir();
@@ -25,7 +24,7 @@ Please download 1.2.1.</pre>';
 
         case version_compare($currentVersion, '1.3.0', '<'):
             $files = array('conf/config.php', 'templates/admin/settings.tpl',
-                       'templates/links/link.tpl', 'templates/popup_admin.tpl');
+                'templates/links/link.tpl', 'templates/popup_admin.tpl');
             $content[] = '<pre>';
             if (PHPWS_Boost::updateFiles($files, 'menu')) {
                 $content[] = '--- Successfully updated the following files:';
@@ -59,7 +58,7 @@ Please download 1.2.1.</pre>';
             $content[] = '<pre>';
 
             $basic_dir = $home_directory . 'templates/menu/menu_layout/basic/';
-            $horz_dir  = $home_directory . 'templates/menu/menu_layout/horizontal/';
+            $horz_dir = $home_directory . 'templates/menu/menu_layout/horizontal/';
 
             if (!is_dir($basic_dir)) {
                 if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
@@ -157,19 +156,19 @@ Please download 1.2.1.</pre>';
             $db = new PHPWS_DB('menu_links');
             PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
             $files = array('templates/style.css',
-                       'templates/menu_layout/basic/menu.tpl',
-                       'templates/menu_layout/basic/link.tpl',
-                       'templates/menu_layout/horizontal/menu.tpl',
-                       'templates/admin/settings.tpl',
-                       'img/icon_indent.png',
-                       'img/icon_outdent.gif',
-                       'javascript/admin_link/',
-                       'conf/config.php'
-                       );
+                'templates/menu_layout/basic/menu.tpl',
+                'templates/menu_layout/basic/link.tpl',
+                'templates/menu_layout/horizontal/menu.tpl',
+                'templates/admin/settings.tpl',
+                'img/icon_indent.png',
+                'img/icon_outdent.gif',
+                'javascript/admin_link/',
+                'conf/config.php'
+            );
 
-                       $content[] = '<pre>';
-                       menuUpdateFiles($files, $content);
-                       $content[] = '1.5.0 Changes
+            $content[] = '<pre>';
+            menuUpdateFiles($files, $content);
+            $content[] = '1.5.0 Changes
 --------------
 + RFE #2060159: Pin page link appears in miniadmin if admin mode is
   set to appear there.
@@ -194,7 +193,7 @@ Please download 1.2.1.</pre>';
         case version_compare($currentVersion, '1.5.2', '<'):
             $content[] = '<pre>';
             $files = array('templates/site_map.tpl', 'templates/menu_layout/basic/menu.tpl',
-                       'templates/menu_layout/horizontal/menu.tpl');
+                'templates/menu_layout/horizontal/menu.tpl');
             menuUpdateFiles($files, $content);
             $content[] = '1.5.2 changes
 ---------------
@@ -218,10 +217,10 @@ Please download 1.2.1.</pre>';
             }
             $content[] = '<pre>';
             $files = array('img/icon_outdent.gif',
-                       'conf/config.php',
-                       'javascript/admin_link/default.php',
-                       'javascript/admin_link/menu.js',
-                       'templates/admin/settings.tpl');
+                'conf/config.php',
+                'javascript/admin_link/default.php',
+                'javascript/admin_link/menu.js',
+                'templates/admin/settings.tpl');
             menuUpdateFiles($files, $content);
             $content[] = '1.6.0 changes
 ---------------
@@ -234,10 +233,10 @@ Please download 1.2.1.</pre>';
         case version_compare($currentVersion, '1.6.1', '<'):
             $content[] = '<pre>';
             $files = array('templates/menu_layout/basic/link.tpl',
-                       'templates/menu_layout/horizontal/link.tpl',
-                       'templates/style.css',
-                       'conf/config.php',
-                       'img/icon_outdent.gif');
+                'templates/menu_layout/horizontal/link.tpl',
+                'templates/style.css',
+                'conf/config.php',
+                'img/icon_outdent.gif');
             menuUpdateFiles($files, $content);
             $content[] = '1.6.1 changes
 ---------------
@@ -271,6 +270,13 @@ Please download 1.2.1.</pre>';
 + Patch from Eloi that reduces database calls on menu creation.
 + Fixed notice bugs from link movement
 </pre>';
+
+        case version_compare($currentVersion, '1.6.6', '<'):
+            $content[] = '<pre>1.6.6 changes
+----------------
++ Fixed bug with javascript in menu admin.
++ Changed getUrl to return just the href and not a complete tag.
+</pre>';
     }
     return true;
 }
@@ -286,6 +292,5 @@ function menuUpdateFiles($files, &$content)
         $content[] = "     " . implode("\n     ", $result);
     }
 }
-
 
 ?>
