@@ -154,18 +154,18 @@ function rolodex_update(&$content, $currentVersion)
             }
 
             $files = array('templates/edit_member.tpl',
-                       'templates/edit_settings.tpl', 
-                       'templates/adv_search_form.tpl', 
-                       'templates/view_member.tpl', 
+                       'templates/edit_settings.tpl',
+                       'templates/adv_search_form.tpl',
+                       'templates/view_member.tpl',
                        'templates/list_member.tpl'
                        );
             rolodexUpdateFiles($files, $content);
 
             $content[] = '1.1.0 changes
 ----------------
-+ Added support for email/contact link privacy at user level 
++ Added support for email/contact link privacy at user level
 + Minor layout tweaks
-+ Fixed bug in post settings that wasn\'t clearning custom field 
++ Fixed bug in post settings that wasn\'t clearning custom field
   labels
 + Added security check so that only users with edit_member
   perms can edit internal custom field data
@@ -183,7 +183,7 @@ function rolodex_update(&$content, $currentVersion)
 
             $content[] = '1.2.0 changes
 ----------------
-+ Fixed bug where some list parameters were being cleared when 
++ Fixed bug where some list parameters were being cleared when
   a search was not being done, when paging a list of users
 + Fixed a session bug in RDX_Runtime
 + Fixed a few php notices
@@ -233,7 +233,7 @@ It has been replaced with mod/rolodex/inc/runtime.php
 + Changed email hiding to hide from all but admins
 + Fixed a minor display issue with instances of getDisplay_name()
 + Fixed bug in thumbnail linking to 1.6 url rewriting
-+ Fixed bug in RDX_Runtime that was usually causing the sideblock 
++ Fixed bug in RDX_Runtime that was usually causing the sideblock
   to not show for logged in users (thanks trf000)
 + fixed typo in Category form instruction
 
@@ -256,6 +256,14 @@ It has been replaced with mod/rolodex/inc/runtime.php
 + Some code tidy up
 + Implemented Icon class
 
+</pre>';
+        case version_compare($currentVersion, '1.3.4', '<'):
+            $content[] = '<pre>';
+
+            $content[] = '1.3.4 changes
+----------------
++ Static error notices fixed.
++ Small listing error fixed.
 </pre>';
 
 
