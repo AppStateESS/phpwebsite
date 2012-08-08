@@ -586,6 +586,62 @@ UPDATES;
 + Removed deny-all .htaccess file from file directory.
 </pre>
 UPDATES;
+ case version_compare($version, '2.1.0', '<'):
+         $content[] = <<<UPDATES
+<pre>2.1.0 changes
+----------------------
+ + Another Powerpoint file mimetype added to file_types.php
+ + Turned off collapse_urls as a default condition.
+ + Added cosign configuration example in defines.dist.php
+ + More static warnings silenced.
+
+Classes
+----------------
+ + Form.php
+    - Fixed bug with addCheckAssoc
+    - Added onbeforeclose protection to forms
+    - Fixed array handling in PHPWS_Form::grab(). If the array of elements isn't
+      indexed by integers, it will return the entire array instead of trying to
+      return element 0.
+ + Error.php
+    - Pear method call was called all lowercase. Probably a hold over
+      from when function name case was irrelevant.
+ + Cookie.php
+    - Cookie assumes a cookie is set before deletion. Changed function
+      call to check prior to operation.
+ + File.php
+    - Fix to file extension checking.
+ + Core.php
+    - Moved some logic for finding the site Base URL out of Layout and
+      into Core, as the getBaseURL() function
+ + Text.php
+    - Missing variable added to parameter list.
+    - Faulty parse_url is being silenced on failure and getGetValues returns null.
+    - Filtering out high ascii using parseOutput
+ + Init.php
+    - Fixed overwrite problem with defines.php on updating.
+ + Database.php
+    - Removed restrictive join check
+    - Database substitutes table "as" if it exists on column call and/or set order
+    - Allow parenthesis and commas in addOrder, so we can order by function,
+      like "order by coalesce(...)"
+    - Fixed splat usage with count in addColumn and getColumn
++ DBPager.php
+    - Rewrote CSV parser to use fputcsv
+    - Fixed bug with csv reporting
+
+Javascript
+------------------
++ captcha/recaptcha - added recycle instructions
++ required_input - file inputs can now be required fields
++ protect_form - new javascript to prevent user leaving fields blank
++ jquery - updated
++ flowplayer - updated version
++ editors
+    + ckeditor - added File Cabinet functionality
+    + cleditor - added Cleditor by Hilmar
+</pre>
+UPDATES;
     }
     return true;
 }
