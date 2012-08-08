@@ -326,6 +326,14 @@ function pagesmith_update(&$content, $currentVersion)
 -------------
 Fixed bug causing blank editors on edit.</pre>';
 
+                case version_compare($currentVersion, '1.4.2', '<'):
+            $content[] = '<pre>1.4.2 changes
+-------------
++ Added conditionals to try and prevent blank page posting.
++ Updated javascript to jquery code.
++ Added some new templates.
+.</pre>';
+
     } // end switch
 
     return true;
