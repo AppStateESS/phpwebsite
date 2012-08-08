@@ -580,6 +580,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Changing public flag to private on document folders creates .htaccess file preventing world access
 + Added mp4/m4v to multimedia class.
 </pre>';
+        case version_compare($version, '2.4.0', '<'):
+            $content[] = '<pre>2.4.0 changes
+---------------------
++ Heavy ckeditor modifications.
++ rtmp support added.
++ Removed FCK code where found.
++ Minified some scripts.
++ Failed image upload will now display an error.
++ Can now add Access shortcut to a document.
++ Various bug fixes
+</pre>';
             return true;
     }
 }
