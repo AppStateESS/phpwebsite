@@ -416,6 +416,14 @@ CREATE INDEX comments_monitors_thread_id_idx ON comments_monitors (thread_id, se
 + Using templating from Eloi.
 + Fixed icons
 + Fixed bug #73 - Fatal error when saving Comment to a monitored thread</pre>';
+
+            case version_compare($currentVersion, '1.3.3', '<'):
+            $content[] = '<pre>1.3.3 changes
+-----------------------
++ Fixed typo bug in Comments.php
++ If getgetvalues returns null, then referrer settings are not derived from it
++ Anonymous captcha set to default true.
+</pre>';
     }
 
     return true;
