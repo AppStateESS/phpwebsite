@@ -1479,7 +1479,7 @@ class User_Action {
 
     }
 
-    public function checkPermissionTables()
+    public static function checkPermissionTables()
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
         $db = new PHPWS_DB('modules');
@@ -1498,7 +1498,7 @@ class User_Action {
             }
         }
 
-        return implode('<br />', $content);
+        return implode('<br>', $content);
     }
 
     public function activateUser($user_id, $value)

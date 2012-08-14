@@ -18,7 +18,7 @@ class Users_Permission {
         $this->groups = $groups;
     }
 
-    public function registerPermissions($module, & $content)
+    public static function registerPermissions($module, & $content)
     {
         $tableName = Users_Permission::getPermissionTableName($module);
         if (!PHPWS_DB::isTable($tableName)) {
