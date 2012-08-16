@@ -7,10 +7,6 @@
  */
 PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
-define('BIRTHDATE_BITMASK', 0x1);
-define('GENDER_BITMASK', 0x2);
-define('REASON_BITMASK', 0x4);
-define('LAST_NAME_BITMASK', 0x8);
 
 class Checkin_Admin extends Checkin {
 
@@ -319,12 +315,12 @@ class Checkin_Admin extends Checkin {
                 $staff->save();
                 PHPWS_Core::goBack();
                 break;
-            
+
             // This is for testing purposes and never happens in actual use
             case 'unassignAll':
                 $this->unassignAll();
                 break;
-            
+
             // This is for testing purposes and never happens in actual use
             case 'auto_assign':
                 $this->autoAssign();
@@ -470,7 +466,7 @@ class Checkin_Admin extends Checkin {
         Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
     }
 
-    /** 
+    /**
      * This method is for testing purposes only and is never called in real
      * world deployment.
      * This method unassigns all visitors from all staff members to allow them
@@ -786,7 +782,7 @@ class Checkin_Admin extends Checkin {
             $form->addCheck('birthdate', 'yes');
             $form->setMatch('birthdate', $checks['birthdate']);
             $form->setLabel('birthdate', dgettext('checkin', 'Birthdate'));
-            
+
             // Fill the date picker with the current filter start date if it is set
             if (isset($this->staff->birthdate_filter_start)) {
                 $form->addText('start_date', date('m/d/Y', $this->staff->birthdate_filter_start));
@@ -796,7 +792,7 @@ class Checkin_Admin extends Checkin {
 
             $form->setSize('start_date', 10);
             $form->setExtra('start_date', 'class="datepicker"');
-            
+
             // Fill the date picker with the current filter end date if it is set
             if (isset($this->staff->birthdate_filter_end)) {
                 $form->addText('end_date', date('m/d/Y', $this->staff->birthdate_filter_end));
@@ -900,7 +896,7 @@ class Checkin_Admin extends Checkin {
         $form->addCheck('email', 1);
         $form->setLabel('email', dgettext('checkin', 'Request email address'));
         $form->setMatch('email', PHPWS_Settings::get('checkin', 'email'));
-        
+
         // Checkbox for requesting gender when checking in
         $form->addCheck('gender', 1);
         $form->setLabel('gender', dgettext('checkin', 'Request gender'));
@@ -1070,10 +1066,10 @@ class Checkin_Admin extends Checkin {
             $this->loadStaff();
             $this->staff->user_id = $user_id;
         }
-        
+
         // Blank filter to begin with
         $filter = 0x0;
-        
+
         // Update last name filter
         if ($_POST['last_name'] == 'yes') {
             $filter = $filter | LAST_NAME_BITMASK;
@@ -1087,7 +1083,7 @@ class Checkin_Admin extends Checkin {
             $this->staff->lname_filter = null;
             $this->staff->lname_regexp = null;
         }
-        
+
         // Update reason filter
         if ($_POST['reason'] == 'yes') {
             $filter = $filter | REASON_BITMASK;
@@ -1097,7 +1093,7 @@ class Checkin_Admin extends Checkin {
                 $this->message[] = dgettext('checkin', 'Please pick one or more reasons.');
             }
         }
-        
+
         // Update gender filter
         if ($_POST['gender'] == 'yes') {
             $filter = $filter | GENDER_BITMASK;
@@ -1109,7 +1105,7 @@ class Checkin_Admin extends Checkin {
         } else {
             $this->staff->gender_filter = null;
         }
-        
+
         // Update birthdate filter
         if ($_POST['birthdate'] == 'yes') {
             $filter = $filter | BIRTHDATE_BITMASK;
