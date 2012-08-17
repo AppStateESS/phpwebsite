@@ -64,7 +64,7 @@
             <arg value="--define" />
             <arg value="_specdir %{_topdir}" />
             <arg value="--define" />
-            <arg value="_sourcedir ${basedir}/build" />
+            <arg value="_sourcedir ${basedir}/build/bin" />
             <arg value="--define" />
             <arg value="vendor ESS" />
             <arg value="--define" />
