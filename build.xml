@@ -63,7 +63,7 @@
         </tar>
     </target>
 
-    <target name="test-rpm" description="Build an RPM" unless="is.production">
+    <target name="test-rpm" depends="test-tarball" description="Build an RPM" unless="is.production">
         <exec executable="rpmbuild">
             <arg value="--define" />
             <arg value="_topdir ${basedir}/build/rpm" />
@@ -110,7 +110,7 @@
         </tar>
     </target>
 
-    <target name="production-rpm" description="Build an RPM" unless="is.testing">
+    <target name="production-rpm" depends="production-tarball" description="Build an RPM" unless="is.testing">
         <exec executable="rpmbuild">
             <arg value="--define" />
             <arg value="_topdir ${basedir}/build/rpm" />
