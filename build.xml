@@ -2,7 +2,6 @@
 
 <project name="phpwebsite" default="build">
     <property environment="env" />
-    <dirname property="imported.basedir" file="${ant.file.phpwebsite}" />
 
     <target name="build"
         depends="prepare,lint" />
@@ -10,33 +9,33 @@
     <target name="build-parallel" />
 
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="${imported.basedir}/build"/>
+        <delete dir="${basedir}/build"/>
     </target>
 
     <target name="prepare" depends="clean"
          description="Prepare for build">
-        <mkdir dir="${imported.basedir}/build/rpm"/>
-        <mkdir dir="${imported.basedir}/build/bin"/>
+        <mkdir dir="${basedir}/build/rpm"/>
+        <mkdir dir="${basedir}/build/bin"/>
     </target>
 
     <target name="lint">
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
-            <fileset dir="${imported.basedir}">
+            <fileset dir="${basedir}">
                 <include name="**/*.php" />
                 <exclude name="lib/**" />
                 <modified />
             </fileset>
 
-<!--            <fileset dir="${imported.basedir}/tests">
+<!--            <fileset dir="${basedir}/tests">
                 <include name="**/*.php" />
                 <modified />
             </fileset>-->
         </apply>
     </target>
 
-    <tarfileset id="phpwebsite-tarball" dir="${imported.basedir}" prefix="phpwebsite/">
+    <tarfileset id="phpwebsite-tarball" dir="${basedir}" prefix="phpwebsite/">
         <exclude name="**/.svn/**" />
         <exclude name="build/**" />
         <exclude name="build.xml" />
