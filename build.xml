@@ -15,6 +15,7 @@
     <target name="prepare" depends="clean"
          description="Prepare for build">
         <mkdir dir="${basedir}/build/rpm"/>
+        <mkdir dir="%{basedir}/build/bin"/>
     </target>
 
     <target name="lint">
@@ -44,18 +45,18 @@
         <exclude name="setup/**" />
     </tarfileset>
 
-    <target name="tarball" depends="build" description="Tar it up">
-        <tar destfile="${basedir}/build/phpwebsite-${RELVERSION}-${RELEASE}.tar.bz2" compression="bzip2">
+    <target name="test-tarball" depends="build" description="Tar it up">
+        <tar destfile="${basedir}/build/bin/phpwebsite-${BUILD_NUMBER}-${RELEASE}.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
     </target>
 
-    <target name="rpm" depends="tarball" description="Build an RPM">
+    <target name="test-rpm" depends="test-tarball" description="Build an RPM">
         <exec executable="rpmbuild">
             <arg value="--define" />
             <arg value="_topdir ${basedir}/build/rpm" />
             <arg value="--define" />
-            <arg value="_rpmdir %{_topdir}" />
+            <arg value="_rpmdir ${basedir}/build/bin" />
             <arg value="--define" />
             <arg value="_srcrpmdir %{_topdir}" />
             <arg value="--define" />
@@ -67,9 +68,51 @@
             <arg value="--define" />
             <arg value="vendor ESS" />
             <arg value="--define" />
-            <arg value="version ${RELVERSION}" />
+            <arg value="version ${BUILD_NUMBER}" />
             <arg value="--define" />
-            <arg value="release ${RELEASE}" />
+            <arg value="release 1" />
+            <arg value="--define" />
+            <arg value="_signature gpg" />
+            <arg value="--define" />
+            <arg value="_gpg_path /etc/ess/gnupg" />
+            <arg value="--define" />
+            <arg value="_gpg_name Electronic Student Services" />
+            <arg value="--define" />
+            <arg value="_gpgbin /usr/bin/gpg" />            
+            <arg value="--define" />
+            <arg value="_binaries_in_noarch_packages_terminate_build 0" />
+            <arg value="-bb" />
+            <arg value="--sign" />
+            <arg path="${basedir}/phpwebsite.spec" />
+        </exec>
+    </target>
+
+    <target name="production-tarball" depends="build" description="Tar it up">
+        <tar destfile="${basedir}/build/bin/phpwebsite-${PRODUCTION_VERSION}-${PRODUCTION_RELEASE}.tar.bz2" compression="bzip2">
+            <tarfileset refid="phpwebsite-tarball" />
+        </tar>
+    </target>
+
+    <target name="production-rpm" depends="production-tarball" description="Build an RPM">
+        <exec executable="rpmbuild">
+            <arg value="--define" />
+            <arg value="_topdir ${basedir}/build/rpm" />
+            <arg value="--define" />
+            <arg value="_rpmdir %{basedir}/build/bin" />
+            <arg value="--define" />
+            <arg value="_srcrpmdir %{_topdir}" />
+            <arg value="--define" />
+            <arg value="_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" />
+            <arg value="--define" />
+            <arg value="_specdir %{_topdir}" />
+            <arg value="--define" />
+            <arg value="_sourcedir ${basedir}/build" />
+            <arg value="--define" />
+            <arg value="vendor ESS" />
+            <arg value="--define" />
+            <arg value="version ${PRODUCTION_VERSION}" />
+            <arg value="--define" />
+            <arg value="release ${PRODUCTION_RELEASE}" />
             <arg value="--define" />
             <arg value="_signature gpg" />
             <arg value="--define" />
