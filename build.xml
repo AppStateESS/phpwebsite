@@ -98,7 +98,7 @@
             <arg value="--define" />
             <arg value="_topdir ${basedir}/build/rpm" />
             <arg value="--define" />
-            <arg value="_rpmdir %{basedir}/build/bin" />
+            <arg value="_rpmdir ${basedir}/build/bin" />
             <arg value="--define" />
             <arg value="_srcrpmdir %{_topdir}" />
             <arg value="--define" />
