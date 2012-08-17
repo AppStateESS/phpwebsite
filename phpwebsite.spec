@@ -1,5 +1,5 @@
 %define name phpwebsite
-%define install_dir /var/www/html/hub
+%define install_dir /var/www/phpwebsite
 
 Summary:   Housing Management System
 Name:      %{name}
