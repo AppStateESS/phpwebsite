@@ -7,6 +7,10 @@
  */
 PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
+define('LAST_NAME_BITMASK', 0x1);
+define('REASON_BITMASK', 0x2);
+define('GENDER_BITMASK', 0x4);
+define('BIRTHDATE_BITMASK', 0x8);
 
 class Checkin_Admin extends Checkin {
 
@@ -85,6 +89,7 @@ class Checkin_Admin extends Checkin {
                 } else {
                     $this->report();
                 }
+                //$this->report2();
                 break;
 
             case 'daily_report':
@@ -315,12 +320,12 @@ class Checkin_Admin extends Checkin {
                 $staff->save();
                 PHPWS_Core::goBack();
                 break;
-
+            
             // This is for testing purposes and never happens in actual use
             case 'unassignAll':
                 $this->unassignAll();
                 break;
-
+            
             // This is for testing purposes and never happens in actual use
             case 'auto_assign':
                 $this->autoAssign();
@@ -466,7 +471,7 @@ class Checkin_Admin extends Checkin {
         Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
     }
 
-    /**
+    /** 
      * This method is for testing purposes only and is never called in real
      * world deployment.
      * This method unassigns all visitors from all staff members to allow them
@@ -782,7 +787,7 @@ class Checkin_Admin extends Checkin {
             $form->addCheck('birthdate', 'yes');
             $form->setMatch('birthdate', $checks['birthdate']);
             $form->setLabel('birthdate', dgettext('checkin', 'Birthdate'));
-
+            
             // Fill the date picker with the current filter start date if it is set
             if (isset($this->staff->birthdate_filter_start)) {
                 $form->addText('start_date', date('m/d/Y', $this->staff->birthdate_filter_start));
@@ -792,7 +797,7 @@ class Checkin_Admin extends Checkin {
 
             $form->setSize('start_date', 10);
             $form->setExtra('start_date', 'class="datepicker"');
-
+            
             // Fill the date picker with the current filter end date if it is set
             if (isset($this->staff->birthdate_filter_end)) {
                 $form->addText('end_date', date('m/d/Y', $this->staff->birthdate_filter_end));
@@ -896,7 +901,7 @@ class Checkin_Admin extends Checkin {
         $form->addCheck('email', 1);
         $form->setLabel('email', dgettext('checkin', 'Request email address'));
         $form->setMatch('email', PHPWS_Settings::get('checkin', 'email'));
-
+        
         // Checkbox for requesting gender when checking in
         $form->addCheck('gender', 1);
         $form->setLabel('gender', dgettext('checkin', 'Request gender'));
@@ -1066,10 +1071,10 @@ class Checkin_Admin extends Checkin {
             $this->loadStaff();
             $this->staff->user_id = $user_id;
         }
-
+        
         // Blank filter to begin with
         $filter = 0x0;
-
+        
         // Update last name filter
         if ($_POST['last_name'] == 'yes') {
             $filter = $filter | LAST_NAME_BITMASK;
@@ -1083,7 +1088,7 @@ class Checkin_Admin extends Checkin {
             $this->staff->lname_filter = null;
             $this->staff->lname_regexp = null;
         }
-
+        
         // Update reason filter
         if ($_POST['reason'] == 'yes') {
             $filter = $filter | REASON_BITMASK;
@@ -1093,7 +1098,7 @@ class Checkin_Admin extends Checkin {
                 $this->message[] = dgettext('checkin', 'Please pick one or more reasons.');
             }
         }
-
+        
         // Update gender filter
         if ($_POST['gender'] == 'yes') {
             $filter = $filter | GENDER_BITMASK;
@@ -1105,7 +1110,7 @@ class Checkin_Admin extends Checkin {
         } else {
             $this->staff->gender_filter = null;
         }
-
+        
         // Update birthdate filter
         if ($_POST['birthdate'] == 'yes') {
             $filter = $filter | BIRTHDATE_BITMASK;
@@ -1292,7 +1297,8 @@ class Checkin_Admin extends Checkin {
         $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
         $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
         $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
-        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'visitor_report', 'print' => 1, 'vis_id' => $visitor->id));
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', 
+                                                    array('aop' => 'visitor_report', 'print' => 1, 'vis_id' => $visitor->id));
 
         $tpl['NAME_NOTE'] = dgettext('checkin', 'Please note: if a visitor typed in a different or misspelled name, they may not appear on this list. Also, different people may have the same name.');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitor_report.tpl');
@@ -1372,6 +1378,62 @@ class Checkin_Admin extends Checkin {
         $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
         $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'month_report', 'print' => '1', 'staff_id' => $staff->id, 'date' => $start_date));
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'monthly_report.tpl');
+    }
+
+    public function report2()
+    {
+        $today =        mktime(0, 0, 0);
+        $tomorrow =     $today + 86400;
+        $form =         new PHPWS_Form('report-date');
+        $form->setMethod('get');
+        $form->addHidden('module', 'checkin');
+        $form->addHidden('aop', 'report');
+        
+        // Single day report
+        $form->addTplTag('DAY_LABEL', dgettext('checkin', 'All visits on'));
+        $form->addText('day_date', strftime('%m/%d/%Y', $today));
+        $form->setExtra('day_date', 'class="datepicker"');
+        $form->setSize('day_date', 10);
+        $form->addSubmit('day_submit', dgettext('checkin', 'View Report'));
+
+        // Timespan report
+        $form->addTplTag('TIMESPAN_LABEL', dgettext('checkin', 'All visits between'));
+        $form->addText('timespan_start', strftime('%m/%d/%Y', $today));
+        $form->setExtra('timespan_start', 'class="datepicker"');
+        $form->setSize('timespan_start', 10);
+        $form->addText('timespan_end', strftime('%m/%d/%Y', $tomorrow));
+        $form->setExtra('timespan_end', 'class="datepicker"');
+        $form->setSize('timespan_end', 10);
+        $form->addSubmit('timespan_submit', dgettext('checkin', 'View Report'));
+
+        // Single visitor report
+        $form->addTplTag('VISITOR_LABEL', dgettext('checkin', 'All visits by'));
+        $form->addText('visitor_name');
+        $form->addSubmit('visitor_submit', dgettext('checkin', 'View Report'));
+
+        // All visitor report
+        $form->addTplTag('ALL_VISITORS_LABEL', dgettext('checkin', 'All visits by all visitors'));
+        $form->addSubmit('all_visitors_submit', dgettext('checkin', 'View Report'));
+
+        // Reason report
+        $reasons = $this->getReasons();
+
+        if (!empty($reasons)) {
+            $reasons = array_reverse($reasons, true);
+            $reasons[0] = dgettext('checkin', '-- Choose a reason --');
+            $reasons = array_reverse($reasons, true);
+
+            $form->addSelect('reason_select', $reasons);
+            $form->addTplTag('REASON_LABEL', dgettext('checkin', 'All visits for'));
+        }
+        $form->addSubmit('reason_submit', dgettext('checkin', 'View Report'));
+
+        $tpl = $form->getTemplate();
+        javascript('datepicker');
+
+        //$this->content = PHPWS_Template::process($tpl, 'checkin', 'report.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'checkin', 'report_new.tpl');
+
     }
 
     public function report()
