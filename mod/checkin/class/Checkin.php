@@ -5,10 +5,10 @@
  */
 
 
-define('BIRTHDATE_BITMASK', 0x1);
-define('GENDER_BITMASK', 0x2);
-define('REASON_BITMASK', 0x4);
-define('LAST_NAME_BITMASK', 0x8);
+define('LAST_NAME_BITMASK', 0x1);
+define('REASON_BITMASK', 0x2);
+define('GENDER_BITMASK', 0x4);
+define('BIRTHDATE_BITMASK', 0x8);
 
 class Checkin {
     public $title           = null;
