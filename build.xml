@@ -44,7 +44,7 @@
         </condition>
 
         <antcall target="test-rpm" />
-        <antcall target="prodiction-rpm" />
+        <antcall target="production-rpm" />
     </target>
 
     <tarfileset id="phpwebsite-tarball" dir="${basedir}" prefix="phpwebsite/">
