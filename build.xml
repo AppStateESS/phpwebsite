@@ -2,6 +2,7 @@
 
 <project name="phpwebsite-core" default="build">
     <property environment="env" />
+    <dirname property="imported.basedir" file="${ant.file.imported}" />
 
     <target name="build"
         depends="prepare,lint" />
@@ -9,45 +10,33 @@
     <target name="build-parallel" />
 
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="${basedir}/build"/>
+        <delete dir="${imported.basedir}/build"/>
     </target>
 
     <target name="prepare" depends="clean"
          description="Prepare for build">
-        <mkdir dir="${basedir}/build/rpm"/>
-        <mkdir dir="${basedir}/build/bin"/>
+        <mkdir dir="${imported.basedir}/build/rpm"/>
+        <mkdir dir="${imported.basedir}/build/bin"/>
     </target>
 
     <target name="lint">
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
-            <fileset dir="${basedir}">
+            <fileset dir="${imported.basedir}">
                 <include name="**/*.php" />
                 <exclude name="lib/**" />
                 <modified />
             </fileset>
 
-<!--            <fileset dir="${basedir}/tests">
+<!--            <fileset dir="${imported.basedir}/tests">
                 <include name="**/*.php" />
                 <modified />
             </fileset>-->
         </apply>
     </target>
 
-    <target name="jenkins-build" depends="build" description="Don't run this unless you are Jenkins">
-        <condition property="is.production">
-            <isset property="${env.PRODUCTION_VERSION}" />
-        </condition>
-        <condition property="is.testing">
-            <not><isset property="is.production" /></not>
-        </condition>
-
-        <antcall target="test-rpm" />
-        <antcall target="production-rpm" />
-    </target>
-
-    <tarfileset id="phpwebsite-tarball" dir="${basedir}" prefix="phpwebsite/">
+    <tarfileset id="phpwebsite-tarball" dir="${imported.basedir}" prefix="phpwebsite/">
         <exclude name="**/.svn/**" />
         <exclude name="build/**" />
         <exclude name="build.xml" />
@@ -56,98 +45,4 @@
         <exclude name="convert/**" />
         <exclude name="setup/**" />
     </tarfileset>
-
-    <target name="test-tarball" depends="build" description="Tar it up" unless="is.production">
-        <tar destfile="${basedir}/build/bin/phpwebsite-${env.BUILD_NUMBER}-1.tar.bz2" compression="bzip2">
-            <tarfileset refid="phpwebsite-tarball" />
-        </tar>
-    </target>
-
-    <target name="test-rpm" depends="test-tarball" description="Build an RPM" unless="is.production">
-        <exec executable="rpmbuild">
-            <arg value="--define" />
-            <arg value="_topdir ${basedir}/build/rpm" />
-            <arg value="--define" />
-            <arg value="_rpmdir ${basedir}/build/bin" />
-            <arg value="--define" />
-            <arg value="_srcrpmdir %{_topdir}" />
-            <arg value="--define" />
-            <arg value="_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" />
-            <arg value="--define" />
-            <arg value="_specdir %{_topdir}" />
-            <arg value="--define" />
-            <arg value="_sourcedir ${basedir}/build/bin" />
-            <arg value="--define" />
-            <arg value="vendor ESS" />
-            <arg value="--define" />
-            <arg value="version ${env.BUILD_NUMBER}" />
-            <arg value="--define" />
-            <arg value="release 1" />
-            <arg value="--define" />
-            <arg value="_signature gpg" />
-            <arg value="--define" />
-            <arg value="_gpg_path /etc/ess/gnupg" />
-            <arg value="--define" />
-            <arg value="_gpg_name Electronic Student Services" />
-            <arg value="--define" />
-            <arg value="_gpgbin /usr/bin/gpg" />            
-            <arg value="--define" />
-            <arg value="_binaries_in_noarch_packages_terminate_build 0" />
-            <arg value="-bb" />
-            <arg value="--sign" />
-            <arg path="${basedir}/phpwebsite.spec" />
-        </exec>
-        <exec executable="sudo">
-            <arg value="/opt/deployrpm" />
-            <arg value="testing" />
-            <arg value="${basedir}/build/bin/phpwebsite-${BUILD_NUMBER}-1.noarch.rpm" />
-        </exec>
-    </target>
-
-    <target name="production-tarball" depends="build" description="Tar it up" unless="is.testing">
-        <tar destfile="${basedir}/build/bin/phpwebsite-${env.PRODUCTION_VERSION}-${env.PRODUCTION_RELEASE}.tar.bz2" compression="bzip2">
-            <tarfileset refid="phpwebsite-tarball" />
-        </tar>
-    </target>
-
-    <target name="production-rpm" depends="production-tarball" description="Build an RPM" unless="is.testing">
-        <exec executable="rpmbuild">
-            <arg value="--define" />
-            <arg value="_topdir ${basedir}/build/rpm" />
-            <arg value="--define" />
-            <arg value="_rpmdir ${basedir}/build/bin" />
-            <arg value="--define" />
-            <arg value="_srcrpmdir %{_topdir}" />
-            <arg value="--define" />
-            <arg value="_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" />
-            <arg value="--define" />
-            <arg value="_specdir %{_topdir}" />
-            <arg value="--define" />
-            <arg value="_sourcedir ${basedir}/build/bin" />
-            <arg value="--define" />
-            <arg value="vendor ESS" />
-            <arg value="--define" />
-            <arg value="version ${env.PRODUCTION_VERSION}" />
-            <arg value="--define" />
-            <arg value="release ${env.PRODUCTION_RELEASE}" />
-            <arg value="--define" />
-            <arg value="_signature gpg" />
-            <arg value="--define" />
-            <arg value="_gpg_path /etc/ess/gnupg" />
-            <arg value="--define" />
-            <arg value="_gpg_name Electronic Student Services" />
-            <arg value="--define" />
-            <arg value="_gpgbin /usr/bin/gpg" />            
-            <arg value="--define" />
-            <arg value="_binaries_in_noarch_packages_terminate_build 0" />
-            <arg value="-bb" />
-            <arg value="--sign" />
-            <arg path="${basedir}/phpwebsite.spec" />
-        </exec>
-        <exec executable="sudo">
-            <arg value="/opt/deployrpm" />
-            <arg value="production" />
-            <arg value="${basedir}/build/bin/phpwebsite-${env.PRODUCTION_VERSION}-${env.PRODUCTION_RELEASE}.noarch.rpm" />
-        </exec>
-    </target>
 </project>
