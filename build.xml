@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="phpwebsite-core" default="build">
+<project name="phpwebsite" default="build">
     <property environment="env" />
-    <dirname property="imported.basedir" file="${ant.file.imported}" />
+    <dirname property="imported.basedir" file="${ant.file.phpwebsite}" />
 
     <target name="build"
         depends="prepare,lint" />
