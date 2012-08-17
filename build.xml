@@ -104,7 +104,7 @@
         </exec>
     </target>
 
-    <target name="test-tarball" depends="build" description="Tar it up" unless="is.testing">
+    <target name="production-tarball" depends="build" description="Tar it up" unless="is.testing">
         <tar destfile="${basedir}/build/bin/phpwebsite-${env.PRODUCTION_VERSION}-${env.PRODUCTION_RELEASE}.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
