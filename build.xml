@@ -15,7 +15,7 @@
     <target name="prepare" depends="clean"
          description="Prepare for build">
         <mkdir dir="${basedir}/build/rpm"/>
-        <mkdir dir="%{basedir}/build/bin"/>
+        <mkdir dir="${basedir}/build/bin"/>
     </target>
 
     <target name="lint">
