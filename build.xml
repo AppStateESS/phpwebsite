@@ -35,6 +35,18 @@
         </apply>
     </target>
 
+    <target name="jenkins-build" depends="build" description="Don't run this unless you are Jenkins">
+        <condition property="is.production">
+            <isset property="${env.PRODUCTION_VERSION}" />
+        </condition>
+        <condition property="is.testing">
+            <not><isset property="is.production" /></not>
+        </condition>
+
+        <antcall target="test-rpm" />
+        <antcall target="prodiction-rpm" />
+    </target>
+
     <tarfileset id="phpwebsite-tarball" dir="${basedir}" prefix="phpwebsite/">
         <exclude name="**/.svn/**" />
         <exclude name="build/**" />
@@ -45,13 +57,13 @@
         <exclude name="setup/**" />
     </tarfileset>
 
-    <target name="test-tarball" depends="build" description="Tar it up">
+    <target name="test-tarball" depends="build" description="Tar it up" unless="is.production">
         <tar destfile="${basedir}/build/bin/phpwebsite-${env.BUILD_NUMBER}-1.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
     </target>
 
-    <target name="test-rpm" depends="test-tarball" description="Build an RPM">
+    <target name="test-rpm" description="Build an RPM" unless="is.production">
         <exec executable="rpmbuild">
             <arg value="--define" />
             <arg value="_topdir ${basedir}/build/rpm" />
@@ -85,15 +97,20 @@
             <arg value="--sign" />
             <arg path="${basedir}/phpwebsite.spec" />
         </exec>
+        <exec executable="sudo">
+            <arg value="/opt/deployrpm" />
+            <arg value="testing" />
+            <arg value="${basedir}/build/bin/phpwebsite-${BUILD_NUMBER}-1.noarch.rpm" />
+        </exec>
     </target>
 
-    <target name="production-tarball" depends="build" description="Tar it up">
+    <target name="test-tarball" depends="build" description="Tar it up" unless="is.testing">
         <tar destfile="${basedir}/build/bin/phpwebsite-${env.PRODUCTION_VERSION}-${env.PRODUCTION_RELEASE}.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
     </target>
 
-    <target name="production-rpm" depends="production-tarball" description="Build an RPM">
+    <target name="production-rpm" description="Build an RPM" unless="is.testing">
         <exec executable="rpmbuild">
             <arg value="--define" />
             <arg value="_topdir ${basedir}/build/rpm" />
@@ -126,6 +143,11 @@
             <arg value="-bb" />
             <arg value="--sign" />
             <arg path="${basedir}/phpwebsite.spec" />
+        </exec>
+        <exec executable="sudo">
+            <arg value="/opt/deployrpm" />
+            <arg value="production" />
+            <arg value="${basedir}/build/bin/phpwebsite-${env.PRODUCTION_VERSION}-${env.PRODUCTION_RELEASE}.noarch.rpm" />
         </exec>
     </target>
 </project>
