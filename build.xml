@@ -46,7 +46,7 @@
     </tarfileset>
 
     <target name="test-tarball" depends="build" description="Tar it up">
-        <tar destfile="${basedir}/build/bin/phpwebsite-${BUILD_NUMBER}-1.tar.bz2" compression="bzip2">
+        <tar destfile="${basedir}/build/bin/phpwebsite-${env.BUILD_NUMBER}-1.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
     </target>
@@ -68,7 +68,7 @@
             <arg value="--define" />
             <arg value="vendor ESS" />
             <arg value="--define" />
-            <arg value="version ${BUILD_NUMBER}" />
+            <arg value="version ${env.BUILD_NUMBER}" />
             <arg value="--define" />
             <arg value="release 1" />
             <arg value="--define" />
@@ -88,7 +88,7 @@
     </target>
 
     <target name="production-tarball" depends="build" description="Tar it up">
-        <tar destfile="${basedir}/build/bin/phpwebsite-${PRODUCTION_VERSION}-${PRODUCTION_RELEASE}.tar.bz2" compression="bzip2">
+        <tar destfile="${basedir}/build/bin/phpwebsite-${env.PRODUCTION_VERSION}-${env.PRODUCTION_RELEASE}.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
     </target>
@@ -110,9 +110,9 @@
             <arg value="--define" />
             <arg value="vendor ESS" />
             <arg value="--define" />
-            <arg value="version ${PRODUCTION_VERSION}" />
+            <arg value="version ${env.PRODUCTION_VERSION}" />
             <arg value="--define" />
-            <arg value="release ${PRODUCTION_RELEASE}" />
+            <arg value="release ${env.PRODUCTION_RELEASE}" />
             <arg value="--define" />
             <arg value="_signature gpg" />
             <arg value="--define" />
