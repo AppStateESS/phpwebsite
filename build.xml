@@ -46,7 +46,7 @@
     </tarfileset>
 
     <target name="test-tarball" depends="build" description="Tar it up">
-        <tar destfile="${basedir}/build/bin/phpwebsite-${BUILD_NUMBER}-${RELEASE}.tar.bz2" compression="bzip2">
+        <tar destfile="${basedir}/build/bin/phpwebsite-${BUILD_NUMBER}-1.tar.bz2" compression="bzip2">
             <tarfileset refid="phpwebsite-tarball" />
         </tar>
     </target>
