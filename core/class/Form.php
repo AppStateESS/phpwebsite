@@ -374,7 +374,7 @@ class PHPWS_Form {
         unset($this->_elements[$name]);
     }
 
-    public function getPostedDate($name)
+    public static function getPostedDate($name)
     {
         $year   = (int)date('Y');
         $month  = (int)date('m');
@@ -410,7 +410,7 @@ class PHPWS_Form {
         return mktime($hour, $minute, 0, $month, $day, $year);
     }
 
-    public function testDate($name)
+    public static function testDate($name)
     {
         $month = @ $_REQUEST[$name . '_month'];
         $day   = @ $_REQUEST[$name . '_day'];
@@ -1531,7 +1531,7 @@ class PHPWS_Form {
             javascript('protect_form');
             $protected = " form-protected";
         }
-        
+
         return '<form class="phpws-form' . $protected . '" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
     }
 
