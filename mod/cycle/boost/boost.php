@@ -5,7 +5,7 @@
  */
 
 $proper_name  = 'Cycle';
-$version      = '1.0.0';
+$version      = '1.0.1';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
