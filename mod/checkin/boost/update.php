@@ -102,7 +102,7 @@ function checkin_update(&$content, $current_version) {
 + May now report by visitor name.</pre>';
         case version_compare($current_version, '1.5.0', '<'):
             $content[] = '<pre>';
-            
+
             // Make changes to checkin_visitor table
             $db = new PHPWS_DB('checkin_visitor');
             if (PHPWS_Error::logIfError($db->addTableColumn('gender', 'varchar(20) default NULL'))) {
@@ -158,6 +158,11 @@ function checkin_update(&$content, $current_version) {
 + Option to collect visitor birthdate.
 + Added staff filters for gender and birthdate.
 + Staff can now have more than one filter.</pre>';
+
+             case version_compare($current_version, '1.5.1', '<'):
+                 $content[] = '<pre>1.5.1 changes
+----------------
++ Fixed some bugs and notices</pre>';
     }
     return true;
 }
