@@ -35,6 +35,8 @@
         </apply>
     </target>
 
+    <target name="post-rpm" />
+
     <tarfileset id="phpwebsite-tarball" dir="${basedir}" prefix="phpwebsite/">
         <exclude name="**/.svn/**" />
         <exclude name="build/**" />
