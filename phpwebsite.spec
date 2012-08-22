@@ -19,7 +19,7 @@ The phpWebSite Content Management System
 %setup -n phpwebsite
 
 %post
-/sbin/service httpd restart
+/usr/bin/curl -L -k http://127.0.0.1/apc/clear
 
 %install
 mkdir -p $RPM_BUILD_ROOT%{install_dir}
