@@ -6,8 +6,6 @@
     <target name="build"
         depends="prepare,lint" />
 
-    <target name="build-parallel" />
-
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/build"/>
     </target>

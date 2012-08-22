@@ -1,7 +1,7 @@
 %define name phpwebsite
 %define install_dir /var/www/phpwebsite
 
-Summary:   Housing Management System
+Summary:   phpWebSite Content Management System
 Name:      %{name}
 Version:   %{version}
 Release:   %{release}
@@ -13,7 +13,7 @@ Requires:  php >= 5.0.0, php-gd >= 5.0.0
 BuildArch: noarch
 
 %description
-The Housing Management System
+The phpWebSite Content Management System
 
 %prep
 %setup -n phpwebsite
