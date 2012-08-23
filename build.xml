@@ -6,12 +6,25 @@
     <target name="build"
         depends="prepare,lint" />
 
+    <target name="build-parallel" />
+    
+    <target name="metrics" />
+
+    <target name="post-rpm" depends="metrics" />
+
+
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/build"/>
     </target>
 
     <target name="prepare" depends="clean"
          description="Prepare for build">
+        <mkdir dir="${basedir}/build/api"/>
+        <mkdir dir="${basedir}/build/code-browser"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
+        <mkdir dir="${basedir}/build/phpdox"/>
         <mkdir dir="${basedir}/build/rpm"/>
         <mkdir dir="${basedir}/build/bin"/>
     </target>
@@ -33,15 +46,88 @@
         </apply>
     </target>
 
-    <target name="post-rpm" />
+    <target name="phploc" description="Measure project size using PHPLOC">
+        <exec executable="phploc">
+            <arg value="--log-csv" />
+            <arg value="${basedir}/build/logs/phploc.csv" />
+            <arg path="${basedir}/class" />
+        </exec>
+    </target>
 
-    <tarfileset id="phpwebsite-tarball" dir="${basedir}" prefix="phpwebsite/">
-        <exclude name="**/.svn/**" />
-        <exclude name="build/**" />
-        <exclude name="build.xml" />
-        <exclude name="phpwebsite.spec" />
-        <exclude name="cache.properties" />
-        <exclude name="convert/**" />
-        <exclude name="setup/**" />
-    </tarfileset>
+    <target name="pdepend"
+        description="Calculate software metrics using PHP_Depend">
+        <exec executable="pdepend">
+            <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+            <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+            <arg path="${basedir}/class" />
+        </exec>
+    </target>
+
+    <target name="phpmd"
+        description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="phpmd">
+            <arg path="${basedir}/class" />
+            <arg value="text" />
+            <arg value="/etc/ess/phpmd.xml" />
+        </exec>
+    </target>
+
+    <target name="phpmd-ci"
+        description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
+        <exec executable="phpmd">
+            <arg path="${basedir}/class" />
+            <arg value="xml" />
+            <arg value="/etc/ess/phpmd.xml" />
+            <arg value="--reportfile" />
+            <arg value="${basedir}/build/logs/pmd.xml" />
+        </exec>
+    </target>
+
+    <target name="phpcs"
+        description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="phpcs">
+            <arg value="--standard=/etc/ess/phpcs.xml" />
+            <arg path="${basedir}/class" />
+        </exec>
+    </target>
+
+    <target name="phpcs-ci"
+        description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+        <exec executable="phpcs" output="/dev/null">
+            <arg value="--report=checkstyle" />
+            <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+            <arg value="--standard=/etc/ess/phpcs.xml" />
+            <arg path="${basedir}/class" />
+        </exec>
+    </target>
+
+    <target name="phpcpd" description="Find duplicate code using PHPCPD">
+        <exec executable="phpcpd">
+            <arg value="--log-pmd" />
+            <arg value="${basedir}/build/logs/pmd-cpd.xml" />
+            <arg path="${basedir}/class" />
+        </exec>
+    </target>
+
+    <target name="phpdox"
+        description="Generate API documentation using phpDox">
+        <exec executable="phpdox"/>
+    </target>
+
+    <target name="phpunit" description="Run unit tests with PHPUnit">
+<!--        <exec executable="phpunit" failonerror="true"/>-->
+    </target>
+
+    <target name="phpcb"
+    description="Aggregate tool output with PHP_CodeBrowser">
+        <exec executable="phpcb">
+            <arg value="--log" />
+            <arg path="${basedir}/build/logs" />
+            <arg value="--source" />
+            <arg path="${basedir}/class" />
+            <arg value="--output" />
+            <arg path="${basedir}/build/code-browser" />
+        </exec>
+    </target>
 </project>
