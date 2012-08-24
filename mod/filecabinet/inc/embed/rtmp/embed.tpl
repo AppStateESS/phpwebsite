@@ -11,9 +11,9 @@
 </style>
     <a class="{ID}" href="{FILE_NAME}">
 </a>
-<script type="text/javascript" src="{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.6.min.js"></script>
+<script type="text/javascript" src="{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.10.min.js"></script>
 <script type="text/javascript">
-$f("a.{ID}", "{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.7.swf", {
+$f("a.{ID}", "{SOURCE_HTTP}javascript/flowplayer/flowplayer-3.2.11.swf", {
 	clip: {provider: 'rtmp', autoPlay : false},
 	plugins: {
 	  rtmp: {
