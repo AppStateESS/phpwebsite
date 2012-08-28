@@ -54,6 +54,7 @@ class Checkin_Visitor {
         $availableStaff = array();
 
         $db = new PHPWS_DB('checkin_staff');
+        $db->addWhere('filter_type', 0, '!=');  // only auto-assign visitors to staff who have filters.
         $db->addWhere('active', 1);         // staff is not deactivated
         $db->addWhere('status', 1, '!=');   // staff is not unavailable
         $db->addOrder('id asc');

@@ -705,6 +705,7 @@ class Checkin_Admin extends Checkin {
         PHPWS_Core::initModClass('checkin', 'Staff.php');
 
         $page_tags['ADD_STAFF'] = $this->addStaffLink();
+        //$page_tags['STAFF_NOTE'] = dgettext('checkin', 'Note: Staff members with no filters will not have visitors automatically assigned to them.');
         $page_tags['FILTER_LABEL'] = dgettext('checkin', 'Filter');
 
         $pager = new DBPager('checkin_staff', 'Checkin_Staff');
@@ -806,6 +807,7 @@ class Checkin_Admin extends Checkin {
 
         $tpl = $form->getTemplate();
         $tpl['FILTER_LEGEND'] = dgettext('checkin', 'Visitor filter');
+        $tpl['STAFF_NOTE'] = dgettext('checkin', 'Note: Staff members with no filters will not have visitors automatically assigned to them.');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
 
