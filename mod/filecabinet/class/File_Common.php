@@ -396,7 +396,6 @@ class File_Common {
 
         $videos = $this->getVideoTypes();
         $ext = $this->getExtension();
-
         return in_array($ext, $videos);
     }
 
@@ -412,7 +411,7 @@ class File_Common {
             $this->loadExtension();
         }
 
-        return $this->_ext;
+        return trim($this->_ext);
     }
 
     public function loadExtension()
