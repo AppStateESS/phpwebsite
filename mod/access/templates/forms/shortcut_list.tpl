@@ -1,3 +1,5 @@
+{PAGE_FORWARDING}<br />
+{PAGE_FIX}<br />
 {MENU_FIX} (<i>{MENU_WARNING}</i>)
 {START_FORM}
 <table width="99%" cellpadding="3">

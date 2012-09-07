@@ -6,14 +6,13 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
-define('SHORTCUT_BAD_KEYWORD',     1);
-define('SHORTCUT_WORD_IN_USE',     2);
+define('SHORTCUT_BAD_KEYWORD', 1);
+define('SHORTCUT_WORD_IN_USE', 2);
 define('SHORTCUT_MISSING_KEYWORD', 3);
-define('SHORTCUT_MISSING_URL',     4);
-define('ACCESS_FILES_DIR',         5);
-define('ACCESS_HTACCESS_WRITE',    6);
-define('ACCESS_HTACCESS_MISSING',  7);
+define('SHORTCUT_MISSING_URL', 4);
+define('ACCESS_FILES_DIR', 5);
+define('ACCESS_HTACCESS_WRITE', 6);
+define('ACCESS_HTACCESS_MISSING', 7);
 
 PHPWS_Core::requireConfig('access');
 
@@ -78,7 +77,6 @@ class Access {
                     $allow_deny->delete();
                     Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
                     break;
-
                 case 'deny_allow':
                     PHPWS_Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Denys and Allows');
@@ -189,10 +187,27 @@ class Access {
                     Access::menuFix();
                     PHPWS_Core::goBack();
                     break;
+
+                case 'page_fix':
+                    Access::pageFix();
+                    PHPWS_Core::goBack();
+                    break;
+
+                case 'autoforward_on':
+                    PHPWS_Settings::set('access', 'forward_ids', 1);
+                    PHPWS_Settings::save('access');
+                    PHPWS_Core::goBack();
+                    break;
+
+                case 'autoforward_off':
+                    PHPWS_Settings::set('access', 'forward_ids', 0);
+                    PHPWS_Settings::save('access');
+                    PHPWS_Core::goBack();
+                    break;
             }
         }
 
-        $tpl['TITLE']   = $title;
+        $tpl['TITLE'] = $title;
         $tpl['MESSAGE'] = $message;
         $tpl['CONTENT'] = $content;
 
@@ -202,6 +217,44 @@ class Access {
         $finalPanel = $panel->display();
 
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    }
+
+    public static function pageFix()
+    {
+        $db = new PHPWS_DB('ps_page');
+        $db->addColumn('id');
+        $db->addColumn('title');
+        $db->setIndexBy('id');
+        $all_pages = $db->select('col');
+
+        if (empty($all_pages)) {
+            return;
+        }
+
+        $db2 = new PHPWS_DB('access_shortcuts');
+        $db2->addWhere('url', 'pagesmith:%', 'like');
+        $db2->addColumn('url');
+        $all_shortcuts = $db2->select('col');
+
+        $current_page_ids = array();
+        if (!empty($all_shortcuts)) {
+            foreach ($all_shortcuts as $page) {
+                $sc_array = explode(':', $page);
+                $current_page_ids[] = array_pop($sc_array);
+            }
+        }
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        foreach ($all_pages as $id => $title) {
+            if (in_array($id, $current_page_ids)) {
+                continue;
+            }
+
+            $shortcut = new Access_Shortcut;
+            $shortcut->setKeyword($title);
+            $shortcut->url = 'pagesmith:' . $id;
+            $shortcut->active = 1;
+            $shortcut->save();
+        }
     }
 
     public function saveShortcut(Access_Shortcut $shortcut)
@@ -269,7 +322,6 @@ class Access {
                     $content[] = 'Allow from ' . $ad->ip_address;
                 }
             }
-
         } elseif ($allow_all) {
             $content[] = 'Order Allow,Deny';
             $content[] = $allow_str;
@@ -279,7 +331,6 @@ class Access {
                     $content[] = 'Deny from ' . $ad->ip_address;
                 }
             }
-
         } else {
             if (!empty($result)) {
                 $content[] = 'Order Deny,Allow';
@@ -298,12 +349,10 @@ class Access {
                 if (!empty($allows)) {
                     $content[] = implode("\n", $allows);
                 }
-
             }
         }
 
         return implode("\n", $content) . "\n\n";
-
     }
 
     public function loadShortcut($title)
@@ -321,7 +370,7 @@ class Access {
     public static function shortcut(Key $key)
     {
         $vars['command'] = 'edit_shortcut';
-        $vars['key_id']  = $key->id;
+        $vars['key_id'] = $key->id;
         $link = PHPWS_Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = dgettext('access', 'Shortcut');
@@ -329,7 +378,6 @@ class Access {
         $js_link = javascript('open_window', $js_vars);
         MiniAdmin::add('access', $js_link);
     }
-
 
     public static function cpanel()
     {
@@ -360,7 +408,6 @@ class Access {
 
         $panel->setModule('access');
         return $panel;
-
     }
 
     public static function getAllowDeny()
@@ -370,7 +417,7 @@ class Access {
         return $db->getObjects('Access_Allow_Deny');
     }
 
-    public function getShortcuts($active_only=false)
+    public function getShortcuts($active_only = false)
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
@@ -568,7 +615,7 @@ class Access {
         $address = Access::inflateIp($address);
 
         $allow_all = PHPWS_Settings::get('access', 'allow_all');
-        $deny_all  = PHPWS_Settings::get('access', 'deny_all');
+        $deny_all = PHPWS_Settings::get('access', 'deny_all');
 
         $db = new PHPWS_DB('access_allow_deny');
         $db->addWhere('active', 1);
@@ -614,8 +661,8 @@ class Access {
     {
         $i = explode('.', $address);
         foreach ($i as $sub) {
-            $subint = (int)$sub;
-            $newip[] = str_pad((string)$subint, 3, '0', STR_PAD_LEFT);
+            $subint = (int) $sub;
+            $newip[] = str_pad((string) $subint, 3, '0', STR_PAD_LEFT);
         }
 
         return implode('.', $newip);
@@ -626,7 +673,6 @@ class Access {
         $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
         Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
     }
-
 
     public function isDenied($ip)
     {
@@ -644,16 +690,15 @@ class Access {
             return false;
         }
 
-        return (bool)$result;
+        return (bool) $result;
     }
-
 
     /**
      * Adds an ip address to the allow or deny database
      */
-    public function addIP($ip, $allow_or_deny=false)
+    public function addIP($ip, $allow_or_deny = false)
     {
-        $allow_or_deny = (int)(bool)$allow_or_deny;
+        $allow_or_deny = (int) (bool) $allow_or_deny;
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
@@ -678,9 +723,9 @@ class Access {
         return $ad->save();
     }
 
-    public function removeIp($ip, $allow_or_deny=false)
+    public function removeIp($ip, $allow_or_deny = false)
     {
-        $allow_or_deny = (int)(bool)$allow_or_deny;
+        $allow_or_deny = (int) (bool) $allow_or_deny;
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
@@ -750,7 +795,7 @@ class Access {
             if (empty($htaccess)) {
                 return false;
             }
-            foreach ($htaccess as $key=>$val) {
+            foreach ($htaccess as $key => $val) {
                 if (preg_match('/^rewriteengine/i', trim($val))) {
                     $htaccess[$key] = sprintf("RewriteEngine On\nRewriteRule ^js/(.*)$ %s$1 [L,R=301,NC]", PHPWS_SOURCE_HTTP);
                     break;
@@ -770,7 +815,7 @@ class Access {
             return false;
         }
 
-        foreach ($htaccess as $key=>$val) {
+        foreach ($htaccess as $key => $val) {
             if (preg_match('/^rewriterule \^js/i', trim($val))) {
                 $htaccess[$key] = "\n";
             }
@@ -781,7 +826,6 @@ class Access {
         }
         return true;
     }
-
 
     public static function getHtaccess()
     {
@@ -802,7 +846,7 @@ class Access {
         $current_directory = dirname($_SERVER['PHP_SELF']);
 
         $base_found = false;
-        foreach ($htaccess as $key=>$val) {
+        foreach ($htaccess as $key => $val) {
             if (preg_match('/^rewritebase/i', trim($val))) {
                 $htaccess[$key] = "RewriteBase $current_directory";
                 $base_found = true;
@@ -836,4 +880,22 @@ class Access {
             $menu_db->reset();
         }
     }
+
+    public static function autoForward()
+    {
+        $current_url = PHPWS_Core::getCurrentUrl();
+        if (preg_match('@pagesmith/\d+@', $current_url)) {
+            $page_name = str_replace('/', ':', $current_url);
+            $db = new PHPWS_DB('access_shortcuts');
+            $db->addColumn('keyword');
+            $db->addWhere('url', $page_name);
+            $db->setLimit(1);
+            $keyword = $db->select('one');
+            if (!empty($keyword)) {
+                PHPWS_Core::reroute('./' . $keyword);
+                exit();
+            }
+        }
+    }
+
 }

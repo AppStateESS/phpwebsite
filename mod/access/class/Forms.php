@@ -42,6 +42,14 @@ class Access_Forms {
         $page_tags = $form->getTemplate();
 
         $page_tags['MENU_FIX']     = PHPWS_Text::secureLink(dgettext('access', 'Update menu links'), 'access', array('command'=>'menu_fix'));
+        $page_tags['PAGE_FIX']     = PHPWS_Text::secureLink(dgettext('access', 'Shortcut all pages'), 'access', array('command'=>'page_fix'));
+
+        if (PHPWS_Settings::get('access', 'forward_ids')) {
+            $page_tags['PAGE_FORWARDING'] = PHPWS_Text::secureLink(dgettext('access', 'Turn OFF autoforwarding of Pagesmith id pages'), 'access', array('command'=>'autoforward_off'));
+        } else {
+            $page_tags['PAGE_FORWARDING'] = PHPWS_Text::secureLink(dgettext('access', 'Turn ON autoforwarding of Pagesmith id pages'), 'access', array('command'=>'autoforward_on'));
+        }
+
         $page_tags['MENU_WARNING'] = dgettext('menu', 'This change is irreversable. Please backup menu_links prior to running it.');
         $page_tags['URL_LABEL']    = dgettext('access', 'Url');
         $page_tags['ACTIVE_LABEL'] = dgettext('access', 'Active?');
