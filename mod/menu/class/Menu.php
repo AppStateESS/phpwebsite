@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Main functionality class for Menu module
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
 class Menu {
@@ -53,7 +53,7 @@ class Menu {
     public static function miniadmin()
     {
         if (!PHPWS_Settings::get('menu', 'miniadmin') ||
-        !Current_User::allow('menu')) {
+                !Current_User::allow('menu')) {
             return;
         }
 
@@ -67,7 +67,6 @@ class Menu {
             MiniAdmin::add('menu', PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
         }
     }
-
 
     /**
      * Function called by mod developer to add their
@@ -109,19 +108,18 @@ class Menu {
                 $menu->view(true);
             }
         }
-
     }
 
     public function atLink($url)
     {
-        $compare =  PHPWS_Core::getCurrentUrl();
+        $compare = PHPWS_Core::getCurrentUrl();
         return $url == $compare;
     }
 
-    public static function getSiteLink($menu_id, $parent_id=0, $isKeyed=false, $popup=false)
+    public static function getSiteLink($menu_id, $parent_id = 0, $isKeyed = false, $popup = false)
     {
-        $vars['command']   = 'add_site_link';
-        $vars['menu_id']   = $menu_id;
+        $vars['command'] = 'add_site_link';
+        $vars['menu_id'] = $menu_id;
         $vars['parent_id'] = $parent_id;
 
         if (!$isKeyed) {
@@ -144,7 +142,7 @@ class Menu {
         return javascript('open_window', $js);
     }
 
-    public static function getAddLink($menu_id, $parent_id=null, $popup=false)
+    public static function getAddLink($menu_id, $parent_id = null, $popup = false)
     {
         $key = Key::getCurrent();
         if (empty($key->url)) {
@@ -161,18 +159,21 @@ class Menu {
             $parent_id = 0;
         }
 
-        $vars['parent'] = (int)$parent_id;
+        $vars['parent'] = (int) $parent_id;
 
-        $link = MENU_LINK_ADD;
-        if ($popup) {
-            $link .= ' ' . dgettext('menu', 'Add current page');
-            $vars['pu'] = 1;
+        if ($key->id) {
+            $link = MENU_LINK_ADD;
+            if ($popup) {
+                $link .= ' ' . dgettext('menu', 'Add current page');
+                $vars['pu'] = 1;
+            }
+        } else {
+            $link = null;
         }
 
         if ($key->id) {
             if (!$popup) {
-                return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>',
-                $menu_id, $parent_id, $link);
+                return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $link);
             } else {
                 $vars['key_id'] = $key->id;
                 return PHPWS_Text::secureLink($link, 'menu', $vars);
@@ -180,28 +181,26 @@ class Menu {
         } else {
             // for dummy keys
             if (empty($key->title)) {
-                $vars['url']      = urlencode($key->url);
-                $js['question']   = dgettext('menu', 'Enter link title');
-                $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
+                $vars['url'] = urlencode($key->url);
+                $js['question'] = dgettext('menu', 'Enter link title');
+                $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
                 $js['link'] = $link;
                 $js['value_name'] = 'link_title';
                 return javascript('prompt', $js);
             } else {
                 $vars['link_title'] = urlencode($key->title);
-                $vars['url']        = urlencode($key->url);
+                $vars['url'] = urlencode($key->url);
 
                 if ($popup) {
                     return PHPWS_Text::secureLink($link, 'menu', $vars);
                 } else {
-                    return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
-                    $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
+                    return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
                 }
-
             }
         }
     }
 
-    public function pinLink($title, $url, $key_id=0)
+    public function pinLink($title, $url, $key_id = 0)
     {
         $key = substr(md5($title . $url), 0, 8);
         $_SESSION['Menu_Pin_Links'][$key]['title'] = strip_tags($title);
@@ -211,7 +210,7 @@ class Menu {
         }
     }
 
-    public static function getUnpinLink($menu_id, $key_id, $pin_all=0)
+    public static function getUnpinLink($menu_id, $key_id, $pin_all = 0)
     {
         $vars['command'] = 'unpin_menu';
         $vars['menu_id'] = $menu_id;
@@ -220,12 +219,12 @@ class Menu {
         }
         $vars['pin_all'] = $pin_all;
         if ($pin_all) {
-            $js['QUESTION']   = dgettext('menu', 'Are you sure you want to unpin this menu from all pages?');
+            $js['QUESTION'] = dgettext('menu', 'Are you sure you want to unpin this menu from all pages?');
         } else {
-            $js['QUESTION']   = dgettext('menu', 'Are you sure you want to unpin this menu from this page?');
+            $js['QUESTION'] = dgettext('menu', 'Are you sure you want to unpin this menu from this page?');
         }
-        $js['ADDRESS']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-        $js['LINK']       = MENU_UNPIN;
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+        $js['LINK'] = MENU_UNPIN;
         return javascript('confirm', $js);
     }
 
@@ -237,12 +236,10 @@ class Menu {
         }
     }
 
-
     public function enableAdminMode()
     {
         $_SESSION['Menu_Admin_Mode'] = true;
     }
-
 
     public static function isAdminMode()
     {
@@ -267,7 +264,7 @@ class Menu {
             $db = new PHPWS_DB('menus');
             $result = $db->getObjects('Menu_Item');
             if ($result) {
-                foreach($result as $menu) {
+                foreach ($result as $menu) {
                     if (empty($menu->title)) {
                         PHPWS_Core::errorPage('404');
                     }
@@ -288,7 +285,7 @@ class Menu {
                 $tpl['CONTENT'] = dgettext('menu', 'Sorry, no menus have been created');
             }
         } else {
-            $menu = new Menu_Item((int)$_GET['site_map']);
+            $menu = new Menu_Item((int) $_GET['site_map']);
             if (empty($menu->title)) {
                 PHPWS_Core::errorPage('404');
             }
@@ -321,7 +318,6 @@ class Menu {
         }
         $content[] = '</ol>';
     }
-
 
     public function quickLink($title, $url)
     {
@@ -375,17 +371,18 @@ class Menu {
         $link = new Menu_Link;
 
         $db = new PHPWS_DB('menu_links');
-        $db->addWhere('key_id', (int)$key_id);
+        $db->addWhere('key_id', (int) $key_id);
         $result = $db->loadObject($link);
         if (!$result || PHPWS_Error::logIfError($result)) {
             return false;
         }
 
-        $link->title  = & $key->title;
-        $link->url    = & $key->url;
+        $link->title = & $key->title;
+        $link->url = & $key->url;
         $link->active = & $key->active;
         return !PHPWS_Error::logIfError($link->save());
     }
 
 }
+
 ?>

@@ -269,7 +269,7 @@ class Menu_Link {
                 $this->_menu->_show_all || $current_link || $this->parent == 0 ||
                 in_array($this->parent, $current_parent)) {
 
-            $link = $this->getAnchorTag(); 
+            $link = $this->getAnchorTag();
 
             $this->_loadAdminLinks($template);
 
@@ -359,8 +359,10 @@ class Menu_Link {
 
                 if ($popup || PHPWS_Settings::get('menu', 'float_mode')) {
                     $template['PIN_LINK'] = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
-                    $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id, $popup);
-                    $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
+                    if ($this->key_id) {
+                        $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id, $popup);
+                        $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
+                    }
                     $template['DELETE_LINK'] = $this->deleteLink($popup);
                     $template['EDIT_LINK'] = $this->editLink($popup);
 
