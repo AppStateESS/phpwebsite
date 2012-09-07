@@ -196,6 +196,14 @@ function access_update(&$content, $version)
             $content[] = '<pre>1.2.0 changes
 ---------------
 + Shortcut length increased and observed in code.</pre>';
+
+            case version_compare($version, '1.2.1', '<'):
+            $sql = "ALTER TABLE  access_shortcuts CHANGE  keyword  keyword VARCHAR( 255 ) NOT NULL DEFAULT ''";
+            PHPWS_DB::query($sql);
+            $content[] = '<pre>1.2.1 changes
+---------------
++ Added tools to shortcuts to give all pages shortcuts and to autoforward on id calls.
++ Made sure the varchar is changed since the install did not reflect the change.</pre>';
     }
 
     return true;
