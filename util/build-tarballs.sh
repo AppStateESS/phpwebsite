@@ -44,7 +44,7 @@ echo "Building $DESTDIR/$NAME$TARSUFFIX"
 $TAR --transform="s,^,$NAME/,S" -f "$DESTDIR/$NAME$TARSUFFIX" --exclude=".svn" --exclude="$DESTDIR" *
 
 CORE_VERSION=`boost_version core/boost/boost.php`
-NAME="phpwebsite-base-$PHPWS_VERSION"
+NAME="base-$CORE_VERSION"
 
 echo "Building $DESTDIR/$NAME$TARSUFFIX"
 
