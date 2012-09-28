@@ -536,7 +536,7 @@ class Layout_Admin {
         }
     }
 
-    public function postHeader()
+    public static function postHeader()
     {
         if (isset($_POST['header_fp_only'])) {
             PHPWS_Settings::set('layout', 'header_fp_only', 1);
