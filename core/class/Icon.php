@@ -33,7 +33,7 @@ class Icon extends Image {
         if (!isset($icon_objects[$module][$type])) {
             Icon::loadIcon($module, $type, $icon_objects);
         }
-        return clone($icon_objects[$module][$type]);
+        return $icon_objects[$module][$type];
     }
 
     public function __toString()
@@ -71,7 +71,6 @@ class Icon extends Image {
             $sourceDir = PHPWS_SOURCE_DIR . "mod/$module/templates/icons/";
             $sourceHttp = "mod/$module/templates/icons/";
         }
-
         if (is_file($sourceDir.'icons.php')) {
             $data[] = array('source' => $sourceHttp, 'icons'  => Icon::getIconArray($sourceDir));
         }
@@ -194,6 +193,9 @@ class Icon extends Image {
             $content[] = '<strong>' . sprintf(dgettext('core', '<strong>Module %1$s icons stored at %2$s')
             , $module, $iconSet['source'])
             . '</strong><br />' . implode('<br />', $subcontent);
+        }
+        if (empty($content)) {
+            trigger_error(dgettext('core', 'Icon class failed demo. Check settings'), E_USER_ERROR);
         }
 
         $final =  implode('<br />', $content);
