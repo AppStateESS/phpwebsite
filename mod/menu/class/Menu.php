@@ -338,7 +338,7 @@ class Menu {
     /**
      * Adds a link to a current pin_all menu
      */
-    public function quickKeyLink($key_id)
+    public static function quickKeyLink($key_id)
     {
         if (!$key_id) {
             return false;
