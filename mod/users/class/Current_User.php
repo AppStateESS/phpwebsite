@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The Current_User class is a shortcut to the Users class.
  * When using the Current_User you are acting on the user currently
@@ -8,7 +9,6 @@
  * @author  Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::initModClass('users', 'Authorization.php');
 PHPWS_Core::initModClass('users', 'Users.php');
 
@@ -17,10 +17,11 @@ if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
 }
 
 final class Current_User {
+
     /**
      * Initializes the User session
      */
-    public static function init($id=0)
+    public static function init($id = 0)
     {
         if ($id) {
             $_SESSION['User'] = new PHPWS_User($id);
@@ -48,7 +49,7 @@ final class Current_User {
      *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
-    public static function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public static function allow($module, $subpermission = null, $item_id = 0, $itemname = null, $unrestricted_only = false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
             return false;
@@ -65,7 +66,7 @@ final class Current_User {
      * Works like authorized, but checks for a salted authkey
      * Won't work on posts yet.
      */
-    public static function secured($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public static function secured($module, $subpermission = null, $item_id = 0, $itemname = null, $unrestricted_only = false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
             return false;
@@ -78,7 +79,6 @@ final class Current_User {
         return Current_User::verifySaltedUrl() && $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname);
     }
 
-
     /**
      * Works the same as the allow static function but confirms the user's authorization code
      *
@@ -90,7 +90,7 @@ final class Current_User {
      *                                     priviledges for that module regardless of
      *                                     module, subpermission, or item id
      */
-    public static function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
+    public static function authorized($module, $subpermission = null, $item_id = 0, $itemname = null, $unrestricted_only = false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
             return false;
@@ -103,7 +103,7 @@ final class Current_User {
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, true);
     }
 
-    public static function allowedItem($module, $item_id, $itemname=null)
+    public static function allowedItem($module, $item_id, $itemname = null)
     {
         return $_SESSION['User']->allowedItem($module, $item_id, $itemname);
     }
@@ -122,7 +122,7 @@ final class Current_User {
      * @param string  message  Message sent to log
      * @param boolean login    If true, then allow change to login
      */
-    public static function disallow($message=null, $login=true)
+    public static function disallow($message = null, $login = true)
     {
         if ($login && Current_User::requireLogin()) {
             return;
@@ -170,7 +170,7 @@ final class Current_User {
         return $_SESSION['User']->getId();
     }
 
-    public static function getAuthKey($salt_value=null)
+    public static function getAuthKey($salt_value = null)
     {
         if (!isset($_SESSION['User'])) {
             return null;
@@ -179,7 +179,7 @@ final class Current_User {
         return $_SESSION['User']->getAuthKey($salt_value);
     }
 
-    public static function verifyAuthKey($check_salted=false)
+    public static function verifyAuthKey($check_salted = false)
     {
         return $_SESSION['User']->verifyAuthKey($check_salted);
     }
@@ -194,7 +194,6 @@ final class Current_User {
         $serial_url = str_replace(' ', '+', serialize($val));
         return Current_User::verifyAuthKey($serial_url);
     }
-
 
     public static function getUnrestrictedLevels()
     {
@@ -271,9 +270,9 @@ final class Current_User {
         return $_SESSION['User']->getDisplayName();
     }
 
-    public static function getEmail($html=false,$showAddress=false)
+    public static function getEmail($html = false, $showAddress = false)
     {
-        return $_SESSION['User']->getEmail($html,$showAddress);
+        return $_SESSION['User']->getEmail($html, $showAddress);
     }
 
     public static function isLogged()
@@ -292,15 +291,18 @@ final class Current_User {
 
     public static function getPermissionLevel($module)
     {
-        if ($_SESSION['User']->isDeity())
-        return UNRESTRICTED_PERMISSION;
+        if ($_SESSION['User']->isDeity()) {
+            return UNRESTRICTED_PERMISSION;
+        }
 
         return $_SESSION['User']->_permission->getPermissionLevel($module);
     }
 
     public static function giveItemPermission($key)
     {
-        return Users_Permission::giveItemPermission(Current_User::getId(), $key);
+        $result = Users_Permission::giveItemPermission(Current_User::getId(), $key);
+        $_SESSION['User']->loadUserGroups();
+        $_SESSION['User']->loadPermissions();
     }
 
     public static function getCreatedDate()
@@ -330,7 +332,7 @@ final class Current_User {
         }
 
         if (Current_User::isUnrestricted($key->module) &&
-        Current_User::allow($key->module, $key->edit_permission)) {
+                Current_User::allow($key->module, $key->edit_permission)) {
 
             if (!javascriptEnabled()) {
                 $tpl = User_Form::permissionMenu($key);
@@ -343,7 +345,7 @@ final class Current_User {
         }
     }
 
-    public static function popupPermission($key_id, $label=null, $mode=null)
+    public static function popupPermission($key_id, $label = null, $mode = null)
     {
         if (empty($label)) {
             $label = dgettext('users', 'Permission');
@@ -351,7 +353,7 @@ final class Current_User {
             $label = strip_tags($label);
         }
 
-        switch($mode) {
+        switch ($mode) {
             case 'icon':
                 $js_vars['label'] = Icon::show('permission', $label);
                 break;
@@ -363,7 +365,7 @@ final class Current_User {
         $js_vars['width'] = 350;
         $js_vars['height'] = 350;
 
-        $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s',$key_id, Current_User::getAuthKey());
+        $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s', $key_id, Current_User::getAuthKey());
 
         return javascript('open_window', $js_vars);
     }
@@ -380,7 +382,7 @@ final class Current_User {
     /**
      * Logs in a user dependant on their authorization setting
      */
-    public static function loginUser($username, $password=null)
+    public static function loginUser($username, $password = null)
     {
         if (!Current_User::allowUsername($username)) {
             return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
@@ -420,7 +422,7 @@ final class Current_User {
         $auth->setPassword($password);
         $result = $auth->authenticate();
 
-        if (PHPWS_Error::isError($result)){
+        if (PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -479,7 +481,7 @@ final class Current_User {
             return false;
         }
 
-        $rArray =  @unserialize($remember);
+        $rArray = @unserialize($remember);
 
         if (!is_array($rArray)) {
             return false;
@@ -532,8 +534,8 @@ final class Current_User {
 
     public static function allowRememberMe()
     {
-        if ( PHPWS_Settings::get('users', 'allow_remember') &&
-        ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
+        if (PHPWS_Settings::get('users', 'allow_remember') &&
+                (!Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME )) {
             return true;
         } else {
             return false;
@@ -565,6 +567,7 @@ final class Current_User {
         $auth = Current_User::getAuthorization();
         return $auth->local_user;
     }
+
 }
 
 ?>

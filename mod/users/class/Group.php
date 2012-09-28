@@ -13,7 +13,7 @@ class PHPWS_Group {
     public $user_id = 0;
     public $active = FALSE;
     public $_members = NULL;
-    public $_permissions = NULL;
+    public $_permission = NULL;
     public $_groups = NULL;
     public $_error = NULL;
 
@@ -252,7 +252,7 @@ class PHPWS_Group {
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
-        if (!isset($this->_permissions)) {
+        if (!isset($this->_permission)) {
             $this->loadPermissions();
         }
 

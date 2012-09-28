@@ -341,7 +341,7 @@ class PHPWS_User {
     {
         // Trim whitespace and make email address all lowercase
         $email = strtolower(trim($email));
-        
+
         if (!PHPWS_Text::isValidInput($email, 'email')) {
             return PHPWS_Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
         }
@@ -352,7 +352,7 @@ class PHPWS_User {
 
         // Only if all these tests pass, modify the member variable
         $this->email = $email;
-        
+
         return true;
     }
 
@@ -736,7 +736,7 @@ class PHPWS_User {
         unset($GLOBALS['User_Settings']);
     }
 
-    public static function getUserSetting($setting, $refresh=false)
+    public static function getUserSetting($setting)
     {
         return PHPWS_Settings::get('users', $setting);
     }
@@ -798,20 +798,6 @@ class PHPWS_User {
                 }
             }
         }
-    }
-
-    public function savePermissions($key)
-    {
-        if (!is_object($key) || strtolower(get_class($key) == 'key')) {
-            return false;
-        }
-
-        if (!PHPWS_Core::moduleExists($key->module)) {
-            return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
-        }
-
-        PHPWS_Core::initModClass('users', 'Permission.php');
-        return Users_Permission::savePermissions($key);
     }
 
     public static function getAllGroups()

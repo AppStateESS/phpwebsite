@@ -483,7 +483,7 @@ class Users_Permission {
         }
     }
 
-    public function clearItemPermissions($module, $group_id)
+    public static function clearItemPermissions($module, $group_id)
     {
         $db = new PHPWS_DB('phpws_key_edit');
         $db->addWhere('group_id', $group_id);
@@ -496,7 +496,7 @@ class Users_Permission {
      * Although called via Current_User, this functions gives
      * a group with edit permissions the right to edit this item.
      */
-    public function giveItemPermission($user_id, Key $key)
+    public static function giveItemPermission($user_id, Key $key)
     {
         $user = new PHPWS_User($user_id);
         $groups = $user->getGroups();

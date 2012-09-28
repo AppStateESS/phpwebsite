@@ -22,7 +22,7 @@ class User_Action {
     public static function adminAction()
     {
         PHPWS_Core::initModClass('users', 'Group.php');
-        $message = $content = null;
+        $title = $message = $content = null;
 
         if (!Current_User::allow('users')) {
             PHPWS_User::disallow(dgettext('users', 'Tried to perform an admin function in Users.'));
@@ -532,7 +532,7 @@ class User_Action {
         return $message;
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['User_Admin_Message'] = $message;
         PHPWS_Core::reroute('index.php?module=users&action=admin&command='
@@ -1029,7 +1029,7 @@ class User_Action {
         return true;
     }
 
-    public function postPermission()
+    public static function postPermission()
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 

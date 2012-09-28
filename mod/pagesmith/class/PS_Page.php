@@ -189,7 +189,6 @@ class PS_Page {
                 $links[] = $this->addPageLink(null, true);
             }
         }
-
         if (Current_User::allow('pagesmith', 'delete_page')) {
             $links[] = $this->deleteLink(true);
         }
@@ -300,7 +299,10 @@ class PS_Page {
     {
         PHPWS_Core::initModClass('search', 'Search.php');
         if (!$this->id) {
+            $new = true;
             $this->create_date = time();
+        } else {
+            $new = false;
         }
 
         $this->last_updated = time();
@@ -323,6 +325,10 @@ class PS_Page {
         }
 
         $this->saveKey();
+
+        if ($new && Current_User::isRestricted('pagesmith')) {
+           Current_User::giveItemPermission($this->_key);
+        }
 
         $search = new Search($this->key_id);
         $search->resetKeywords();
@@ -376,6 +382,7 @@ class PS_Page {
             PHPWS_Core::initModClass('menu', 'Menu.php');
             Menu::updateKeyLink($this->key_id);
         }
+        $this->_key = $key;
         return true;
     }
 

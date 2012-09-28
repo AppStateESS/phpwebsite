@@ -3,7 +3,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-$settings = array('default_authorization' => 0,
+$settings = array('default_authorization' => 1,
                   'new_user_method'       => 0,
                   'user_menu'             => 'css.tpl',
                   'graphic_confirm'       => 0,
