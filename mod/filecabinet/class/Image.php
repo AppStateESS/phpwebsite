@@ -43,7 +43,7 @@ class PHPWS_Image extends File_Common {
             $this->_errors[] = $result;
         } elseif (empty($result)) {
             $this->id = 0;
-            $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
+            $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image', "Id=$id");
         }
         $this->loadExtension();
     }
