@@ -7,11 +7,6 @@ basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
    CKEDITOR.plugins.addExternal('filecabinet',basePath+'ckeditor/phpws_plugins/filecabinet/', 'plugin.js');
 })();
 
-CKEDITOR.on('instanceReady', function(ev) {
-    ev.editor.on('paste', function(evt) {
-        evt.data['html'] = '<!--class="Mso"-->'+evt.data['html'];
-    }, null, null, 9);
-});
 
 CKEDITOR.editorConfig = function( config )
 {
