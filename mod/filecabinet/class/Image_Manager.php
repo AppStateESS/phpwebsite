@@ -247,13 +247,7 @@ class FC_Image_Manager {
             $max_size = & $this->max_size;
         }
 
-        if ($max_size >= 1000000) {
-            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dMB (%d bytes)'), floor($max_size / 1000000), $max_size);
-        } elseif ($max_size >= 1000) {
-            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dKB (%d bytes)'), floor($max_size / 1000), $max_size);
-        } else {
-            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
-        }
+        $template['MAX_SIZE'] = File_Common::humanReadable($max_size);
 
         $template['ERRORS'] = $this->image->printErrors();
 
@@ -328,6 +322,7 @@ class FC_Image_Manager {
             return true;
         } else {
             $this->edit();
+            Layout::nakedDisplay($this->content);
             return;
         }
     }

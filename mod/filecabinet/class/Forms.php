@@ -491,9 +491,12 @@ class Cabinet_Form {
         $tpl['FORM_LABEL'] = dgettext('filecabinet', 'Form upload limit');
         $tpl['ABSOLUTE_LABEL'] = dgettext('filecabinet', 'Absolute upload limit');
 
-        $tpl['MAX_SYSTEM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['system']);
-        $tpl['MAX_FORM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['form']);
-        $tpl['ABSOLUTE_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['absolute']);
+        //$tpl['MAX_SYSTEM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['system']);
+        //$tpl['MAX_FORM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['form']);
+        //$tpl['ABSOLUTE_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['absolute']);
+        $tpl['MAX_SYSTEM_SIZE'] = File_Common::humanReadable($sizes['system']);
+        $tpl['MAX_FORM_SIZE'] = File_Common::humanReadable($sizes['form']);
+        $tpl['ABSOLUTE_SIZE'] = File_Common::humanReadable($sizes['absolute']);
 
         if (Current_User::isDeity()) {
             $link = new PHPWS_Link(null, 'filecabinet', array('aop' => 'fix_document_dir'), true);

@@ -162,7 +162,7 @@ class File_Common {
                     break;
 
                 case UPLOAD_ERR_FORM_SIZE:
-                    $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                    $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array(self::humanReadable($this->_max_size)));
                     return false;
                     break;
 
@@ -330,6 +330,17 @@ class File_Common {
         }
 
         return true;
+    }
+
+    public static function humanReadable($max_size)
+    {
+        if ($max_size >= 1000000) {
+            return sprintf(dgettext('filecabinet', '%dMB (%d bytes)'), floor($max_size / 1000000), $max_size);
+        } elseif ($max_size >= 1000) {
+            return sprintf(dgettext('filecabinet', '%dKB (%d bytes)'), floor($max_size / 1000), $max_size);
+        } else {
+            return sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
+        }
     }
 
     public function getPath()
