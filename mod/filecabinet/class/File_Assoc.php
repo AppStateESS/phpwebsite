@@ -377,7 +377,7 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail()));
+                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail()));
             }
 
             $this->loadCarousel($count);
@@ -446,7 +446,7 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $img = sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getThumbnail());
+                $img = sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail());
                 $tpl['thumbnails'][] = array('IMAGE' => $img);
             }
             if ($this->vertical) {

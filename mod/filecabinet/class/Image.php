@@ -145,7 +145,7 @@ class PHPWS_Image extends File_Common {
 
     public function lightboxThumb()
     {
-        return sprintf('<span class="lightbox"><a href="%s">%s</a></span>', $this->getPath(), $this->getThumbnail());
+        return sprintf('<span class="lightbox"><a title="%s" href="%s">%s</a></span>', $this->getDescription(), $this->getPath(), $this->getThumbnail());
     }
 
     public function getJSView($thumbnail = FALSE, $link_override = null)
