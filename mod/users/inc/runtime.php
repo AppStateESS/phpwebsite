@@ -4,6 +4,10 @@
  * @version $Id$
  */
 
+if(!defined('USERS_AUTH_PATH')) {
+    define('USERS_AUTH_PATH', PHPWS_SOURCE_DIR . 'mod/users/scripts/');
+}
+
 if (!class_exists('PHPWS_User')) {
     include '../../core/conf/404.html';
     exit();

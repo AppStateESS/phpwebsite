@@ -544,13 +544,13 @@ final class Current_User {
 
     public static function loadAuthorization(PHPWS_User $user)
     {
-        if (!is_file($user->auth_path)) {
+        if (!is_file(USERS_AUTH_PATH . $user->auth_script)) {
             return false;
         }
-        require_once $user->auth_path;
+        require_once USERS_AUTH_PATH . $user->auth_script;
         $class_name = $user->auth_name . '_authorization';
         if (!class_exists($class_name)) {
-            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', $user->auth_path);
+            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', USERS_AUTH_PATH . $user->auth_script);
             return false;
         }
         $GLOBALS['User_Authorization'] = new $class_name($user);

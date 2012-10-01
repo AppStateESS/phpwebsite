@@ -42,7 +42,6 @@ class PHPWS_User {
     public $_logged          = false;
     public $_prev_username   = null;
     public $auth_script      = null;
-    public $auth_path        = null;
     public $auth_name        = null;
 
     public function __construct($id=0,$username=null)
@@ -929,11 +928,10 @@ class PHPWS_User {
         }
 
         $this->auth_script = $filename;
-        $this->auth_path   = PHPWS_SOURCE_DIR . 'mod/users/scripts/' . $filename;
         $this->auth_name   = preg_replace('/\.php$/i', '', $filename);
 
-        if (!is_file($this->auth_path)) {
-            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'User_Authorization', $this->auth_path);
+        if (!is_file(USERS_AUTH_PATH . $this->auth_script)) {
+            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'User_Authorization', USERS_AUTH_PATH . $this->auth_script);
             return false;
         } else {
             return true;
