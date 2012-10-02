@@ -833,11 +833,10 @@ class PHPWS_DB {
                     $where_list[$group_name]['group_conj'] = 'AND';
                 }
 
-                if (@$search_key = array_search($group_name, $this->group_in, true)) {
-                    $where_list[$search_key]['group_in'][$group_name] = &$where_list[$group_name];
+                if (isset($this->group_in[$group_name])) {
+                    $where_list[$this->group_in[$group_name]]['group_in'][$group_name] = $where_list[$group_name];
                 }
             }
-            $start_main = false;
             if (!empty($where_list)) {
                 $sql[] = $this->_buildGroup($where_list, $ignore_list, true);
             }
