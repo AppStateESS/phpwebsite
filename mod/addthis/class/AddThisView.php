@@ -29,6 +29,10 @@ class AddThisView {
 
     public function view()
     {
+        $key = Key::getCurrent();
+        if(!Key::checkKey($key))
+            return;
+
         $tpl = array();
 
         $allSettings = $this->settings->getAll();
