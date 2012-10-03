@@ -845,6 +845,10 @@ class Layout {
             $links[] = PHPWS_Text::secureLink(dgettext('layout', 'Box move on'), 'layout', $vars);
         }
 
+        unset($vars['command']);
+        $vars['tab'] = 'meta';
+        $links[] = PHPWS_Text::secureLink(dgettext('layout', 'Change Website Title'), 'layout', $vars);
+
         $key = Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
         Key::checkKey($key)) {
