@@ -5,23 +5,35 @@
 if (Current_User::isLogged()) {
     $key = Key::getCurrent(true);
     if ($key) {
-        $form = new PHPWS_Form('create-qr');
-        $form->setMethod('get');
-        $form->addHidden('module', 'qr');
-        $form->addHidden('id', $key->id);
+        $links = array();
+        $vars  = array();
+        $windowVars = array();
+        $vars['id'] = $key->id;
 
-        $sizes[5] = 'Small';
-        $sizes[6] = 'Medium';
-        $sizes[8] = 'Large';
-        $sizes[12] = 'X-Large';
-        $form->addSelect('size', $sizes);
-        $form->setLabel('size', 'Size');
+        $windowVars['width']  = 500;
+        $windowVars['height'] = 500;
 
-        $form->addSubmit('Show QR');
+        $vars['size'] = 5;
+        $windowVars['label'] = dgettext('qr', 'Small');
+        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
+        $links[] = javascript('open_window', $windowVars);
 
-        $tpl = $form->getTemplate();
-        $content = PHPWS_Template::process($tpl, 'qr', 'form.tpl');
-        Layout::add($content, 'qr', 'qr');
+        $vars['size'] = 6;
+        $windowVars['label'] = dgettext('qr', 'Medium');
+        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
+        $links[] = javascript('open_window', $windowVars);
+
+        $vars['size'] = 8;
+        $windowVars['label'] = dgettext('qr', 'Large');
+        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
+        $links[] = javascript('open_window', $windowVars);
+
+        $vars['size'] = 12;
+        $windowVars['label'] = dgettext('qr', 'X-Large');
+        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
+        $links[] = javascript('open_window', $windowVars);
+
+        MiniAdmin::add('qr', $links);
     }
 }
 ?>

@@ -2,7 +2,7 @@
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-$proper_name  = 'QR';
+$proper_name  = 'QR Code';
 $version      = '1.0.0';
 $register     = false;
 $unregister   = false;
