@@ -13,8 +13,8 @@ class cosignnocreate_authorization extends User_Authorization {
 
     // Enter the url to the cosign login page
     public $login_link       = '';
-    public $login_label     = 'Cosign log in';
-    public $force_redirect  =  false;
+    public $login_link_label = 'ASU WebLogin';
+    public $force_redirect   = false;
 
     // Link to the cosign logout
     public $logout_link     = '';
@@ -23,6 +23,7 @@ class cosignnocreate_authorization extends User_Authorization {
     {
         parent::__construct($user);
         $this->login_link = $this->getLocalCosignLink('login');
+        $this->login_link_label = 'ASU WebLogin';
     }
 
     public function authenticate()
@@ -66,6 +67,14 @@ class cosignnocreate_authorization extends User_Authorization {
 
     // Run before a new user is created.
     public function createUser(){}
+
+    public function getLoginLink()
+    {
+        return sprintf('<a href="%s"><img src="%s/mod/users/img/external-login.png">%s</a>',
+            $this->login_link,
+            PHPWS_SOURCE_HTTP,
+            $this->login_link_label);
+    }
 
     public function logout()
     {
