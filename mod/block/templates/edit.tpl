@@ -7,5 +7,4 @@
 {BLOCK_CONTENT}</p>
 <p>{FILE_ID}</p>
 </div>
-{SUBMIT} {END_FORM}
-<div class="align-center">{CANCEL}</div>
+<div class="align-center">{SUBMIT} {CANCEL} {END_FORM}</div>
