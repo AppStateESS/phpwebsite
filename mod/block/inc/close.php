@@ -13,8 +13,8 @@ if (Current_User::allow('block')) {
         $val['address'] = sprintf('index.php?module=block&action=js_block_edit&key_id=%s&authkey=%s',
         $key->id, Current_User::getAuthkey());
         $val['label'] = dgettext('block', 'Add block here');
-        $val['width'] = 640;
-        $val['height'] = 480;
+        $val['width'] = 750;
+        $val['height'] = 550;
         MiniAdmin::add('block', javascript('open_window', $val));
     }
 }
