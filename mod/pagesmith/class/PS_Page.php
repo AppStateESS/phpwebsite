@@ -476,7 +476,7 @@ class PS_Page {
     {
         Layout::addStyle('pagesmith');
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
-            MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
+            MiniAdmin::add('pagesmith', $this->editLink(dgettext('pagesmith', 'Edit this page')));
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         Layout::getCacheHeaders($this->cacheKey());
