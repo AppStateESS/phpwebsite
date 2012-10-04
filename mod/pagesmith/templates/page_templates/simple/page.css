@@ -1,15 +1,11 @@
 div#simple-block1 {
     float: right;
     display: inline;
-    margin: 0px 0px 10px 10px;
+    margin: 3px 3px 10px 10px;
+    padding: 4px;
+    border: 1px solid #CCC;
 }
 
 div#simple-page {
-    background-color: white;
-    color: inherit;
     overflow: hidden;
-}
-
-div#simple-page h1 {
-    margin-bottom: 1em;
 }
