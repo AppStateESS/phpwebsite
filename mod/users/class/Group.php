@@ -19,7 +19,7 @@ class PHPWS_Group {
 
     public function __construct($id=NULL, $loadGroups=TRUE)
     {
-        if (isset($id)) {
+        if (!empty($id)) {
             $this->setId($id);
             $result = $this->init();
             if (PHPWS_Error::logIfError($result)) {
