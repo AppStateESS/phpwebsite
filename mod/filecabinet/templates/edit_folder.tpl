@@ -14,6 +14,5 @@
 <p style="margin-bottom: 1em">{MODULE_CREATED_LABEL}<br />
 {MODULE_CREATED}</p>
 <!-- END module-created -->
-<p>{SUBMIT}</p>
+<div style="text-align: center">{SUBMIT} {CLOSE}</div>
 {END_FORM}
-<div style="text-align: center">{CLOSE}</div>
