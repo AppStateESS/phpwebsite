@@ -32,8 +32,13 @@ class PHPWS_Document extends File_Common {
             $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
+            if (isset($_SERVER['HTTP_REFERER'])) {
+                $info = 'referer=' . $_SERVER['HTTP_REFERER'] . ', id=' . $this->id;
+            } else {
+                $info = 'id=' . $this->id;
+            }
+            $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'PHPWS_Document', $info);
             $this->id = 0;
-            $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
         }
         $this->loadExtension();
     }

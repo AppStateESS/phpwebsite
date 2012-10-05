@@ -35,7 +35,6 @@ class PHPWS_Image extends File_Common {
         if (empty($id)) {
             return;
         }
-
         $this->id = (int) $id;
         $result = $this->init();
         if (PHPWS_Error::isError($result)) {
