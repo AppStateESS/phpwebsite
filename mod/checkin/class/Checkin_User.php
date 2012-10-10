@@ -12,6 +12,7 @@ class Checkin_User extends Checkin {
     public function checkinForm() {
         $form = new PHPWS_Form('checkin');
         $form->turnOffAutoComplete();
+        $form->setProtected(false);
         $form->addHidden('module', 'checkin');
         $form->addHidden('uop', 'post_checkin');
 
