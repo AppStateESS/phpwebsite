@@ -415,7 +415,7 @@ class PageSmith {
                     $content = dgettext('pagesmith', 'Restricted page.');
                 }
             }
-            Layout::add($content);
+            Layout::add($content, 'pagesmith', 'view_' . $this->page->id, TRUE);
         } else {
             header('HTTP/1.0 404 Not Found');
             Layout::add(dgettext('pagesmith', 'Sorry, but your page could not be found. You may wish to search for it.'));
