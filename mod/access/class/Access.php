@@ -668,7 +668,7 @@ class Access {
         return implode('.', $newip);
     }
 
-    public function denied()
+    public static function denied()
     {
         $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
         Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
