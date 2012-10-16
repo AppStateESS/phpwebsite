@@ -354,7 +354,7 @@ class Menu {
         }
     }
 
-    public function updateKeyLink($key_id)
+    public static function updateKeyLink($key_id)
     {
         if (empty($key_id)) {
             return false;
