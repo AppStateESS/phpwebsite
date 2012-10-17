@@ -6,15 +6,14 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 /**
  * phpWebsite will not work properly after Mon, 18 Jan 2038
  * Hopefully, it was a good ride.
  */
 define('HIDE_CEILING', 2147400000);
-define('KEY_NOT_RESTRICTED',    0);
+define('KEY_NOT_RESTRICTED', 0);
 define('KEY_LOGGED_RESTRICTED', 1);
-define('KEY_GROUP_RESTRICTED',  2);
+define('KEY_GROUP_RESTRICTED', 2);
 
 if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = Key::getHomeKey();
@@ -23,52 +22,44 @@ if (!isset($_REQUEST['module'])) {
 }
 
 class Key {
+
     // if the id is 0 (zero) then this is a _dummy_ key
     // dummy keys are not saved
-    public $id              = null;
-    public $module          = null;
-    public $item_name       = null;
-    public $item_id         = null;
-    public $title           = null;
-    public $summary         = null;
-    public $url             = null;
-    public $active          = 1;
-
+    public $id = null;
+    public $module = null;
+    public $item_name = null;
+    public $item_id = null;
+    public $title = null;
+    public $summary = null;
+    public $url = null;
+    public $active = 1;
     // if KEY_LOGGED_RESTRICTED, then only logged in users will access
     // if KEY_GROUP_RESTRICTED, user must be in group list
-    public $restricted      = 0;
-
-    public $create_date     = 0;
-    public $update_date     = 0;
-
-    public $creator         = null;
-    public $creator_id      = 0;
-
-    public $updater         = null;
-    public $updater_id      = 0;
-
+    public $restricted = 0;
+    public $create_date = 0;
+    public $update_date = 0;
+    public $creator = null;
+    public $creator_id = 0;
+    public $updater = null;
+    public $updater_id = 0;
     // contains permission allow name for editing
     public $edit_permission = null;
-
-    public $times_viewed    = 0;
-
-    public $show_after      = 0;
-    public $hide_after      = HIDE_CEILING;
-
+    public $times_viewed = 0;
+    public $show_after = 0;
+    public $hide_after = HIDE_CEILING;
     // groups allowed to view
-    public $_view_groups    = null;
+    public $_view_groups = null;
     // groups allowed to edit
-    public $_edit_groups    = null;
+    public $_edit_groups = null;
+    public $_error = null;
 
-    public  $_error         = null;
-
-    public function __construct($id=null)
+    public function __construct($id = null)
     {
         if (empty($id)) {
             return null;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $this->init();
     }
 
@@ -84,7 +75,7 @@ class Key {
     /**
      * returns the url in a link
      */
-    public function getUrl($full_path=false)
+    public function getUrl($full_path = false)
     {
         if ($full_path) {
             return sprintf('<a href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $this->url, $this->title);
@@ -108,7 +99,7 @@ class Key {
         $this->restricted = KEY_LOGGED_RESTRICTED;
     }
 
-    public function restrictToGroups($groups=null)
+    public function restrictToGroups($groups = null)
     {
         if (!is_array($groups)) {
             return false;
@@ -123,7 +114,7 @@ class Key {
     {
         foreach ($groups as $group_id) {
             if (is_numeric($group_id)) {
-                $this->_view_groups[] = (int)$group_id;
+                $this->_view_groups[] = (int) $group_id;
             }
         }
     }
@@ -131,7 +122,7 @@ class Key {
     // restricted means that only logged users can access
     public function isRestricted()
     {
-        return (bool)$this->restricted;
+        return (bool) $this->restricted;
     }
 
     public function setEditPermission($permission)
@@ -145,12 +136,12 @@ class Key {
 
     public function setShowAfter($date)
     {
-        $this->show_after = (int)$date;
+        $this->show_after = (int) $date;
     }
 
     public function setHideAfter($date)
     {
-        $date = (int)$date;
+        $date = (int) $date;
         if (!$date) {
             $this->hide_after = HIDE_CEILING;
         } else {
@@ -201,10 +192,9 @@ class Key {
         return $this->_edit_groups;
     }
 
-    public function allowView($check_dates=true)
+    public function allowView($check_dates = true)
     {
-        if (Current_User::allow($this->module, $this->edit_permission,
-        $this->item_id, $this->item_name)) {
+        if (Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
             return true;
         } elseif (!$this->active) {
             return false;
@@ -212,7 +202,7 @@ class Key {
 
         $now = time();
         if ($check_dates &&
-        (($this->hide_after < $now) || ($this->show_after > $now))) {
+                (($this->hide_after < $now) || ($this->show_after > $now))) {
             return false;
         }
 
@@ -229,7 +219,7 @@ class Key {
                     if (empty($user_groups)) {
                         return false;
                     } else {
-                        return (bool)array_intersect($user_groups, $this->getViewGroups());
+                        return (bool) array_intersect($user_groups, $this->getViewGroups());
                     }
                 }
             }
@@ -244,8 +234,7 @@ class Key {
             return true;
         }
 
-        return Current_User::allow($this->module, $this->edit_permission,
-        $this->item_id, $this->item_name);
+        return Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name);
     }
 
     public function init()
@@ -303,8 +292,7 @@ class Key {
             if (PHPWS_Error::isError($result)) {
                 return $result;
             } elseif ($result) {
-                return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save',
-                sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
+                return PHPWS_Error::get(KEY_DUPLICATE, 'core', 'Key::save', sprintf('%s-%s-%s', $this->module, $this->item_name, $this->item_id));
             }
             $db->reset();
         }
@@ -389,7 +377,6 @@ class Key {
     public function setItemId($item_id)
     {
         $this->item_id = $item_id;
-
     }
 
     public function setTitle($title)
@@ -403,7 +390,7 @@ class Key {
         $this->summary = trim(PHPWS_Text::condense($summary, 255));
     }
 
-    public function setUrl($url, $local=true)
+    public function setUrl($url, $local = true)
     {
         if (preg_match('/^<a/', trim($url))) {
             $url = preg_replace('/<a href="(.*)".*<\/a>/iU', '\\1', $url);
@@ -418,7 +405,7 @@ class Key {
 
     public function isActive()
     {
-        return (bool)$this->active;
+        return (bool) $this->active;
     }
 
     /**
@@ -463,14 +450,14 @@ class Key {
     {
         $module_names = PHPWS_Core::getModuleNames();
 
-        $tpl['ID']          = $this->id;
-        $tpl['MODULE']      = $module_names[$this->module];
-        $tpl['ITEM_ID']     = $this->item_id;
-        $tpl['TITLE']       = $this->title;
-        $tpl['URL']         = $this->getUrl();
-        $tpl['SUMMARY']     = $this->summary;
-        $tpl['CREATOR']     = $this->creator;
-        $tpl['UPDATER']     = $this->updater;
+        $tpl['ID'] = $this->id;
+        $tpl['MODULE'] = $module_names[$this->module];
+        $tpl['ITEM_ID'] = $this->item_id;
+        $tpl['TITLE'] = $this->title;
+        $tpl['URL'] = $this->getUrl();
+        $tpl['SUMMARY'] = $this->summary;
+        $tpl['CREATOR'] = $this->creator;
+        $tpl['UPDATER'] = $this->updater;
         $tpl['CREATE_DATE'] = $this->getCreateDate();
         $tpl['UPDATE_DATE'] = $this->getUpdateDate();
         return $tpl;
@@ -516,7 +503,7 @@ class Key {
      * Retrieves the current flagged key. Will return the home key if
      * on the home page and allow_home is true.
      */
-    public static function getCurrent($allow_home=true)
+    public static function getCurrent($allow_home = true)
     {
         if (!isset($GLOBALS['Current_Flag'])) {
             if (isset($_REQUEST['module']) || !$allow_home) {
@@ -528,7 +515,6 @@ class Key {
             return $GLOBALS['Current_Flag'];
         }
     }
-
 
     /**
      * added limitations to a select query to only pull rows that
@@ -542,7 +528,7 @@ class Key {
      * to your db object.
      *
      */
-    public static function restrictView($db, $module=null, $check_dates=true, $source_table=null)
+    public static function restrictView($db, $module = null, $check_dates = true, $source_table = null)
     {
         $now = time();
         if (empty($source_table)) {
@@ -559,21 +545,21 @@ class Key {
             $key_table = false;
         }
 
-        $db->addWhere("$source_table.key_id", '0', null, null, 'empty_key');
-
-        $db->addWhere('phpws_key.active', 1, null, null, 'active');
-
-        $db->groupIn('empty_key', 'active');
-        $db->setGroupConj('active', 'or');
-
         if (!$key_table) {
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
         } else {
             $db->addJoin('left', 'phpws_key', $source_table, 'id', 'key_id');
         }
+        $db->addWhere("$source_table.key_id", '0', null, null, 'base');
 
-        if ( Current_User::isDeity() ||
-        (isset($module) && Current_User::isUnrestricted($module) )
+        $db->addWhere('phpws_key.active', 1, null, null, 'active');
+
+        $db->groupIn('active', 'base');
+        $db->setGroupConj('active', 'or');
+
+
+        if (Current_User::isDeity() ||
+                (isset($module) && Current_User::isUnrestricted($module) )
         ) {
             return;
         }
@@ -596,35 +582,26 @@ class Key {
 
             // if key only has a level 1 restriction, a logged user can view it
             $db->addWhere('phpws_key.restricted', KEY_LOGGED_RESTRICTED, '<=', null, 'restrict_1');
+            $db->setGroupConj('restrict_1', 'and');
 
             // at level 2, the user must be in a group given view permissions
             $db->addWhere('phpws_key.restricted', KEY_GROUP_RESTRICTED, '=', null, 'restrict_2');
 
             $db->addWhere('phpws_key_view.group_id', $groups, 'in', null, 'restrict_2');
+            $db->setGroupConj('restrict_2', 'or');
 
             if (empty($module)) {
                 $levels = Current_User::getUnrestrictedLevels();
                 if (!empty($levels)) {
                     $db->addWhere('phpws_key.module', $levels, null, null, 'permission');
-                    $db->groupIn('active', 'permission');
-                    $db->groupIn('permission', 'restrict_1');
-                    $db->setGroupConj('restrict_1', 'or');
-                } else {
-                    $db->groupIn('active', 'restrict_1');
+                    $db->groupIn('permission', 'restrict_2');
                 }
-            } else {
-                $db->groupIn('active', 'restrict_1');
             }
+            $db->groupIn('restrict_1', 'base');
+            $db->groupIn('restrict_2', 'restrict_1');
 
-
-            $db->setGroupConj('restrict_2', 'or');
-            $db->setGroupConj('active', 'or');
-            $db->groupIn('restrict_1', 'restrict_2');
-
-            return;
         }
     }
-
 
     /**
      * Adds limits to a db select query to only pull items the user
@@ -646,7 +623,7 @@ class Key {
      * @param  string   key_id_column : (optional) Usually "key_id".  Only use this if you allow edits where "key_id=0"
      * @param  string   owner_id_column : (optional) Only use this if you allow edits on content created by the user
      */
-    public static function restrictEdit($db, $module, $edit_permission=null, $source_table=null, $key_id_column=null, $owner_id_column=null)
+    public static function restrictEdit($db, $module, $edit_permission = null, $source_table = null, $key_id_column = null, $owner_id_column = null)
     {
         if (Current_User::isDeity()) {
             return;
@@ -661,7 +638,7 @@ class Key {
 
         // If the current user has unrestricted rights to edit the item
         // linked to this key, no further restrictions are necessary
-        if ( Current_User::isUnrestricted($module) ) {
+        if (Current_User::isUnrestricted($module)) {
             return;
         } else {
             $db->setDistinct(1);
@@ -670,11 +647,11 @@ class Key {
             }
 
             if (!empty($key_id_column)) {
-                $db->addWhere($source_table.'.'.$key_id_column, 0, null, 'or', 'key_1');
+                $db->addWhere($source_table . '.' . $key_id_column, 0, null, 'or', 'key_1');
             }
 
             if (!empty($owner_id_column)) {
-                $db->addWhere($source_table.'.'.$owner_id_column, Current_User::getId(), null, 'or','key_1');
+                $db->addWhere($source_table . '.' . $owner_id_column, Current_User::getId(), null, 'or', 'key_1');
             }
 
             $groups = Current_User::getGroups();
@@ -704,8 +681,8 @@ class Key {
             return;
         }
 
-        if ( isset($_SESSION['Key_Views']) &&
-        in_array($this->id, $_SESSION['Key_Views']) ) {
+        if (isset($_SESSION['Key_Views']) &&
+                in_array($this->id, $_SESSION['Key_Views'])) {
             return;
         }
 
@@ -718,8 +695,9 @@ class Key {
     /**
      * A set of checks on a key to see if it is usable for content indexing
      */
-    public static function checkKey($key, $allow_home_key=true) {
-        if ( empty($key) || isset($key->_error) ) {
+    public static function checkKey($key, $allow_home_key = true)
+    {
+        if (empty($key) || isset($key->_error)) {
             return false;
         }
 
@@ -736,7 +714,7 @@ class Key {
         return true;
     }
 
-    public function isDummy($allow_home=false)
+    public function isDummy($allow_home = false)
     {
         if ($this->id === 0) {
             if ($this->isHomeKey() && $allow_home) {
@@ -757,9 +735,9 @@ class Key {
     public function isBlocked($module)
     {
         if (empty($module) ||
-        !is_string($module) ||
-        !isset($GLOBALS['Key_Blocked_Popups']) ||
-        !is_array($GLOBALS['Key_Blocked_Popups'])) {
+                !is_string($module) ||
+                !isset($GLOBALS['Key_Blocked_Popups']) ||
+                !is_array($GLOBALS['Key_Blocked_Popups'])) {
             return false;
         }
 
@@ -854,14 +832,14 @@ class Key {
         return $db->select('col');
     }
 
-    public static function getKey($module, $item_id, $item_name=null)
+    public static function getKey($module, $item_id, $item_name = null)
     {
         $key = new Key;
         if (empty($item_name)) {
             $item_name = $module;
         }
         $db = new PHPWS_DB('phpws_key');
-        $db->addWhere('item_id', (int)$item_id);
+        $db->addWhere('item_id', (int) $item_id);
         $db->addWhere('module', $module);
         $db->addWhere('item_name', $item_name);
         if ($db->loadObject($key)) {
@@ -875,6 +853,7 @@ class Key {
     {
         return $this->_error;
     }
+
 }
 
 ?>
