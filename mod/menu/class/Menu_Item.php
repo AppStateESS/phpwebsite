@@ -244,12 +244,12 @@ class Menu_Item {
         foreach ($data as $key => $row) {
             $hash[$row['parent']][] = $key;
         }
-        
+
         // Locate the desired record(s)
         if (empty($hash[$parent])) {
             return NULL;
         }
-        
+
         $final = array();
         foreach ($hash[$parent] as $rowId) {
             $link = new Menu_Link();
