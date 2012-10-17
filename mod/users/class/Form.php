@@ -664,7 +664,7 @@ class User_Form {
     }
 
 
-    public function getLikeGroups($name, PHPWS_Group $group)
+    public static function getLikeGroups($name, PHPWS_Group $group)
     {
         $db = new PHPWS_DB('users_groups');
         $name = preg_replace('/[^\w]/', '', $name);
