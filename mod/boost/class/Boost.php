@@ -912,12 +912,11 @@ class PHPWS_Boost {
                     return $errorDir;
                 }
                 foreach ($result as $branch) {
-                    $content[] = '';
-                    $content[] = sprintf(dgettext('boost', 'Checking branch "%s"'), $branch['branch_name']);
-                    if (!PHPWS_Boost::checkDirectories($content, $branch['directory'], false)) {
+                    if (!PHPWS_Boost::checkDirectories($contentTmp, $branch['directory'], false)) {
+                        $content[] = sprintf(dgettext('boost', 'Checking branch "%s"'), $branch['branch_name']);
+                        foreach($contentTmp as $tmp) $content[] = $tmp;
+                        $content[] = '';
                         $errorDir = false;
-                    } else {
-                        $content[] = dgettext('boost', 'Branch directories are ready.');
                     }
                 }
             }
