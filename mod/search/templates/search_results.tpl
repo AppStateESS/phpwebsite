@@ -1,4 +1,5 @@
 <!-- BEGIN search-found -->
+<div id="searchresults">
 <table width="100%" cellpadding="4">
     <tr>
         <th>{TITLE_LABEL} {TITLE_SORT}</th>
@@ -11,6 +12,7 @@
         </tr>
         <!-- END listrows -->
 </table>
+</div>
 <!-- END search-found -->
 {EMPTY_MESSAGE}
 <hr />

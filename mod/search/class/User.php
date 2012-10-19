@@ -133,7 +133,11 @@ class Search_User {
             Search_User::sendToAlternate($_GET['alternate'], $search_phrase);
             exit();
         }
-
+		
+		// hi + keep search terms for further use (like hilite for js)
+		$_SESSION['search']['search_phrase']=$search_phrase;
+		// hi /
+		
         $form = new PHPWS_Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
