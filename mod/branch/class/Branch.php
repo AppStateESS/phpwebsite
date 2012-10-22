@@ -135,14 +135,6 @@ class Branch {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . 'javascript/')) {
-            return FALSE;
-        }
-
-        if (!mkdir($this->directory . 'javascript/editors/')) {
-            return FALSE;
-        }
-
         if (!mkdir($this->directory . 'admin/')) {
             return FALSE;
         }
