@@ -876,14 +876,14 @@ class PHPWS_Core {
             return true;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
                 return false;
             }
             if (Branch::checkCurrentBranch()) {
                 $GLOBALS['Is_Branch'] = true;
                 return true;
             } else {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
                 return false;
             }
         }
