@@ -104,7 +104,7 @@ define('LOG_PERMISSION', 0600);
 /**
  *  The time format for each log entry
  */
-define('LOG_TIME_FORMAT', '%X %x');
+define('LOG_TIME_FORMAT', '%Y-%m-%d %H:%M');
 
 /************************ POST CHECK ***************************/
 /**
@@ -137,7 +137,7 @@ ini_set('include_path', '.:' . PHPWS_SOURCE_DIR . 'lib/pear/');
  * it.
  * This should be set reasonably high. The default is ~5mb
  */
-define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
+define('ABSOLUTE_UPLOAD_LIMIT', '15000000');
 
 
 /******************** CACHING **********************************/
