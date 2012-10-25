@@ -38,7 +38,7 @@ define('FORM_GENERIC_LEGEND', _('Form'));
 define('FORM_USE_FILE_RESTRICTIONS', TRUE);
 
 // Form will use the below only if ABSOLUTE_UPLOAD_LIMIT is not defined
-define('FORM_MAX_FILE_SIZE', 5000000);
+define('FORM_MAX_FILE_SIZE', 15000000);
 
 
 

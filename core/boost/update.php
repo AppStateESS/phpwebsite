@@ -642,6 +642,27 @@ Javascript
     + cleditor - added Cleditor by Hilmar
 </pre>
 UPDATES;
+
+     case version_compare($version, '2.1.1', '<'):
+         $content[] = <<<UPDATES
+<pre>
+2.1.1 changes
+-----------------
+
+Core Classes
+-----------------
++ Fixed bugs with Key and Database. Registered users (not deities) were having problems
+  with editing and view restricted items. PHPWS_DB::groupIn rewritten.
++ Core now has better error messages for Branches problems.
++ Image - removed px from width and height for xhtml compatibility.
++ Static notice fixes
++ Removed clone function call in Icon.
+
+Javascript
+----------------
++ jquery_ui and jquery updated
+</pre>
+UPDATES;
     }
     return true;
 }
