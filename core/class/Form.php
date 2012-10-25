@@ -2067,14 +2067,20 @@ class Form_Checkbox extends Form_Element {
             return null;
         }
 
-        if (is_array($this->match) && in_array($this->value, $this->match)) {
+        // If there's a set of matched elements, then $this->match will be an array
+        if (is_array($this->match)) {
+            // Search the array to see if this element's value should be "matched"
+            if(in_array($this->value, $this->match)){
+                return 'checked="checked" ';
+            }else{
+                return null;
+            }
+        // Otherwise, $this->match could be a string, so check if its single value
+        // matches this elements value
+        }else if ((string)$this->match == (string)$this->value) {
             return 'checked="checked" ';
-        }
-
-        if ((string)$this->match == (string)$this->value) {
-            return 'checked="checked" ';
-        }
-        else {
+        } else {
+            // If nothing matched, just return null
             return null;
         }
     }
