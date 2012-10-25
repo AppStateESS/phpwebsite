@@ -1,11 +1,11 @@
 <?php
+
 /**
  * update file for search
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function search_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
@@ -20,7 +20,7 @@ function search_update(&$content, $currentVersion)
                 } else {
                     $content[] = 'Wordlist files updated.';
                 }
-            }  else {
+            } else {
                 $content[] = 'Wordlist files updated.';
             }
             $content[] = '<pre>
@@ -93,20 +93,26 @@ function search_update(&$content, $currentVersion)
 + PHP 5 formatted.
 </pre>';
 
-            case version_compare($currentVersion, '0.4.1', '<'):
+        case version_compare($currentVersion, '0.4.1', '<'):
             $content[] = '<pre>0.4.1 changes
 -------------
 + PHP 5 strict formatted.</pre>';
 
-            case version_compare($currentVersion, '0.4.2', '<'):
+        case version_compare($currentVersion, '0.4.2', '<'):
             $content[] = '<pre>0.4.2 changes
 -------------
 + Using a less strict ignore list.</pre>';
 
-                case version_compare($currentVersion, '0.4.3', '<'):
+        case version_compare($currentVersion, '0.4.3', '<'):
             $content[] = '<pre>0.4.3 changes
 -------------
 + Form protection turned off</pre>';
+
+        case version_compare($currentVersion, '0.4.5', '<'):
+            $content[] = '<pre>0.4.5 changes
+-------------
++ Hilmar updated searching with highlighting
++ XHTML fixes</pre>';
     }
 
     return TRUE;
@@ -122,6 +128,5 @@ function searchUpdateFiles($files, &$content)
     $content[] = "    " . implode("\n    ", $files);
     $content[] = '';
 }
-
 
 ?>
