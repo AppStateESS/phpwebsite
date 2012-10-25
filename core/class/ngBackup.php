@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: ngBackup.php 0002 2011-07-01 Hilmar $
+ * @version $Id: ngBackup.php 0003 2012-10-17 Hilmar $
  * @author Hilmar Runge <ngwebsite.net>
  */
 
@@ -25,17 +25,22 @@
 	{
 		// API	string|false=ngBackup::getRepositoryPath();
 		
-		$subdir=str_replace($_SERVER['SERVER_NAME'],'',PHPWS_Core::getHomeHttp(false));
+		$subdir=str_replace('/','.',trim(str_replace($_SERVER['SERVER_NAME'],'',PHPWS_Core::getHomeHttp(false)),'/'));
+		$u=explode('/',$_SERVER['DOCUMENT_ROOT']);
+		array_pop($u);
+		$compath=implode('/',$u);
 		
-		$u=posix_getpwuid(getmyuid());
-		$compath=$u['dir'];
-		
-		$reposit=$compath.'/.repository'.$subdir;
+		$reposit=$compath.'/.repository/'.$subdir.'/';
 		
 		if (file_exists($compath)) {
 			@mkdir($compath.'/.repository',0750);
 			if (!file_exists($reposit)) {
 				@mkdir($reposit,0700);
+				// anycase, if within any view of the webserver
+				if (file_exists($reposit)) {
+					file_put_contents($reposit.'.htaccess','Deny from all');
+					chmod($reposit.'.htaccess', 0600);
+				}
 			}
 			if (file_exists($reposit)) {
 				return $reposit;
@@ -176,6 +181,9 @@
 					@copy($tmp.$tgz,$this->rp.$tgz);
 					@unlink($tmp.$tgz);
 					@chmod($this->rp.$tgz, 0600);
+					if (isset($_SESSION['ngboost']['BUSIGN']['fs'])) {
+						file_put_contents($this->rp.'.'.$_SESSION['ngboost']['BUSIGN']['fs'].'.txt',$tgz."\n",FILE_APPEND);
+					}
 					$this->msg=' '.'to'.' '.$tgz; 
 					return $this->msg;
 			} else {
@@ -275,6 +283,10 @@
 								}
 								fclose($fp);
 								chmod($bupath.$this->bufilename, 0600);
+								if (isset($_SESSION['ngboost']['BUSIGN']['db'])) {
+									file_put_contents($bupath.'.'.$_SESSION['ngboost']['BUSIGN']['db'].'.txt',
+										$this->bufilename."\n",FILE_APPEND);
+								}
 								$msg='0,export done, '.count($rows).' rows';
 							}
 						}
