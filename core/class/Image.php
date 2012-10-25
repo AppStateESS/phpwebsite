@@ -87,12 +87,12 @@ class Image extends Tag {
 
     public function setWidth($width)
     {
-        $this->width = intval($width) . 'px';
+        $this->width = intval($width);
     }
 
     public function setHeight($height)
     {
-        $this->height = intval($height) . 'px';
+        $this->height = intval($height);
     }
 
 
