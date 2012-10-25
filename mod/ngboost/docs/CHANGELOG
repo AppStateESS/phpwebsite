@@ -43,4 +43,42 @@ Version 3.0.13
 	
 Version 3.0.14
 2011-07-26 ngBackup in class core now pays attention to some
-	shared host sites with the location of the repository
+	shared host sites with a location of the repository
+2012-03-31 lists scrollable instead of the hole page
+
+Version 3.0.15
+Version 3.0.16
+2012-09-17 attention to different major releases
+	on the distro server and formats of the xml files
+2012-09-18 tab distro listdistro (selrel) 1st release entry 
+	preselected	instead of all
+	and selected distro is retained
+2012-09-18 style.css table borders & padding
+2012-09-22 adapted to ngInstall
+	distro & rel are stored in conf
+	
+Version 3.0.17
+2012-10-08
+	based on last jquery and jquery_ui 
+	display of double table headers removed
+	
+Version 3.0.18
+2012-10-17
+	ngbackup extended logic with repository location
+		in case php posix is possible use the homedir
+		else use the realpath (normally the htdocs)
+		anycase, a .htaccess is placed into repository
+
+Version 3.0.19
+2012-10-19
+	ngbackup changed detection of repository path
+		posix not more used
+	consistence between hub and branches with some lists
+	removed width elements from css, thanks Tommy
+	
+Version 3.0.20
+2012-10-21
+	refresh display of module list after update, install etc
+	introducing backup sets with ngbackup
+	
+	

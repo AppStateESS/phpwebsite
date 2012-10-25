@@ -17,7 +17,6 @@
 	margin-left: 1em;
 }
 .ngpseudo {
-	font-variant: small-caps;
 	text-transform: capitalize;
 	color: #777;
 }
@@ -31,27 +30,23 @@
 	margin-top: 4px;
 }
 
-#ngbstcpbody {
-	line-height: 1em;
-}
-
 #ngbstcpbody a {
 	font-weight: normal;
-	text-transform: capitalize;
 	color: #a00;
 }
 
-#ngbstcptab1, #ngbstcptab2 {
-	padding: 0px 4px;
+#ngbstcptab1, #ngbstcptab2, #ngbstcptab3, #ngbstcptab4, #ngbstcptab5, #ngbstcptab6 {
+	padding: 0px 2px;
 }
-#ngbstcptab5, #ngbstcptab6 {
-	padding: 0;
+
+.ngbstcphelp {
+	max-height:360px; 
+	overflow:auto
 }
 
 #ngbstcpfoot {
 	max-height: 180px;
 	overflow: auto;
-	width: 99%;
 }
 
 .jqmWindow {
@@ -65,7 +60,6 @@
 }
 div .ngjqmtitle{
 	display: inline;
-	width: 90%;
 	font-size: 1.2em;
 	font-weight: bold;
 	text-align:left;
@@ -79,26 +73,22 @@ div .ngjqmimg {
 	width: 11px;
 }
 
-.ngtable, .ngplain {
-	width: 99%;
-}
-.ngthead {
-	color: #eeeeee;
-}
-.ngtbody, .ngplain {
-	height: 288px;
+.ngplain {
+	font-size: 0.9em;
+	line-height: 1em;
+	height: 242px;
 	min-height: 32px;
-	max-height: 288px;
+	max-height: 242px;
 	overflow: auto;
-	overflow-x: hidden;
+	overflow-x: auto;
+}
+.ngtable td, .ngtable th {
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	padding: 0px 2px;
 }
 .ngtrfoot {
 	background-color: #ddd;
-}
-
-.ngplain {
-	font-size: 0.9em;
-	overflow-x: auto;
 }
 
 .ngscauto {

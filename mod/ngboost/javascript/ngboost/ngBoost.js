@@ -13,6 +13,7 @@
 	var ngprobar = 0;
 	
 	var ngselrel ='';
+	var ngmyrel ='';
 	
 	// for actions to complete in sync:
 	// ffu
@@ -20,15 +21,20 @@
 
 	$(document).ready(function(){
 	
-		$("#ngbstcptabs").tabs();
+		$("#ngbstcptabs").tabs({
+			create: function(e,ui) {
+				$('.ui-tabs-panel:not(.ui-tabs-hide):has(.ngtable)>#ngbsttbco').fixedHeaderTable({ height: 292 });
+			}
+		});
+		
+		$('.ngbsttab').click(function(){
+			$('.ui-tabs-panel:not(.ui-tabs-hide):has(.ngtable)>#ngbsttbmo').fixedHeaderTable({ height: 292 });
+			$('#ngbstcpfoot').html(' ');
+		});
 		
 		$('.ngAnyHelp').click(function(){
 			var who = $(this).parent('div').parent('div').attr('id');
 			ngAnyHelp(who);
-		});
-
-		$('.ngbsttab').click(function(){
-			$('#ngbstcpfoot').html(' ');
 		});
 
 	});
@@ -380,6 +386,11 @@
 		ngUniCS('','sr');
 	}
 	
+	function ngSetMyRel() {
+		ngmyrel = $('#ngboostrsel').val() + '';
+		ngUniCS('','sry');
+	}
+	
 	function ngUniCS(ref,op,i) {
 		var url = 'ngboost/action/admin/xaop/';
 		switch (op) {
@@ -445,6 +456,9 @@
 				break;
 			case 'sr':
 				url = url + 'sr/v/' + ngselrel;
+				break;
+			case 'sry':
+				url = url + 'sry/v/' + ngmyrel;
 				break;
 			case 'su':
 				url = url + 'u/p/';
@@ -524,7 +538,7 @@
 							case 'sd':
 								ngUniJqSC(reply,'#ngmsg');
 							break;
-							case 'sr':
+							case 'sr': case 'sry':
 								ngPlain('tsl');
 							break;
 							case 'su':
@@ -606,6 +620,26 @@
 	}
 	function ngPlainSC(reply,wo) {
 		$(wo).html(reply);
+		switch (wo) {
+			case '#ngmsgt31':
+				if ($('#ngbsttbds').is('#ngbsttbds')) {
+					$('#ngbsttbds').fixedHeaderTable({ height: 224 });
+				}
+				if ($('#ngbsttbpat').is('#ngbsttbpat')) {
+					$('#ngbsttbpat').fixedHeaderTable({ height: 282 });
+				}
+			break;
+			case '#ngmsgt41':
+				if ($('#ngbsttbrp').is('#ngbsttbrp')) {
+					$('#ngbsttbrp').fixedHeaderTable({ height: 224 });
+				}
+			break;
+			case '#ngmsgt51':
+				if ($('#ngbsttbdb').is('#ngbsttbdb')) {
+					$('#ngbsttbdb').fixedHeaderTable({ height: 224 });
+				}
+			break;
+		}
 		document.body.style.cursor = 'auto';
 	}
 

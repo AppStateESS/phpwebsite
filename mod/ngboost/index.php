@@ -4,8 +4,8 @@
  * @author Hilmar Runge <ngwebsite.net>
 */
 
-	error_reporting(E_ALL);
-	//error_reporting(-1);
+	$prod=false;
+	$prod?error_reporting(0):error_reporting(-1);
 
     if (!defined('PHPWS_SOURCE_DIR')) {
         include '../../core/conf/404.html';

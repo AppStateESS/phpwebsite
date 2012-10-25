@@ -1,4 +1,4 @@
-<h4>Release {PHPWS_VERSION}</h4>
+{PHPWS_VERSION}
 <!-- BEGIN directories -->
 <div
     style="height: 80px; overflow: auto; border: 1px solid black; padding: 3px"
@@ -9,7 +9,7 @@
 <br />
 <br />
 <!-- END warning -->
-<table class="ngtable">
+<table id="{NGTABLE}" class="ngtable ngbsttbmo">
   <thead class="ngthead">
     <tr>
         <th>{TITLE_LABEL}</th>

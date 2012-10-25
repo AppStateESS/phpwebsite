@@ -36,7 +36,7 @@ class ngBoost_Action {
 	const PATXAOP = '/[a-zA-Z]*[a-zA-Z]/';
 	const PATXMOD = '/[a-z]*[a-z0-9]/';
 	const PATXA32 = '/[a-z0-9]/';
-	const PATXVSN = '/^[a-z0-9\.]*$/';
+	const PATXVSN = '/^[a-zA-Z0-9\.\,]*$/';
 	//const PATSORT = '/[a-zA-Z0-9\.\_\-\ ]/';
 	
 	var $context = '';
@@ -88,6 +88,7 @@ class ngBoost_Action {
 		if ($this) {
 		//if ($this->context==NGBOOST) {}
 
+			javascript('jquery_ui');
 			javascriptMod('ngboost', 'ngboost');
 			Layout::addStyle('ngboost','style.css');
 
@@ -98,8 +99,13 @@ class ngBoost_Action {
 			}
 			// )
 			
-		$ngboostform = new ngBoost_Form('ngboost');
-		//$ngboostform->ngGetModules('core');
+			unset($_SESSION[NGBOOST]['BUSIGN']);
+		
+			$_SESSION[NGBOOST]['ml']=array();
+			$ngboostform = new ngBoost_Form;
+			$ngboostform->_ngGetModules();
+		
+		//	$ngboostform = new ngBoost_Form('ngboost');
 			$tpl['MOCO'] = NGANYHELP.$ngboostform->ngTabModules('core');
 			$tpl['MOOT'] = NGANYHELP.$ngboostform->ngTabModules('noco');
 			$tpl['DIST'] = NGANYHELP.$ngboostform->ngTabDistro();
@@ -117,10 +123,10 @@ class ngBoost_Action {
     protected function indexBG()
     {
 		// BG actions
-		$xaop=preg_replace(self::PATXAOP, '', $_REQUEST['xaop'])?'':$_REQUEST['xaop'];
-		$xmod=preg_replace(self::PATXMOD, '', $_REQUEST['p'])?'':$_REQUEST['p'];
-		$xa32=preg_replace(self::PATXA32, '', $_REQUEST['rs'])?'':$_REQUEST['rs'];
-		$xvsn=preg_replace(self::PATXVSN, '', $_REQUEST['v'])?'':$_REQUEST['v'];
+		$xaop=isset($_REQUEST['xaop'])?(preg_replace(self::PATXAOP, '', $_REQUEST['xaop'])?'':$_REQUEST['xaop']):'';
+		$xmod=isset($_REQUEST['p'])?(preg_replace(self::PATXMOD, '', $_REQUEST['p'])?'':$_REQUEST['p']):'';
+		$xa32=isset($_REQUEST['rs'])?(preg_replace(self::PATXA32, '', $_REQUEST['rs'])?'':$_REQUEST['rs']):'';
+		$xvsn=isset($_REQUEST['v'])?(preg_replace(self::PATXVSN, '', $_REQUEST['v'])?'':$_REQUEST['v']):'';
         switch ($xaop) {
         case 'a':
             $this->ngShowAbout($xmod);
@@ -210,6 +216,14 @@ class ngBoost_Action {
             $this->ngInstall($xmod);
             return;
             break;
+        case 'lbu':
+            $this->ngListRepoBus();
+            return;
+            break;
+        case 'ls':
+            $this->ngListRepoBusDir($_REQUEST['fn']);
+            return;
+            break;
         case 'lbl':
             $this->ngListBoostLog();
             return;
@@ -250,8 +264,12 @@ class ngBoost_Action {
             $this->ngSelRel($xvsn);
             return;
             break;
+        case 'sry':
+            $this->ngMyRel($xvsn);
+            return;
+            break;
         case 're':
-            $fn=$_SESSION['FG']['ngfn'][$_REQUEST['fn']];
+            $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$_REQUEST['fn']];
             if (substr($fn,-4)=='.tgz' || substr($fn,-7)=='.tar.gz') {
                 $this->ngReTar($_REQUEST['fn']);
             } else {
@@ -313,6 +331,10 @@ class ngBoost_Action {
             $this->ngExpandTgz();
             return;
             break;
+        case 'xrp':
+            $this->ngXrefRepo();
+            return;
+            break;
         }
     }
 
@@ -356,7 +378,7 @@ class ngBoost_Action {
 		$_SESSION['BG'] =
 		$mod
         . '--'
-        . $_SESSION['FG']['ngvx'][$mod]
+        . $_SESSION[NGBOOST]['FG']['ngvx'][$mod]
         . '--'
         . str_replace('class="ngjqmtitle">','class="ngjqmtitle">check &#171;'.$mod.'&#187;',NGJQMCLOSE)
 		. $cnt;
@@ -407,6 +429,8 @@ class ngBoost_Action {
         } else {
             $content[] = 'ok--'.$mod.'--';
             $content[] = $jqmclose.'<div class="ngscauto">'.$result.'</div>';
+			$_SESSION[NGBOOST]['ml'][$mod]['in']='t';
+			$_SESSION[NGBOOST]['ml'][$mod]['vdb']=$_SESSION[NGBOOST]['ml'][$mod]['vfs'];
         }
 
         $_SESSION['BG'] = implode('',$content);
@@ -426,6 +450,8 @@ class ngBoost_Action {
             // 1st status feedback, 2nd mod, 3rd flip action translated
             $content[] = 'ok--'.$mod.'--'.dgettext('ngboost', 'Install').'--';
             $content[] = $jqmclose.$addmsg.'<div class="ngscauto">'.$this->_uninstallModule($_REQUEST['p']).'</div>';
+			$_SESSION[NGBOOST]['ml'][$mod]['in']='f';
+			$_SESSION[NGBOOST]['ml'][$mod]['vdb']=null;
         } else {
             $content[] = 'no--'.$mod.'--'.dgettext('ngboost', 'Uninstall').'--';
             $content[] = $jqmclose.dgettext('ngboost', 'Uninstall not confirmed');
@@ -482,11 +508,11 @@ class ngBoost_Action {
     protected function ngListRepo()
     {
                 $rp=$this->ngGetRepositoryPath();
-                $_SESSION['BG']='<b>'.dgettext('ngboost','Content of repository').'</b><br />';
+                $_SESSION['BG']='<b>'.dgettext('ngboost','Content of repository').'</b> ('.$this->_reportMem().')<br />';
                 $filenames=array();
                 $dir=opendir($rp);
                 while (FALSE !== ($file = readdir ($dir))) {
-                    if ($file != '.' and $file != '..') {
+                    if ($file != '..' and substr($file,0,1) != '.') {
                         $filenames[]=$file;
                     }
                 }
@@ -496,7 +522,7 @@ class ngBoost_Action {
                 } else {
                     sort($filenames);
                     $cl='bgcolor1';
-                    $_SESSION['BG'] .= '<table class="ngtable">'
+                    $_SESSION['BG'] .= '<table id="ngbsttbrp" class="ngtable">'
                     .	'<thead class="ngthead"><tr><th>' .dgettext('ngboost','File')
                     .	'</th class="ngthead"><th style="text-align:right;">'.dgettext('ngboost','Size')
                     .	'</th><th>'.dgettext('ngboost','Commands').'</th></tr></thead>'
@@ -516,12 +542,104 @@ class ngBoost_Action {
                     . '<td style="text-align:right;">' . sprintf("%u",round($szsum/1024/1024,0)) . '</td>'
                     . '<td>' . dgettext('ngboost','MB') . '</td></tr>';
 
-                    $_SESSION['BG'] .= '</table>'
-					.	$this->_reportMem();
+                    $_SESSION['BG'] .= '</table>';
                 }
 
     }
+	
+    protected function ngXrefRepo()
+    {
+        $_SESSION['BG']='<b>'.dgettext('ngboost','Branch list of repository').'</b> ('.$this->_reportMem().')<br />';
+		if ($this->isbranch) {
+			$_SESSION['BG'].=dgettext('ngboost', 'Xref is not supported in branches');
+		} else {
+			if (Current_User::authorized('branch')) {
+				PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
+				$branch_admin = new Branch_Admin;
+				$branches=$branch_admin->getBranches(true);
+				if (is_array($branches)) {
+					$rp=$this->ngGetRepositoryPath();
+					$cl='bgcolor1';
+					$_SESSION['BG'] .= '<table id="ngbsttbrp" class="ngtable">'
+					.	'<thead class="ngthead"><tr><th>' .dgettext('ngboost','Branch')
+					.	'</th class="ngthead"><th>'.dgettext('ngboost','Dir')
+					.	'<th>'.dgettext('ngboost','Perms').'</th>'
+					.	'</th><th>'.dgettext('ngboost','Url').'</th><th>Repository</th></tr></thead>'
+					.	'<tbody class="ngtbody">';
+					foreach ($branches as $branch) {
+						$cl=='bgcolor1' ? $cl='bgcolor2' : $cl='bgcolor1';
+						$subdir=str_replace('/','.',trim(str_replace($_SERVER['SERVER_NAME'],'',$branch->url),'/'));
+						$u=explode('/',$_SERVER['DOCUMENT_ROOT']);
+						array_pop($u);
+						$compath=implode('/',$u);
+						$reposit=$compath.'/.repository/'.$subdir.'/';
+						$_SESSION['BG'].='<tr><td>'.$branch->branch_name.'</td><td>'
+						.	str_replace($_SERVER['DOCUMENT_ROOT'].'/','',$branch->directory).'</td>'
+						.	'<td>'.ngBackup::_cvFilePerms(fileperms($branch->directory)).'</td>'
+						.	'<td><a href="http://'.$branch->url.'/">'.$branch->url.'</a></td>'
+						.	'<td>'.(file_exists($reposit)?NGSAYOK.' '.count(glob($reposit.'*'))
+						.		' '.dgettext('ngboost','files'):NGSAYKO)
+						.	'</td></tr>';
+					}
+					$_SESSION['BG'] .= '</tbody></table>';
+				} else {
+					$_SESSION['BG'] .= dgettext('ngboost', 'No branches defined on this site');
+				}
+			}
+		}
+	}
 
+    protected function ngListRepoBus()
+    {
+                $rp=$this->ngGetRepositoryPath();
+                $_SESSION['BG']='<b>'.dgettext('ngboost','Backup sets of repository').'</b> ('.$this->_reportMem().')<br />';
+                $filenames=array();
+                $dir=opendir($rp);
+                while (FALSE !== ($file = readdir ($dir))) {
+                    if (substr($file,0,11) == '.ngbu.full.' and substr($file,-4)=='.txt') {
+                        $filenames[]=$file;
+                    }
+                }
+                closedir($dir);
+                if (count($filenames)==0) {
+                    $_SESSION['BG'] .= NGSAYKO . '  <i>' . 'no backup sets available' . '</i><br />';
+                } else {
+                    sort($filenames);
+                    $cl='bgcolor1';
+                    $_SESSION['BG'] .= '<table id="ngbsttbrp" class="ngtable">'
+                    .	'<thead class="ngthead"><tr><th>' .dgettext('ngboost','BackupSet')
+                    .	'</th><th>'.dgettext('ngboost','Commands').'</th></tr></thead>'
+                    .	'<tbody class="ngtbody">';
+                    $fct=0;
+                    foreach ($filenames as $f) {
+                        $cl=='bgcolor1' ? $cl='bgcolor2' : $cl='bgcolor1';
+                        $fct++;
+                        $_SESSION['BG'] .= '<tr class="'.$cl.'"><td>' . substr($f,6,-4) . '</td>'
+                        . '<td id="ngop'.md5($f).'">' . ngBoost_Form::ngTabLBus($f) . '</td></tr>';
+                    }
+                    $_SESSION['BG'] .= '</tbody><tr class="ngtrfoot"><td style="text-align:right;">'
+                    . $fct . ' ' . dgettext('ngboost','backup sets') . '</td>'
+                    . '<td></td></tr>';
+
+                    $_SESSION['BG'] .= '</table>';
+                }
+	}
+	
+    protected function ngListRepoBusDir($fnc)
+    {
+        $_SESSION['BG']='';
+        if (isset($_SESSION[NGBOOST]['FG']['ngfnbus'][$fnc])) {
+            $fn=$_SESSION[NGBOOST]['FG']['ngfnbus'][$fnc];
+			$rp=ngBackup::getRepositoryPath();
+			if (file_exists($rp.$fn)) {
+				$re=str_replace("\n",'<br />',file_get_contents($rp.$fn));
+                $_SESSION['BG'] = NGJQMCLOSE . '<h3>'.substr($fn,6,-4)
+				.	'</h3><div style="height:400px; overflow:auto;">'.$re.'</div>';
+			} else {
+                $_SESSION['BG'] = NGJQMCLOSE . 'No File' . NGSAYKO;
+			}
+        }
+    }
     protected function ngListDB()
     {
         // associate tables to mods
@@ -534,27 +652,27 @@ class ngBoost_Action {
         $returnPrefix=false;
         $tl = $ngbu->getTableList($returnPrefix);
 
-        $_SESSION['BG']='<b>'.dgettext('ngboost','Database tables of installation').'</b><br />'
-        .	'<table class="ngtable"><thead class="ngthead">'
+        $_SESSION['BG']='<b>'.dgettext('ngboost','Database tables of installation').'</b> ('.$this->_reportMem().')<br />'
+        .	'<table id="ngbsttbdb" class="ngtable"><thead class="ngthead">'
         .	'<tr><th>' .dgettext('ngboost','Module')
         .	'</th><th>'.dgettext('ngboost','Table(s)')
         .	'</th><th>'.dgettext('ngboost','Commands')
         .	'</th><th>'.dgettext('ngboost','Actions, Messages, Feedback')
         .	' </th></tr></thead><tbody class="ngtbody">';
-        unset($_SESSION['FG']['ngtn']);
-        unset($_SESSION['FG']['ngtm']);
+        unset($_SESSION[NGBOOST]['FG']['ngtn']);
+        unset($_SESSION[NGBOOST]['FG']['ngtm']);
 		
         foreach ($ar as $mod => $tbs) {
             if (count($tbs)==0) {
             } else {
 
-                $_SESSION['FG']['ngtn']['0m'.md5($mod)]=$tbs;
+                $_SESSION[NGBOOST]['FG']['ngtn']['0m'.md5($mod)]=$tbs;
 
                 $cl=='bgcolor1'?$cl='bgcolor2':$cl='bgcolor1';
                 $_SESSION['BG'] .= '<tr class="'.$cl.'"><td>'.$mod.'</td>';
                 $_SESSION['BG'] .= '<td align="right"><sub><i>'.count($tbs).' Table(s)</i></sub></td>';
                 if ($_SESSION[NGBOOST]['ml'][$mod]['in']==ISTRUE) {
-                    $_SESSION['FG']['ngtm'][md5($mod)]=$mod;
+                    $_SESSION[NGBOOST]['FG']['ngtm'][md5($mod)]=$mod;
                     $_SESSION['BG'] .= '<td>' . ngBoost_Form::ngTabListTables('m',$mod,$tbs) . '</td>';
                 } else {
                     $_SESSION['BG'] .= '<td>' . dgettext('ngboost','Module not installed') . '</td>';
@@ -579,8 +697,7 @@ class ngBoost_Action {
         $_SESSION['BG'] .= 	'</tbody></table><hr />'
 						.	'<div style="text-align:center;">'
 						.	'<a href="javascript:ngBuTs1(\'n\',\''.md5('all').'\')">BackupAllTables</a>'
-						.	'</div>'
-						.	$this->_reportMem();
+						.	'</div>';
     }
     protected function ngListDBmod($mod)
     {
@@ -607,37 +724,30 @@ class ngBoost_Action {
 	
     protected function ngListBoostLog()
     {
-		$_SESSION['BG'] = '<h4>Boost Log</h4>'
+		$_SESSION['BG'] = '<b>Boost Log</b> ('.$this->_reportMem().')'
 		.	'<pre class="ngplain">'
-		.	htmlentities(@file_get_contents('logs/boost.log'))
-		.	'</pre>'
-        .	$this->_reportMem();
+		.	htmlentities(@file_get_contents(PHPWS_SOURCE_DIR.'logs/boost.log'))
+		.	'</pre>';
 	}
 
     protected function ngListErrorLog()
     {
-		$_SESSION['BG'] = '<h4>Error Log</h4>'
+		$_SESSION['BG'] = '<b>Error Log</b> ('.$this->_reportMem().')'
 		.	'<pre class="ngplain">'
-		.	htmlentities(@file_get_contents('logs/error.log'))
-		.	'</pre>'
-        .	$this->_reportMem();
+		.	htmlentities(@file_get_contents(PHPWS_SOURCE_DIR.'logs/error.log'))
+		.	'</pre>';
 	}
 
     protected function ngListML()
     {
 		$ngboostform = new ngBoost_Form('ngboost');
+		$ngboostform->_ngGetModules();
 		$_SESSION['BG'] = $ngboostform->ngRowModules();
-		return;
-		$_SESSION['BG'] = implode('',array_merge
-			(
-			$ngboostform->ngTabModules('core'),
-			$ngboostform->ngTabModules('noco')
-			));
 	}
 	
     protected function ngListPato($pato)
     {
-				$distro = ''.PHPWS_Settings::get('ngboost', 'distro');
+				$distro = $this->ngConfigGet('distro');
 				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
 				$xmlfile = $distropath . $pato . '/pato.xml';
 				$xml = @simplexml_load_file($xmlfile);
@@ -659,56 +769,56 @@ class ngBoost_Action {
 
     protected function ngListPatos()
     {
-				$_SESSION['BG']='';
-				$distro = ''.PHPWS_Settings::get('ngboost', 'distro');
-				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
-				$xdirfile = $distropath . 'patos.xml';
-				$xdir = @simplexml_load_file($xdirfile);
-				if ($xdir) {
-					if (is_object($xdir)) {
-					
-						$_SESSION['BG'] .= '<table class="ngtable">'
-						.	'<thead class="ngthead"><tr>'
-						.	'<th>' . dgettext('ngboost','PatchOption') . '</th>'
-						.	'<th>' . dgettext('ngboost','Scope') . '</th>'
-						.	'<th>' . dgettext('ngboost','Distro') . '</th>'
-						.	'<th>' . dgettext('ngboost','Version') .'</th>'
-						.	'<th>' . dgettext('ngboost','Description') .'</th>'
-						.	'<th>' . dgettext('ngboost','Commands') .'</th>'
-						.	'</tr></thead>'
-						.	'<tbody class="ngtbody">';
-						$cl='bgcolor1';
-						foreach ($xdir->entry as $patdir) {
-							$xmlfile = $distropath . $patdir . '/pato.xml';
-							$xml = @simplexml_load_file($xmlfile);
-							$cl=='bgcolor1' ? $cl='bgcolor2' : $cl='bgcolor1';
-							if ($xml) {
-								if (is_object($xml)) {
-									$alnk = '<a id="ngpata'.$patdir.'" class="ngpata" href="javascript:ngPatoDesc(\''.$xml->pato->title.'\')">more</a>';
-									$_SESSION['BG'].='<tr class="'.$cl.'">'
-									.	'<td>'.strip_tags($xml->pato->title).'</td>'
-									.	'<td>'.strip_tags($xml->pato->scope).'</td>'
-									.	'<td>'.$distro.'</td>'
-									.	'<td>'.strip_tags($xml->pato->version).'</td>'
-									.	'<td>'.strip_tags($xml->pato->shortdesc) . NGSP3 . $alnk
-									.		'<p id="ngpatx'.$patdir.'"></p></td>'
-									.	'<td><span id="ngpato'.$patdir.'">'
-									.	'<a href="javascript:ngPatoApply(\''.$patdir.'\')">'.'Apply'.'</a></span>'
-									.'</td></tr>';
-								}
-							} else {
-								$_SESSION['BG'].='<tr class="'.$cl.'">'
-								.	'<td>'.$patdir.'</td><td>'.$distro.'</td><td>---</td><td>---</td><td>'
-								.	dgettext('ngboost','not available').'</td><td></td></tr>';
-							}
-						}
-						
-						$_SESSION['BG'] .= '</tbody></table>';
-						
-						
-					}
-				}
+		if ($this->isbranch) {
+			$_SESSION['BG']=dgettext('ngboost', 'List patos is not supported in branches');
+		} else {
+			$_SESSION['BG']='';
+			$distro = $this->ngConfigGet('distro');
+			$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
+			$xdirfile = $distropath . 'patos.xml';
+			$xdir = @simplexml_load_file($xdirfile);
+			if ($xdir) {
+				if (is_object($xdir)) {
 				
+					$_SESSION['BG'] .= '<table id="ngbsttbpat" class="ngtable">'
+					.	'<thead class="ngthead"><tr>'
+					.	'<th>' . dgettext('ngboost','PatchOption') . '</th>'
+					.	'<th>' . dgettext('ngboost','Scope') . '</th>'
+					.	'<th>' . dgettext('ngboost','Distro') . '</th>'
+					.	'<th>' . dgettext('ngboost','Version') .'</th>'
+					.	'<th>' . dgettext('ngboost','Description') .'</th>'
+					.	'<th>' . dgettext('ngboost','Commands') .'</th>'
+					.	'</tr></thead>'
+					.	'<tbody class="ngtbody">';
+					$cl='bgcolor1';
+					foreach ($xdir->entry as $patdir) {
+						$xmlfile = $distropath . $patdir . '/pato.xml';
+						$xml = @simplexml_load_file($xmlfile);
+						$cl=='bgcolor1' ? $cl='bgcolor2' : $cl='bgcolor1';
+						if ($xml) {
+							if (is_object($xml)) {
+								$alnk = '<a id="ngpata'.$patdir.'" class="ngpata" href="javascript:ngPatoDesc(\''.$xml->pato->title.'\')">more</a>';
+								$_SESSION['BG'].='<tr class="'.$cl.'">'
+								.	'<td>'.strip_tags($xml->pato->title).'</td>'
+								.	'<td>'.strip_tags($xml->pato->scope).'</td>'
+								.	'<td>'.$distro.'</td>'
+								.	'<td>'.strip_tags($xml->pato->version).'</td>'
+								.	'<td>'.strip_tags($xml->pato->shortdesc) . NGSP3 . $alnk
+								.		'<p id="ngpatx'.$patdir.'"></p></td>'
+								.	'<td><span id="ngpato'.$patdir.'">'
+								.	'<a href="javascript:ngPatoApply(\''.$patdir.'\')">'.'Apply'.'</a></span>'
+								.'</td></tr>';
+							}
+						} else {
+							$_SESSION['BG'].='<tr class="'.$cl.'">'
+							.	'<td>'.$patdir.'</td><td>'.$distro.'</td><td>---</td><td>---</td><td>'
+							.	dgettext('ngboost','not available').'</td><td></td></tr>';
+						}
+					}
+					$_SESSION['BG'] .= '</tbody></table>';
+				}
+			}
+		}	
 	}
 	
     protected function ngApplyPato($pato)
@@ -716,7 +826,7 @@ class ngBoost_Action {
 			if ($this->isbranch) {
 				$_SESSION['BG']='notOnBranch';
 			} else {
-				$distro = ''.PHPWS_Settings::get('ngboost', 'distro');
+				$distro = $this->ngConfigGet('distro');
 				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
 				$xmlfile = $distropath . $pato . '/pato.xml';
 				$xml = @simplexml_load_file($xmlfile);
@@ -778,8 +888,8 @@ class ngBoost_Action {
     protected function ngListTar($fnc)
     {
         $_SESSION['BG']='';
-        if (isset($_SESSION['FG']['ngfn'][$fnc])) {
-            $fn=$_SESSION['FG']['ngfn'][$fnc];
+        if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
+            $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
             PHPWS_Core::initCoreClass('ngBackup.php');
             $ngbu = new ngBackup();
             $r=$ngbu->tarList($fn);
@@ -796,8 +906,8 @@ class ngBoost_Action {
     protected function ngReTar($fnc)
     {
         $_SESSION['BG']='';
-        if (isset($_SESSION['FG']['ngfn'][$fnc])) {
-            $fn=$_SESSION['FG']['ngfn'][$fnc];
+        if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
+            $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
             PHPWS_Core::initCoreClass('ngBackup.php');
             $ngbu = new ngBackup();
             $r=$ngbu->restoreMod($fn);
@@ -830,13 +940,14 @@ class ngBoost_Action {
 		$ngboostform = new ngBoost_Form;
 		$ngboostform->_ngGetModules();
         $_SESSION['BG'] = implode('--', array_keys($_SESSION[NGBOOST]['ml']));
+		$_SESSION[NGBOOST]['BUSIGN']['fs']='ngbu.full.fs.'.date("Ymd-His");
     }
 
     protected function ngBuDel($fnc)
     {
         $_SESSION['BG']=' ';
-        if (isset($_SESSION['FG']['ngfn'][$fnc])) {
-            $fn=$_SESSION['FG']['ngfn'][$fnc];
+        if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
+            $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
             $cc=@unlink($this->ngGetRepositoryPath().$fn);
             if ($cc) {
                 $_SESSION['BG'] = '#ngop'.$fnc.'--purged--' . NGJQMCLOSE . $fn. ' ' . 'purged' . ' ' . NGSAYOK;
@@ -862,11 +973,11 @@ class ngBoost_Action {
     protected function ngBuTbl($tnc)
     {
         $_SESSION['BG']=' ';
-        if (isset($_SESSION['FG']['ngtn'][$tnc])) {
-            $tn=$_SESSION['FG']['ngtn'][$tnc];
+        if (isset($_SESSION[NGBOOST]['FG']['ngtn'][$tnc])) {
+            $tn=$_SESSION[NGBOOST]['FG']['ngtn'][$tnc];
             $ngbu = new ngBackup();
             // retranslate
-            $ngbu->mod = $_SESSION['FG']['ngtm'][$_REQUEST['m']];
+            $ngbu->mod = $_SESSION[NGBOOST]['FG']['ngtm'][$_REQUEST['m']];
             $msg=$ngbu->exportTable($tn);
             $_SESSION['BG'] = $msg;
         }
@@ -875,20 +986,21 @@ class ngBoost_Action {
     protected function ngBuTblMod($mod)
     {
         $_SESSION['BG'] .= $mod;
-        foreach ($_SESSION['FG']['ngtn']['0m'.$mod] as $tb) {
+        foreach ($_SESSION[NGBOOST]['FG']['ngtn']['0m'.$mod] as $tb) {
             $_SESSION['BG'] .= '--' . md5($tb);
         }
     }
     protected function ngBuTblAll()
     {
-        $_SESSION['BG']=implode('--',array_keys($_SESSION['FG']['ngtm']));
+        $_SESSION['BG']=implode('--',array_keys($_SESSION[NGBOOST]['FG']['ngtm']));
+		$_SESSION[NGBOOST]['BUSIGN']['db']='ngbu.full.db.'.date("Ymd-His");
     }
 
     protected function ngReTbl($fnc)
     {
         $_SESSION['BG']='';
-        if (isset($_SESSION['FG']['ngfn'][$fnc])) {
-            $fn=$_SESSION['FG']['ngfn'][$fnc];
+        if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
+            $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
             PHPWS_Core::initCoreClass('ngBackup.php');
             $ngbu = new ngBackup();
             $r=$ngbu->importTable($fn);
@@ -902,9 +1014,17 @@ class ngBoost_Action {
         }
     }
 
+    protected function ngMyRel($xvsn)
+    {
+		$tf=$this->ngConfigSet('release', (string)$xvsn);
+		$st=($tf?'t':'f');
+		$_SESSION['BG'] = $xvsn.' '.$st;
+	}
+	
     protected function ngSelRel($xvsn)
     {
-		$_SESSION['FG'][NGBOOST]['xmlrel']=$xvsn;
+		$_SESSION[NGBOOST]['FG']['xmlrel']=$xvsn;
+		$_SESSION['BG'] = $_SESSION[NGBOOST]['FG']['xmlrel'];
 	}
 	
     protected function ngTuneFS()
@@ -927,7 +1047,7 @@ class ngBoost_Action {
 		$_SESSION['BG'] = $r;
 		}
 		if (1==2) {
-		$_SESSION['FG']['ngfn']['.sysbu'] = '.sysbu.20110111-132843.fs.tgz';
+		$_SESSION[NGBOOST]['FG']['ngfn']['.sysbu'] = '.sysbu.20110111-132843.fs.tgz';
 		$this->ngListTar('.sysbu');
 		}
 		$_SESSION['BG'] = 'FFU';
@@ -936,29 +1056,33 @@ class ngBoost_Action {
 	
     protected function ngTuneSources()
     {
-		$chka = $chkn = $chks = $none = '';
-		$in = ''.PHPWS_Settings::get('ngboost', 'distro');
-		switch ($in) {
-		case 'asu':
-			$chka=' checked="checked" ';
-			break;
-		case 'ngws':
-			$chkn=' checked="checked" ';
-			break;
-		case 'sf':
-			$chks=' checked="checked" ';
-			break;
-		default:
-			$none=' checked="checked" ';
-		}
+		if ($this->isbranch) {
+			$cnt=dgettext('ngboost', 'Distro server setting is not supported in branches');
+		} else {
+			$chka = $chkn = $chks = $none = '';
+			$in = $this->ngConfigGet('distro');
+			switch ($in) {
+			case 'asu':
+				$chka=' checked="checked" ';
+				break;
+			case 'ngws':
+				$chkn=' checked="checked" ';
+				break;
+			case 'sf':
+				$chks=' checked="checked" ';
+				break;
+			default:
+				$none=' checked="checked" ';
+			}
 
-		$cnt = '<h4>Distro selection</h4>';
-		$onc = ' type="radio" name="distro" onclick="javascript:ngOnC()" ';
+			$cnt = '<h4>Distro selection</h4>';
+			$onc = ' type="radio" name="distro" onclick="javascript:ngOnC()" ';
 		
-		$cnt.='<label><input'.$onc.$chka.'value="asu"  />' . htmlentities(BYASU) . '</label>' . NGBR
-		.	  '<label><input'.$onc.$chkn.'value="ngws" />' . htmlentities(BYNGWS). '</label>' . NGBR
-		.	  '<label><input'.$onc.$chks.'value="sf"   />' . htmlentities(BYSF)  . '</label>' . NGBR
-		.	  '<label><input'.$onc.$none.'value="none"   />' . 'none'  . '</label>';
+			$cnt.='<label><input'.$onc.$chka.'value="asu"  />' . htmlentities(BYASU) . '</label>' . NGBR
+			.	  '<label><input'.$onc.$chkn.'value="ngws" />' . htmlentities(BYNGWS). '</label>' . NGBR
+			.	  '<label><input'.$onc.$chks.'value="sf"   />' . htmlentities(BYSF)  . '</label>' . NGBR
+			.	  '<label><input'.$onc.$none.'value="none"   />' . 'none'  . '</label>';
+		}
 		$_SESSION['BG'] = $cnt;
 	}
 	
@@ -968,7 +1092,7 @@ class ngBoost_Action {
 			$cnt=dgettext('ngboost', 'List distro is not supported in branches');
 		} else {
 			$ngboostform = new ngBoost_Form('ngboost');
-			$in = ''.PHPWS_Settings::get('ngboost', 'distro');
+			$in = $this->ngConfigGet('distro');
 			switch ($in) {
 			case 'asu':
 				$ngboostform->distro=$in.' @ '.htmlentities(BYASU);
@@ -998,11 +1122,12 @@ class ngBoost_Action {
     protected function ngTuneSourceSet()
     {
 		$_SESSION['BG'] = ' ';
-		$p	= urlencode($_REQUEST['p']);
-		if ($p=='asu' || $p=='ngws' || $p=='sf'|| $p=='none') {
-			PHPWS_Settings::set('ngboost', 'distro', $p);
-			PHPWS_Settings::save('ngboost');
-			$_SESSION['BG'] = dgettext('ngboost','Distro set to') . ' ' . $p;
+		if (!$this->isbranch) {
+			$p	= urlencode($_REQUEST['p']);
+			if ($p=='asu' || $p=='ngws' || $p=='sf'|| $p=='none') {
+				$this->ngConfigSet('distro', $p);
+				$_SESSION['BG'] = dgettext('ngboost','Distro set to') . ' ' . $p;
+			}
 		}
 	}
 
@@ -1013,34 +1138,39 @@ class ngBoost_Action {
 		.	'convert ... '.ngBackup::_cvFilePerms(fileperms(PHPWS_SOURCE_DIR.'convert'))
 		.	NGBR
 		.	'setup   ... '.ngBackup::_cvFilePerms(fileperms(PHPWS_SOURCE_DIR.'setup'))
-		.	'</pre>'
-		.	NGSP3.'<a href="javascript:ngFsPermsLock()">lock</a>'
-		.	NGSP3.'<a href="javascript:ngFsPermsUnlock()">unlock</a>'
-		;
+		.	'</pre>';
+		if (!$this->isbranch) {
+			$_SESSION['BG'].=NGSP3.'<a href="javascript:ngFsPermsLock()">lock</a>'
+						   . NGSP3.'<a href="javascript:ngFsPermsUnlock()">unlock</a>';
+		}
 	}
     protected function ngFsPermsLock()
     {
-		chmod(PHPWS_SOURCE_DIR.'convert', 0000);
-		chmod(PHPWS_SOURCE_DIR.'setup', 0000);
-		$this->ngFsPerms();
+		if (!$this->isbranch) {
+			chmod(PHPWS_SOURCE_DIR.'convert', 0000);
+			chmod(PHPWS_SOURCE_DIR.'setup', 0000);
+			$this->ngFsPerms();
+		}
 	}
     protected function ngFsPermsUnLock()
     {
-		chmod(PHPWS_SOURCE_DIR.'convert', 0750);
-		chmod(PHPWS_SOURCE_DIR.'setup', 0750);
-		$this->ngFsPerms();
+		if (!$this->isbranch) {
+			chmod(PHPWS_SOURCE_DIR.'convert', 0750);
+			chmod(PHPWS_SOURCE_DIR.'setup', 0750);
+			$this->ngFsPerms();
+		}
 	}
 
     protected function ngPickupTgz()
     {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
-        if (isset($_SESSION['FG'][$mod][$ix])) {
-            $tgzf = array_pop(explode('/', $_SESSION['FG'][$mod][$ix]));
+        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
+            $tgzf = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
 			$next = dgettext('ngboost','check');
  			$cc='0';
 			if (!file_exists($tgzf)) {
-                $rc = @copy($_SESSION['FG'][$mod][$ix], $tgzf);
+                $rc = @copy($_SESSION[NGBOOST]['FG'][$mod][$ix], $tgzf);
                 if ($rc) {
 				} else {
 					$cc='4';
@@ -1058,13 +1188,26 @@ class ngBoost_Action {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
 		$cc='4';
-        if (isset($_SESSION['FG'][$mod][$ix])) {
-            $tgzf = array_pop(explode('/', $_SESSION['FG'][$mod][$ix]));
+        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
+            $tgzf = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
 			$next = dgettext('ngboost','decompress');
 			if (file_exists($tgzf)) {
 				$tgzmd5=@md5_file($tgzf);
-				$xmlfile = ngBoost_Action::ngGetDistro() . $mod . '/check.xml';
+				//$xmlexpl = str_replace('.tar.gz','.xml',str_replace($mod.'_','check.',$tgzf));
+				// mod.v_v_v.check.xml from 3.0.16 primary choice
+				$xmlexpl = str_replace('.tar.gz','.check.xml',str_replace($mod.'_',$mod.'.',$tgzf));
+				$xmlfile = ngBoost_Action::ngGetDistro() . $mod . '/'.$xmlexpl;
 				$xml = @simplexml_load_file($xmlfile);
+				if (!is_object($xml)) {
+					// 1st fallback to logic up to 3.0.15 check.v_v_v.xml
+					$xmlexpl = str_replace('.tar.gz','.xml',str_replace($mod.'_','check.',$tgzf));
+					$xml = @simplexml_load_file($xmlfile);
+					if (!is_object($xml)) {
+						// 2nd fallback to check.xml
+						$xmlfile = ngBoost_Action::ngGetDistro() . $mod . '/check.xml';
+						$xml = @simplexml_load_file($xmlfile);
+					}
+				}
 				if (is_object($xml)) {
 					if (isset($xml->module->parts)) {
 						$xmlmd5 = (string)$xml->module->parts->part[(int)$ix]->md5sum;
@@ -1076,7 +1219,7 @@ class ngBoost_Action {
 						$next = dgettext('ngboost','decompress');
 					} else {
 						@unlink($tgzf);
-						$next = dgettext('ngboost', 'checksum verification error').'='.$xmlmd5;
+						$next = dgettext('ngboost', 'checksum verification error').'='.$xmlmd5.$xmlexpl;
 					}
 				} else {
 					$next = dgettext('ngboost', 'check.xml');
@@ -1095,9 +1238,9 @@ class ngBoost_Action {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
 		$cc='4';
-        if (isset($_SESSION['FG'][$mod][$ix])) {
+        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
 			$next = dgettext('ngboost','expand');
-            $tgz = array_pop(explode('/', $_SESSION['FG'][$mod][$ix]));
+            $tgz = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
 			if (file_exists($tgz)) {
 				$tar=substr($tgz,0,-3);
 				if (file_exists($tar)) {
@@ -1130,8 +1273,8 @@ class ngBoost_Action {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
 		$cc='4';
-        if (isset($_SESSION['FG'][$mod][$ix])) {
-            $tgz = array_pop(explode('/', $_SESSION['FG'][$mod][$ix]));
+        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
+            $tgz = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
 			// tar.gz = tar
 			$tar = substr($tgz,0,-3);
 			if (file_exists($tar)) {
@@ -1160,7 +1303,7 @@ class ngBoost_Action {
 	
     public function ngGetDistro()
     {
-		$in = ''.PHPWS_Settings::get('ngboost', 'distro');
+		$in = $this->ngConfigGet('distro');
 		switch ($in) {
 		case 'asu':
 			$thatfile = BYASU;
@@ -1175,6 +1318,35 @@ class ngBoost_Action {
 			$thatfile = '';
 		}
 		return $thatfile;
+	}
+	
+    protected function ngConfig()
+    {
+		$mycfg=PHPWS_SOURCE_DIR.'mod/ngboost/conf/ngboost.jso';
+		if (file_exists($mycfg)) {
+			return json_decode(stripslashes(file_get_contents($mycfg)),true);
+		} else {
+			file_put_contents($mycfg,json_encode(array()));
+			return array();
+		}
+	}
+	
+    protected function ngConfigGet($k)
+    {
+		$mycfg=$this->ngConfig();
+		if (array_key_exists($k,$mycfg)) {
+			return $mycfg[$k];
+		} else {
+			return false;
+		}
+	}
+	
+    protected function ngConfigSet($k,$v)
+    {
+		$mycfg=$this->ngConfig();
+		$mycfg[$k]=$v;
+		$cc=file_put_contents(PHPWS_SOURCE_DIR.'mod/ngboost/conf/ngboost.jso',addslashes(json_encode($mycfg)));
+		return $cc;
 	}
 	
     protected function ngAnyHelp($help)
@@ -1202,7 +1374,7 @@ class ngBoost_Action {
         }
 		
 
- 		$cnt= '<div style="max-height:360px; overflow:auto">';
+ 		$cnt= '<div class="ngbstcphelp">';
 
         if ($helpfile) {
             $helppf = PHPWS_SOURCE_DIR.'mod/ngboost/docs/'.$helpfile;
@@ -1247,7 +1419,7 @@ class ngBoost_Action {
 			if (is_object($xml)) {
 				$version = (string)$xml->module->version;
 				$tgz = array_pop(explode('/', (string)$xml->module->download));
-				$_SESSION['FG'][$mox]['0'] = $distropath . $mox . '/' . trim($tgz);
+				$_SESSION[NGBOOST]['FG'][$mox]['0'] = $distropath . $mox . '/' . trim($tgz);
 			}
 		}
 		return $version;
@@ -1276,7 +1448,7 @@ class ngBoost_Action {
 			} else {
 				$template['STABLE_VERSION'] = $version;
 			}
-			$_SESSION['FG']['ngvx'][$mod] = $version;
+			$_SESSION[NGBOOST]['FG']['ngvx'][$mod] = $version;
 
 			if (version_compare($version, $_SESSION[NGBOOST]['ml'][$mod]['vfs'], '>')) {
 				$template['CHANGES_LABEL'] = dgettext('ngboost', 'Changes');
@@ -1287,7 +1459,7 @@ class ngBoost_Action {
 				}
 				$template['UPDATE_AVAILABLE'] = dgettext('ngboost', 'A new release is available');
 				$template['PU_LINK_LABEL'] = '<b>'.dgettext('ngboost', 'Copy from distribution server to my site').'</b>';
-				$_SESSION['FG'][$mox]=array();
+				$_SESSION[NGBOOST]['FG'][$mox]=array();
 				// multipart srcs
 				if (isset($xml->module->parts)) {
 					$i=0;
@@ -1297,7 +1469,7 @@ class ngBoost_Action {
 						$mmd5[] = (string)$part->md5sum;
 						$i++;
 						if (!empty($distropath)) {
-							$_SESSION['FG'][$mox][] = $distropath . $mox . '/' . $tgz;
+							$_SESSION[NGBOOST]['FG'][$mox][] = $distropath . $mox . '/' . $tgz;
 							$full = $distropath . $mox . '/' . array_pop(explode('/', (string)$xml->module->download));
 						} else {
 							$full = (string)$xml->module->download;
@@ -1308,18 +1480,18 @@ class ngBoost_Action {
 					$mtgz=array($tgz.$this->ngTplChkUpd('0'.$mox));
 					$mmd5=array((string)$xml->module->md5sum);
 					if (!empty($distropath)) {
-						$_SESSION['FG'][$mox][] = $full = $distropath . $mox . '/' . $tgz;
+						$_SESSION[NGBOOST]['FG'][$mox][] = $full = $distropath . $mox . '/' . $tgz;
 					} else {
 						// native xml D/L resource (cannot be multipart)
-						$_SESSION['FG'][$mod][] = $full = (string)$xml->module->download;
+						$_SESSION[NGBOOST]['FG'][$mod][] = $full = (string)$xml->module->download;
 					}
 				}
 
 				$template['PU_LINK'] = '<span id="ngpickupa"><a href="javascript:ngPickup(\''.$mox.'\',\''.count($mtgz).'\')">'
                 .	$_SESSION[NGBOOST]['ml'][$mod]['t'].NGSP3.$version.'</a></span>'
 				.	NGBR.':... '.implode(NGBR.':... ',$mtgz).'<div id="ngpickup'.$mox.'"></div>';
-				$template['DL_PATH_LABEL'] = dgettext('ngboost', 'or download by yourself from here');
-				$template['DL_PATH'] = '<a href="' . $full . '">' . $full . '</a>';
+			//	$template['DL_PATH_LABEL'] = dgettext('ngboost', 'or download by yourself from here');
+				$template['DL_PATH'] = $full;
 				$template['MD5_LABEL'] = dgettext('ngboost', 'MD5 Sum');
 				foreach ($mtgz as $i => $v) {
 					$template['MD5'] .= $v.NGSP3.$mmd5[$i].NGBR;
