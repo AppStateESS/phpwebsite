@@ -610,6 +610,18 @@ class PHPWS_Form {
         }
     }
 
+    /**
+     * Sets all elements in this form to disabled by default. If $value = false, all elements will be enabled.
+     *
+     * @param boolean $value - True (default) to disable elements. False to enable elements.
+     */
+    public function setAllDisabled($value = true)
+    {
+        foreach ($this->_elements as $key=>$element){
+            $this->setDisabled($key, $value);
+        }
+    }
+
     public function setAutoComplete($name, $value=false)
     {
         if (!$this->testName($name)) {
