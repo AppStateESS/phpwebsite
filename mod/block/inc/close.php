@@ -14,7 +14,7 @@ if (Current_User::allow('block')) {
         $key->id, Current_User::getAuthkey());
         $val['label'] = dgettext('block', 'Add block here');
         $val['width'] = 750;
-        $val['height'] = 550;
+        $val['height'] = 650;
         MiniAdmin::add('block', javascript('open_window', $val));
     }
 }

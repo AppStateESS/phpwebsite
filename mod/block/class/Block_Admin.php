@@ -6,7 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::requireConfig('block');
 
 class Block_Admin {
@@ -21,8 +20,7 @@ class Block_Admin {
         $panel = Block_Admin::cpanel();
         if (isset($_REQUEST['action'])) {
             $action = $_REQUEST['action'];
-        }
-        else {
+        } else {
             $tab = $panel->getCurrentTab();
             if (empty($tab)) {
                 $action = 'new';
@@ -42,9 +40,9 @@ class Block_Admin {
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
-        $tabs['new']  = array ('title'=>dgettext('block', 'New'),  'link'=> $linkBase);
-        $tabs['list'] = array ('title'=>dgettext('block', 'List'), 'link'=> $linkBase);
-        $tabs['settings'] = array ('title'=>dgettext('block', 'Settings'), 'link'=> $linkBase);
+        $tabs['new'] = array('title' => dgettext('block', 'New'), 'link' => $linkBase);
+        $tabs['list'] = array('title' => dgettext('block', 'List'), 'link' => $linkBase);
+        $tabs['settings'] = array('title' => dgettext('block', 'Settings'), 'link' => $linkBase);
 
         $panel = new PHPWS_Panel('categories');
         $panel->enableSecure();
@@ -134,9 +132,14 @@ class Block_Admin {
                 break;
 
             case 'postBlock':
-                Block_Admin::postBlock($block);
-                $result = $block->save();
-                Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
+                if (Block_Admin::postBlock($block)) {
+                    $result = $block->save();
+                    Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
+                } else {
+                    $message = dgettext('block', 'Block must have a title, some content, or a file attachment.');
+                    $title = ('Edit Block');
+                    $content = Block_Admin::edit($block);
+                }
                 break;
 
             case 'settings':
@@ -156,16 +159,21 @@ class Block_Admin {
                 break;
 
             case 'postJSBlock':
-                if (!PHPWS_Core::isPosted()) {
-                    Block_Admin::postBlock($block);
+                if (Block_Admin::postBlock($block)) {
                     $result = $block->save();
                     if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
                     } elseif (isset($_REQUEST['key_id'])) {
                         Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
                     }
+                    javascript('close_refresh');
+                } else {
+                    $template['TITLE'] = dgettext('block', 'New Block');
+                    $template['CONTENT'] = Block_Admin::edit($block, TRUE);
+                    $template['MESSAGE'] = dgettext('block', 'Block must have a title, some content, or a file attachment.');
+                    $content = PHPWS_Template::process($template, 'block', 'admin.tpl');
+                    Layout::nakedDisplay($content);
                 }
-                javascript('close_refresh');
                 break;
 
             case 'lock':
@@ -197,11 +205,11 @@ class Block_Admin {
         return PHPWS_Template::process($template, 'block', 'admin.tpl');
     }
 
-    public function sendMessage($message, $command=null)
+    public function sendMessage($message, $command = null)
     {
         $_SESSION['block_message'] = $message;
         if (isset($command)) {
-            PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action'=>$command), TRUE));
+            PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action' => $command), TRUE));
         }
     }
 
@@ -232,10 +240,9 @@ class Block_Admin {
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
         }
-
     }
 
-    public static function edit(Block_Item $block, $js=FALSE)
+    public static function edit(Block_Item $block, $js = FALSE)
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
@@ -249,7 +256,7 @@ class Block_Admin {
         if ($js) {
             $form->addHidden('action', 'postJSBlock');
             if (isset($_REQUEST['key_id'])) {
-                $form->addHidden('key_id', (int)$_REQUEST['key_id']);
+                $form->addHidden('key_id', (int) $_REQUEST['key_id']);
             }
             $form->addButton('cancel', dgettext('block', 'Cancel'));
             $form->setExtra('cancel', 'onclick="window.close()"');
@@ -287,24 +294,31 @@ class Block_Admin {
 
     public static function postBlock(Block_Item $block)
     {
+        if (!Current_User::authorized('block', 'edit_block', $block->id)) {
+            Current_User::disallow();
+        }
+
         $block->setTitle($_POST['title']);
         $block->setContent($_POST['block_content']);
-        $block->file_id = (int)$_POST['file_id'];
+        $block->file_id = (int) $_POST['file_id'];
         if (isset($_POST['hide_title'])) {
             $block->hide_title = 1;
         } else {
             $block->hide_title = 0;
         }
-        return TRUE;
+        if (empty($block->content) && empty($block->title) && empty($block->file_id)) {
+            return false;
+        } else {
+            return true;
+        }
     }
-
 
     public static function blockList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['CONTENT'] = dgettext('block', 'Content');
-        $pageTags['ACTION']  = dgettext('block', 'Action');
+        $pageTags['ACTION'] = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');
         $pager->setModule('block');
         $pager->setTemplate('list.tpl');
@@ -316,7 +330,6 @@ class Block_Admin {
         $content = $pager->get();
         return $content;
     }
-
 
     public function pinBlock(Block_Item $block)
     {
@@ -337,16 +350,15 @@ class Block_Admin {
         return $db->insert();
     }
 
-
     public static function lockBlock($block_id, $key_id)
     {
-        $block_id = (int)$block_id;
-        $key_id = (int)$key_id;
+        $block_id = (int) $block_id;
+        $key_id = (int) $key_id;
 
         unset($_SESSION['Pinned_Blocks'][$block_id]);
 
         $values['block_id'] = $block_id;
-        $values['key_id']   = $key_id;
+        $values['key_id'] = $key_id;
 
         $db = new PHPWS_DB('block_pinned');
         $db->addWhere($values);
@@ -388,7 +400,7 @@ class Block_Admin {
         } elseif ($_POST['max_image_width'] > 1024) {
             $error[] = dgettext('block', 'Max image width must be smaller than 1024px');
         } else {
-            PHPWS_Settings::set('block', 'max_image_width', (int)$_POST['max_image_width']);
+            PHPWS_Settings::set('block', 'max_image_width', (int) $_POST['max_image_width']);
         }
 
         if (empty($_POST['max_image_height']) || $_POST['max_image_height'] < 50) {
@@ -396,7 +408,7 @@ class Block_Admin {
         } elseif ($_POST['max_image_height'] > 3000) {
             $error[] = dgettext('block', 'Max image height must be smaller than 3000px');
         } else {
-            PHPWS_Settings::set('block', 'max_image_height', (int)$_POST['max_image_height']);
+            PHPWS_Settings::set('block', 'max_image_height', (int) $_POST['max_image_height']);
         }
 
         PHPWS_Settings::save('block');
@@ -407,5 +419,7 @@ class Block_Admin {
             return true;
         }
     }
+
 }
+
 ?>
