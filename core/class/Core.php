@@ -821,6 +821,11 @@ class PHPWS_Core {
                      'version_http' => $version_http);
     }
 
+    public static function isRewritten()
+    {
+        return strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE;
+    }
+
 
     /**
      * Returns the url of the current page
@@ -835,7 +840,7 @@ class PHPWS_Core {
 
         $self = & $_SERVER['PHP_SELF'];
 
-        if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
+        if ($use_redirect && self::isRewritten()) {
             // some users reported problems using redirect_url so parsing uri instead
             if ($_SERVER['REQUEST_URI'] != '/') {
                 $root_url = substr($self, 0, strrpos($self, '/'));

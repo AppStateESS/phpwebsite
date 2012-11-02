@@ -798,11 +798,11 @@ class PHPWS_Text {
         if (empty($query)) {
             if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
                 $query = $_SERVER['REDIRECT_QUERY_STRING'];
-            } elseif (isset($_SERVER['REDIRECT_URL'])) {
+            } elseif (PHPWS_Core::isRewritten()) {
                 if (dirname($_SERVER['PHP_SELF']) == '/') {
-                    $rewrite = substr($_SERVER['REDIRECT_URL'], 1);
+                    $rewrite = substr($_SERVER['REQUEST_URI'], 1);
                 } else {
-                    $rewrite = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
+                    $rewrite = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REQUEST_URI']);
                 }
                 if (!empty($rewrite)) {
                     $re_array = explode('/', $rewrite);
