@@ -1172,7 +1172,7 @@ class User_Action {
         return $result;
     }
 
-    public function postAuthorization()
+    public static function postAuthorization()
     {
 
         if (isset($_POST['add_script'])){
@@ -1593,7 +1593,7 @@ class User_Action {
         $db->setIndexBy('id');
         $scripts = $db->select('col');
 
-        $default_group = $scripts[$user->authorize]['default_group'];
+        $default_group = $scripts[$user->authorize];
 
         $group = new PHPWS_Group($default_group);
 
