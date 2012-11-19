@@ -170,7 +170,7 @@ class DBPager {
      */
     public $auto_sort = true;
 
-    public function __construct($table, $class=null)
+    public function __construct($table, $class = null)
     {
         if (empty($table)) {
             $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
@@ -283,7 +283,7 @@ class DBPager {
      * your source object contains the variable your are joining. (e.g. $this->t2_title must exist)
      *
      */
-    public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name=null, $searchable=false)
+    public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name = null, $searchable = false)
     {
         static $join_match = null;
         static $index = 1;
@@ -366,7 +366,7 @@ class DBPager {
      * Sets the default order for the pager. If only_if_empty is true
      * then a sort can overwrite the direction.
      */
-    public function setOrder($column, $direction='asc', $only_if_empty=false)
+    public function setOrder($column, $direction = 'asc', $only_if_empty = false)
     {
         if ($only_if_empty && !empty($this->orderby)) {
             return;
@@ -378,7 +378,7 @@ class DBPager {
         $this->orderby_dir = $direction;
     }
 
-    public function setDefaultOrder($default_order, $direction='asc')
+    public function setDefaultOrder($default_order, $direction = 'asc')
     {
         if (preg_match('/\W/', $default_order)) {
             return false;
@@ -509,7 +509,7 @@ class DBPager {
         $this->empty_message = $message;
     }
 
-    public function addToggleFunction($function, $toggle=2)
+    public function addToggleFunction($function, $toggle = 2)
     {
         if (empty($function) || $toggle < 2) {
             return false;
@@ -573,7 +573,7 @@ class DBPager {
         $this->run_methods[] = $method;
     }
 
-    public function addWhere($column, $value, $operator=null, $conj=null, $group=null)
+    public function addWhere($column, $value, $operator = null, $conj = null, $group = null)
     {
         return $this->db->addWhere($column, $value, $operator, $conj, $group);
     }
@@ -700,7 +700,7 @@ class DBPager {
      * the data it gets into the object.
      * @modified Eloi George
      */
-    public function initialize($load_rows=true)
+    public function initialize($load_rows = true)
     {
         $order_set = false;
         $this->table_columns = $this->db->getTableColumns();
@@ -1077,7 +1077,7 @@ class DBPager {
         return $template;
     }
 
-    public function addSortHeader($header, $title, $hover=null)
+    public function addSortHeader($header, $title, $hover = null)
     {
         $this->sort_headers[$header]['title'] = $title;
         $this->sort_headers[$header]['hover'] = $hover;
@@ -1239,8 +1239,10 @@ class DBPager {
             }
 
             if (isset($this->class)) {
-                foreach ($this->_class_vars as $varname) {
-                    $template[$count][strtoupper($varname)] = $disp_row->$varname;
+                if (!empty($this->_class_vars)) {
+                    foreach ($this->_class_vars as $varname) {
+                        $template[$count][strtoupper($varname)] = $disp_row->$varname;
+                    }
                 }
 
                 if (!empty($this->row_tags)) {
@@ -1255,7 +1257,11 @@ class DBPager {
                     }
 
                     if (!empty($row_result) && is_array($row_result)) {
-                        $template[$count] = array_merge($template[$count], $row_result);
+                        if (!empty($template[$count])) {
+                            $template[$count] = array_merge($template[$count], $row_result);
+                        } else {
+                            $template[$count] = $row_result;
+                        }
                     }
                 }
             } else {
@@ -1266,7 +1272,11 @@ class DBPager {
                 if (isset($this->run_function)) {
                     $row_result = call_user_func($this->run_function, $disp_row);
                     if (!empty($row_result) && is_array($row_result)) {
-                        $template[$count] = array_merge($template[$count], $row_result);
+                        if (!empty($template[$count])) {
+                            $template[$count] = array_merge($template[$count], $row_result);
+                        } else {
+                            $template[$count] = $row_result;
+                        }
                     }
                 }
             }
@@ -1275,7 +1285,11 @@ class DBPager {
                 if (!($count % $this->toggle_func_number)) {
                     $row_result = call_user_func($this->toggle_function, $disp_row);
                     if (!empty($row_result)) {
-                        $template[$count] = array_merge($template[$count], $row_result);
+                        if (!empty($template[$count])) {
+                            $template[$count] = array_merge($template[$count], $row_result);
+                        } else {
+                            $template[$count] = $row_result;
+                        }
                     }
                 }
             }
@@ -1455,7 +1469,7 @@ class DBPager {
     /**
      * Returns the content of the the pager object
      */
-    public function get($return_blank_results=true)
+    public function get($return_blank_results = true)
     {
 
         $template = array();
@@ -1557,7 +1571,7 @@ class DBPager {
         }
     }
 
-    public function convertDate($column_name, $format='%c')
+    public function convertDate($column_name, $format = '%c')
     {
         $this->convert_date[$column_name] = $format;
     }
@@ -1569,7 +1583,7 @@ class DBPager {
         }
     }
 
-    public function cacheQueries($cache=true)
+    public function cacheQueries($cache = true)
     {
         $this->cache_queries = (bool) $cache;
     }
