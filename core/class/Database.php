@@ -2686,7 +2686,7 @@ class PHPWS_DB {
                 break;
 
             case 'select':
-                $start = stripos($sql, 'from') + 4;
+                $start = stripos($sql, 'from ') + 5;
                 $table = substr($sql, $start, strlen($sql) - $start);
 
                 if ($where = stripos($table, ' where ')) {
