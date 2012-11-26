@@ -2656,7 +2656,7 @@ class PHPWS_DB {
                 break;
 
             case 'delete':
-                $start = stripos($sql, 'from') + 4;
+                $start = stripos($sql, 'from ') + 5;
                 $end = strlen($sql) - $start;
                 $table = substr($sql, $start, $end);
                 $table = preg_replace('/where.*/i', '', $table);
