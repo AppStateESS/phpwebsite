@@ -171,6 +171,29 @@ class PHPWS_Mail {
         return preg_match('/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i', $email_address);
     }
 
+    protected function genMessageId()
+    {
+        $token = 'phpws';
+        $random = sha1(mt_rand() . time() . $this->message_body . $this->html_body);
+        $host = $_SERVER['HTTP_HOST'];
+        return "<$token-$random@$host>";
+    }
+
+    protected static function log($to, $headers, $result)
+    {
+        $id      = 'id:'       . $headers['Message-Id'];
+        $from    = 'from:'     . (isset($headers['From'])     ? $headers['From']     : '');
+        $cc      = 'cc:'       . (isset($headers['Cc'])       ? $headers['Cc']       : '');
+        $bcc     = 'bcc:'      . (isset($headers['Bcc'])      ? $headers['Bcc']      : '');
+        $replyto = 'reply-to:' . (isset($headers['Reply-To']) ? $headers['Reply-To'] : '');
+        $subject = 'subject:'  . (isset($headers['Subject'])  ? $headers['Subject']  : '');
+        $module  = 'module:'   . PHPWS_Core::getCurrentModule();
+        $user    = 'user:'     . (Current_User::isLogged() ? Current_User::getUsername() : '');
+        $result  = 'result:'   . (PHPWS_Error::isError($result) ? 'Failure' : 'Success');
+
+        PHPWS_Core::log("$id $module $user $subject $from $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
+    }
+
     /**
      * @returns If sent individually and an error occurs, a false statement
      *          is returned and the error is logged after the mailing is complete.
@@ -200,8 +223,9 @@ class PHPWS_Mail {
 
         $body = $message->get();
 
-        $headers['From']    = & $this->from_address;
-        $headers['Subject'] = & $this->subject_line;
+        $headers['From']       = & $this->from_address;
+        $headers['Subject']    = & $this->subject_line;
+        $headers['Message-Id'] = $this->genMessageId();
 
         if (isset($this->reply_to_address)) {
             $headers['Reply-To'] = $this->reply_to_address;
@@ -261,6 +285,7 @@ class PHPWS_Mail {
                 if (PHPWS_Error::logIfError($result)) {
                     $error_found = true;
                 }
+                self::log($recipients['To'], $m_headers, $result);
             }
             if (isset($error_found)) {
                 return false;
@@ -269,7 +294,9 @@ class PHPWS_Mail {
             }
         } else {
             $recipients['To']   = implode(',', $this->send_to);
-            return $mail_object->send($recipients, $m_headers, $body);
+            $result = $mail_object->send($recipients, $m_headers, $body);
+            self::log($recipients['To'], $m_headers, $result);
+            return $result;
         }
     }
 

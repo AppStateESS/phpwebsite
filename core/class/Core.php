@@ -554,7 +554,7 @@ class PHPWS_Core {
 
         if (PHPWS_Core::isBranch()) {
             $branch_name = Branch::getCurrentBranchName();
-            $message = '{' . $branch_name . '}' . $message;
+            $message = '{' . $branch_name . '} ' . $message;
         } else {
             $message = '{HUB} ' . $message;
         }
