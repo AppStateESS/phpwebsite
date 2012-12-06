@@ -217,6 +217,7 @@ class PHPWS_Mail {
 
         switch ($this->backend_type) {
             case 'mail':
+                $param = "-f$this->from_address";
                 break;
 
             case 'sendmail':
