@@ -183,6 +183,7 @@ class PHPWS_Mail {
     {
         $id      = 'id:'       . $headers['Message-Id'];
         $from    = 'from:'     . (isset($headers['From'])     ? $headers['From']     : '');
+        $to      = 'to:'       . $to
         $cc      = 'cc:'       . (isset($headers['Cc'])       ? $headers['Cc']       : '');
         $bcc     = 'bcc:'      . (isset($headers['Bcc'])      ? $headers['Bcc']      : '');
         $replyto = 'reply-to:' . (isset($headers['Reply-To']) ? $headers['Reply-To'] : '');
@@ -191,7 +192,7 @@ class PHPWS_Mail {
         $user    = 'user:'     . (Current_User::isLogged() ? Current_User::getUsername() : '');
         $result  = 'result:'   . (PHPWS_Error::isError($result) ? 'Failure' : 'Success');
 
-        PHPWS_Core::log("$id $module $user $subject $from $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
+        PHPWS_Core::log("$id $module $user $subject $from $to $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
     }
 
     /**
