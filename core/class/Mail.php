@@ -183,7 +183,7 @@ class PHPWS_Mail {
     {
         $id      = 'id:'       . $headers['Message-Id'];
         $from    = 'from:'     . (isset($headers['From'])     ? $headers['From']     : '');
-        $to      = 'to:'       . $to
+        $to      = 'to:'       . $to;
         $cc      = 'cc:'       . (isset($headers['Cc'])       ? $headers['Cc']       : '');
         $bcc     = 'bcc:'      . (isset($headers['Bcc'])      ? $headers['Bcc']      : '');
         $replyto = 'reply-to:' . (isset($headers['Reply-To']) ? $headers['Reply-To'] : '');
@@ -242,7 +242,12 @@ class PHPWS_Mail {
 
         switch ($this->backend_type) {
             case 'mail':
-                $param = "-f$this->from_address";
+                $from = $this->from_address;
+                // Strip anything outside of <>
+                if(preg_match('/.*<.+>$/', $from)) {
+                    $from = preg_replace('/.*<([^>]+)>/', '\\1', $from);
+                }
+                $param = "-f$from";
                 break;
 
             case 'sendmail':
@@ -297,6 +302,7 @@ class PHPWS_Mail {
             $recipients['To']   = implode(',', $this->send_to);
             $result = $mail_object->send($recipients, $m_headers, $body);
             self::log($recipients['To'], $m_headers, $result);
+            PHPWS_Error::logIfError($result);
             return $result;
         }
     }
