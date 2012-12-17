@@ -223,7 +223,9 @@ class FC_File_Manager {
 
     public function get()
     {
-        static $count = 0;
+        if (!Current_User::allow('filecabinet')) {
+            return '<em>' . dgettext('filecabinet', 'Sorry, you do not have File Cabinet rights.') . '</em>';
+        }
         javascriptMod('filecabinet', 'flowplayer');
         Layout::addStyle('filecabinet', 'file_view.css');
         Layout::addStyle('filecabinet');

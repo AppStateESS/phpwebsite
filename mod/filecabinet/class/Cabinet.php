@@ -30,6 +30,10 @@ class Cabinet {
      */
     public function fmAdmin()
     {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+        require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
         Layout::cacheOff();
         if ($this->loadFileManager()) {
             Layout::nakedDisplay($this->file_manager->admin(), null, false);
@@ -85,13 +89,19 @@ class Cabinet {
     {
         PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
 
-        if (!@$module = $_GET['cm']) {
+
+        if (empty($_GET['cm']) || preg_match('/\W/', $_GET['cm'])) {
             return false;
+        } else {
+            $module = $_GET['cm'];
         }
 
-        if (!@$itemname = $_GET['itn']) {
+        if (empty($_GET['itn']) || preg_match('/\W/', $_GET['itn'])) {
             return false;
+        } else {
+            $itemname = $_GET['itn'];
         }
+
 
         $this->file_manager = new FC_File_Manager($module, $itemname, $_GET['fid']);
         if (isset($_GET['mw'])) {
