@@ -591,6 +591,12 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Can now add Access shortcut to a document.
 + Various bug fixes
 </pre>';
+        case version_compare($version, '2.4.1', '<'):
+            $content[] = '<pre>2.4.1 changes
+-----------------------
++ Fixed a possible XSS vulnerability discovered by Jakub Galczyk.
++ Users must have some File Cabinet permission to use the File Manager.
+</pre>';
             return true;
     }
 }
