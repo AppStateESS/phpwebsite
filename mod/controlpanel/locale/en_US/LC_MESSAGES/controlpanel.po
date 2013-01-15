@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 13:35-0400\n"
+"POT-Creation-Date: 2013-01-15 08:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,9 +65,6 @@ msgstr ""
 msgid "Control Panel unregisteration file not implemented."
 msgstr ""
 
-msgid "Copying source image directory for module."
-msgstr ""
-
 msgid "Description"
 msgstr ""
 
@@ -116,12 +114,6 @@ msgid "Remove Tab"
 msgstr ""
 
 msgid "Save"
-msgstr ""
-
-msgid "Source image directory copied successfully."
-msgstr ""
-
-msgid "Source image directory failed to copy."
 msgstr ""
 
 msgid "Tab is missing a link address."
