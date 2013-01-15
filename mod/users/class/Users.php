@@ -757,6 +757,8 @@ class PHPWS_User {
 
     public function kill()
     {
+        PHPWS_Core::initModClass('users', 'Group.php');
+        
         if (!$this->id) {
             return false;
         }

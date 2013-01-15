@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"POT-Creation-Date: 2013-01-15 08:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -101,6 +102,9 @@ msgid "All visitors"
 msgstr ""
 
 msgid "Allow Remember Me"
+msgstr ""
+
+msgid "Allow new user creation?"
 msgstr ""
 
 msgid "Allow script tag input"
@@ -240,9 +244,6 @@ msgid "Deity"
 msgstr ""
 
 msgid "Deity users copied to branch."
-msgstr ""
-
-msgid "Delete"
 msgstr ""
 
 msgid "Delete Groups"
@@ -471,7 +472,7 @@ msgstr ""
 msgid "Module does not exist."
 msgstr ""
 
-msgid "Module tried to detect a non-existant permission."
+msgid "Module tried to detect a non-existent permission."
 msgstr ""
 
 msgid "Module's item permission file is missing."
@@ -638,9 +639,6 @@ msgid "Please change your password immediately after logging in."
 msgstr ""
 
 msgid "Please check your email for a response."
-msgstr ""
-
-msgid "Please create a user to administrate the site."
 msgstr ""
 
 msgid "Please enter a valid email address as a site contact."
@@ -843,9 +841,6 @@ msgstr ""
 msgid "User created and notified."
 msgstr ""
 
-msgid "User created successfully."
-msgstr ""
-
 msgid "User created successfully. Check your email for your login information."
 msgstr ""
 
@@ -891,9 +886,6 @@ msgid "User's email address is missing or malformed."
 msgstr ""
 
 msgid "User's email address is missing."
-msgstr ""
-
-msgid "User's email used as contact email address."
 msgstr ""
 
 msgid "Username"
