@@ -2790,7 +2790,7 @@ class PHPWS_DB {
         return $this->query($query);
     }
 
-    public function begin()
+    public static function begin()
     {
         // If transaction started already, return false.
         if (isset($GLOBALS['DB_Transaction']) && $GLOBALS['DB_Transaction']) {
@@ -2800,7 +2800,7 @@ class PHPWS_DB {
         return PHPWS_DB::query('BEGIN');
     }
 
-    public function commit()
+    public static function commit()
     {
         // if transaction not started, return false.
         if (!$GLOBALS['DB_Transaction']) {
@@ -2810,7 +2810,7 @@ class PHPWS_DB {
         return PHPWS_DB::query('COMMIT');
     }
 
-    public function rollback()
+    public static function rollback()
     {
         // if transaction not started, return false.
         if (!$GLOBALS['DB_Transaction']) {
