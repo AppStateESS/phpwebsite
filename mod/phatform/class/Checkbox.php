@@ -19,16 +19,22 @@ class PHAT_Checkbox extends PHAT_Element {
      * @param  integer $id The id of the checkbox to be created
      * @access public
      */
-    function PHAT_Checkbox($id = NULL) {
+    function PHAT_Checkbox($id = NULL)
+    {
         $this->setTable('mod_phatform_checkbox');
 
-        if(isset($id)) {
+        if (isset($id)) {
             $this->setId($id);
             $leftOvers = $this->init();
         }
-    } // END FUNC PHAT_Checkbox
+    }
 
-    function hasOptions() {return TRUE;}
+// END FUNC PHAT_Checkbox
+
+    function hasOptions()
+    {
+        return TRUE;
+    }
 
     /**
      * View this PHAT_Checkbox
@@ -36,27 +42,36 @@ class PHAT_Checkbox extends PHAT_Element {
      * @return string The HTML content to view the PHAT_Checkbox
      * @access public
      */
-    function view() {
+    function view()
+    {
         $label = $this->getLabel();
-        if(isset($_REQUEST['PHAT_' . $label]) && is_array($_REQUEST['PHAT_' . $label])) {
+        if (isset($_REQUEST['PHAT_' . $label]) && is_array($_REQUEST['PHAT_' . $label])) {
             $this->setValue($_REQUEST['PHAT_' . $label]);
         }
 
-        if($this->isRequired())
-        $viewTags['REQUIRED_FLAG'] = '&#42;';
+        if ($this->isRequired())
+            $viewTags['REQUIRED_FLAG'] = '&#42;';
 
-        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(), ENCODE_PARSED_TEXT, false, true);
         $viewTags['CHECK_BOXES'] = '';
 
         $optionText = $this->getOptionText();
         $optionValues = $this->getOptionValues();
         $value = $this->getValue();
-
-        for($i = 0; $i < sizeof($optionText); $i++)
-        $viewTags['CHECK_BOXES'] .= PHPWS_Form::formCheckBox('PHAT_' . $label . '[' . $i . ']', $optionValues[$i], $value[$i], NULL, $optionText[$i]) . "<br />\n";
+        $viewTags['CHECK_BOXES'] = null;
+        for ($i = 0; $i < sizeof($optionText); $i++) {
+            if (isset($value[$i])) {
+                $match = $value[$i];
+            } else {
+                $match = null;
+            }
+            $viewTags['CHECK_BOXES'] .= PHPWS_Form::formCheckBox('PHAT_' . $label . '[' . $i . ']', $optionValues[$i], $match, NULL, $optionText[$i]) . "<br />\n";
+        }
 
         return PHPWS_Template::processTemplate($viewTags, 'phatform', 'checkbox/view.tpl');
-    } // END FUNC view
+    }
+
+// END FUNC view
 
     /**
      * Edit this PHAT_Checkbox
@@ -66,18 +81,20 @@ class PHAT_Checkbox extends PHAT_Element {
      * @return string The HTML form for editing
      * @access public
      */
-    function edit() {
+    function edit()
+    {
         $numOptions = sizeof($this->getOptionText());
-        if(!$numOptions || $this->getOptionSet()) $numOptions='';
+        if (!$numOptions || $this->getOptionSet())
+            $numOptions = '';
 
         $elements[0] = PHPWS_Form::formHidden('module', 'phatform') . PHPWS_Form::formHidden('PHAT_EL_OP', 'SaveElement');
 
-        if(!$this->getLabel()) {
+        if (!$this->getLabel()) {
             $num = $_SESSION['PHAT_FormManager']->form->numElements();
             $this->setLabel('Element' . ($num + 1));
         }
 
-        if(PHAT_SHOW_INSTRUCTIONS) {
+        if (PHAT_SHOW_INSTRUCTIONS) {
             $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Checkbox Element Instructions');
         }
 
@@ -89,7 +106,7 @@ class PHAT_Checkbox extends PHAT_Element {
         $editTags['OPTIONS_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementNumOptions', $numOptions, 5, 3);
 
         $options = $this->getOptionSets();
-        if(is_array($options)) {
+        if (is_array($options)) {
             $editTags['OPTION_SET_LABEL'] = dgettext('phatform', 'Predefined Option Set');
             $editTags['OPTION_SET_INPUT'] = PHPWS_Form::formSelect('PHAT_OptionSet', $options, $this->getOptionSet(), FALSE, TRUE);
         }
@@ -102,7 +119,9 @@ class PHAT_Checkbox extends PHAT_Element {
         $elements[0] .= PHPWS_Template::processTemplate($editTags, 'phatform', 'checkbox/edit.tpl');
 
         return PHPWS_Form::makeForm('PHAT_CheckboxEdit', 'index.php', $elements, 'post', NULL, NULL);
-    } // END FUNC edit
+    }
+
+// END FUNC edit
 
     /**
      * Save this PHAT_Checkbox
@@ -111,11 +130,12 @@ class PHAT_Checkbox extends PHAT_Element {
      *                or PHPWS_Error on failure.
      * @access public
      */
-    function save() {
+    function save()
+    {
         $error = FALSE;
         $label = $this->getLabel();
-        if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-        || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+        if ((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
+                || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
 
             $message = dgettext('phatform', 'The name you entered for the Checkbox is not valid or is already in use with this form.');
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
@@ -123,27 +143,30 @@ class PHAT_Checkbox extends PHAT_Element {
         }
 
         $result = $this->setBlurb($_REQUEST['PHAT_ElementBlurb']);
-        if(PHPWS_Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $currentError = $result;
             $error = TRUE;
         }
 
-        if(isset($_REQUEST['PHAT_ElementRequired'])) {
+        if (isset($_REQUEST['PHAT_ElementRequired'])) {
             $this->setRequired(TRUE);
         } else {
             $this->setRequired(FALSE);
         }
 
-        if($error) {
+        if ($error) {
             return $currentError;
         } else {
-            if((is_numeric($_REQUEST['PHAT_ElementNumOptions']) && ($_REQUEST['PHAT_ElementNumOptions'] > 0)) || isset($_REQUEST['PHAT_OptionSet'])) {
+            if ((is_numeric($_REQUEST['PHAT_ElementNumOptions']) && ($_REQUEST['PHAT_ElementNumOptions'] > 0)) || isset($_REQUEST['PHAT_OptionSet'])) {
                 return $this->getOptions();
             } else {
                 return PHPWS_Error::get(PHATFORM_ZERO_OPTIONS, 'phatform', 'PHAT_Checkbox::save()');
             }
         }
-    } // END FUNC save
-} // END CLASS PHAT_Checkbox
+    }
 
+// END FUNC save
+}
+
+// END CLASS PHAT_Checkbox
 ?>

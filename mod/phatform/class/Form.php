@@ -556,7 +556,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Begin view template array */
         if($this->currentPage() == 1) {
-            $viewTags['BLURB0'] = PHPWS_Text::parseOutput($this->_blurb0);
+            $viewTags['BLURB0'] = PHPWS_Text::parseOutput($this->_blurb0, ENCODE_PARSED_TEXT, false, true);
 
             if(!$this->_saved) {
                 $viewTags['WARNING'] = dgettext('phatform', 'The form must be saved before it is available to the public.');
@@ -598,7 +598,7 @@ class PHAT_Form extends PHPWS_Item {
 
                 /* If in edit mode, show the element editor for the current element */
                 if($edit) {
-                    $sectionTags['ELEMENT_NAME'] = PHPWS_Text::parseOutput($this->element->getLabel());
+                    $sectionTags['ELEMENT_NAME'] = PHPWS_Text::parseOutput($this->element->getLabel(), ENCODE_PARSED_TEXT, false, true);
                     $sectionTags['ELEMENT_EDITOR'] = $this->_elementEditor($i);
                 }
 
@@ -1074,7 +1074,7 @@ class PHAT_Form extends PHPWS_Item {
     }// END FUNC _saveFormData()
 
     function _thanks() {
-        $thanksTags['MESSAGE'] = PHPWS_Text::parseOutput($this->_blurb1);
+        $thanksTags['MESSAGE'] = PHPWS_Text::parseOutput($this->_blurb1, ENCODE_PARSED_TEXT, false, true);
 
         $dataId = $this->_dataId;
 
@@ -1661,7 +1661,7 @@ class PHAT_Form extends PHPWS_Item {
             if(preg_match("/a:.:{/", $value)) {
                 $message .= implode(', ', unserialize(stripslashes($value)));
             } else {
-                $message .= PHPWS_Text::parseOutput($value);
+                $message .= PHPWS_Text::parseOutput($value, ENCODE_PARSED_TEXT, false, true);
             }
 
             $message = $message .
@@ -1702,7 +1702,7 @@ class PHAT_Form extends PHPWS_Item {
             if(preg_match('/a:.:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize(stripslashes($value)));
             } else {
-                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value);
+                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value, ENCODE_PARSED_TEXT, false, true);
             }
 
             $entryTags['ENTRY_DATA'][] = PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');

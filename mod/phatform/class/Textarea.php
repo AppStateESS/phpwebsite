@@ -68,7 +68,7 @@ class PHAT_Textarea extends PHAT_Element {
         if($this->isRequired())
         $viewTags['REQUIRED_FLAG'] = '&#42;';
 
-        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(), ENCODE_PARSED_TEXT, false, true);
         $viewTags['NAME'] = 'PHAT_' . $this->getLabel();
         $viewTags['ROWS'] = $this->_rows;
         $viewTags['COLS'] = $this->_cols;

@@ -55,7 +55,7 @@ class PHAT_Multiselect extends PHAT_Element {
         if($this->isRequired())
         $viewTags['REQUIRED_FLAG'] = '&#42;';
 
-        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->_blurb);
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->_blurb, ENCODE_PARSED_TEXT, false, true);
 
         $optionText = $this->getOptionText();
         $optionValues = $this->getOptionValues();

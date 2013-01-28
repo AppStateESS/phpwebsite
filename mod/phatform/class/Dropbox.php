@@ -61,7 +61,7 @@ class PHAT_Dropbox extends PHAT_Element {
         for($i = 0; $i < sizeof($optionText); $i++)
         $options[$optionValues[$i]] = $optionText[$i];
 
-        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(), ENCODE_PARSED_TEXT, false, true);
         $element = new Form_Select('PHAT_' . $label, $options);
         $element->setMatch($this->getValue());
 

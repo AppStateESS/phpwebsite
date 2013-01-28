@@ -353,7 +353,7 @@ class PHAT_Report {
             if(preg_match('/a:.:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize($value));
             } else {
-                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value);
+                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value, ENCODE_PARSED_TEXT, false, true);
             }
 
             $entryTags['ENTRY_DATA'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');

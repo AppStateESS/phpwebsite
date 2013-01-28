@@ -48,7 +48,7 @@ class PHAT_Radiobutton extends PHAT_Element {
         if($this->isRequired())
         $viewTags['REQUIRED_FLAG'] = '&#42;';
 
-        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb());
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(), ENCODE_PARSED_TEXT, false, true);
         $viewTags['RADIO_BUTTONS'] = '';
 
         $optionText = $this->getOptionText();
