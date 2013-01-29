@@ -813,8 +813,6 @@ class Rideboard {
 
         $tpl = $form->getTemplate();
 
-        $tpl['DIRECTIONS'] = dgettext('rideboard', '');
-
         if ($this->carpool->id) {
             $this->title = dgettext('rideboard', 'Update carpool');
         } else {
