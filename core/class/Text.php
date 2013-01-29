@@ -588,7 +588,7 @@ class PHPWS_Text {
      */
     public static function linkAddress($module=null, $getVars=null, $secure=false, $add_base=false, $convert_amp=true, $rewrite=false)
     {
-        $link = new PHPWS_Link(null, $module, $getVars);
+        $link = new PHPWS_Link('void', $module, $getVars);
         $link->secure = $secure;
         $link->full_url = $add_base;
         $link->convert_amp = $convert_amp;
