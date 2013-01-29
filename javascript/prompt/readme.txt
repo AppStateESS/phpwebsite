@@ -6,6 +6,8 @@ $vars['answer']     = 'Type the name here...';
 $vars['value_name'] = 'new_name';
 $vars['link']       = 'Click on me to name this';
 $vars['type']       = 'link'; // or button
+$vars['class']      = 'css-class';
+$vars['title']       = 'Hover text';
 
 echo javascript('prompt', $vars);
 
