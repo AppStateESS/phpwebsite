@@ -108,6 +108,14 @@ function phatform_update(&$content, $version)
 -------------
 + Fixed isset check that should have used empty
 </pre>';
+
+        case version_compare($version, '3.1.8', '<'):
+            $content[] = '<pre>
+3.1.8 changes
+-------------
++ Fixed newline bug.
++ Fixed notice error message display.
+</pre>';
     }
     return true;
 }
