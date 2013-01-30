@@ -1,0 +1,1 @@
+<script type="text/javascript" src="{source_http}mod/blog/javascript/image_url/script.js"></script>

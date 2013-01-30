@@ -197,7 +197,7 @@ function blog_update(&$content, $currentVersion)
             $content[] = '<pre>
 1.6.3 changes
 ----------------
-+ Small fix to allow linkable images on cached pages.        
++ Small fix to allow linkable images on cached pages.
 </pre>';
 
 
@@ -290,7 +290,7 @@ function blog_update(&$content, $currentVersion)
 + Blog templates now have have single view and multiple view
   templates.';
             $content[] = '</pre>';
-            
+
         case version_compare($currentVersion, '1.8.3', '<'):
             $content[] = '<pre>1.8.3 changes
 ---------------------
@@ -301,6 +301,11 @@ function blog_update(&$content, $currentVersion)
 ---------------------
 + Removed caching to correct previous blog entries problems
 </pre>';
+
+        case version_compare($currentVersion, '1.9.0', '<'):
+            $content[] = '<pre>1.9.0 changes
+---------------------
++ Blog entry takes place in just one text field now.</pre>';
     } // end of switch
     return true;
 }

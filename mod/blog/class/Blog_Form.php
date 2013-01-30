@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::initCoreClass('Form.php');
 
 class Blog_Form {
@@ -12,8 +11,9 @@ class Blog_Form {
     /**
      * @param boolean limited   If true, use anonymous submission form
      */
-    public static function edit(Blog $blog, $version_id=NULL, $limited=false)
+    public static function edit(Blog $blog, $version_id = NULL, $limited = false)
     {
+        javascriptMod('blog', 'image_url');
         $form = new PHPWS_Form('edit-blog');
         $form->useBreaker();
         $form->addHidden('module', 'blog');
@@ -39,7 +39,7 @@ class Blog_Form {
                 }
             }
 
-            if ($blog->id || isset($version_id)){
+            if ($blog->id || isset($version_id)) {
                 $form->addHidden('blog_id', $blog->id);
                 $form->addSubmit('submit', dgettext('blog', 'Update entry'));
             } else {
@@ -70,14 +70,14 @@ class Blog_Form {
                 $form->setMatch('comment_approval', PHPWS_Settings::get('comments', 'default_approval'));
             }
 
-            $link_choices['none']       = dgettext('blog', 'No link and ignore image link setting');
-            $link_choices['default']    = dgettext('blog', 'No link but allow image link setting');
-            $link_choices['readmore']   = dgettext('blog', 'Link to read more');
-            $link_choices['parent']     = dgettext('blog', 'Link resized image to parent');
-            $link_choices['url']        = dgettext('blog', 'Link the url below');
+            $link_choices['none'] = dgettext('blog', 'No link and ignore image link setting');
+            $link_choices['default'] = dgettext('blog', 'No link but allow image link setting');
+            $link_choices['readmore'] = dgettext('blog', 'Link to read more');
+            $link_choices['parent'] = dgettext('blog', 'Link resized image to parent');
+            $link_choices['url'] = dgettext('blog', 'Link the url below');
 
             $form->addSelect('image_link', $link_choices);
-            $form->setExtra('image_link', 'onchange="toggleUrl(this)"');
+            //$form->setExtra('image_link', 'onchange="toggleUrl(this)"');
             $form->setLabel('image_link', dgettext('blog', 'Link setting (if image)'));
             if (!isset($link_choices[$blog->image_link])) {
                 $url = $blog->image_link;
@@ -120,21 +120,13 @@ class Blog_Form {
         $form->setLabel('title', dgettext('blog', 'Title'));
         $form->setRequired('title');
 
-        $form->addTextArea('summary', $blog->getSummary());
+        $form->addTextArea('summary', $blog->getSummaryAndEntry());
         if (!$limited) {
             $form->useEditor('summary');
         }
         $form->setRows('summary', '10');
         $form->setCols('summary', '60');
-        $form->setLabel('summary', dgettext('blog', 'Summary'));
-
-        $form->addTextArea('entry', $blog->getEntry());
-        if (!$limited) {
-            $form->useEditor('entry');
-        }
-        $form->setRows('entry', '10');
-        $form->setCols('entry', '60');
-        $form->setLabel('entry', dgettext('blog', 'Entry'));
+        $form->setLabel('summary', dgettext('blog', 'Content'));
 
         $form->addText('publish_date', $blog->getPublishDate('%Y/%m/%d %H:%M'));
         $form->setLabel('publish_date', dgettext('blog', 'Publish date/time'));
@@ -146,7 +138,7 @@ class Blog_Form {
         $template = $form->getTemplate();
 
         $jscal['form_name'] = 'edit-blog';
-        $jscal['type']      = 'text_clock';
+        $jscal['type'] = 'text_clock';
 
         $jscal['date_name'] = 'publish_date';
 
@@ -159,6 +151,7 @@ class Blog_Form {
         if ($blog->_error) {
             $template['MESSAGE'] = implode('<br />', $blog->_error);
         }
+        $template['REMINDER'] = dgettext('blog', 'Add a horizontal rule to separate content into summary and body');
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 
@@ -242,18 +235,18 @@ class Blog_Form {
         $form->setMatch('show_recent', PHPWS_Settings::get('blog', 'show_recent'));
 
         /*
-         $cache_view = PHPWS_Settings::get('blog', 'cache_view');
-         $form->addCheck('cache_view', 1);
-         $form->setLabel('cache_view', dgettext('blog', 'Cache anonymous view'));
-         $form->setMatch('cache_view', $cache_view);
-         if (!ALLOW_CACHE_LITE) {
-         $form->setDisabled('cache_view');
-         $form->addTplTag('RESET_CACHE', dgettext('blog', 'System caching disabled.'));
-         } else {
-         if ($cache_view) {
-         $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
-         }
-         }
+          $cache_view = PHPWS_Settings::get('blog', 'cache_view');
+          $form->addCheck('cache_view', 1);
+          $form->setLabel('cache_view', dgettext('blog', 'Cache anonymous view'));
+          $form->setMatch('cache_view', $cache_view);
+          if (!ALLOW_CACHE_LITE) {
+          $form->setDisabled('cache_view');
+          $form->addTplTag('RESET_CACHE', dgettext('blog', 'System caching disabled.'));
+          } else {
+          if ($cache_view) {
+          $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
+          }
+          }
          */
         $form->addCheck('allow_anonymous_submits', 1);
         $form->setLabel('allow_anonymous_submits', dgettext('blog', 'Allow anonymous submissions'));
@@ -261,11 +254,11 @@ class Blog_Form {
 
         $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
         $form->setLabel('max_width', dgettext('blog', 'Maximum image width (50-2048)'));
-        $form->setSize('max_width', 4,4);
+        $form->setSize('max_width', 4, 4);
 
         $form->addTextField('max_height', PHPWS_Settings::get('blog', 'max_height'));
         $form->setLabel('max_height', dgettext('blog', 'Maximum image height (50-2048)'));
-        $form->setSize('max_height', 4,4);
+        $form->setSize('max_height', 4, 4);
 
         $form->addSubmit(dgettext('blog', 'Save settings'));
 
@@ -282,17 +275,18 @@ class Blog_Form {
 
 
         if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-            $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',
-            array('action'=>'admin', 'command'=>'menu_submit_link'));
+            $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog', array('action' => 'admin', 'command' => 'menu_submit_link'));
         }
 
-        $template['VIEW_LABEL']       = dgettext('blog', 'View');
-        $template['CATEGORY_LABEL']   = dgettext('blog', 'Category');
-        $template['COMMENT_LABEL']    = dgettext('blog', 'Comment');
+        $template['VIEW_LABEL'] = dgettext('blog', 'View');
+        $template['CATEGORY_LABEL'] = dgettext('blog', 'Category');
+        $template['COMMENT_LABEL'] = dgettext('blog', 'Comment');
         $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
-        $template['PAST_NOTE']        = dgettext('blog', 'Set to zero to prevent display');
+        $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');
 
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');
     }
+
 }
+
 ?>

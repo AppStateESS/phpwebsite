@@ -21,7 +21,7 @@ class Blog_Admin {
             return;
         }
 
-        $previous_version = $title = $content = NULL;
+        $title = $content = NULL;
         $message = Blog_Admin::getForward();
 
         $panel = Blog_Admin::cpanel();
