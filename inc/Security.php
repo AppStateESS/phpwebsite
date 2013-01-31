@@ -68,24 +68,30 @@ if (!(PHPWS_Core::allowScriptTags()) &&
 }
 
 /**
- * Checks for <script> embedding
+ * Checks for <script> embedding and any double-URL-encoded data
+ * 
+ * @return bool
  */
-function checkUserInput($check)
+function checkUserInput($input)
 {
     $scripting = '/(%3C|<|&lt;|&#60;)\s*(script|\?)/iU';
-    $ascii_chars = '/%(0|1)(\d|[a-f])/i';
+    $asciiChars = '/%(0|1)(\d|[a-f])/i';
 
-    if (is_array($check)) {
-        foreach ($check as $check_val) {
-            if (!checkUserInput($check_val)) {
+    // Call recursively if input is an array
+    if (is_array($input)) {
+        foreach ($input as $input_val) {
+            if (!checkUserInput($input_val)) {
                 return FALSE;
-            }
-        }
+            }   
+        }   
         return TRUE;
     } else {
 
-        if (preg_match($scripting, $check) ||
-        preg_match($ascii_chars, $check)) {
+        // Decoding input once is ok
+        $decodedInput = rawurldecode($input);
+
+        // Check for any script tags or any remaining URL encoded characters
+        if (preg_match($scripting, $decodedInput) || preg_match($asciiChars, $decodedInput)) {
             return FALSE;
         }
         return TRUE;
