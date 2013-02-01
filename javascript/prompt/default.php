@@ -21,7 +21,4 @@ if (isset($data['answer'])) {
     $data['answer'] = str_replace("&#039;", "\\'", $data['answer']);
 }
 
-if (!isset($data['title'])) {
-    $data['title'] = $data['link'];
-}
 ?>
