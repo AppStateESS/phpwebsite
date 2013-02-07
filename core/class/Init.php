@@ -59,6 +59,7 @@ define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
 
+/*
 function __autoload($class_name)
 {
     if (preg_match('/\W/', $class_name)) {
@@ -71,6 +72,7 @@ function __autoload($class_name)
         require_once $class_file;
     }
 }
+*/
 
 PHPWS_Core::initCoreClass('Database.php');
 PHPWS_Core::initCoreClass('Debug.php');

@@ -1,86 +1,120 @@
 <?php
 
 /**
- * Main file for loading phpwebsite. Initializes core,
- * checks security, loads modules.
+ * Main file for loading phpwebsite. Loads configuration
+ * and creates inital object to start execution.
  *
- * @author Matthew McNaney <matt at tux dot appstate edu>,
+ * @link http://phpwebsite.appstate.edu/
+ * @package TheThing
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>,
  * @author Hilmar Runge <hi at dc4db dot net>
- * @version $Id$
+ * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
+ * @license http://opensource.org/licenses/gpl-3.0.html GNU GPLv3
+ * @copyright Copyright 2013, Appalachian State University & Contributors
  */
-ini_set('register_globals', 0);
 
-// For extra security, consider changing AUTO_ROUTE to FALSE
-// after installation
+// Setup initial error handling so that errors at least
+// end up in the web server's logs
+set_error_handler('errorHandler');
+set_exception_handler('exceptionHandler');
 
-define('AUTO_ROUTE', TRUE);
+/* Debugging Flag
+ * Setting this to true will cause exceptions to be echoed
+ * to the browser, as welll as being logged. This is useful
+ * for development environments, but should be set to false
+ * for production work.
+ */
+define('DEBUG', true);
 
+// If config file is present, then load it
+// otherwise, go to setup.
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
 } else {
-    if (AUTO_ROUTE == TRUE) {
-        if (is_file('./setup/index.php')) {
-            header('Location: ./setup/index.php');
-            exit();
-        } else {
-            exit('Fatal Error: Could not locate your configuration file.');
-        }
+    if (is_file('./setup/index.php')) {
+        header('Location: ./setup/index.php');
+        exit();
     } else {
-        exit('Fatal Error: Could not locate your configuration file.');
+        // Config file missing, Setup index.php missing, so stop here.
+        exit('Fatal Error: Could not locate your configuration file and no setup index.php available.');
     }
 }
 
-include PHPWS_SOURCE_DIR . 'phpws_stats.php';
+// Now that we have file paths from configuration,
+// setup autoloading and setup the namespace
+spl_autoload_register('autoloadTheThing');
 
-// Commented out in phpWebSite 2.0. If missing functions, uncomment
-// require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
+// Create a new Thing and run it for this request
+use \TheThing;
+try{
+    $thing = new TheThing\TheThing();
+    $thing->execute();
 
-ob_start();
-require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
-require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
-require_once PHPWS_SOURCE_DIR . 'inc/Forward.php';
-
-
-PHPWS_Core::requireConfig('core', 'file_types.php');
-PHPWS_Core::initializeModules();
-
-define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
-session_name(SESSION_NAME);
-session_start();
-
-require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
-
-if (!PHPWS_Core::checkBranch()) {
-    PHPWS_Core::errorPage();
+}catch(Exception $e){ // Catch ALL the exceptions!
+    exceptionHandler($e);
 }
 
-PHPWS_Core::runtimeModules();
-PHPWS_Core::checkOverpost();
-PHPWS_Core::runCurrentModule();
-PHPWS_Core::closeModules();
 
-// BGmode (
-if (isset($_SESSION['BG'])) {
-    ob_end_clean();
-    echo $_SESSION['BG'];
-} else {
-    ob_end_flush();
+/**
+ * A simple error handler for catching major errors and turning them into exceptions
+ * using PHP's built in ErrorException class.
+ *
+ * @param $errno Int - Error number
+ * @param $errstr
+ * @param $errfile
+ * @param $errline
+ * @param @errcontext
+ */
+function errorHandler($errno, $errstr, $errfile = null, $errline = null, $errcontext = null)
+{
+    // Ignore most types of errors, and only throw exceptions for the most critical.
+    // NB: This ignores E_STRICT errors, because PEAR still has lots of those.
+    if($errno & (E_ERROR | E_PARSE | E_USER_ERROR)){
+        throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+    }
 }
-// )
 
-PHPWS_DB::disconnect();
+/**
+ * A sipmle exception handler for catching exceptions that are thrown outside
+ * the main execution try/catch block (e.g. when autoloading). This function
+ * is registered with PHP using the set_exception_handler() function at the
+ * start of index.php.
+ *
+ * @param Exception $e
+ */
+function exceptionHandler(Exception $e)
+{
+    // Log the exception to the web server's log
+    error_log("Exception: {$e->getMessage()} in {$e->getFile()} on line {$e->getLine()}");
 
-PHPWS_Core::setLastPost();
+    // If config had debug turned on, then echo the exception and exit
+    if(DEBUG){
+        echo $e;
+        exit;
+    }
 
-if (isset($_REQUEST['reset'])) {
-    PHPWS_Core::killAllSessions();
+    require_once('exception.html');
+    exit();
 }
-// BGmode(
-if (isset($_SESSION['BG'])) {
-    unset($_SESSION['BG']);
-} else {
-    show_stats();
-}
-// )
 
+/**
+ * The central custom autoloader method for TheThing. Takes a class path
+ * (namespace path + class name) and attempts to require_once() the proper
+ * file containing that class.
+ *
+ * Currently, this will only load "core" classes from the /class directory.
+ *
+ * @param string $classPath Namespace path and class name
+ */
+function autoloadTheThing($classPath)
+{
+    $parts = explode('\\', $classPath);
+
+    if($parts[0] == 'TheThing') {
+        array_shift($parts); // Remove TheThing namespace, keep the rest of the path
+        $path = getcwd() . '/class/' . implode('/', $parts) . '.php';
+    }
+
+    require_once $path;
+}
 ?>
