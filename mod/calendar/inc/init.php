@@ -5,4 +5,5 @@
  * @version $Id$
  */
 PHPWS_Core::initModClass('calendar', 'Calendar.php');
+PHPWS_Core::initCoreClass('Time.php');
 ?>
