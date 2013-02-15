@@ -113,7 +113,8 @@ function autoloadTheThing($class)
     // Handle the new way of doing things
     if($parts[0] == 'TheThing') {
         array_shift($parts); // Remove TheThing namespace, keep the rest of the path
-        $path = getcwd() . '/class/' . implode('/', $parts) . '.php';
+        // Can't use getcwd here because branches
+        $path = PHPWS_SOURCE_DIR . '/class/' . implode('/', $parts) . '.php';
         require_once $path;
         return;
     }
