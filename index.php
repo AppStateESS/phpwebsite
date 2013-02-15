@@ -104,17 +104,38 @@ function exceptionHandler(Exception $e)
  *
  * Currently, this will only load "core" classes from the /class directory.
  *
- * @param string $classPath Namespace path and class name
+ * @param string $class Namespace path and class name
  */
-function autoloadTheThing($classPath)
+function autoloadTheThing($class)
 {
-    $parts = explode('\\', $classPath);
+    $parts = explode('\\', $class);
 
+    // Handle the new way of doing things
     if($parts[0] == 'TheThing') {
         array_shift($parts); // Remove TheThing namespace, keep the rest of the path
         $path = getcwd() . '/class/' . implode('/', $parts) . '.php';
+        require_once $path;
+        return;
     }
 
-    require_once $path;
+    // Handle the old way of doing things
+    // TODO: deprecate
+    if(substr($class, 0, 6) == 'PHPWS_') {
+        $class_file = PHPWS_SOURCE_DIR . 'core/class/' . 
+            preg_replace('/^PHPWS_/', '', $class) . '.php';
+        if(!is_file($class_file)) {
+            // TODO: Better Exceptions
+            throw new Exception("Could not use the old autoloader to initialize class $class in file $class_file");
+        }
+        require_once $class_file;
+
+        // Alert the developer that something old is happening
+        $back = debug_backtrace();
+        $file = $back[2]['file'];
+        $line = $back[2]['line'];
+        PHPWS_Error::log("Deprecation Notice: used old autoload to load $class in $file line $line");
+
+        return;
+    }
 }
 ?>

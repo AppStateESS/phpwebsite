@@ -59,21 +59,6 @@ define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
 
-/*
-function __autoload($class_name)
-{
-    if (preg_match('/\W/', $class_name)) {
-        return;
-    }
-    $class_name = str_replace('PHPWS_', '', $class_name);
-
-    $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
-    if (is_file($class_file)) {
-        require_once $class_file;
-    }
-}
-*/
-
 PHPWS_Core::initCoreClass('Database.php');
 PHPWS_Core::initCoreClass('Debug.php');
 PHPWS_Core::initCoreClass('Settings.php');
