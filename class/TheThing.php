@@ -9,6 +9,7 @@ namespace TheThing;
  */
 
 use \PHPWS_Core;
+use \PHPWS_DB;
 
 class TheThing {
 
