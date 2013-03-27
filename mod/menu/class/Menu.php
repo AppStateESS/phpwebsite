@@ -160,8 +160,7 @@ class Menu {
         }
 
         $vars['parent'] = (int) $parent_id;
-
-        if ($key->id) {
+        if ($key->id || $key->module == 'home') {
             $link = MENU_LINK_ADD;
             if ($popup) {
                 $link .= ' ' . dgettext('menu', 'Add current page');
