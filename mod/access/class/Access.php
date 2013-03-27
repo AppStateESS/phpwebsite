@@ -892,7 +892,7 @@ class Access {
             $db->setLimit(1);
             $keyword = $db->select('one');
             if (!empty($keyword)) {
-                PHPWS_Core::reroute('./' . $keyword);
+                PHPWS_Core::reroute($keyword);
                 exit();
             }
         }
