@@ -204,6 +204,11 @@ function access_update(&$content, $version)
 ---------------
 + Added tools to shortcuts to give all pages shortcuts and to autoforward on id calls.
 + Made sure the varchar is changed since the install did not reflect the change.</pre>';
+
+            case version_compare($version, '1.2.2', '<'):
+                $content[] = '<pre>1.2.2 changes
+--------------
++ Fixed autoforwarding</pre>';
     }
 
     return true;
