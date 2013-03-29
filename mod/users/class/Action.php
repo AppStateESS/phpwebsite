@@ -734,6 +734,10 @@ class User_Action {
                 }
                 break;
 
+            case 'return_bookmark':
+                PHPWS_Core::popUrlHistory();
+                break;
+
                 // reset user password
             case 'rp':
                 $user_id = User_Action::checkResetPassword();

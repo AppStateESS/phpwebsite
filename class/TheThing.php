@@ -46,6 +46,8 @@ class TheThing {
         PHPWS_Core::runCurrentModule();
         PHPWS_Core::closeModules();
 
+        PHPWS_Core::pushUrlHistory();
+
         // BGmode
         // NEEDS MOAR COMMENTS
         if (isset($_SESSION['BG'])) {

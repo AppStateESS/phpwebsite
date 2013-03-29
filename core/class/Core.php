@@ -308,6 +308,8 @@ class PHPWS_Core {
         }
 
         $_SESSION['PHPWS_Bookmark'] = $url;
+
+        PHPWS_Core::pushUrlHistory();
     }
 
     public static function returnToBookmark($clear_bm=true)
@@ -322,6 +324,24 @@ class PHPWS_Core {
         } else {
             PHPWS_Core::goBack();
         }
+    }
+
+    public static function pushUrlHistory()
+    {
+        if(!isset($_SESSION['PHPWS_UrlHistory'])) {
+            $_SESSION['PHPWS_UrlHistory'] = array();
+        }
+
+        array_push($_SESSION['PHPWS_UrlHistory'], PHPWS_Core::getCurrentUrl());
+    }
+
+    public static function popUrlHistory()
+    {
+        if(!isset($_SESSION['PHPWS_UrlHistory']) || count($_SESSION['PHPWS_UrlHistory']) == 0) {
+            PHPWS_Core::home();
+        }
+
+        PHPWS_Core::reroute(array_pop($_SESSION['PHPWS_UrlHistory']));
     }
 
     /**
