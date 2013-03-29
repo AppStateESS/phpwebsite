@@ -6,30 +6,30 @@ should just use the files included with distribution.
 
 After installation you will need to install some content modules.
 
-Login and go to the Administration tab.
-Click on Boost.
-Click on Other Modules
-Install any of the modules included. We recommend you try them all.
+1. Login and go to the Administration tab.
+2. Click on Boost.
+3. Click on Other Modules
+4. Install any of the modules included. We recommend you try them all.
 
-Remember after you install to restrict your directory permissions.
+**Remember after you install to restrict your directory permissions.**
 
-files/
-images/
-logs/
-^ Should be writable to by apache.
+These directories should always be writable and executable by Apache:
+* files/
+* images/
+* logs/
 
-javascript/
-templates/
-config/
-^ Should be writable ONLY during module or core installs/updates/uninstalls
+These directories should be writable and executable by Apache only during module or core installs, updates, and uninstalls:
+* javascript/
+* templates/
 
-logs/     should NOT be world readable
-setup/    should be moved or made unreadable AFTER an installation
-convert/  should be removed after converting
+Additional permission suggestions:
+* logs/     should NOT be world readable
+* setup/    should be moved or made unreadable AFTER an installation
+* convert/  should be removed after converting
 
-> Before updating the core, make sure to make a copy of your
-> config/core directory or some of your settings could get
-> overwritten.
+**Before updating the core, make sure to make a copy of your
+config/core directory or some of your settings could get
+overwritten.**
 
 If you are upgrading, the only file you must keep in your config/core
 directory is language.php.
