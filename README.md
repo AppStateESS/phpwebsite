@@ -1,4 +1,5 @@
 Welcome to phpWebSite!
+======================
 
 phpWebSite comes with its own set of Pear files. Most of the time you
 should just use the files included with distribution.
@@ -26,9 +27,9 @@ logs/     should NOT be world readable
 setup/    should be moved or made unreadable AFTER an installation
 convert/  should be removed after converting
 
-!!! Before updating the core, make sure to make a copy of your
-!!! config/core directory or some of your settings could get
-!!! overwritten.
+> Before updating the core, make sure to make a copy of your
+> config/core directory or some of your settings could get
+> overwritten.
 
 If you are upgrading, the only file you must keep in your config/core
 directory is language.php.
