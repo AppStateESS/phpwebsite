@@ -912,6 +912,7 @@ class PHPWS_Boost {
                     return $errorDir;
                 }
                 foreach ($result as $branch) {
+                    $contentTmp = array();
                     if (!PHPWS_Boost::checkDirectories($contentTmp, $branch['directory'], false)) {
                         $content[] = sprintf(dgettext('boost', 'Checking branch "%s"'), $branch['branch_name']);
                         foreach($contentTmp as $tmp) $content[] = $tmp;
