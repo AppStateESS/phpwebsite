@@ -1,0 +1,44 @@
+/*
+    Document   : style
+    Created on : May 28, 2012, 11:42:59 AM
+    Author     : matt
+    Description:
+        Styles the debug output. See Global\Data::debug()
+*/
+
+body {
+    font-size : 14px;
+}
+
+div#Debug {
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    text-align : left;
+    background-color : #768EFF;
+}
+
+td, th {
+    padding : 4px;
+    vertical-align : top;
+}
+
+h1 {
+    font-size : 1.4em;
+}
+
+table.object tr th {
+   background-color : #A8B8FF;
+}
+
+tr.variable {
+    background-color : gray;
+}
+
+table.var-listing td {
+    padding : 2px;
+}

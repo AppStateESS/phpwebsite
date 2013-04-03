@@ -1,0 +1,3 @@
+<?=$called?>
+
+<?= $debug_output ?>"

@@ -1,0 +1,67 @@
+The PEAR library included with phpWebSite is a subset of the original. Some directories and files have been removed.
+These directories and files included documentation and test files. LICENCE files were not deleted.
+Also, some files were updated to conform to strict PHP standards. A PEAR update WILL overwrite these changes but should
+not change the functionality.
+
+If you want the full versions, see the README file included with this distribution.
+
+Changes
+
+All files:
+"&new" to "new"
+"& new" to "new"
+
+Calendar/Calendar.php
+Calender_Engine_Factory::getEngine - made static
+Calendar::Calendar - removed pass-by-reference
+
+MDB2.php
+---------------------------
+Commented out PHP 4 constructors
+pass-by-references removed on some constructions
+(MDB2::_wrapResult was cast to a variable and then passed as a reference)
+
+Following were made public static functions:
+MDB2::singleton
+MDB2::parseDSN
+MDB2::factory
+MDB2::classExists
+MDB2::loadClass
+MDB2::setOptions
+MDB2::areEquals
+MDB2::isResultCommon
+MDB2::isError
+MDB2::fileExists
+
+Cache/Lite.php
+Cache_Lite::raiseError - fixed strict error
+
+
+MDB2/Manager/mysql.php
+---------------------------
+pass-by-references removed
+
+
+DB.php
+---------------------------
+functions made static:
+ connect
+ parseDSN 
+ 
+
+File.php
+---------------------------
+Made public static:
+ _File 
+ closeAll
+
+PEAR.php
+---------------------------
+Functions made public static:
+ isError
+ registerShutdownFunc()
+ getStaticProperty
+
+HTTP/Upload.php
+HTTP_Upload_Error::raiseError - made compatible with PEAR::raiseError
+HTTP_Upload_File::isError - changed name of function is "hasError"
