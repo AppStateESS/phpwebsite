@@ -18,45 +18,43 @@
 //
 // $Id: If.php,v 1.5 2003/12/10 02:36:26 alan_k Exp $
 //
- 
+
 /**
 * Class to handle If statements
 *
 *
 */
-class HTML_Template_Flexy_Token_If extends HTML_Template_Flexy_Token{ 
+class HTML_Template_Flexy_Token_If extends HTML_Template_Flexy_Token{
     /**
     * Condition for the if statement.
     * @var string // a variable
     * @access public
     */
-    
+
     var $condition;
      /**
     * if the statement is negative = eg. !somevar..
     * @var string
     * @access public
     */
-    
-    
+
+
     var $isNegative = '';
-    
+
     /**
     * Setvalue - a string
     * @see parent::setValue()
     */
     function setValue($value) {
-        //var_dump($value);
         if (strlen($value) && $value{0} == '!') {
             $this->isNegative = '!';
             $value = substr($value,1);
         }
         $this->condition=$value;
     }
-    
+
 
 }
 
- 
- 
-  
+
+

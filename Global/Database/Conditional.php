@@ -156,10 +156,11 @@ class Conditional extends \Data {
                     $column = str_replace($this->resource . '.', $column);
                 }
             }
-            if ($this->resource->columnExists($column)) {
-                $this->column = $column;
-            } else {
+
+            if (DATABASE_CHECK_COLUMNS && !$this->resource->columnExists($column)) {
                 throw new \Exception(t('Unknown column: "%s"', $column));
+            } else {
+                $this->column = $column;
             }
         } elseif (is_object($column) && ($column instanceof Field || $column instanceof Expression)) {
             $this->column = $column;

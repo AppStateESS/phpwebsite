@@ -23,6 +23,11 @@ define('MYSQL_CHARACTER_SET', 'utf8');
 
 class DB extends \Database\DB {
 
+    public function getRandomCall()
+    {
+        return 'RAND()';
+    }
+
     public function getDelimiter()
     {
         return '`';

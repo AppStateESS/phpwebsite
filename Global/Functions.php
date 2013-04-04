@@ -25,7 +25,7 @@ function __autoload($class_name)
         $new_class_name = array_shift($class_stack);
         $class_remainder = implode('/', $class_stack);
 
-        $class_file = "Module/$new_class_name/Class/$class_remainder.php";
+        $class_file = "mod/$new_class_name/class/$class_remainder.php";
         if (is_file($class_file)) {
             require_once $class_file;
         }

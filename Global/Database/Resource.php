@@ -139,7 +139,7 @@ abstract class Resource extends Alias {
             throw new \Exception(t('Improper column name "%s"', $column_name));
         }
         $field = new Field($this, $column_name, $alias);
-        if (!($field->allowSplat() && $column_name == '*') && !$this->columnExists($column_name)) {
+        if (!($field->allowSplat() && $column_name == '*') && (DATABASE_CHECK_COLUMNS && !$this->columnExists($column_name))) {
             throw new \Exception(t('Column does not exist in %s "%s"', get_class($this), $this->getFullName()));
         }
         return $field;
@@ -228,9 +228,12 @@ abstract class Resource extends Alias {
      * @param string $conjunction
      * @return \Database\Conditional
      */
-    public function getConditional($column, $value, $operator = null, $conjunction = 'AND')
+    public function getConditional($column, $value, $operator = null, $conjunction = null)
     {
         $conditional = new Conditional($this, $column, $value, $operator);
+        if (empty($conjunction)) {
+                $conjunction = 'AND';
+        }
         $conditional->setConjunction($conjunction);
         return $conditional;
     }
@@ -274,16 +277,22 @@ abstract class Resource extends Alias {
      */
     public function addOrderBy($column, $direction = 'ASC')
     {
+        static $allowed_directions = array('ASC', 'DESC', 'RAND', 'RANDOM');
         $direction = trim(strtoupper($direction));
 
-        if ($direction != 'ASC' && $direction != 'DESC') {
+        if (!in_array($direction, $allowed_directions)) {
             throw new \Exception(t('Unknown order direction'));
         }
 
-        if ($this->columnExists($column)) {
-            $this->orders[] = $this->__toString() . " $column $direction";
-        } else {
+        // If a random call, return the db os specific function call.
+        if ($direction == 'RAND' || $direction == 'RANDOM') {
+            $direction = $this->db->getRandomCall();
+        }
+
+        if (DATABASE_CHECK_COLUMNS && !$this->columnExists($column)) {
             throw new \Exception(t('Table column "%s" is not known', $column));
+        } else {
+            $this->orders[] = $this->__toString() . ".$column $direction";
         }
     }
 

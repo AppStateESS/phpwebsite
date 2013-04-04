@@ -6,7 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-
 require_once 'Config/Defines.php';
 
 /**
@@ -22,6 +21,17 @@ class Database {
      * @var \Database\DSN
      */
     static private $default_dsn;
+
+    /**
+     * A stack of the previous queries
+     * @var array
+     */
+    private static $last_query = array();
+
+    public static function logQuery($query)
+    {
+        self::$last_query[] = $query;
+    }
 
     /**
      * Creates a new DB object based on the dsn parameter OR the default
@@ -46,7 +56,6 @@ class Database {
         return $db;
     }
 
-
     /**
      * Returns the DSN object currently stored in the default_dsn static variable.
      * @return \Database\DSN
@@ -68,7 +77,8 @@ class Database {
      */
     public static function newDSN($database_type, $username, $password = null, $database_name = null, $host = 'localhost', $port = null)
     {
-        $dsn = new \Database\DSN($database_type, $username, $password, $database_name, $host, $port);
+        $dsn = new \Database\DSN($database_type, $username, $password,
+                $database_name, $host, $port);
         return $dsn;
     }
 
@@ -114,7 +124,25 @@ class Database {
         }
         include $filename;
 
-        return self::newDSN($database_type, $username, $password, $database_name, $host, $port);
+        return self::newDSN($database_type, $username, $password,
+                        $database_name, $host, $port);
+    }
+
+    /**
+     * Returns the last query requested if $all is FALSE. If $all is TRUE,
+     * all queries in the command stack are returned.
+     * @param boolean $all
+     * @param boolean $html If true, add breaks on all
+     * @return string
+     */
+    public static function getLastQuery($all = false, $html=true)
+    {
+        if ($all) {
+            return implode(($html ? '<br>' : "\n"), self::$last_query);
+        } else {
+            $end = count(self::$last_query) - 1;
+            return self::$last_query[$end];
+        }
     }
 
 }

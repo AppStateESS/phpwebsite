@@ -38,9 +38,9 @@ class Field extends Column {
      * @param string $alias
      * @param boolean $check_existance Sends boolean argument to Column constructor
      */
-    public function __construct(\Database\Resource $resource, $name,
-            $alias = null, $check_existance = DATABASE_CHECK_COLUMNS)
+    public function __construct(\Database\Resource $resource, $name, $alias = null, $check_existance = null)
     {
+        $check_existance = empty($check_existance) ? DATABASE_CHECK_COLUMNS : $check_existance;
         parent::__construct($resource, $name, $check_existance);
 
         if ($alias) {

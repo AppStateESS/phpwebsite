@@ -116,12 +116,6 @@ abstract class DB extends \Data {
     private $limit = null;
 
     /**
-     * A stack of the last queries
-     * @var array
-     */
-    private $last_query = array();
-
-    /**
      * Number of rows to offset on the limit
      * @var integer
      */
@@ -201,6 +195,12 @@ abstract class DB extends \Data {
      * @return string
      */
     abstract public function getDelimiter();
+
+    /**
+     * Should return the proper format for a random order
+     * @return string
+     */
+    abstract public function getRandomCall();
 
     /**
      * Accepts a DSN object to create a new
@@ -372,7 +372,7 @@ abstract class DB extends \Data {
             throw new \Exception('SQL query was empty');
         }
 
-        $this->last_query[] = $sql;
+        \Database::logQuery($sql);
         return self::$PDO->query($sql);
     }
 
@@ -389,7 +389,7 @@ abstract class DB extends \Data {
             throw new \Exception('SQL query was empty');
         }
 
-        $this->last_query[] = $sql;
+        \Database::logQuery($sql);
         return self::$PDO->exec($sql);
     }
 
@@ -597,6 +597,8 @@ abstract class DB extends \Data {
     {
         if ($this->inTableStack($table_name)) {
             return $this->tables[$table_name];
+        } else {
+            throw new \Exception(t('Table "%s" does not exist', $table_name));
         }
     }
 
@@ -611,7 +613,7 @@ abstract class DB extends \Data {
 
     /**
      * Returns the first table object on the DB table stack.
-     * @return Table
+     * @return \Database\Table
      */
     public function getFirstTable()
     {
@@ -682,22 +684,6 @@ abstract class DB extends \Data {
     public function getLastId($table_name)
     {
         return $this->last_id[$table_name];
-    }
-
-    /**
-     * Returns the last query requested of DB is $all if FALSE. If $all is TRUE,
-     * all queries in the command stack are returned.
-     * @param boolean $all
-     * @return string
-     */
-    public function getLastQuery($all = false)
-    {
-        if ($all) {
-            return implode("\n", $this->last_query);
-        } else {
-            $end = count($this->last_query) - 1;
-            return $this->last_query[$end];
-        }
     }
 
     /**
@@ -1300,12 +1286,13 @@ abstract class DB extends \Data {
     {
         $fields = array();
         foreach ($this->tables as $tbl) {
-            if ($tbl->columnExists($column_name)) {
-                if ($add_to_table) {
-                    $fields[] = $tbl->addField($column_name);
-                } else {
-                    $fields[] = $tbl->getField($column_name);
-                }
+            if (DATABASE_CHECK_COLUMNS && !$tbl->columnExists($column_name)) {
+                throw new \Exception(t('Column "%s" not found', $column_name));
+            }
+            if ($add_to_table) {
+                $fields[] = $tbl->addField($column_name);
+            } else {
+                $fields[] = $tbl->getField($column_name);
             }
         }
 
@@ -1451,21 +1438,22 @@ abstract class DB extends \Data {
         foreach ($this->tables as $tbl) {
             $primary_key = $tbl->getPrimaryIndex();
             foreach ($values as $column => $value) {
-                if ($tbl->columnExists($column)) {
-// if the column is a primary key and empty, we want to insert
-                    if ($column == $primary_key) {
-                        if (empty($value)) {
-                            $insert_object = true;
-                        } else {
-                            if (!$tbl->isJoined()) {
-                                $tbl->addWhere($primary_key, $value);
-                            }
-                            $insert_object = false;
-                        }
-                        continue;
-                    }
-                    $tbl->addValue($column, $value);
+                if (DATABASE_CHECK_COLUMNS && !$tbl->columnExists($column)) {
+                    throw new \Exception(t('Column "%s" not found', $column));
                 }
+                // if the column is a primary key and empty, we want to insert
+                if ($column == $primary_key) {
+                    if (empty($value)) {
+                        $insert_object = true;
+                    } else {
+                        if (!$tbl->isJoined()) {
+                            $tbl->addWhere($primary_key, $value);
+                        }
+                        $insert_object = false;
+                    }
+                    continue;
+                }
+                $tbl->addValue($column, $value);
             }
         }
 
@@ -1533,7 +1521,7 @@ abstract class DB extends \Data {
      */
     public function recordQuery($query)
     {
-        $this->last_query[] = $query;
+        \Database::logQuery($query);
     }
 
     /**
@@ -1562,9 +1550,11 @@ abstract class DB extends \Data {
     public function __destruct()
     {
         if (self::$transaction_count > 0) {
-            trigger_error(t('%s uncommitted database transactions', self::$transaction_count), E_USER_ERROR);
+            trigger_error(t('%s uncommitted database transactions',
+                            self::$transaction_count), E_USER_ERROR);
         } elseif (self::$transaction_count < 0) {
-            trigger_error(t('Database transaction commits and/or rollbacks are not in sync'), E_USER_ERROR);
+            trigger_error(t('Database transaction commits and/or rollbacks are not in sync'),
+                    E_USER_ERROR);
         }
     }
 

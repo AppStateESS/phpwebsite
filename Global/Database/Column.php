@@ -16,6 +16,7 @@ abstract class Column extends Alias {
      * @var object
      */
     public $resource = null;
+
     /**
      * Name of column
      * @var Variable\Attribute
@@ -29,15 +30,18 @@ abstract class Column extends Alias {
      * @param boolean $check_existence If true, check to see if column exists
      *        before creating
      */
-    public function __construct(\Database\Resource $resource, $name, $check_existence=DATABASE_CHECK_COLUMNS)
+    public function __construct(\Database\Resource $resource, $name, $check_existence = null)
     {
+        $check_existance = empty($check_existance) ? DATABASE_CHECK_COLUMNS : $check_existance;
         if (!\Database\DB::allowed($name)) {
             throw new \Exception(t('Bad column name'));
         }
         $this->name = new \Variable\Attribute($name, 'name');
         $this->resource = $resource;
         if ($check_existence && !$this->resource->columnExists($name)) {
-            throw new \Exception(t('Column "%s" does not exist in %s "%s"', $name, get_class($resource),  $this->resource->getFullName(false)));
+            throw new \Exception(t('Column "%s" does not exist in %s "%s"',
+                    $name, get_class($resource),
+                    $this->resource->getFullName(false)));
         }
     }
 
@@ -49,9 +53,10 @@ abstract class Column extends Alias {
     /**
      * @return string Name of column
      */
-    public function getName($with_delimiter=false)
+    public function getName($with_delimiter = false)
     {
-        return $with_delimiter ? wrap($this->name->get(), $this->resource->db->getDelimiter()) : $this->name->get();
+        return $with_delimiter ? wrap($this->name->get(),
+                        $this->resource->db->getDelimiter()) : $this->name->get();
     }
 
     /**
@@ -83,7 +88,6 @@ abstract class Column extends Alias {
     {
         return $this->resource === $table;
     }
-
 
 }
 

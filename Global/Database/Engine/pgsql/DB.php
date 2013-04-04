@@ -20,6 +20,11 @@ namespace Database\Engine\pgsql;
 
 class DB extends \Database\DB {
 
+    public function getRandomCall()
+    {
+        return 'RANDOM()';
+    }
+
     public function getDelimiter()
     {
         return '"';

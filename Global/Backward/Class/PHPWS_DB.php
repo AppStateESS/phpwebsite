@@ -13,6 +13,11 @@ class PHPWS_DB {
      * @var Database\DB object
      */
     private $db;
+
+    /**
+     * First table object created
+     * @var \Database\Table
+     */
     private $initial_table;
     public $tables;
     public $order;
@@ -20,12 +25,147 @@ class PHPWS_DB {
     public $group_by;
     public $distinct;
 
+    /**
+     * An array of where conditional objects
+     * @var array
+     */
+    private $where;
+
     public function __construct($table = null)
     {
         $this->db = \Database::newDB();
-        if ($table) {
-            $this->initial_table = $this->db->addTable($table);
-            $this->tables[$table] = $this->initial_table;
+        if (!empty($table)) {
+            $this->addTable($table);
+        }
+    }
+
+    /**
+     * If the table hasn't been added yet, this method:
+     * 1) Creates a table object, adding it to the DB object
+     * 2) If not yet set, copy the table name to the initial_table variable.
+     * 3) Add the table name to the tables variable.
+     *
+     * If it has already been added, pullTable returns it.
+     *
+     * @param string $table_name
+     * @return \Database\Table
+     */
+    public function addTable($table_name)
+    {
+        if ($this->db->inTableStack($table_name)) {
+            return $this->db->pullTable($table_name);
+        } else {
+            $tbl_obj = $this->db->addTable($table_name);
+            if (empty($this->initial_table)) {
+                $this->initial_table = $tbl_obj;
+            }
+            $this->tables[] = $table_name;
+            return $tbl_obj;
+        }
+    }
+
+    /**
+     * Joins two tables.
+     * @param string $join_type The type of join to use
+     * @param string $join_from The left table name
+     * @param string $join_to The right table name
+     * @param string $join_on_1 What column to join on from the left table
+     * @param string $join_on_2 What column to join on from the right table
+     * @param string $ignore_tables
+     */
+    public function addJoin($join_type, $join_from, $join_to, $join_on_1 = null, $join_on_2 = null, $ignore_tables = false)
+    {
+        unset($ignore_tables);
+        $left_table = $this->addTable($join_from);
+        $right_table = $this->addTable($join_to);
+
+        if (empty($join_on_1)) {
+            if (!empty($join_on_2)) {
+                throw new \Exception('Right join on added without left join on');
+            }
+            $this->db->join($left_table, $right_table, $join_type);
+        } else {
+            $left_field = $left_table->addField($join_on_1);
+            $right_field = $right_table->addField($join_on_2);
+            $this->db->join($left_field, $right_field, $join_type);
+        }
+    }
+
+    /**
+     * Receive a column name and determines if it is accessing the first table
+     * or a different table. The result is an added Table object.
+     *
+     * Example:
+     * $column_name = 'foo.bar';
+     *
+     * list($table, $column) = $db->deriveTable($column_name);
+     * // returns the 'foo' table object and the 'bar' field
+     * @param string $column
+     * @return array An array with a \Database\Table object and a column name string
+     */
+    public function deriveTableAndColumn($column)
+    {
+        // The column was entered as a table/column pair.
+        if (preg_match('/\w+\./', $column)) {
+            list($table_name, $column_name) = explode('.', $column);
+            if ($this->db->inTableStack($table_name)) {
+                $data['table'] = $this->db->pullTable($table_name);
+            } else {
+                $data['table'] = $this->addTable($table_name);
+            }
+            $data['column_name'] = $column_name;
+        } else {
+            $data['table'] = $this->initial_table;
+            $data['column_name'] = $column;
+        }
+        return $data;
+    }
+
+    /**
+     * Order query should be operated on or returned.
+     * @param string $order
+     */
+    public function addOrder($order)
+    {
+        /* @var $table \Database\Table */
+        $table = null;
+
+        /* @var $column_name string */
+        $column_name = null;
+        extract($this->deriveTableAndColumn($order));
+
+        // if a space is seen, the direction is included
+        if (preg_match('/\w+\s\w/', $column_name)) {
+            list($new_column_name, $direction) = explode(' ', $column_name);
+        } else {
+            $new_column_name = &$column_name;
+            $direction = 'ASD';
+        }
+        $table->addOrderBy($new_column_name, $direction);
+    }
+
+    /**
+     * Adds a where conditional to the first table.
+     *
+     * @param string $column
+     * @param string $value
+     * @param string $operator
+     * @param string $conj
+     * @param string $group
+     * @param string $join
+     */
+    public function addWhere($column, $value = null, $operator = null, $conj = null, $group = null, $join = false)
+    {
+        /* @var $table \Database\Table */
+        $table = null;
+
+        /* @var $column_name string */
+        $column_name = null;
+        extract($this->deriveTableAndColumn($column));
+        $this->where[] = $table->addWhere($column_name, $value, $operator, $conj);
+        if (!empty($group) || !empty($join)) {
+            trigger_error('Backward\PHPWS_DB::addWhere needs finishing - missing parameters group and join',
+                    E_USER_ERROR);
         }
     }
 
@@ -103,21 +243,24 @@ class PHPWS_DB {
     {
         if (strpos($column, '.')) {
             list($table, $column) = explode('.', $column);
-            if (!isset($this->tables[$table])) {
+            if (!in_array($table, $this->tables)) {
                 $column_table = $this->db->addTable($table);
             } else {
-                $column_table = $this->tables[$table];
+                $column_table = $this->db->pullTable($table);
             }
         } else {
             $column_table = $this->initial_table;
         }
         $field = $column_table->getField($column);
 
-        if ($distinct) {
+        if (!empty($max_min)) {
+            $max_min = strtoupper($max_min);
+            if ($max_min == 'MAX' || $max_min == 'MIN') {
+                $field = new \Database\Expression("$max_min($field)");
+            }
+        } elseif ($distinct) {
             $field = new \Database\Expression("distinct($field)");
-        }
-
-        if ($count) {
+        } elseif ($count) {
             $field = new \Database\Expression("count($field)");
         } elseif ($coalesce) {
             $field = new \Database\Expression("coalesce($field)");
@@ -129,7 +272,7 @@ class PHPWS_DB {
         $column_table->addField($field);
     }
 
-    public function select($type, $sql = null)
+    public function select($type = null, $sql = null)
     {
         if (empty($sql)) {
             $this->db->loadSelectStatement();
@@ -190,22 +333,23 @@ class PHPWS_DB {
     /**
      * @author Matt McNaney <mcnaney at gmail dot com>
      * @param  object $object        Object variable filled with result.
-     * @param  boolean $require_where If true, require a where parameter or
-     *                               have the id set
+     * @param  boolean $require_where If true, require a where parameter or have the id set
      * @return mixed                 Returns true if object properly populated and false otherwise
      *                               Returns error object if something goes wrong
      * @access public
+     * @throw \Exception
      */
     public function loadObject($object, $require_where = true)
     {
         if (!is_object($object)) {
             throw new Exception('Non object passed to loadObject');
         }
-        echo 'loadobject is not complete<br>';
-        echo '<a href="xdebug:///' . __FILE__ . '@' . __LINE__ . '">' . __CLASS__ . '::' . __FUNCTION__ . '</a>';
-        exit();
+
+        // If a where conditional is required and the object doesn't have an id
+        // and the database doesn't have a where conditional, we throw an exception.
         if ($require_where && empty($object->id) && empty($this->where)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_ID, 'core', 'PHPWS_DB::loadObject', get_class($object));
+            throw new \Exception(t('loadObject expected the object to have an id or where clause'),
+            PHPWS_DB_NO_ID);
         }
 
         if ($require_where && empty($this->where)) {
