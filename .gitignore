@@ -1,2 +1,4 @@
-config/core
+config/*
 logs/*
+files/*
+images/*
