@@ -103,6 +103,16 @@ class Setup {
         require_once 'File.php';
 
         $location = PHPWS_SOURCE_DIR . 'config/core/';
+
+        if(!file_exists($location)) {
+            // Try to make configuration directory
+            $result = mkdir($location);
+            if($result === false) {
+                $this->messages[] = 'Cannot create core configuration directory ' . $location;
+                return false;
+            }
+        }
+
         if (!is_writable($location)) {
             $this->messages[] = 'Cannot write file to ' . $location;
             return false;
