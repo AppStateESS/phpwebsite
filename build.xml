@@ -3,18 +3,45 @@
 <project name="phpwebsite" default="build">
     <property environment="env" />
 
-    <target name="build"
-        depends="prepare,lint" />
+    <!-- The current set of directories containing PHP code is /class,
+         /core/class, /mod/*/class.  Here, we set this up for consumption
+         by the various utilities that the buildscript employs. -->
+    <dirset dir="${basedir}" includes="class,core/class,mod/**/class" id="phpclasses" />
+    <pathconvert pathsep=" " property="phpclass-directories" refid="phpclasses" />
+    <pathconvert pathsep="," property="phpclass-directories-comma" refid="phpclasses" />
+    <pathconvert pathsep=" " property="phpclass-directories-source" refid="phpclasses">
+        <mapper type="glob" from="*" to="--source *" />
+    </pathconvert>
 
-    <target name="build-parallel" />
-    
-    <target name="metrics" />
+    <!-- These properties are used to communicate version information from
+         Jenkins to things like tar and rpm. -->
+    <target name="do-properties">
+        <property name="project.name" value="${env.JOB_NAME}"/>
 
-    <target name="post-rpm" depends="metrics" />
+        <condition property="project.version" value="${env.PRODUCTION_VERSION}" else="TESTING">
+            <isset property="env.PRODUCTION_VERSION" />
+        </condition>
 
+        <condition property="project.repo" value="production" else="testing">
+            <isset property="env.PRODUCTION_VERSION" />
+        </condition>
+
+        <condition property="project.release" value="${env.PRODUCTION_RELEASE}" else="${env.BUILD_NUMBER}">
+            <isset property="env.PRODUCTION_RELEASE" />
+        </condition>
+    </target>
+
+    <!-- 'build' just makes sure there are no silly syntax errors.  If you fail
+         this step, you fail at life. -->
+    <target name="build" depends="lint" />
+
+    <!-- 'metrics' runs all the testing, metrics, docgen, etc. -->
+    <target name="metrics" depends="prepare,phploc,pdepend,phpmd,phpcs,phpcpd,apigen,phpunit,phpcb" />
+    <target name="metrics-ci" depends="phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,apigen-ci,phpunit,phpcb" />
 
     <target name="clean" description="Cleanup build artifacts">
-        <delete dir="${basedir}/build"/>
+        <delete dir="${basedir}/build" />
+        <delete file="cache.properties" />
     </target>
 
     <target name="prepare" depends="clean"
@@ -24,12 +51,11 @@
         <mkdir dir="${basedir}/build/coverage"/>
         <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/pdepend"/>
-        <mkdir dir="${basedir}/build/phpdox"/>
         <mkdir dir="${basedir}/build/rpm"/>
         <mkdir dir="${basedir}/build/bin"/>
     </target>
 
-    <target name="lint">
+    <target name="lint" depends="prepare">
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
@@ -46,88 +72,139 @@
         </apply>
     </target>
 
-    <target name="phploc" description="Measure project size using PHPLOC">
+    <target name="phploc" depends="prepare" description="Measure project size using PHPLOC">
         <exec executable="phploc">
             <arg value="--log-csv" />
             <arg value="${basedir}/build/logs/phploc.csv" />
-            <arg path="${basedir}/class" />
+            <arg line="${phpclass-directories}" />
         </exec>
     </target>
 
-    <target name="pdepend"
+    <target name="pdepend" depends="prepare"
         description="Calculate software metrics using PHP_Depend">
         <exec executable="pdepend">
             <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg path="${basedir}/class" />
+            <arg line="${phpclass-directories-comma}" />
         </exec>
     </target>
 
-    <target name="phpmd"
+    <target name="phpmd" depends="prepare"
         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+        <!-- Commenting out because it literally takes days to run.
         <exec executable="phpmd">
-            <arg path="${basedir}/class" />
+            <arg line="${phpclass-directories-comma}" />
             <arg value="text" />
-            <arg value="/etc/ess/phpmd.xml" />
-        </exec>
+            <arg value="rulesets/unusedcode.xml,rulesets/codesize.xml,rulesets/controversial.xml,rulesets/design.xml,rulesets/naming.xml" />
+        </exec>-->
     </target>
 
-    <target name="phpmd-ci"
+    <target name="phpmd-ci" depends="prepare"
         description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
+        <!-- Commenting out because it literally takes days to run.
         <exec executable="phpmd">
-            <arg path="${basedir}/class" />
+            <arg line="${phpclass-directories-comma}" />
             <arg value="xml" />
-            <arg value="/etc/ess/phpmd.xml" />
-            <arg value="--reportfile" />
+            <arg value="rulesets/unusedcode.xml,rulesets/codesize.xml,rulesets/controversial.xml,rulesets/design.xml,rulesets/naming.xml" />
+            <arg value="-\-reportfile" />
             <arg value="${basedir}/build/logs/pmd.xml" />
-        </exec>
+        </exec>-->
     </target>
 
-    <target name="phpcs"
+    <target name="phpcs" depends="prepare"
         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
-            <arg value="--standard=/etc/ess/phpcs.xml" />
-            <arg path="${basedir}/class" />
+            <arg value="--standard=PEAR" />
+            <arg line="${phpclass-directories}" />
         </exec>
     </target>
 
-    <target name="phpcs-ci"
+    <target name="phpcs-ci" depends="prepare"
         description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-            <arg value="--standard=/etc/ess/phpcs.xml" />
-            <arg path="${basedir}/class" />
+            <arg value="--standard=PEAR" />
+            <arg line="${phpclass-directories}" />
         </exec>
     </target>
 
-    <target name="phpcpd" description="Find duplicate code using PHPCPD">
+    <target name="phpcpd" depends="prepare" description="Find duplicate code using PHPCPD">
         <exec executable="phpcpd">
             <arg value="--log-pmd" />
             <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/class" />
+            <arg line="${phpclass-directories}" />
         </exec>
     </target>
 
-    <target name="phpdox"
-        description="Generate API documentation using phpDox">
-        <exec executable="phpdox"/>
+    <target name="apigen" depends="prepare"
+        description="Generate API documentation using ApiGen">
+        <exec executable="apigen">
+            <arg line="${phpclass-directories-source}" />
+            <arg value="--destination" /><arg value="${basedir}/build/api" />
+        </exec>
     </target>
 
-    <target name="phpunit" description="Run unit tests with PHPUnit">
+    <target name="apigen-ci" depends="prepare"
+        description="Generate API documentation using ApiGen">
+        <exec executable="apigen">
+            <arg line="${phpclass-directories-source}" />
+            <arg value="--destination" /><arg value="${basedir}/build/api" />
+            <arg value="--download" /><arg value="yes" />
+            <arg value="--colors" /><arg value="no" />
+            <arg value="--progressbar" /><arg value="no" />
+        </exec>
+    </target>
+
+    <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
 <!--        <exec executable="phpunit" failonerror="true"/>-->
     </target>
 
-    <target name="phpcb"
+    <target name="phpcb" depends="prepare"
     description="Aggregate tool output with PHP_CodeBrowser">
         <exec executable="phpcb">
-            <arg value="--log" />
-            <arg path="${basedir}/build/logs" />
-            <arg value="--source" />
-            <arg path="${basedir}/class" />
-            <arg value="--output" />
-            <arg path="${basedir}/build/code-browser" />
+            <arg value="--log" /><arg value="${basedir}/build/logs" />
+            <arg line="${phpclass-directories-source}" />
+            <arg value="--output" /><arg value="${basedir}/build/code-browser" />
+        </exec>
+    </target>
+
+    <target name="tarball" depends="build" description="Create a Tarball">
+        <tar destfile="${basedir}/build/bin/${project.name}-${project.version}-${project-release}.tar.bz2" compression="bzip2">
+            <tarfileset dir="${basedir}" prefix="${project.name}-${project.version}-${project.release}/">
+                <exclude name=".git/**" />
+                <exclude name=".gitignore" />
+                <exclude name="build/**" />
+                <exclude name="cache.properties" />
+            </tarfileset>
+        </tar>
+    </target>
+
+    <target name="rpm" depends="tarball" description="Create an RPM">
+        <exec executable="rpmbuild" failonerror="true">
+            <arg value="--define" />
+            <arg value="_topdir ${basedir}/build/rpm" />
+            <arg value="--define" />
+            <arg value="_rpmdir ${basedir}/build/bin" />
+            <arg value="--define" />
+            <arg value="_srcrpmdir %{_topdir}" />
+            <arg value="--define" />
+            <arg value="_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm" />
+            <arg value="--define" />
+            <arg value="_specdir %{_topdir}" />
+            <arg value="--define" />
+            <arg value="_sourcedir ${basedir}/build/bin" />
+            <arg value="--define" />
+            <arg value="vendor Appalachian State University" />
+            <arg value="--define" />
+            <arg value="version ${project.version}" />
+            <arg value="--define" />
+            <arg value="release ${project.release}" />
+            <arg value="--define" />
+            <arg value="_binaries_in_noarch_packages_terminate_build 0" />
+            <arg value="-bb" />
+            <arg path="${basedir}/${project.name}.spec" />
         </exec>
     </target>
 </project>
