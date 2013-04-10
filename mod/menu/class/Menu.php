@@ -133,6 +133,9 @@ class Menu {
         $js['link_title'] = dgettext('menu', 'Add other link');
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
+        if($parent_id) {
+            $js['label'] = MENU_SUBLINK_ADD_SITE;
+        }
         if ($popup) {
             $js['label'] .= ' ' . dgettext('menu', 'Add other link');
         }
@@ -162,6 +165,9 @@ class Menu {
         $vars['parent'] = (int) $parent_id;
         if ($key->id || $key->module == 'home') {
             $link = MENU_LINK_ADD;
+            if($parent_id) {
+                $link = MENU_SUBLINK_ADD;
+            }
             if ($popup) {
                 $link .= ' ' . dgettext('menu', 'Add current page');
                 $vars['pu'] = 1;
