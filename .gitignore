@@ -4,3 +4,5 @@ files/*
 images/*
 cache.properties
 build/
+core/conf/defines.php
+javascript/captcha/recaptcha/recaptcha_settings.php

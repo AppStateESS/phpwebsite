@@ -1,8 +1,8 @@
 <?php
-namespace TheThing;
+namespace phpws;
 
 /*
- * TheThing  - Main controller class for the project
+ * LegacyController  - Main controller class for the project
  *
  * @author Jeremy Booker
  * @package TheThing
@@ -11,7 +11,7 @@ namespace TheThing;
 use \PHPWS_Core;
 use \PHPWS_DB;
 
-class TheThing {
+class LegacyController {
 
     public function __construct()
     {

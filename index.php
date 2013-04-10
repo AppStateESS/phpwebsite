@@ -5,7 +5,7 @@
  * and creates inital object to start execution.
  *
  * @link http://phpwebsite.appstate.edu/
- * @package TheThing
+ * @package phpws
  * @author Matthew McNaney <matt at tux dot appstate dot edu>,
  * @author Hilmar Runge <hi at dc4db dot net>
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
@@ -45,14 +45,19 @@ if (is_file('config/core/config.php')) {
 spl_autoload_register('autoloadTheThing');
 
 // Create a new Thing and run it for this request
-use \TheThing;
+use \phpws;
 try{
-    $thing = new TheThing\TheThing();
-    $thing->execute();
+    $controller = new LegacyController();
+    $controller->execute();
 
 }catch(Exception $e){ // Catch ALL the exceptions!
     exceptionHandler($e);
 }
+
+// Clean up after ourselves
+spl_autoload_unregister('autoloadTheThing');
+restore_exception_handler();
+restore_error_handler();
 
 
 /**
@@ -113,8 +118,8 @@ function autoloadTheThing($class)
     // Handle the new way of doing things
     if($parts[0] == 'TheThing') {
         array_shift($parts); // Remove TheThing namespace, keep the rest of the path
-        // Can't use getcwd here because branches
         $path = PHPWS_SOURCE_DIR . '/class/' . implode('/', $parts) . '.php';
+        // Can't use getcwd here because branches
         require_once $path;
         return;
     }
