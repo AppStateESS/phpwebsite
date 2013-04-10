@@ -45,8 +45,9 @@ if (is_file('config/core/config.php')) {
 spl_autoload_register('autoloadTheThing');
 
 // Create a new Thing and run it for this request
+use \phpws\LegacyController;
 try{
-    $controller = new phpws\LegacyController();
+    $controller = new LegacyController();
     $controller->execute();
 
 }catch(Exception $e){ // Catch ALL the exceptions!
@@ -115,7 +116,7 @@ function autoloadTheThing($class)
     $parts = explode('\\', $class);
 
     // Handle the new way of doing things
-    if($parts[0] == 'TheThing') {
+    if($parts[0] == 'phpws') {
         array_shift($parts); // Remove TheThing namespace, keep the rest of the path
         $path = PHPWS_SOURCE_DIR . '/class/' . implode('/', $parts) . '.php';
         // Can't use getcwd here because branches
