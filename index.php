@@ -45,7 +45,7 @@ if (is_file('config/core/config.php')) {
 spl_autoload_register('autoloadTheThing');
 
 // Create a new Thing and run it for this request
-use \phpws;
+use phpws;
 try{
     $controller = new LegacyController();
     $controller->execute();
