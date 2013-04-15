@@ -1320,6 +1320,12 @@ abstract class DB extends \Data {
         static $position = 0;
 
         $args = func_get_args();
+        // only one argument was sent and it was an array, in this case
+        // we replace the $args variable with the first value.
+        if (func_num_args() == 1 && is_array($args[0])) {
+            $args = $args[0];
+        }
+
 
         if (empty($args)) {
             throw new \Exception(t('Invalid parameters.'));
@@ -1549,6 +1555,7 @@ abstract class DB extends \Data {
      */
     public function __destruct()
     {
+        self::disconnect();
         if (self::$transaction_count > 0) {
             trigger_error(t('%s uncommitted database transactions',
                             self::$transaction_count), E_USER_ERROR);
@@ -1556,6 +1563,14 @@ abstract class DB extends \Data {
             trigger_error(t('Database transaction commits and/or rollbacks are not in sync'),
                     E_USER_ERROR);
         }
+    }
+
+    /**
+     * PDO does not appear to have a disconnect function.
+     */
+    public static function disconnect()
+    {
+        self::$PDO = null;
     }
 
     /**

@@ -19,7 +19,7 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-require_once PHPWS_SOURCE_DIR . 'core/class/Image.php';
+require_once 'Image.php';
 
 class Icon extends Image {
     /**

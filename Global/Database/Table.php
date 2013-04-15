@@ -489,6 +489,7 @@ abstract class Table extends Resource {
             if (is_object($col) && ($col instanceof \Database\Field || $col instanceof \Database\Datatype)) {
                 $this->primary_key[] = $col;
             } elseif (is_array($col) && $recursion == false) {
+                // set to true just long enough to finish the recursion
                 $recursion = true;
                 call_user_func_array(array('self', 'setPrimaryKey'), $col);
                 $recursion = false;

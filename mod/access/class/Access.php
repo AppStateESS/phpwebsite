@@ -611,8 +611,7 @@ class Access {
             return;
         }
 
-        $address = & $_SERVER['REMOTE_ADDR'];
-        $address = Access::inflateIp($address);
+        $address = Access::inflateIp($_SERVER['REMOTE_ADDR']);
 
         $allow_all = PHPWS_Settings::get('access', 'allow_all');
         $deny_all = PHPWS_Settings::get('access', 'deny_all');

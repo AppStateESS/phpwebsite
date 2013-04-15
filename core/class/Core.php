@@ -31,10 +31,8 @@ class PHPWS_Core {
     public static function initializeModules()
     {
         if (!$moduleList = PHPWS_Core::getModules()) {
-            PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'initializeModules');
-            PHPWS_Core::errorPage();
+            throw new \Exception(t('No active active modules installed'));
         }
-
         if (PHPWS_Error::isError($moduleList)) {
             PHPWS_Error::log($moduleList);
             PHPWS_Core::errorPage();
