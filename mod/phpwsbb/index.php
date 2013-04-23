@@ -2,8 +2,15 @@
 /**
  * This is the index file for the phpwsbb module.
  *
- * @version $Id: index.php,v 1.2 2008/10/08 17:11:19 adarkling Exp $
+ * WARNING: This module has been deprecated. It will no longer be
+ * maintained by phpwebsite and no further bug/security patches will
+ * be released. It will be removed from the phpWebsite distribution
+ * at some point in the future. We recommend migrating to one of the
+ * many other freely available web forums packages.
  *
+ * @deprecated
+ * 
+ * @version $Id: index.php,v 1.2 2008/10/08 17:11:19 adarkling Exp $
  * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
  * @module Bulletin Board
  */
