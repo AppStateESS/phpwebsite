@@ -35,9 +35,10 @@ if (ERRORS_AS_EXCEPTION) {
 }
 
 if (is_file('config/core/config.php')) {
-require_once 'config/core/config.php';
+    require_once 'config/core/config.php';
 } else {
-
+    header('location: setup/index.php');
+    exit();
 }
 
 $controller = new ModuleController();
@@ -47,6 +48,4 @@ $controller->execute();
 spl_autoload_unregister('autoloadTheThing');
 restore_exception_handler();
 restore_error_handler();
-
-
 ?>
