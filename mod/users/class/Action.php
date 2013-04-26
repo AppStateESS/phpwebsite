@@ -1131,10 +1131,10 @@ class User_Action {
                 $settings['new_user_method'] = (int)$_POST['user_signup'];
             }
 
-            if (isset($_POST['hide_login'])) {
-                $settings['hide_login'] = 1;
+            if (isset($_POST['show_login'])) {
+                $settings['show_login'] = 1;
             } else {
-                $settings['hide_login'] = 0;
+                $settings['show_login'] = 0;
             }
 
             if (isset($_POST['allow_remember'])) {

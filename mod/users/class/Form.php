@@ -28,14 +28,14 @@ class User_Form {
             $username = Current_User::getUsername();
             return User_Form::loggedIn();
         } else {
-            if (PHPWS_Settings::get('users', 'hide_login')) {
-                return NULL;
-            } else {
+            if (PHPWS_Settings::get('users', 'show_login')) {
                 if ($auth->showLoginForm()) {
                     return User_Form::loggedOut();
                 } else {
                     return $auth->getLoginLink();
                 }
+            } else {
+                return NULL;
             }
         }
     }
@@ -873,9 +873,9 @@ class User_Form {
             $form->setMatch('user_menu', PHPWS_User::getUserSetting('user_menu'));
             $form->setLabel('user_menu', dgettext('users', 'User Menu'));
 
-            $form->addCheckBox('hide_login', 1);
-            $form->setMatch('hide_login', PHPWS_Settings::get('users', 'hide_login'));
-            $form->setLabel('hide_login', dgettext('users', 'Hide login box'));
+            $form->addCheckBox('show_login', 1);
+            $form->setMatch('show_login', PHPWS_Settings::get('users', 'show_login'));
+            $form->setLabel('show_login', dgettext('users', 'Show login box'));
             $form->addTplTag('AFFIRM', dgettext('users', 'Yes'));
 
             $form->addCheckBox('allow_remember', 1);
