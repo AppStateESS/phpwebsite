@@ -1,7 +1,7 @@
 
 /**
   * @author Hilmar Runge <ngwebsite.net>
-  * @version 20120107
+  * @version 20130326
   */
 	
 	var ngaximg = '<img src="' + source_http + 'mod/ngboost/img/ajax10red.gif" alt="..." />';
