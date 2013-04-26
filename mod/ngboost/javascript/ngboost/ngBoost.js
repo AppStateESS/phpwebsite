@@ -1,7 +1,7 @@
 
 /**
   * @author Hilmar Runge <ngwebsite.net>
-  * @version 20110701
+  * @version 20120107
   */
 	
 	var ngaximg = '<img src="' + source_http + 'mod/ngboost/img/ajax10red.gif" alt="..." />';
@@ -302,13 +302,19 @@
 	function ngFsPermsUnlock() {
 		ngUniCS('','fspy');
 	}
-	function ngPickup(mod,x) {
-		for (var i=0; i<x; i++) {
+	function ngPickup(mod,n) {
+		for (var i=0; i<n; i++) {
 			var wom = '#ngpickuprm' + i + mod;
 			var wop = '#ngpickuprp' + i + mod;
 			$(wom).html('receive ');
 			$(wop).html(ngaximg);
 			ngUniCS(mod,'wgr',i);
+		}
+	}	
+	function ngPickupMp(mod,n,x) {
+		for (var i=0; i<n; i++) {
+			var xid = x.substr(i*32,32);
+			ngPickup(mod,'1',xid);
 		}
 	}	
 	function ngPickupSC(reply) {
@@ -334,8 +340,8 @@
 					wop = '#ngpickupcp' + ix + mod;
 					$(wom).html(' ' + msg + ' ');
 					$(wop).html(ngaximg);
-					ngUniCS(mod,'wgc',ix);			
-				break
+					ngUniCS(mod,'wgc',ix);
+				break;
 				case 'c':
 					// from check trigger decompress
 					wom = '#ngpickupxm' + ix + mod;
@@ -343,7 +349,7 @@
 					$(wom).html(' ' + msg + ' ');
 					$(wop).html(ngaximg);
 					ngUniCS(mod,'wgx',ix);			
-				break
+				break;
 				case 'x':
 					// from decompress trigger expand
 					wom = '#ngpickupum' + ix + mod;
@@ -351,14 +357,14 @@
 					$(wom).html(' ' + msg + ' ');
 					$(wop).html(ngaximg);
 					ngUniCS(mod,'wgu',ix);			
-				break
+				break;
 				case 'u':
 					// from decompress done
 					wom = '#ngpickupzz' + ix + mod;
 					$(wom).html(' ' + msg + ' ');
 					var woa = '#ngpickupa' + mod;
 					$(woa).html('');
-				break
+				break;
 			}
 		} else {
 			wom = '#ngpickupzz' + ix + mod;
@@ -407,7 +413,7 @@
 				url = url + 'B';
 				break;
 			case 'Br':
-				url = url + 'bm/p/';
+				url = url + 'br/p/';
 				break;
 			case 'c':
 				url = url + 'c/p/';
@@ -656,11 +662,12 @@
 		}
 		if (op == 're') {
 			var wo = '#ngop' + v;
+			$(wo).prepend(ngaximg); 
 			var msg = ngboostmsg030;
 			$(wo).fastConfirm({
 				questionText: msg,
 				onProceed: function(trigger) {ngPopCS(op,k,v);},
-				onCancel: function(trigger) {return;} 
+				onCancel: function(trigger) {$(wo + ' > img').remove();} 
 			});
 			return;
 		}
@@ -671,6 +678,8 @@
 			type: "GET",
 			url: "ngboost/action/admin/xaop/" + op + "/" + k + "/" + v + "/authkey/" + authkey,
 			success: function(reply) {
+						var wo = '#ngop' + v;
+						$(wo + ' > img').remove();
 						ngPopSC(reply);
 					}
 		});
