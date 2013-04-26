@@ -1,3 +1,4 @@
+<div style="margin : 8px 0px">{NEW_BLOCK}</div>
 <table cellpadding="4" cellspacing="1" width="100%">
     <tr>
         <th>{TITLE_SORT}</th>
