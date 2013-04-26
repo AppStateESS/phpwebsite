@@ -138,14 +138,14 @@ class Image extends \Tag {
     }
 
     /**
-     * An alternative to __toString, show allows the passing of pixel width and
+     * An alternative to __toString, view allows the passing of pixel width and
      * height. If either is left blank, the alternate value is set to match
      * the aspect ratio of the changed value.
      * @param integer $width
      * @param integer $height
      * @return string
      */
-    public function show($width = null, $height = null)
+    public function view($width = null, $height = null)
     {
         $this->loadDimensions();
         $width = intval($width);

@@ -59,7 +59,7 @@ define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
 
-PHPWS_Core::initCoreClass('Database.php');
+PHPWS_Core::initCoreClass('PHPWS_DB.php');
 PHPWS_Core::initCoreClass('Debug.php');
 PHPWS_Core::initCoreClass('Settings.php');
 PHPWS_Core::initCoreClass('Link.php');

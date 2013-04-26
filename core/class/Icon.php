@@ -19,9 +19,7 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-require_once 'Image.php';
-
-class Icon extends Image {
+class Icon extends \Tag\Image {
     /**
      * @var string
      */

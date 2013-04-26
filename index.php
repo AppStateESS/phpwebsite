@@ -13,6 +13,9 @@
  * @copyright Copyright 2013, Appalachian State University & Contributors
  */
 mb_internal_encoding('UTF-8');
+/**
+ * Include the defines used in Global library
+ */
 require_once 'Config/Defines.php';
 
 /**
@@ -24,7 +27,6 @@ if (DISPLAY_ERRORS) {
 } else {
     ini_set('display_errors', 'Off');
 }
-
 require_once 'Global/Functions.php';
 
 set_exception_handler(array('Error', 'exceptionHandler'));
@@ -32,10 +34,11 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
 }
 
-// @todo this needs doing away with when reworking Setup. Old version uses
-// defines for dsn.
+if (is_file('config/core/config.php')) {
 require_once 'config/core/config.php';
-Database::setDefaultDSNFromFile('Config/Sites/beanie.php');
+} else {
+
+}
 
 $controller = new TheThing();
 $controller->execute();
