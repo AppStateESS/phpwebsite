@@ -924,7 +924,7 @@ class User_Form {
             if (extension_loaded('gd')) {
                 $form->addCheckbox('graphic_confirm');
                 $form->setLabel('graphic_confirm',
-                        dgettext('users', 'Use graphic authentication'));
+                        dgettext('users', 'New user CAPTCHA confirmation'));
                 $form->setMatch('graphic_confirm',
                         PHPWS_User::getUserSetting('graphic_confirm'));
             }
