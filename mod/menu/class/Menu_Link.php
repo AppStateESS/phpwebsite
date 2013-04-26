@@ -126,7 +126,8 @@ class Menu_Link {
 
     public function setUrl($url)
     {
-        if (!preg_match('/^index.php/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/', $url)) {
+        if (!preg_match('/^index.php/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/',
+                        $url)) {
             $url = PHPWS_Text::checkLink($url);
         }
         PHPWS_Text::makeRelative($url);
@@ -141,7 +142,9 @@ class Menu_Link {
      */
     public function getAnchorTag($currentLink = false)
     {
-        return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->id, $this->title, $this->title);
+        return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>',
+                str_replace('&', '&amp;', $this->url), $this->id, $this->title,
+                $this->title);
     }
 
     /**
@@ -224,12 +227,12 @@ class Menu_Link {
         }
 
         $home = preg_quote(PHPWS_HOME_HTTP);
-        if (preg_match('@^http@i', $this->url) && !preg_match("@$home@i", $this->url)) {
+        if (preg_match('@^http@i', $this->url) && !preg_match("@$home@i",
+                        $this->url)) {
             return false;
         }
-
-        if (preg_match("@$current_url$@", $this->url) ||
-                preg_match("@$redirect_url$@", $this->url)) {
+        if (preg_match("@$current_url$@", $this->url) || (!empty($redirect_url) &&
+                preg_match("@$redirect_url$@", $this->url))) {
             return true;
         } else {
             return false;
@@ -242,7 +245,6 @@ class Menu_Link {
 
         $current_link = false;
         $current_key = Key::getCurrent();
-
         if (!empty($current_key)) {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
@@ -254,7 +256,6 @@ class Menu_Link {
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
         }
-
         if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl() && $this->url != 'index.php') {
             $current_link = true;
             $current_parent[] = $this->id;
@@ -268,7 +269,6 @@ class Menu_Link {
         if ((Menu::isAdminMode() && PHPWS_Settings::get('menu', 'show_all_admin')) ||
                 $this->_menu->_show_all || $current_link || $this->parent == 0 ||
                 in_array($this->parent, $current_parent)) {
-
             $link = $this->getAnchorTag();
 
             $this->_loadAdminLinks($template);
@@ -358,10 +358,13 @@ class Menu_Link {
                 $vars['link_id'] = $this->id;
 
                 if ($popup || PHPWS_Settings::get('menu', 'float_mode')) {
-                    $template['PIN_LINK'] = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
+                    $template['PIN_LINK'] = Menu_Item::getPinLink($this->menu_id,
+                                    $this->id, $popup);
                     if ($this->key_id) {
-                        $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id, $popup);
-                        $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
+                        $template['ADD_LINK'] = Menu::getAddLink($this->menu_id,
+                                        $this->id, $popup);
+                        $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id,
+                                        $this->id, $keyed, $popup);
                     }
                     $template['DELETE_LINK'] = $this->deleteLink($popup);
                     $template['EDIT_LINK'] = $this->editLink($popup);
@@ -372,34 +375,54 @@ class Menu_Link {
                         if ($popup) {
                             $up_link .= ' ' . dgettext('menu', 'Move link up');
                             $vars['pu'] = 1;
-                            $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
+                            $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link,
+                                            'menu', $vars);
                         } else {
-                            $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>', $this->menu_id, $this->id, 'up', $up_link);
+                            $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                                    $this->menu_id, $this->id, 'up', $up_link);
                         }
 
                         $down_link = MENU_LINK_DOWN;
                         $vars['command'] = 'move_link_down';
                         if ($popup) {
-                            $down_link .= ' ' . dgettext('menu', 'Move link down');
+                            $down_link .= ' ' . dgettext('menu',
+                                            'Move link down');
                             $vars['pu'] = 1;
-                            $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
+                            $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link,
+                                            'menu', $vars);
                         } else {
-                            $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>', $this->menu_id, $this->id, 'down', $down_link);
+                            $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                                    $this->menu_id, $this->id, 'down',
+                                    $down_link);
                         }
                     }
 
                     if ($this->link_order != 1) {
-                        $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>', $this->menu_id, $this->id, MENU_LINK_INDENT_INCREASE);
+                        $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
+                                $this->menu_id, $this->id,
+                                MENU_LINK_INDENT_INCREASE);
                     }
 
                     if ($this->parent) {
-                        $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>', $this->menu_id, $this->id, MENU_LINK_INDENT_DECREASE);
+                        $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
+                                $this->menu_id, $this->id,
+                                MENU_LINK_INDENT_DECREASE);
                     }
 
                     if ($popup) {
-                        $template['LINK_INDENT'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_INCREASE, dgettext('menu', 'Increase indent')), 'menu', array('command' => 'indent_link', 'menu_id' => $this->menu_id,
+                        $template['LINK_INDENT'] = PHPWS_Text::secureLink(sprintf('%s %s',
+                                                MENU_LINK_INDENT_INCREASE,
+                                                dgettext('menu',
+                                                        'Increase indent')),
+                                        'menu',
+                                        array('command' => 'indent_link', 'menu_id' => $this->menu_id,
                                     'link_id' => $this->id, 'po' => 1));
-                        $template['LINK_OUTDENT'] = PHPWS_Text::secureLink(sprintf('%s %s', MENU_LINK_INDENT_DECREASE, dgettext('menu', 'Decrease indent')), 'menu', array('command' => 'outdent_link', 'menu_id' => $this->menu_id,
+                        $template['LINK_OUTDENT'] = PHPWS_Text::secureLink(sprintf('%s %s',
+                                                MENU_LINK_INDENT_DECREASE,
+                                                dgettext('menu',
+                                                        'Decrease indent')),
+                                        'menu',
+                                        array('command' => 'outdent_link', 'menu_id' => $this->menu_id,
                                     'link_id' => $this->id, 'po' => 1));
                     }
 
@@ -436,7 +459,8 @@ class Menu_Link {
 
         if ($this->key_id) {
             $vars['command'] = 'edit_link_title';
-            $prompt_js['question'] = dgettext('menu', 'Type the new title for this link.');
+            $prompt_js['question'] = dgettext('menu',
+                    'Type the new title for this link.');
             $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
             $prompt_js['answer'] = $this->title;
             $prompt_js['value_name'] = 'link_title';
@@ -457,7 +481,9 @@ class Menu_Link {
         $link = MENU_LINK_DELETE;
 
         if (!$popup) {
-            return sprintf('<a style="cursor : pointer" onclick="delete_link(\'%s\', \'%s\', \'%s\')">%s</a>', $this->menu_id, $this->id, htmlentities($this->getTitle(), ENT_QUOTES, 'UTF-8'), $link);
+            return sprintf('<a style="cursor : pointer" onclick="delete_link(\'%s\', \'%s\', \'%s\')">%s</a>',
+                    $this->menu_id, $this->id,
+                    htmlentities($this->getTitle(), ENT_QUOTES, 'UTF-8'), $link);
         } else {
             $link .= ' ' . dgettext('menu', 'Delete link');
             $vars['pu'] = 1;
@@ -467,7 +493,8 @@ class Menu_Link {
 
         $vars['link_id'] = $this->id;
         $vars['command'] = 'delete_link';
-        $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' .
+        $js['QUESTION'] = dgettext('menu',
+                'Are you sure you want to delete this link: ' .
                 addslashes($this->getTitle()));
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, true);
         return javascript('confirm', $js);
