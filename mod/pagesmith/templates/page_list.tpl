@@ -1,4 +1,4 @@
-{TOTAL_ROWS}
+<div style="margin-bottom : 10px">{NEW}</div>{TOTAL_ROWS}
 <table cellpadding="5" width="95%">
     <tr>
         <th width="5%">{ID_SORT} {ID_LABEL}</th>
