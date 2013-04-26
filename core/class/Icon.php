@@ -129,6 +129,10 @@ class Icon extends \Tag\Image {
         }
     }
 
+    public function setStyle($style)
+    {
+        $this->addStyle($style);
+    }
 
     private static function loadIcon($module, $type, &$icon_objects)
     {
@@ -137,26 +141,23 @@ class Icon extends \Tag\Image {
         foreach ($params[$module] AS $key => $iconSet) {
             if (!empty($iconSet['icons'][$type])) {
                 $icon = $iconSet['icons'][$type];
-                $src = PHPWS_SOURCE_HTTP . $iconSet['source'] . $icon['src'];
+                $src = $iconSet['source'] . $icon['src'];
                 break;
             }
         }
-
         if (empty($icon)) {
             trigger_error(sprintf(dgettext('core', 'Icon type not found: %1$s::%2$s'), $module, $type));
             $src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
-        } else {
-            $src = PHPWS_SOURCE_HTTP . $iconSet['source'] . $icon['src'];
         }
         $o = new Icon($src);
         $o->module = $module;
 
         if (isset($icon['class'])) {
-            $o->setClass($icon['class']);
+            $o->addClass($icon['class']);
         }
 
         if (isset($icon['x']) && isset($icon['y'])) {
-            $o->setStyle(sprintf('background-position : %spx %spx', $icon['x'], $icon['y']));
+            $o->addStyle(sprintf('background-position : %spx %spx', $icon['x'], $icon['y']));
         }
 
         if (isset($icon['width'])) {

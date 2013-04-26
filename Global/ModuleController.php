@@ -1,5 +1,4 @@
 <?php
-namespace TheThing;
 
 /*
  * TheThing  - Main controller class for the project
@@ -8,10 +7,7 @@ namespace TheThing;
  * @package TheThing
  */
 
-use \PHPWS_Core;
-use \PHPWS_DB;
-
-class TheThing {
+class ModuleController {
 
     public function __construct()
     {

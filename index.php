@@ -16,7 +16,7 @@ mb_internal_encoding('UTF-8');
 /**
  * Include the defines used in Global library
  */
-require_once 'Config/Defines.php';
+require_once 'config/Defines.php';
 
 /**
  * DISPLAY_ERRORS set in Config/Defines.php
@@ -40,7 +40,7 @@ require_once 'config/core/config.php';
 
 }
 
-$controller = new TheThing();
+$controller = new ModuleController();
 $controller->execute();
 
 // Clean up after ourselves
