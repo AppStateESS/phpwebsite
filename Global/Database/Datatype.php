@@ -82,13 +82,13 @@ abstract class Datatype extends \Data {
         $engine_file = "Global/Database/Engine/$engine/Datatype/$class_name.php";
 
         if (is_file($engine_file)) {
-            $datatype = "\Database\Engine\\$engine\Datatype\\$class_name";
+            $datatype_name = "\Database\Engine\\$engine\Datatype\\$class_name";
         } elseif (is_file($class_file)) {
-            $datatype = "\Database\Datatype\\$class_name";
+            $datatype_name = "\Database\Datatype\\$class_name";
         } else {
             throw new \Exception(\t('Unknown class name "%s"', $class_name));
         }
-        $object = new $datatype($table, $name);
+        $object = new $datatype_name($table, $name);
         if ($object->default instanceof \Variable) {
             $object->setDefault($value);
         }
