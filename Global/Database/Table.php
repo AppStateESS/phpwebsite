@@ -117,7 +117,6 @@ abstract class Table extends Resource {
      * @access protected
      */
     protected $values = array();
-
     protected $constraints = array();
 
     /**
@@ -679,7 +678,7 @@ abstract class Table extends Resource {
         return $this->db->getDelimiter();
     }
 
-    protected function getConstraintString($create_query=false)
+    protected function getConstraintString($create_query = false)
     {
         foreach ($this->constraints as $c) {
             if ($create_query && !is_a($c, '\Database\TableCreateConstraint')) {
@@ -841,7 +840,6 @@ abstract class Table extends Resource {
 
         return $result;
     }
-
 }
 
 ?>
