@@ -27,6 +27,13 @@ if (DISPLAY_ERRORS) {
 } else {
     ini_set('display_errors', 'Off');
 }
+if (is_file('config/core/config.php')) {
+    require_once 'config/core/config.php';
+} else {
+    header('location: setup/index.php');
+    exit();
+}
+
 require_once 'Global/Functions.php';
 
 set_exception_handler(array('Error', 'exceptionHandler'));
@@ -34,12 +41,6 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
 }
 
-if (is_file('config/core/config.php')) {
-    require_once 'config/core/config.php';
-} else {
-    header('location: setup/index.php');
-    exit();
-}
 
 $controller = new ModuleController();
 $controller->execute();
