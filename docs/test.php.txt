@@ -7,6 +7,7 @@ mb_internal_encoding('UTF-8');
  * Include the defines used in Global library
  */
 require_once 'config/Defines.php';
+require_once 'config/core/config.php';
 
 /**
  * DISPLAY_ERRORS set in Config/Defines.php
@@ -24,7 +25,6 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
 }
 
-include 'config/core/config.php';
 
 /****************************************************/
 
