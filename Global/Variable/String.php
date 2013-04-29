@@ -213,14 +213,20 @@ class String extends \Variable {
         $this->value = & $word;
     }
 
-    public function loadDataType(\DB\Table $table)
+    /**
+     * Changes the column name based on the size of the string.
+     * NOTE: If the text is extremely long, "Text" may not be enough
+     * for MySQL.
+     *
+     * @param \Database\Table $table
+     * @return \Database\Datatype
+     */
+    public function loadDataType(\Database\Table $table)
     {
-        if ($this->limit > 16777215) {
-            $this->column_type = 'Longtext';
-        } elseif ($this->limit > 65535) {
-            $this->column_type = 'Mediumtext';
-        } elseif ($this->limit > 0 && $this->limit <= 256) {
+        if ($this->limit <= 256) {
             $this->column_type = 'Varchar';
+        } else {
+            $this->column_type = 'Text';
         }
         $dt = parent::loadDataType($table);
         return $dt;

@@ -177,7 +177,7 @@ abstract class Datatype extends \Data {
         if ($this->default->isNull() && $this->is_null) {
             return 'default';
         }
-        return "default '" . mysql_escape_string($this->default) . "'";
+        return "default " . $this->table->db->quote($this->default);
     }
 
     /**

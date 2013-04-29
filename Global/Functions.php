@@ -17,15 +17,18 @@
 function __autoload($class_name)
 {
     $class_name = preg_replace('@^/|/$@', '', str_replace('\\', '/', $class_name));
-    $class_file = 'Global/' . $class_name . '.php';
-    if (is_file($class_file)) {
+    $global_file = PHPWS_SOURCE_DIR . 'Global/' . $class_name . '.php';
+    $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
+    if (is_file($global_file)) {
+        require_once $global_file;
+    } elseif (is_file($class_file)) {
         require_once $class_file;
     } else {
         $class_stack = explode('/', $class_name);
         $new_class_name = array_shift($class_stack);
         $class_remainder = implode('/', $class_stack);
 
-        $class_file = "mod/$new_class_name/class/$class_remainder.php";
+        $class_file = PHPWS_SOURCE_DIR . "mod/$new_class_name/class/$class_remainder.php";
         if (is_file($class_file)) {
             require_once $class_file;
         }

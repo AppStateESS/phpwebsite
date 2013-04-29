@@ -455,17 +455,16 @@ abstract class Variable extends Data {
      * Loads a datatype into the passed Table object based on settings in the
      * current Variable object.
      *
-     * @param \DB\Table $table
+     * @param \Database\Table $table
      * @return \Database\Datatype
-     * @throws \Exception Err is varname is not set
+     * @throws \Exception Error is varname is not set
      */
-    public function loadDataType(\DB\Table $table)
+    public function loadDataType(\Database\Table $table)
     {
         if (empty($this->varname)) {
             throw \Exception('Variable name is not set');
         }
         $dt = $table->addDataType($this->varname, $this->column_type);
-
 
         if (isset($this->value)) {
             $dt->setDefault($this->value);

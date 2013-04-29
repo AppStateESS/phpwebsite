@@ -98,6 +98,38 @@ abstract class Resource extends Data {
         return ResourceFactory::saveResource($this);
     }
 
+    /**
+     * Returns an associative array of Datatypes based on the Variable parameter
+     * objects in the current object
+     * @param \Database\Table $table
+     * @return Array
+     */
+    public function getVariablesAsDatatypes(\Database\Table $table)
+    {
+        $vars = $this->getVars();
+        foreach ($vars as $variable) {
+            if ($variable instanceof \Variable) {
+                $dts[$variable->getVarname()] = $variable->loadDatatype($table);
+            }
+        }
+        return empty($dts) ? null : $dts;
+    }
+
+    /**
+     * Creates a new table based on the resource object
+     * @param \Database\DB $db
+     */
+    public function createTable(\Database\DB $db)
+    {
+        $resource_table = $db->buildTable($this->getTable());
+        $datatypes = $this->getVariablesAsDatatypes($resource_table);
+        if (!$datatypes) {
+            throw new \Exception('Resource did not return any datatypes');
+        }
+        $resource_table->addPrimaryIndexId();
+        $resource_table->create();
+    }
+
 }
 
 ?>
