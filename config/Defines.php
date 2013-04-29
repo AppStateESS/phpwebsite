@@ -45,7 +45,7 @@ define('DATABASE_CHECK_ENGINE', true);
 /**
  * The permission mode a log file is written as. Default is read-only.
  */
-define('LOG_FILE_PERMISSION', 0200);
+define('LOG_FILE_PERMISSION', 0600);
 
 /**
  * See http://www.php.net/manual/en/timezones.php
