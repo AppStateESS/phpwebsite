@@ -45,7 +45,6 @@ $controller = new ModuleController();
 $controller->execute();
 
 // Clean up after ourselves
-spl_autoload_unregister('autoloadTheThing');
 restore_exception_handler();
 restore_error_handler();
 ?>

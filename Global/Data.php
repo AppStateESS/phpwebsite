@@ -432,8 +432,8 @@ abstract class Data {
         if ($pop_number < 1 || $pop_number > count($carray)) {
             throw new \Exception('Number of classes to pop outside range');
         }
-        $carray = array_reverse($carray);
-        return $carray[$pop_number - 1];
+        $carray_rev = array_reverse($carray);
+        return $carray_rev[$pop_number - 1];
     }
 
     /**

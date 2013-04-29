@@ -58,7 +58,7 @@ class Error {
     public static function errorPage($code = 500)
     {
         http_response_code($code);
-        $error_text = get_status_text($code);
+        //$error_text = get_status_text($code);
         $default = 'Global/Error/Pages/' . ERROR_PAGE_TEMPLATE;
         $error_template = "Global/Error/Pages/$code.html";
         if (is_file($error_template)) {

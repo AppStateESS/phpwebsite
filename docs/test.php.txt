@@ -2,13 +2,29 @@
 // copy this file in your phpwebsite root directory as
 // test.php. Use only for development.
 
-header('Content-Type: text/html; charset=UTF-8');
-include 'config/core/config.php';
-require_once 'core/class/Init.php';
+mb_internal_encoding('UTF-8');
+/**
+ * Include the defines used in Global library
+ */
+require_once 'config/Defines.php';
 
-PHPWS_Core::initCoreClass('Database.php');
-PHPWS_Core::initCoreClass('Form.php');
-PHPWS_Core::initCoreClass('Template.php');
+/**
+ * DISPLAY_ERRORS set in Config/Defines.php
+ */
+if (DISPLAY_ERRORS) {
+    ini_set('display_errors', 'On');
+    error_reporting(E_ALL | E_STRICT);
+} else {
+    ini_set('display_errors', 'Off');
+}
+require_once 'Global/Functions.php';
+
+set_exception_handler(array('Error', 'exceptionHandler'));
+if (ERRORS_AS_EXCEPTION) {
+    set_error_handler(array('Error', 'errorHandler'));
+}
+
+include 'config/core/config.php';
 
 /****************************************************/
 
@@ -16,4 +32,3 @@ echo 'Hi! I\'m a test file!';
 
 /******************************************************/
 ?>
-

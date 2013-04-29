@@ -1509,8 +1509,7 @@ abstract class DB extends \Data {
         if (is_string($value)) {
             $result = self::$PDO->quote($value);
             if ($result === false) {
-                throw new \Exception(t('Database connection failed when calling "%s"',
-                        'mysql_real_escape_string'));
+                throw new \Exception(t('Database connection failed when quoting string'));
             } else {
                 return $result;
             }

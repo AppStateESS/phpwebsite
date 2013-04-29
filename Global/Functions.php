@@ -10,7 +10,7 @@
 
 /**
  * Autoloads undeclared classes. Only checks two places:
- * the Global directory or the Module/Class directory.
+ * the Global directory or the mod/class directory.
  * Any other undeclared classes will need to be required directly.
  * @param string $class_name
  */
