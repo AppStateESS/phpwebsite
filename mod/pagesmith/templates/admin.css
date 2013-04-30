@@ -1,0 +1,9 @@
+.block-edit:hover {
+    background-color : #D4E7FF;
+    cursor : pointer;
+}
+
+.block-edit a {
+    pointer-events : none;
+    cursor : default;
+}

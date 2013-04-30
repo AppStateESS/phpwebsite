@@ -56,7 +56,7 @@ class PS_Forms {
      */
     public function pageLayout()
     {
-        javascriptMod('pagesmith', 'disable_links');
+        javascript('editors/ckeditor');
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
@@ -99,7 +99,6 @@ class PS_Forms {
                     'Unable to load page template.');
             return;
         }
-        //$form->addSubmit('save_so_far', dgettext('pagesmith', 'Save and continue'));
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
         $this->pageTemplateForm($form);
 
@@ -114,7 +113,6 @@ class PS_Forms {
                     dgettext('pagesmith', 'Orphans'));
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
-
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
                         'page_form.tpl');
     }
@@ -240,6 +238,11 @@ class PS_Forms {
 
     public function pageTemplateForm(PHPWS_Form $form)
     {
+        javascript('jquery');
+        javascript('jquery_ui');
+        Layout::addStyle('pagesmith', 'admin.css');
+        Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
+                'pageedit');
         $edit_button = false;
         $page = $this->ps->page;
 
@@ -269,21 +272,8 @@ class PS_Forms {
                     break;
 
                 case 'text':
-                    $js['label'] = dgettext('pagesmith', 'Edit text');
-                    $js['link_title'] = dgettext('pagesmith', 'Change text');
-                    $vars['aop'] = 'edit_page_text';
-                    $js['width'] = 1000;
-                    $js['height'] = 700;
-                    $js['class'] = 'change-link';
-                    $edit_button = true;
+                    $tpl['admin'] = 'title="Click to edit" data-page-id="' . $page->id . '" data-block-id="' . $section->id . '"';
                     break;
-            }
-
-            if ($edit_button) {
-                $vars['section'] = $name;
-                $js['label'] = PS_EDIT;
-                $js['address'] = PHPWS_Text::linkAddress('pagesmith', $vars, 1);
-                $tpl[$name . '_edit'] = javascript('open_window', $js);
             }
         }
 
@@ -351,6 +341,7 @@ class PS_Forms {
             if (!$image) {
                 $image = 'folder_contents.png';
             }
+            $vars['tab'] = 'new';
             $link = PHPWS_Text::linkAddress('pagesmith', $vars, true);
             $tpl['folders'][] = array('TITLE' => ucwords(str_replace('-',
                                 '&nbsp;', $name)),
