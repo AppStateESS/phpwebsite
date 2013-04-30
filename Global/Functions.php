@@ -23,12 +23,9 @@ function __autoload($class_name)
         require_once $global_file;
     } elseif (is_file($class_file)) {
         require_once $class_file;
-    } else {
-        $class_stack = explode('/', $class_name);
-        $new_class_name = array_shift($class_stack);
-        $class_remainder = implode('/', $class_stack);
-
-        $class_file = PHPWS_SOURCE_DIR . "mod/$new_class_name/class/$class_remainder.php";
+    } elseif (isset($_REQUEST['module'])) {
+        $module = preg_replace('/\W/', '', $_REQUEST['module']);
+        $class_file = PHPWS_SOURCE_DIR . "mod/$module/class/$class_name.php";
         if (is_file($class_file)) {
             require_once $class_file;
         }
