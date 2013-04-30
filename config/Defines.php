@@ -1,21 +1,6 @@
 <?php
 
 /**
- * Defines for Beanie. Setting here should rarely change.
- * @author Matthew McNaney <mcnaney at gmail dot com>
- * @license http://opensource.org/licenses/lgpl-3.0.html
- */
-define('CONFIGURATION_FILE', './Config/Configuration.php');
-
-/**
- * Location of module assets (Javascript, CSS, HTML, etc.)
- * This path must be publically accessible and on the web server path.
- */
-define('SHARED_ASSETS', 'http://localhost/beanie-cms/');
-
-define('ROOT_DIRECTORY', getcwd());
-
-/**
  * Path to error log file directory.
  * Path must end with a (forward) slash
  * This directory must be writable by Apache.
@@ -48,12 +33,6 @@ define('DATABASE_CHECK_ENGINE', true);
 define('LOG_FILE_PERMISSION', 0600);
 
 /**
- * See http://www.php.net/manual/en/timezones.php
- */
-date_default_timezone_set('America/New_York');
-
-
-/**
  * If true, the log will contain a stack trace for each error.
  * Setting this to false shows the message ONLY.
  */
@@ -77,10 +56,5 @@ define('DISPLAY_ERRORS', true);
  * Changing it false is helpful for Xdebug (if installed) error reports.
  */
 define('ERRORS_AS_EXCEPTION', false);
-
-/**
- * Directory containing site configuration files.
- */
-define('SITE_CONFIGURATION_DIRECTORY', 'Config/Sites/');
 
 ?>

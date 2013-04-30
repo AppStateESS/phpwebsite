@@ -44,7 +44,12 @@ class Database {
     {
         if (is_null($dsn)) {
             if (empty(self::$default_dsn)) {
-                throw new \Exception(t('Default DSN not set.'));
+                if (defined('PHPWS_DSN')) {
+                    Database::phpwsDSNLoader(PHPWS_DSN);
+                    $dsn = self::$default_dsn;
+                } else {
+                    throw new \Exception(t('Default DSN not set.'));
+                }
             } else {
                 $dsn = self::$default_dsn;
             }

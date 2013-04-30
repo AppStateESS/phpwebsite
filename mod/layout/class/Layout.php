@@ -142,8 +142,12 @@ class Layout {
         Layout::resetBoxes();
     }
 
-    // Index is the name of the javascript header
-    // prevents repeated scripts
+    /**
+     * Adds a script to the header of the theme.
+     * @staticvar int $index_count
+     * @param string $script Content of the javascript
+     * @param string $index Unique id passed to prevent duplicate scripts
+     */
     public static function addJSHeader($script, $index=NULL)
     {
         static $index_count = 0;
