@@ -316,7 +316,7 @@ class Block_Admin {
     {
         Layout::addStyle('block');
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pageTags['NEW_BLOCK'] = PHPWS_Text::secureLink(dgettext('block', 'Create new block'), 'block', array('tab'=>'new'), null, dgettext('block', 'Create new block'), 'button');
+        $pageTags['NEW_BLOCK'] = PHPWS_Text::secureLink(dgettext('block', 'Create new block'), 'block', array('action'=>'new'), null, dgettext('block', 'Create new block'), 'button');
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION'] = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');

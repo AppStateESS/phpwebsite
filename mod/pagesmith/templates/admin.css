@@ -1,6 +1,7 @@
 .block-edit:hover {
-    background-color : #D4E7FF;
+    background-color : #eee;
     cursor : pointer;
+    border : 1px solid #e3e3e3;
 }
 
 .block-edit a {

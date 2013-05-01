@@ -33,9 +33,9 @@ function initializeDialog(editor)
 {
     $('#block-edit-popup').dialog(
             {
-                position: {my: 'left top', at: 'center top', of: $('.block-edit')},
+                position: {my: 'center top', at: 'center top', of: document},
                 autoOpen: false,
-                width: '800px',
+                width: 650,
                 title: 'Edit text area',
                 buttons: [{text: "Save",
                         click: function() {
@@ -61,7 +61,6 @@ function updateBlock(editor) {
                 if (content === '') {
                     content = '[Click to edit]';
                 }
-                console.log(data);
         current_block.html(content);
     });
 }

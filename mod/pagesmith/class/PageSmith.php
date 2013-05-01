@@ -24,62 +24,6 @@ class PageSmith {
     public $content = null;
     public $page = null;
 
-    private function getTextBlockData($block_id, $page_id, $section_id)
-    {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
-        $content = null;
-        if (!empty($block_id)) {
-            $ps_block = new PS_Text($block_id);
-            $content = $ps_block->getContent();
-            $this->setUndoSession($page_id, $block_id, $content);
-        }
-        echo $content;
-    }
-
-    private function setUndoSession($page_id, $block_id, $content)
-    {
-        $_SESSION['page_undo'][$page_id][$block_id][] = $content;
-    }
-
-    private function resetUndoSession($page_id)
-    {
-        $_SESSION['page_undo'][$page_id] = null;
-        if (isset($_SESSION['page_undo'][$page_id])) {
-            unset($_SESSION['page_undo'][$page_id]);
-        }
-    }
-
-    private function getLastUndo($page_id, $block_id)
-    {
-        if (isset($_SESSION['page_undo'][$page_id][$block_id])) {
-            $content = array_pop($_SESSION['page_undo'][$page_id][$block_id]);
-            return $content;
-        } else {
-            return null;
-        }
-    }
-
-    private function saveBlockData($page_id, $block_id, $section_id, $content)
-    {
-        echo $section_id;
-        // New page, don't save anything.
-        if (empty($page_id)) {
-            $this->setUndoSession(0, $section_id, $content);
-            return;
-        }
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
-        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
-        $page = new PS_Page($page_id);
-        $block = new PS_Text($block_id);
-        $block->setContent($content);
-        $block->save($page->key_id);
-    }
-
-    private function getUndoSession($page_id)
-    {
-        return $_SESSION['page_undo'][$page_id];
-    }
-
     public function admin()
     {
         if (!Current_User::allow('pagesmith')) {
@@ -145,6 +89,7 @@ class PageSmith {
                 break;
 
             case 'edit_page':
+                $this->resetUndoSession(0);
                 $this->loadPage();
                 if (!$this->page->id) {
                     $this->title = dgettext('pagesmith', 'Sorry');
@@ -193,13 +138,6 @@ class PageSmith {
             case 'delete_section':
                 $this->deleteSection($_GET['sec_id']);
                 exit();
-                break;
-
-            case 'edit_page_text':
-                $this->loadPage();
-                $this->loadForms();
-                $this->forms->editPageText();
-                $javascript = true;
                 break;
 
             case 'post_header':
@@ -324,6 +262,63 @@ class PageSmith {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content,
                                     $this->title, $this->message)));
         }
+    }
+
+    private function getTextBlockData($block_id, $page_id, $section_id)
+    {
+        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        $content = null;
+        if (!empty($block_id)) {
+            $ps_block = new PS_Text($block_id);
+            $content = $ps_block->getContent();
+            $this->setUndoSession($page_id, $block_id, $content);
+        } elseif (isset($_SESSION['page_undo'][$page_id][$section_id])) {
+            echo $_SESSION['page_undo'][$page_id][$section_id][0];
+        }
+        echo $content;
+    }
+
+    private function setUndoSession($page_id, $block_id, $content)
+    {
+        $_SESSION['page_undo'][$page_id][$block_id][] = $content;
+    }
+
+    private function resetUndoSession($page_id)
+    {
+        $_SESSION['page_undo'][$page_id] = null;
+        if (isset($_SESSION['page_undo'][$page_id])) {
+            unset($_SESSION['page_undo'][$page_id]);
+        }
+    }
+
+    private function getLastUndo($page_id, $block_id)
+    {
+        if (isset($_SESSION['page_undo'][$page_id][$block_id])) {
+            $content = array_pop($_SESSION['page_undo'][$page_id][$block_id]);
+            return $content;
+        } else {
+            return null;
+        }
+    }
+
+    private function saveBlockData($page_id, $block_id, $section_id, $content)
+    {
+        // New page, don't save anything.
+        if (empty($page_id)) {
+            $this->setUndoSession(0, $section_id, $content);
+            return;
+        }
+        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
+        $page = new PS_Page($page_id);
+        $block = new PS_Text($block_id);
+        $block->setContent($content);
+        $block->save($page->key_id);
+    }
+
+    private function getUndoSession($page_id)
+    {
+        return $_SESSION['page_undo'][$page_id];
     }
 
     public function loadForms()
@@ -748,4 +743,5 @@ class PageSmith {
     }
 
 }
+
 ?>

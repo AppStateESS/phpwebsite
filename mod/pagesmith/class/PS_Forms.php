@@ -184,29 +184,6 @@ class PS_Forms {
                         'edit_header.tpl');
     }
 
-    public function editPageText()
-    {
-        $section_name = $_GET['section'];
-        $pid = $_GET['id'];
-        $content = @$_SESSION['PS_Page'][$pid][$section_name];
-        $form = new PHPWS_Form('edit');
-        $form->addHidden('pid', $pid);
-        $form->addHidden('tpl', $_GET['tpl']);
-        $form->addHidden('module', 'pagesmith');
-        $form->addHidden('aop', 'post_text');
-        $form->addHidden('section_name', $section_name);
-        $form->addTextArea('text', $content);
-        $form->useEditor('text', true, false, 720, 480);
-        $form->setCols('text', 90);
-        $form->setRows('text', 30);
-        $form->addSubmit(dgettext('pagesmith', 'Update'));
-        $tpl = $form->getTemplate();
-        $tpl['CANCEL'] = javascript('close_window');
-        $this->ps->title = dgettext('pagesmith', 'Edit text');
-        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
-                        'edit_text.tpl');
-    }
-
     public function pageList()
     {
         Layout::addStyle('pagesmith');
@@ -272,7 +249,7 @@ class PS_Forms {
                     break;
 
                 case 'text':
-                    $tpl['admin'] = 'title="Click to edit" data-page-id="' . $page->id . '" data-block-id="' . $section->id . '"';
+                    $tpl[$name . '_admin'] = 'title="Click to edit" data-page-id="' . $page->id . '" data-block-id="' . $section->id . '"';
                     break;
             }
         }
@@ -284,7 +261,6 @@ class PS_Forms {
         } else {
             $tpl['page_title'] = $page->title;
         }
-
         $pg_tpl = PHPWS_Template::process($tpl, 'pagesmith', $template_file);
 
         $form->addTplTag('PAGE_TEMPLATE', $pg_tpl);
