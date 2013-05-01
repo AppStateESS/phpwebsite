@@ -4,30 +4,31 @@ basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
 
 //load external plugin
 (function() {
-   CKEDITOR.plugins.addExternal('filecabinet',basePath+'ckeditor/phpws_plugins/filecabinet/', 'plugin.js');
+    CKEDITOR.plugins.addExternal('filecabinet', basePath + 'ckeditor/phpws_plugins/filecabinet/', 'plugin.js');
 })();
 
 
-CKEDITOR.editorConfig = function( config )
+CKEDITOR.editorConfig = function(config)
 {
     config.toolbar = 'MyToolbar';
-    config.extraPlugins = 'filecabinet';
-    config.height = 300;
-
+    config.extraPlugins = 'filecabinet,autogrow,menubutton,scayt';
+    config.scayt_autoStartup = true;
+    config.scayt_sLang = 'en_US';
+    config.removePlugins = 'resize';
+    config.autoGrow_onStartup = true;
+    config.autoGrow_maxHeight = 600;
+    config.skin = 'kama';
     config.toolbar_MyToolbar =
-    [
-        ['Source','-','Templates'],
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-', 'SpellChecker', 'Scayt'],
-        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-        '/',
-        ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-        ['Link','Unlink','Anchor'],
-        ['Image', 'Filecabinet', 'Table','HorizontalRule','SpecialChar'],
-        '/',
-        ['Styles','Format','Font','FontSize'],
-        ['TextColor','BGColor'],
-        ['Maximize', 'ShowBlocks','-','About']
-    ];
+            [
+                ['Source', 'Maximize'],
+                ['Cut', 'Copy', 'PasteText'],
+                ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
+                ['Filecabinet', 'Table', 'HorizontalRule', 'SpecialChar'],
+                ['Link', 'Unlink', 'Anchor'],
+                '/',
+                ['Bold', 'Italic', 'Strike', '-', 'Subscript', 'Superscript'],
+                ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
+                ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                ['Styles', 'Format']
+            ];
 };
