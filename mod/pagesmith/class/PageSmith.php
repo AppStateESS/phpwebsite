@@ -433,10 +433,6 @@ class PageSmith {
             $sections[$section_name] = & $section;
         }
 
-        if (!$some_content) {
-            // All sections were empty, return false
-            return 0;
-        }
 
         if (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith',
                         'auto_link')) {
