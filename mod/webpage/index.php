@@ -1,18 +1,18 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
     exit();
 }
-
+Deprecate::moduleWarning('webpage');
 if (isset($_REQUEST['wp_user'])) {
     PHPWS_Core::initModClass('webpage', 'User.php');
     Webpage_User::main();
-} elseif(isset($_REQUEST['wp_admin'])) {
+} elseif (isset($_REQUEST['wp_admin'])) {
     PHPWS_Core::initModClass('webpage', 'Admin.php');
     Webpage_Admin::main();
 } elseif (isset($_REQUEST['id'])) {
@@ -24,5 +24,4 @@ if (isset($_REQUEST['wp_user'])) {
 } else {
     PHPWS_Core::errorPage('404');
 }
-
 ?>
