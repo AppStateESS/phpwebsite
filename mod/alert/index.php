@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     header('location: ../../index.php');
     exit();
 }
-
+Deprecate::moduleWarning('alert');
 PHPWS_Core::initModClass('alert', 'Alert.php');
 $alert = new Alert;
 
