@@ -1,4 +1,4 @@
-{START_FORM} 
+{START_FORM}
 <strong>{TITLE_LABEL}</strong>
 {TITLE}
 <hr />
@@ -11,3 +11,4 @@
 <!-- BEGIN orphans -->
 {ORPHANS}
 <!-- END orphans -->
+<div id="block-edit-popup" style="display:none"><textarea id="block-edit-textarea"></textarea></div>

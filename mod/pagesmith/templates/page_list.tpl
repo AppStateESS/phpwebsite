@@ -5,7 +5,7 @@
         <th>{TITLE_SORT}</th>
         <th width="25%">{CREATE_DATE_SORT}<br />
         {LAST_UPDATED_SORT}</th>
-        <th width="20%">{ACTION_LABEL}</th>
+        <th width="15%">{ACTION_LABEL}</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr>
