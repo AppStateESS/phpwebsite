@@ -6,8 +6,8 @@
 <div class="box-content">
 <table cellpadding="10" class="banner-two-col-table">
     <tr>
-        <td>{text1_edit}<div id="banner-two-col-text1">{text1}</div></td>
-        <td>{text2_edit}<div id="banner-two-col-text2">{text2}</div></td>
+        <td><div id="banner-two-col-text1" class="block-edit" {text1_admin}>{text1}</div></td>
+        <td><div id="banner-two-col-text2" class="block-edit" {text2_admin}>{text2}</div></td>
     </tr>
 </table>
 </div>

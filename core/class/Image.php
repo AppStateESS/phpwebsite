@@ -19,7 +19,6 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 
-require_once PHPWS_SOURCE_DIR . 'core/class/Tag.php';
 
 class Image extends Tag {
     /**

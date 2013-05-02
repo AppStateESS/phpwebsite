@@ -2,6 +2,14 @@
 /**
  * whatsnew - phpwebsite module
  *
+ *
+ * WARNING: This module has been deprecated. It will no longer be
+ * maintained by phpwebsite and no further bug/security patches will
+ * be released. It will be removed from the phpWebsite distribution
+ * at some point in the future.
+ * 
+ * @deprecated
+ *
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
  * This program is free software; you can redistribute it and/or modify

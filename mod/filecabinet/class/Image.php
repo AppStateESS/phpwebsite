@@ -800,6 +800,7 @@ EOF;
         if (is_dir($base_dir)) {
             if (is_dir($full_dir)) {
                 if (!is_writable($full_dir)) {
+                    PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::makeResizePath', $full_dir);
                     return false;
                 }
             } else {

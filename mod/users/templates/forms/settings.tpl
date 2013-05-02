@@ -14,8 +14,8 @@
         <td>{VERIFY_EXPLAIN}</td>
     </tr>
     <tr>
-        <td>{HIDE_LOGIN_LABEL}</td>
-        <td>{HIDE_LOGIN} {AFFIRM}</td>
+        <td>{SHOW_LOGIN_LABEL}</td>
+        <td>{SHOW_LOGIN} {AFFIRM}</td>
     </tr>
     <!-- BEGIN allow-remember -->
     <tr>

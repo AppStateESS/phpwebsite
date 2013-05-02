@@ -1,14 +1,5 @@
 <table>
     <tr>
-        <td>{PIN_LINK}</td>
-    </tr>
-    <tr>
-        <td>{ADD_LINK}</td>
-    </tr>
-    <tr>
-        <td>{ADD_SITE_LINK}</td>
-    </tr>
-    <tr>
         <td>{EDIT_LINK}</td>
     </tr>
     <tr>
@@ -19,6 +10,15 @@
     </tr>
     <tr>
         <td>{LINK_OUTDENT}</td>
+    </tr>
+    <tr>
+        <td>{PIN_LINK}</td>
+    </tr>
+    <tr>
+        <td>{ADD_LINK}</td>
+    </tr>
+    <tr>
+        <td>{ADD_SITE_LINK}</td>
     </tr>
     <tr>
         <td>{MOVE_LINK_UP}</td>

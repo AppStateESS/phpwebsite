@@ -549,7 +549,7 @@ class Layout_Admin {
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
-    public function postFooter()
+    public static function postFooter()
     {
         if (isset($_POST['footer_fp_only'])) {
             PHPWS_Settings::set('layout', 'footer_fp_only', 1);

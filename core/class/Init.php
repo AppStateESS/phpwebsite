@@ -53,13 +53,13 @@ initializei18n();
 loadBrowserInformation();
 
 /* Load the Core class */
-require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
+require_once PHPWS_SOURCE_DIR . 'core/class/PHPWS_Core.php';
 
 define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
 
-PHPWS_Core::initCoreClass('Database.php');
+PHPWS_Core::initCoreClass('PHPWS_DB.php');
 PHPWS_Core::initCoreClass('Debug.php');
 PHPWS_Core::initCoreClass('Settings.php');
 PHPWS_Core::initCoreClass('Link.php');

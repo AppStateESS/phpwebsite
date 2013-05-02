@@ -1,0 +1,29 @@
+<tr class="object">
+    <td>
+        <strong><?=$varname?></strong>
+    </td>
+    <td>
+        <em>(object) <?=$class_name?></em>
+        <table class="var-listing">
+            <?php if(isset($object_value)): ?>
+            <tr>
+                <td colspan="2"><strong>Value:</strong> <?=$object_value?></td>
+            </tr>
+            <?php endif ?>
+            <?php if(isset($to_string)): ?>
+            <tr>
+                <td colspan="2"><strong>toString:</strong> <?=@$to_string?></td>
+            </tr>
+            <?php endif ?>
+
+            <?php if (isset($variables)): ?>
+            <?php foreach ($variables as $subname=>$subvar): ?>
+            <tr class="object-variables">
+                <td><strong><?=$subname?></strong></td>
+                <td><?=\Data::debugValue($subvar)?></td>
+            </tr>
+            <?php endforeach ?>
+            <?php endif ?>
+        </table>
+    </td>
+</tr>

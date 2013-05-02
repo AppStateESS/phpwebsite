@@ -1,0 +1,18 @@
+
+<?=$varname?>
+
+--------------
+    (object) <?=$class_name?>
+
+<?php if(isset($object_value)): ?>
+    Value: <?=$object_value?>
+<?php endif ?>
+<?php if(isset($to_string)): ?>
+    toString: <?=@$to_string?>
+<?php endif ?>
+
+<?php if (isset($variables)): ?>
+<?php foreach ($variables as $subname=>$subvar): ?>
+    <?=$subname?>  |  <?=\Data::debugValue($subvar)?>
+<?php endforeach ?>
+<?php endif ?>

@@ -1,0 +1,24 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="Global/Templates/Debug/style.css" />
+        <title>Debug <?=$class_name?></title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div id="Debug">
+            <h1><?=$called?></h1>
+            <table border="1" class="main">
+                <tr class="base-variable">
+                    <th style="width : 10%">Variable name</th>
+                    <th>Value</th>
+                </tr>
+                <?= $debug_output ?>
+            </table>
+        </div>
+    </body>
+</html>

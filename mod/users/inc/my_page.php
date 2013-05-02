@@ -63,6 +63,7 @@ class User_Settings {
 
     public static function userForm(PHPWS_User $user, $message=NULL)
     {
+        require_once PHPWS_SOURCE_DIR . 'core/class/Time.php';
         javascript('jquery');
         $form = new PHPWS_Form;
 
@@ -80,7 +81,7 @@ class User_Settings {
                                                               'id'   => 'name-info',
                                                               'message' => dgettext('users', 'Once you change your display name, you may not change it again until reset by the site administrator.')));
 
-            $form->addTplTag('DISPLAY_NAME', PHPWS_Help::show_link('users', 'display_name_change', $user->display_name));
+            //$form->addTplTag('DISPLAY_NAME', PHPWS_Help::show_link('users', 'display_name_change', $user->display_name));
         }
 
         if ($user->canChangePassword()){

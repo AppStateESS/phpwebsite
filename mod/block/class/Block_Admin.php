@@ -40,7 +40,6 @@ class Block_Admin {
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
-        $tabs['new'] = array('title' => dgettext('block', 'New'), 'link' => $linkBase);
         $tabs['list'] = array('title' => dgettext('block', 'List'), 'link' => $linkBase);
         $tabs['settings'] = array('title' => dgettext('block', 'Settings'), 'link' => $linkBase);
 
@@ -315,8 +314,9 @@ class Block_Admin {
 
     public static function blockList()
     {
+        Layout::addStyle('block');
         PHPWS_Core::initCoreClass('DBPager.php');
-
+        $pageTags['NEW_BLOCK'] = PHPWS_Text::secureLink(dgettext('block', 'Create new block'), 'block', array('action'=>'new'), null, dgettext('block', 'Create new block'), 'button');
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION'] = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');

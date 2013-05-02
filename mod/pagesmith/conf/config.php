@@ -5,7 +5,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 $icon = Icon::get('edit');
-$icon->setStyle('float : left; margin-right : 5px;');
+$icon->addStyle('float : left; margin-right : 5px;');
 
 define('PS_EDIT', $icon->__toString());
 

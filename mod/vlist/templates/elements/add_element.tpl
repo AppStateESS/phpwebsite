@@ -1,4 +1,0 @@
-{START_FORM}
-{TYPE}
-{ADD}
-{END_FORM}

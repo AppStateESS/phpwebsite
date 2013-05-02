@@ -3,18 +3,17 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Text extends PS_Section {
 
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $this->init();
     }
 
@@ -33,7 +32,6 @@ class PS_Text extends PS_Section {
         }
     }
 
-
     public function setSaved()
     {
         if (!PageSmith::checkLorum($this->content)) {
@@ -51,22 +49,13 @@ class PS_Text extends PS_Section {
             if (empty($lorum)) {
                 $lorum = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/inc/lorum.txt');
             }
-            $this->content =  PHPWS_Text::breaker($lorum);
+            $this->content = PHPWS_Text::breaker($lorum);
         }
         $this->setSaved();
     }
 
-    public function loadSaved()
-    {
-        if (isset($_SESSION['PS_Page'][$this->pid][$this->secname])) {
-            $this->content = $_SESSION['PS_Page'][$this->pid][$this->secname];
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    public function getContent($view_mode=true)
+    public function getContent($view_mode = true)
     {
         if (empty($this->content)) {
             return null;
@@ -85,6 +74,10 @@ class PS_Text extends PS_Section {
         }
     }
 
+    public function setContent($content)
+    {
+        $this->content = PHPWS_Text::parseInput($content);
+    }
 
     public function save($key_id)
     {

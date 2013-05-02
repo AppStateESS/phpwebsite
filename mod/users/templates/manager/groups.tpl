@@ -1,4 +1,6 @@
-{TITLE}&#160;{NAV_INFO}
+{TITLE}
+<div style="margin : 10px 0px">{NEW_GROUP}</div>
+{NAV_INFO}
 <table border="0" cellspacing="1" cellpadding="4" width="100%">
     <tr>
         <th width="20%">{NAME_SORT}</th>

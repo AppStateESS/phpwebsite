@@ -1,6 +1,14 @@
 <?php
 
 /**
+ *
+ * WARNING: This module has been deprecated. It will no longer be
+ * maintained by phpwebsite and no further bug/security patches will
+ * be released. It will be removed from the phpWebsite distribution
+ * at some point in the future.
+ *
+ * @deprecated since phpwebsite 1.8.0
+ *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
@@ -10,7 +18,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
     exit();
 }
-
+Deprecate::moduleWarning('related');
 if (!defined('PHPWS_SOURCE_DIR') || !isset($_REQUEST['action'])) {
     return NULL;
 }
@@ -50,7 +58,7 @@ switch ($_REQUEST['action']) {
     case 'remove':
         Related_Action::remove();
         break;
-         
+
     case 'save':
         Related_Action::save();
         break;

@@ -8,8 +8,6 @@
         <!-- BEGIN block1 -->
         <div id="simple-block1">{block1}</div>
         <!-- END block1 -->
-
-        {text1_edit}
-        <div id="simple-text1">{text1}</div>
+        <div id="simple-text1" class="block-edit" {text1_admin}>{text1}</div>
     </div>
 </div>
