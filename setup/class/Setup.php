@@ -786,6 +786,13 @@ class Setup {
         $test['image_dir']['name'] = dgettext('core', 'Image directory ready');
         $test['image_dir']['crit'] = true;
 
+        $test['conf']['pass'] = is_dir('config/core/') && is_writable('config/core/');
+        $test['conf']['fail'] = sprintf(dgettext('core',
+                        '%s directory does not exist or is not writable.'),
+                PHPWS_SOURCE_DIR . 'config/core/');
+        $test['conf']['name'] = dgettext('core', 'Config directory ready');
+        $test['conf']['crit'] = true;
+
         $test['file_dir']['pass'] = is_dir('files/') && is_writable('files/');
         $test['file_dir']['fail'] = sprintf(dgettext('core',
                         '%s directory does not exist or is not writable.'),
