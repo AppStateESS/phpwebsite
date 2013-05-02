@@ -7,7 +7,7 @@
  * be released. It will be removed from the phpWebsite distribution
  * at some point in the future.
  *
- * @deprecated
+ * @deprecated since phpwebsite 1.8.0
  *
  *
  * @version $Id$

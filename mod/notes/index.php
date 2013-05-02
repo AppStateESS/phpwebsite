@@ -3,6 +3,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+
+Deprecate::moduleWarning('notes');
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
     exit();

@@ -8,8 +8,8 @@
  * at some point in the future. We recommend migrating to one of the
  * many other freely available web forums packages.
  *
- * @deprecated
- * 
+ * @deprecated since phpwebsite 1.8.0
+ *
  * @version $Id: index.php,v 1.2 2008/10/08 17:11:19 adarkling Exp $
  * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
  * @module Bulletin Board
@@ -18,7 +18,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
     exit();
 }
-
+Deprecate::moduleWarning('phpwsbb');
 Layout::addStyle('phpwsbb');
 
 // When was this user last on?

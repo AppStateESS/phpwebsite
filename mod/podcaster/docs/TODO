@@ -1,8 +1,0 @@
-# podcaster - phpwebsite module
-# @version $Id: $
-# @author Verdon Vaillancourt <verdonv at gmail dot com>
-
-
-Q: further user permission and security audit review, but so far so good
-A: take another look at restricted vs unrestricted correct usage
-

@@ -1,5 +1,12 @@
 <?php
+
 /**
+ * WARNING: This module has been deprecated. It will no longer be
+ * maintained by phpwebsite and no further bug/security patches will
+ * be released. It will be removed from the phpWebsite distribution
+ * at some point in the future.
+ *
+ * @deprecated since phpwebsite 1.8.0
  * skeleton - phpwebsite module
  *
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
@@ -21,11 +28,12 @@
  * @version $Id$
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
-
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
     exit();
 }
+
+Deprecate::moduleWarning('skeleton');
 
 PHPWS_Core::initModClass('skeleton', 'Skeleton.php');
 $skeleton = new Skeleton;
@@ -45,6 +53,4 @@ if (isset($_REQUEST['aop'])) {
 } else {
     PHPWS_Core::home();
 }
-
-
 ?>

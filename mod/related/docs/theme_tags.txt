@@ -1,7 +1,0 @@
-The Related module has only on content variable.
-
-Name: bank
-Tag : RELATED_BANK
--------------------
-Everything done in the Related module appears here. Best put near the
-top of a theme.

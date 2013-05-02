@@ -1,4 +1,0 @@
-{START_FORM} {MESSAGE}
-<br />
-<br />
-{ALBUM_NO}&#160;&#160;{ALBUM_YES} {END_FORM}
