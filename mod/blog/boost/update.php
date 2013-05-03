@@ -316,8 +316,6 @@ function blog_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.10.0', '<'):
             $content[] = '<pre>1.10.0 changes
 ---------------------
-+ Blog entry takes place in a single text field. The summary is separated from
-  the entry by a horizontal rule.
 + Rewrote image url hiding script
 </pre>';
     } // end of switch
