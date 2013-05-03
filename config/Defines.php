@@ -47,13 +47,23 @@ define('ERROR_PAGE_TEMPLATE', 'default.html');
 /**
  * Will display errors instead of error page.
  * Only change to true for debugging: never in production.
+ * If this is FALSE, ERRORS_AS_EXCEPTION should be TRUE to get a proper
+ * error page.
  */
 define('DISPLAY_ERRORS', FALSE);
 
 /**
+ * If TRUE and DISPLAY_ERRORS and ERRORS_AS_EXCEPTION are TRUE, PHP warnings
+ * and notices will be thrown as exceptions.
+ * Note: these notices may not be seen with ERRORS_AS_EXCEPTION as FALSE.
+ * Default FALSE.
+ */
+define('SHOW_ALL_ERRORS', FALSE);
+
+/**
  * If true, errors produced by the system will be changed to exceptions. This should
  * be TRUE for production and some cases of debugging.
- * Changing it false is helpful for Xdebug (if installed) error reports.
+ * Changing it FALSE is helpful for Xdebug (if installed) error reports.
  */
 define('ERRORS_AS_EXCEPTION', TRUE);
 

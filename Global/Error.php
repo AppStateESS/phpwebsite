@@ -28,7 +28,8 @@ class Error {
     {
         self::log($error);
         if (DISPLAY_ERRORS) {
-            echo '<h1>DISPLAY_ERRORS is set to TRUE</h1><pre>', self::getErrorInfo($error, true, true), '</pre>';
+            echo '<h1>Unhandled exception:</h1><pre>', self::getErrorInfo($error,
+                    true, true), '</pre>';
         } else {
             self::errorPage();
         }
@@ -47,7 +48,9 @@ class Error {
      */
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+        if (SHOW_ALL_ERRORS  || ($errno & (E_ERROR | E_PARSE | E_USER_ERROR))) {
+            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+        }
     }
 
     /**
@@ -59,8 +62,9 @@ class Error {
     {
         http_response_code($code);
         $error_text = get_status_text($code);
-        $default = 'Global/Error/Pages/' . ERROR_PAGE_TEMPLATE;
-        $error_template = "Global/Error/Pages/$code.html";
+        $default = PHPWS_SOURCE_DIR . 'Global/Error/Pages/' . ERROR_PAGE_TEMPLATE;
+        $error_template = PHPWS_SOURCE_DIR . "Global/Error/Pages/$code.html";
+        $source_http = PHPWS_SOURCE_HTTP;
         if (is_file($error_template)) {
             include $error_template;
         } else {
@@ -85,7 +89,7 @@ class Error {
 
     public static function logError($message)
     {
-        $log_path = ERROR_LOG_DIRECTORY . 'error.log';
+        $log_path = PHPWS_SOURCE_DIR . ERROR_LOG_DIRECTORY . 'error.log';
         if (!@error_log($message, 3, $log_path)) {
             throw new \Exception('Could not write error.log file. Check error directory setting and file permissions.');
         } else {
@@ -113,9 +117,11 @@ class Error {
         }
 
         if ($error_stack) {
-            return sprintf("[%s] %s in %s on line %s\n%s\n\n", $time, $error->getMessage(), $file_info, $line, $trace);
+            return sprintf("[%s] %s in %s on line %s\n%s\n\n", $time,
+                    $error->getMessage(), $file_info, $line, $trace);
         } else {
-            return sprintf("[%s] %s in %s on line %s\n\n", $time, $error->getMessage(), $file_info, $line);
+            return sprintf("[%s] %s in %s on line %s\n\n", $time,
+                    $error->getMessage(), $file_info, $line);
         }
     }
 
@@ -124,7 +130,7 @@ class Error {
         $class = $type = NULL;
         $trace = $error->getTrace();
 
-        foreach ($trace as $key=>$value) {
+        foreach ($trace as $key => $value) {
             extract($value);
             $row[] = "#$key " . self::xdebugLink($file, $line) . "($line): $class$type$function";
         }
