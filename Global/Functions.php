@@ -16,7 +16,8 @@
  */
 function __autoload($class_name)
 {
-    $class_name = preg_replace('@^/|/$@', '', str_replace('\\', '/', $class_name));
+    $class_name = preg_replace('@^/|/$@', '',
+            str_replace('\\', '/', $class_name));
     $global_file = PHPWS_SOURCE_DIR . 'Global/' . $class_name . '.php';
     $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
     if (is_file($global_file)) {
@@ -74,7 +75,8 @@ function t()
  */
 function is_assoc($value)
 {
-    return (is_array($value) && (0 !== count(array_diff_key($value, array_keys(array_keys($value)))) || count($value) == 0));
+    return (is_array($value) && (0 !== count(array_diff_key($value,
+                            array_keys(array_keys($value)))) || count($value) == 0));
 }
 
 /**
@@ -294,7 +296,8 @@ function get_status_text($code)
  */
 function is_string_like($variable)
 {
-    return (is_string($variable) || is_numeric($variable) || (is_object($variable) && method_exists($variable, '__toString')));
+    return (is_string($variable) || is_numeric($variable) || (is_object($variable) && method_exists($variable,
+                    '__toString')));
 }
 
 /**
@@ -473,17 +476,18 @@ function safeFile($file, $type = 'require')
  * @param string $prefix
  * @return string
  */
-function walkingCase($variable_name, $prefix=null)
+function walkingCase($variable_name, $prefix = null)
 {
     $var_array = explode('_', $variable_name);
     if ($prefix) {
         array_unshift($var_array, $prefix);
     }
     $start = array_shift($var_array);
-    foreach ($var_array as $key=>$name) {
+    foreach ($var_array as $key => $name) {
         $var_array[$key] = ucfirst($name);
     }
     array_unshift($var_array, $start);
     return implode('', $var_array);
 }
+
 ?>
