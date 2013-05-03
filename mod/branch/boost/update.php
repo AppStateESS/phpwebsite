@@ -127,7 +127,7 @@ function branch_update(&$content, $version)
 + No longer copying fckeditor.
 </pre>';
 
-            case version_compare($version, '1.3.3', '<'):
+        case version_compare($version, '1.3.3', '<'):
             $content[] = '<pre>1.3.3 Changes
 -------------
 + Removed javascript directory creation
