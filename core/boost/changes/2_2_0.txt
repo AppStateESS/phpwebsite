@@ -3,7 +3,7 @@
 + Added Global library: new classes used as we move forward.
 + Removed DB2 class, it was an early version of the Database class in Global.
 + Added autoload function for core, Global, and module classes.
-+
++ Moving away from PEAR errors towards exceptions.
 
 Global Classes
 -----------------
@@ -23,4 +23,21 @@ Core Classes
 +PHPWS_DB.php
 - Renamed from Database.php to reflect class name.
 - Moved Group_In and Where classes into their own folder.
--
+
++ Deprecate.php
+- New class to log deprecated modules.
+
++ File.php
+- Fix to file extension testing.
+
++ Form.php
+- Fixed static notices
+- Fixed array to string conversion warning when calling setMatch() with a set of
+  checkboxes to pre-select
+- Added Form::setAllDisabled().
+
++ Icon.php
+- Removed clone call in Icon.php
+
++ Image.php
+- Removed px from width and height

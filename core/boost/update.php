@@ -14,8 +14,6 @@ function core_update(&$content, $version)
 <p>Your version of phpWebSite is too old to update using 1.8.0. Please update to
 1.7.3 and return.</p>';
 
-
-
         case version_compare($version, '2.0.0', '<'):
             if (PHPWS_Core::isBranch()) {
                 $content[] = 'This update can only be performed on the hub.';
@@ -202,7 +200,7 @@ Javascript
 UPDATES;
 
         case version_compare($version, '2.2.0', '<'):
-            $changes = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changelogs/changelog_2_2_0.txt');
+            $changes = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/2_2_0.txt');
             $content[] = "<pre>$changes</pre>";
     }
     return true;
