@@ -126,6 +126,12 @@ function branch_update(&$content, $version)
 + Added ability to search for branches from list.
 + No longer copying fckeditor.
 </pre>';
+
+            case version_compare($version, '1.3.3', '<'):
+            $content[] = '<pre>1.3.3 Changes
+-------------
++ Removed javascript directory creation
+</pre>';
     }
     return true;
 }
