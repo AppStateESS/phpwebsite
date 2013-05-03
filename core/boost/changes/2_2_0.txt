@@ -41,3 +41,13 @@ Core Classes
 
 + Image.php
 - Removed px from width and height
+
+CKEditor
+-----------------
++ Removed several buttons by default making it a two row layout.
++ Added scayt and autogrow plugin.
+
+
+Setup
+-----------------
++ Added config/core directory check.
