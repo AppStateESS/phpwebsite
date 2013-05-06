@@ -4,7 +4,6 @@
     {BASE}
     <title>{PAGE_TITLE}</title>
     {METATAGS}
-    {JAVASCRIPT}
     {STYLE}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{THEME_HTTP}css/local.css" rel="stylesheet" media="screen">
@@ -18,7 +17,6 @@
         href="{THEME_HTTP}favicon/apple-touch-icon-57x57-precomposed.png">
     <link rel="shortcut icon" type="image/x-icon"
         href="{THEME_HTTP}favicon/favicon.ico">
-    <script src="{THEME_HTTP}js/bootstrap.min.js"></script>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,14 +27,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="index.php">{SITE_TITLE}</a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
-              Herp Derpinson
-            </p>
-            <ul class="nav">
-            </ul>
-          </div>
+          <a class="brand" href="index.php?module=controlpanel&command=panel_view">phpWebSite Administration</a>
+          <ul class="nav">
+            <li class="{CONTENT_PAGE}"><a href="index.php">View Site</a></li>
+          </ul>
+          <ul class="nav nav-collapse pull-right">
+          <!-- BEGIN miniadmin -->
+            <li class="dropdown">
+              <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                Page Settings <b class="caret"></b>
+              </a>
+              {MINIADMIN_MINI_ADMIN}
+            </li>
+          <!-- END miniadmin -->
+            {USERS_LOGIN_BOX}
+          </ul>
         </div>
       </div>
     </div>
@@ -55,6 +60,6 @@
     <footer>
       {LAYOUT_FOOTER}
     </footer>
-    <script data-main="js/main" src="js/libs/require/require.js"></script>
+    {JAVASCRIPT}
   </body>
 </html>

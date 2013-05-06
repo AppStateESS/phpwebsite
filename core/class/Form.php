@@ -143,6 +143,11 @@ class PHPWS_Form {
 
     }
 
+    public function getEncode()
+    {
+        return ($this->_encode ? $this->_encode : '');
+    }
+
     public function setFormId($id)
     {
         $this->id = $id;
@@ -587,6 +592,26 @@ class PHPWS_Form {
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setValue($value);
             if (PHPWS_Error::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
+    /**
+     * Allows you to set an HTML5 Placeholder on an input element
+     * Note: Our implementation allows you to set a placeholder on any
+     * legal Form_Element, although in practice, it is really only
+     * useful on text inputs and will be ignored in all other cases.
+     */
+    public function setPlaceholder($name, $placeholder)
+    {
+        if(!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setPlaceholder', array($name));
+        }
+
+        foreach($this->_elements[$name] as $key=>$element) {
+            $result = $this->_elements[$name][$key]->setPlaceholder($placeholder);
+            if(PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1406,6 +1431,14 @@ class PHPWS_Form {
             }
         }
 
+        $template['FORM_ACTION'] = $this->getFormAction();
+        $template['FORM_ID'] = $this->getFormId();
+        $template['FORM_NAME'] = $this->getFormName();
+        $template['FORM_AUTOCOMPLETE'] = $this->getAutocompleteValue();
+        $template['FORM_CLASS'] = $this->getFormClass();
+        $template['FORM_METHOD'] = $this->getMethod();
+        $template['FORM_ENCODE'] = $this->getEncode();
+
         unset($this->_elements['authkey']);
         if (class_exists('Current_User') && $this->use_auth_key) {
             if ($authkey = Current_User::getAuthKey()) {
@@ -1432,6 +1465,8 @@ class PHPWS_Form {
                 if ($this->types[$elementName] == 'hidden') {
                     if ($helperTags) {
                         $template['START_FORM'] .= $subElement->get() . "\n";
+                        if(!isset($template['HIDDEN_FIELDS'])) $template['HIDDEN_FIELDS'] = '';
+                        $template['HIDDEN_FIELDS'] .= $subElement->get() . "\n";
                     } else {
                         $hidden_vars[] = $subElement->get();
                     }
@@ -1464,15 +1499,13 @@ class PHPWS_Form {
         }
 
         if ($helperTags) {
-            if (isset($this->_action)) {
-                if ($this->use_fieldset) {
-                    $end_form[] = '</fieldset>';
-                } else {
-                    $end_form[] = '</div>';
-                }
-                $end_form[] = '</form>';
-                $template['END_FORM'] = implode("\n", $end_form);
+            if ($this->use_fieldset) {
+                $end_form[] = '</fieldset>';
+            } else {
+                $end_form[] = '</div>';
             }
+            $end_form[] = '</form>';
+            $template['END_FORM'] = implode("\n", $end_form);
 
         } elseif (isset($hidden_vars)) {
             $template['HIDDEN'] = implode("\n", $hidden_vars);
@@ -1507,44 +1540,71 @@ class PHPWS_Form {
         }
     }
 
+    public function getFormAction()
+    {
+        $multipart = '';
+        if($this->_multipart) {
+            $multipart = '?check_overpost=1';
+        }
+
+        if(!isset($this->_action)) {
+            return 'index.php' . $multipart;
+        }
+
+        return $this->_action . $multipart;
+    }
+
+    public function getFormName()
+    {
+        if($this->allowFormName) {
+            return $this->getFormId();
+        }
+
+        return null;
+    }
+
+    public function getAutocompleteValue()
+    {
+        return $this->_autocomplete ? 'on' : 'off';
+    }
+
+    public function getFormClass()
+    {
+        $class = ' ';
+        if(function_exists('javascript') && $this->protected) {
+            $class .= 'form-protected ';
+        }
+
+        return $class;
+    }
+
+    /**
+     * Provided for compatibility.  Any new forms should use the
+     * individual elements of this function instead:
+     */
     public function getStart()
     {
-        if (!isset($this->_action)) {
-            $this->_action = 'index.php';
-        }
+        $action       = $this->getFormAction();
+        $id           = $this->getFormId();
+        $name         = $this->getFormName();
+        $autocomplete = $this->getAutocompleteValue();
+        $class        = $this->getFormClass();
+        $method       = $this->getMethod();
+        $encode       = $this->getEncode();
 
-        if ($this->_multipart) {
-            $this->_action .= '?check_overpost=1';
-        }
-
-        if (isset($this->id)) {
-            if ($this->allowFormName) {
-                $formName = 'name="' . $this->id . '" id="' . $this->id . '" ';
-            } else {
-                $formName = 'id="' . $this->id . '" ';
-            }
-        } else {
-            $formName = null;
-        }
-
-        if (!$this->_autocomplete) {
-            $autocomplete = 'autocomplete="off" ';
-        } else {
-            $autocomplete = null;
-        }
         if (function_exists('javascript') && $this->required_field) {
             javascript('jquery');
             javascript('required_input');
         }
 
-        // Add "Protection" javascript if requested.
-        $protected = '';
-        if (function_exists('javascript') && $this->protected) {
-            javascript('protect_form');
-            $protected = " form-protected";
-        }
-
-        return '<form class="phpws-form' . $protected . '" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
+        return '<form ' .
+            'class="phpws-form' . $class . '" '.
+            'autocomplete="' . $autocomplete . '" '.
+            ($name ? 'name="' . $name . '" ' : '') .
+            'action="' . $action . '" ' .
+            'method="' . $method . '" ' .
+            ($encode ? $encode . ' ' : '') .
+            '>';
     }
 
     public static function formTextField($name, $value, $size=30, $maxsize=255, $label=null)
@@ -1673,6 +1733,7 @@ class Form_TextField extends Form_Element {
         return '<input type="text" '
         . $this->getName(true)
         . $this->getTitle(true)
+        . $this->getPlaceholder()
         . $this->getDisabled()
         . $this->getReadOnly()
         . $this->getValue()
@@ -1795,6 +1856,7 @@ class Form_Password extends Form_Element {
         . $this->getName(true)
         . $this->getTitle(true)
         . $this->getDisabled()
+        . $this->getPlaceholder()
         . $this->getReadOnly()
         . $this->getValue()
         . $this->getWidth(true)
@@ -1919,6 +1981,7 @@ class Form_TextArea extends Form_Element {
             '<textarea '
             . $this->getName(true)
             . $this->getTitle(true)
+            . $this->getPlaceholder()
             . $this->getDisabled()
             . $this->getReadOnly()
             . implode(' ', $dimensions) . ' '
@@ -2150,6 +2213,7 @@ class Form_Element {
     public $type        = null;
     public $name        = null;
     public $value       = null;
+    public $placeholder = null;
     public $disabled    = false;
     public $read_only   = false;
     public $css_class   = null;
@@ -2353,6 +2417,20 @@ class Form_Element {
         }
     }
 
+    public function setPlaceholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
+    }
+
+    public function getPlaceholder()
+    {
+        if($this->placeholder) {
+            $placeholder = str_replace('"', '&quot;', $this->placeholder);
+            return 'placeholder="' . $placeholder . '" ';
+        }
+        return '';
+    }
+
     public function setClass($css_class)
     {
         $this->css_class = $css_class;
@@ -2360,19 +2438,17 @@ class Form_Element {
 
     public function getClass($formMode=false)
     {
-        if ($formMode) {
-            if ($this->required) {
-                if (empty($this->css_class)) {
-                    $this->css_class = 'input-required';
-                } else {
-                    $this->css_class .= ' input-required';
-                }
-            }
-            return (isset($this->css_class)) ? 'class="' . $this->css_class . '"' : null;
-        }
-        else {
+        if(!$formMode) {
             return $this->css_class;
         }
+
+        $class = (isset($this->css_class) ? $this->css_class : null);
+
+        if($this->required) {
+            $class .= ' input-required';
+        }
+
+        return $class;
     }
 
     public function setStyle($style)
@@ -2486,7 +2562,7 @@ class Form_Element {
 
         // Don't check isset here. Required needs to be checked in
         // the getClass function.
-        $extra[] = $this->getClass(true);
+        $extra[] = 'class="'.$this->getClass(true).'"';
 
         if (isset($this->extra)) {
             $extra[] = $this->getExtra();

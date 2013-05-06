@@ -1,13 +1,6 @@
-<div class="controlpanel">
-    <ul class="tabmenu">
-    <!-- BEGIN tabs -->
-        <li {STATUS}>{TITLE}</li>
-    <!-- END tabs -->
-    </ul>
-    <div class="frame">
-        <div class="backgrd">
-            {CONTENT}
-        </div>
-    </div>
-</div>
-
+<ul class="nav nav-tabs">
+<!-- BEGIN tabs -->
+  <li {STATUS}>{TITLE}</li>
+<!-- END tabs -->
+</ul>
+{CONTENT}
