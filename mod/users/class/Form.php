@@ -88,6 +88,9 @@ class User_Form {
         $form->setLabel('phpws_username', dgettext('users', 'Username'));
         $form->setLabel('phpws_password', dgettext('users', 'Password'));
 
+        $form->setPlaceholder('phpws_username', dgettext('users', 'Username'));
+        $form->setPlaceholder('phpws_password', dgettext('users', 'Password'));
+
         $template = $form->getTemplate();
 
         $signup_vars = array('action' => 'user',
