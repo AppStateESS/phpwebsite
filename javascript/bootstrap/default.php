@@ -1,0 +1,5 @@
+<?php
+
+javascript('jquery');
+
+?>
