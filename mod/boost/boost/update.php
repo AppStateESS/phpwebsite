@@ -106,6 +106,15 @@ Please download update 2.1.1.</pre>';
 ----------------
 + Patches from Hilmar applied.
 </pre>';
+
+        case version_compare($currentVersion, '2.3.6', '<'):
+            $content[] = '<pre>
+2.3.6 changes
+----------------
++ Fixed Boost so that it does not show branches that are OK in the "writable" check
++ Fixed a bug in displaying which branches have unwritable directories
++ Added an exception check on module installation. Reports error and sets as unsuccessful.
+</pre>';
     }
 
     return TRUE;

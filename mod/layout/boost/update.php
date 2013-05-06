@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function layout_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
@@ -18,7 +17,8 @@ function layout_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '2.3.0', '<'):
             $content[] = '<pre>';
-            if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'), 'layout')) {
+            if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'),
+                            'layout')) {
                 $content[] = 'Updated conf/config.php and conf/error.php file.';
             } else {
                 $content[] = 'Unable to update conf/config.php and conf/error.php file.';
@@ -119,14 +119,16 @@ function layout_update(&$content, $currentVersion)
         case version_compare($currentVersion, '2.4.5', '<'):
             $content[] = '<pre>';
             $db = new PHPWS_DB('layout_config');
-            if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload',
+                                    'smallint not null default 0'))) {
                 $content[] = 'Could not create layout_config.deity_reload column.';
                 return false;
             } else {
                 $content[] = 'Added layout_config.deity_reload column.';
             }
 
-            layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'), $content);
+            layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'),
+                    $content);
             $content[] = '2.4.5 changes
 --------------------
 + Added option to use a Key\'s summary or title to fill in the meta
@@ -190,7 +192,12 @@ function layout_update(&$content, $currentVersion)
 + HOME_URL also added for theming.
 </pre>';
 
-
+        case version_compare($currentVersion, '2.5.4', '<'):
+            $content[] = '<pre>2.5.4 changes
+---------------------
++ Static notice corrected.
++ Page title can be changed from miniadmin
+</pre>';
     }
     return true;
 }
@@ -204,4 +211,5 @@ function layoutUpdateFiles($files, &$content)
     }
     $content[] = "     " . implode("\n     ", $files);
 }
+
 ?>

@@ -34,8 +34,7 @@ class PHPWS_Core {
             throw new \Exception(t('No active active modules installed'));
         }
         if (PHPWS_Error::isError($moduleList)) {
-            PHPWS_Error::log($moduleList);
-            PHPWS_Core::errorPage();
+            throw new \Exception($moduleList->getMessage());
         }
 
         foreach ($moduleList as $mod) {

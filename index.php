@@ -23,9 +23,10 @@ require_once 'config/Defines.php';
  */
 if (DISPLAY_ERRORS) {
     ini_set('display_errors', 'On');
-    error_reporting(E_ALL | E_STRICT);
+    error_reporting(-1);
 } else {
     ini_set('display_errors', 'Off');
+    error_reporting(0);
 }
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
@@ -40,7 +41,6 @@ set_exception_handler(array('Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
 }
-
 
 $controller = new ModuleController();
 $controller->execute();

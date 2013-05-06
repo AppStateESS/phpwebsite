@@ -597,6 +597,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Fixed a possible XSS vulnerability discovered by Jakub Galczyk.
 + Users must have some File Cabinet permission to use the File Manager.
 </pre>';
+        case version_compare($version, '2.4.2', '<'):
+            $content[] = '<pre>2.4.2 changes
+-----------------------
++ Added error logging to image resize.
+</pre>';
             return true;
     }
 }
