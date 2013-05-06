@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Id: ngBackup.php 0003 2012-10-17 Hilmar $
+ * @version $Id: ngBackup.php 0004 2012-12-28 Hilmar $
  * @author Hilmar Runge <ngwebsite.net>
  */
 
@@ -259,7 +259,9 @@
 						$filestamp=date("Ymd-His.");
 					}
 					$db = new PHPWS_DB($table);
-					$rows=$db->select();
+					$sqlx='select * from '.$table.'';
+					$rows = $db->query($sqlx);
+					$rsn=$rows->numRows();
 					if ($rows) {
 						if (PEAR::isError($rows)) {
 							$msg='3,not exported, pear error';
@@ -269,7 +271,8 @@
 							if ($fp === FALSE) {
 								$msg='3,unable to open file '.$this->bufilename;
 							} else {
-								foreach ($rows as $row) {
+								for ($i=0; $i < $rsn; $i++) {
+									$row=$rows->fetchRow(DB_FETCHMODE_ASSOC);	
 									$sql='INSERT INTO ' . $table . ' SET ';
 									foreach ($row as $k => $v) {
 										// ignore empty fields
@@ -281,13 +284,14 @@
 									$sql = substr($sql, 0, -2).'--#'.sprintf("%u",crc32(substr($sql, 0, -2))).";\n";
 									fwrite($fp, $sql);
 								}
+								$rows->free();
 								fclose($fp);
 								chmod($bupath.$this->bufilename, 0600);
 								if (isset($_SESSION['ngboost']['BUSIGN']['db'])) {
 									file_put_contents($bupath.'.'.$_SESSION['ngboost']['BUSIGN']['db'].'.txt',
 										$this->bufilename."\n",FILE_APPEND);
 								}
-								$msg='0,export done, '.count($rows).' rows';
+								$msg='0,export done, '.$rsn.' rows';
 							}
 						}
 					} else {
@@ -313,11 +317,14 @@
 			$this->prefix=PHPWS_DB::getPrefix();
 			$bupath=$this->getRepositoryPath();
 			if ($bupath) {
-				$ar=@file($bupath.$filename);
-				if ($ar) {
+				$fr=fopen($bupath.$filename,'r');
+				if ($fr) {
 					$msg='0,'.dgettext('ngboost','Import start with').' '. $filename;
-					$cc0=$cc1=$cc2=$cc3=0;
-					foreach ($ar as $rec) {
+					$cc0=$cc1=$cc2=$cc3=$ccn=0;
+					while (!feof($fr)) {
+						$rec=fgets($fr);
+						if (empty($rec)) break;
+						$ccn++;
 						$parts=explode('--#',$rec,2);
 						$sql=$parts['0'];
 						$crcim=sprintf("%u",crc32($sql));
@@ -349,9 +356,11 @@
 							$cc0++;
 						}
 					}
+					fclose($fr);
+					
 					$msg.='<br />'
 					.	dgettext('ngboost','Import done for').' '.$tbl.', '
-					.	count($ar).' '.dgettext('ngboost','rows').', '
+					.	$ccn.' '.dgettext('ngboost','rows').', '
 					.	$cc1.' '.dgettext('ngboost','errors').', '.$cc0.' ok, '.$cc3.' neCRC, '.$cc2.' eqCRC.';
 				} else {
 					$msg='3,'.dgettext('ngboost','unable to open file').' '.$filename;

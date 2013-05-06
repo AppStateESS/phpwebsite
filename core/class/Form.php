@@ -592,6 +592,26 @@ class PHPWS_Form {
         }
     }
 
+    /**
+     * Allows you to set an HTML5 Placeholder on an input element
+     * Note: Our implementation allows you to set a placeholder on any
+     * legal Form_Element, although in practice, it is really only
+     * useful on text inputs and will be ignored in all other cases.
+     */
+    public function setPlaceholder($name, $placeholder)
+    {
+        if(!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setPlaceholder', array($name));
+        }
+
+        foreach($this->_elements[$name] as $key=>$element) {
+            $result = $this->_elements[$name][$key]->setPlaceholder($placeholder);
+            if(PHPWS_Error::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
 
     /**
      * Sets an element's disabled status
@@ -1673,6 +1693,7 @@ class Form_TextField extends Form_Element {
         return '<input type="text" '
         . $this->getName(true)
         . $this->getTitle(true)
+        . $this->getPlaceholder()
         . $this->getDisabled()
         . $this->getReadOnly()
         . $this->getValue()
@@ -1795,6 +1816,7 @@ class Form_Password extends Form_Element {
         . $this->getName(true)
         . $this->getTitle(true)
         . $this->getDisabled()
+        . $this->getPlaceholder()
         . $this->getReadOnly()
         . $this->getValue()
         . $this->getWidth(true)
@@ -1919,6 +1941,7 @@ class Form_TextArea extends Form_Element {
             '<textarea '
             . $this->getName(true)
             . $this->getTitle(true)
+            . $this->getPlaceholder()
             . $this->getDisabled()
             . $this->getReadOnly()
             . implode(' ', $dimensions) . ' '
@@ -2150,6 +2173,7 @@ class Form_Element {
     public $type        = null;
     public $name        = null;
     public $value       = null;
+    public $placeholder = null;
     public $disabled    = false;
     public $read_only   = false;
     public $css_class   = null;
@@ -2351,6 +2375,20 @@ class Form_Element {
         } else {
             return null;
         }
+    }
+
+    public function setPlaceholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
+    }
+
+    public function getPlaceholder()
+    {
+        if($this->placeholder) {
+            $placeholder = str_replace('"', '&quot;', $this->placeholder);
+            return 'placeholder="' . $placeholder . '" ';
+        }
+        return '';
     }
 
     public function setClass($css_class)
