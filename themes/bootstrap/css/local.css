@@ -1,0 +1,12 @@
+@import url("bootstrap.min.css");
+@import url("bootstrap-responsive.min.css");
+
+/* Leave this here if you're using navbar-fixed-top */
+body {
+    padding-top: 60px;
+}
+
+/* Leave this here if you're also using sidebar-nav */
+.sidebar-nav {
+    padding: 9px 0;
+}
