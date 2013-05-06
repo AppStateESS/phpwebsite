@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the ngWebSite/phpWebSite package.
 # FIRST AUTHOR, SEE COMMENTS OF MSG LINES.
-# ngboost 3.0.13
+# ngboost 3.0.22
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: ngWebsite and phpWebSite 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-23 11:46 -0400\n"
-"PO-Revision-Date: 2011-07-23 11:46 -0400\n"
+"POT-Creation-Date: 2013-01-16 09:20 -0500\n"
+"PO-Revision-Date: 2013-01-16 09:20 -0500\n"
 "Last-Translator: see comments of msg lines\n"
 "Language: de\n"
 "Language-Team: ngI18n <ngwebsite.net>\n"
@@ -17,537 +17,662 @@ msgstr ""
 "Content-Type: charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x99y3
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12418y114464
 msgid "about"
 msgstr "über"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x100y4
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12419y114465
 msgid "Action"
 msgstr "Aktion"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x101y5
+#, #2013.00.16-15:00:51@ngI18n@Hilmar
+#, ngi18n300db,x12420y114466
 msgid "Actions, Messages, Feedback"
-msgstr "Aktionen, Meldungen, Feedback"
+msgstr "Aktionen, Meldungen, Rückmeldungen"
 
-#, #2011.06.06-09:34:56@ngI18n@Hilmar
-#, ngi18n300db,x102y6
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12421y114467
 msgid "After 5 seconds going to classic boost"
 msgstr "Nach 5 Sekunden geht es zum klassischen boost"
 
-#, #2011.06.06-10:11:52@ngI18n@Hilmar
-#, ngi18n300db,x103y7
+#, #2013.00.16-15:01:24@ngI18n@Hilmar
+#, ngi18n300db,x12422y114468
 msgid "An error occurred updating the core"
-msgstr "Ein Fehler ist beim Aktualisieren vom Kern aufgetreten"
+msgstr "Ein Fehler ist beim Aktualisieren des Kernmoduls aufgetreten"
 
-#, #2011.06.06-09:37:00@ngI18n@Hilmar
-#, ngi18n300db,x104y8
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12423y114469
 msgid "An error occurred while installing this module."
 msgstr "Fehler aufgetreten bei der Installation dieses Moduls."
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x105y2
+#, #2013.00.16-14:58:58@ngI18n@Hilmar
+#, ngi18n300db,x12424y114463
 msgid "A new release is available"
-msgstr "Eine neue Version ist verfügbar"
+msgstr "Eine neue Freigabeversion ist verfügbar"
 
-#, #2011.06.23-15:39:33@ngI18n@Hilmar
-#, ngi18n300db,x195y203
+#, #2013.00.16-15:15:07@ngI18n@Hilmar
+#, ngi18n300db,x12425y114470
 msgid "are you sure to purge"
-msgstr "sind Sie sicher zu löschen"
+msgstr "sind Sie sicher, zu löschen"
 
-#, #2011.06.06-09:37:20@ngI18n@Hilmar
-#, ngi18n300db,x106y9
+#, #2013.00.16-15:15:22@ngI18n@Hilmar
+#, ngi18n300db,x12426y114471
 msgid "are you sure to uninstall"
-msgstr "sind Sie sicher zu deinstallieren"
+msgstr "sind Sie sicher, zu deinstallieren"
 
-#, #2011.06.06-10:11:21@ngI18n@Hilmar
-#, ngi18n300db,x107y10
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12427y114472
 msgid "Backup"
 msgstr "Sichern"
 
-#, #2011.06.06-10:26:00@ngI18n@Hilmar
-#, ngi18n300db,x108y11
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12428y114475
 msgid "BackupAll"
 msgstr "SichernAlle"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x109y12
+#, #2013.00.16-15:02:24@ngI18n@Hilmar
+#, ngi18n300db,x12429y114476
 msgid "BackupBranch"
-msgstr "BackupBranch"
+msgstr "BackupPortalzweig"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x110y13
+#, #2013.00.16-14:40:43@ngI18n@Hilmar
+#, ngi18n300db,x12430y114477
+msgid "BackupSet"
+msgstr "Sicherungssatz"
+
+#, #2013.00.16-14:51:23@ngI18n@Hilmar
+#, ngi18n300db,x12431y114473
+msgid "backup sets"
+msgstr "Sicherungssätze"
+
+#, #2013.00.16-15:02:02@ngI18n@Hilmar
+#, ngi18n300db,x12432y114474
+msgid "Backup sets of repository"
+msgstr "Sicherungssätze des Depots"
+
+#, #2013.00.16-14:40:52@ngI18n@Hilmar
+#, ngi18n300db,x12433y114478
+msgid "Branch"
+msgstr "Portalabzweig"
+
+#, #2013.00.16-15:03:02@ngI18n@Hilmar
+#, ngi18n300db,x12434y114479
+msgid "Branch list of repository"
+msgstr "Portalabzweigliste des Depots"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12435y114480
 msgid "Changes"
 msgstr "Änderungen"
 
-#, #2011.06.06-10:26:18@ngI18n@Hilmar
-#, ngi18n300db,x111y14
+#, #2013.00.16-14:42:15@ngI18n@Hilmar
+#, ngi18n300db,x13170y127279
 msgid "Check"
+msgstr "Prüfung"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12436y114481
+msgid "check"
 msgstr "Prüfen"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x112y17
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12437y114484
 msgid "check.xml"
 msgstr "check.xml"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x113y18
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12438y114485
 msgid "check.xml not found"
 msgstr "check.xml nicht gefunden"
 
-#, #2011.06.06-10:27:39@ngI18n@Hilmar
-#, ngi18n300db,x114y19
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12439y114486
 msgid "CheckAll"
 msgstr "AllePrüfen"
 
-#, #2011.06.06-10:26:29@ngI18n@Hilmar
-#, ngi18n300db,x115y15
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12440y114482
 msgid "Check disabled"
 msgstr "Prüfung deaktiviert"
 
-#, #2011.06.06-10:26:57@ngI18n@Hilmar
-#, ngi18n300db,x116y16
+#, #2013.00.16-15:03:41@ngI18n@Hilmar
+#, ngi18n300db,x12441y114483
 msgid "Check done - further maintenance is supported thru the hub only"
-msgstr "Prüfung erfolgt - weitere Pflege wird nur im Hub unterstützt"
+msgstr "Prüfung erfolgt - weitere Wartung wird nur im Hub unterstützt"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x117y20
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12442y114487
 msgid "checksum verification error"
 msgstr "Prüfsummenverifizierung Fehler"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x118y21
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12443y114488
 msgid "Commands"
 msgstr "Befehle"
 
-#, #2011.06.06-10:28:45@ngI18n@Hilmar
-#, ngi18n300db,x119y22
+#, #2013.00.16-15:03:53@ngI18n@Hilmar
+#, ngi18n300db,x12444y114489
 msgid "Content of repository"
-msgstr "Inhalt des Depot"
+msgstr "Inhalt des Depots"
 
-#, #2011.06.06-10:09:51@ngI18n@Hilmar
-#, ngi18n300db,x120y23
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12445y114490
 msgid "Copy from distribution server to my site"
 msgstr "Kopieren von Verteilungsserver auf meine Website"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x121y24
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12446y114491
 msgid "Core successfully updated"
 msgstr "Kern erfolgreich aktualisiert"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x122y25
+#, #2013.00.16-14:51:38@ngI18n@Hilmar
+#, ngi18n300db,x12447y114492
+msgid "current"
+msgstr "derzeit"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12448y114493
 msgid "Current local version"
 msgstr "Aktuelle lokale Version"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x123y27
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12449y114495
 msgid "currently no help available"
 msgstr "derzeit keine Hilfe verfügbar"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x124y26
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12450y114494
+msgid "Current Version"
+msgstr "Aktuelle Version"
+
+#, #2013.00.16-14:43:09@ngI18n@Hilmar
+#, ngi18n300db,x13171y127289
 msgid "Current version"
 msgstr "Aktuelle Version"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x125y28
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12451y114496
 msgid "Database tables of installation"
 msgstr "Datenbanktabellen der Installation"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x126y29
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12452y114497
 msgid "decompress"
 msgstr "dekomprimieren"
 
-#, #2011.06.06-10:09:20@ngI18n@Hilmar
-#, ngi18n300db,x127y30
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12453y114498
 msgid "DependedUpon"
 msgstr "AbhängigVon"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x128y31
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12454y114499
 msgid "Dependencies"
 msgstr "Abhängigkeiten"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x129y32
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12455y114500
 msgid "Dependencies of"
 msgstr "Abhängigkeiten von"
 
-#, #2011.06.06-10:39:42@ngI18n@Hilmar
-#, ngi18n300db,x130y33
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12456y114501
 msgid "Dependents of"
 msgstr "Abhängige von"
 
-#, #2011.06.06-09:33:22@ngI18n@googleTrans
-#, ngi18n300db,x131y34
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12457y114502
 msgid "Description"
 msgstr "Beschreibung"
 
-#, #2011.06.06-10:30:52@ngI18n@Hilmar
-#, ngi18n300db,x132y35
+#, #2013.00.16-14:43:30@ngI18n@Hilmar
+#, ngi18n300db,x12458y114503
+msgid "Dir"
+msgstr "Dir"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12459y114504
 msgid "Distro"
 msgstr "Verteiler"
 
-#, #2011.06.06-10:30:00@ngI18n@Hilmar
-#, ngi18n300db,x133y37
+#, #2013.00.16-15:05:31@ngI18n@Hilmar
+#, ngi18n300db,x12460y114507
 msgid "DistroServer"
-msgstr "VerteilServer"
+msgstr "VerteilungsServer"
 
-#, #2011.06.06-10:30:43@ngI18n@Hilmar
-#, ngi18n300db,x134y36
+#, #2013.00.16-15:04:58@ngI18n@Hilmar
+#, ngi18n300db,x12461y114505
+msgid "Distro server setting is not supported in branches"
+msgstr "Verteilserver Einstellung ist nicht im Portalzweig unterstützt"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12462y114506
 msgid "Distro set to"
 msgstr "Verteiler festgelegt auf"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x135y40
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12463y114510
 msgid "done"
 msgstr "erledigt"
 
-#, #2011.06.06-10:31:19@ngI18n@Hilmar
-#, ngi18n300db,x136y38
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12464y114508
 msgid "Do you really want to purge the backup file?"
 msgstr "Wollen Sie wirklich diese Sicherungsdatei löschen?"
 
-#, #2011.06.06-09:41:24@ngI18n@Hilmar
-#, ngi18n300db,x137y39
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12465y114509
 msgid "Do you really want to restore / overwrite?"
 msgstr "Wollen Sie wirklich wiederherstellen &#47; überschreiben?"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x138y41
+#, #2013.00.16-14:38:43@ngI18n@Hilmar
+#, ngi18n300db,x9086y103922
+msgid "errors"
+msgstr "Fehler"
+
+#, #2013.00.16-15:00:13@ngI18n@Hilmar
+#, ngi18n300db,x9088y103921
+msgid "error with repository"
+msgstr "Fehler mit Depot"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12466y114511
 msgid "expand"
 msgstr "erweitern"
 
-#, #2011.06.06-10:08:50@ngI18n@Hilmar
-#, ngi18n300db,x139y42
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12467y114512
 msgid "Failed"
 msgstr "Gescheitert"
 
-#, #2011.06.23-15:40:55@ngI18n@Hilmar
-#, ngi18n300db,x196y238
+#, #2013.00.16-15:06:10@ngI18n@Hilmar
+#, ngi18n300db,x12468y114513
 msgid "Failed installation of module."
-msgstr "Fehlschlag Installation des Moduls."
+msgstr "Installation des Moduls fehlgeschlagen."
 
-#, #2011.06.23-15:41:46@ngI18n@Hilmar
-#, ngi18n300db,x197y239
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12469y114514
 msgid "Failed to copy file to local directory."
 msgstr "Datei konnte nicht zum lokalen Verzeichnis kopiert werden."
 
-#, #2011.06.23-15:42:32@ngI18n@Hilmar
-#, ngi18n300db,x198y240
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12470y114515
 msgid "Failed upgrade of module."
 msgstr "Fehlschlag Modul Aktualisierung."
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x140y43
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12471y114516
 msgid "File"
 msgstr "Datei"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x141y45
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12472y114518
 msgid "files"
 msgstr "Dateien"
 
-#, #2011.06.06-09:41:51@ngI18n@Hilmar
-#, ngi18n300db,x142y44
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12473y114517
 msgid "File System"
 msgstr "Datei System"
 
-#, #2011.06.06-10:31:47@ngI18n@Hilmar
-#, ngi18n300db,x143y46
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12474y114519
 msgid "GetNew"
 msgstr "NeuAbholen"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x144y47
+#, #2013.00.16-14:34:33@ngI18n@Hilmar
+#, ngi18n300db,x9158y103993
+msgid "Import done for"
+msgstr "Import ausgeführt für"
+
+#, #2013.00.16-14:34:52@ngI18n@Hilmar
+#, ngi18n300db,x9159y103994
+msgid "Import error feedback"
+msgstr "Import Fehlerrückmeldung"
+
+#, #2013.00.16-14:35:08@ngI18n@Hilmar
+#, ngi18n300db,x9161y103995
+msgid "Import start with"
+msgstr "Import Start mit"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12475y114520
 msgid "Install"
 msgstr "Installieren"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x145y48
+#, #2013.00.16-15:16:07@ngI18n@Hilmar
+#, ngi18n300db,x12476y114521
 msgid "invalid call"
-msgstr "ungültigen Aufruf"
+msgstr "ungültiger Aufruf"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x146y49
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12477y114522
 msgid "invalid file type"
 msgstr "ungültiger Dateityp"
 
-#, #2011.06.06-10:07:31@ngI18n@Hilmar
-#, ngi18n300db,x147y50
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12478y114523
 msgid "IsInstalled"
 msgstr "IstInstalliert"
 
-#, #2011.06.06-10:07:42@ngI18n@Hilmar
-#, ngi18n300db,x148y51
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12479y114524
 msgid "IsLocal"
 msgstr "IstLokal"
 
-#, #2011.06.06-10:32:14@ngI18n@Hilmar
-#, ngi18n300db,x149y52
+#, #2013.00.16-15:19:57@ngI18n@Hilmar
+#, ngi18n300db,x12480y114525
 msgid "just"
-msgstr "eben"
+msgstr "noch"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x150y53
+#, #2013.00.16-14:45:26@ngI18n@Hilmar
+#, ngi18n300db,x12481y114526
+msgid "LastNew"
+msgstr "LetzteNeu"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12482y114527
 msgid "Latest distro version"
 msgstr "Neueste Distribution Version"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x151y54
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12483y114528
 msgid "Latest version"
 msgstr "Neueste Version"
 
-#, #2011.06.23-15:43:21@ngI18n@Hilmar
-#, ngi18n300db,x199y253
+#, #2013.00.16-14:46:06@ngI18n@Hilmar
+#, ngi18n300db,x12484y114529
 msgid "List distro is not supported in branches"
-msgstr "List Distribution ist nicht in Branches unterstützt"
+msgstr "List Distribution ist nicht in Portalzweigen unterstützt"
 
-#, #2011.06.06-09:42:32@ngI18n@Hilmar
-#, ngi18n300db,x152y55
+#, #2013.00.16-14:46:47@ngI18n@Hilmar
+#, ngi18n300db,x12485y114530
+msgid "List patos is not supported in branches"
+msgstr "List patos ist nicht in Portalzweigen unterstützt"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12486y114531
 msgid "local tar broken"
 msgstr "lokale Tar defekt"
 
-#, #2011.06.06-09:42:48@ngI18n@Hilmar
-#, ngi18n300db,x153y56
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12487y114532
 msgid "local tar not found:"
 msgstr "lokales Tar nicht gefunden:"
 
-#, #2011.06.06-09:43:00@ngI18n@Hilmar
-#, ngi18n300db,x154y57
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12488y114533
 msgid "local tgz invalid"
 msgstr "lokales Tgz ungültig"
 
-#, #2011.06.06-09:43:11@ngI18n@Hilmar
-#, ngi18n300db,x155y58
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12489y114534
 msgid "local tgz not found"
 msgstr "lokales Tgz nicht gefunden"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x156y59
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12490y114535
 msgid "MB"
 msgstr "MB"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x157y60
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12491y114536
 msgid "MD5 Sum"
 msgstr "MD5 Sum"
 
-#, #2011.06.06-10:06:35@ngI18n@Hilmar
-#, ngi18n300db,x158y61
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12492y114537
 msgid "MissingDependency"
 msgstr "FehlendeAbhängigkeit"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x159y62
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12493y114538
 msgid "Module"
 msgstr "Modul"
 
-#, #2011.06.06-09:55:17@ngI18n@Hilmar
-#, ngi18n300db,x160y63
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12494y114539
 msgid "Module \"%s\" requires module(s) installed with the proper version(s)"
 msgstr "Modul \"%s\" erfordert Module die mit der richtigen Version installiert sind"
 
-#, #2011.06.23-15:43:49@ngI18n@googleTrans
-#, ngi18n300db,x200y263
+#, #2013.00.16-15:08:33@ngI18n@Hilmar
+#, ngi18n300db,x12495y114540
 msgid "Module is missing register file."
-msgstr "Modul fehlt Register-File."
+msgstr "Dem Modul fehlt die Registrierdatei."
 
-#, #2011.06.23-15:44:06@ngI18n@googleTrans
-#, ngi18n300db,x201y264
+#, #2013.00.16-15:08:57@ngI18n@Hilmar
+#, ngi18n300db,x12496y114541
 msgid "Module is missing register function."
-msgstr "Modul fehlt Register-Funktion."
+msgstr "Dem Modul fehlt die Registrier-Funktion."
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x161y64
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12497y114542
 msgid "Module Needed"
 msgstr "Modul erforderlich"
 
-#, #2011.06.06-09:33:24@ngI18n@googleTrans
-#, ngi18n300db,x162y65
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12498y114543
 msgid "Module not installed"
 msgstr "Modul nicht installiert"
 
-#, #2011.06.23-15:44:21@ngI18n@googleTrans
-#, ngi18n300db,x202y268
+#, #2013.00.16-15:09:28@ngI18n@Hilmar
+#, ngi18n300db,x12499y114545
 msgid "Modules have not been set."
-msgstr "Die Module sind nicht festgelegt."
+msgstr "Die Module sind nicht eingestellt."
 
-#, #2011.06.06-09:33:26@ngI18n@googleTrans
-#, ngi18n300db,x163y67
+#, #2013.00.16-15:16:53@ngI18n@Hilmar
+#, ngi18n300db,x12500y114546
 msgid "modules to process"
-msgstr "Module zu verarbeiten"
+msgstr "zu verarbeitende Module"
 
-#, #2011.06.06-09:33:26@ngI18n@googleTrans
-#, ngi18n300db,x164y66
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12501y114544
 msgid "Module title"
 msgstr "Modultitel"
 
-#, #2011.06.06-09:33:26@ngI18n@googleTrans
-#, ngi18n300db,x165y68
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12502y114547
 msgid "More information"
 msgstr "Weitere Informationen"
 
-#, #2011.06.06-09:44:10@ngI18n@Hilmar
-#, ngi18n300db,x166y69
+#, #2013.00.16-15:09:54@ngI18n@Hilmar
+#, ngi18n300db,x12503y114548
 msgid "Needs upgrading"
-msgstr "Erfordert Upgrade"
+msgstr "Erfordert Aktualisierung"
 
-#, #2011.06.06-09:33:26@ngI18n@googleTrans
-#, ngi18n300db,x167y70
+#, #2013.00.16-14:52:13@ngI18n@Hilmar
+#, ngi18n300db,x12504y114549
 msgid "ngBoost (boost2.0)"
-msgstr ""
+msgstr "ngBoost (boost2.0)"
 
-#, #2011.06.06-10:33:06@ngI18n@Hilmar
-#, ngi18n300db,x168y71
+#, #2013.00.16-14:47:37@ngI18n@Hilmar
+#, ngi18n300db,x12505y114550
+msgid "No branches defined on this site"
+msgstr "Auf der Website sind keine Portalabzweigungen definiert"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12506y114551
 msgid "No change infos provided"
 msgstr "Keine Änderungs Infos zur Verfügung gestellt"
 
-#, #2011.06.06-09:55:46@ngI18n@Hilmar
-#, ngi18n300db,x169y73
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12507y114553
 msgid "None"
 msgstr "Keine"
 
-#, #2011.06.06-10:04:59@ngI18n@Hilmar
-#, ngi18n300db,x170y72
+#, #2013.00.16-15:10:26@ngI18n@Hilmar
+#, ngi18n300db,x12508y114552
 msgid "No new release(s) available"
-msgstr "Keine neuen Releases vorhanden"
+msgstr "Keine neuen Freigabeversion(en) vorhanden"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x171y74
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12509y114554
 msgid "not available"
 msgstr "nicht verfügbar"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x172y75
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12510y114555
 msgid "Not installed"
 msgstr "Nicht installiert"
 
-#, #2011.06.23-15:45:15@ngI18n@Hilmar
-#, ngi18n300db,x203y278
+#, #2013.00.16-14:49:07@ngI18n@Hilmar
+#, ngi18n300db,x12511y114556
 msgid "Object sent to boost was not of the PHPWS_Module class."
-msgstr ""
+msgstr "Das an Boost gerichtete Objekt ist nicht von der PHPWS_Modul Klasse."
 
-#, #2011.06.06-10:34:20@ngI18n@Hilmar
-#, ngi18n300db,x173y76
-msgid "or download by yourself from here"
-msgstr "oder von Ihnen von hier herunterladen"
-
-#, #2011.06.06-10:34:45@ngI18n@Hilmar
-#, ngi18n300db,x174y77
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12512y114557
 msgid "Passed"
 msgstr "Bestanden"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x175y78
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12513y114558
 msgid "PatchOption"
 msgstr "PatchOption"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x176y79
+#, #2013.00.16-14:49:29@ngI18n@Hilmar
+#, ngi18n300db,x12514y114559
+msgid "Perms"
+msgstr "Berechtigungen"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12515y114560
 msgid "Please check your error logs."
 msgstr "Bitte überprüfen Sie Ihre Fehler-Logs."
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x177y80
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12516y114561
 msgid "Processing update file."
 msgstr "Verarbeitung Update-Datei."
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x178y81
+#, #2013.00.16-14:39:08@ngI18n@Hilmar
+#, ngi18n300db,x9322y104156
+msgid "programming error, no object context"
+msgstr "Programmierfehler, kein Objektkontext"
+
+#, #2013.00.16-15:11:06@ngI18n@Hilmar
+#, ngi18n300db,x12517y114562
+msgid "Release"
+msgstr "Versionsfreigabe"
+
+#, #2013.00.16-14:39:18@ngI18n@Hilmar
+#, ngi18n300db,x9337y104171
+msgid "rows"
+msgstr "Zeilen"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12518y114563
 msgid "Scope"
 msgstr "Umfang"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x179y82
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12519y114564
 msgid "Server configuration prevents version checking."
 msgstr "Server-Konfiguration verhindert Versionsüberprüfung."
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x180y83
+#, #2013.00.16-15:11:35@ngI18n@Hilmar
+#, ngi18n300db,x12520y114565
+msgid "SetAsMyRelease"
+msgstr "SetzeAlsMeineFreigabeversion"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12521y114566
 msgid "Size"
 msgstr "Größe"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x181y84
+#, #2013.00.16-15:12:14@ngI18n@Hilmar
+#, ngi18n300db,x12522y114567
 msgid "Source XML error"
-msgstr "Source XML-Fehler"
+msgstr "Quelle XML Fehler"
 
-#, #2011.06.06-09:33:27@ngI18n@googleTrans
-#, ngi18n300db,x182y85
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12523y114568
 msgid "Status"
 msgstr "Status"
 
-#, #2011.06.06-10:04:28@ngI18n@Hilmar
-#, ngi18n300db,x183y86
+#, #2013.00.16-15:12:28@ngI18n@Hilmar
+#, ngi18n300db,x12524y114569
 msgid "Table(s)"
-msgstr "Tabelle"
+msgstr "Tabelle(n)"
 
-#, #2011.06.06-09:33:28@ngI18n@googleTrans
-#, ngi18n300db,x184y87
+#, #2013.00.16-15:13:05@ngI18n@Hilmar
+#, ngi18n300db,x12525y114570
 msgid "The boost UI for the installation and upgrading of modules."
-msgstr "Die Boost-Benutzeroberfläche für die Installation und Aktualisierung von Modulen."
+msgstr "Die Boost-Benutzeroberfläche für die Installation und Aktualisierung von Module."
 
-#, #2011.06.06-10:35:53@ngI18n@Hilmar
-#, ngi18n300db,x185y88
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12526y114571
 msgid "The following modules depend on \"%s\" to function"
 msgstr "Die folgenden Module sind abhängig von \"%s\" um zu funktionieren"
 
-#, #2011.06.06-10:36:23@ngI18n@Hilmar
-#, ngi18n300db,x186y89
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12527y114572
 msgid "this distro server does not have the xml file"
 msgstr "Dieser Verteilungsserver verfügt nicht über die XML-Datei"
 
-#, #2011.06.06-10:37:00@ngI18n@Hilmar
-#, ngi18n300db,x187y90
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12528y114573
 msgid "This module does not have dependents"
 msgstr "Dieses Modul hat keine Abhängigkeiten"
 
-#, #2011.06.06-09:33:28@ngI18n@googleTrans
-#, ngi18n300db,x188y91
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12529y114574
 msgid "transfer error"
 msgstr "Übertragungsfehler"
 
-#, #2011.06.23-15:46:01@ngI18n@Hilmar
-#, ngi18n300db,x204y295
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12530y114575
 msgid "Unable to locate SQL import file."
 msgstr "Kann SQL Import Datei nicht lokalisieren."
 
-#, #2011.06.23-15:46:36@ngI18n@Hilmar
-#, ngi18n300db,x205y296
+#, #2013.00.16-15:14:21@ngI18n@Hilmar
+#, ngi18n300db,x12531y114576
 msgid "Unable to make a backup of a local module file."
-msgstr "Kann kein Backup von einer lokalen Modul-Datei zu machen."
+msgstr "Kann keine Sicherungskopie von einer lokalen Modul-Datei vornehmen."
 
-#, #2011.06.06-10:37:21@ngI18n@Hilmar
-#, ngi18n300db,x189y92
+#, #2013.00.16-14:57:46@ngI18n@Hilmar
+#, ngi18n300db,x9412y104246
+msgid "unable to open file"
+msgstr "kann die Datei nicht öffnen"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12532y114577
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#, #2011.06.06-10:37:32@ngI18n@Hilmar
-#, ngi18n300db,x190y93
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12533y114578
 msgid "Uninstall not confirmed"
 msgstr "Deinstallierung nicht bestätigt"
 
-#, #2011.06.06-10:17:08@ngI18n@Hilmar
-#, ngi18n300db,x191y94
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12534y114579
 msgid "Update"
 msgstr "Aktualisieren"
 
-#, #2011.06.06-09:33:28@ngI18n@googleTrans
-#, ngi18n300db,x192y95
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12535y114580
 msgid "Updating core"
 msgstr "Aktualisieren Kern"
 
-#, #2011.06.06-09:33:28@ngI18n@googleTrans
-#, ngi18n300db,x193y96
+#, #2013.00.16-14:50:35@ngI18n@Hilmar
+#, ngi18n300db,x12536y114581
+msgid "Url"
+msgstr "Url"
+
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12537y114582
 msgid "Version"
 msgstr "Version"
 
-#, #2011.06.06-09:33:28@ngI18n@googleTrans
-#, ngi18n300db,x194y97
+#, #2011-07-23 11:46 -0400@see comments of msg lines
+#, ngi18n300db,x12538y114583
 msgid "Version required"
 msgstr "Version erforderlich"
+
+#, #2013.00.16-14:51:08@ngI18n@Hilmar
+#, ngi18n300db,x12539y114584
+msgid "Xref is not supported in branches"
+msgstr "Xref ist nicht in Portalzweigen unterstützt"

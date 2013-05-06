@@ -21,8 +21,9 @@ class ngBoost_Form extends ngBoost_Action {
 	}
 
 	protected function _ngTabTitle()
-    {
-        return '<h4>Release '.$this->release.' '.gettext('Distro').' '.str_replace(',',' ',$_SESSION[NGBOOST]['FG']['xmlrel']).'</h4>';
+  {
+		return '<h4>Release '.$this->release.' '.gettext('Distro').' '
+		.				str_replace(',',' ',$_SESSION[NGBOOST]['FG']['xmlrel']).'</h4>';
 	}
 	
  	/** @param string $type 'core' or 'noco' */
@@ -374,6 +375,7 @@ class ngBoost_Form extends ngBoost_Action {
 
     protected function ngTabListDistros()
     {
+    $_SESSION[NGBOOST][FG]['dml']=array();
 		$myrel = $this->ngConfigGet('release');
 		if (isset($_SESSION[NGBOOST]['FG']['xmlrel'])) {
 			$selrel=$_SESSION[NGBOOST]['FG']['xmlrel'];
@@ -435,7 +437,7 @@ class ngBoost_Form extends ngBoost_Action {
 						.	'\')">purge</a></span>';
 					} else {
 						$is='N';
-						$_SESSION[NGBOOST]['FG'][$mod][]=$distropath.$mod.'/'.$mod.'_'.strtr((string)$modo->version,'.','_').'.tar.gz';
+						$_SESSION[NGBOOST]['FG']['dml'][$mod][]=$distropath.$mod.'/'.$mod.'_'.strtr((string)$modo->version,'.','_').'.tar.gz';
 						$op='<span id="ngpickuprm0'.$mod
 						.	'"><a href="javascript:ngPickup(\''.$mod.'\',\''
 						.	'1'

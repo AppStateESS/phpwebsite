@@ -50,7 +50,8 @@ class ngBoost_Action {
 		$this->context=PHPWS_Core::getCurrentModule();
 		// &	if (Current_user::isLogged()) { } // ractest
 		PHPWS_Core::initModClass('ngboost', 'ngForm.php');
-		
+    PHPWS_Core::initCoreClass('ngBackup.php');
+				
 		PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 		PHPWS_Core::initModClass('boost', 'Boost.php');
 		
@@ -144,7 +145,7 @@ class ngBoost_Action {
             $this->ngBuAll();
             return;
             break;
-        case 'Br':
+        case 'br':
             $this->ngBuBranch();
             return;
             break;
@@ -501,7 +502,6 @@ class ngBoost_Action {
 
     protected function ngGetRepositoryPath()
     {
-        PHPWS_Core::initCoreClass('ngBackup.php');
         return ngBackup::getRepositoryPath();
     }
 
@@ -645,14 +645,14 @@ class ngBoost_Action {
         // associate tables to mods
         $mods=array_keys($_SESSION[NGBOOST]['ml']);
         foreach ($mods as $mod) {
-			$ar[$mod]=$this->ngListDBmod($mod);
+					$ar[$mod]=$this->ngListDBmod($mod);
         }
-        PHPWS_Core::initCoreClass('ngBackup.php');
         $ngbu = new ngBackup();
         $returnPrefix=false;
         $tl = $ngbu->getTableList($returnPrefix);
 
-        $_SESSION['BG']='<b>'.dgettext('ngboost','Database tables of installation').'</b> ('.$this->_reportMem().')<br />'
+        $_SESSION['BG']='<b>'.dgettext('ngboost','Database tables of installation').'</b> ('
+        .	$this->_reportMem().')<br />'
         .	'<table id="ngbsttbdb" class="ngtable"><thead class="ngthead">'
         .	'<tr><th>' .dgettext('ngboost','Module')
         .	'</th><th>'.dgettext('ngboost','Table(s)')
@@ -890,7 +890,6 @@ class ngBoost_Action {
         $_SESSION['BG']='';
         if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
             $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
-            PHPWS_Core::initCoreClass('ngBackup.php');
             $ngbu = new ngBackup();
             $r=$ngbu->tarList($fn);
             $cc=substr($r,0,1);
@@ -908,7 +907,6 @@ class ngBoost_Action {
         $_SESSION['BG']='';
         if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
             $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
-            PHPWS_Core::initCoreClass('ngBackup.php');
             $ngbu = new ngBackup();
             $r=$ngbu->restoreMod($fn);
             $cc=substr($r,0,1);
@@ -923,7 +921,6 @@ class ngBoost_Action {
 
     protected function ngBU($mod)
     {
-        PHPWS_Core::initCoreClass('ngBackup.php');
         $ngbu = new ngBackup();
         $r=$ngbu->backupMod($mod);
         $cc=substr($r,0,1);
@@ -941,6 +938,12 @@ class ngBoost_Action {
 		$ngboostform->_ngGetModules();
         $_SESSION['BG'] = implode('--', array_keys($_SESSION[NGBOOST]['ml']));
 		$_SESSION[NGBOOST]['BUSIGN']['fs']='ngbu.full.fs.'.date("Ymd-His");
+    }
+
+    protected function ngBuBranch()
+    {
+		$_SESSION[NGBOOST]['BUSIGN']['fs']='ngbu.full.fs.'.date("Ymd-His");
+		$this->ngBU('core1v1');
     }
 
     protected function ngBuDel($fnc)
@@ -1001,7 +1004,6 @@ class ngBoost_Action {
         $_SESSION['BG']='';
         if (isset($_SESSION[NGBOOST]['FG']['ngfn'][$fnc])) {
             $fn=$_SESSION[NGBOOST]['FG']['ngfn'][$fnc];
-            PHPWS_Core::initCoreClass('ngBackup.php');
             $ngbu = new ngBackup();
             $r=$ngbu->importTable($fn);
             $cc=substr($r,0,1);
@@ -1039,7 +1041,6 @@ class ngBoost_Action {
     protected function ngTuneFSdispl()
     {
 		if (1==2) {
-        PHPWS_Core::initCoreClass('ngBackup.php');
         $ngbu = new ngBackup();
         $r=$ngbu->backupMod('');
         $cc=substr($r,0,1);
@@ -1165,12 +1166,12 @@ class ngBoost_Action {
     {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
-        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
-            $tgzf = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
+        if (isset($_SESSION[NGBOOST]['FG']['dml'][$mod][$ix])) {
+            $tgzf = array_pop(explode('/', $_SESSION[NGBOOST]['FG']['dml'][$mod][$ix]));
 			$next = dgettext('ngboost','check');
  			$cc='0';
 			if (!file_exists($tgzf)) {
-                $rc = @copy($_SESSION[NGBOOST]['FG'][$mod][$ix], $tgzf);
+                $rc = @copy($_SESSION[NGBOOST]['FG']['dml'][$mod][$ix], $tgzf);
                 if ($rc) {
 				} else {
 					$cc='4';
@@ -1188,23 +1189,25 @@ class ngBoost_Action {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
 		$cc='4';
-        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
-            $tgzf = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
+        if (isset($_SESSION[NGBOOST]['FG']['dml'][$mod][$ix])) {
+            $tgzf = array_pop(explode('/', $_SESSION[NGBOOST]['FG']['dml'][$mod][$ix]));
 			$next = dgettext('ngboost','decompress');
 			if (file_exists($tgzf)) {
 				$tgzmd5=@md5_file($tgzf);
 				//$xmlexpl = str_replace('.tar.gz','.xml',str_replace($mod.'_','check.',$tgzf));
 				// mod.v_v_v.check.xml from 3.0.16 primary choice
 				$xmlexpl = str_replace('.tar.gz','.check.xml',str_replace($mod.'_',$mod.'.',$tgzf));
-				$xmlfile = ngBoost_Action::ngGetDistro() . $mod . '/'.$xmlexpl;
+				$xmlpath = ngBoost_Action::ngGetDistro() . $mod . '/';
+				$xmlfile = $xmlpath.$xmlexpl;
 				$xml = @simplexml_load_file($xmlfile);
-				if (!is_object($xml)) {
+				if ($xml===false) {
 					// 1st fallback to logic up to 3.0.15 check.v_v_v.xml
 					$xmlexpl = str_replace('.tar.gz','.xml',str_replace($mod.'_','check.',$tgzf));
+					$xmlfile = $xmlpath.$xmlexpl;
 					$xml = @simplexml_load_file($xmlfile);
-					if (!is_object($xml)) {
+					if ($xml===false) {
 						// 2nd fallback to check.xml
-						$xmlfile = ngBoost_Action::ngGetDistro() . $mod . '/check.xml';
+						$xmlfile = $xmlpath.'check.xml';
 						$xml = @simplexml_load_file($xmlfile);
 					}
 				}
@@ -1219,7 +1222,7 @@ class ngBoost_Action {
 						$next = dgettext('ngboost','decompress');
 					} else {
 						@unlink($tgzf);
-						$next = dgettext('ngboost', 'checksum verification error').'='.$xmlmd5.$xmlexpl;
+						$next = dgettext('ngboost', 'checksum verification error').'=F)'.$tgzmd5.' X)'.$xmlmd5.' '.$xmlexpl.' '.$tgzf;
 					}
 				} else {
 					$next = dgettext('ngboost', 'check.xml');
@@ -1238,9 +1241,9 @@ class ngBoost_Action {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
 		$cc='4';
-        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
+        if (isset($_SESSION[NGBOOST]['FG']['dml'][$mod][$ix])) {
 			$next = dgettext('ngboost','expand');
-            $tgz = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
+            $tgz = array_pop(explode('/', $_SESSION[NGBOOST]['FG']['dml'][$mod][$ix]));
 			if (file_exists($tgz)) {
 				$tar=substr($tgz,0,-3);
 				if (file_exists($tar)) {
@@ -1273,8 +1276,8 @@ class ngBoost_Action {
 		$mod=$_REQUEST['m'];
 		$ix=$_REQUEST['x'];
 		$cc='4';
-        if (isset($_SESSION[NGBOOST]['FG'][$mod][$ix])) {
-            $tgz = array_pop(explode('/', $_SESSION[NGBOOST]['FG'][$mod][$ix]));
+        if (isset($_SESSION[NGBOOST]['FG']['dml'][$mod][$ix])) {
+            $tgz = array_pop(explode('/', $_SESSION[NGBOOST]['FG']['dml'][$mod][$ix]));
 			// tar.gz = tar
 			$tar = substr($tgz,0,-3);
 			if (file_exists($tar)) {
@@ -1419,7 +1422,7 @@ class ngBoost_Action {
 			if (is_object($xml)) {
 				$version = (string)$xml->module->version;
 				$tgz = array_pop(explode('/', (string)$xml->module->download));
-				$_SESSION[NGBOOST]['FG'][$mox]['0'] = $distropath . $mox . '/' . trim($tgz);
+				$_SESSION[NGBOOST]['FG']['dml'][$mox]['0'] = $distropath . $mox . '/' . trim($tgz);
 			}
 		}
 		return $version;
@@ -1459,7 +1462,7 @@ class ngBoost_Action {
 				}
 				$template['UPDATE_AVAILABLE'] = dgettext('ngboost', 'A new release is available');
 				$template['PU_LINK_LABEL'] = '<b>'.dgettext('ngboost', 'Copy from distribution server to my site').'</b>';
-				$_SESSION[NGBOOST]['FG'][$mox]=array();
+				$_SESSION[NGBOOST]['FG']['dml'][$mox]=array();
 				// multipart srcs
 				if (isset($xml->module->parts)) {
 					$i=0;
@@ -1469,7 +1472,7 @@ class ngBoost_Action {
 						$mmd5[] = (string)$part->md5sum;
 						$i++;
 						if (!empty($distropath)) {
-							$_SESSION[NGBOOST]['FG'][$mox][] = $distropath . $mox . '/' . $tgz;
+							$_SESSION[NGBOOST]['FG']['dml'][$mox][] = $distropath . $mox . '/' . $tgz;
 							$full = $distropath . $mox . '/' . array_pop(explode('/', (string)$xml->module->download));
 						} else {
 							$full = (string)$xml->module->download;
@@ -1480,10 +1483,10 @@ class ngBoost_Action {
 					$mtgz=array($tgz.$this->ngTplChkUpd('0'.$mox));
 					$mmd5=array((string)$xml->module->md5sum);
 					if (!empty($distropath)) {
-						$_SESSION[NGBOOST]['FG'][$mox][] = $full = $distropath . $mox . '/' . $tgz;
+						$_SESSION[NGBOOST]['FG']['dml'][$mox][] = $full = $distropath . $mox . '/' . $tgz;
 					} else {
 						// native xml D/L resource (cannot be multipart)
-						$_SESSION[NGBOOST]['FG'][$mod][] = $full = (string)$xml->module->download;
+						$_SESSION[NGBOOST]['FG']['dml'][$mod][] = $full = (string)$xml->module->download;
 					}
 				}
 
