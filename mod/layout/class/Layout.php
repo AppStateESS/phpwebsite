@@ -357,7 +357,6 @@ class Layout {
         $contentList = Layout::getBoxContent();
         // if content list is blank
         // 404 error?
-
         foreach ($contentList as $module => $content) {
             foreach ($content as $contentVar => $template) {
 
