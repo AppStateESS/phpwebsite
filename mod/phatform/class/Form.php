@@ -295,7 +295,7 @@ class PHAT_Form extends PHPWS_Item {
         $form->setCols('PHAT_FormBlurb1', PHAT_DEFAULT_COLS);
         $form->setRows('PHAT_FormBlurb1', PHAT_DEFAULT_ROWS);
         $form->setLabel('PHAT_PostProcess', dgettext('phatform', 'Post Process Code'));
-        $formTags['POSTPROCESS_HELP']  = PHPWS_Help::show_link('phatform', 'post_process_code');
+        //$formTags['POSTPROCESS_HELP']  = PHPWS_Help::show_link('phatform', 'post_process_code');
 
         $form->addTextArea('PHAT_FormEmails', $this->getAdminEmails());
         $form->setCols('PHAT_FormBlurb1', PHAT_DEFAULT_COLS);

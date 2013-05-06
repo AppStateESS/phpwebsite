@@ -4,7 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function blog_update(&$content, $currentVersion)
 {
     $home_directory = PHPWS_Boost::getHomeDir();
@@ -34,11 +33,11 @@ function blog_update(&$content, $currentVersion)
             }
 
             $files = array('templates/edit.tpl',
-                       'templates/settings.tpl',
-                       'templates/view.tpl',
-                       'templates/submit.tpl',
-                       'templates/user_main.tpl',
-                       'templates/list_view.tpl');
+                'templates/settings.tpl',
+                'templates/view.tpl',
+                'templates/submit.tpl',
+                'templates/user_main.tpl',
+                'templates/list_view.tpl');
 
             blogUpdateFiles($files, $content);
             $content[] = '
@@ -70,7 +69,8 @@ function blog_update(&$content, $currentVersion)
 -------------';
 
             $db = new PHPWS_DB('blog_entries');
-            $result = $db->addTableColumn('expire_date', 'int not null default 0', 'publish_date');
+            $result = $db->addTableColumn('expire_date',
+                    'int not null default 0', 'publish_date');
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'Unable to create table column "expire_date" on blog_entries table.</pre>';
@@ -79,7 +79,8 @@ function blog_update(&$content, $currentVersion)
                 $content[] = '+ Created "expire_date" column on blog_entries table.';
             }
 
-            $result = $db->addTableColumn('sticky', 'smallint not null default 0');
+            $result = $db->addTableColumn('sticky',
+                    'smallint not null default 0');
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'Unable to create table column "sticky" on blog_entries table.</pre>';
@@ -138,12 +139,13 @@ function blog_update(&$content, $currentVersion)
 
             $columns = array();
             $columns['update_date'] = 'int not null default 0';
-            $columns['updater']     = 'varchar(50) NOT NULL';
-            $columns['updater_id']  = 'int not null default 0';
+            $columns['updater'] = 'varchar(50) NOT NULL';
+            $columns['updater_id'] = 'int not null default 0';
 
             $db = new PHPWS_DB('blog_entries');
             foreach ($columns as $column_name => $col_info) {
-                $result = $db->addTableColumn($column_name, $col_info, 'create_date');
+                $result = $db->addTableColumn($column_name, $col_info,
+                        'create_date');
                 if (PHPWS_Error::logIfError($result)) {
                     $content[] = "--- Unable to create table column '$column_name' on blog_entries table.</pre>";
                     return false;
@@ -186,7 +188,8 @@ function blog_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.6.2', '<'):
             $content[] = '<pre>';
 
-            blogUpdateFiles(array('templates/view.tpl', 'templates/settings.tpl', 'templates/style.css'), $content);
+            blogUpdateFiles(array('templates/view.tpl', 'templates/settings.tpl', 'templates/style.css'),
+                    $content);
 
             if (!PHPWS_Boost::inBranch()) {
                 $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_6_2.txt');
@@ -204,7 +207,8 @@ function blog_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.7.0', '<'):
             $content[] = '<pre>';
             $db = new PHPWS_DB('blog_entries');
-            if (PHPWS_Error::logIfError($db->addTableColumn('image_link', "varchar(255) NOT NULL default 'default'"))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('image_link',
+                                    "varchar(255) NOT NULL default 'default'"))) {
                 $content[] = '--- Unable to create image_link column on blog_entries table.</pre>';
                 return false;
             } else {
@@ -232,11 +236,13 @@ function blog_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.7.2', '<'):
             $db = new PHPWS_DB('blog_entries');
-            if (PHPWS_Error::logIfError($db->addTableColumn('thumbnail', 'smallint not null default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('thumbnail',
+                                    'smallint not null default 0'))) {
                 $content[] = 'Unable to create thumbnail column on blog_entries table.';
             }
             $content[] = '<pre>';
-            blogUpdatefiles(array('templates/edit.tpl', 'templates/style.css', 'templates/view.tpl', 'templates/list.tpl', 'templates/settings.tpl'), $content);
+            blogUpdatefiles(array('templates/edit.tpl', 'templates/style.css', 'templates/view.tpl', 'templates/list.tpl', 'templates/settings.tpl'),
+                    $content);
             $content[] = '1.7.2 changes
 -------------
 + Can use media or image thumbnails on blog listing page.
@@ -255,7 +261,7 @@ function blog_update(&$content, $currentVersion)
         case version_compare($currentVersion, '1.8.0', '<'):
             $content[] = '<pre>';
             $files = array('templates/list.tpl', 'templates/purge_confirm.tpl', 'conf/config.php',
-                       'img/');
+                'img/');
 
             blogUpdateFiles($files, $content);
 
@@ -306,6 +312,12 @@ function blog_update(&$content, $currentVersion)
             $content[] = '<pre>1.9.0 changes
 ---------------------
 + Blog entry takes place in just one text field now.</pre>';
+
+        case version_compare($currentVersion, '1.10.0', '<'):
+            $content[] = '<pre>1.10.0 changes
+---------------------
++ Rewrote image url hiding script
+</pre>';
     } // end of switch
     return true;
 }

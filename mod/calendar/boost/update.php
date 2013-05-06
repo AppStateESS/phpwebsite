@@ -277,6 +277,10 @@ function calendar_update(&$content, $version)
             $content[] = '<pre>1.7.4 changes
 ------------------
 + RSS added.</pre>';
+        case version_compare($version, '1.7.5', '<'):
+            $content[] = '<pre>1.7.5 changes
+------------------
++ Added an explicit require for Time.php in Calendar, in an attempt to move off of the older autoload</pre>';
     } // end of switch
 
     return true;

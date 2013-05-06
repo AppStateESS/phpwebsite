@@ -1,0 +1,53 @@
+2.2.0 changes
+----------------
++ Added Global library: new classes used as we move forward.
++ Removed DB2 class, it was an early version of the Database class in Global.
++ Added autoload function for core, Global, and module classes.
++ Moving away from PEAR errors towards exceptions.
+
+Global Classes
+-----------------
+Written for Beanie, this is a new foundation level code that will replace the
+core classes. The idea is to use it for new modules and replace code in old modules.
+At some point, the Global library will deprecate core classes. Even further out,
+core classes will go away.
+
+Core Classes
+----------------
++ DBPager.php
+- error checking added to objects without public variables
+- fixed bug where DBPager would error out then quietly quit. The error now is at
+  least logged.
+- Added SubselectDatabase and SubselectPager classes.
+
++PHPWS_DB.php
+- Renamed from Database.php to reflect class name.
+- Moved Group_In and Where classes into their own folder.
+
++ Deprecate.php
+- New class to log deprecated modules.
+
++ File.php
+- Fix to file extension testing.
+
++ Form.php
+- Fixed static notices
+- Fixed array to string conversion warning when calling setMatch() with a set of
+  checkboxes to pre-select
+- Added Form::setAllDisabled().
+
++ Icon.php
+- Removed clone call in Icon.php
+
++ Image.php
+- Removed px from width and height
+
+CKEditor
+-----------------
++ Removed several buttons by default making it a two row layout.
++ Added scayt and autogrow plugin.
+
+
+Setup
+-----------------
++ Added config/core directory check.

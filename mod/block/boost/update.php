@@ -103,6 +103,13 @@ Please download version 1.1.2.</pre>';
 --------------
 + Removed exit call.
 </pre>';
+
+            case version_compare($currentVersion, '1.3.5', '<'):
+            $content[] = '<pre>1.3.5 changes
+--------------
++ Put in sanity checks preventing blank blocks.
++ Removed New tab, added New block button to List view.
+</pre>';
     }
     return TRUE;
 }

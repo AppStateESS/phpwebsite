@@ -61,7 +61,8 @@ Please download 1.2.1.</pre>';
             $horz_dir = $home_directory . 'templates/menu/menu_layout/horizontal/';
 
             if (!is_dir($basic_dir)) {
-                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
+                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/',
+                                $basic_dir)) {
                     $content[] = "--- Successfully copied directory: $basic_dir";
                 } else {
                     $content[] = "--- Failed to copy directory: $basic_dir</pre>";
@@ -70,7 +71,8 @@ Please download 1.2.1.</pre>';
             }
 
             if (!is_dir($horz_dir)) {
-                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
+                if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/',
+                                $horz_dir)) {
                     $content[] = "--- Successfully copied directory: $horz_dir";
                 } else {
                     $content[] = "--- Failed to copy directory: $horz_dir</pre>";
@@ -154,7 +156,8 @@ Please download 1.2.1.</pre>';
 
         case version_compare($currentVersion, '1.5.0', '<'):
             $db = new PHPWS_DB('menu_links');
-            PHPWS_Error::logIfError($db->alterColumnType('title', 'varchar(255) not null'));
+            PHPWS_Error::logIfError($db->alterColumnType('title',
+                            'varchar(255) not null'));
             $files = array('templates/style.css',
                 'templates/menu_layout/basic/menu.tpl',
                 'templates/menu_layout/basic/link.tpl',
@@ -205,7 +208,8 @@ Please download 1.2.1.</pre>';
 
         case version_compare($currentVersion, '1.6.0', '<'):
             $db = new PHPWS_DB('menus');
-            if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int not null default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('key_id',
+                                    'int not null default 0'))) {
                 return false;
             }
             PHPWS_Core::initModClass('menu', 'Menu_Item.php');
@@ -276,6 +280,14 @@ Please download 1.2.1.</pre>';
 ----------------
 + Fixed bug with javascript in menu admin.
 + Changed getUrl to return just the href and not a complete tag.
+</pre>';
+
+        case version_compare($currentVersion, '1.6.7', '<'):
+            $content[] = '<pre>1.6.7 changes
+----------------
++ Fixed bug with add link not appearing on home page
++ Re-ordered administrative options in "mouse hover" menu for menu link
++ Added additional conditional to prevent menu expansion on a blank url
 </pre>';
     }
     return true;

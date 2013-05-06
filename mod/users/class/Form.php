@@ -891,8 +891,6 @@ class User_Form {
 
     public static function settings()
     {
-        PHPWS_Core::initModClass('help', 'Help.php');
-
         $content = array();
 
         $form = new PHPWS_Form('user_settings');
@@ -928,6 +926,20 @@ class User_Form {
                 $form->setMatch('graphic_confirm',
                         PHPWS_User::getUserSetting('graphic_confirm'));
             }
+
+            $included_usermenu = PHPWS_File::readDirectory(
+                PHPWS_SOURCE_DIR . 'mod/users/templates/usermenus/',
+                FALSE, TRUE, FALSE, array('tpl'));
+            $theme_usermenu = PHPWS_FILE::readDirectory(
+                PHPWS_SOURCE_DIR . Layout::getThemeDir() . 'templates/users/usermenus/',
+                FALSE, TRUE, FALSE, array('tpl'));
+
+            if($theme_usermenu) {
+                $options = array_unique(array_merge($included_usermenu, $theme_usermenu));
+            } else {
+                $options = $included_usermenu;
+            }
+            $menu_options = array_combine($options, $options);
 
             // Replace below with a directory read
             $menu_options['none'] = dgettext('users', 'None');
