@@ -14,7 +14,6 @@ if (!defined('REMEMBER_ME_LIFE')) {
 
 function my_page()
 {
-    PHPWS_Core::initModClass('help', 'Help.php');
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
     }
@@ -81,7 +80,6 @@ class User_Settings {
                                                               'id'   => 'name-info',
                                                               'message' => dgettext('users', 'Once you change your display name, you may not change it again until reset by the site administrator.')));
 
-            //$form->addTplTag('DISPLAY_NAME', PHPWS_Help::show_link('users', 'display_name_change', $user->display_name));
         }
 
         if ($user->canChangePassword()){
