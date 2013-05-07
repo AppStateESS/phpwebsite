@@ -25,10 +25,6 @@ if (ERRORS_AS_EXCEPTION) {
 }
 
 /* * ************************************************* */
-require 'mod/pagesmith/class/PS_Text.php';
-$ps_block = new PS_Text(1);
-exit('hi');
-var_dump($ps_block);
-echo $ps_block->content;
+echo 'This is a test file for phpwebsite functionality';
 /* * *************************************************** */
 ?>
