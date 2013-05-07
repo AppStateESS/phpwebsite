@@ -82,8 +82,22 @@ class Menu_Item {
 
     public function getTemplateList()
     {
-        $result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
-        if (PHPWS_Error::logIfError($result) || empty($result)) {
+        $included_result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
+        $theme_result = PHPWS_File::listDirectories(PHPWS_SOURCE_DIR . Layout::getThemeDir() . 'templates/menu/menu_layout/');
+
+        if(PHPWS_Error::logIfError($included_result) || PHPWS_Error::logIfError($theme_result)) {
+            return null;
+        }
+
+        if($theme_result) {
+            $result = array_unique(array_merge($included_result, $theme_result));
+        } else {
+            $result = $included_result;
+        }
+
+        $result = array_combine($result, $result);
+
+        if (empty($result)) {
             return null;
         }
 

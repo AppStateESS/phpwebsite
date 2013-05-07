@@ -933,7 +933,7 @@ class User_Form {
             $included_usermenu = PHPWS_File::readDirectory(
                 PHPWS_SOURCE_DIR . 'mod/users/templates/usermenus/',
                 FALSE, TRUE, FALSE, array('tpl'));
-            $theme_usermenu = PHPWS_FILE::readDirectory(
+            $theme_usermenu = PHPWS_File::readDirectory(
                 PHPWS_SOURCE_DIR . Layout::getThemeDir() . 'templates/users/usermenus/',
                 FALSE, TRUE, FALSE, array('tpl'));
 
