@@ -161,6 +161,7 @@ class User_Settings {
 
         $form->addHidden('userId', $user->getId());
         $form->addSubmit('submit', dgettext('users', 'Update my information'));
+        $form->setClass('submit', 'btn btn-primary');
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
             $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
@@ -190,7 +191,7 @@ class User_Settings {
         }
 
         $form->addSelect('editor', $all_editors);
-        $form->setLabel('editor', dgettext('users', 'Preferred editor (admins only)'));
+        $form->setLabel('editor', dgettext('users', 'Preferred editor'));
         $form->setMatch('editor', $user_type);
 
         $template = $form->getTemplate();
@@ -198,6 +199,7 @@ class User_Settings {
         if (isset($message)){
             foreach ($message as $tag=>$error) {
                 $template[$tag] = $error;
+                $template[$tag . '_CLASS'] = 'error';
             }
         }
 
