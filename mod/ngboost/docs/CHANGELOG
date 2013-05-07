@@ -81,4 +81,16 @@ Version 3.0.20
 	refresh display of module list after update, install etc
 	introducing backup sets with ngbackup
 	
+Version 3.0.21
+2012-10-29
+	backup branch does also with backup sets
 	
+Version 3.0.22
+2013-01-16
+	ngbackup can now handle larger db content better
+	
+Version 3.0.23
+2013-03-26
+	tab distro list distro get sources access check xml fixed
+	some ngbackup calls had no initmodclass assignment
+		(now placed in constructor)
