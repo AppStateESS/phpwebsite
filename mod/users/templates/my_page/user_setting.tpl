@@ -1,4 +1,29 @@
-{START_FORM}
+<form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}" {FORM_ENCODE}>
+  {HIDDEN_FIELDS}
+  <fieldset>
+    <legend>{ACCT_INFO}</legend>
+    <div class="control-group">
+      {DISPLAY_NAME_LABEL}
+      <div class="controls">
+        {DISPLAY_NAME}
+      </div>
+    </div>
+    <div class="control-group">
+      {PASSWORD1_LABEL}
+      <div class="controls">
+        {PASSWORD1}
+        {PASSWORD2}
+      </div>
+    </div>
+    <div class="control-group">
+      {EMAIL_LABEL}
+      <div class="controls">
+        {EMAIL}
+      </div>
+    </div>
+  </fieldset>
+  {SUBMIT}
+</form>
 <fieldset style="margin-bottom: 2em"><legend>{ACCT_INFO}</legend>
 <table width="99%" cellpadding="4">
     <tr>

@@ -50,7 +50,7 @@ define('ERROR_PAGE_TEMPLATE', 'default.html');
  * If this is FALSE, ERRORS_AS_EXCEPTION should be TRUE to get a proper
  * error page.
  */
-define('DISPLAY_ERRORS', FALSE);
+define('DISPLAY_ERRORS', TRUE);
 
 /**
  * If TRUE and DISPLAY_ERRORS and ERRORS_AS_EXCEPTION are TRUE, PHP warnings
