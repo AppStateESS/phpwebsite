@@ -192,7 +192,6 @@ class PS_Forms {
 
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $create = dgettext('pagesmith', 'Create new page');
-        Language::setLocale('de_DE');
         $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$create</a>";
 
         $pager = new DBPager('ps_page', 'PS_Page');
