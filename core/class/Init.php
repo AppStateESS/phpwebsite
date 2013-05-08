@@ -53,23 +53,10 @@ initializei18n();
 loadBrowserInformation();
 
 /* Load the Core class */
-require_once PHPWS_SOURCE_DIR . 'core/class/PHPWS_Core.php';
 
 define('PHPWS_HOME_HTTP', PHPWS_Core::getHomeHttp());
 
 /***** PHPWS Classes ****/
-
-PHPWS_Core::initCoreClass('PHPWS_DB.php');
-PHPWS_Core::initCoreClass('Debug.php');
-PHPWS_Core::initCoreClass('Settings.php');
-PHPWS_Core::initCoreClass('Link.php');
-PHPWS_Core::initCoreClass('Text.php');
-PHPWS_Core::initCoreClass('Cache.php');
-PHPWS_Core::initCoreClass('Key.php');
-PHPWS_Core::initCoreClass('Cookie.php');
-PHPWS_Core::initCoreClass('Security.php');
-PHPWS_Core::initCoreClass('Icon.php');
-
 if (!defined('USE_ROOT_CONFIG')) {
     define('USE_ROOT_CONFIG', FALSE);
 }
