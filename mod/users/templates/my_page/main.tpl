@@ -1,6 +1,8 @@
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 <!-- BEGIN message -->
-<p class="error"><strong>{MESSAGE}</strong></p>
-<hr />
+<div class="alert">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  {MESSAGE}
+</div>
 <!-- END message -->
 {CONTENT}

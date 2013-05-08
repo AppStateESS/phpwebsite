@@ -1,0 +1,40 @@
+#top-menu div.horizontal-menu {
+    height: 30px;
+}
+
+div.horizontal-menu ul li {
+    position: relative;
+    display: inline;
+    float: left;
+    margin-right: 5px;
+    background-color: white;
+}
+
+div.horizontal-menu ul li div {
+    border: 1px black solid;
+}
+
+div.horizontal-menu ul li div a {
+    font-size: 13px;
+    display: block;
+    padding: 5px;
+}
+
+div.horizontal-menu ul li div ul {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+}
+
+div.horizontal-menu ul li div ul li.link-level-2 {
+    display: none;
+    margin: 0px;
+}
+
+div.horizontal-menu ul li:hover ul li.link-level-2 {
+    display: block;
+}
+
+span.menu-admin {
+    float: left;
+}

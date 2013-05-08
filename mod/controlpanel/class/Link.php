@@ -97,9 +97,9 @@ class PHPWS_Panel_Link {
             $authkey = null;
         }
 
-        $image_path = sprintf('%smod/%s/img/%s', PHPWS_SOURCE_HTTP, $this->itemname, $this->image);
-            $image = sprintf('<img src="%s" title="%s" alt="%s" />', $image_path, $this->getLabel(),
-                sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
+        $image_path = $this->getImageSrc();
+        $image = sprintf('<img src="%s" title="%s" alt="%s" />', $image_path, $this->getLabel(),
+            sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
 
         if ($linkable == true) {
             $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $image);
@@ -107,12 +107,17 @@ class PHPWS_Panel_Link {
         return $image;
     }
 
+    public function getImageSrc()
+    {
+        return sprintf('%smod/%s/img/%s', PHPWS_SOURCE_HTTP, $this->itemname, $this->image);
+    }
+
     public function setUrl($url)
     {
         $this->url = $url;
     }
 
-    public function getUrl($tag=false)
+    public function getUrl($tag=false, $relative=false)
     {
         if ($this->restricted) {
             $authkey = '&amp;authkey=' . Current_User::getAuthKey();
@@ -120,12 +125,18 @@ class PHPWS_Panel_Link {
             $authkey = null;
         }
 
+        $relurl = $this->url . $authkey;
 
         if ($tag) {
-            return sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $this->getLabel());
+            return sprintf('<a href="%s">%s</a>', $relurl, $this->getLabel());
         }
-        else
-        return $this->url;
+        else {
+            if($relative) {
+                return $relurl;
+            } else {
+                return $this->url;
+            }
+        }
     }
 
     public function setLinkOrder($order)
@@ -187,7 +198,10 @@ class PHPWS_Panel_Link {
     public function view()
     {
         $tpl['IMAGE']       = $this->getImage(true, true);
+        $tpl['IMAGE_SRC']   = $this->getImageSrc();
         $tpl['NAME']        = $this->getUrl(true);
+        $tpl['LABEL']       = $this->getLabel();
+        $tpl['HREF']        = $this->getUrl(false, true);
         $tpl['DESCRIPTION'] = $this->getDescription();
 
         return PHPWS_Template::process($tpl, 'controlpanel', 'link.tpl');

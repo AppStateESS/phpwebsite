@@ -212,7 +212,7 @@ class Image extends \Tag {
         $dimen = getimagesize($this->directory);
         if (!is_array($dimen)) {
             trigger_error(sprintf(t('%s not found'), $this->src));
-            $this->src = 'Image/Icon/not_found.gif';
+            $this->src = PHPWS_SOURCE_HTTP .  'Global/inc/images/not_found.gif';
             return false;
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -18,14 +19,14 @@
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-
 class Icon extends \Tag\Image {
+
     /**
      * @var string
      */
     private $module;
 
-    public static function get($type, $module='core')
+    public static function get($type, $module = 'core')
     {
         static $icon_objects = null;
         if (!isset($icon_objects[$module][$type])) {
@@ -40,7 +41,7 @@ class Icon extends \Tag\Image {
         return parent::__toString();
     }
 
-    public static function show($type, $alt=null, $module='core')
+    public static function show($type, $alt = null, $module = 'core')
     {
         $icon = Icon::get($type, $module);
         if ($alt) {
@@ -49,7 +50,7 @@ class Icon extends \Tag\Image {
         return $icon->__toString();
     }
 
-    public static function getIconSets($module='core')
+    public static function getIconSets($module = 'core')
     {
         $data = array();
         // Check for theme-based icons
@@ -57,20 +58,19 @@ class Icon extends \Tag\Image {
             $sourceHttp = Layout::getThemeDir() . "templates/$module/icons/";
             $sourceDir = PHPWS_SOURCE_DIR . $sourceHttp;
             if (is_file($sourceDir)) {
-                $data[] = array('source' => $sourceHttp, 'icons'  => Icon::getIconArray($sourceDir));
+                $data[] = array('source' => $sourceHttp, 'icons' => Icon::getIconArray($sourceDir));
             }
         }
         // Get distro icon address
         if ($module == 'core') {
             $sourceDir = PHPWS_SOURCE_DIR . 'images/icons/default/';
             $sourceHttp = 'images/icons/default/';
-        }
-        else {
+        } else {
             $sourceDir = PHPWS_SOURCE_DIR . "mod/$module/templates/icons/";
             $sourceHttp = "mod/$module/templates/icons/";
         }
-        if (is_file($sourceDir.'icons.php')) {
-            $data[] = array('source' => $sourceHttp, 'icons'  => Icon::getIconArray($sourceDir));
+        if (is_file($sourceDir . 'icons.php')) {
+            $data[] = array('source' => $sourceHttp, 'icons' => Icon::getIconArray($sourceDir));
         }
         return $data;
     }
@@ -82,14 +82,15 @@ class Icon extends \Tag\Image {
             trigger_error(dgettext('core', 'An icons variable was not found.'));
             exit();
         }
-        return $icons;;
+        return $icons;
+        ;
     }
 
     /**
      * Loads the current icons setup.
      * @return array Array of icon parameters, used by loadIcon
      */
-    public static function getParams($module='core')
+    public static function getParams($module = 'core')
     {
         static $params = null;
         if (!empty($params[$module])) {
@@ -120,8 +121,7 @@ class Icon extends \Tag\Image {
         // Get distro style.css
         if ($module == 'core') {
             $filename = 'images/icons/default/icon.css';
-        }
-        else {
+        } else {
             $filename = "mod/$module/templates/icons/icon.css";
         }
         if (is_file(PHPWS_SOURCE_DIR . $filename)) {
@@ -146,10 +146,12 @@ class Icon extends \Tag\Image {
             }
         }
         if (empty($icon)) {
-            trigger_error(sprintf(dgettext('core', 'Icon type not found: %1$s::%2$s'), $module, $type));
+            trigger_error(sprintf(dgettext('core',
+                                    'Icon type not found: %1$s::%2$s'), $module,
+                            $type));
             $src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
         }
-        $o = new Icon($src);
+        $o = new Icon(PHPWS_SOURCE_DIR . $src, PHPWS_SOURCE_HTTP . $src);
         $o->module = $module;
 
         if (isset($icon['class'])) {
@@ -157,7 +159,8 @@ class Icon extends \Tag\Image {
         }
 
         if (isset($icon['x']) && isset($icon['y'])) {
-            $o->addStyle(sprintf('background-position : %spx %spx', $icon['x'], $icon['y']));
+            $o->addStyle(sprintf('background-position : %spx %spx', $icon['x'],
+                            $icon['y']));
         }
 
         if (isset($icon['width'])) {
@@ -176,10 +179,11 @@ class Icon extends \Tag\Image {
         return true;
     }
 
-    public static function demo($module='core')
+    public static function demo($module = 'core')
     {
         if (!class_exists('Layout')) {
-            trigger_error(dgettext('core', 'Layout class not enabled'), E_USER_ERROR);
+            trigger_error(dgettext('core', 'Layout class not enabled'),
+                    E_USER_ERROR);
         }
         $params = Icon::getParams($module);
 
@@ -187,19 +191,24 @@ class Icon extends \Tag\Image {
             $subcontent = array();
             $icon_list = array_keys($iconSet['icons']);
             foreach ($icon_list as $item) {
-                $subcontent[] = Icon::show($item, null, $module) . ' '. $item;
+                $subcontent[] = Icon::show($item, null, $module) . ' ' . $item;
             }
-            $content[] = '<strong>' . sprintf(dgettext('core', '<strong>Module %1$s icons stored at %2$s')
-            , $module, $iconSet['source'])
-            . '</strong><br />' . implode('<br />', $subcontent);
+            $content[] = '<strong>' . sprintf(dgettext('core',
+                                    '<strong>Module %1$s icons stored at %2$s')
+                            , $module, $iconSet['source'])
+                    . '</strong><br />' . implode('<br />', $subcontent);
         }
         if (empty($content)) {
-            trigger_error(dgettext('core', 'Icon class failed demo. Check settings'), E_USER_ERROR);
+            trigger_error(dgettext('core',
+                            'Icon class failed demo. Check settings'),
+                    E_USER_ERROR);
         }
 
-        $final =  implode('<br />', $content);
+        $final = implode('<br />', $content);
         echo Layout::wrap($final);
         exit();
     }
+
 }
+
 ?>

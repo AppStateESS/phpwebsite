@@ -14,7 +14,6 @@ if (!defined('REMEMBER_ME_LIFE')) {
 
 function my_page()
 {
-    PHPWS_Core::initModClass('help', 'Help.php');
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
     }
@@ -81,7 +80,6 @@ class User_Settings {
                                                               'id'   => 'name-info',
                                                               'message' => dgettext('users', 'Once you change your display name, you may not change it again until reset by the site administrator.')));
 
-            //$form->addTplTag('DISPLAY_NAME', PHPWS_Help::show_link('users', 'display_name_change', $user->display_name));
         }
 
         if ($user->canChangePassword()){
@@ -163,6 +161,7 @@ class User_Settings {
 
         $form->addHidden('userId', $user->getId());
         $form->addSubmit('submit', dgettext('users', 'Update my information'));
+        $form->setClass('submit', 'btn btn-primary');
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
             $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
@@ -192,7 +191,7 @@ class User_Settings {
         }
 
         $form->addSelect('editor', $all_editors);
-        $form->setLabel('editor', dgettext('users', 'Preferred editor (admins only)'));
+        $form->setLabel('editor', dgettext('users', 'Preferred editor'));
         $form->setMatch('editor', $user_type);
 
         $template = $form->getTemplate();
@@ -200,6 +199,7 @@ class User_Settings {
         if (isset($message)){
             foreach ($message as $tag=>$error) {
                 $template[$tag] = $error;
+                $template[$tag . '_CLASS'] = 'error';
             }
         }
 
