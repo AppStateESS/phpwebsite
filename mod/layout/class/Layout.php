@@ -982,7 +982,7 @@ class Layout {
         return '<base href="' . PHPWS_Core::getBaseURL() . '" />';
     }
 
-    public function getPageTitle($only_root = FALSE)
+    public static function getPageTitle($only_root = FALSE)
     {
         return $_SESSION['Layout_Settings']->getPageTitle($only_root);
     }
