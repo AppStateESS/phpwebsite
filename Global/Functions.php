@@ -73,8 +73,12 @@ function t()
     }
 
     $r = debug_backtrace();
-    $class = & $r[1]['class'];
-    $domain = strstr($class, '\\', true);
+    $file_path = $r[0]['file'];
+    if (strstr($file_path, 'mod/')) {
+        $domain = preg_replace('|.*mod/([^/]+)/.*|', '\\1', $file_path);
+    } else {
+        $domain = 'core';
+    }
     $lang->setDomain($domain);
     return $lang->translate($args);
 }

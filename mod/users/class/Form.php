@@ -44,7 +44,6 @@ class User_Form {
     {
         $auth = Current_User::getAuthorization();
 
-        PHPWS_Core::initCoreClass('Text.php');
         $template['GREETING'] = dgettext('users', 'Hello');
         $template['USERNAME'] = Current_User::getUsername();
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
