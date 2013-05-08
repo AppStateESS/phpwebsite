@@ -1475,12 +1475,15 @@ class PHPWS_Form {
 
                 $tagName = $subElement->getTag();
                 $label = $subElement->getLabel(true);
+                $labelText = $subElement->getLabel(false);
 
                 if ($this->row_repeat && $multiple) {
                     if (!empty($label)) {
                         $subtpl[$tagName . '_LABEL'] = $label;
+                        $subtpl[$tagName . '_LABEL_TEXT'] = $labelText;
                     }
                     $subtpl[$tagName] = $subElement->get();
+                    $subtpl[$tagName . '_ID'] = $subElement->getId();
                     $template[strtolower($tagName) . '_repeat'][] = $subtpl;
                     continue;
                 }
@@ -1491,7 +1494,10 @@ class PHPWS_Form {
 
                 if (!empty($label)) {
                     $template[$tagName . '_LABEL'] = $label;
+                    $template[$tagName . '_LABEL_TEXT'] = $labelText;
                 }
+
+                $template[$tagName . '_ID'] = $subElement->getId();
 
                 $template[$tagName] = $subElement->get();
                 $count++;
@@ -2378,6 +2384,11 @@ class Form_Element {
         } else {
             $this->id = $id;
         }
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getName($formMode=false, $show_id=true)

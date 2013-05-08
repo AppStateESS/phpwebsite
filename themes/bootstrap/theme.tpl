@@ -32,6 +32,7 @@
             <li class="{CONTENT_PAGE}"><a href="index.php">View Site</a></li>
           </ul>
           <ul class="nav nav-collapse pull-right">
+            <li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle">New Content <b class="caret"></b></a></li>
           <!-- BEGIN miniadmin -->
             <li class="dropdown">
               <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
