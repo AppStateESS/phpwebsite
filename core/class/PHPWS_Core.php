@@ -22,7 +22,7 @@ if (!defined('LOG_DIRECTORY')) {
 }
 
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
-PHPWS_Core::initCoreClass('Error.php');
+PHPWS_Core::initCoreClass('PHPWS_Error.php');
 class PHPWS_Core {
 
     /**
