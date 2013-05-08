@@ -16,23 +16,29 @@ mb_internal_encoding('UTF-8');
 /**
  * Include the defines used in Global library
  */
-require_once 'config/Defines.php';
-
+if (is_file('config/core/config.php')) {
+    require_once 'config/core/config.php';
+} else {
+    header('location: setup/index.php');
+    exit();
+}
+//require_once 'config/Defines.php';
 /**
  * DISPLAY_ERRORS set in Config/Defines.php
  */
+
+if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
+    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
+} else {
+    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
+}
+
 if (DISPLAY_ERRORS) {
     ini_set('display_errors', 'On');
     error_reporting(-1);
 } else {
     ini_set('display_errors', 'Off');
     error_reporting(0);
-}
-if (is_file('config/core/config.php')) {
-    require_once 'config/core/config.php';
-} else {
-    header('location: setup/index.php');
-    exit();
 }
 
 require_once 'Global/Functions.php';

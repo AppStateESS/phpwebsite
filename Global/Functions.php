@@ -145,6 +145,29 @@ function template($file, array $template)
 }
 
 /**
+ * Logs a message to the specified $filename in side the defined LOG_DIRECTORY
+ * 
+ * @param string $message
+ * @param string $filename
+ * @return boolean
+ */
+function logMessage($message, $filename)
+{
+    if (preg_match('|[/\\\]|', $filename)) {
+        trigger_error('Slashes not allowed in log file names.', E_USER_ERROR);
+    }
+    $log_path = LOG_DIRECTORY . $filename;
+    $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . $message . "\n";
+    if (@error_log($message, 3, $log_path)) {
+        chmod($log_path, LOG_PERMISSION);
+        return true;
+    } else {
+        trigger_error("Could not write $filename file. Check error directory setting and file permissions.",
+                E_USER_ERROR);
+    }
+}
+
+/**
  * Receives a printf formatted string and substitutes the values in the
  * $arr array.
  *

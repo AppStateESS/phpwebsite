@@ -127,7 +127,7 @@ define('PHPWS_LOG_ERRORS', TRUE);
 /**
  * Directory where logs will be written
  */
-define('PHPWS_LOG_DIRECTORY', 'logs/');
+define('LOG_DIRECTORY', 'logs/');
 
 /**
  * Determines the permissions given to log files when written
