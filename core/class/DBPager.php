@@ -1370,7 +1370,11 @@ class DBPager {
             return null;
         }
 
-        return implode("\n", $template);
+        return $template['START_FORM'] . "\n" .
+               $template['PAGER_C_SEARCH_LABEL'] . "\n" .
+               $template['PAGER_C_SEARCH'] . "\n" .
+               $template['GO'] . "\n" .
+               $template['END_FORM'];
     }
 
     private function getNavigation(&$template)
