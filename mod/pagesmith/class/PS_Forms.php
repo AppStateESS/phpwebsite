@@ -192,6 +192,7 @@ class PS_Forms {
 
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $create = dgettext('pagesmith', 'Create new page');
+        Language::setLocale('de_DE');
         $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$create</a>";
 
         $pager = new DBPager('ps_page', 'PS_Page');
@@ -208,7 +209,6 @@ class PS_Forms {
         $pager->addSortHeader('create_date', dgettext('pagesmith', 'Created'));
         $pager->addSortHeader('last_updated', dgettext('pagesmith', 'Updated'));
         $pager->addWhere('parent_page', 0);
-
         $this->ps->title = dgettext('pagesmith', 'Pages');
         $this->ps->content = $pager->get();
     }
