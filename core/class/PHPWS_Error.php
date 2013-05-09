@@ -6,6 +6,13 @@
 
 require_once 'PEAR.php';
 
+/**
+ * Error logging presets
+ * If you cannot secure your log directory, this should be changed
+ * to FALSE
+ */
+define('PHPWS_LOG_ERRORS', TRUE);
+
 class PHPWS_Error {
 	/**
 	 * Replacement functions for PEAR's isError function. Prevents
@@ -124,17 +131,13 @@ class PHPWS_Error {
 		if ((bool)PHPWS_LOG_ERRORS == FALSE) {
 			return;
 		}
-
 		if (!PHPWS_Error::isError($value)) {
 			$error = PHPWS_Error::get($value, $module, $funcName, $extraInfo);
-		}
-		else {
+		} else {
 			$error = $value;
 		}
-
 		$final = PHPWS_Error::printError($error);
-
-		PHPWS_Core::log($final, 'error.log', _('Error'));
+        Error::logError($final);
 	}
 
 

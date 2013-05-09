@@ -65,7 +65,7 @@ function fakeCore()
 	}
 
 	set_include_path('./lib/pear/');
-	define('PHPWS_LOG_DIRECTORY', './logs/');
+	define('LOG_DIRECTORY', './logs/');
 	define('DEFAULT_LANGUAGE', 'en_US');
 	define('CURRENT_LANGUAGE', 'en_US');
 	define('PHPWS_SOURCE_DIR', getcwd() . '/');

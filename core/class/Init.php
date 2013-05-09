@@ -23,7 +23,7 @@ if (!defined('PHPWS_SOURCE_HTTP')) {
  * In case the config.php file hasn't been edited, the below
  * check tries to prevent a redeclaration.
  **/
-if (!defined('DB_ALLOW_TABLE_INDEX')) {
+if (!defined('ALLOW_CACHE_LITE')) {
     /**
      * Moving defines.php to defines.dist.php.  This is mainly so
      * that your cache and captcha settings don't get blown away

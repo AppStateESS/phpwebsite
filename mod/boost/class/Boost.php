@@ -932,7 +932,7 @@ class PHPWS_Boost {
 
         $directory[] = $home_dir . 'images/';
         $directory[] = $home_dir . 'files/';
-        $directory[] = PHPWS_LOG_DIRECTORY;
+        $directory[] = LOG_DIRECTORY;
 
         foreach ($directory as $id => $check) {
             if (!is_dir($check)) {

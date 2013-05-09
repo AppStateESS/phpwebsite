@@ -17,12 +17,12 @@ if (!defined('ALLOW_SCRIPT_TAGS')) {
     define('ALLOW_SCRIPT_TAGS', false);
 }
 
-if (!defined('PHPWS_LOG_DIRECTORY')) {
-    define('PHPWS_LOG_DIRECTORY', PHPWS_SOURCE_DIR . 'logs/');
+if (!defined('LOG_DIRECTORY')) {
+    define('LOG_DIRECTORY', PHPWS_SOURCE_DIR . 'logs/');
 }
 
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
-PHPWS_Core::initCoreClass('Error.php');
+PHPWS_Core::initCoreClass('PHPWS_Error.php');
 class PHPWS_Core {
 
     /**
@@ -551,19 +551,18 @@ class PHPWS_Core {
      */
     public static function log($message, $filename, $type=NULL)
     {
-        require_once 'Log.php';
-        if (!is_writable(PHPWS_LOG_DIRECTORY)) {
+
+        if (!is_writable(LOG_DIRECTORY)) {
             exit(_('Unable to write to log directory.'));
         }
 
-        if (is_file(PHPWS_LOG_DIRECTORY . $filename) && !is_writable(PHPWS_LOG_DIRECTORY . $filename)) {
+        if (is_file(LOG_DIRECTORY . $filename) && !is_writable(LOG_DIRECTORY . $filename)) {
             exit(sprintf(_('Unable to write %s file.'), $filename));
         }
 
 
         $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
         $factory = new Log(1);
-        $log  = $factory->singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
         if (PHPWS_Error::isError($log)) {
             return;
@@ -575,9 +574,7 @@ class PHPWS_Core {
         } else {
             $message = '{HUB} ' . $message;
         }
-
-        $log->log($message, PEAR_LOG_NOTICE);
-        $log->close();
+        logMessage($message, $filename);
     }
 
     /**

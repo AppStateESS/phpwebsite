@@ -48,7 +48,7 @@ class Error {
      */
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        if (SHOW_ALL_ERRORS  || ($errno & (E_ERROR | E_PARSE | E_USER_ERROR))) {
+        if (SHOW_ALL_ERRORS || ($errno & (E_ERROR | E_PARSE | E_USER_ERROR))) {
             throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         }
     }
@@ -82,20 +82,17 @@ class Error {
             self::logError(self::getErrorInfo($error, LOG_ERROR_STACK));
         } catch (\Exception $e) {
             // very bad error, could not even log it
-            echo $e->getMessage();
+            trigger_error($e->getMessage(), E_USER_ERROR);
             exit();
         }
     }
 
     public static function logError($message)
     {
-        $log_path = PHPWS_SOURCE_DIR . ERROR_LOG_DIRECTORY . 'error.log';
-        if (!@error_log($message, 3, $log_path)) {
-            throw new \Exception('Could not write error.log file. Check error directory setting and file permissions.');
-        } else {
-            chmod($log_path, LOG_FILE_PERMISSION);
-            return true;
+        if (defined('PHPWS_DSN')) {
+            $message = str_replace(PHPWS_DSN, '-- DSN removed --', $message);
         }
+        logMessage($message, 'error.log');
     }
 
     /**

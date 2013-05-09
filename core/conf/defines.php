@@ -19,7 +19,7 @@ define('ERROR_PAGE_TEMPLATE', 'default.html');
  * error page.
  * Default: FALSE
  */
-define('DISPLAY_ERRORS', FALSE);
+define('DISPLAY_ERRORS', TRUE);
 
 /**
  * If TRUE and DISPLAY_ERRORS and ERRORS_AS_EXCEPTION are TRUE, PHP warnings
@@ -27,7 +27,7 @@ define('DISPLAY_ERRORS', FALSE);
  * Note: these notices may not be seen with ERRORS_AS_EXCEPTION as FALSE.
  * Default: FALSE.
  */
-define('SHOW_ALL_ERRORS', FALSE);
+define('SHOW_ALL_ERRORS', TRUE);
 
 /**
  * If true, errors produced by the system will be changed to exceptions. This should
