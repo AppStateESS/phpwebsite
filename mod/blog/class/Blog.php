@@ -342,7 +342,7 @@ class Blog {
         $template['IMAGE'] = $this->getFile($this->thumbnail);
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
-        $template['POSTED_ON'] = dgettext('blog', 'Posted on');
+        $template['POSTED_ON'] = dgettext('blog', 'Posted at');
         if ($this->author_id) {
             $template['AUTHOR'] = $this->author;
         } else {
