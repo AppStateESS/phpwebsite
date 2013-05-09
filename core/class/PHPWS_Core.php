@@ -560,13 +560,7 @@ class PHPWS_Core {
             exit(sprintf(_('Unable to write %s file.'), $filename));
         }
 
-
         $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
-        $factory = new Log(1);
-
-        if (PHPWS_Error::isError($log)) {
-            return;
-        }
 
         if (PHPWS_Core::isBranch()) {
             $branch_name = Branch::getCurrentBranchName();
