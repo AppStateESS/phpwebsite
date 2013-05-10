@@ -33,10 +33,6 @@ class Boost_Form {
 	public static function listModules($type)
 	{
 		Layout::addStyle('boost');
-		PHPWS_Core::initCoreClass('Module.php');
-		PHPWS_Core::initCoreClass('Text.php');
-		PHPWS_Core::initCoreClass('File.php');
-		PHPWS_Core::initModClass('boost', 'Boost.php');
 
 		$allow_update = true;
 		$core_update_needed = false;

@@ -26,7 +26,7 @@ function __autoload($class_name)
     }
     $class_name = preg_replace('@^/|/$@', '',
             str_replace('\\', '/', $class_name));
-    $new_mod_file = PHPWS_SOURCE_DIR . preg_replace('|^([^/]+)/(\w+)|',
+    $new_mod_file = PHPWS_SOURCE_DIR . preg_replace('|^([^/]+)/([\w/]+)|',
                     'mod/\\1/class/\\2.php', $class_name);
     $global_file = PHPWS_SOURCE_DIR . 'Global/' . $class_name . '.php';
     $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
