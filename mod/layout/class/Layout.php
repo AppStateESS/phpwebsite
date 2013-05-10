@@ -1181,12 +1181,22 @@ class Layout {
     public static function cacheHeaders($cache_key)
     {
         $cache_key = 'layout_header' . $cache_key;
+        if (isset($GLOBALS['Layout_JS'])) {
+            $layout_data['Layout_JS'] = $GLOBALS['Layout_JS'];
+        }
+        if (isset($GLOBALS['Style'])) {
+            $layout_data['Style'] = $GLOBALS['Style'];
+        }
+        if (isset($GLOBALS['Extra_Style'])) {
+            $layout_data['Extra_Style'] = $GLOBALS['Extra_Style'];
+        }
 
-        $layout_data['Layout_JS'] = @$GLOBALS['Layout_JS'];
-        $layout_data['Style'] = @$GLOBALS['Style'];
-        $layout_data['Extra_Style'] = @$GLOBALS['Extra_Style'];
-        $layout_data['Layout_Page_Title_Add'] = @$GLOBALS['Layout_Page_Title_Add'];
-        PHPWS_Cache::save($cache_key, serialize($layout_data));
+        if (isset($GLOBALS['Layout_Page_Title'])) {
+            $layout_data['Layout_Page_Title_Add'] = $GLOBALS['Layout_Page_Title_Add'];
+        }
+        if (!empty($layout_data)) {
+            PHPWS_Cache::save($cache_key, serialize($layout_data));
+        }
     }
 
     /**
