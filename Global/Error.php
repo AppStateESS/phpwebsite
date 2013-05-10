@@ -128,7 +128,14 @@ class Error {
         $trace = $error->getTrace();
 
         foreach ($trace as $key => $value) {
+            // Sometimes file is not set
+            // @todo investigate on PEAR errors
+            $file = null;
             extract($value);
+            if (empty($file)) {
+                $file = t('[Unknown file]');
+            }
+            var_dump($value);
             $row[] = "#$key " . self::xdebugLink($file, $line) . "($line): $class$type$function";
         }
         return implode("<br>", $row);
