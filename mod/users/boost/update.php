@@ -388,6 +388,12 @@ timeout INT NOT NULL default 0,
 + Update permissions
 </pre>';
 
+            case version_compare($currentVersion, '2.7.4', '<'):
+            $content[] = '<pre>2.7.4 changes
+------------------------
++ Fixed 500 error on My Page
+</pre>';
+
 
     } // End of switch statement
 
