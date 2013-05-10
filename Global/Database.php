@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-require_once 'config/Defines.php';
+//require_once 'config/Defines.php';
 
 /**
  * The factory class for DB and DSN creation.

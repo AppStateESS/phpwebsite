@@ -14,7 +14,8 @@
  * Any other undeclared classes will need to be required directly.
  * @param string $class_name
  */
-function __autoload($class_name)
+spl_autoload_register('autoload');
+function autoload($class_name)
 {
     // stores previously found requires
     static $files_found = array();
