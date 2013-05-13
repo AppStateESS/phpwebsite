@@ -1607,6 +1607,7 @@ class PHPWS_Form {
             'class="phpws-form' . $class . '" '.
             'autocomplete="' . $autocomplete . '" '.
             ($name ? 'name="' . $name . '" ' : '') .
+            'id="' . $id . '" '.
             'action="' . $action . '" ' .
             'method="' . $method . '" ' .
             ($encode ? $encode . ' ' : '') .

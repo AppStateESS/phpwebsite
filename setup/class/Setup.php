@@ -6,6 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+require_once 'DB.php';
 require_once 'core/class/Debug.php';
 if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
     define('DIRECTORY_SLASH', '\\');
