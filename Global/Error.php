@@ -132,11 +132,14 @@ class Error {
             // @todo investigate on PEAR errors
             $file = null;
             extract($value);
-            if (empty($file)) {
-                $file = t('[Unknown file]');
+
+            if (!empty($file)) {
+                $prefix = self::xdebugLink($file, $line) . "($line):";
+            } else {
+                $prefix = null;
             }
-            var_dump($value);
-            $row[] = "#$key " . self::xdebugLink($file, $line) . "($line): $class$type$function";
+
+            $row[] = "#$key " . $prefix . $class . $type . $function;
         }
         return implode("<br>", $row);
     }
