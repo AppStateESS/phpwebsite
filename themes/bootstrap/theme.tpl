@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
+    <div id="hero" class="container-fluid">
       <div class="row-fluid">
         <div class="span3">
           {DEFAULT}
