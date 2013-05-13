@@ -62,6 +62,5 @@
     <footer>
       {LAYOUT_FOOTER}
     </footer>
-    {JAVASCRIPT}
   </body>
 </html>
