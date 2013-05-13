@@ -61,6 +61,17 @@ class User_Form {
                                 'Home'));
 
         $usermenu = PHPWS_User::getUserSetting('user_menu');
+
+        $theme_tpl = PHPWS_Template::getTplDir('usermenus') . $usermenu;
+        $mod_tpl = PHPWS_SOURCE_DIR . "mod/users/templates/$usermenu";
+
+        if (!is_file($theme_tpl) && !is_file($mod_tpl)) {
+            logMessage("Could not find user menu file: $usermenu", 'error.log');
+            PHPWS_Settings::set('users', 'user_menu', 'css.tpl');
+            PHPWS_Settings::save('users');
+            $usermenu = 'css.tpl';
+        }
+
         return PHPWS_Template::process($template, 'users',
                         'usermenus/' . $usermenu);
     }
