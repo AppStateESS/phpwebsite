@@ -1,9 +1,9 @@
 {XML}{XML_STYLE}{DOCTYPE}{XHTML}
 <head>
 {BASE}
-<link rel="stylesheet" type="text/css" href="{source_http}themes/simple/compat.css" />
 <title>{PAGE_TITLE}</title>
 {METATAGS} {JAVASCRIPT} {STYLE}
+<link rel="stylesheet" type="text/css" href="{THEME_HTTP}compat.css" />
 </head>
 <body>
 <div id="body-sub">
