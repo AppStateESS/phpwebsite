@@ -36,7 +36,7 @@ function initializeDialog(editor)
 {
     $('#block-edit-popup').dialog(
             {
-                position: {my: 'center top', at: 'center top', of: document},
+                position: {my: 'center', at: 'center', of: this},
                 autoOpen: false,
                 width: 650,
                 title: 'Edit text area',
