@@ -6,6 +6,9 @@ $(document).ready(function() {
     var editor = CKEDITOR.replace('block-edit-textarea', {customConfig: 'phpws_config.js'});
     initializeDialog(editor);
     editBlock(editor);
+    $.fn.powerTip.defaults.followMouse = 'true';
+    $.fn.powerTip.defaults.offset = '10';
+    $('.block-edit').powerTip();
 });
 function editBlock(editor)
 {
@@ -56,11 +59,11 @@ function updateBlock(editor) {
                 'pid': page_id,
                 'bid': block_id,
                 'content': content,
-                'section_id':section_id
+                'section_id': section_id
             }, function(data) {
-                if (content === '') {
-                    content = '[Click to edit]';
-                }
+        if (content === '') {
+            content = '[Click to edit]';
+        }
         current_block.html(content);
     });
 }

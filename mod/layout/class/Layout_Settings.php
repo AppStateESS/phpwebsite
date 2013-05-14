@@ -171,7 +171,7 @@ class Layout_Settings {
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
-        
+
         if ($theme && is_dir(Layout::getThemeDirRoot() . $theme)) {
             $this->default_theme = $theme;
         }
@@ -179,7 +179,7 @@ class Layout_Settings {
         if (empty($this->current_theme)) {
             $this->current_theme = $this->default_theme;
         }
-        
+
         $themeInit = Layout::getThemeDirRoot() . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
@@ -194,7 +194,7 @@ class Layout_Settings {
             $this->deity_reload = true;
         }
     }
-    
+
 
     public function loadStyleSheets($themeVars)
     {

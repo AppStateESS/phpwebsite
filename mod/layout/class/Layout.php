@@ -121,7 +121,8 @@ class Layout {
         if (!isset($theme_var)) {
             $mod_theme_var = strtoupper(sprintf('%s_%s', $module, $content_var));
 
-            if (in_array($mod_theme_var,
+            if (!empty($_SESSION['Layout_Settings']->_theme_variables) &&
+                    in_array($mod_theme_var,
                             $_SESSION['Layout_Settings']->_theme_variables)) {
                 $theme_var = $mod_theme_var;
             } else {
