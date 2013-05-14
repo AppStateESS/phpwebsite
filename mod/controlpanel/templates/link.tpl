@@ -1,4 +1,4 @@
-<div class="media">
+<div class="link media">
   <a class="pull-left" href="{HREF}">
     <img class="media-object" src="{IMAGE_SRC}">
   </a>
