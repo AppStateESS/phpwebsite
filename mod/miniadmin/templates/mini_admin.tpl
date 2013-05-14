@@ -1,4 +1,4 @@
-<ul class="nav nav-list">
+<ul class="miniadmin-content nav nav-list">
 <!-- BEGIN module -->
 <li class="nav-header">{MODULE}</li>
 <!-- BEGIN links -->

@@ -348,6 +348,11 @@ Fixed bug causing blank editors on edit.</pre>';
 + New method of editing text. Click on text instead of edit image.
 + Javascript window replaced with Jquery dialog.
 </pre>';
+        case version_compare($currentVersion, '1.5.1', '<'):
+            $content[] = '<pre>1.5.1 changes
+---------------
++ Mouseover edit behavior changed.
+</pre>';
     } // end switch
 
     return true;

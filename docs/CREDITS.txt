@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------
 phpWebSite
-Copyright (c) 2003-2006 Web Technology Group, Appalachian State University
+Copyright (c) 2003-2013 Web Technology Group, Appalachian State University
 --------------------------------------------------------------------------
 
 phpWebsite 1.x is a fully functional Content Managment System.
@@ -15,6 +15,7 @@ Version History:
        fixes
 1.x    Core and core modules rewritten again for new functionality and
        ease-of-use issues
+1.8.x  Overhaul of system as we move to 2.x
 
 
 --------------------------------------------------------------------------
@@ -25,9 +26,6 @@ Matt McNaney (mcnaney at gmail dot com)
 Jeff Tickle
 Jeremy Booker
 Hilmar Runge
-Verdon Vaillancourt
-Eloi George
-
 
 ---------------------
 Previous contributors
@@ -39,6 +37,8 @@ Kevin Wilcox
 Jeremy Agee
 Mike Wilson
 Ryan Cowan
+Verdon Vaillancourt
+Eloi George
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following projects
@@ -72,17 +72,8 @@ http://www.apache.org
 SourceForge
 http://sourceforge.net
 
-Hotscripts
-http://www.hotscripts.com/
-
-Freshmeat
-http://freshmeat.net/
-
-FCKeditor
-http://www.fckeditor.net/
-
-YouTube Plugin for FCKEditor
-http://youtubepluginfo.sourceforge.net/
+CKeditor
+http://ckeditor.com/
 
 TinyMCE
 http://tinymce.moxiecode.com/
@@ -142,7 +133,6 @@ Yusuke Kamiyamane
 Fugue icons
 http://code.google.com/p/fugue-icons/
 
-
 Tango Desktop Project
 http://tango-project.org/
 
@@ -157,6 +147,10 @@ http://code.google.com/p/jsmin-php/
 phpqrcode
 Dominik Dzienia
 
+PowerTip
+Steven Benner
+http://stevenbenner.github.io/jquery-powertip/
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
@@ -168,38 +162,42 @@ Anders Haugarvoll (Norwegian)
 Olivier Sannier (French)
 Han Velthuis (Dutch)
 
+
+*Special thanks to Mike Noyes, Hilmar Runge and Tommy De Jesus for lurking in IRC
+and sticking with us.*
+
 --------------------------------------------------------------------------
-The phpWebSite team would also like to thank the following people in
-alphabetical order for their contributions and support:
+The phpWebSite team would like to thank the following people in
+alphabetical order for their past contributions and support:
 --------------------------------------------------------------------------
 Scott Baer
 Dr. Greg Blimling
 Fridtjof Busse
-Christian - hosts phpws.de, German support
-Wendall Cada - SF maintainer, bug reporter
-Eloi George/aDarkling - xmlrpc dev, bug/feature patches, mods
+Christian
+Wendall Cada
+Eloi George/aDarkling
 Darren Greene
-Hilmar Runge - documentation, bugs, functionality
-Thomas de Jesus - SF bugs and RFE, irc assistance
-Bobby Kennedy/fatman - phpwebsitemanual host
-Rene Kiesler/rck - kiesler.at, phpws advocate and developer
-Tommy de Jesus/trf000 - Windows survivor, tester, advocate
-Kevin McElligott/XiRoCCo - phpwsforums host
-Greg Meiste/blindman1344 - module developer, bug/RFE patch & report
+Hilmar Runge
+Thomas de Jesus
+Bobby Kennedy/fatman
+Rene Kiesler/rck
+Tommy de Jesus/trf000
+Kevin McElligott/XiRoCCo
+Greg Meiste/blindman1344
 Greg Morgan/dr_kludge
-Shaun Murray/singletrack - Developer, user help, bugs, UI RFE
-Ken Nordquist/kenphused - mod developer
-Mike Noyes/mhnoyes - Black belt in standards & accessibility
+Shaun Murray/singletrack
+Ken Nordquist/kenphused
+Mike Noyes/mhnoyes
 Paivi/spiggy
 Andrew Patterson/inuitart
 Ortwin Pinke
-Kenneth Poulsen/KennethP - User assistance
-Michael Rasmussen/TechElephant - bug fixes and developer
-Sharon Renshaw/Sharondippity - Theme developer and advice
+Kenneth Poulsen/KennethP
+Michael Rasmussen/TechElephant
+Sharon Renshaw/Sharondippity
 Don Seiler/rizzo
 Geoff Staples
 Richard Sumilang
-Verdon Vaillancourt - Bugs, 3rd party modules, user help, morale
+Verdon Vaillancourt
 Paul Van Voorst
 Pete Wachs
 Cindy Wallace - Vice Chancellor of Student Development @ AppState
@@ -207,4 +205,4 @@ Kevin Wilcox
 
 
 And all those who have contributed to phpWebSite. Thanks for your
-support even though we are neglectful parents =)
+support.
