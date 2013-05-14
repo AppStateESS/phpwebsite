@@ -217,8 +217,16 @@ class PS_Forms {
         javascript('jquery');
         javascript('jquery_ui');
         Layout::addStyle('pagesmith', 'admin.css');
-        Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
+        Layout::addJSHeader('<script type="text/javascript" src="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
                 'pageedit');
+
+        Layout::addJSHeader('<link rel="stylesheet" type="text/css" href="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/jquery.powertip.min.css" />',
+                'ptipcss');
+        Layout::addJSHeader('<script type="text/javascript" src="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/jquery.powertip.min.js"></script>',
+                'ptipjs');
         $edit_button = false;
         $page = $this->ps->page;
 
@@ -248,7 +256,8 @@ class PS_Forms {
                     break;
 
                 case 'text':
-                    $tpl[$name . '_admin'] = 'title="Click to edit" data-page-id="' . $page->id . '" data-block-id="' . $section->id . '"';
+                    $edit_message = t('Click here to edit this content');
+                    $tpl[$name . '_admin'] = "title=\"$edit_message\" data-page-id=\"$page->id\" data-block-id=\"$section->id\"";
                     break;
             }
         }

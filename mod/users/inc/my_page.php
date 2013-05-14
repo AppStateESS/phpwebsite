@@ -4,7 +4,7 @@
  * My Page for users, controls changing password, display name, etc.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @version $Id$
+ * @version $Id: my_page.php 7776 2010-06-11 13:52:58Z jtickle $
  */
 
 // Number of days a remember me cookie will last
@@ -199,7 +199,6 @@ class User_Settings {
         if (isset($message)){
             foreach ($message as $tag=>$error) {
                 $template[$tag] = $error;
-                $template[$tag . '_CLASS'] = 'error';
             }
         }
 
