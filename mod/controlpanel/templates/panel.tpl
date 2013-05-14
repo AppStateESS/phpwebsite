@@ -1,4 +1,4 @@
-<ul class="tabmenu nav nav-tabs">
+<ul class="nav nav-tabs">
 <!-- BEGIN tabs -->
   <li {STATUS}>{TITLE}</li>
 <!-- END tabs -->
