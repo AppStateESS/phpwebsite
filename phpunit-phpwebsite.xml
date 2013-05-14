@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<phpunit
+    bootstrap="inc/Bootstrap-Phpunit.php"
+    >
+
+    <testsuites>
+        <testsuite name="core">
+            <directory>tests</directory>
+        </testsuite>
+        <testsuite name="modules">
+            <directory>mod/*/tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
