@@ -18,7 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon"
         href="{THEME_HTTP}favicon/favicon.ico">
   </head>
-  <body>
+  <body id="bootstrap-theme">
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
