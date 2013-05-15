@@ -3,6 +3,7 @@ var CKEDITOR = window.parent.CKEDITOR;
 var oEditor = CKEDITOR.instances.editorName;
 
 var okListener = function(ev) {
+    console.log(insert_text);
     this._.editor.insertHtml(insert_text);
     CKEDITOR.dialog.getCurrent().removeListener("ok", okListener);
     CKEDITOR.dialog.getCurrent().removeListener("cancel", cancelListener);
@@ -192,7 +193,9 @@ function fileClick(folder_line)
 
         $.getJSON(file_link, function(data) {
             $('div#files').html(data.html);
-
+            if (data.width < 300) {
+                data.insert = data.insert.replace(/style="(.*)"/, 'style="$1;float:right;margin:0px 0px 8px 8px;"');
+            }
             insert_text = data.insert;
             readyButtons(data.title);
         });
