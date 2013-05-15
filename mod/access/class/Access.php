@@ -599,8 +599,6 @@ class Access {
         $scl = $db->getObjects('Access_Shortcut');
         if (@$sc = $scl[0]) {
             $sc->loadGet();
-        } else {
-            PHPWS_Core::errorPage(404);
         }
     }
 

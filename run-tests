@@ -5,4 +5,4 @@ if [ ! -x phpunit ]; then
     exit
 fi
 
-phpunit --bootstrap inc/BootstrapPhpunit.php tests/ mod/*/tests/
+phpunit -c phpunit-phpwebsite.xml

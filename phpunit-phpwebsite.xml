@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <phpunit
-    bootstrap="inc/Bootstrap-Phpunit.php"
+    bootstrap="inc/BootstrapPhpunit.php"
     >
 
     <testsuites>
