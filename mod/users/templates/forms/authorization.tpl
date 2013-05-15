@@ -1,7 +1,7 @@
 {START_FORM} {FILE_LIST}{ADD_SCRIPT}
 <br />
 <br />
-<h1>{AUTH_LIST_LABEL}</h1>
+<h2>{AUTH_LIST_LABEL}</h2>
 <table cellpadding="4" width="100%">
     <tr>
         <th>{DEFAULT_LABEL}</th>

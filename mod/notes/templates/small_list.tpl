@@ -1,6 +1,6 @@
 <div class="notes">
   <div class="box padded">
-  <h1>{TITLE}</h1>
+  <h2>{TITLE}</h2>
     {COUNT_LABEL}
     <ul>
     <!-- BEGIN note -->

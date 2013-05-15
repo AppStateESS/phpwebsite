@@ -6,7 +6,7 @@
     </tr>
 </table>
 <div id="image-view">
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 <div class="align-center">{IMAGE} <!-- BEGIN desc -->
 <p class="padded">{DESCRIPTION}</p>
 <!-- END desc --></div>

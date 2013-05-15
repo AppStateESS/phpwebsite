@@ -10,3 +10,9 @@ body {
 .sidebar-nav {
     padding: 9px 0;
 }
+
+/*#hero h1 {font-size : 3.0em}*/
+#hero h2 {font-size : 1.8em}
+#hero h3 {font-size : 1.6em}
+#hero h4 {font-size : 1.4em}
+#hero h5 {font-size : 1.2em}

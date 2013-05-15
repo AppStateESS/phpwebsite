@@ -1,7 +1,7 @@
 <div class="box recent">
-   <!-- BEGIN title --><div class="box-title"><h1>{TITLE}</h1></div><!-- END title -->
+   <!-- BEGIN title --><div class="box-title"><h2>{TITLE}</h2></div><!-- END title -->
    <div class="box-content">
-      <!-- BEGIN message --><h2>{MESSAGE}</h2><!-- END message -->
+      <!-- BEGIN message --><h3>{MESSAGE}</h3><!-- END message -->
       {CONTENT}
    </div>
 </div>

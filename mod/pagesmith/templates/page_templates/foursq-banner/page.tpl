@@ -1,7 +1,7 @@
 <div id="foursq-banner-page" class="pagesmith-page">
     <div id="foursq-banner-block1">{block1}</div>
     <div class="box-title">
-        <h1 id="foursq-banner-page-title">{page_title}</h1>
+        <h2 id="foursq-banner-page-title">{page_title}</h2>
     </div>
     <div class="box-content">
         <div id="foursq-banner-text1" class="block-edit" {text1_admin}>{text1}</div>

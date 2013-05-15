@@ -1,6 +1,6 @@
 <div class="box">
 <div class="box-title">
-<h1>{FORM_TITLE}</h1>
+<h2>{FORM_TITLE}</h2>
 </div>
 <div class="box-content"><!-- BEGIN error -->
 <div class="error">{ERRORS}</div>

@@ -1,6 +1,6 @@
 <div id="threesec_tbl-page" class="pagesmith-page">
 <div class="box-title">
-<h1 id="threesec-tbl-page-title">{page_title}</h1>
+<h2 id="threesec-tbl-page-title">{page_title}</h2>
 </div>
 <div class="box-content">
 <table>

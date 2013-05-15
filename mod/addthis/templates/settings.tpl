@@ -1,4 +1,4 @@
-<h1>AddThis Settings</h1>
+<h2>AddThis Settings</h2>
 
 <p>
 {START_FORM}

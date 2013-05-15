@@ -4,7 +4,7 @@
  * @author Hilmar Runge <ngwebsite.net>
  */
 
-	// me 
+	// me
 	define ('NGBOOST','ngboost');
     define('NGANYHELP', '<div style="text-align:right;">'
                     . '<img class="ngAnyHelp" src="'.PHPWS_SOURCE_HTTP
@@ -29,7 +29,7 @@
 	if (!defined('NGBR')) {
 		define ('NGBR', '<br />');
 	}
-	
+
 
 class ngBoost_Action {
 
@@ -38,23 +38,23 @@ class ngBoost_Action {
 	const PATXA32 = '/[a-z0-9]/';
 	const PATXVSN = '/^[a-zA-Z0-9\.\,]*$/';
 	//const PATSORT = '/[a-zA-Z0-9\.\_\-\ ]/';
-	
+
 	var $context = '';
-	
+
  	/** @var bool $this->isbranch state */
 	var $isbranch;
-	
-	
+
+
     public function __construct()
     {
 		$this->context=PHPWS_Core::getCurrentModule();
 		// &	if (Current_user::isLogged()) { } // ractest
 		PHPWS_Core::initModClass('ngboost', 'ngForm.php');
     PHPWS_Core::initCoreClass('ngBackup.php');
-				
+
 		PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 		PHPWS_Core::initModClass('boost', 'Boost.php');
-		
+
 		$this->isbranch = (bool)PHPWS_Core::isBranch();
 	}
 
@@ -99,13 +99,13 @@ class ngBoost_Action {
 				$tpl['DIRECTORIES'] = implode('<br />', $chkdir);
 			}
 			// )
-			
+
 			unset($_SESSION[NGBOOST]['BUSIGN']);
-		
+
 			$_SESSION[NGBOOST]['ml']=array();
 			$ngboostform = new ngBoost_Form;
 			$ngboostform->_ngGetModules();
-		
+
 		//	$ngboostform = new ngBoost_Form('ngboost');
 			$tpl['MOCO'] = NGANYHELP.$ngboostform->ngTabModules('core');
 			$tpl['MOOT'] = NGANYHELP.$ngboostform->ngTabModules('noco');
@@ -114,13 +114,13 @@ class ngBoost_Action {
 			$tpl['DBAC'] = NGANYHELP.$ngboostform->ngTabDB();
 			$tpl['TUNE'] = NGANYHELP.$ngboostform->ngTabTune();
 
-			Layout::add(PHPWS_ControlPanel::display('<h2>ngBoost (boost2.0)</h2>
+			Layout::add(PHPWS_ControlPanel::display('<h3>ngBoost (boost2.0)</h3>
 			<div id="ngmsg" class="jqmWindow">&nbsp;</div>
 			<div id="ngpar" class="jqmWindow">&nbsp;</div>'
 			. PHPWS_Template::process($tpl, 'ngboost', 'cptabs.tpl') ));
 		}
 	}
-	
+
     protected function indexBG()
     {
 		// BG actions
@@ -346,11 +346,11 @@ class ngBoost_Action {
         } else {
             $c1 = file_get_contents(PHPWS_SOURCE_DIR.'mod/'.$mod.'/boost/about.html');
         }
-        $c2 = explode('<h1>', $c1);
+        $c2 = explode('<h2>', $c1);
 		if (isset($c2[1])) {
 			$c3 = explode('</body>',$c2[1]);
 			$c4 = NGJQMCLOSE.'<div class="ngscauto">'
-			.	'<h1>' . str_replace('onclick="window.close()"', 'class="jqmClose"',$c3[0]);
+			.	'<h2>' . str_replace('onclick="window.close()"', 'class="jqmClose"',$c3[0]);
 			$_SESSION['BG']=str_replace('class="ngjqmtitle">','class="ngjqmtitle">about &#171;'.$mod.'&#187;',$c4)
 			.	'</div>';
 		} else {
@@ -409,7 +409,7 @@ class ngBoost_Action {
 			. '--unknown--check.xml error';
 		}
 	}
-	
+
     protected function ngCheckRepo()
     {
         $rp=$this->ngGetRepositoryPath();
@@ -546,7 +546,7 @@ class ngBoost_Action {
                 }
 
     }
-	
+
     protected function ngXrefRepo()
     {
         $_SESSION['BG']='<b>'.dgettext('ngboost','Branch list of repository').'</b> ('.$this->_reportMem().')<br />';
@@ -624,7 +624,7 @@ class ngBoost_Action {
                     $_SESSION['BG'] .= '</table>';
                 }
 	}
-	
+
     protected function ngListRepoBusDir($fnc)
     {
         $_SESSION['BG']='';
@@ -633,8 +633,8 @@ class ngBoost_Action {
 			$rp=ngBackup::getRepositoryPath();
 			if (file_exists($rp.$fn)) {
 				$re=str_replace("\n",'<br />',file_get_contents($rp.$fn));
-                $_SESSION['BG'] = NGJQMCLOSE . '<h3>'.substr($fn,6,-4)
-				.	'</h3><div style="height:400px; overflow:auto;">'.$re.'</div>';
+                $_SESSION['BG'] = NGJQMCLOSE . '<h4>'.substr($fn,6,-4)
+				.	'</h4><div style="height:400px; overflow:auto;">'.$re.'</div>';
 			} else {
                 $_SESSION['BG'] = NGJQMCLOSE . 'No File' . NGSAYKO;
 			}
@@ -661,7 +661,7 @@ class ngBoost_Action {
         .	' </th></tr></thead><tbody class="ngtbody">';
         unset($_SESSION[NGBOOST]['FG']['ngtn']);
         unset($_SESSION[NGBOOST]['FG']['ngtm']);
-		
+
         foreach ($ar as $mod => $tbs) {
             if (count($tbs)==0) {
             } else {
@@ -721,7 +721,7 @@ class ngBoost_Action {
         }
 		return $ar;
  	}
-	
+
     protected function ngListBoostLog()
     {
 		$_SESSION['BG'] = '<b>Boost Log</b> ('.$this->_reportMem().')'
@@ -744,7 +744,7 @@ class ngBoost_Action {
 		$ngboostform->_ngGetModules();
 		$_SESSION['BG'] = $ngboostform->ngRowModules();
 	}
-	
+
     protected function ngListPato($pato)
     {
 				$distro = $this->ngConfigGet('distro');
@@ -779,7 +779,7 @@ class ngBoost_Action {
 			$xdir = @simplexml_load_file($xdirfile);
 			if ($xdir) {
 				if (is_object($xdir)) {
-				
+
 					$_SESSION['BG'] .= '<table id="ngbsttbpat" class="ngtable">'
 					.	'<thead class="ngthead"><tr>'
 					.	'<th>' . dgettext('ngboost','PatchOption') . '</th>'
@@ -818,9 +818,9 @@ class ngBoost_Action {
 					$_SESSION['BG'] .= '</tbody></table>';
 				}
 			}
-		}	
+		}
 	}
-	
+
     protected function ngApplyPato($pato)
     {
 			if ($this->isbranch) {
@@ -830,9 +830,9 @@ class ngBoost_Action {
 				$distropath = str_replace('/modules/','/patos/',ngBoost_Action::ngGetDistro());
 				$xmlfile = $distropath . $pato . '/pato.xml';
 				$xml = @simplexml_load_file($xmlfile);
-				
+
 				// check dependencies ... TODO
-				
+
 				if (is_object($xml)) {
 					$tgzf = $xml->pato->download;
 					$md5 = (string)$xml->pato->md5sum;
@@ -884,7 +884,7 @@ class ngBoost_Action {
 				}
 			}
 	}
-	
+
     protected function ngListTar($fnc)
     {
         $_SESSION['BG']='';
@@ -972,7 +972,7 @@ class ngBoost_Action {
         }
 		$_SESSION['BG'] = implode(NGBR,$fb);
     }
-	
+
     protected function ngBuTbl($tnc)
     {
         $_SESSION['BG']=' ';
@@ -1022,18 +1022,18 @@ class ngBoost_Action {
 		$st=($tf?'t':'f');
 		$_SESSION['BG'] = $xvsn.' '.$st;
 	}
-	
+
     protected function ngSelRel($xvsn)
     {
 		$_SESSION[NGBOOST]['FG']['xmlrel']=$xvsn;
 		$_SESSION['BG'] = $_SESSION[NGBOOST]['FG']['xmlrel'];
 	}
-	
+
     protected function ngTuneFS()
     {
-		$cnt = '<h4>File system permissions'.NGSP3
+		$cnt = '<h5>File system permissions'.NGSP3
         .	'<a href="javascript:ngPlain(\'fsd\')">Display</a>'
-		.	'</h4>'
+		.	'</h5>'
         .	'<p id="ngmsgt71"></p>';
 		$_SESSION['BG'] = $cnt;
 	}
@@ -1052,9 +1052,9 @@ class ngBoost_Action {
 		$this->ngListTar('.sysbu');
 		}
 		$_SESSION['BG'] = 'FFU';
-		
+
 	}
-	
+
     protected function ngTuneSources()
     {
 		if ($this->isbranch) {
@@ -1076,9 +1076,9 @@ class ngBoost_Action {
 				$none=' checked="checked" ';
 			}
 
-			$cnt = '<h4>Distro selection</h4>';
+			$cnt = '<h5>Distro selection</h5>';
 			$onc = ' type="radio" name="distro" onclick="javascript:ngOnC()" ';
-		
+
 			$cnt.='<label><input'.$onc.$chka.'value="asu"  />' . htmlentities(BYASU) . '</label>' . NGBR
 			.	  '<label><input'.$onc.$chkn.'value="ngws" />' . htmlentities(BYNGWS). '</label>' . NGBR
 			.	  '<label><input'.$onc.$chks.'value="sf"   />' . htmlentities(BYSF)  . '</label>' . NGBR
@@ -1086,7 +1086,7 @@ class ngBoost_Action {
 		}
 		$_SESSION['BG'] = $cnt;
 	}
-	
+
     protected function ngTuneSourceList()
     {
 		if ($this->isbranch) {
@@ -1134,8 +1134,8 @@ class ngBoost_Action {
 
     protected function ngFsPerms()
     {
-		$_SESSION['BG'] = '<h4>'.gettext('File System')
-		.	'</h4><pre>'
+		$_SESSION['BG'] = '<h5>'.gettext('File System')
+		.	'</h5><pre>'
 		.	'convert ... '.ngBackup::_cvFilePerms(fileperms(PHPWS_SOURCE_DIR.'convert'))
 		.	NGBR
 		.	'setup   ... '.ngBackup::_cvFilePerms(fileperms(PHPWS_SOURCE_DIR.'setup'))
@@ -1235,7 +1235,7 @@ class ngBoost_Action {
 		}
 		$_SESSION['BG'] = $ix . '--c--' . $cc . '--' . $mod . '--' . $next;
 	}
-	
+
     protected function ngDecomTgz()
     {
 		$mod=$_REQUEST['m'];
@@ -1270,7 +1270,7 @@ class ngBoost_Action {
 		}
 		$_SESSION['BG'] = $ix . '--x--' . $cc . '--' . $mod . '--' . $next;
 	}
-	
+
     protected function ngExpandTgz()
     {
 		$mod=$_REQUEST['m'];
@@ -1303,7 +1303,7 @@ class ngBoost_Action {
 		}
 		$_SESSION['BG'] = $ix . '--u--' . $cc . '--' . $mod . '--' . $next;
 	}
-	
+
     public function ngGetDistro()
     {
 		$in = $this->ngConfigGet('distro');
@@ -1322,7 +1322,7 @@ class ngBoost_Action {
 		}
 		return $thatfile;
 	}
-	
+
     protected function ngConfig()
     {
 		$mycfg=PHPWS_SOURCE_DIR.'mod/ngboost/conf/ngboost.jso';
@@ -1333,7 +1333,7 @@ class ngBoost_Action {
 			return array();
 		}
 	}
-	
+
     protected function ngConfigGet($k)
     {
 		$mycfg=$this->ngConfig();
@@ -1343,7 +1343,7 @@ class ngBoost_Action {
 			return false;
 		}
 	}
-	
+
     protected function ngConfigSet($k,$v)
     {
 		$mycfg=$this->ngConfig();
@@ -1351,7 +1351,7 @@ class ngBoost_Action {
 		$cc=file_put_contents(PHPWS_SOURCE_DIR.'mod/ngboost/conf/ngboost.jso',addslashes(json_encode($mycfg)));
 		return $cc;
 	}
-	
+
     protected function ngAnyHelp($help)
     {
         $helpfile = false;
@@ -1375,7 +1375,7 @@ class ngBoost_Action {
             $helpfile = 'cp.tune.html';
             break;
         }
-		
+
 
  		$cnt= '<div class="ngbstcphelp">';
 
@@ -1383,9 +1383,9 @@ class ngBoost_Action {
             $helppf = PHPWS_SOURCE_DIR.'mod/ngboost/docs/'.$helpfile;
             if (file_exists($helppf)) {
                 $cnth = file_get_contents($helppf);
-				$ar=explode('</h1>',$cnth);
+				$ar=explode('</h2>',$cnth);
 				$cnt.=$ar[1] . '</div>';
-				$title=str_replace('<h1>','',$ar[0]);
+				$title=str_replace('<h2>','',$ar[0]);
 				$pre=str_replace('class="ngjqmtitle">','class="ngjqmtitle">'.$title,NGJQMCLOSE);
 				$_SESSION['BG'] = $pre.$cnt;
                 return;
@@ -1408,9 +1408,9 @@ class ngBoost_Action {
 		.		'<span id="ngpickupup'.$mod.'"></span>'
 		.		'<span id="ngpickupzz'.$mod.'"></span>';
 	}
-	
+
     //
-	
+
     private function _checknew($mod)
     {
 		$version=false;
@@ -1427,18 +1427,18 @@ class ngBoost_Action {
 		}
 		return $version;
 	}
-	
+
     private function _checkupdate($mod)
     {
 		$mox = $mod=='core'?'base':$mod;
 		$file= $_SESSION[NGBOOST]['ml'][$mod]['chk'];
 		// http://phpwebsite.appstate.edu/downloads/modules/mod/check.xml
-		
+
 		$distropath = ngBoost_Action::ngGetDistro();
 		if (!empty($distropath)) {
 			$file = $distropath.$mox.'/check.xml';
 		}
-		
+
 		$xml = @simplexml_load_file($file);
 		if (is_object($xml)) {
 			$version = (string)$xml->module->version;
@@ -1527,7 +1527,7 @@ class ngBoost_Action {
 				}
 			} else {
 				$template['NO_UPDATE'] = dgettext('ngboost', 'No new release(s) available');
-                
+
 			}
 			$template['TITLE'] = dgettext('ngboost', 'Module') . ': ' . $_SESSION[NGBOOST]['ml'][$mod]['t'];
 			if (!$this->isbranch) {
@@ -1564,7 +1564,7 @@ class ngBoost_Action {
 
         $content[] = dgettext('ngboost', 'Processing update file.');
         $result = core_update($content, $ver_info['version']);
-		
+
 		$umsg = dgettext('ngboost', 'An error occurred updating the core');
 
         if ($result === true) {
@@ -1650,12 +1650,12 @@ class ngBoost_Action {
         }
         return PHPWS_Template::process($template, 'ngboost', 'dependency.tpl');
     }
-	
+
     private function _varyJQM($mod,$titel)
     {
         return str_replace('class="ngjqmtitle">','class="ngjqmtitle">'.$titel.' &#171;'.$mod.'&#187;',NGJQMCLOSE);
 	}
-	
+
     private function _reportMem()
     {
 		return 1==1?'CurrentMemUse=' . round( (memory_get_usage() / 1024) / 1024, 0).'MB':'';

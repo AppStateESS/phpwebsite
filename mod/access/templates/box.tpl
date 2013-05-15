@@ -1,9 +1,9 @@
 <div class="box">
 <div class="box-title">
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 </div>
 <div class="box-content"><!-- BEGIN message -->
-<h2>{MESSAGE}</h2>
+<h3>{MESSAGE}</h3>
 <!-- END message --> {CONTENT}</div>
 <div class="align-center">{CLOSE}</div>
 </div>

@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 
-html,body,div,h1,h2,h3,h4 {
+html,body,div,h2,h2,h3,h4 {
     margin: 0px;
     padding: 0px;
 }
@@ -28,29 +28,29 @@ div#body-sub {
     background: transparent url("images/bg_stripe.png") repeat-x;
 }
 
-h1 {
+h2 {
     font-size: 1.3em;
     font-weight: bold;
     font-family: Georgia, "Times New Roman", Times, serif;
     font-style: italic;
 }
 
-#body-content h1 {
+#body-content h2 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.8em;
     font-style: normal;
     margin: 1em 0;
 }
 
-h2 {
+h3 {
     font-size: 1.2em;
 }
 
-h3 {
+h4 {
     font-size: 1.1em;
 }
 
-h4 {
+h5 {
     font-size: 1.0em;
     font-weight: bold;
 }
@@ -302,7 +302,7 @@ li.menu-link ul li a.menu-link-href {
     padding: 0px;
 }
 
-.menu h1 a {
+.menu h2 a {
     text-decoration: none;
 }
 
@@ -388,7 +388,7 @@ h3.posted-by,h3.posted-on {
     font-weight: normal;
 }
 
-h1.entry-title a,h2.entry-title a {
+h2.entry-title a,h2.entry-title a {
     text-decoration: none;
 }
 

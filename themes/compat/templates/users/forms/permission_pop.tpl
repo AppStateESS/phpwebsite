@@ -30,8 +30,7 @@ function hideSelect(radio_value)
 </script>
 <div class="box">
 <div class="box-title">
-<h1>{TITLE}
-<h1>
+<h2>{TITLE}</h2>
 </div>
 <!-- BEGIN message -->
 <div class="padded">
