@@ -166,7 +166,6 @@ class PageSmith {
                         break;
 
                     case 1:
-
                         $this->killSaved($this->page->id);
                         PHPWS_Cache::clearCache();
                         if (isset($_POST['save_so_far'])) {
@@ -442,6 +441,14 @@ class PageSmith {
         }
 
         $this->page->save();
+        if (!empty($_POST['publish_date'])) {
+            $this->page->_key->show_after = strtotime($_POST['publish_date']);
+        } else {
+            $this->page->_key->show_after = time();
+        }
+        $this->page->_key->save();
+
+
         PHPWS_Cache::clearCache();
         PHPWS_Core::initModClass('access', 'Shortcut.php');
 

@@ -100,6 +100,20 @@ class PS_Forms {
             return;
         }
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
+
+        $page->loadKey();
+
+
+        if ($page->_key->id && $page->_key->show_after) {
+            $publish_date = $page->_key->show_after;
+        } else {
+            $publish_date = time();
+        }
+
+        $form->addText('publish_date', strftime('%F %H:%M', $publish_date));
+        $form->setSize('publish_date', 15);
+        $form->setLabel('publish_date', 'Show page after this date and time');
+
         $this->pageTemplateForm($form);
 
         $tpl = $form->getTemplate();
@@ -409,7 +423,6 @@ class PS_Forms {
                 $fdirs[$key] = $key;
             }
         }
-
 
         $form = new PHPWS_Form('upload-templates');
         $form->addHidden('module', 'pagesmith');

@@ -352,6 +352,7 @@ Fixed bug causing blank editors on edit.</pre>';
             $content[] = '<pre>1.5.1 changes
 ---------------
 + Mouseover edit behavior changed.
++ Publish on date added.
 </pre>';
     } // end switch
 

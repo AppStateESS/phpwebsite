@@ -15,6 +15,7 @@ class PS_Page {
     public $front_page = 0;
     public $parent_page = 0;
     public $page_order = 0;
+    public $publish_date;
     public $_tpl = null;
     public $_sections = array();
 
@@ -34,12 +35,14 @@ class PS_Page {
 
     public function __construct($id = 0)
     {
-        if (!$id) {
-            return;
+        if ($id) {
+            $this->id = (int) $id;
+            $this->init();
         }
 
-        $this->id = (int) $id;
-        $this->init();
+        if (empty($this->publish_date)) {
+            $this->publish_date = time();
+        }
     }
 
     public function init()
@@ -470,8 +473,9 @@ class PS_Page {
         $this->_tpl->loadStyle();
         $this->flag();
 
-        if (!empty($cache)) {
-// needed for filecabinet
+        // Page always shown when user is an admin
+        if (!Current_User::allow('pagesmith') && !empty($cache)) {
+            // needed for filecabinet
             javascript('open_window');
             return $cache;
         }
@@ -484,6 +488,10 @@ class PS_Page {
         $this->_content['page_title'] = & $this->title;
 
         $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
+
+        if ($this->_key->show_after > time()) {
+            $tpl['SHOW_AFTER'] = t('Page hidden until %s', strftime('%F %H:%M', $this->_key->show_after));
+        }
 
         $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith',
                         $this->_tpl->page_path . 'page.tpl');
