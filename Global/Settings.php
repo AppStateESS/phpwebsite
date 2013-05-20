@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Stores and retrieves settings within Modules.
  *
@@ -6,29 +7,35 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-
-
 class Settings extends Data {
 
     public $variables;
+    private static $settings;
 
     public static function get($module_name, $variable_name)
     {
-        $settings = self::singleton();
-        if (!isset($settings->variables[$module_name][$variable_name])) {
-            $settings->loadDefaultSettings($module_name, $variable_name);
+        if (empty(self::$settings)) {
+            self::singleton();
         }
-        return $settings->variables[$module_name][$variable_name];
+        if (!isset(self::$settings->variables[$module_name][$variable_name])) {
+            self::$settings->loadDefaultSettings($module_name, $variable_name);
+        }
+        return self::$settings->variables[$module_name][$variable_name];
     }
 
     public function loadDefaultSettings($module_name, $variable_name)
     {
-        $manager = \ModuleManager::singleton();
-        $module = $manager->getModule($module_name);
+        if (strtolower($module_name != 'global')) {
+            $module = new GlobalModule;
+        } else {
+            $manager = \ModuleManager::singleton();
+            $module = $manager->getModule($module_name);
+        }
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!isset($settings[$variable_name])) {
-                throw new \Exception(t('Unknown setting "%s:%s"', $module_name, $variable_name));
+                throw new \Exception(t('Unknown setting "%s:%s"', $module_name,
+                        $variable_name));
             }
             $this->set($module_name, $variable_name, $settings[$variable_name]);
         } else {
@@ -41,7 +48,7 @@ class Settings extends Data {
         $settings = self::singleton();
         $settings->variables[$module_name][$variable_name] = $setting;
         $db = \Database::newDB();
-        $s = $db->addTable('Settings');
+        $s = $db->addTable('settings');
         $s->addWhere('module_name', $module_name);
         $s->addWhere('variable_name', $variable_name);
         try {
@@ -57,21 +64,20 @@ class Settings extends Data {
         $db->insert();
     }
 
-    final public static function singleton($reload=false)
+    final public static function singleton($reload = false)
     {
-        static $settings = null;
-        if ($reload || empty($settings)) {
-            $settings = new Settings;
+        if ($reload || empty(self::$settings)) {
+            self::$settings = new Settings;
             $db = Database::newDB();
-            $db->addTable('Settings');
+            $db->addTable('settings');
             $db->loadSelectStatement();
             $rows = $db->fetchAll();
             foreach ($rows as $v) {
                 extract($v);
-                $settings->variables[$module_name][$variable_name] = $setting;
+                self::$settings->variables[$module_name][$variable_name] = $setting;
             }
         }
-        return $settings;
+        return self::$settings;
     }
 
 }

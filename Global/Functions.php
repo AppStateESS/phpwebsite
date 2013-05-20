@@ -147,7 +147,7 @@ function template($file, array $template)
 
 /**
  * Logs a message to the specified $filename in side the defined LOG_DIRECTORY
- * 
+ *
  * @param string $message
  * @param string $filename
  * @return boolean

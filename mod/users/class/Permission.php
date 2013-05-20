@@ -7,13 +7,13 @@
  * @author Matt McNaney <mcnaney at gmail dot com>
  * @package User Module
  */
-
 class Users_Permission {
-    public $permissions = NULL;
-    public $groups      = NULL;
-    public $levels      = NULL;
 
-    public function __construct($groups=NULL)
+    public $permissions = NULL;
+    public $groups = NULL;
+    public $levels = NULL;
+
+    public function __construct($groups = NULL)
     {
         $this->groups = $groups;
     }
@@ -26,7 +26,7 @@ class Users_Permission {
         }
 
         $file = sprintf('%smod/%s/boost/permission.php', PHPWS_SOURCE_DIR,
-        $module);
+                $module);
         if (!is_file($file)) {
             return NULL;
         }
@@ -49,17 +49,20 @@ class Users_Permission {
             }
             $result = $db->addTableColumn($perm_name, $columnSetting);
             if (PHPWS_Error::isError($result)) {
-                $content[] = sprintf(dgettext('users', 'Could not create "%s" permission column.'), $perm_name);
+                $content[] = sprintf(dgettext('users',
+                                'Could not create "%s" permission column.'),
+                        $perm_name);
                 PHPWS_Error::log($result);
             } else {
-                $content[] = sprintf(dgettext('users', '"%s" permission column created.'), $perm_name);
+                $content[] = sprintf(dgettext('users',
+                                '"%s" permission column created.'), $perm_name);
             }
         }
 
         return TRUE;
     }
 
-    public function allowedItem($module, $item_id, $itemname=NULL)
+    public function allowedItem($module, $item_id, $itemname = NULL)
     {
         if (!isset($itemname)) {
             $itemname = $module;
@@ -80,9 +83,10 @@ class Users_Permission {
             case RESTRICTED_PERMISSION:
                 // If no items exist in the permission object, return FALSE
                 if (!isset($this->permissions[$module]['items']) ||
-                !isset($this->permissions[$module]['items'][$itemname])) {
+                        !isset($this->permissions[$module]['items'][$itemname])) {
                     return FALSE;
-                } elseif (in_array($item_id, $this->permissions[$module]['items'][$itemname])){
+                } elseif (in_array($item_id,
+                                $this->permissions[$module]['items'][$itemname])) {
                     return TRUE;
                 } else {
                     return FALSE;
@@ -91,7 +95,7 @@ class Users_Permission {
         }
     }
 
-    public function allow($module, $subpermission=NULL, $item_id=0, $itemname=NULL)
+    public function allow($module, $subpermission = NULL, $item_id = 0, $itemname = NULL)
     {
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
@@ -104,15 +108,16 @@ class Users_Permission {
         if ($this->getPermissionLevel($module) == NO_PERMISSION) {
             return FALSE;
         }
-        if(!empty($this->permissions[$module]['permissions'])) {
+        if (!empty($this->permissions[$module]['permissions'])) {
             if (isset($subpermission)) {
                 if (!isset($this->permissions[$module]['permissions'][$subpermission])) {
-                    PHPWS_Error::log(USER_ERR_FAIL_ON_SUBPERM, 'users', 'allow', 'SubPerm: ' . $subpermission);
+                    PHPWS_Error::log(USER_ERR_FAIL_ON_SUBPERM, 'users', 'allow',
+                            'SubPerm: ' . $subpermission);
                     return FALSE;
                 }
 
                 $allow = $this->permissions[$module]['permissions'][$subpermission];
-                if ((bool)$allow) {
+                if ((bool) $allow) {
                     if ($item_id) {
                         // subpermission is set as is item id
                         return $this->allowedItem($module, $item_id, $itemname);
@@ -158,7 +163,7 @@ class Users_Permission {
 
         $permTable = Users_Permission::getPermissionTableName($module);
 
-        if(!PHPWS_DB::isTable($permTable)) {
+        if (!PHPWS_DB::isTable($permTable)) {
             $this->permissions[$module]['permission_level'] = UNRESTRICTED_PERMISSION;
             return TRUE;
         }
@@ -201,7 +206,7 @@ class Users_Permission {
 
             unset($permission['permission_level']);
 
-            foreach($permission as $name=>$value){
+            foreach ($permission as $name => $value) {
                 if (!isset($permissionSet[$name]) || $permissionSet[$name] < $value) {
                     $permissionSet[$name] = $value;
                 } elseif ($permissionSet[$name] < $value) {
@@ -216,7 +221,7 @@ class Users_Permission {
             $this->permissions[$module]['items'] = NULL;
         }
         $this->permissions[$module]['permission_level'] = $permissionLevel;
-        $this->permissions[$module]['permissions']      = $permissionSet;
+        $this->permissions[$module]['permissions'] = $permissionSet;
         $this->levels[$module] = $permissionLevel;
         return TRUE;
     }
@@ -240,7 +245,7 @@ class Users_Permission {
     {
         $permissions = NULL;
         $file = sprintf('%smod/%s/boost/permission.php', PHPWS_SOURCE_DIR,
-        $module);
+                $module);
         if (!is_file($file)) {
             return NULL;
         }
@@ -254,20 +259,21 @@ class Users_Permission {
 
         if (isset($errors)) {
             foreach ($errors as $error)
-            PHPWS_Error::log($error);
+                PHPWS_Error::log($error);
             return FALSE;
         }
 
         return TRUE;
     }
 
-    public static function createPermissionTable($module, $permissions=NULL)
+    public static function createPermissionTable($module, $permissions = NULL)
     {
         $tableName = Users_Permission::getPermissionTableName($module);
         $columnSetting = 'smallint NOT NULL default \'0\'';
 
         if (PHPWS_DB::isTable($tableName)) {
-            return PHPWS_Error::get(USER_ERR_PERM_TABLE, 'users', 'createPermissionTable', 'Table Name: ' . $tableName);
+            return PHPWS_Error::get(USER_ERR_PERM_TABLE, 'users',
+                            'createPermissionTable', 'Table Name: ' . $tableName);
         }
 
         $DB = new PHPWS_DB($tableName);
@@ -276,8 +282,8 @@ class Users_Permission {
         $columns['permission_level'] = 'smallint NOT NULL default \'0\'';
 
         if (isset($permissions)) {
-            foreach ($permissions as $permission=>$description)
-            $columns[$permission] = & $columnSetting;
+            foreach ($permissions as $permission => $description)
+                $columns[$permission] = & $columnSetting;
         }
 
         $DB->addValue($columns);
@@ -289,7 +295,7 @@ class Users_Permission {
         return implode('', array($module, '_permissions'));
     }
 
-    public static function setPermissions($group_id, $module, $level, $subpermissions=NULL)
+    public static function setPermissions($group_id, $module, $level, $subpermissions = NULL)
     {
         if (empty($group_id) || !is_numeric($group_id)) {
             return false;
@@ -301,16 +307,16 @@ class Users_Permission {
         }
 
         $db = new PHPWS_DB($tableName);
-        $db->addWhere('group_id', (int)$group_id);
+        $db->addWhere('group_id', (int) $group_id);
 
         $db->delete();
 
         $db->resetWhere();
 
-        $db->addValue('group_id', (int)$group_id);
+        $db->addValue('group_id', (int) $group_id);
         $columns = $db->getTableColumns();
 
-        $db->addValue('permission_level', (int)$level);
+        $db->addValue('permission_level', (int) $level);
 
         if ($level == NO_PERMISSION) {
             unset($subpermissions);
@@ -318,12 +324,12 @@ class Users_Permission {
         }
 
         if (isset($subpermissions)) {
-            foreach ($columns as $colName){
+            foreach ($columns as $colName) {
                 if ($colName == 'permission_level' || $colName == 'group_id') {
                     continue;
                 }
 
-                if (isset($subpermissions[$colName]) && (int)$subpermissions[$colName] == 1) {
+                if (isset($subpermissions[$colName]) && (int) $subpermissions[$colName] == 1) {
                     $db->addValue($colName, 1);
                 } else {
                     $db->addValue($colName, 0);
@@ -341,7 +347,7 @@ class Users_Permission {
      * @param object  key          Key object for comparison
      * @param boolean edit_rights  If true, check the edit permissions as well
      */
-    public static function getRestrictedGroups($key, $edit_rights=false)
+    public static function getRestrictedGroups($key, $edit_rights = false)
     {
         $group_list = Users_Permission::getPermissionGroups($key, $edit_rights);
         if (empty($group_list) || PHPWS_Error::isError($group_list)) {
@@ -355,13 +361,13 @@ class Users_Permission {
      * Returns an associative list of all groups and their levels of permission
      * in reference to the key passed to it
      */
-    public static function getPermissionGroups($key, $edit_rights=false)
+    public static function getPermissionGroups($key, $edit_rights = false)
     {
-        if ( empty($key) ||
-        !PHPWS_Core::isClass($key, 'key') ||
-        $key->isHomeKey() ||
-        empty($key->module) ||
-        ($edit_rights && empty($key->edit_permission) )
+        if (empty($key) ||
+                !is_a($key, 'Key') ||
+                $key->isHomeKey() ||
+                empty($key->module) ||
+                ($edit_rights && empty($key->edit_permission) )
         ) {
             return NULL;
         }
@@ -369,7 +375,8 @@ class Users_Permission {
         $permTable = Users_Permission::getPermissionTableName($key->module);
 
         if (!PHPWS_DB::isTable($permTable)) {
-            return PHPWS_Error::get(USER_ERR_PERM_FILE, 'users', __CLASS__ . '::' . __FUNCTION__);
+            return PHPWS_Error::get(USER_ERR_PERM_FILE, 'users',
+                            __CLASS__ . '::' . __FUNCTION__);
         }
 
         $db = new PHPWS_DB('users_groups');
@@ -383,8 +390,8 @@ class Users_Permission {
         if ($edit_rights) {
             if (!$test_db->isTableColumn($key->edit_permission)) {
                 return PHPWS_Error::get(KEY_PERM_COLUMN_MISSING, 'core',
-                                        'Users_Permission::getRestrictedGroups',
-                $key->edit_permission);
+                                'Users_Permission::getRestrictedGroups',
+                                $key->edit_permission);
             }
             $db->addWhere($permTable . '.' . $key->edit_permission, 1);
         }
@@ -398,20 +405,20 @@ class Users_Permission {
         foreach ($result as $group) {
             if ($group['user_id']) {
                 if ($group['permission_level'] == RESTRICTED_PERMISSION) {
-                    $glist['restricted']['all'][]   =
-                    $glist['restricted']['users'][] = $group;
+                    $glist['restricted']['all'][] =
+                            $glist['restricted']['users'][] = $group;
                 } else {
                     $glist['unrestricted']['users'][] =
-                    $glist['unrestricted']['all'][]   = $group;
+                            $glist['unrestricted']['all'][] = $group;
                 }
                 $glist['permitted']['users'][] = $group;
             } else {
                 if ($group['permission_level'] == RESTRICTED_PERMISSION) {
                     $glist['restricted']['groups'][] =
-                    $glist['restricted']['all'][]    = $group;
+                            $glist['restricted']['all'][] = $group;
                 } else {
                     $glist['unrestricted']['groups'][] =
-                    $glist['unrestricted']['all'][]    = $group;
+                            $glist['unrestricted']['all'][] = $group;
                 }
                 $glist['permitted']['groups'][] = $group;
             }
@@ -420,7 +427,6 @@ class Users_Permission {
 
         return $glist;
     }
-
 
     public function getGroupList($groups)
     {
@@ -445,19 +451,17 @@ class Users_Permission {
         return $inputs;
     }
 
-
-
     public static function postViewPermissions(Key $key)
     {
         if (!isset($_POST['view_permission'])) {
             return;
         }
 
-        $key->restricted = (int)$_POST['view_permission'];
+        $key->restricted = (int) $_POST['view_permission'];
 
-        if ( $key->restricted == 2 ) {
+        if ($key->restricted == 2) {
             $key->_view_groups = NULL;
-            if ( isset($_POST['view_groups']) && is_array($_POST['view_groups']) ) {
+            if (isset($_POST['view_groups']) && is_array($_POST['view_groups'])) {
                 $key->_view_groups = & $_POST['view_groups'];
             }
         }
@@ -477,7 +481,8 @@ class Users_Permission {
             if (empty($key->_view_groups)) {
                 $key->_view_groups = $key->_edit_groups;
             } elseif (is_array($key->_view_groups)) {
-                $key->_view_groups = array_merge($key->_view_groups, $key->_edit_groups);
+                $key->_view_groups = array_merge($key->_view_groups,
+                        $key->_edit_groups);
                 $key->_view_groups = array_unique($key->_view_groups);
             }
         }
@@ -513,13 +518,14 @@ class Users_Permission {
 
         foreach ($groups as $group_id) {
             $group_obj = new PHPWS_Group($group_id, false);
-            if ( !in_array($group_id, $key->_edit_groups) &&
-            $group_obj->allow($key->module, $key->edit_permission) ) {
+            if (!in_array($group_id, $key->_edit_groups) &&
+                    $group_obj->allow($key->module, $key->edit_permission)) {
                 $key->_edit_groups[] = $group_id;
             }
         }
         return $key->savePermissions();
     }
+
 }
 
 ?>

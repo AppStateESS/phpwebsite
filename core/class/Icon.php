@@ -109,14 +109,12 @@ class Icon extends \Tag\Image {
         // Mark this module's css as included
         $included[$module] = true;
         // Check for theme-based style.css
-        if (class_exists('Layout')) {
-            $themeDir = Layout::getTheme();
-            $filename = "themes/$themeDir/templates/$module/icons/icon.css";
-            if (is_file($filename)) {
-                Layout::addToStyleList($filename);
-                $included[$module] = true;
-                return;
-            }
+        $themeDir = Layout::getTheme();
+        $filename = "themes/$themeDir/templates/$module/icons/icon.css";
+        if (is_file($filename)) {
+            Layout::addToStyleList($filename);
+            $included[$module] = true;
+            return;
         }
         // Get distro style.css
         if ($module == 'core') {

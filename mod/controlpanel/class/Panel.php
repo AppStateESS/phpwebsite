@@ -36,18 +36,20 @@ class PHPWS_Panel{
     public function quickSetTabs($tabs)
     {
         $count = 1;
-        foreach ($tabs as $id=>$info){
+        foreach ($tabs as $id => $info) {
             $tab = new PHPWS_Panel_Tab;
             $tab->setId($id);
 
             if (!isset($info['title'])) {
-                return PHPWS_Error::get(CP_MISSING_TITLE, 'controlpanel', 'quickSetTabs');
+                return PHPWS_Error::get(CP_MISSING_TITLE, 'controlpanel',
+                                'quickSetTabs');
             } else {
                 $tab->setTitle($info['title']);
             }
 
             if (!isset($info['link'])) {
-                return PHPWS_Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
+                return PHPWS_Error::get(CP_MISSING_LINK, 'controlpanel',
+                                'quickSetTabs');
             } else {
                 $tab->setLink($info['link']);
             }
@@ -71,7 +73,6 @@ class PHPWS_Panel{
 
         return true;
     }
-
 
     public function setTabs($tabs)
     {
@@ -112,7 +113,6 @@ class PHPWS_Panel{
         return $this->itemname;
     }
 
-
     public function setModule($module)
     {
         $this->module = $module;
@@ -144,13 +144,13 @@ class PHPWS_Panel{
         $itemname = $this->getItemname();
 
         if (isset($_REQUEST['tab']) &&
-        isset($this->tabs[$_REQUEST['tab']]) &&
-        $itemname == $this->tabs[$_REQUEST['tab']]->itemname)
-        $this->setCurrentTab($_REQUEST['tab']);
+                isset($this->tabs[$_REQUEST['tab']]) &&
+                $itemname == $this->tabs[$_REQUEST['tab']]->itemname)
+            $this->setCurrentTab($_REQUEST['tab']);
 
 
         if (isset($_SESSION['Panel_Current_Tab'][$itemname]))
-        return $_SESSION['Panel_Current_Tab'][$itemname];
+            return $_SESSION['Panel_Current_Tab'][$itemname];
         else {
             $currentTab = $this->getFirstTab();
             $this->setCurrentTab($currentTab);
@@ -165,29 +165,29 @@ class PHPWS_Panel{
 
         $tabs = $this->getTabs();
 
-        if (isset($tabs)){
+        if (isset($tabs)) {
             $tab = array_shift($tabs);
             $result = $tab->id;
         }
         return $result;
     }
 
-    public function display($content=null, $title=null, $message=null)
+    public function display($content = null, $title = null, $message = null)
     {
-
-        $itemname   = $this->getItemname();
+        $itemname = $this->getItemname();
         $currentTab = $this->getCurrentTab();
-        $tabs       = $this->getTabs();
-        $panel      = $this->getPanel();
-        $module     = $this->getModule();
+        $tabs = $this->getTabs();
+        $panel = $this->getPanel();
+        $module = $this->getModule();
 
         if (empty($content)) {
-            $content    = $this->getContent();
+            $content = $this->getContent();
         } else {
-            $settpl['TITLE']   = & $title;
+            $settpl['TITLE'] = & $title;
             $settpl['MESSAGE'] = & $message;
             $settpl['CONTENT'] = & $content;
-            $content = PHPWS_Template::process($settpl, 'controlpanel', 'default.tpl');
+            $content = PHPWS_Template::process($settpl, 'controlpanel',
+                            'default.tpl');
         }
 
         if (!isset($module)) {
@@ -198,23 +198,22 @@ class PHPWS_Panel{
             $panel = CP_DEFAULT_PANEL;
         }
 
-        if (!is_file(PHPWS_Template::getTemplateDirectory($module) . $panel)){
+        if (!is_file(PHPWS_Template::getTemplateDirectory($module) . $panel)) {
             $module = 'controlpanel';
             $panel = CP_DEFAULT_PANEL;
         }
 
-        foreach ($tabs as $id=>$tab) {
+        foreach ($tabs as $id => $tab) {
             if ($this->_secure) {
                 $tab->enableSecure();
             } else {
                 $tab->disableSecure();
             }
             $tpl['TITLE'] = $tab->getLink();
-            if ($id == $currentTab){
+            if ($id == $currentTab) {
                 $tpl['STATUS'] = 'class="active"';
                 $tpl['ACTIVE'] = ' ';
-            }
-            else {
+            } else {
                 $tpl['STATUS'] = 'class="inactive"';
                 $tpl['INACTIVE'] = ' ';
             }
@@ -224,6 +223,7 @@ class PHPWS_Panel{
         $template['CONTENT'] = $content;
         return PHPWS_Template::process($template, $module, $panel);
     }
+
 }
 
 ?>

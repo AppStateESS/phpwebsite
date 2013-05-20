@@ -5,7 +5,6 @@
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 mb_internal_encoding('UTF-8');
 
 /**
@@ -21,7 +20,6 @@ if (is_file('config/core/config.php')) {
 /**
  * DISPLAY_ERRORS set in Config/Defines.php
  */
-
 if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
     require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
 } else {
@@ -35,15 +33,24 @@ if (DISPLAY_ERRORS) {
     ini_set('display_errors', 'Off');
     error_reporting(0);
 }
-
-require_once 'Global/Functions.php';
+require_once PHPWS_SOURCE_DIR . 'Global/Functions.php';
 
 set_exception_handler(array('Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
 }
 
-function PHPWS_unBootstrap() {
+require_once PHPWS_SOURCE_DIR . 'Global/Implementations.php';
+require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
+require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
+PHPWS_Core::checkOverpost();
+PHPWS_Core::setLastPost();
+
+Language::setLocale(Settings::get('Global', 'language'));
+
+
+function PHPWS_unBootstrap()
+{
     restore_exception_handler();
     restore_error_handler();
     spl_autoload_unregister('phpwsAutoload');

@@ -1,17 +1,14 @@
 <?php
 
-
 /**
  * The default template to use in Global/Error/Pages/ when a error is reported.
  * @see Error::errorPage()
  */
 define('ERROR_PAGE_TEMPLATE', 'default.html');
 
-
 /**
  * Error settings
  */
-
 /**
  * Will display errors instead of error page.
  * Only change to true for debugging: never in production.
@@ -38,7 +35,45 @@ define('SHOW_ALL_ERRORS', FALSE);
 define('ERRORS_AS_EXCEPTION', TRUE);
 
 
-/**************************************************************
+/* * ******************** Language **************************** */
+
+if (!defined('DEFAULT_LANGUAGE')) {
+    define('DEFAULT_LANGUAGE', 'en_US');
+}
+
+/**
+ *  If set to TRUE, phpWebSite will not try to translate anything.
+ *  All content will display in its native language.
+ */
+define('DISABLE_TRANSLATION', false);
+
+
+/**
+ * If set to TRUE, phpWebSite will ALWAYS use the default language
+ * no matter what the user settings.
+ *
+ * If your DEFAULT_LANGUAGE is not set correctly, you may have site
+ * problems. Test before setting this option.
+ */
+define('FORCE_DEFAULT_LANGUAGE', false);
+
+/**
+ * If set to true, phpWebSite will ignore the browser language settings
+ * but WILL obey the user cookie
+ */
+define('IGNORE_BROWSER_LANGUAGE', false);
+
+/**
+ * If true, phpWebSite will use the putenv function to set
+ * LANGUAGE and LANG environment variables.
+ * This may cause problems with some servers.
+ * Default is "false"
+ */
+define('USE_PUTENV', false);
+
+
+
+/* * ************************************************************
  * The settings in this file affect the hub and all branches
  * Most of the defines from this file were originally in the
  * config.php file. That file now contains hub/branch specific
@@ -54,7 +89,7 @@ define('ERRORS_AS_EXCEPTION', TRUE);
  * @version $Id$
  */
 
-/***************** Database ***********************************/
+/* * *************** Database ********************************** */
 
 /**
  * If true, a table existence will be check prior to inserting it into a DB
@@ -79,7 +114,7 @@ define('DATABASE_CHECK_COLUMNS', FALSE);
 define('DATABASE_CHECK_ENGINE', FALSE);
 
 
-/************************ Cookie *******************************/
+/* * ********************** Cookie ****************************** */
 /**
  * The core will occasionally save cookies. They do not contain
  * important information. This is the time until they expire.
@@ -87,7 +122,7 @@ define('DATABASE_CHECK_ENGINE', FALSE);
 define('CORE_COOKIE_TIMEOUT', 2592000);
 
 
-/************************ Memory Setting **********************/
+/* * ********************** Memory Setting ********************* */
 /* There is a chance that your installation may require more
  * memory than is alloted in your php.ini file. If ini_set
  * is allowed, you can uncomment and set the line before to
@@ -97,7 +132,7 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
 //ini_set('memory_limit', '10M');
 
 
-/************************ Time Zone **************************/
+/* * ********************** Time Zone ************************* */
 /**
  * If SERVER_TIME_ZONE is commented out, phpWebSite will use the
  * server's default time zone (recommended). If you wish to force
@@ -110,7 +145,6 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  * Set to 1 for yes, or 0 for now. Commenting it out
  * sets it to zero
  */
-
 //define('SERVER_TIME_ZONE', -4);
 //define('SERVER_USE_DST', 1);
 
@@ -119,10 +153,9 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  * date function. The full list is here:
  * http://us3.php.net/manual/en/timezones.php
  */
-
 define('DATE_SET_SERVER_TIME_ZONE', 'America/New_York');
 
-/********************** Logging Settings **********************/
+/* * ******************** Logging Settings ********************* */
 
 /**
  * If true, the log will contain a stack trace for each error.
@@ -147,7 +180,7 @@ define('LOG_PERMISSION', 0600);
  */
 define('LOG_TIME_FORMAT', '%Y-%m-%d %H:%M');
 
-/************************ POST CHECK ***************************/
+/* * ********************** POST CHECK ************************** */
 /**
  * Determines how many previous posts the session will store. If
  * isPosted is called and a previous post matches the list, the
@@ -156,7 +189,7 @@ define('LOG_TIME_FORMAT', '%Y-%m-%d %H:%M');
 define('MAX_POST_TRACK', 10);
 
 
-/********************** PEAR SETTINGS **************************/
+/* * ******************** PEAR SETTINGS ************************* */
 
 /**
  * phpWebSite ships with a 'known working version' of pear. This
@@ -171,7 +204,7 @@ ini_set('include_path', '.:' . PHPWS_SOURCE_DIR . 'lib/pear/');
 //ini_set('include_path', '.;' . PHPWS_SOURCE_DIR . 'lib\\pear\\');
 
 
-/******************* ABSOLUTE LIMIT ***************************/
+/* * ***************** ABSOLUTE LIMIT ************************** */
 /**
  * This the absolute upload limit in bytes. No matter what the code or
  * module says the user can upload, this amount, if checked, will trump
@@ -181,7 +214,7 @@ ini_set('include_path', '.:' . PHPWS_SOURCE_DIR . 'lib/pear/');
 define('ABSOLUTE_UPLOAD_LIMIT', '15000000');
 
 
-/******************** CACHING **********************************/
+/* * ****************** CACHING ********************************* */
 /**
  * There are two forms of caching in phpWebSite, both developed by
  * the PEAR team:
@@ -206,23 +239,21 @@ define('ABSOLUTE_UPLOAD_LIMIT', '15000000');
  * CACHE_DIRECTORY is set to writable directory. PHP normally uses
  * /tmp/. The directory MUST have a forward slash (/) on the end.
  */
-
 define('ALLOW_CACHE_LITE', TRUE);
 define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
 define('CACHE_TPL_LOCALLY', TRUE);
 define('CACHE_DIRECTORY', '/tmp/');
 
-/******************** MOD_REWRITE *******************************/
+/* * ****************** MOD_REWRITE ****************************** */
 /**
  * Mod_rewrite is an Apache web server process that allows you to
  * reduce the size of your web urls. It must be enabled for it to
  * function properly.
  */
-
 define('MOD_REWRITE_ENABLED', TRUE);
 
-/******************* UTF8 Mode *********************************/
+/* * ***************** UTF8 Mode ******************************** */
 /**
  * Some core functions perform regular expressions matches using the \pL
  * parameter. Some versions of php don't support this. If you are getting
@@ -231,14 +262,13 @@ define('MOD_REWRITE_ENABLED', TRUE);
  * be lost as a result. You may also change this to false if your site
  * is native English.
  */
+define('UTF8_MODE', false);
 
-define ('UTF8_MODE', false);
-
-/**--------------------------------------------------------------------------
+/* * --------------------------------------------------------------------------
  *  The settings below will be moved a settings module on the next release
- *--------------------------------------------------------------------------*/
+ * -------------------------------------------------------------------------- */
 
-/************************ EDITOR *******************************/
+/* * ********************** EDITOR ****************************** */
 /*
  * If you have downloaded a wysiwyg editor or editors for
  * phpwebsite, you may enable their use below. You can also
@@ -254,12 +284,12 @@ define('USE_WYSIWYG_EDITOR', true);
 define('DEFAULT_EDITOR_TOOL', 'ckeditor');
 define('FORCE_EDITOR', true);
 
-/************************ Captcha Settings *******************/
+/* * ********************** Captcha Settings ****************** */
 /**
-* Determines if you want to use captcha and if so which version.
-* phpWebSite ships with freecap by default which is supplied by
-* http://www.puremango.co.uk/
-*/
+ * Determines if you want to use captcha and if so which version.
+ * phpWebSite ships with freecap by default which is supplied by
+ * http://www.puremango.co.uk/
+ */
 define('ALLOW_CAPTCHA', true);
 define('CAPTCHA_NAME', 'freecap');
 
@@ -269,7 +299,7 @@ define('CAPTCHA_NAME', 'freecap');
  */
 define('ALLOW_SCRIPT_TAGS', false);
 
-/************************ Cosign Settings *******************/
+/* * ********************** Cosign Settings ****************** */
 /**
  * If using Cosign for user authentication, please uncomment and
  * provide the settings below.  Note that you will also need to
@@ -284,5 +314,4 @@ define('ALLOW_SCRIPT_TAGS', false);
  *  </Location>
  */
 //define('COSIGN_LOGOUT_URL', 'http://cosign.example.com/cosign-bin/logout');
-
 ?>

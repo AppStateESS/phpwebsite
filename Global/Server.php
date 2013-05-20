@@ -46,7 +46,7 @@ class Server {
     public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
         if (!$relative) {
-            $address[] = self::getHomeUrl();
+            $address[] = self::getSiteUrl();
         }
 
         $self = & $_SERVER['PHP_SELF'];
@@ -63,7 +63,8 @@ class Server {
         }
 
         $stack = explode('/', $self);
-        if ($url = array_pop($stack)) {
+        $url = array_pop($stack);
+        if (!empty($url)) {
             $address[] = $url;
         }
 
@@ -118,7 +119,7 @@ class Server {
     public static function pageNotFound()
     {
         // @todo turn header back on
-        //header("HTTP/1.0 404 Not Found");
+        header("HTTP/1.0 404 Not Found");
         echo '<html><head><title>404 - Page not found</title></head><body><h1>404 - Page not found</h1></body></html>';
     }
 

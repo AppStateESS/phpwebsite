@@ -121,6 +121,9 @@ class Request extends Data {
     {
         if (!empty($_POST)) {
             $this->post = $_POST;
+            if (!empty($_POST['module'])) {
+                $this->module = $_POST['module'];
+            }
         }
     }
 
@@ -516,7 +519,8 @@ class Request extends Data {
                 return $obj->$state();
             }
         }
-        throw new \Exception(t('Pass command called by %s module cannot continue', $class_name));
+        throw new \Exception(t('Pass command called by %s module cannot continue',
+                $class_name));
     }
 
     /**

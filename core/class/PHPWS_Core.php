@@ -8,7 +8,6 @@
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-
 if (!defined('FORCE_MOD_CONFIG')) {
     define('FORCE_MOD_CONFIG', true);
 }
@@ -23,67 +22,24 @@ if (!defined('LOG_DIRECTORY')) {
 
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
 PHPWS_Core::initCoreClass('PHPWS_Error.php');
+
 class PHPWS_Core {
-
-    /**
-     * Loads each module's /inc/init.php file
-     */
-    public static function initializeModules()
-    {
-        if (!$moduleList = PHPWS_Core::getModules()) {
-            throw new \Exception(t('No active active modules installed'));
-        }
-        if (PHPWS_Error::isError($moduleList)) {
-            throw new \Exception($moduleList->getMessage());
-        }
-
-        foreach ($moduleList as $mod) {
-            PHPWS_Core::setCurrentModule($mod['title']);
-            /* Using include instead of require to prevent broken mods from hosing the site */
-            $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/init.php';
-
-            if (is_file($includeFile)) {
-                include($includeFile);
-            }
-
-            $GLOBALS['Modules'][$mod['title']] = $mod;
-        }
-    }
-
-    /**
-     * Loads each module's inc/close.php file
-     */
-    public static function closeModules()
-    {
-        if (!isset($GLOBALS['Modules'])) {
-            PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
-            PHPWS_Core::errorPage();
-        }
-
-        foreach ($GLOBALS['Modules'] as $mod){
-            $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/close.php';
-            if (is_file($includeFile)) {
-                include($includeFile);
-            }
-        }
-    }
 
     /**
      * Gets all the modules from the module table
      */
-    public static function getModules($active=true, $just_title=false)
+    public static function getModules($active = true, $just_title = false)
     {
-        $DB = new PHPWS_DB('modules');
-        if ($active == true) {
-            $DB->addWhere('active', 1);
-        }
-        $DB->addOrder('priority asc');
-
-        if ($just_title==true) {
-            $DB->addColumn('title');
-            return $DB->select('col');
+        if ($active) {
+            $mods = ModuleController::singleton()->getModuleArrayActive();
         } else {
-            return $DB->select();
+            $mods = ModuleController::singleton()->getModuleArrayAll();
+        }
+
+        if ($just_title) {
+            return array_keys($mods);
+        } else {
+            return $mods;
         }
     }
 
@@ -95,71 +51,22 @@ class PHPWS_Core {
      */
     public static function getModuleNames()
     {
-        if (isset($GLOBALS['Core_Module_Names'])) {
-            return $GLOBALS['Core_Module_Names'];
-        }
+        $mods = ModuleController::singleton()->getModuleStack();
 
-        $db = new PHPWS_DB('modules');
-        $db->setIndexBy('title');
-        $db->addOrder('proper_name');
-        $db->addColumn('proper_name');
-        $db->addColumn('title');
-        $result = $db->select('col');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-            return NULL;
+        foreach ($mods as $o) {
+            $listing[$o->getTitle()] = $o->getProperName();
         }
-
-        $GLOBALS['Core_Module_Names'] = $result;
-        return $GLOBALS['Core_Module_Names'];
+        return $listing;
     }
 
     /**
      * Returns a module object based on core
      */
-    public static function loadAsMod($use_file=true)
+    public static function loadAsMod($use_file = true)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $core_mod = new PHPWS_Module('core', $use_file);
         return $core_mod;
-    }
-
-
-    /**
-     * Loads each module's inc/runtime.php file
-     */
-    public static function runtimeModules()
-    {
-        if (!isset($GLOBALS['Modules'])) {
-            PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
-            PHPWS_Core::errorPage();
-        }
-
-        foreach ($GLOBALS['Modules'] as $title=>$mod) {
-            PHPWS_Core::setCurrentModule($title);
-            $runtimeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/runtime.php';
-            is_file($runtimeFile) ? include_once $runtimeFile : NULL;
-        }
-    }
-
-    /**
-     * Loads the index.php file of the currently selected module
-     */
-    public static function runCurrentModule()
-    {
-        if (isset($_REQUEST['module'])) {
-            $mods = PHPWS_Core::getModules(true, true);
-            if (!in_array($_REQUEST['module'], $mods)) {
-                PHPWS_Core::home();
-            }
-            PHPWS_Core::setCurrentModule($_REQUEST['module']);
-            $modFile = PHPWS_SOURCE_DIR . 'mod/' . $_REQUEST['module'] . '/index.php';
-            if (is_file($modFile)) {
-                include $modFile;
-            } else {
-                PHPWS_Core::errorPage('404');
-            }
-        }
     }
 
     /**
@@ -172,24 +79,12 @@ class PHPWS_Core {
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
-            require_once 'PEAR/Exception.php';
-            throw new PEAR_Exception(dgettext('core', 'Could not initialize module class ' . $classFile));
+            throw new \Exception(t('Module class file not found: %s', $classFile));
         }
 
-        // Require the file, and catch any exceptions that might cause
-        try{
-            require_once $classFile;
-        }catch(Exception $e){
-            // Log the exception
-            PHPWS_Error::log($e->getMessage());
-            // Re-throw the exception
-            throw $e;
-        }
-
+        require_once $classFile;
         return true;
     }
-
 
     /**
      * Requires a core class file once
@@ -201,28 +96,17 @@ class PHPWS_Core {
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
-            require_once 'PEAR/Exception.php';
-            throw new PEAR_Exception(dgettext('core', 'Could not initialize core class ' . $classFile));
+            throw new \Exception(t('Core class file not found: %s', $classFile));
         }
 
-        // Require the file, and catch any exceptions that might cause
-        try{
-            require_once $classFile;
-        }catch (Exception $e){
-            // Log the exception
-            PHPWS_Error::log($e->getMessage());
-            // Re-throw the exception
-            throw $e;
-        }
-
+        require_once $classFile;
         return true;
     }
-
 
     /**
      * Sets the last form post made to the website.
      * Works with isPosted
+     * @deprecate
      */
     public static function setLastPost()
     {
@@ -244,13 +128,14 @@ class PHPWS_Core {
     /**
      * Makes a post key to track past posts
      * Works with setLastPost and isPosted
+     * @deprecate
      */
     public static function _getPostKey()
     {
         $key = serialize($_POST);
 
         if (isset($_FILES)) {
-            foreach ($_FILES as $file){
+            foreach ($_FILES as $file) {
                 extract($file);
                 $key .= $name . $type . $size;
             }
@@ -265,8 +150,9 @@ class PHPWS_Core {
      * prevent double posts.
      * If return_count is true, it returns the number of attempts
      * made with the same post.
+     * @deprecate
      */
-    public static function isPosted($return_count=false)
+    public static function isPosted($return_count = false)
     {
         if (!isset($_SESSION['PHPWS_LastPost']) || !isset($_POST)) {
             return false;
@@ -289,27 +175,21 @@ class PHPWS_Core {
 
     public static function atHome()
     {
-        if (isset($_REQUEST['module']) || isset($_POST['module']) || isset($_GET['module'])) {
-            return false;
-        } else {
-            return true;
-        }
+        return !isset($_REQUEST['module']);
     }
 
-    public static function bookmark($allow_authkey=true)
+    public static function bookmark($allow_authkey = true)
     {
         $url = PHPWS_Core::getCurrentUrl();
 
-        if(!$allow_authkey && preg_match('/authkey=/', $url)) {
+        if (!$allow_authkey && preg_match('/authkey=/', $url)) {
             $url = null;
         }
 
         $_SESSION['PHPWS_Bookmark'] = $url;
-
-        PHPWS_Core::pushUrlHistory();
     }
 
-    public static function returnToBookmark($clear_bm=true)
+    public static function returnToBookmark($clear_bm = true)
     {
         if (isset($_SESSION['PHPWS_Bookmark'])) {
             $bm = $_SESSION['PHPWS_Bookmark'];
@@ -321,24 +201,6 @@ class PHPWS_Core {
         } else {
             PHPWS_Core::goBack();
         }
-    }
-
-    public static function pushUrlHistory()
-    {
-        if(!isset($_SESSION['PHPWS_UrlHistory'])) {
-            $_SESSION['PHPWS_UrlHistory'] = array();
-        }
-
-        array_push($_SESSION['PHPWS_UrlHistory'], PHPWS_Core::getCurrentUrl());
-    }
-
-    public static function popUrlHistory()
-    {
-        if(!isset($_SESSION['PHPWS_UrlHistory']) || count($_SESSION['PHPWS_UrlHistory']) == 0) {
-            PHPWS_Core::home();
-        }
-
-        PHPWS_Core::reroute(array_pop($_SESSION['PHPWS_UrlHistory']));
     }
 
     /**
@@ -372,19 +234,14 @@ class PHPWS_Core {
      */
     public static function getHttp()
     {
-        if ( isset($_SERVER['HTTPS']) &&
-        strtolower($_SERVER['HTTPS']) == 'on' ) {
-            return 'https://';
-        } else {
-            return 'http://';
-        }
+        return Server::getHttp();
     }
 
     /**
      * Sends a location header based on the relative link passed
      * to the function.
      */
-    public static function reroute($address=NULL)
+    public static function reroute($address = NULL)
     {
         $current_url = PHPWS_Core::getCurrentUrl();
 
@@ -393,7 +250,7 @@ class PHPWS_Core {
         }
 
         // Set last post since we will be skipping it
-        PHPWS_Core::setLastPost();
+        //PHPWS_Core::setLastPost();
 
         if (!preg_match('/^http/', $address)) {
             $address = preg_replace('@^/@', '', $address);
@@ -431,14 +288,16 @@ class PHPWS_Core {
         $_SESSION = array();
         unset($_SESSION);
         session_destroy();
-    }// END FUNC killAllSessions()
+    }
+
+// END FUNC killAllSessions()
 
     /**
      * Returns true is a module is installed, false otherwise
      */
     public static function moduleExists($module)
     {
-        return isset($GLOBALS['Modules'][$module]);
+        return ModuleController::singleton()->moduleIsInstalled($module_title);
     }
 
     /**
@@ -446,22 +305,14 @@ class PHPWS_Core {
      */
     public static function getCurrentModule()
     {
-        return $GLOBALS['PHPWS_Current_Mod'];
-    }
-
-    /**
-     * Sets the currently active module
-     */
-    public static function setCurrentModule($module)
-    {
-        $GLOBALS['PHPWS_Current_Mod'] = $module;
+        return ModuleController::singleton()->getCurrentModuleTitle();
     }
 
     /**
      * Retrieves a module's config file path. If the file
      * does not exist, throws an exception otherwise.
      */
-    public static function getConfigFile($module, $file=NULL)
+    public static function getConfigFile($module, $file = NULL)
     {
         if (empty($file)) {
             $file = 'config.php';
@@ -477,39 +328,38 @@ class PHPWS_Core {
         }
 
         if (!is_file($file)) {
-            return false;
+            throw new Exception(t('getConfigFile could not find file: %s', $file));
         }
 
         return $file;
     }
 
-
     /**
      * Pseudoname of configRequireOnce
      */
-    public static function requireConfig($module, $file=NULL, $exitOnError=true)
+    public static function requireConfig($module, $file = NULL, $exitOnError = true)
     {
         return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
 
-
     /**
      * Like requireConfig but for files in the inc directory
      */
-    public static function requireInc($module, $file, $exitOnError=true)
+    public static function requireInc($module, $file, $exitOnError = true)
     {
         if ($module == 'core') {
-            $inc_file = sprintf('%score/inc/%s', PHPWS_SOURCE_DIR, $file);
+            $inc_file = PHPWS_SOURCE_DIR . 'core/inc/' . $file;
         } else {
-            $inc_file = sprintf('%smod/%s/inc/%s', PHPWS_SOURCE_DIR, $module, $file);
+            $inc_file = PHPWS_SOURCE_DIR . "mod/$module/inc/$file";
         }
 
         if (!is_file($inc_file)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc',
+                    $inc_file);
             if ($exitOnError) {
-                PHPWS_Core::errorPage();
-            }
-            else {
+                throw new Exception(t('Could not find inc file to require: %s',
+                        $inc_file));
+            } else {
                 return false;
             }
         } else {
@@ -519,12 +369,11 @@ class PHPWS_Core {
         return true;
     }
 
-
     /**
      * Loads a config file via a require. If missing, shows error page.
      * If file is NULL, function assumes 'config.php'
      */
-    public static function configRequireOnce($module, $file=NULL, $exitOnError=true)
+    public static function configRequireOnce($module, $file = NULL, $exitOnError = true)
     {
         if (empty($file)) {
             $file = 'config.php';
@@ -532,11 +381,12 @@ class PHPWS_Core {
         $config_file = PHPWS_Core::getConfigFile($module, $file);
 
         if (empty($config_file) || !$config_file) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce',
+                    $file);
             if ($exitOnError) {
-                PHPWS_Core::errorPage();
-            }
-            else {
+                throw new Exception(t('Could not find config file to require: %s',
+                        $inc_file));
+            } else {
                 return $config_file;
             }
         } else {
@@ -549,7 +399,7 @@ class PHPWS_Core {
     /**
      * Uses the Pear log class to write a log file to the logs directory
      */
-    public static function log($message, $filename, $type=NULL)
+    public static function log($message, $filename, $type = NULL)
     {
 
         if (!is_writable(LOG_DIRECTORY)) {
@@ -574,7 +424,7 @@ class PHPWS_Core {
     /**
      * Routes the user to a HTML file. File depends on code passed to it.
      */
-    public static function errorPage($code=NULL)
+    public static function errorPage($code = NULL)
     {
         switch ($code) {
             case '400':
@@ -610,7 +460,7 @@ class PHPWS_Core {
     public static function isWindows()
     {
         if (isset($_SERVER['WINDIR']) ||
-        preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
+                preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
             return true;
         } else {
             return false;
@@ -657,29 +507,24 @@ class PHPWS_Core {
     /**
      * Returns an array of all installed modules
      */
-    public static function installModList($active_only=false)
+    public static function installModList($active_only = false)
     {
-        $db = new PHPWS_DB('modules');
-        if ($active_only) {
-            $db->addWhere('active', 1);
-        }
-        $db->addColumn('title');
-        return $db->select('col');
+        return ModuleController::singleton()->getModuleArrayActive();
     }
 
     /**
      * Returns an array with containing all the values of
      * the passed object.
      */
-    public static function stripObjValues($object, $strip_null=true)
+    public static function stripObjValues($object, $strip_null = true)
     {
         $className = get_class($object);
         $classVars = get_class_vars($className);
         $var_array = NULL;
 
-        if(!is_array($classVars)) {
+        if (!is_array($classVars)) {
             return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core',
-                                    'PHPWS_Core::stripObjValues', $className);
+                            'PHPWS_Core::stripObjValues', $className);
         }
 
         foreach ($classVars as $key => $value) {
@@ -701,23 +546,25 @@ class PHPWS_Core {
      * If arguments are sent in the third parameter, plugObject will call
      * the object's postPlug function and send those arguments to it.
      */
-    public static function plugObject($object, $variables, $args=null)
+    public static function plugObject($object, $variables, $args = null)
     {
         $post_plug = isset($args) && method_exists($object, 'postPlug');
 
         $className = get_class($object);
         $classVars = get_class_vars($className);
 
-        if(!is_array($classVars) || empty($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::plugObject', $className);
+        if (!is_array($classVars) || empty($classVars)) {
+            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core',
+                            'PHPWS_Core::plugObject', $className);
         }
 
         if (isset($variables) && !is_array($variables)) {
-            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
+            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core',
+                            __CLASS__ . '::' . __FUNCTION__, gettype($variables));
         }
 
-        foreach($classVars as $key => $value) {
-            if(isset($variables[$key])) {
+        foreach ($classVars as $key => $value) {
+            if (isset($variables[$key])) {
                 if (preg_match('/^[aO]:\d+:/', $variables[$key])) {
                     $object->$key = unserialize($variables[$key]);
                 } else {
@@ -745,52 +592,13 @@ class PHPWS_Core {
     /**
      * Returns the installations url address
      */
-    public static function getHomeHttp($with_http=true, $with_directory=true, $with_slash=true)
+    public static function getHomeHttp($with_http = true, $with_directory = true, $with_slash = true)
     {
-        if ($with_http && $with_directory && $with_slash && defined('PHPWS_HOME_HTTP')) {
-            return PHPWS_HOME_HTTP;
-        }
-
-        if ($with_http) {
-            $address[] = PHPWS_Core::getHttp();
-        }
-        $address[] = $_SERVER['HTTP_HOST'];
-
-        if ($with_directory) {
-            $address[] = dirname($_SERVER['PHP_SELF']);
-        }
-
-        $url = implode('', $address);
-        $url = preg_replace('@\\\@', '/', $url);
-
+        $url = Server::getSiteUrl($with_http, $with_directory);
         if ($with_slash && !preg_match('/\/$/', $url)) {
             $url .= '/';
         }
         return $url;
-    }
-
-    /**
-     * I am tired of writing this over and over with the php
-     * version differences.
-     *
-     * Returns true if the object is of the entered class.
-     * The class name must be lower case. If it isn't well you should
-     * have known PHP 5 was going to change the rules, on get_class
-     * shouldn't have ya? In other words, My_Class and my_class are
-     * the same as far as this function is concerned.
-     * Mix up your class names.
-     */
-    public static function isClass(&$object, $class_name)
-    {
-        if (!is_object($object)) {
-            return false;
-        }
-
-        if (strtolower(get_class($object)) == strtolower($class_name)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -808,9 +616,8 @@ class PHPWS_Core {
      * @param boolean get_file  If true, uses the boost.php file, if false
      *                          uses the database version.
      */
-    public static function getVersionInfo($get_file=true)
+    public static function getVersionInfo($get_file = true)
     {
-
         $file = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
         include $file;
 
@@ -824,9 +631,9 @@ class PHPWS_Core {
             }
         }
 
-        return array('proper_name'  => $proper_name,
-                     'version'      => $version,
-                     'version_http' => $version_http);
+        return array('proper_name' => $proper_name,
+            'version' => $version,
+            'version_http' => $version_http);
     }
 
     public static function isRewritten()
@@ -834,44 +641,14 @@ class PHPWS_Core {
         return strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE;
     }
 
-
     /**
      * Returns the url of the current page
      * If redirect is true and a redirect occurs at the root level,
      * index.php is returned.
      */
-    public static function getCurrentUrl($relative=true, $use_redirect=true)
+    public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
-        if (!$relative) {
-            $address[] = PHPWS_Core::getHomeHttp();
-        }
-
-        $self = & $_SERVER['PHP_SELF'];
-
-        if ($use_redirect && self::isRewritten()) {
-            // some users reported problems using redirect_url so parsing uri instead
-            if ($_SERVER['REQUEST_URI'] != '/') {
-                $root_url = substr($self, 0, strrpos($self, '/'));
-                $address[] = preg_replace("@^$root_url/@", '', $_SERVER['REQUEST_URI']);
-            } else {
-                $address[] = 'index.php';
-            }
-            return implode('', $address);
-        }
-
-        $stack = explode('/', $self);
-        if ($url = array_pop($stack)) {
-            $address[] = $url;
-        }
-
-        if (!empty($_SERVER['QUERY_STRING'])) {
-            $address[] = '?';
-            $address[] = $_SERVER['QUERY_STRING'];
-        }
-        if (!empty($address)) {
-            $address = implode('', $address);
-            return preg_replace('@^/?@', '', $address);
-        }
+        return Server::getCurrentUrl($relative, $use_redirect);
     }
 
     /**
@@ -881,22 +658,24 @@ class PHPWS_Core {
      */
     public static function checkBranch()
     {
-        if (substr(php_sapi_name(),0,3) == 'cgi' && PHPWS_SOURCE_DIR == getcwd() . '/') {
+        if (substr(php_sapi_name(), 0, 3) == 'cgi' && PHPWS_SOURCE_DIR == getcwd() . '/') {
             $GLOBALS['Is_Branch'] = false;
             return true;
-        } elseif(str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
+        } elseif (str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
             $GLOBALS['Is_Branch'] = false;
             return true;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core',
+                        'Cannot load Branch class');
                 return false;
             }
             if (Branch::checkCurrentBranch()) {
                 $GLOBALS['Is_Branch'] = true;
                 return true;
             } else {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core',
+                        'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
                 return false;
             }
         }
@@ -919,41 +698,21 @@ class PHPWS_Core {
     public static function allowScriptTags()
     {
         if (ALLOW_SCRIPT_TAGS && class_exists('Current_User') &&
-        Current_User::allow('users', 'scripting')) {
+                Current_User::allow('users', 'scripting')) {
             return true;
         } else {
             return false;
         }
     }
 
-
-    public static function securePopup()
-    {
-        if (!class_exists('Layout')) {
-            exit(_('Unable to display contents.'));
-        }
-
-        // no session has been created, return false
-        if (!isset($_SESSION['secure_open_window']) ||
-        !isset($_GET['owpop']) ||
-        !in_array($_GET['owpop'], $_SESSION['secure_open_window'])) {
-
-            javascript('close_refresh');
-            Layout::metaRoute('index.php');
-            Layout::nakedDisplay(_('Unable to display contents.'));
-            return false;
-        }
-
-        javascript('secure_pop', array('id'=>$_GET['owpop']));
-        return true;
-    }
-
     public static function getBaseURL()
     {
         return PHPWS_Core::getHttp()
-        . $_SERVER['HTTP_HOST']
-        . preg_replace('/index.*/', '', $_SERVER['PHP_SELF']);
+                . $_SERVER['HTTP_HOST']
+                . preg_replace('/index.*/', '', $_SERVER['PHP_SELF']);
     }
-}// End of core class
 
+}
+
+// End of core class
 ?>

@@ -12,9 +12,10 @@
  * @license http://opensource.org/licenses/gpl-3.0.html GNU GPLv3
  * @copyright Copyright 2013, Appalachian State University & Contributors
  */
+
 require_once('inc/Bootstrap.php');
 
-$controller = new ModuleController();
+$controller = ModuleController::singleton();
 $controller->execute();
 
 PHPWS_unBootstrap();

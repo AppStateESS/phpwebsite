@@ -24,33 +24,15 @@ abstract class ModuleAbstract extends Data {
      * Indicates if module is currently active
      * @var boolean
      */
-    protected $active = true;
-
-    /**
-     * Pointer to the manager display object
-     * @var \Body
-     */
-    protected $display = null;
-
-    /**
-     * If true, this module has been installed on the station
-     * or site
-     * @var false
-     */
-    protected $installed = false;
-
-    /**
-     * Type of module or when it is run. Global modules are
-     * always loaded. Site and station modules are only loaded
-     * at their respective times.
-     * @var unknown_type
-     */
+    protected $active;
+    protected $title;
+    protected $priority;
 
     /**
      * Name of the current module
      * @var string
      */
-    protected $name;
+    protected $proper_name;
 
     /**
      * Address to icon representing this Module
@@ -75,6 +57,13 @@ abstract class ModuleAbstract extends Data {
      * @var Register
      */
     protected $register;
+
+    /**
+     * If true, this module is a version created prior to 1.8.2
+     * @var boolean
+     */
+    protected $deprecated = 0;
+    protected $version;
 
     /**
      * A required function accessed on initialization of the software. After loaded
@@ -103,11 +92,26 @@ abstract class ModuleAbstract extends Data {
      */
     public function __construct()
     {
+        $this->title = new \Variable\Attribute(null, 'title');
+        $this->proper_name = new \Variable\TextOnly(null, 'proper_name');
+    }
+
+    public function loadData()
+    {
         // This must be called for the module to be identifable.
         $this->loadNamespace();
         $this->loadDependencies();
-        $this->loadModuleName();
         $this->loadDirectory();
+        $this->loadUrl();
+        $this->loadDomain();
+    }
+
+    public function loadDomain()
+    {
+        if (empty($this->directory)) {
+            throw new Exception(t('Module directory must be loaded before loadDomain'));
+        }
+        bindtextdomain($this->title, $this->directory . 'locale/');
     }
 
     /**
@@ -124,23 +128,14 @@ abstract class ModuleAbstract extends Data {
         return $this->register[$module->name];
     }
 
-    /**
-     * Name of the current module
-     * @param string $module_name
-     */
-    private function loadModuleName()
-    {
-        $this->name = $this->getNamespace();
-    }
-
     private function loadDirectory()
     {
-        $this->directory = ModuleManager::singleton()->getDirectory() . 'Module/' . $this->name . '/';
+        $this->directory = PHPWS_SOURCE_DIR . 'mod/' . $this->title . '/';
     }
 
     private function loadUrl()
     {
-        $this->url = ModuleManager::singleton()->getUrl() . 'Module/' . $this->name . '/';
+        $this->url = PHPWS_SOURCE_HTTP . 'mod/' . $this->title . '/';
     }
 
     public function getUrl()
@@ -169,9 +164,9 @@ abstract class ModuleAbstract extends Data {
     /**
      * @return string
      */
-    public function getName()
+    public function getProperName()
     {
-        return $this->name;
+        return $this->proper_name;
     }
 
     /**
@@ -199,13 +194,44 @@ abstract class ModuleAbstract extends Data {
         $this->active = false;
     }
 
-    /**
-     * An expected method in the
-     * @return mixed
-     */
-    public function display()
+    public function setTitle($title)
     {
-        return false;
+        $this->title->setValue($title);
+    }
+
+    public function getTitle()
+    {
+        return (string) $this->title;
+    }
+
+    public function setPriority($priority)
+    {
+        $this->priority = (int) $priority;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = (bool) $active;
+    }
+
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    }
+
+    public function setDeprecated($deprecated)
+    {
+        $this->deprecated = (bool) $deprecated;
+    }
+
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    public function destruct()
+    {
+        
     }
 
 }
