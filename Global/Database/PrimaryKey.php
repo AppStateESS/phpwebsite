@@ -20,6 +20,15 @@ namespace Database;
 
 class PrimaryKey extends Constraint implements TableCreateConstraint {
 
+    public function __construct($columns, $name = null)
+    {
+        if (empty($name)) {
+            $name = 'key_' . uniqid();
+        }
+        parent::__construct($columns, $name);
+    }
+
+
     public function getConstraintType()
     {
         return 'PRIMARY KEY';

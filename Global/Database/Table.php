@@ -134,6 +134,14 @@ abstract class Table extends Resource {
     abstract public function constraintTypeAfterName();
 
     /**
+     * Serializes the primary key in the current table. This is a one time method
+     * that brings PHPWS_DB tables up to date with Beanie tables. In a nutshell,
+     * the sequence table from the old version will be read for the top id and then
+     * the column of the current table will be altered to auto increment.
+     */
+    abstract public function serializePrimaryKey();
+
+    /**
      * Renames the table
      * @param string $new_name
      */
@@ -174,6 +182,11 @@ abstract class Table extends Resource {
      *
      */
     abstract public function getIndexes();
+
+    /**
+     * Returns true if the current table has a sequence table associated with it.
+     */
+    abstract public function hasPearSequenceTable();
 
     /**
      * @param string $name Name of the table
@@ -233,24 +246,15 @@ abstract class Table extends Resource {
     public function addValueArray(array $values)
     {
         static $value_key = 0;
-        foreach ($values as $key => $val) {
+        foreach ($values as $key=> $val) {
             if (is_array($val)) {
-                foreach ($val as $skey => $sval) {
+                foreach ($val as $skey=> $sval) {
                     $this->addValue($skey, $sval, $value_key);
                 }
                 $value_key++;
             } else {
                 $this->addValue($key, $val);
             }
-        }
-    }
-
-    private function checkConstraintTable(Constraint $constraint)
-    {
-        $source_table_name = $constraint->getSourceTable()->getFullName();
-        if ($source_table_name != $this->getFullName()) {
-            throw new \Exception(t('Source column table %s does not match current table %s',
-                    $source_table_name, $this->getFullName()));
         }
     }
 
@@ -320,19 +324,6 @@ abstract class Table extends Resource {
         $db_value = new Value($this, $column_name, $value);
 
         return $db_value;
-    }
-
-    /**
-     * Returns table alias if set, full_name otherwise.
-     * @return string
-     */
-    public function __toString()
-    {
-        if ($this->alias) {
-            return wrap($this->alias, $this->db->getDelimiter());
-        } else {
-            return wrap($this->full_name, $this->db->getDelimiter());
-        }
     }
 
     /**
@@ -436,12 +427,6 @@ abstract class Table extends Resource {
         } else {
             return $this->incremented_ids;
         }
-    }
-
-    public function getPrimaryIndex()
-    {
-        $this->loadPrimaryIndex();
-        return $this->primary_key;
     }
 
     public function addIndex()
@@ -561,11 +546,25 @@ abstract class Table extends Resource {
         }
     }
 
+
+    /**
+     * Returns table alias if set, full_name otherwise.
+     * @return string
+     */
+    public function __toString()
+    {
+        if ($this->alias) {
+            return wrap($this->alias, $this->db->getDelimiter());
+        } else {
+            return wrap($this->full_name, $this->db->getDelimiter());
+        }
+    }
+
     /**
      * Returns the table identifier for a sql query.
      * @return string
      */
-    public function getQuery()
+    public function getResourceQuery()
     {
         if ($this->alias) {
             return $this->db->wrap($this->full_name) . ' AS ' . $this->alias;
@@ -747,7 +746,7 @@ abstract class Table extends Resource {
         $prep = DB::$PDO->prepare($query);
 
         foreach ($this->values as $line) {
-            foreach ($line as $key => $val) {
+            foreach ($line as $key=> $val) {
                 $data[$key] = $val->getValue();
             }
             $prep->execute($data);
@@ -840,6 +839,7 @@ abstract class Table extends Resource {
 
         return $result;
     }
+
 }
 
 ?>

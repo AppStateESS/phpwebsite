@@ -26,7 +26,7 @@ class Table extends \Database\Table {
     public function addPrimaryIndexId()
     {
         $id = $this->addDatatype('id', 'serial');
-        $pk = new PrimaryKey($id);
+        $pk = new \Database\PrimaryKey($id);
         $this->addPrimaryKey($pk);
         return $id;
     }
@@ -97,6 +97,11 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
 
     public function getIndexes()
     {
+        static $current_table_index = null;
+
+        if (!empty($current_table_index)) {
+            return $current_table_index;
+        }
         $tbl_name = $this->getFullName(false);
         $query = "
 SELECT a.table_name,
@@ -132,9 +137,9 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
             $info['column_name'] = $idx['column_list'];
             $info['unique'] = $idx['constraint_type'] == 'UNIQUE' ? 1 : 0;
             $info['primary_key'] = $idx['constraint_type'] == 'PRIMARY KEY' ? 1 : 0;
-            $index[$idx['constraint_name']][] = $info;
+            $current_table_index[$idx['constraint_name']][] = $info;
         }
-        return $index;
+        return $current_table_index;
     }
 
     /**
@@ -151,6 +156,20 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
 
         $column_type = $schema['data_type'];
         $dt = \Database\Datatype::factory($this, $column_name, $column_type);
+
+        $indexes = $this->getIndexes();
+        foreach ($indexes as $index_name=> $indices) {
+            foreach ($indices as $idx) {
+                if ($idx['column_name'] == $column_name) {
+                    if ($idx['primary_key']) {
+                        $dt->setIsPrimaryKey(1);
+                    }
+                    if ($idx['unique']) {
+                        $dt->setIsUnique(1);
+                    }
+                }
+            }
+        }
 
         $dt->setIsNull($schema['is_nullable']);
 
@@ -182,6 +201,34 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         }
         $dt->setDefault($default);
         return $dt;
+    }
+
+    public function hasPearSequenceTable()
+    {
+        $sequence_table = $this->getFullName(false) . '_seq';
+
+        $db = \Database::newDB();
+        $db->loadStatement("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S' AND c.relname = '$sequence_table'");
+        $result = $db->fetchRow();
+        return (bool) $result;
+    }
+
+    /**
+     * Changes id in the Postgresql to serial coupled to its sequence table.
+     */
+    public function serializePrimaryKey()
+    {
+        if (!$this->hasPearSequenceTable()) {
+            throw new \Exception('There is not a PEAR::DB sequence for this table');
+        }
+
+        $table_name = $this->getFullName();
+        $sequence_table = $this->getFullName(false) . '_seq';
+
+        $sql = "ALTER TABLE $table_name ALTER COLUMN id SET DEFAULT NEXTVAL('$sequence_table')";
+        $this->db->exec($sql);
+        $sql2 = "ALTER SEQUENCE $sequence_table OWNED BY $table_name.id";
+        $this->db->exec($sql2);
     }
 
 }

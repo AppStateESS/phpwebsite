@@ -44,12 +44,7 @@ abstract class DB extends \Data {
      */
     private $tbl_prefix = null;
 
-    /**
-     * An array of where groupings within the query
-     * @var array
-     * @access private
-     */
-    private $where_group_stack = null;
+    private $conditional;
 
     /**
      * An array of joined tables
@@ -183,6 +178,13 @@ abstract class DB extends \Data {
     abstract public function databaseExists($database_name);
 
     /**
+     * Should return true if the passed in table name exists.
+     * @param string
+     * @return boolean
+     */
+    abstract public function tableExists($table_name);
+
+    /**
      * Extended class should return a flat array of table names from the
      * current database.
      * @return array
@@ -279,6 +281,11 @@ abstract class DB extends \Data {
         }
     }
 
+    public function setConditional(\Database\Conditional $conditional)
+    {
+        $this->conditional = $conditional;
+    }
+
     /**
      * Sets the DSN and loads the PDO object for future queries.
      * @param \Database\DSN $dsn
@@ -323,7 +330,7 @@ abstract class DB extends \Data {
         if (!isset(self::$pdo_stack[$hash])) {
             self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(),
                     $this->dsn->getUsername(), $this->dsn->getPassword(),
-                    array(\PDO::ATTR_PERSISTENT => true, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+                    array(\PDO::ATTR_PERSISTENT=>true, \PDO::ATTR_ERRMODE=>\PDO::ERRMODE_EXCEPTION));
         }
         self::$PDO = self::$pdo_stack[$hash];
     }
@@ -426,7 +433,7 @@ abstract class DB extends \Data {
         if (!$this->allowed($new_name)) {
             throw new \Exception(t('Improper new table name'));
         }
-        return $this->alterTable($old_name, array('name' => $new_name));
+        return $this->alterTable($old_name, array('name'=>$new_name));
     }
 
     /**
@@ -644,7 +651,11 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns the table stack from the DB object
+     * Returns the table stack from the DB object. Only tables added by the dev
+     * will be returned. For a list of all tables, use $db->listTables().
+     * If you need to know if a table is in the database use
+     * $db->tableExists($table_name)
+     *
      * @return array
      */
     public function getAllTables()
@@ -665,7 +676,7 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns the group by object. Expected use is for string output.
+     * Returns the group_by object. Expected use is for string output.
      * @return Group object
      */
     private function getGroupBy()
@@ -815,7 +826,7 @@ abstract class DB extends \Data {
         if (!empty($include_on_join)) {
             foreach ($include_on_join as $module) {
                 if (is_subclass_of($module, 'Resource')) {
-                    $delete_modules[] = $module->hasAlias() ? $module->getAlias() : $module->getQuery();
+                    $delete_modules[] = $module->hasAlias() ? $module->getAlias() : $module->getResourceQuery();
                 }
             }
             $query[] = implode(', ', $delete_modules);
@@ -919,7 +930,7 @@ abstract class DB extends \Data {
      * @param \Database\Alias $alias
      * @return SubSelect
      */
-    public function getSubSelect(DB $DB, $alias)
+    public function getSubSelect(DB $DB, $alias=null)
     {
         return new SubSelect($DB, $alias);
     }
@@ -1088,7 +1099,7 @@ abstract class DB extends \Data {
             $show_left = true;
             $joined = array();
             foreach ($this->join_tables as $join) {
-                $joined[] = $join->getQuery($show_left);
+                $joined[] = $join->getResourceQuery($show_left);
                 $show_left = false;
             }
             $sources[] = implode(' ', $joined);
@@ -1115,12 +1126,7 @@ abstract class DB extends \Data {
                 }
 
                 if (!$module->isJoined()) {
-                    $sources[] = $module->getQuery();
-                }
-                $twhere = $module->getWhereStack($allow_first_conjunction);
-                if ($twhere) {
-                    $where[] = $twhere;
-                    $allow_first_conjunction = true;
+                    $sources[] = $module->getResourceQuery();
                 }
 
                 if ($mode == DB::SELECT) {
@@ -1143,18 +1149,8 @@ abstract class DB extends \Data {
         }
 
         $data['modules'] = implode(', ', $sources);
-        $conjgroup = !empty($where);
-        $where_groups = $this->whereGroupQuery($conjgroup);
-        if (!empty($where_groups) || !empty($where)) {
-            $slist[] = 'WHERE';
-            if (!empty($where)) {
-                $slist[] = implode(' ', $where);
-            }
-
-            if (!empty($where_groups)) {
-                $slist[] = $where_groups;
-            }
-            $data['where'] = implode(' ', $slist);
+        if (!empty($this->conditional)) {
+            $data['where'] = 'WHERE ' . $this->conditional->__toString();
         }
 
         // Groups used only on selects
@@ -1326,7 +1322,6 @@ abstract class DB extends \Data {
             $args = $args[0];
         }
 
-
         if (empty($args)) {
             throw new \Exception(t('Invalid parameters.'));
         } else {
@@ -1443,7 +1438,7 @@ abstract class DB extends \Data {
 
         foreach ($this->tables as $tbl) {
             $primary_key = $tbl->getPrimaryIndex();
-            foreach ($values as $column => $value) {
+            foreach ($values as $column=> $value) {
                 if (DATABASE_CHECK_COLUMNS && !$tbl->columnExists($column)) {
                     throw new \Exception(t('Column "%s" not found', $column));
                 }
@@ -1509,7 +1504,8 @@ abstract class DB extends \Data {
         if (is_string($value)) {
             $result = self::$PDO->quote($value);
             if ($result === false) {
-                throw new \Exception(t('Database connection failed when quoting string'));
+                throw new \Exception(t('Database connection failed when calling "%s"',
+                        'mysql_real_escape_string'));
             } else {
                 return $result;
             }
