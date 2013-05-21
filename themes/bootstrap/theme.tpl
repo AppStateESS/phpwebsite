@@ -27,7 +27,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="index.php?module=controlpanel&command=panel_view">Appalachian State University</a>
+          <a class="brand" href="index.php?module=controlpanel&command=panel_view">{SITE_NAME}</a>
           <ul class="nav">
             <li class="{CONTENT_PAGE}"><a href="index.php">View Site</a></li>
           </ul>
