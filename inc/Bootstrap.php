@@ -36,7 +36,7 @@ if (DISPLAY_ERRORS) {
     error_reporting(0);
 }
 
-require_once 'Global/Functions.php';
+require_once PHPWS_SOURCE_DIR . 'Global/Functions.php';
 
 set_exception_handler(array('Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
