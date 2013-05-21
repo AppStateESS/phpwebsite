@@ -12,6 +12,6 @@ $settings = array('default_authorization' => 1,
     'forbidden_usernames' => "admin\nroot\nwebmaster\nadministrator\neditor",
     'local_script' => 0,
     'allow_new_users' => 1,
-    'show_login' => 0
+    'show_login' => 1
 );
 ?>
