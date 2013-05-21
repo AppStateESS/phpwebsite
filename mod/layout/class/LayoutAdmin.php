@@ -394,7 +394,8 @@ class Layout_Admin {
                 dgettext('layout', 'Restore the default theme'));
         $address = 'index.php?module=layout&amp;action=admin&amp;command=demo_fail';
         Layout::metaRoute($address, 10);
-        return $form->getMerge();
+        $tpl = $form->getTemplate();
+        return $tpl['START_FORM'] . $tpl['CONFIRM'] .  $tpl['DECLINE'] . $tpl['END_FORM'];
     }
 
     public static function editFooter()
