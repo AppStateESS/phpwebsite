@@ -467,6 +467,8 @@ class PS_Page {
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         Layout::getCacheHeaders($this->cacheKey());
+        $save_cache = true;
+
         $cache = PHPWS_Cache::get($this->cacheKey());
 
         $this->loadTemplate();
@@ -489,8 +491,10 @@ class PS_Page {
 
         $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
 
-        if ($this->_key->show_after > time()) {
-            $tpl['SHOW_AFTER'] = t('Page hidden until %s', strftime('%F %H:%M', $this->_key->show_after));
+        if (Current_User::allow('pagesmith') && $this->_key->show_after > time()) {
+            $tpl['SHOW_AFTER'] = t('Page hidden until %s',
+                    strftime('%F %H:%M', $this->_key->show_after));
+            $save_cache = false;
         }
 
         $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith',
@@ -502,9 +506,10 @@ class PS_Page {
                     dgettext('pagesmith', 'Back to top'));
         }
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
-
-        Layout::cacheHeaders($this->cacheKey());
-        PHPWS_Cache::save($this->cacheKey(), $content);
+        if ($save_cache) {
+            Layout::cacheHeaders($this->cacheKey());
+            PHPWS_Cache::save($this->cacheKey(), $content);
+        }
         return $content;
     }
 
