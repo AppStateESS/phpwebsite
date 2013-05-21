@@ -69,8 +69,9 @@ class Cabinet_Form {
         $form->addHidden('ftype', $folder->ftype);
         $form->addText('folder_search', @$_GET['folder_search']);
         $form->addSubmit(dgettext('filecabinet', 'Search folders for file'));
+        $search_tpl = $form->getTemplate();
 
-        $pagetags['FILE_SEARCH'] = implode(' ', $form->getTemplate());
+        $pagetags['FILE_SEARCH'] = $search_tpl['START_FORM'] . $search_tpl['FOLDER_SEARCH'] . $search_tpl['SUBMIT'] . $search_tpl['END_FORM'];
 
         $pager = new DBPager('folders', 'Folder');
 
