@@ -7,6 +7,7 @@
  */
 mb_internal_encoding('UTF-8');
 
+
 /**
  * Include the defines used in Global library
  */
@@ -25,6 +26,7 @@ if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
 } else {
     require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
 }
+date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
 
 if (DISPLAY_ERRORS) {
     ini_set('display_errors', 'On');

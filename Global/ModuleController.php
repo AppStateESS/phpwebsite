@@ -29,7 +29,7 @@ final class ModuleController {
      *
      * @return ModuleController
      */
-    public function singleton()
+    public static function singleton()
     {
         if (empty(self::$controller)) {
             self::$controller = new ModuleController;
@@ -189,7 +189,8 @@ final class ModuleController {
         $mods->addOrderBy('priority');
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
-            if (!$row['deprecated']) {
+            if (isset($row['deprecated']) && !$row['deprecated']) {
+                var_dump($row);
                 $module = $this->loadModuleByTitle($row['title']);
             } else {
                 $module = $this->loadPHPWSModule($row);

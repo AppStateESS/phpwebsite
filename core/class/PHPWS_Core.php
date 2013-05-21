@@ -295,7 +295,7 @@ class PHPWS_Core {
     /**
      * Returns true is a module is installed, false otherwise
      */
-    public static function moduleExists($module)
+    public static function moduleExists($module_title)
     {
         return ModuleController::singleton()->moduleIsInstalled($module_title);
     }

@@ -149,7 +149,6 @@ class String extends \Variable {
         } else {
             $this->allowed_tags = '<' . implode('><', $args) . '>';
         }
-        $this->allowed_tags = $allowed_tags;
     }
 
     /**
