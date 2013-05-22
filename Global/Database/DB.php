@@ -287,6 +287,19 @@ abstract class DB extends \Data {
     }
 
     /**
+     * Constructs and returns a Conditional object.
+     * @param mixed $left
+     * @param mixed $right
+     * @param string $operator
+     * @return \Database\Conditional
+     */
+    public function getConditional($left, $right, $operator)
+    {
+        return new Conditional($left, $right, $operator);
+    }
+
+
+    /**
      * Sets the DSN and loads the PDO object for future queries.
      * @param \Database\DSN $dsn
      */
@@ -1301,50 +1314,6 @@ abstract class DB extends \Data {
         } else {
             throw new \Exception(t('No table fields were found'));
         }
-    }
-
-    /**
-     * Receives any number of Conditional or Conditional_Group objects as
-     * arguments and groups them into the returned new Conditional_Group.
-     *
-     * @access public
-     * @param \Datebase\Conditional
-     * @return \Database\Conditional_Group
-     */
-    public function groupWhere()
-    {
-        static $position = 0;
-
-        $args = func_get_args();
-        // only one argument was sent and it was an array, in this case
-        // we replace the $args variable with the first value.
-        if (func_num_args() == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
-
-        if (empty($args)) {
-            throw new \Exception(t('Invalid parameters.'));
-        } else {
-            $position++;
-            try {
-                $this->where_group_stack[$position] = new Conditional_Group($this,
-                        $position, $args);
-            } catch (Error $e) {
-                throw new \Exception('groupWhere parameters must be DB Conditional/Conditional_Group objects',
-                $e);
-            }
-            return $this->where_group_stack[$position];
-        }
-    }
-
-    /**
-     * Removes a where group from the stack. This is used internally when a
-     * new group is added to prevent repeats.
-     * @param boolean $position The position of the where group in the stack
-     */
-    public function dropWhereGroup($position)
-    {
-        unset($this->where_group_stack[$position]);
     }
 
     /**

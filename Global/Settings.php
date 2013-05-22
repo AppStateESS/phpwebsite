@@ -25,12 +25,7 @@ class Settings extends Data {
 
     public function loadDefaultSettings($module_name, $variable_name)
     {
-        if (strtolower($module_name != 'global')) {
-            $module = new GlobalModule;
-        } else {
-            $manager = \ModuleManager::singleton();
-            $module = $manager->getModule($module_name);
-        }
+        $module = ModuleController::singleton()->getModule($module_name);
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!isset($settings[$variable_name])) {
@@ -48,6 +43,9 @@ class Settings extends Data {
         $settings = self::singleton();
         $settings->variables[$module_name][$variable_name] = $setting;
         $db = \Database::newDB();
+        if (!$db->tableExists('settings')) {
+            self::createSettingsTable();
+        }
         $s = $db->addTable('settings');
         $s->addWhere('module_name', $module_name);
         $s->addWhere('variable_name', $variable_name);
@@ -64,11 +62,25 @@ class Settings extends Data {
         $db->insert();
     }
 
+    private static function createSettingsTable()
+    {
+        $db = \Database::newDB();
+        $settings = $db->addTable('settings');
+        $uniq[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
+        $uniq[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
+        $settings->addDataType('setting', 'text')->setIsNull(false);
+        $settings->addUnique(new Database\Unique($uniq));
+        $settings->create();
+    }
+
     final public static function singleton($reload = false)
     {
         if ($reload || empty(self::$settings)) {
             self::$settings = new Settings;
             $db = Database::newDB();
+            if (!$db->tableExists('settings')) {
+                self::createSettingsTable();
+            }
             $db->addTable('settings');
             $db->loadSelectStatement();
             $rows = $db->fetchAll();

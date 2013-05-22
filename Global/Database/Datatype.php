@@ -108,9 +108,14 @@ abstract class Datatype extends \Data {
         }
     }
 
+    /**
+     * Sets whether the database type is NULL (true) or NOT NULL (false)
+     * @param boolean $null
+     */
     public function setIsNull($null)
     {
         $this->is_null = (bool) $null;
+        return $this;
     }
 
     public function setName($name)
@@ -199,6 +204,7 @@ abstract class Datatype extends \Data {
         } else {
             $this->default = new \Variable\String((string) $value);
         }
+        return $this;
     }
 
     /**
@@ -256,6 +262,7 @@ abstract class Datatype extends \Data {
     public function setSize($length)
     {
         $this->size->set($length);
+        return $this;
     }
 
     public function getSize()

@@ -14,6 +14,11 @@ abstract class Constraint {
     protected $columns;
     protected $source_table;
 
+    /**
+     *
+     * @param mixed $columns A single or array of \Database\Datatype objects
+     * @param string $name
+     */
     public function __construct($columns, $name = null)
     {
         $this->setColumns($columns);
@@ -32,6 +37,10 @@ abstract class Constraint {
         return $this->name;
     }
 
+    /**
+     *
+     * @param mixed $columns A single or array of \Database\Datatype objects
+     */
     public function setColumns($columns)
     {
         $this->check($columns);
@@ -47,7 +56,7 @@ abstract class Constraint {
     protected function check($datatype)
     {
         if (is_array($datatype)) {
-            $this->checkTables($datatype);
+            $this->checkDatatypeArray($datatype);
         } else {
             $this->checkDatatype($datatype);
         }
@@ -87,7 +96,7 @@ abstract class Constraint {
      * @param array $datatypes
      * @throws \Exception
      */
-    protected function checkTables(Array $datatypes)
+    protected function checkDatatypeArray(Array $datatypes)
     {
         foreach ($datatypes as $dt) {
             $this->checkDatatype($dt);

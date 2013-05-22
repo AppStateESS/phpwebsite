@@ -22,7 +22,8 @@ final class ModuleController {
 
     protected function __construct()
     {
-
+        $global_module = new GlobalModule;
+        $this->module_stack['Global'] = $global_module;
     }
 
     /**
@@ -233,6 +234,13 @@ final class ModuleController {
     public function moduleIsInstalled($module_title)
     {
         return isset($this->module_stack[$module_title]);
+    }
+
+    public function getModule($module_title) {
+        if (!isset($this->module_stack[$module_title])) {
+            throw new Exception(t('Module "%s" does not exist', $module_title));
+        }
+        return $this->module_stack[$module_title];
     }
 
     private function forwardInfo()

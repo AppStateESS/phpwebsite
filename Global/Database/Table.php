@@ -235,6 +235,15 @@ abstract class Table extends Resource {
         return $this->values;
     }
 
+    private function checkConstraintTable(Constraint $constraint)
+    {
+        $source_table_name = $constraint->getSourceTable()->getFullName();
+        if ($source_table_name != $this->getFullName()) {
+            throw new \Exception(t('Source column table %s does not match current table %s',
+                    $source_table_name, $this->getFullName()));
+        }
+    }
+
     /**
      * Adds an associative array of values to the table for an update or
      * insert execution. If this is a multi-tier array, multiple value
@@ -246,9 +255,9 @@ abstract class Table extends Resource {
     public function addValueArray(array $values)
     {
         static $value_key = 0;
-        foreach ($values as $key=> $val) {
+        foreach ($values as $key => $val) {
             if (is_array($val)) {
-                foreach ($val as $skey=> $sval) {
+                foreach ($val as $skey => $sval) {
                     $this->addValue($skey, $sval, $value_key);
                 }
                 $value_key++;
@@ -546,7 +555,6 @@ abstract class Table extends Resource {
         }
     }
 
-
     /**
      * Returns table alias if set, full_name otherwise.
      * @return string
@@ -746,7 +754,7 @@ abstract class Table extends Resource {
         $prep = DB::$PDO->prepare($query);
 
         foreach ($this->values as $line) {
-            foreach ($line as $key=> $val) {
+            foreach ($line as $key => $val) {
                 $data[$key] = $val->getValue();
             }
             $prep->execute($data);

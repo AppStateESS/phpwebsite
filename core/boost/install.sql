@@ -1,18 +1,27 @@
-CREATE TABLE modules ( 
-	title CHAR(40) NOT NULL, 
-	proper_name CHAR(40) NOT NULL,
-	priority SMALLINT NOT NULL, 
-	active SMALLINT NOT NULL, 
-	version CHAR(20) NOT NULL, 
-	register SMALLINT NOT NULL,
-	unregister SMALLINT NOT NULL,
-        PRIMARY KEY (title)
-	);
+CREATE TABLE modules (
+ title CHAR(40) NOT NULL,
+ proper_name CHAR(40) NOT NULL,
+ priority SMALLINT NOT NULL,
+ active SMALLINT NOT NULL,
+ version CHAR(20) NOT NULL,
+ register SMALLINT NOT NULL,
+ unregister SMALLINT NOT NULL,
+ deprecated smallint not null default 1,
+ PRIMARY KEY (title)
+);
 
-CREATE TABLE registered ( 
-	module CHAR(40) NOT NULL, 
-	registered_to CHAR(40) NOT NULL
-	);
+CREATE TABLE IF NOT EXISTS settings (
+  module_name varchar(255) NOT NULL,
+  variable_name varchar(255) NOT NULL,
+  setting text NOT NULL,
+  UNIQUE KEY modvar (module_name,variable_name)
+);
+
+
+CREATE TABLE registered (
+ module CHAR(40) NOT NULL,
+ registered_to CHAR(40) NOT NULL
+);
 
 
 CREATE TABLE dependencies (
