@@ -162,7 +162,7 @@ class Layout {
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
 
-    public function extraStyle($filename)
+    public static function extraStyle($filename)
     {
         $styles = Layout::getExtraStyles();
         if (!isset($styles[$filename])) {

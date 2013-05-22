@@ -667,8 +667,7 @@ class Access {
 
     public static function denied()
     {
-        $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
-        Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
+        Error::errorPage('403');
     }
 
     public function isDenied($ip)

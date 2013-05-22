@@ -8,7 +8,8 @@ $default['class'] = 'js-slider';
 $default['id'] = 'span-' . time();
 $default['speed'] = 'fast';
 
-switch (@$data['speed']) {
+$speed = !empty($data['speed']) ? $data['speed'] : 1;
+switch ($speed) {
  case 'fast':
  case 'normal':
  case 'slow':
