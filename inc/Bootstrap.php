@@ -28,6 +28,8 @@ if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
     require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
 }
 
+date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+
 if (DISPLAY_ERRORS) {
     ini_set('display_errors', 'On');
     error_reporting(-1);

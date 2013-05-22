@@ -4,7 +4,7 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Item.php');
 
 require_once(PHPWS_SOURCE_DIR . 'core/class/Error.php');
 
-//require_once(PHPWS_SOURCE_DIR . 'core/Form.php');
+require_once(PHPWS_SOURCE_DIR . 'core/class/Form.php');
 
 require_once(PHPWS_SOURCE_DIR . 'core/class/Text.php');
 
