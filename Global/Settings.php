@@ -47,8 +47,10 @@ class Settings extends Data {
             self::createSettingsTable();
         }
         $s = $db->addTable('settings');
-        $s->addWhere('module_name', $module_name);
-        $s->addWhere('variable_name', $variable_name);
+        $db->setConditional($db->getConditional($db->getConditional($s->getField('module_name'),
+                                $module_name, '='),
+                        $db->getConditional($s->getField('variable_name'),
+                                $variable_name, '='), 'and'));
         try {
             $db->delete();
         } catch (\Exception $e) {

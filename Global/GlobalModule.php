@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class GlobalModule implements SettingDefaults {
+class GlobalModule extends ModuleAbstract implements SettingDefaults {
 
     /**
      * Eventually to be handled by UI
@@ -15,6 +15,16 @@ class GlobalModule implements SettingDefaults {
     {
         $settings['language'] = DEFAULT_LANGUAGE;
         return $settings;
+    }
+
+    public function run()
+    {
+
+    }
+
+    public function init()
+    {
+        
     }
 
 }
