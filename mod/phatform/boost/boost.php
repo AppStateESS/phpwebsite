@@ -4,7 +4,7 @@
  * @version $Id$
  */
 $proper_name = 'Form Generator';
-$version = '3.1.8';
+$version = '3.1.9';
 $import_sql = TRUE;
 $priority = 50;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/phatform/check.xml';

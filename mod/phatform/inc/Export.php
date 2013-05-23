@@ -74,7 +74,21 @@ function export($formId = NULL) {
     $goCode = 'zip -qmj ' . $path . $filename . '.zip ' . $path . $filename;
     system($goCode);
 
-    header('Location: files/phatform/export/' . $filename . '.zip');
+    $filename = $filename . '.zip';
+    $filepath = 'files/phatform/export/' . $filename;
+
+    header('Pragma: public');
+	header('Expires: 0');
+	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($filepath)).' GMT');
+	header('Cache-Control: private',false);
+	header('Content-Type: application/zip');
+	header('Content-Disposition: attachment; filename="' . $filename . '"');
+	header('Content-Transfer-Encoding: binary');
+	header('Content-Length: '.filesize($filepath));
+	header('Connection: close');
+	readfile($filepath);
+	exit();
 }
 
 ?>

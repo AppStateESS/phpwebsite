@@ -13,7 +13,7 @@ function pagesmith_install(&$content)
 	$section->pid = $page->id;
 	$section->content = '&lt;p&gt;Thank you for installing phpWebSite.
 	Its developers hope you enjoy it.&lt;/p&gt;&lt;p&gt;
-	The page you are reading was created under 
+	The page you are reading was created under
 	&lt;a href=&quot;./index.php?module=pagesmith&amp;amp;aop=menu&amp;amp;authkey=be5c993fffbc1193e3763d43ef5b2c78&quot;&gt;PageSmith&lt;/a&gt;
 	, which can be found in the &lt;a href=&quot;index.php?module=controlpanel&amp;amp;command=panel_view&quot;&gt;Control Panel&lt;/a&gt; under the Content Tab.&lt;/p&gt;&lt;p&gt;
 	PageSmith has many default templates to get you started. If you are comfortable with HTML, you may wish to just use the &quot;Text Only&quot;

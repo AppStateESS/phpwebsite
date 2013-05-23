@@ -12,6 +12,7 @@ class Signup_Peep {
     public $last_name    = null;
     public $email        = null;
     public $phone        = null;
+    public $organization = null;
     /**
      * No longer used
      */

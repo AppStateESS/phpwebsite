@@ -118,7 +118,7 @@ class Categories_Action {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['Category_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=categories&action=admin&subaction=%s&authkey=%s', $command, Current_User::getAuthKey()));
