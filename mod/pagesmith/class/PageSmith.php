@@ -330,7 +330,8 @@ class PageSmith {
     public function loadPage()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
-        if (@$_REQUEST['id']) {
+
+        if (isset($_REQUEST['id'])) {
             $this->page = new PS_Page($_REQUEST['id']);
         } else {
             $this->page = new PS_Page;

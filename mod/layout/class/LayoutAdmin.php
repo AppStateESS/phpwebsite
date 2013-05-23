@@ -140,7 +140,10 @@ class Layout_Admin {
                                 false, true);
                 if (!empty($files) && is_array($files)) {
                     foreach ($files as $fn) {
-                        @unlink('templates/cache/' . $fn);
+                        $delete_cache_path = "templates/cache/$fn";
+                        if (is_file($delete_cache_path)) {
+                            unlink('templates/cache/' . $fn);
+                        }
                     }
                 }
                 PHPWS_Core::goBack();
@@ -395,7 +398,7 @@ class Layout_Admin {
         $address = 'index.php?module=layout&amp;action=admin&amp;command=demo_fail';
         Layout::metaRoute($address, 10);
         $tpl = $form->getTemplate();
-        return $tpl['START_FORM'] . $tpl['CONFIRM'] .  $tpl['DECLINE'] . $tpl['END_FORM'];
+        return $tpl['START_FORM'] . $tpl['CONFIRM'] . $tpl['DECLINE'] . $tpl['END_FORM'];
     }
 
     public static function editFooter()

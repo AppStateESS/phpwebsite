@@ -184,7 +184,5 @@ class Database {
             return self::$last_query[$end];
         }
     }
-
 }
-
 ?>

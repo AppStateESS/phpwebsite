@@ -91,10 +91,11 @@ class DSN extends \Data {
         $this->table_prefix->setLabel(t('Table prefix'));
         $this->table_prefix->wordCharactersOnly();
 
-        $this->host = \Variable::factory('string', $host, 'host');
+        $this->host = \Variable::factory('string', null, 'host');
         $this->host->setLimit(255);
         $this->host->setLabel('Database host');
         $this->host->allowNull(true);
+        $this->host->set($host);
 
         $this->port = \Variable::factory('integer', $port, 'port');
         $this->port->setLabel('Database port');
@@ -151,9 +152,7 @@ class DSN extends \Data {
     public function getPDOString()
     {
         $pdo_string[] = $this->database_type . ':';
-        if ($this->host->isEmpty()) {
-            $pdo_string[] = 'host=localhost;';
-        } else {
+        if (!$this->host->isEmpty()) {
             $pdo_string[] = 'host=' . $this->host . ';';
         }
 

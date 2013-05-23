@@ -416,10 +416,10 @@ class Comment_Thread {
             $forum = $this->phpwsbb_topic->get_forum();
             $canPostInForum = $forum->can_post();
         }
-        
+
         $user = Comments::getCommentUser(Current_User::getId());
-        $result =  (!$this->locked || $this->userCan()) 
-                    && !$user->locked 
+        $result =  (!$this->locked || $this->userCan())
+                    && !$user->locked
                     && $canPostInForum
                     && (Current_User::isLogged() || $this->allow_anon);
         $GLOBALS['Perms']['canComment'][$this->id] = $result;
@@ -457,7 +457,7 @@ class Comment_Thread {
         $db->addWhere('member_id', $author_list);
         $db->addColumn('group_id');
         $db->addColumn('member_id');
-        $result = $db->select('col');
+        $result = $db->select();
         if (!PHPWS_Error::logIfError($result) && !empty($result)) {
             foreach ($result as $value) {
                 $GLOBALS['Comment_UsersGroups'][$value['member_id']][] = $value['group_id'];

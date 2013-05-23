@@ -326,7 +326,11 @@ class PS_Forms {
         foreach ($this->tpl_list as $template) {
             if ($template->folders) {
                 foreach ($template->folders as $folder_name) {
-                    @$folder_list[$folder_name]++;
+                    if (isset($folder_list[$folder_name])) {
+                        $folder_list[$folder_name]++;
+                    } else {
+                        $folder_list[$folder_name] = 1;
+                    }
                 }
             }
         }
