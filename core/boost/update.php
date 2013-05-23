@@ -211,6 +211,7 @@ UPDATES;
                 $deprecated->setDefault(1);
                 $deprecated->add();
 
+
             } catch (\Exception $e) {
                 echo $e->getCode();
                 $content[] = 'Error: ' . $e->getMessage();

@@ -1,12 +1,12 @@
 <?php
-
+namespace addthis;
 /**
  * Settings class - Singleton class that Wraps phpws settings for AddThis.
  *
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  */
 class Settings {
-    
+
     // Static var to hold instance of this class
     private static $instance;
 
@@ -31,7 +31,7 @@ class Settings {
     // Returns the value of the given setting name
     public function get($settingName)
     {
-       return $this->settings[$settingName]; 
+       return $this->settings[$settingName];
     }
 
     public function getAll()
