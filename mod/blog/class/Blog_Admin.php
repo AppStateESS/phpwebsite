@@ -565,7 +565,7 @@ class Blog_Admin {
         $version->delete();
     }
 
-    public function sticky($blog)
+    public static function sticky($blog)
     {
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('sticky', 0, '>');
