@@ -88,10 +88,11 @@ class DSN extends \Data {
         $this->table_prefix->setLabel(t('Table prefix'));
         $this->table_prefix->wordCharactersOnly();
 
-        $this->host = \Variable::factory('string', $host, 'host');
+        $this->host = \Variable::factory('string', null, 'host');
         $this->host->setLimit(255);
         $this->host->setLabel('Database host');
         $this->host->allowNull(true);
+        $this->host->set($host);
 
         $this->port = \Variable::factory('integer', $port, 'port');
         $this->port->setLabel('Database port');
@@ -159,8 +160,6 @@ class DSN extends \Data {
         if (!$this->database_name->isEmpty()) {
             $pdo_string[] = 'dbname=' . $this->database_name;
         }
-
-        var_dump(implode('', $pdo_string));
 
         return implode('', $pdo_string);
     }
