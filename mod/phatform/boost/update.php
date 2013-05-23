@@ -67,7 +67,8 @@ function phatform_update(&$content, $version)
 </pre>';
 
         case version_compare($version, '3.1.3', '<'):
-            if (!PHPWS_Boost::updateFiles(array('templates/form/form.tpl'), 'phatform')) {
+            if (!PHPWS_Boost::updateFiles(array('templates/form/form.tpl'),
+                            'phatform')) {
                 $content[] = 'Failed copying templates/form/form.tpl';
             }
             $content[] = '<pre>
@@ -115,6 +116,17 @@ function phatform_update(&$content, $version)
 -------------
 + Fixed newline bug.
 + Fixed notice error message display.
+</pre>';
+
+        case version_compare($version, '3.1.9', '<'):
+            if (!is_file(PHPWS_HOME_DIR . 'files/phatform/.htaccess')) {
+                copy(PHPWS_SOURCE_DIR . 'mod/phatform/boost/htaccess',
+                        PHPWS_HOME_DIR . 'files/phatform/.htaccess');
+            }
+            $content[] = '<pre>
+3.1.9 changes
+-------------
++ Added .htaccess to files/phatform to prevent direct accecss
 </pre>';
     }
     return true;

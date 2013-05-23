@@ -553,13 +553,13 @@ class Blog_Admin {
         return $result;
     }
 
-    public function restoreBlog($version_id)
+    public static function restoreBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);
         $version->restore();
     }
 
-    public function removePrevBlog($version_id)
+    public static function removePrevBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);
         $version->delete();
