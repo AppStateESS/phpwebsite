@@ -428,7 +428,7 @@ class Access {
         return $db->getObjects('Access_Shortcut');
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
@@ -481,7 +481,7 @@ class Access {
         }
     }
 
-    public function postDenyAllow()
+    public static function postDenyAllow()
     {
         if (!Current_User::authorized('access', 'admin_options')) {
             Current_User::disallow();

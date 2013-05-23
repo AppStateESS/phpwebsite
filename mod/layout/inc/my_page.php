@@ -1,15 +1,16 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 function my_page()
 {
 
-    $title = $content =  NULL;
+    $title = $content = $message = NULL;
 
-    if (@$message = $_SESSION['Layout_User_Message']) {
+    if (isset($_SESSION['Layout_User_Message'])) {
+        $message = $_SESSION['Layout_User_Message'];
         unset($_SESSION['Layout_User_Message']);
     }
 
@@ -18,7 +19,9 @@ function my_page()
         Layout::reset();
     }
 
-    if (!(@$lo_command = $_REQUEST['lo_command'])) {
+    if (isset($_REQUEST['lo_command'])) {
+        $lo_command = $_REQUEST['lo_command'];
+    } else {
         $lo_command = 'user_form';
     }
 
@@ -31,20 +34,21 @@ function my_page()
         case 'save_settings':
             Layout_User_Settings::save_settings();
             $_SESSION['Reset_Layout'] = 1;
-            $_SESSION['Layout_User_Message'] = dgettext('layout', 'Settings saved');
+            $_SESSION['Layout_User_Message'] = dgettext('layout',
+                    'Settings saved');
             PHPWS_Core::reroute('index.php?module=users&action=user&tab=layout');
             break;
     }
 
-    $tpl['TITLE']   = $title;
+    $tpl['TITLE'] = $title;
     $tpl['CONTENT'] = $content;
     $tpl['MESSAGE'] = $message;
 
     return PHPWS_Template::process($tpl, 'layout', 'main.tpl');
 }
 
-
 class Layout_User_Settings {
+
     public static function user_form()
     {
         $form = new PHPWS_Form;
@@ -74,6 +78,7 @@ class Layout_User_Settings {
             return TRUE;
         }
     }
+
 }
 
 ?>
