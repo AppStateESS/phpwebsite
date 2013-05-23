@@ -591,7 +591,7 @@ class Blog_Admin {
         $db->update();
     }
 
-    public function unsticky($blog)
+    public static function unsticky($blog)
     {
         $blog->sticky = 0;
         $blog->save();
