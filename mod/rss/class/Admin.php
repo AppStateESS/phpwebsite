@@ -144,7 +144,7 @@ class RSS_Admin {
     }
 
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['RSS_Message'] = $message;
 
@@ -209,7 +209,7 @@ class RSS_Admin {
 
     }
 
-    public function settings()
+    public static function settings()
     {
         $form = new PHPWS_Form('rss-settings');
         $form->addHidden('module', 'rss');
@@ -243,7 +243,7 @@ class RSS_Admin {
         return $fc;
     }
 
-    public function save_settings()
+    public static function save_settings()
     {
         $message = null;
         PHPWS_Settings::set('rss', 'rssfeed', (int)$_POST['rssfeed']);
