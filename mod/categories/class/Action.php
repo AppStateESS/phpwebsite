@@ -435,7 +435,7 @@ class Categories_Action {
         return $content;
     }
 
-    public function addCategoryItem($cat_id, $key_id)
+    public static function addCategoryItem($cat_id, $key_id)
     {
         $db = new PHPWS_DB('category_items');
         $db->addValue('cat_id', (int)$cat_id);
@@ -445,7 +445,7 @@ class Categories_Action {
         return $db->insert();
     }
 
-    public function removeCategoryItem($cat_id, $key_id)
+    public static function removeCategoryItem($cat_id, $key_id)
     {
         $db = new PHPWS_DB('category_items');
         $db->addWhere('cat_id', (int)$cat_id);
@@ -453,7 +453,7 @@ class Categories_Action {
         return $db->delete();
     }
 
-    public function quickAdd($title, $key_id)
+    public static function quickAdd($title, $key_id)
     {
         $title = strip_tags($title);
 
@@ -490,7 +490,7 @@ class Categories_Action {
         return true;
     }
 
-    public function postItem()
+    public static function postItem()
     {
         if (isset($_POST['add']) && isset($_POST['add_category'])) {
             Categories_Action::addCategoryItem($_POST['add_category'], $_POST['key_id']);
@@ -503,7 +503,7 @@ class Categories_Action {
      * Returns the category popup form for assigning items to
      * categories
      */
-    public function categoryPopup()
+    public static function categoryPopup()
     {
         $key = new Key((int)$_REQUEST['key_id']);
         $content = Categories::showForm($key, TRUE);
