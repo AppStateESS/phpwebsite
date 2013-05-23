@@ -971,7 +971,7 @@ class PHPWS_Text {
      * @param integer characters Number of characters in string
      * @return string
      */
-    public function randomString($characters=8)
+    public static function randomString($characters=8)
     {
         $characters = (int) $characters;
         $alpha = '023456789abcdefghijkmnopqrstuvwxyz';
