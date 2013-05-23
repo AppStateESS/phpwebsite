@@ -535,7 +535,7 @@ class Blog_Admin {
         }
     }
 
-    public function restoreVersionList(&$blog)
+    public static function restoreVersionList(&$blog)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
         $vars['action'] = 'admin';
