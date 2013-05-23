@@ -170,9 +170,6 @@ class Database {
             $dbhost = substr($dsn, $at_sign + 1, $third_slash - $at_sign - 1);
         }
 
-        if (empty($dbhost)) {
-            $dbhost = 'localhost';
-        }
         $dbname = substr($dsn, $third_slash + 1);
 
         if ($third_colon) {

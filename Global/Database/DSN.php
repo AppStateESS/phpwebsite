@@ -148,9 +148,7 @@ class DSN extends \Data {
     public function getPDOString()
     {
         $pdo_string[] = $this->database_type . ':';
-        if ($this->host->isEmpty()) {
-            $pdo_string[] = 'host=localhost;';
-        } else {
+        if (!$this->host->isEmpty()) {
             $pdo_string[] = 'host=' . $this->host . ';';
         }
 
@@ -161,6 +159,8 @@ class DSN extends \Data {
         if (!$this->database_name->isEmpty()) {
             $pdo_string[] = 'dbname=' . $this->database_name;
         }
+
+        var_dump(implode('', $pdo_string));
 
         return implode('', $pdo_string);
     }
