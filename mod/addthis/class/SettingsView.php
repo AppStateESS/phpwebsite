@@ -1,12 +1,12 @@
 <?php
-
+namespace addthis;
 /**
  * Settings Interface - Generates HTML for the settings form.
  *
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  */
 class SettingsView {
-    
+
     private $settings;
 
     public function __construct(Settings $settings)
@@ -17,7 +17,7 @@ class SettingsView {
     public function show()
     {
         // Setup form
-        $form = new PHPWS_Form('addthis_settings');
+        $form = new \PHPWS_Form('addthis_settings');
         $form->setMethod('POST');
 
         // Hidden fields for directing this request after submission
@@ -47,7 +47,7 @@ class SettingsView {
 
         $tpl = $form->getTemplate();
 
-        return PHPWS_Template::process($tpl, 'addthis', 'settings.tpl');
+        return \PHPWS_Template::process($tpl, 'addthis', 'settings.tpl');
     }
 }
 

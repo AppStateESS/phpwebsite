@@ -9,10 +9,10 @@
 PHPWS_Core::initModClass('addthis', 'AddThisView.php');
 PHPWS_Core::initModClass('addthis', 'Settings.php');
 
-$settings = Settings::getInstance();
+$settings = addthis\Settings::getInstance();
 
 if($settings->get('enabled') == 1){
-    $view = new AddThisView($settings);
+    $view = new addthis\AddThisView($settings);
     $view->view();
 }
 
