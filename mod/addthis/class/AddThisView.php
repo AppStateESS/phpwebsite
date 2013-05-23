@@ -1,4 +1,5 @@
 <?php
+namespace addthis;
 /**
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,8 +30,8 @@ class AddThisView {
 
     public function view()
     {
-        $key = Key::getCurrent();
-        if(!Key::checkKey($key))
+        $key = \Key::getCurrent();
+        if(!\Key::checkKey($key))
             return;
 
         $tpl = array();
@@ -43,9 +44,9 @@ class AddThisView {
             }
         }
 
-        $content = PHPWS_Template::process($tpl, 'addthis', 'addThis.tpl');
+        $content = \PHPWS_Template::process($tpl, 'addthis', 'addThis.tpl');
 
-        Layout::add($content, 'addthis', 'DEFAULT');
+        \Layout::add($content, 'addthis', 'DEFAULT');
     }
 }
 ?>

@@ -17,15 +17,15 @@ class Settings {
     private function __construct()
     {
         // load all the settings into a local array
-        $this->settings = PHPWS_Settings::get('addthis');
+        $this->settings = \PHPWS_Settings::get('addthis');
     }
 
     // Set a given setting by name
     public function set($settingName, $value)
     {
         $this->settings[$settingName] = $value;
-        PHPWS_Settings::set('addthis', $settingName, $value);
-        PHPWS_Settings::save('addthis');
+        \PHPWS_Settings::set('addthis', $settingName, $value);
+        \PHPWS_Settings::save('addthis');
     }
 
     // Returns the value of the given setting name

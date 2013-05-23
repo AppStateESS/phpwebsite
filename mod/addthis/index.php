@@ -33,7 +33,7 @@ PHPWS_Core::initModClass('addthis', 'SettingsView.php');
 
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){
     // save the settings
-    $settings = Settings::getInstance();
+    $settings = addthis\Settings::getInstance();
     $settingList = $settings->getAll();
 
     $inputSettings = $_POST['enabled_check'];
@@ -55,8 +55,8 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){
 
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'ShowSettings') {
     // Create the settings view
-    $settingsView = new SettingsView(Settings::getInstance());
-    Layout::add($settingsView->show());
+    $settingsView = new addthis\SettingsView(addthis\Settings::getInstance());
+    \Layout::add($settingsView->show());
 }
 
 ?>
