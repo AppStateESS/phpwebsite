@@ -257,7 +257,7 @@ class Access {
         }
     }
 
-    public function saveShortcut(Access_Shortcut $shortcut)
+    public static function saveShortcut(Access_Shortcut $shortcut)
     {
         $result = $shortcut->save();
         if (PHPWS_Error::isError($result)) {
@@ -445,7 +445,7 @@ class Access {
         return $message;
     }
 
-    public function postShortcutList()
+    public static function postShortcutList()
     {
         if (!Current_User::authorized('access')) {
             Current_User::disallow();
@@ -670,7 +670,7 @@ class Access {
         Error::errorPage('403');
     }
 
-    public function isDenied($ip)
+    public static function isDenied($ip)
     {
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
@@ -692,7 +692,7 @@ class Access {
     /**
      * Adds an ip address to the allow or deny database
      */
-    public function addIP($ip, $allow_or_deny = false)
+    public static function addIP($ip, $allow_or_deny = false)
     {
         $allow_or_deny = (int) (bool) $allow_or_deny;
 
@@ -719,7 +719,7 @@ class Access {
         return $ad->save();
     }
 
-    public function removeIp($ip, $allow_or_deny = false)
+    public static function removeIp($ip, $allow_or_deny = false)
     {
         $allow_or_deny = (int) (bool) $allow_or_deny;
 
