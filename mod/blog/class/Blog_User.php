@@ -278,33 +278,14 @@ class Blog_User {
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
+        } else {
+            $page = 0;
         }
-
         if (!is_numeric($page) || $page < 2) {
             $offset = $page = 0;
         } else {
             $offset = ($page - 1) * $limit;
         }
-
-        /* Updated 1/7/2010 no longer caching. Unable to get previous blog entries
-         * to work properly with current code order.
-         */
-        /*
-          if ($page == 0) {
-          $cache_key = BLOG_CACHE_KEY . '1';
-          } else {
-          $cache_key = BLOG_CACHE_KEY . $page;
-          }
-
-          if ($page <= MAX_BLOG_CACHE_PAGES &&
-          !Current_User::isLogged() &&
-          !Current_User::allow('blog') &&
-          PHPWS_Settings::get('blog', 'cache_view') &&
-          $content = PHPWS_Cache::get($cache_key)) {
-          Layout::getCacheHeaders($cache_key);
-          return $content;
-          }
-         */
         Layout::addStyle('blog');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
