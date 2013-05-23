@@ -788,7 +788,7 @@ class Layout {
         return $tpl;
     }
 
-    public function moveBoxes($key)
+    public static function moveBoxes($key)
     {
         $_SESSION['Layout_Settings']->_move_box = (bool) $key;
     }
@@ -818,7 +818,7 @@ class Layout {
         $_SESSION['Layout_Settings']->loadBoxes();
     }
 
-    public function resetDefaultBoxes()
+    public static function resetDefaultBoxes()
     {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('theme', Layout::getDefaultTheme());
@@ -1135,7 +1135,7 @@ class Layout {
         }
 
         foreach ($settings->_style_sheets as $css) {
-            if (@$css['title']) {
+            if (isset($css['title'])) {
                 $filename = str_ireplace('themes/' . $_SESSION['Layout_Settings']->current_theme . '/',
                         '', $css['file']);
                 $sheets[$filename] = $css['title'];

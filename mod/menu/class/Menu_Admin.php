@@ -791,7 +791,7 @@ class Menu_Admin {
         return $content;
     }
 
-    public function finish()
+    public static function finish()
     {
         if (isset($_GET['pu'])) {
             javascript('close_refresh');

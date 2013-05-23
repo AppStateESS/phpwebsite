@@ -162,7 +162,7 @@ class Categories_Action {
         Layout::add($content);
     }
 
-    public function postCategory(Category $category)
+    public static function postCategory(Category $category)
     {
         PHPWS_Core::initCoreClass('File.php');
 

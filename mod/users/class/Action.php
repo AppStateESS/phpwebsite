@@ -1115,7 +1115,7 @@ class User_Action {
         return Current_User::loginUser($username, $password);
     }
 
-    public function postGroup(PHPWS_Group $group, $showLikeGroups = false)
+    public static function postGroup(PHPWS_Group $group, $showLikeGroups = false)
     {
         $result = $group->setName($_POST['groupname'], true);
         if (PHPWS_Error::isError($result))
