@@ -201,7 +201,7 @@ abstract class Variable extends Data {
      */
     public function set($value)
     {
-        if ($value !== 0 && (is_null($value) || $value == '')) {
+        if ($value !== 0 && is_null($value)) {
             if ($this->allow_null) {
                 $this->value = null;
                 return true;
@@ -266,7 +266,7 @@ abstract class Variable extends Data {
     }
 
     /**
-     * Returns true is allowed to be is set to null, false otherwise. Also accepts
+     * Returns true if value is allowed to be null, false otherwise. Also accepts
      * a parameter to set whether variable may be null or not.
      * @param boolean $allow
      * @return boolean

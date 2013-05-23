@@ -70,7 +70,7 @@ class Settings extends Data {
         $settings = $db->addTable('settings');
         $uniq[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
         $uniq[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
-        $settings->addDataType('setting', 'text')->setIsNull(false);
+        $settings->addDataType('setting', 'text')->setIsNull(true);
         $settings->addUnique(new Database\Unique($uniq));
         $settings->create();
     }
