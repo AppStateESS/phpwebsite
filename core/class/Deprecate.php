@@ -26,7 +26,8 @@ class Deprecate {
             return;
         }
 
-        $last_warned = PHPWS_Settings::get($module, 'deprecated');
+        $dep_name = $module . '_deprecated';
+        $last_warned = PHPWS_Settings::get('users', $dep_name);
         $spacing = time() - (86400 * DEPRECATE_DAY_SPACING);
         // It hasn't been long enough to log the warning.
         if ($last_warned && $last_warned > $spacing) {
@@ -34,8 +35,8 @@ class Deprecate {
         }
         $warning = "The $module module is deprecated and support is discontinued. Please consider uninstalling it.";
         PHPWS_Core::log($warning, 'deprecated.log');
-        PHPWS_Settings::set($module, 'deprecated', time());
-        PHPWS_Settings::save($module);
+        PHPWS_Settings::set('users', $dep_name, time());
+        PHPWS_Settings::save('users');
     }
 
 }
