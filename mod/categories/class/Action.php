@@ -19,6 +19,7 @@ class Categories_Action {
             return;
         }
 
+        $title = null;
         $message = Categories_Action::getMessage();
 
         $content = array();
