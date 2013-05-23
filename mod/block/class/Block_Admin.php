@@ -223,7 +223,7 @@ class Block_Admin {
         return NULL;
     }
 
-    public function removeBlock()
+    public static function removeBlock()
     {
         if (!isset($_GET['block_id'])) {
             return;
@@ -331,7 +331,7 @@ class Block_Admin {
         return $content;
     }
 
-    public function pinBlock(Block_Item $block)
+    public static function pinBlock(Block_Item $block)
     {
         $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
     }
@@ -367,7 +367,7 @@ class Block_Admin {
         return $db->insert();
     }
 
-    public function copyBlock(Block_Item $block)
+    public static function copyBlock(Block_Item $block)
     {
         Clipboard::copy($block->getTitle(), $block->getTag());
     }

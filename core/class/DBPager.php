@@ -1366,7 +1366,7 @@ class DBPager {
             return null;
         }
 
-        return implode("\n", $template);
+        return $template['START_FORM'] . $template['CHANGE_PAGE'] . $template['END_FORM'];
     }
 
     public function getSearchBox()
