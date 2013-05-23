@@ -257,8 +257,10 @@ class Block_Item {
                 $links[] = Current_User::popupPermission($this->key_id, null, 'icon');
             }
 
+            /*
             $vars['action'] = 'copy';
             $links[] = PHPWS_Text::secureLink(Icon::show('copy', dgettext('block', 'Copy')), 'block', $vars);
+             */
         }
 
         if (Current_User::allow('block', 'delete_block')) {

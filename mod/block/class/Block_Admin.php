@@ -204,7 +204,7 @@ class Block_Admin {
         return PHPWS_Template::process($template, 'block', 'admin.tpl');
     }
 
-    public function sendMessage($message, $command = null)
+    public static function sendMessage($message, $command = null)
     {
         $_SESSION['block_message'] = $message;
         if (isset($command)) {
@@ -223,7 +223,7 @@ class Block_Admin {
         return NULL;
     }
 
-    public function removeBlock()
+    public static function removeBlock()
     {
         if (!isset($_GET['block_id'])) {
             return;
@@ -331,12 +331,12 @@ class Block_Admin {
         return $content;
     }
 
-    public function pinBlock(Block_Item $block)
+    public static function pinBlock(Block_Item $block)
     {
         $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
     }
 
-    public function pinBlockAll(Block_Item $block)
+    public static function pinBlockAll(Block_Item $block)
     {
         $values['block_id'] = $block->id;
         $db = new PHPWS_DB('block_pinned');
@@ -367,7 +367,7 @@ class Block_Admin {
         return $db->insert();
     }
 
-    public function copyBlock(Block_Item $block)
+    public static function copyBlock(Block_Item $block)
     {
         Clipboard::copy($block->getTitle(), $block->getTag());
     }
@@ -393,7 +393,7 @@ class Block_Admin {
         return PHPWS_Template::process($tpl, 'block', 'settings.tpl');
     }
 
-    public function postSettings()
+    public static function postSettings()
     {
         if (empty($_POST['max_image_width']) || $_POST['max_image_width'] < 50) {
             $error[] = dgettext('block', 'Max image width must be greater than 50px');

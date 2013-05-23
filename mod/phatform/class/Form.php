@@ -265,7 +265,6 @@ class PHAT_Form extends PHPWS_Item {
             $formTags['FORM_INFORMATION'] = $this->getFormInfo();
         }
 
-        PHPWS_Core::initModClass('help', 'Help.php');
         $form = new PHPWS_Form('edit_settings');
 
         /* Setup all editable values and their labels */

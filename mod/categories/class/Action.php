@@ -19,6 +19,7 @@ class Categories_Action {
             return;
         }
 
+        $title = null;
         $message = Categories_Action::getMessage();
 
         $content = array();
@@ -118,7 +119,7 @@ class Categories_Action {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['Category_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=categories&action=admin&subaction=%s&authkey=%s', $command, Current_User::getAuthKey()));
@@ -162,7 +163,7 @@ class Categories_Action {
         Layout::add($content);
     }
 
-    public function postCategory(Category $category)
+    public static function postCategory(Category $category)
     {
         PHPWS_Core::initCoreClass('File.php');
 

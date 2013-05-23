@@ -432,7 +432,7 @@ class advViews {
         if(is_dir($dir)) {
             if($dh = opendir($dir)) {
                 while(($file = readdir($dh)) !== false) {
-                    if(ereg('phat$', $file)) {
+                    if(preg_match('/phat$/', $file)) {
                         $files[$total_files]['filename'] = $file;
                         $timeStamp = preg_split('/\./', $file);
                         $files[$total_files]['date'] = date('m / d / y', $timeStamp[1]);
