@@ -490,7 +490,7 @@ class Access {
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
-        if (@$_POST['allow_deny_enabled']) {
+        if (!empty($_POST['allow_deny_enabled'])) {
             PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
         } else {
             PHPWS_Settings::set('access', 'allow_deny_enabled', 0);
