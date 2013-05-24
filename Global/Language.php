@@ -66,6 +66,11 @@ class Language {
         bind_textdomain_codeset($domain, 'UTF8');
     }
 
+    public static function getLocale()
+    {
+        return setlocale(LC_CTYPE, 0);
+    }
+
     public static function setLocale($locale)
     {
         $versions = array();
