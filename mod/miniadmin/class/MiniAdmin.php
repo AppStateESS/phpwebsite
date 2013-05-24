@@ -52,9 +52,9 @@ class MiniAdmin {
                         'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
                     $oTpl->parseCurrentBlock();
                 }
-                $oTpl->setCurrentBlock('module');
-            }
 
+            }
+            $oTpl->setCurrentBlock('module');
             $mod_title = $modlist[$module];
 
             if (isset($GLOBALS['MiniAdmin'][$module]['title_link'])) {

@@ -10,12 +10,14 @@ if (Current_User::allow('block')) {
 
     $key = Key::getCurrent();
     if (Key::checkKey($key) && javascriptEnabled()) {
-        $val['address'] = sprintf('index.php?module=block&action=js_block_edit&key_id=%s&authkey=%s',
-                $key->id, Current_User::getAuthkey());
-        $val['label'] = dgettext('block', 'Add block here');
-        $val['width'] = 750;
-        $val['height'] = 650;
-        MiniAdmin::add('block', javascript('open_window', $val));
+        javascript('editors/ckeditor');
+        $js_address = PHPWS_SOURCE_HTTP . 'mod/block/javascript/addblock/script.js';
+        javascript('jquery');
+        javascript('jquery_ui');
+        Layout::addJSHeader('<script src="'.$js_address.'" type="text/javascript"></script>', 'addblock');
+        Layout::add('<div id="block-form-dialog" style="display : none"></div>');
+        MiniAdmin::add('block', '<a href="#" data-auth-key="' . Current_User::getAuthKey() .
+                '" data-key-id="'.$key->id.'" id="add-block">Add block here</a>');
     }
 }
 ?>

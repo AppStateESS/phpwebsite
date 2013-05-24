@@ -3,7 +3,7 @@ var page_id = 0;
 var section_id = 0;
 var current_block;
 $(document).ready(function() {
-    var editor = CKEDITOR.replace('block-edit-textarea', {customConfig: 'phpws_config.js'});
+    var editor = CKEDITOR.replace('block-edit-textarea');
     initializeDialog(editor);
     editBlock(editor);
     $.fn.powerTip.defaults.followMouse = 'true';

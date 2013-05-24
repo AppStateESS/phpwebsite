@@ -597,7 +597,10 @@ EOF;
 
     public function _getDegrees()
     {
-        switch (@$_REQUEST['rotate']) {
+        if (!isset($_REQUEST['rotate'])) {
+            return 0;
+        }
+        switch ($_REQUEST['rotate']) {
             case '90cw':
                 return 270;
 
