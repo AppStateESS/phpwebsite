@@ -16,8 +16,6 @@ if (Current_User::allow('block')) {
         $val['width'] = 750;
         $val['height'] = 650;
         MiniAdmin::add('block', javascript('open_window', $val));
-        $content = '<a style="cursor:pointer" class="add-block">Add block here</a>';
-        MiniAdmin::add('block', $content);
     }
 }
 ?>
