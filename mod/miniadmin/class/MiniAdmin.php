@@ -6,7 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::requireConfig('miniadmin');
 
 if (!defined('MINIADMIN_TEMPLATE')) {
@@ -14,6 +13,7 @@ if (!defined('MINIADMIN_TEMPLATE')) {
 }
 
 class MiniAdmin {
+
     public static function add($module, $links)
     {
         if (is_array($links)) {
@@ -45,20 +45,21 @@ class MiniAdmin {
             if (!isset($modlist[$module])) {
                 continue;
             }
-
-            foreach ($links['links'] as $link) {
-                $oTpl->setCurrentBlock('links');
-                $oTpl->setData(array('LINE_MODULE' => $modlist[$module],
-                                     'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
-                $oTpl->parseCurrentBlock();
+            if (isset($links['links'])) {
+                foreach ($links['links'] as $link) {
+                    $oTpl->setCurrentBlock('links');
+                    $oTpl->setData(array('LINE_MODULE' => $modlist[$module],
+                        'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
+                    $oTpl->parseCurrentBlock();
+                }
+                $oTpl->setCurrentBlock('module');
             }
-            $oTpl->setCurrentBlock('module');
 
             $mod_title = $modlist[$module];
 
             if (isset($GLOBALS['MiniAdmin'][$module]['title_link'])) {
-                $mod_title = sprintf('<a href="%s">%s</a>', $GLOBALS['MiniAdmin'][$module]['title_link'],
-                $mod_title);
+                $mod_title = sprintf('<a href="%s">%s</a>',
+                        $GLOBALS['MiniAdmin'][$module]['title_link'], $mod_title);
             }
 
             $oTpl->setData(array('MODULE' => $mod_title));
@@ -70,13 +71,15 @@ class MiniAdmin {
         Layout::set($content, 'miniadmin', 'mini_admin');
     }
 
-    public static function setTitle($module, $link, $add_authkey=false)
+    public static function setTitle($module, $link, $add_authkey = false)
     {
         if ($add_authkey) {
-            $link = sprintf('%s&amp;authkey=%s', $link, Current_User::getAuthKey());
+            $link = sprintf('%s&amp;authkey=%s', $link,
+                    Current_User::getAuthKey());
         }
         $GLOBALS['MiniAdmin'][$module]['title_link'] = $link;
     }
+
 }
 
 ?>
