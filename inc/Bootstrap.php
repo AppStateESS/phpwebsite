@@ -5,7 +5,16 @@
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-mb_internal_encoding('UTF-8');
+
+
+/***
+ * This is part of the 'mbstring' extension and is not enabled by default.
+ * See this page for installation instructions:
+ * http://www.php.net/manual/en/mbstring.installation.php
+ */
+if (extension_loaded('mbstring')) {
+    mb_internal_encoding('UTF-8');
+}
 
 
 /**
