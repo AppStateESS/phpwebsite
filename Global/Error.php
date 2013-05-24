@@ -17,7 +17,7 @@
 class Error {
 
     /**
-     * A sipmle exception handler for catching exceptions that are thrown outside
+     * A simple exception handler for catching exceptions that are thrown outside
      * the main execution try/catch block (e.g. when autoloading). This function
      * is registered with PHP using the set_exception_handler() function at the
      * start of index.php.
