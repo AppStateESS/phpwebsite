@@ -49,7 +49,9 @@ PHPWS_Core::checkOverpost();
 PHPWS_Core::setLastPost();
 
 Language::setLocale(Settings::get('Global', 'language'));
-
+if (!PHPWS_Core::checkBranch()) {
+    throw new Exception('Unknown branch called');
+}
 
 function PHPWS_unBootstrap()
 {

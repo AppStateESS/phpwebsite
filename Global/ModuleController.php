@@ -40,10 +40,6 @@ final class ModuleController {
 
     public function execute()
     {
-        if (!PHPWS_Core::checkBranch()) {
-            throw new Exception('Unknown branch called');
-        }
-
         $this->loadSiteModules();
 
         if (strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE) {
