@@ -1507,7 +1507,9 @@ class PHPWS_Form {
                     $template[$tagName . '_LABEL_TEXT'] = $labelText;
                 }
 
-                $template[$tagName . '_ID'] = $subElement->getId();
+                $template[$tagName . '_ID']    = $subElement->getId();
+                $template[$tagName . '_VALUE'] = $subElement->value; // NB: Calling 'getValue()' gives 'value="myValue"'... 
+                $template[$tagName . '_NAME']  = $subElement->getName();
 
                 $template[$tagName] = $subElement->get();
                 $count++;
