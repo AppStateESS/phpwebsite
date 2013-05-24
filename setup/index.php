@@ -16,8 +16,10 @@ if (CONFIG_CREATED) {
 } else {
 	define('SITE_HASH', md5(rand()));
 }
+
+define('PHPWS_SOURCE_DIR', './');
+
 require_once './setup/config.php';
-require_once './core/class/Init.php';
 require_once './core/class/Template.php';
 require_once './setup/class/Setup.php';
 
