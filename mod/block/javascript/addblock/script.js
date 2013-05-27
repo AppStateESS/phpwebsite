@@ -4,14 +4,16 @@
  */
 
 $(window).ready(function() {
+    var editor_called = false;
     var dblock = $('#block-form-dialog');
     dblock.dialog(
             {
+                title : 'Add block to this page',
                 autoOpen: false,
-                width: 700,
+                width: 650,
                 buttons: [
                     {
-                        text : 'Save',
+                        text: 'Save',
                         click: function() {
                             $('#block-form').submit();
                         }
@@ -29,7 +31,11 @@ $(window).ready(function() {
                 $(this).data('key-id') + '&authkey=' + $(this).data('auth-key');
         $.get(link, function(data) {
             dblock.html(data);
-            CKEDITOR.replace('block-form_block_content');
+            console.log(data);
+            if (!editor_called) {
+                CKEDITOR.replace('block-form_block_content');
+                editor_called = true;
+            }
             dblock.dialog('open');
         });
     });

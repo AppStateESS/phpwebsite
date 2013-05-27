@@ -88,17 +88,6 @@ class Block_Admin {
                 $content = Block_Admin::edit($block);
                 break;
 
-            case 'pin':
-                if (!Current_User::authorized('block', 'delete_block',
-                                $_REQUEST['block_id'])) {
-                    Current_User::disallow();
-                }
-
-                Block_Admin::pinBlock($block);
-                Block_Admin::sendMessage(dgettext('block', 'Block pinned'),
-                        'list');
-                break;
-
             case 'pin_all':
                 if (!Current_User::authorized('block', 'delete_block',
                                 $_REQUEST['block_id'])) {
@@ -110,33 +99,12 @@ class Block_Admin {
                         'list');
                 break;
 
-            case 'unpin':
-                if (!Current_User::authorized('block', 'delete_block',
-                                $_REQUEST['block_id'])) {
-                    Current_User::disallow();
-                }
-
-                unset($_SESSION['Pinned_Blocks']);
-                Block_Admin::sendMessage(dgettext('block', 'Block unpinned'),
-                        'list');
-                break;
-
             case 'remove':
                 if (!Current_User::authorized('block', 'edit_block',
                                 $_REQUEST['block_id'])) {
                     Current_User::disallow();
                 }
                 Block_Admin::removeBlock();
-                PHPWS_Core::goBack();
-                break;
-
-            case 'copy':
-                if (!Current_User::authorized('block', 'delete_block',
-                                $_REQUEST['block_id'])) {
-                    Current_User::disallow();
-                }
-
-                Block_Admin::copyBlock($block);
                 PHPWS_Core::goBack();
                 break;
 
@@ -205,7 +173,6 @@ class Block_Admin {
                 break;
 
             case 'js_block_edit':
-                $template['TITLE'] = dgettext('block', 'New Block');
                 $template['CONTENT'] = Block_Admin::edit($block, TRUE);
                 echo PHPWS_Template::process($template, 'block', 'admin.tpl');
                 exit();
@@ -260,7 +227,6 @@ class Block_Admin {
 
     public static function edit(Block_Item $block, $js = FALSE)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initCoreClass('Editor.php');
         $form = new PHPWS_Form('block-form');
         $form->addHidden('module', 'block');
@@ -274,9 +240,53 @@ class Block_Admin {
         $form->setWidth('block_content', '80%');
         $form->setLabel('block_content', dgettext('block', 'Entry'));
         if ($js) {
+            if (isset($_REQUEST['key_id']) && is_numeric($_REQUEST['key_id'])) {
+                $key_id = (int) $_REQUEST['key_id'];
+            } else {
+                $key_id = 0;
+            }
+
+            $form->addHidden('key_id', $key_id);
             $form->addHidden('action', 'postJSBlock');
-            if (isset($_REQUEST['key_id'])) {
-                $form->addHidden('key_id', (int) $_REQUEST['key_id']);
+
+            $pdb = Database::newDB();
+            $pdb->addTable('block_pinned');
+            $all_pinned = $pdb->select();
+
+            if (!empty($all_pinned)) {
+                $pinned = new \Variable\Arr($all_pinned);
+                $pinned->indexByColumn('block_id', true, 'key_id');
+                $pinned_keys = $pinned->get();
+            } else {
+                $pinned_keys = null;
+            }
+
+
+            $db = Database::newDB();
+            $blocks = $db->addTable('block');
+            $blocks->addField('id');
+            $blocks->addField('title');
+            $blocks->addOrderBy('title');
+            $db->loadSelectStatement();
+            while ($b = $db->fetch()) {
+                /**
+                 * Checking here to see if this block is already set for the current
+                 * key OR is this block is set to show everywhere. If either,
+                 * then don't add to select list.
+                 */
+                if (!empty($pinned_keys)) {
+                    if (isset($pinned_keys[$b['id']])) {
+                        if (in_array($key_id, $pinned_keys[$b['id']]) ||
+                                in_array('-1', $pinned_keys[$b['id']])) {
+                            continue;
+                        }
+                    }
+                }
+                $block_options[$b['id']] = $b['title'];
+            }
+            if (!empty($block_options)) {
+                $form->addSelect('block_list', $block_options);
+                $form->addSubmit('pick_block', 'Add this block to the page');
             }
         } else {
             $form->useEditor('block_content');
@@ -294,20 +304,13 @@ class Block_Admin {
         $form->setLabel('title', dgettext('block', 'Title'));
         $form->setSize('title', 50);
 
-
         $template = $form->getTemplate();
-
-        if (!$js) {
-            $manager = Cabinet::fileManager('file_id', $block->file_id);
-            $manager->maxImageWidth(PHPWS_Settings::get('block',
-                            'max_image_width'));
-            $manager->maxImageHeight(PHPWS_Settings::get('block',
-                            'max_image_height'));
-
-            $template['FILE_ID'] = $manager->get();
+        if ($js) {
+            $template['ALTERNATIVE'] = t('or create new block below');
+            $content = PHPWS_Template::process($template, 'block', 'js_edit.tpl');
+        } else {
+            $content = PHPWS_Template::process($template, 'block', 'edit.tpl');
         }
-
-        $content = PHPWS_Template::process($template, 'block', 'edit.tpl');
         return $content;
     }
 
@@ -316,12 +319,13 @@ class Block_Admin {
         if (!Current_User::authorized('block', 'edit_block', $block->id)) {
             Current_User::disallow();
         }
+        if (isset($_POST['pick_block'])) {
+            self::lockBlock($_POST['block_list'], $_POST['key_id']);
+            return true;
+        }
 
         $block->setTitle($_POST['title']);
         $block->setContent($_POST['block_content']);
-        if (isset($_POST['file_id'])) {
-            $block->file_id = (int) $_POST['file_id'];
-        }
         if (isset($_POST['hide_title'])) {
             $block->hide_title = 1;
         } else {
@@ -356,11 +360,6 @@ class Block_Admin {
         return $content;
     }
 
-    public static function pinBlock(Block_Item $block)
-    {
-        $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
-    }
-
     public static function pinBlockAll(Block_Item $block)
     {
         $values['block_id'] = $block->id;
@@ -390,11 +389,6 @@ class Block_Admin {
         $result = $db->delete();
         $db->addValue($values);
         return $db->insert();
-    }
-
-    public static function copyBlock(Block_Item $block)
-    {
-        Clipboard::copy($block->getTitle(), $block->getTag());
     }
 
     public static function settings()
