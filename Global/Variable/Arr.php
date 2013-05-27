@@ -37,7 +37,7 @@ class Arr extends \Variable {
      * @param string $value Value added to the array
      * @param string $key The index to the value in the array
      */
-    public function push($value, $key=null)
+    public function push($value, $key = null)
     {
         if (is_null($key)) {
             $this->value[] = $value;
@@ -51,7 +51,7 @@ class Arr extends \Variable {
      * @param boolean $with_key
      * @return mixed
      */
-    public function pop($with_key=false)
+    public function pop($with_key = false)
     {
         if ($with_key) {
             end($this->value);
@@ -154,6 +154,50 @@ class Arr extends \Variable {
     public function __set($name, $value)
     {
         $this->push($name, $value);
+    }
+
+    /**
+     * Reindexes a multidimensional array by a specific column in that array.
+     * By default, duplicates are not allowed. If you choose to allow them, then
+     * expect stacked results:
+     *
+     * Example:
+     * <code>
+     * $animals[] = array('id'=>4, 'title'=>'dog');
+     * $animals[] = array('id'=>7, 'title'=>'frog');
+     * $animals[] = array('id'=>11, 'title'=>'bird');
+     * </code>
+     *
+     * @param string $column_name Name of column
+     * @param boolean $duplicate_allowed If false, an exception will be throw on
+     * repeated indices. If false, the reindexing will stack rows in an array for
+     * each index.
+     * @throws \Exception
+     */
+    public function indexByColumn($column_name, $duplicate_allowed = false)
+    {
+        $duplicate_allowed = (bool) $duplicate_allowed;
+
+        foreach ($this->value as $val) {
+            if (!is_array($val)) {
+                throw new \Exception(t('Value of Arr object is not a multidimensional array'));
+            }
+            if (!isset($val[$column_name])) {
+                throw new \Exception(t('Could not index array by column name "%s"',
+                        $column_name));
+            }
+
+            if (!$duplicate_allowed && isset($new_value[$val[$column_name]])) {
+                throw new \Exception(t('Duplicate index value encountered'));
+            }
+
+            if ($duplicate_allowed) {
+                $new_value[$val[$column_name]][] = $val;
+            } else {
+                $new_value[$val[$column_name]] = $val;
+            }
+        }
+        $this->value = $new_value;
     }
 
 }
