@@ -1,0 +1,1 @@
+<a style="cursor: pointer" onclick="add_unkeyed_link('{MENU_ID}', '{PARENT_ID}', '{url}', '{link_title}')" title="Add link" alt="Add link"><i class="icon-plus"></i> Add link to this page</a>
