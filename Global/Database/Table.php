@@ -848,6 +848,15 @@ abstract class Table extends Resource {
         return $result;
     }
 
+    public function getFieldConditional($field_name, $value, $operator = null)
+    {
+        if ($operator == null) {
+            $operator = '=';
+        }
+        $cond = new Conditional($this->getField($field_name), $value, $operator);
+        return $cond;
+    }
+
 }
 
 ?>

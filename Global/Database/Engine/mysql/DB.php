@@ -46,14 +46,14 @@ class DB extends \Database\DB {
             $table_name = $this->getTablePrefix() . $table_name;
         }
         $this->loadStatement("SHOW TABLES like '$table_name'");
-        $result = $this->fetchRow();
+        $result = $this->fetchOneRow();
         return (bool) $result;
     }
 
     public function databaseExists($database_name)
     {
         $this->loadStatement("SELECT schema_name FROM `information_schema`.`SCHEMATA` WHERE SCHEMA_NAME='$database_name'");
-        return (bool) $this->fetchRow();
+        return (bool) $this->fetchOneRow();
     }
 
     public function listTables()

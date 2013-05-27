@@ -37,7 +37,7 @@ class ResourceFactory {
         $table = $db->addTable($table_name);
         $table->addWhere('id', $id);
         $db->loadSelectStatement();
-        $row = $db->fetchRow();
+        $row = $db->fetchOneRow();
         if (empty($row)) {
             throw new \Exception(t('Row not found'));
         }

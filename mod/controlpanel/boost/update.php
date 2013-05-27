@@ -149,7 +149,7 @@ function controlpanel_update(&$content, $currentVersion)
             $tbl = $db->addTable('controlpanel_link');
             $tbl->addWhere('itemname', 'controlpanel');
             $db->loadSelectStatement();
-            $row = $db->fetchRow();
+            $row = $db->fetchOneRow();
             PHPWS_Core::plugObject($link, $row);
             $link->kill();
             $content[] = '<pre>2.3.3 changes

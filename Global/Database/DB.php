@@ -981,7 +981,7 @@ abstract class DB extends \Data {
      * Fetches a single row and then clears the PDO statement.
      * @return array
      */
-    public function fetchRow()
+    public function fetchOneRow()
     {
         $this->checkStatement();
         $result = $this->pdo_statement->fetch(\PDO::FETCH_ASSOC);
@@ -990,11 +990,12 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Fetches a single row from the database based upon the pdo_statement. fetch
+     * Fetches a row from the database based upon the pdo_statement. fetch()
      * will continue to return rows until no more can be returned. Fetch should
-     * not be used for single row fetch without clearing the statement. If the statement
-     * is not cleared after an incomplete fetch cycle, the next fetch will assume
-     * the current statement should be used unless set otherwise.
+     * not be used for single row fetch without clearing the statement (use
+     * fetchOneRow() instead). If the statement is not cleared after an incomplete
+     * fetch cycle, the next fetch will assume the current statement should be
+     * used unless set otherwise.
      * @return array
      */
     public function fetch()
@@ -1007,6 +1008,12 @@ abstract class DB extends \Data {
         return $result;
     }
 
+    /**
+     * Returns a passed $object parameter with values set from the current query.
+     * 
+     * @param object $object
+     * @return object
+     */
     public function fetchInto($object)
     {
         $this->checkStatement();
@@ -1027,7 +1034,7 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns a single column from a single row in the current pdo select
+     * Returns a single column from a row in the current pdo select
      * statement. The pointer is then advanced to the next row. Returns null
      * when reaching the end of the result stack.
      *
@@ -1567,7 +1574,7 @@ abstract class DB extends \Data {
     {
         $this->isResourceClass($class_name);
         $this->loadSelectStatement();
-        $vars = $this->fetchRow();
+        $vars = $this->fetchOneRow();
         $object = new $class_name;
         $object->setVars($vars);
         return $object;

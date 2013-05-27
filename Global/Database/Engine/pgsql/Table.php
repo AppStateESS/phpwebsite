@@ -92,7 +92,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
     public function columnExists($column_name)
     {
         $this->db->loadStatement($this->getSchemaQuery($column_name));
-        return (bool) $this->db->fetchRow();
+        return (bool) $this->db->fetchOneRow();
     }
 
     public function getIndexes()
@@ -209,7 +209,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
 
         $db = \Database::newDB();
         $db->loadStatement("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S' AND c.relname = '$sequence_table'");
-        $result = $db->fetchRow();
+        $result = $db->fetchOneRow();
         return (bool) $result;
     }
 

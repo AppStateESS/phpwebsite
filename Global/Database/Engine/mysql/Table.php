@@ -111,7 +111,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
     public function columnExists($column_name)
     {
         $this->db->loadStatement($this->getSchemaQuery($column_name));
-        return (bool) $this->db->fetchRow();
+        return (bool) $this->db->fetchOneRow();
     }
 
     public function getIndexes()
@@ -209,7 +209,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         $tbl = $db->addTable($seq_table_name);
         $tbl->addField('id');
         $db->loadSelectStatement();
-        $result = $db->fetchRow();
+        $result = $db->fetchOneRow();
         return empty($result) ? false : $result['id'];
     }
 

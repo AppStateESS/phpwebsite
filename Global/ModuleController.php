@@ -103,7 +103,13 @@ final class ModuleController {
         }
         $module_name = $request->getModule();
         if ($module_name) {
-            $this->setCurrentModule($module_name);
+            // We are catching this as a bad module name could just be a badly
+            // entered url.
+            try {
+                $this->setCurrentModule($module_name);
+            } catch (\Exception $e) {
+                Error::errorPage('404');
+            }
         }
     }
 
@@ -232,7 +238,8 @@ final class ModuleController {
         return isset($this->module_stack[$module_title]);
     }
 
-    public function getModule($module_title) {
+    public function getModule($module_title)
+    {
         if (!isset($this->module_stack[$module_title])) {
             throw new Exception(t('Module "%s" does not exist', $module_title));
         }
