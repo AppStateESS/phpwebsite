@@ -1440,13 +1440,13 @@ class PHPWS_Form {
             }
         }
 
-            $template['FORM_ACTION'] = $this->getFormAction();
-            $template['FORM_ID'] = $this->getFormId();
-            $template['FORM_NAME'] = $this->getFormName();
-            $template['FORM_AUTOCOMPLETE'] = $this->getAutocompleteValue();
-            $template['FORM_CLASS'] = $this->getFormClass();
-            $template['FORM_METHOD'] = $this->getMethod();
-            $template['FORM_ENCODE'] = $this->getEncode();
+        $template['FORM_ACTION'] = $this->getFormAction();
+        $template['FORM_ID'] = $this->getFormId();
+        $template['FORM_NAME'] = $this->getFormName();
+        $template['FORM_AUTOCOMPLETE'] = $this->getAutocompleteValue();
+        $template['FORM_CLASS'] = $this->getFormClass();
+        $template['FORM_METHOD'] = $this->getMethod();
+        $template['FORM_ENCODE'] = $this->getEncode();
 
         unset($this->_elements['authkey']);
         if (class_exists('Current_User') && $this->use_auth_key) {
@@ -1508,6 +1508,8 @@ class PHPWS_Form {
                 }
 
                 $template[$tagName . '_ID'] = $subElement->getId();
+                $template[$tagName . '_VALUE'] = $subElement->value; // NB: Calling 'getValue()' gives 'value="myValue"'...
+                $template[$tagName . '_NAME'] = $subElement->getName();
 
                 $template[$tagName] = $subElement->get();
                 $count++;
