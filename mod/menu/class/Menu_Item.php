@@ -476,13 +476,13 @@ class Menu_Item {
                     }
                 }
 
-                $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
-                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key));
+                $tpl['ADD_LINK'] = Menu::getAddLink($this->id, null, null, $this->template);
+                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key), null, $this->template);
 
                 if (!empty($key)) {
-                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all);
+                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all, $this->template);
                 } else {
-                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1, $this->pin_all);
+                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1, $this->pin_all, $this->template);
                 }
 
                 if ($admin_link) {
@@ -502,8 +502,8 @@ class Menu_Item {
 
             if (empty($tpl['ADD_LINK']) && PHPWS_Settings::get('menu', 'always_add') && Key::checkKey($key)) {
                 $this->loadJS();
-                $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
-                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key));
+                $tpl['ADD_LINK'] = Menu::getAddLink($this->id, null, null, $this->template);
+                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key), null, $this->template);
             }
         }
 
