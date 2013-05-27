@@ -29,10 +29,12 @@ th, td {
     font-size:12px; height : 20px;margin-bottom : 0px;
 }
 
-#bootstrap-theme input {
+#bootstrap-theme input, #bootstrap-theme select {
     margin-bottom : 0px;
 }
 
 label {
     display : inline;
+    font-weight : inherit;
 }
+
