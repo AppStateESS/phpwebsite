@@ -745,7 +745,7 @@ class User_Action {
                     // here
 
                     if (!$result) {
-                        $title = dgettext('users', 'Login page');
+                        $title = dgettext('users', 'Sign-in');
                         $message = dgettext('users',
                                 'Username and password combination not found.');
                         $content = User_Form::loginPage();
@@ -841,7 +841,7 @@ class User_Action {
                 if (Current_User::isLogged()) {
                     PHPWS_Core::home();
                 }
-                $title = dgettext('users', 'Login Page');
+                $title = dgettext('users', 'Sign-in');
                 $content = User_Form::loginPage();
                 break;
 

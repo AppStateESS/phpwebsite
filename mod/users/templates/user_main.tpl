@@ -1,10 +1,13 @@
-<div class="users">
-<div class="box">
-<div class="box-title">
 <h2>{TITLE}</h2>
+
+<!-- BEGIN message -->
+<div class="row">
+  <div class="span6">
+    <div class="alert">
+      {MESSAGE}
+    </div>
+  </div>
 </div>
-<div class="box-content"><!-- BEGIN message -->
-<h3>{MESSAGE}</h3>
-<!-- END message --> {CONTENT}</div>
-</div>
-</div>
+<!-- END message -->
+
+{CONTENT}
