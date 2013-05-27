@@ -111,6 +111,7 @@ Please download version 1.1.2.</pre>';
 --------------
 + Put in sanity checks preventing blank blocks.
 + Removed New tab, added New block button to List view.
++ Empty block titles now get a deactivated title based on the content.
 </pre>';
 
         case version_compare($currentVersion, '1.3.6', '<'):

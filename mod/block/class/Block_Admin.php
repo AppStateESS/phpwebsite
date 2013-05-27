@@ -324,13 +324,24 @@ class Block_Admin {
             return true;
         }
 
-        $block->setTitle($_POST['title']);
-        $block->setContent($_POST['block_content']);
         if (isset($_POST['hide_title'])) {
             $block->hide_title = 1;
         } else {
             $block->hide_title = 0;
         }
+
+        $block->setTitle($_POST['title']);
+        $block->setContent($_POST['block_content']);
+
+        if (empty($block->title)) {
+            $content = trim(strip_tags($_POST['block_content']));
+            if (!empty($content)) {
+                $title_sub = ucfirst(substr($content, 0, strpos($content, ' ', 10)));
+                $block->setTitle($title_sub);
+                $block->hide_title = 1;
+            }
+        }
+
         if (empty($block->content) && empty($block->title) && empty($block->file_id)) {
             return false;
         } else {
