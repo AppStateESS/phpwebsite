@@ -12,6 +12,15 @@
  * @author  Matthew McNaney <mcnaney at gmail dot com>
  * @package Core
  */
+
+if (!defined('PHPWS_DATE_FORMAT')) {
+    define('PHPWS_DATE_FORMAT', 'm-d-Y');
+}
+
+if (!defined('PHPWS_TIME_FORMAT')) {
+    define('PHPWS_TIME_FORMAT', 'H:i');
+}
+
 class PHPWS_Item {
 
     /**
