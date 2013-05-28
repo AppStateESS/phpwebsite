@@ -1,5 +1,6 @@
 <div class="menu" id="{MENU_ID}">
 	<div>
+	<!-- BEGIN menu_admin -->
 		<div class="btn-group pull-right">
 			<a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#"> <i class="icon-list">
 			  </i> Menu Options <span class="caret"></span>
@@ -12,6 +13,7 @@
 				<li>{CLIP}</li>
 			</ul>
 		</div>
+		<!-- END menu_admin -->
 		<h5>{TITLE}</h5>
 	</div>
 	<ul id="sort-{MENU_ID}" class="nav nav-tabs nav-stacked">{LINKS}
