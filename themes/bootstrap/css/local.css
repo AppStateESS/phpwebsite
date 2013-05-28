@@ -1,5 +1,4 @@
 @import url("bootstrap.min.css");
-@import url("bootstrap-responsive.min.css");
 
 /* Leave this here if you're using navbar-fixed-top */
 body {
@@ -32,3 +31,5 @@ th, td {
 #bootstrap-theme input, #bootstrap-theme select {
     margin-bottom : 0px;
 }
+
+@import url("bootstrap-responsive.min.css");
