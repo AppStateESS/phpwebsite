@@ -260,6 +260,7 @@ class Menu_Link {
             $current_link = true;
             $current_parent[] = $this->id;
             $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
+            $template['ACTIVE'] = 'active'; // booststrap theme
         }
 
         if ($this->childIsCurrentUrl()) {
@@ -274,6 +275,9 @@ class Menu_Link {
             $this->_loadAdminLinks($template);
 
             $template['LINK'] = $link;
+            $template['LINK_URL'] = $this->url;
+            $template['LINK_DROPDOWN'] = 'dropdown'; // Dummy tag to make dropdowns work
+            $template['LINK_TEXT'] = $this->title;
             if (!empty($this->_children)) {
                 foreach ($this->_children as $kid) {
                     $kid->_menu = & $this->_menu;
@@ -290,7 +294,6 @@ class Menu_Link {
 
             $template['LEVEL'] = $level;
             $template['ID'] = sprintf('menu-link-%s', $this->id);
-
             $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
             return PHPWS_Template::process($template, 'menu', $tpl_file);
         } else {
@@ -370,6 +373,7 @@ class Menu_Link {
                     $template['EDIT_LINK'] = $this->editLink($popup);
 
                     if (!PHPWS_Settings::get('menu', 'drag_sort')) {
+                        // Create 'Move link up' button
                         $vars['command'] = 'move_link_up';
                         $up_link = MENU_LINK_UP;
                         if ($popup) {
@@ -382,6 +386,7 @@ class Menu_Link {
                                     $this->menu_id, $this->id, 'up', $up_link);
                         }
 
+                        // Create 'Move link down' button
                         $down_link = MENU_LINK_DOWN;
                         $vars['command'] = 'move_link_down';
                         if ($popup) {
@@ -397,12 +402,15 @@ class Menu_Link {
                         }
                     }
 
+                    // Create the 'link indent' button
+                    //TODO: remove the magic number
                     if ($this->link_order != 1) {
                         $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
                                 $this->menu_id, $this->id,
                                 MENU_LINK_INDENT_INCREASE);
                     }
 
+                    // Create the 'outdent' button if this link has a parent (i.e. is not a top-level link)
                     if ($this->parent) {
                         $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
                                 $this->menu_id, $this->id,
