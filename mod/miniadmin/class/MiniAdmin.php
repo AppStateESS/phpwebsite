@@ -30,7 +30,9 @@ class MiniAdmin {
     public static function get()
     {
         $modlist = PHPWS_Core::getModuleNames();
-
+        if (empty($GLOBALS['MiniAdmin'])) {
+            return;
+        }
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
             if (!isset($modlist[$module])) {
                 continue;
