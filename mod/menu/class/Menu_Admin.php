@@ -803,13 +803,6 @@ class Menu_Admin {
 
     public static function saveSettings()
     {
-        if ($_POST['admin_mode'] == 'on') {
-            $_SESSION['Menu_Admin_Mode'] = true;
-        } else {
-            $_SESSION['Menu_Admin_Mode'] = false;
-            unset($_SESSION['Menu_Admin_Mode']);
-        }
-
         if (!empty($_POST['max_link_characters'])) {
             $chars = (int)$_POST['max_link_characters'];
             if ($chars > 10 && $chars < 1000) {
