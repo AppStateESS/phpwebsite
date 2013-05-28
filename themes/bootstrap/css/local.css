@@ -32,9 +32,3 @@ th, td {
 #bootstrap-theme input, #bootstrap-theme select {
     margin-bottom : 0px;
 }
-
-label {
-    display : inline;
-    font-weight : inherit;
-}
-
