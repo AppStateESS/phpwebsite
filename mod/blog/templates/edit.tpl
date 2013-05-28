@@ -1,7 +1,8 @@
 <!-- BEGIN error -->
 <span class="error">{MESSAGE}</span>
 <!-- END error -->
-{START_FORM}
+<form method="post" class="form-inline" action="index.php" id="edit-blog" autocomplete="on">
+{HIDDEN_FIELDS}
 <div class="top-label">
     <p>{TITLE_LABEL}<br />
         {TITLE}</p>

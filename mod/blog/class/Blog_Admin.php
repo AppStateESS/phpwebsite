@@ -403,7 +403,7 @@ class Blog_Admin {
     }
 
 
-    public function viewVersion($version_id)
+    public function viewVersion()
     {
         $version = new Version('blog_entries', (int)$_REQUEST['version_id']);
         $blog = new Blog;
@@ -453,8 +453,9 @@ class Blog_Admin {
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        $newLink = 'index.php?module=blog&amp;action=admin';
-        $newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
+
+        //$newLink = 'index.php?module=blog&amp;action=admin';
+        //$newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
 
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>dgettext('blog', 'List'), 'link'=> $listLink);
@@ -471,7 +472,7 @@ class Blog_Admin {
             $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
         }
 
-        $tabs['new'] = &$newCommand;
+        //$tabs['new'] = &$newCommand;
 
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
@@ -498,6 +499,7 @@ class Blog_Admin {
 
         $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
+        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'), 'blog', array('action'=>'admin', 'command'=>'new'), null, t('Create new blog entry'), 'btn');
 
         $pager = new DBPager('blog_entries', 'Blog');
         $pager->addSortHeader('title', dgettext('blog', 'Title'));

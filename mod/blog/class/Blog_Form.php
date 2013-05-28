@@ -14,6 +14,7 @@ class Blog_Form {
     public static function edit(Blog $blog, $version_id = NULL, $limited = false)
     {
         javascriptMod('blog', 'image_url');
+
         $form = new PHPWS_Form('edit-blog');
         $form->useBreaker();
         $form->addHidden('module', 'blog');
