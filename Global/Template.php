@@ -9,29 +9,55 @@ class Template {
 
     private $file;
     private $variables;
+    private $encode = false;
+    private $encode_type = ENT_QUOTES;
 
-    public function __construct($file, $variables = null)
+    /**
+     *
+     * @param array $variables Values shown inside the template
+     * @param string $file Direct path to template file
+     * @param boolean $encode If true (default), encode the output
+     */
+    public function __construct(array $variables = null, $file = null, $encode = null)
     {
-        $this->setFile($file);
-        if (!empty($variables)) {
+        if (isset($file)) {
+            $this->setFile($file);
+        }
+
+        if (isset($variables)) {
             $this->addVariables($variables);
         }
+
+        if (isset($encode)) {
+            $this->setEncode($encode);
+        }
     }
 
-    public function addVariables(array $variables, $encode = true)
+    public function addVariables(array $variables)
     {
         foreach ($variables as $key => $val) {
-            $this->add($key, $val, $encode);
+            $this->add($key, $val);
         }
     }
 
-    public function add($key, $value, $encode = true)
+    public function setEncodeType($type)
     {
-        if ($encode) {
-            $this->variables[$key] = $this->encode($value);
-        } else {
-            $this->variables[$key] = $value;
-        }
+        $this->encode_type = $type;
+    }
+
+    public function setEncode($encode)
+    {
+        $this->encode = (bool) $encode;
+    }
+
+    public function add($key, $value)
+    {
+        $this->variables[$key] = $value;
+    }
+
+    public function setModuleTemplate($module, $file)
+    {
+        $this->setFile(PHPWS_SOURCE_DIR . "mod/$module/templates/$file");
     }
 
     public function setFile($file)
@@ -49,19 +75,25 @@ class Template {
                 $content[$k] = $this->encode($v);
             }
         } else {
-            $content = htmlentities($content, ENT_HTML5 | ENT_QUOTES);
+            $content = htmlentities($content, $this->encode_type, 'UTF-8');
         }
         return $content;
     }
 
     public function __toString()
     {
-        extract($this->variables);
+        $template_content_array = $this->encode ? $this->encode($this->variables) : $this->variables;
+        extract($template_content_array);
         ob_start();
         include $this->file;
         $result = ob_get_contents();
         ob_end_clean();
         return $result;
+    }
+
+    public function get()
+    {
+        return $this->__toString();
     }
 
 }
