@@ -118,32 +118,6 @@ function get_file_permission($file)
     return sprintf("%o", ($stat['mode'] & 000777));
 }
 
-/**
- * Plugs in values to a template html file. The html file is expected to have
- * PHP code to echo these variables. The variables names match the keys of the
- * associative array. The values are what is most likely echoed.
- *
- * The template designer may perform other functions within the template with
- * the values. (for example, the value may be an array itself and the template
- * iterates through that array to create content).
- *
- * @param string $file Full path to template file
- * @param array $template Associative array of variables to plug into template
- * @return string
- * @throws \Exception
- */
-function template($file, array $template)
-{
-    if (!is_file($file)) {
-        throw new \Exception(t('Template file not found'));
-    }
-    extract($template);
-    ob_start();
-    include $file;
-    $result = ob_get_contents();
-    ob_end_clean();
-    return $result;
-}
 
 /**
  * Logs a message to the specified $filename in side the defined LOG_DIRECTORY
