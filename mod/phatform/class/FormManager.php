@@ -10,7 +10,7 @@
  * @package Phat Form
  */
 
-require_once(PHPWS_SOURCE_DIR . "core/class/Manager.php");
+require_once(PHPWS_SOURCE_DIR . "mod/phatform/class/Manager.php");
 
 //require_once(PHPWS_SOURCE_DIR . "core/Form.php");
 
@@ -261,17 +261,17 @@ class PHAT_FormManager extends PHPWS_Manager {
      *
      * @access private
      */
-     
+
     function _listOptions() {
         $this->init();
         $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
-         
+
         $content = array();
         $content[] = $this->menu();
         $this->setTable('mod_phatform_options');
         $content[] = $this->getList('options', dgettext('phatform', 'Option Sets'));
         $this->setTable('mod_phatform_forms');
-         
+
         return implode(chr(10), $content);
     }
 
@@ -285,14 +285,14 @@ class PHAT_FormManager extends PHPWS_Manager {
             } else {
                 $optionSetId = $_REQUEST['PHAT_OptionSetId'];
             }
-             
+
             if(isset($_REQUEST['PHAT_SaveOptionSet'])) {
                 if(is_array($_REQUEST['PHAT_ElementOptions']) && is_array($_REQUEST['PHAT_ElementValues'])) {
                     for($i = 0; $i < sizeof($_REQUEST['PHAT_ElementOptions']); $i++) {
                         $_REQUEST['PHAT_ElementOptions'][$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementOptions'][$i]);
                         $_REQUEST['PHAT_ElementValues'][$i] = PHPWS_Text::parseInput($_REQUEST['PHAT_ElementValues'][$i]);
                     }
-                     
+
                     $options = addslashes(serialize($_REQUEST['PHAT_ElementOptions']));
                     $values = addslashes(serialize($_REQUEST['PHAT_ElementValues']));
                     $saveArray = array('optionSet'=>$options,
@@ -311,30 +311,30 @@ class PHAT_FormManager extends PHPWS_Manager {
                 $this->action();
                 return;
             }
-             
+
             $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
-             
+
             $sql = "SELECT * FROM mod_phatform_options WHERE id='$optionSetId'";
             $result = PHPWS_DB::getRow($sql);
-             
+
             if($result) {
                 $elements = array();
                 $elements[] = PHPWS_Form::formHidden('module', $this->_module);
                 $elements[] = PHPWS_Form::formHidden('PHAT_MAN_OP', 'editOptions');
                 $elements[] = PHPWS_Form::formHidden('PHAT_OptionSetId', $optionSetId);
-                 
+
                 $options = unserialize(stripslashes($result['optionSet']));
                 $values = unserialize(stripslashes($result['valueSet']));
-                 
+
                 $editTags = array();
                 $editTags['TITLE'] = dgettext('phatform', 'Edit option set')."&#160;{$result['label']}";
                 $editTags['NUMBER_LABEL'] = dgettext('phatform', 'Option');
                 $editTags['INPUT_LABEL'] = dgettext('phatform', 'Text');
                 $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
-                 
+
                 $editTags['OPTIONS'] = '';
                 $rowClass = NULL;
-                 
+
 
                 for($i = 0; $i < sizeof($options); $i++) {
                     $optionRow['OPTION_NUMBER'] = $i + 1;
@@ -346,15 +346,15 @@ class PHAT_FormManager extends PHPWS_Manager {
                     } else {
                         $rowClass = null;
                     }
-                     
+
                     $editTags['OPTIONS'] .= PHPWS_Template::processTemplate($optionRow, 'phatform', 'options/option.tpl');
                 }
             }
             $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
             $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save'), 'PHAT_SaveOptionSet');
-             
+
             $elements[] = PHPWS_Template::processTemplate($editTags, 'phatform', 'options/optionList.tpl');
-             
+
             return PHPWS_Form::makeForm('PHAT_Options_edit', 'index.php', $elements);
         } else {
             $this->_list();
@@ -414,7 +414,7 @@ class PHAT_FormManager extends PHPWS_Manager {
                     if(isset($this->form))
                     unset($this->form);
                 }
-                 
+
                 $content  = $this->menu();
                 $content .= $_SESSION['PHAT_advViews']->viewArchives();
                 break;
