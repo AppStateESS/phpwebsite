@@ -47,31 +47,39 @@ class Settings extends Data {
             self::createSettingsTable();
         }
         $s = $db->addTable('settings');
-        $db->setConditional($db->getConditional($db->getConditional($s->getField('module_name'),
-                                $module_name, '='),
-                        $db->getConditional($s->getField('variable_name'),
-                                $variable_name, '='), 'and'));
-        try {
-            $db->delete();
-        } catch (\Exception $e) {
-            //@todo better error handling here
-            throw $e;
+        $db->setConditional($db->getConditional($s->getFieldConditional('module_name',
+                                $module_name),
+                        $s->getFieldConditional('variable_name', $variable_name),
+                        'and'));
+        $db->delete();
+        $s->reset();
+        if (is_array($setting)) {
+            foreach ($setting as $value) {
+                $s->addValue('module_name', $module_name);
+                $s->addValue('variable_name', $variable_name);
+                $s->addValue('setting', $value);
+                $db->insert();
+                $s->resetValues();
+            }
+        } else {
+            $s->addValue('module_name', $module_name);
+            $s->addValue('variable_name', $variable_name);
+            $s->addValue('setting', $setting);
+            $db->insert();
         }
-
-        $s->addValue('module_name', $module_name);
-        $s->addValue('variable_name', $variable_name);
-        $s->addValue('setting', $setting);
-        $db->insert();
     }
 
-    private static function createSettingsTable()
+    public static function createSettingsTable()
     {
         $db = \Database::newDB();
+        if ($db->tableExists('settings')) {
+            return;
+        }
         $settings = $db->addTable('settings');
-        $uniq[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
-        $uniq[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
-        $settings->addDataType('setting', 'text')->setIsNull(true);
-        $settings->addUnique(new Database\Unique($uniq));
+        $idx[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
+        $idx[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
+        $settings->addDataType('setting', 'varchar')->setIsNull(true);
+        $settings->addIndex($idx);
         $settings->create();
     }
 
@@ -87,8 +95,18 @@ class Settings extends Data {
             $db->loadSelectStatement();
             $rows = $db->fetchAll();
             foreach ($rows as $v) {
+                $module_name = $variable_name = $setting = null;
                 extract($v);
-                self::$settings->variables[$module_name][$variable_name] = $setting;
+                if (isset(self::$settings->variables[$module_name][$variable_name])) {
+                    if (!is_array(self::$settings->variables[$module_name][$variable_name])) {
+                        $old_val = self::$settings->variables[$module_name][$variable_name];
+                        unset(self::$settings->variables[$module_name][$variable_name]);
+                        self::$settings->variables[$module_name][$variable_name][] = $old_val;
+                    }
+                    self::$settings->variables[$module_name][$variable_name][] = $setting;
+                } else {
+                    self::$settings->variables[$module_name][$variable_name] = $setting;
+                }
             }
         }
         return self::$settings;
