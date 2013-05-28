@@ -28,8 +28,8 @@ th, td {
     font-size:12px; height : 20px;margin-bottom : 0px;
 }
 
-#bootstrap-theme input, #bootstrap-theme select {
-    margin-bottom : 0px;
+form.form-inline input, form.form-inline select {
+    margin-bottom : 5px;
 }
 
 @import url("bootstrap-responsive.min.css");
