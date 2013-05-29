@@ -193,7 +193,6 @@ final class ModuleController {
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
             if (isset($row['deprecated']) && !$row['deprecated']) {
-                var_dump($row);
                 $module = $this->loadModuleByTitle($row['title']);
             } else {
                 $module = $this->loadPHPWSModule($row);
