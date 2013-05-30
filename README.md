@@ -1,9 +1,9 @@
 Welcome to phpWebSite!
 ======================
 
-[phpWebSite Home](https://phpwebsite.appstate.edu)
-[phpWebSite Continuous Integration](https://code.appstate.edu/jenkins/job/phpwebsite)
-[phpWebSite on Github](https://github.com/AppStateESS/phpwebsite)
+* [phpWebSite Home](https://phpwebsite.appstate.edu)
+* [phpWebSite Continuous Integration](https://code.appstate.edu/jenkins/job/phpwebsite)
+* [phpWebSite on Github](https://github.com/AppStateESS/phpwebsite)
 
 phpWebSite comes with its own set of Pear files. Most of the time you
 should just use the files included with distribution.
