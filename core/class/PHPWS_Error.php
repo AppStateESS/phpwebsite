@@ -64,9 +64,9 @@ class PHPWS_Error {
                             'Value: ' . $value . ', Function: ' . $funcName);
         }
 
-        if (is_file(PHPWS_SOURCE_DIR . "mod/$module/conf/error.php")) {
+        try {
             $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
-        } else {
+        } catch (\Exception $e) {
             $errorFile = null;
         }
 

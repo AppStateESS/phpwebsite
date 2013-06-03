@@ -1,4 +1,20 @@
 <?php
+/* * ************************************************************
+ * The settings in this file affect the hub and all branches
+ * Most of the defines from this file were originally in the
+ * config.php file. That file now contains hub/branch specific
+ * information.
+ *
+ * PLEASE NOTE: WE DO NOT RECOMMEND EDITING THIS FILE.  If you
+ * need to change it, copy it first to core/conf/defines.php,
+ * and that file will be loaded instead.  Otherwise, next time
+ * you update phpWebSite, this file will be replaced and your
+ * changes lost.
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
 
 /**
  * The default template to use in Global/Error/Pages/ when a error is reported.
@@ -34,6 +50,12 @@ define('SHOW_ALL_ERRORS', FALSE);
  */
 define('ERRORS_AS_EXCEPTION', TRUE);
 
+
+/**
+ * If true, the log will contain a stack trace for each error.
+ * Setting this to false shows the message ONLY.
+ */
+define('LOG_ERROR_STACK', FALSE);
 
 /* * ******************** Language **************************** */
 
@@ -71,23 +93,6 @@ define('IGNORE_BROWSER_LANGUAGE', false);
  */
 define('USE_PUTENV', false);
 
-
-
-/* * ************************************************************
- * The settings in this file affect the hub and all branches
- * Most of the defines from this file were originally in the
- * config.php file. That file now contains hub/branch specific
- * information.
- *
- * PLEASE NOTE: WE DO NOT RECOMMEND EDITING THIS FILE.  If you
- * need to change it, copy it first to core/conf/defines.php,
- * and that file will be loaded instead.  Otherwise, next time
- * you update phpWebSite, this file will be replaced and your
- * changes lost.
- *
- * @author Matthew McNaney <mcnaney at gmail dot com>
- * @version $Id$
- */
 
 /* * *************** Database ********************************** */
 
@@ -156,12 +161,6 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
 define('DATE_SET_SERVER_TIME_ZONE', 'America/New_York');
 
 /* * ******************** Logging Settings ********************* */
-
-/**
- * If true, the log will contain a stack trace for each error.
- * Setting this to false shows the message ONLY.
- */
-define('LOG_ERROR_STACK', FALSE);
 
 /**
  * Directory where logs will be written

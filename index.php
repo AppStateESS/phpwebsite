@@ -13,7 +13,17 @@
  * @copyright Copyright 2013, Appalachian State University & Contributors
  */
 
-require_once('inc/Bootstrap.php');
+/**
+ * Include the defines used in Global library
+ */
+if (is_file('config/core/config.php')) {
+    require_once 'config/core/config.php';
+} else {
+    header('location: setup/index.php');
+    exit();
+}
+
+require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
 
 $controller = ModuleController::singleton();
 $controller->execute();
