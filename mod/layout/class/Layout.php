@@ -206,14 +206,11 @@ class Layout {
 
         $cssFile['file'] = $moduleLoc;
 
-        Layout::addToStyleList($cssFile);
-
         $themeFile['file'] = PHPWS_Template::getTplDir($module) . $filename;
         if (is_file($themeFile['file'])) {
             Layout::addToStyleList(str_replace(PHPWS_SOURCE_DIR, '', $themeFile));
-            return;
-        } elseif (FORCE_THEME_TEMPLATES) {
-            return;
+        } else {
+            Layout::addToStyleList($cssFile);
         }
     }
 
