@@ -43,7 +43,6 @@ abstract class DB extends \Data {
      * @access private
      */
     private $tbl_prefix = null;
-
     private $conditional;
 
     /**
@@ -298,7 +297,6 @@ abstract class DB extends \Data {
         return new Conditional($left, $right, $operator);
     }
 
-
     /**
      * Sets the DSN and loads the PDO object for future queries.
      * @param \Database\DSN $dsn
@@ -343,7 +341,7 @@ abstract class DB extends \Data {
         if (!isset(self::$pdo_stack[$hash])) {
             self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(),
                     $this->dsn->getUsername(), $this->dsn->getPassword(),
-                    array(\PDO::ATTR_PERSISTENT=>true, \PDO::ATTR_ERRMODE=>\PDO::ERRMODE_EXCEPTION));
+                    array(\PDO::ATTR_PERSISTENT => true, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         }
         self::$PDO = self::$pdo_stack[$hash];
     }
@@ -446,7 +444,7 @@ abstract class DB extends \Data {
         if (!$this->allowed($new_name)) {
             throw new \Exception(t('Improper new table name'));
         }
-        return $this->alterTable($old_name, array('name'=>$new_name));
+        return $this->alterTable($old_name, array('name' => $new_name));
     }
 
     /**
@@ -943,7 +941,7 @@ abstract class DB extends \Data {
      * @param \Database\Alias $alias
      * @return SubSelect
      */
-    public function getSubSelect(DB $DB, $alias=null)
+    public function getSubSelect(DB $DB, $alias = null)
     {
         return new SubSelect($DB, $alias);
     }
@@ -1010,7 +1008,7 @@ abstract class DB extends \Data {
 
     /**
      * Returns a passed $object parameter with values set from the current query.
-     * 
+     *
      * @param object $object
      * @return object
      */
@@ -1387,78 +1385,6 @@ abstract class DB extends \Data {
         return $this->module->numCols();
     }
 
-    /**
-     * Takes an object, parses its variables, and saves them into the current table or tables.
-     * Function checks to see if the object is an extension of Object. If so, it calls the
-     * object's save function. Otherwise, it depends on get_object_vars (which may skip
-     * private variables)
-     * @param object $object
-     */
-    public function saveObject($object)
-    {
-        $insert_object = false;
-
-        if (!is_object($object)) {
-            throw new \Exception(t('Variable is not an object'));
-        }
-
-        if (is_subclass_of($object, 'Object')) {
-            return $object->save();
-        } else {
-            $values = get_object_vars($object);
-        }
-
-        if (empty($values)) {
-            throw new \Exception(t('No values in object to save'));
-        }
-
-        foreach ($this->tables as $tbl) {
-            $primary_key = $tbl->getPrimaryIndex();
-            foreach ($values as $column=> $value) {
-                if (DATABASE_CHECK_COLUMNS && !$tbl->columnExists($column)) {
-                    throw new \Exception(t('Column "%s" not found', $column));
-                }
-                // if the column is a primary key and empty, we want to insert
-                if ($column == $primary_key) {
-                    if (empty($value)) {
-                        $insert_object = true;
-                    } else {
-                        if (!$tbl->isJoined()) {
-                            $tbl->addWhere($primary_key, $value);
-                        }
-                        $insert_object = false;
-                    }
-                    continue;
-                }
-                $tbl->addValue($column, $value);
-            }
-        }
-
-        if ($insert_object) {
-            $this->insert();
-        } else {
-            $this->update();
-        }
-    }
-
-    /**
-     * Saves an array of objects
-     * @param array $objects
-     */
-    public function saveAllObjects(array $objects)
-    {
-        foreach ($objects as $obj) {
-            if (!is_object($obj)) {
-                throw new \Exception(t('Array must contain object variables only'));
-            }
-
-            if (is_subclass_of($obj, 'Object')) {
-                $obj->save();
-            } else {
-                $this->saveObject($obj);
-            }
-        }
-    }
 
     /**
      * Safely quotes a value for entry in the database.
