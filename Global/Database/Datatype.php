@@ -78,8 +78,8 @@ abstract class Datatype extends \Data {
             throw new \Exception(\t('Unknown data type "%s"', $type));
         }
         $class_name = ucwords($alltypes[$type]);
-        $class_file = "Global/Database/Datatype/$class_name.php";
-        $engine_file = "Global/Database/Engine/$engine/Datatype/$class_name.php";
+        $class_file = PHPWS_SOURCE_DIR . "Global/Database/Datatype/$class_name.php";
+        $engine_file = PHPWS_SOURCE_DIR . "Global/Database/Engine/$engine/Datatype/$class_name.php";
 
         if (is_file($engine_file)) {
             $datatype_name = "\Database\Engine\\$engine\Datatype\\$class_name";
