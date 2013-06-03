@@ -712,6 +712,26 @@ class PHPWS_Core {
                 . preg_replace('/index.*/', '', $_SERVER['PHP_SELF']);
     }
 
+    // TODO: A more formal and less nasty way to do this, issue #96
+    public static function pushUrlHistory()
+    {
+        if(!isset($_SESSION['PHPWS_UrlHistory'])) {
+            $_SESSION['PHPWS_UrlHistory'] = array();
+        }
+
+        array_push($_SESSION['PHPWS_UrlHistory'], PHPWS_Core::getCurrentUrl());
+    }
+
+    // TODO: A more formal and less nasty way to do this, issue #96
+    public static function popUrlHistory()
+    {
+        if(!isset($_SESSION['PHPWS_UrlHistory']) || count($_SESSION['PHPWS_UrlHistory']) == 0) {
+            PHPWS_Core::home();
+        }
+
+        PHPWS_Core::reroute(array_pop($_SESSION['PHPWS_UrlHistory']));
+    }
+
 }
 
 // End of core class
