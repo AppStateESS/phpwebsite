@@ -73,11 +73,10 @@
             <div class="row-fluid">
                 <div class="span3">
                     {DEFAULT}
+                    <div class="row-fluid">
+                        {LIKEBOX_DEFAULT}
+                    </div>
                 </div>
-          <div class="row-fluid">
-            {LIKEBOX_DEFAULT}
-          </div>
-        </div>
                 <div class="span9">
                     {LAYOUT_HEADER}
                     {BODY}
