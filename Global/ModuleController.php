@@ -147,6 +147,7 @@ final class ModuleController {
         require_once $module_path;
         $namespace = "$module_title\\Module";
         $module = new $namespace;
+        $module->loadData();
         return $module;
     }
 
@@ -194,6 +195,7 @@ final class ModuleController {
         while ($row = $db->fetch()) {
             if (isset($row['deprecated']) && !$row['deprecated']) {
                 $module = $this->loadModuleByTitle($row['title']);
+                $module->setActive(1);
             } else {
                 $module = $this->loadPHPWSModule($row);
             }
@@ -237,8 +239,15 @@ final class ModuleController {
         return isset($this->module_stack[$module_title]);
     }
 
+    /**
+     *
+     * @param string $module_title
+     * @return \ModuleAbstract
+     * @throws Exception
+     */
     public function getModule($module_title)
     {
+        $module_title = (string)$module_title;
         if (!isset($this->module_stack[$module_title])) {
             throw new Exception(t('Module "%s" does not exist', $module_title));
         }

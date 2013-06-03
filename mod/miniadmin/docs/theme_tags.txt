@@ -1,8 +1,0 @@
-Miniadmin needs just one content variable.
-
-Name: mini_admin
-Tag : MINIADMIN_MINI_ADMIN
---------------------------
-Since admins often need to access this block, it should be near the
-top of the page. The default styling uses an overflow : auto in case
-it has too many options.

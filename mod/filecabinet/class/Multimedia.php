@@ -580,13 +580,6 @@ class PHPWS_Multimedia extends File_Common {
         return $tpl;
     }
 
-    public function pinTags()
-    {
-        $tpl['TN'] = $this->getJSView(true);
-        $tpl['TITLE'] = $this->title;
-        return $tpl;
-    }
-
     public function getManagerIcon($fmanager)
     {
         $force = $fmanager->force_resize ? 'true' : 'false';

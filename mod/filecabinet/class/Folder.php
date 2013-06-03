@@ -150,16 +150,6 @@ class Folder {
         }
     }
 
-    public function unpinLink()
-    {
-        $icon = Icon::get('close');
-        $icon->setStyle('float : right');
-        $img = $icon->__toString();
-        $key = Key::getCurrent();
-        return PHPWS_Text::secureLink($img, 'filecabinet',
-                        array('aop' => 'unpin', 'folder_id' => $this->id, 'key_id' => $key->id));
-    }
-
     public function uploadLink($mode = null, $force_width = null, $force_height = null)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
@@ -564,68 +554,6 @@ class Folder {
 
         $db->addWhere('folder_id', $this->id);
         return $db->count();
-    }
-
-    public static function getPinned($key_id)
-    {
-        $db = new PHPWS_DB('folders');
-        $db->addWhere('filecabinet_pins.key_id', $key_id);
-        $db->addWhere('id', 'filecabinet_pins.folder_id');
-        Key::restrictView($db, 'filecabinet');
-        $result = $db->getObjects('Folder');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-            return;
-        } elseif (!$result) {
-            return;
-        }
-        Layout::addStyle('filecabinet');
-        foreach ($result as $folder) {
-            $folder->showPinned(false);
-        }
-    }
-
-    public function showPinned($single = true)
-    {
-        $tpl['FOLDER_TITLE'] = $this->viewLink();
-
-        $this->loadFiles();
-
-        if (empty($this->_files)) {
-            $tpl['CONTENT'] = dgettext('filecabinet', 'Folder is empty.');
-        }
-
-        if ($this->ftype == IMAGE_FOLDER) {
-            $max = PHPWS_Settings::get('filecabinet', 'max_pinned_images');
-        } elseif ($this->ftype == DOCUMENT_FOLDER) {
-            $max = PHPWS_Settings::get('filecabinet', 'max_pinned_documents');
-        } else {
-            $max = PHPWS_Settings::get('filecabinet', 'max_pinned_multimedia');
-        }
-
-        if (!$max) {
-            $max = 999;
-        }
-
-        $count = 1;
-        foreach ($this->_files as $file) {
-            if ($count > $max) {
-                break;
-            }
-            $count++;
-            $tpl['files'][] = $file->pinTags();
-        }
-
-        $tpl['UNPIN'] = $this->unpinLink();
-
-        if (count($this->_files) > $count) {
-            $tpl['MORE'] = sprintf('<a href="%s">%s</a>',
-                    $this->viewLink(false), dgettext('filecabinet', 'More...'));
-        }
-
-
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'pinned.tpl');
-        Layout::add($content, 'filecabinet', 'pinfolder');
     }
 
 }

@@ -1,0 +1,7 @@
+<ul class="dropdown-menu">
+    <?php foreach ($links as $module_name => $interfaces):?>
+    <li class="nav-header"><?=$module_name?></li>
+    <?php foreach ($interfaces as $content):?>
+    <li><?=$content?></li>
+    <?php endforeach;endforeach;?>
+</ul>

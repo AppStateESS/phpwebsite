@@ -22,6 +22,10 @@ class Module extends \ModuleAbstract implements \SettingDefaults {
         if (is_file($this->directory . 'inc/runtime.php')) {
             include $this->directory . 'inc/runtime.php';
         }
+        if (is_file($this->directory . 'boost/controlpanel.php')) {
+            $this->addPHPWSPanelLinks();
+        }
+
     }
 
     public function init()
@@ -58,6 +62,21 @@ class Module extends \ModuleAbstract implements \SettingDefaults {
     {
         if (is_file($this->directory . 'inc/close.php')) {
             include $this->directory . 'inc/close.php';
+        }
+    }
+
+    protected function addPHPWSPanelLinks()
+    {
+        include $this->directory . 'boost/controlpanel.php';
+        if (!empty($link)) {
+            foreach ($link as $l) {
+                extract($l);
+                $title = t('Options');
+                $full_link = <<<EOF
+<a href="$url">$title</a>
+EOF;
+                Controlpanel::getToolbar()->addSiteOption($this->title, $full_link);
+            }
         }
     }
 

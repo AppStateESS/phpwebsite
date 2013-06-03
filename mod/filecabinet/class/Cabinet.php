@@ -193,7 +193,6 @@ class Cabinet {
         }
 // Requires an unrestricted user
         switch ($aop) {
-            case 'pin_folder':
             case 'delete_folder':
             case 'unpin':
                 if (Current_User::isRestricted('filecabinet')) {
@@ -260,16 +259,6 @@ class Cabinet {
                 $javascript = true;
                 $this->loadFolder();
                 $this->addFolder();
-                break;
-
-            case 'pin_folder':
-                if (!Current_User::authorized('filecabinet', 'edit_folders')) {
-                    Current_User::disallow();
-                }
-
-                $javascript = true;
-                $this->pinFolder();
-                javascript('close_refresh');
                 break;
 
             case 'classify':
@@ -845,28 +834,6 @@ class Cabinet {
         $db->addWhere('folder_id', $folder_id);
         $db->addWhere('key_id', $key_id);
         $db->delete();
-    }
-
-    public function pinFolder()
-    {
-        if (!isset($_POST['folder_id']) || !isset($_POST['key_id'])) {
-            return;
-        }
-
-        $folder_id = (int) $_POST['folder_id'];
-        $key_id = (int) $_POST['key_id'];
-
-        $db = new PHPWS_DB('filecabinet_pins');
-        $db->addWhere('folder_id', $folder_id);
-        $db->addWhere('key_id', $key_id);
-        $db->delete();
-
-        $db->addValue('folder_id', $folder_id);
-        $db->addValue('key_id', $key_id);
-        $result = $db->insert();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-        }
     }
 
     public function passImages()

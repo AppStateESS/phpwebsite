@@ -367,13 +367,6 @@ class PHPWS_Image extends File_Common {
         return $db->delete();
     }
 
-    public function pinTags()
-    {
-        $tpl['TN'] = $this->getJSView(true);
-        $tpl['TITLE'] = htmlspecialchars($this->title, ENT_QUOTES);
-        return $tpl;
-    }
-
     public function editLink($icon = false)
     {
         $vars['iop'] = 'upload_image_form';

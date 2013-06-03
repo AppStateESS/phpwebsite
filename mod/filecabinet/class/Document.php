@@ -139,14 +139,6 @@ class PHPWS_Document extends File_Common {
         return $document->allowType($type);
     }
 
-    public function pinTags()
-    {
-        $tpl['TN'] = $this->getViewLink(true, 'icon');
-        $tpl['TITLE'] = $this->getViewLink(true);
-
-        return $tpl;
-    }
-
     public function rowTags()
     {
         static $folder = null;

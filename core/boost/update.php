@@ -203,15 +203,10 @@ UPDATES;
             $changes = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/2_2_0.txt');
             $content[] = "<pre>$changes</pre>";
 
-        case version_compare($version, '2.3.0', '<'):
+        case version_compare($version, '2.3.1', '<'):
             try {
-                $db = Database::newDB();
-                $deprecated = $db->addTable('modules')->addDataType('deprecated',
-                        'smallint');
-                $deprecated->setDefault(1);
-                $deprecated->add();
-
-
+                include PHPWS_SOURCE_DIR . 'core/boost/updates/2_3_0.php';
+                update_core_2_3_0();
             } catch (\Exception $e) {
                 echo $e->getCode();
                 $content[] = 'Error: ' . $e->getMessage();

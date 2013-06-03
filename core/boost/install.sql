@@ -10,12 +10,13 @@ CREATE TABLE modules (
  PRIMARY KEY (title)
 );
 
-CREATE TABLE IF NOT EXISTS settings (
+CREATE TABLE settings (
   module_name varchar(255) NOT NULL,
   variable_name varchar(255) NOT NULL,
-  setting text NOT NULL,
-  UNIQUE KEY modvar (module_name,variable_name)
+  setting varchar(255) DEFAULT NULL
 );
+
+CREATE INDEX settings_idx ON settings (module_name, variable_name);
 
 
 CREATE TABLE registered (

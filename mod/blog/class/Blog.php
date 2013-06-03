@@ -109,12 +109,14 @@ class Blog {
             }
 
             if ($thumbnail) {
-                return sprintf('<a href="%s">%s</a>', $url, $file->getThumbnail());
+                return sprintf('<a href="%s">%s</a>', $url,
+                        $file->getThumbnail());
             } else {
                 return sprintf('<a href="%s">%s</a>', $url, $file->getTag());
             }
         } elseif ($thumbnail && ($file->isMedia() && $file->_source->isVideo())) {
-            return sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $file->getThumbnail());
+            return sprintf('<a href="%s">%s</a>', $this->getViewLink(true),
+                    $file->getThumbnail());
         } else {
             return $file->getTag();
         }
@@ -322,7 +324,8 @@ class Blog {
 
     public function getViewLink($bare = false)
     {
-        $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog', array('id' => $this->id));
+        $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog',
+                array('id' => $this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
         if ($bare) {
@@ -370,10 +373,12 @@ class Blog {
 
         if (!$key->allowView() || !Blog_User::allowView()) {
             Current_User::requireLogin();
-            return dgettext('blog', 'You do not have permission to view this entry.');
+            return dgettext('blog',
+                    'You do not have permission to view this entry.');
         }
 
-        $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>', $this->getViewLink(true), $this->title);
+        $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
+                $this->getViewLink(true), $this->title);
 
         if ($this->publish_date > time()) {
             $template['UNPUBLISHED'] = dgettext('blog', 'Unpublished');
@@ -391,7 +396,9 @@ class Blog {
                 $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
             } else {
                 if (!empty($entry)) {
-                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', array('id' => $this->id));
+                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog',
+                                            'Read more'), 'blog',
+                                    array('id' => $this->id));
                 }
                 $template['SUMMARY'] = PHPWS_Text::parseTag($summary);
             }
@@ -411,9 +418,12 @@ class Blog {
             $vars['action'] = 'admin';
             $vars['command'] = 'edit';
 
-            $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
+            $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog',
+                                    'Edit'), 'blog', $vars);
             if (!$summarized) {
-                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
+                Controlpanel::getToolbar()->addPageOption('blog',
+                        PHPWS_Text::secureLink(dgettext('blog', 'Edit blog'),
+                                'blog', $vars));
             }
         }
 
@@ -422,7 +432,8 @@ class Blog {
 
             if ($summarized && !empty($comments)) {
                 $link = $comments->countComments(true);
-                $comment_link = new PHPWS_Link($link, 'blog', array('id' => $this->id));
+                $comment_link = new PHPWS_Link($link, 'blog',
+                        array('id' => $this->id));
                 $comment_link->setRewrite();
                 $comment_link->setAnchor('comments');
                 $template['COMMENT_LINK'] = $comment_link->get();
@@ -434,7 +445,8 @@ class Blog {
                 $last_poster = $comments->getLastPoster();
 
                 if (!empty($last_poster)) {
-                    $template['LAST_POSTER_LABEL'] = dgettext('blog', 'Last poster');
+                    $template['LAST_POSTER_LABEL'] = dgettext('blog',
+                            'Last poster');
                     $template['LAST_POSTER'] = $last_poster;
                 }
             } elseif ($this->id) {
@@ -483,7 +495,8 @@ class Blog {
 
     public function getPagerTags()
     {
-        $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
+        $template['TITLE'] = sprintf('<a href="%s">%s</a>',
+                $this->getViewLink(true), $this->title);
         $template['CREATE_DATE'] = $this->relativeCreateDate(BLOG_PAGER_DATE_FORMAT);
         $template['PUBLISH_DATE'] = $this->relativePublishDate(BLOG_PAGER_DATE_FORMAT);
         $template['EXPIRE_DATE'] = $this->relativeExpireDate(BLOG_PAGER_DATE_FORMAT);
@@ -497,8 +510,8 @@ class Blog {
         $link['action'] = 'admin';
         $link['blog_id'] = $this->id;
 
-        if (( Current_User::allow('blog', 'edit_blog') && Current_User::getId() == $this->author_id )
-                || Current_User::allow('blog', 'edit_blog', $this->id, 'entry')) {
+        if (( Current_User::allow('blog', 'edit_blog') && Current_User::getId() == $this->author_id ) || Current_User::allow('blog',
+                        'edit_blog', $this->id, 'entry')) {
 
             $link['command'] = 'edit';
             $icon = Icon::show('edit');
@@ -507,8 +520,10 @@ class Blog {
 
         if (Current_User::allow('blog', 'delete_blog')) {
             $link['command'] = 'delete';
-            $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
-            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, true);
+            $confirm_vars['QUESTION'] = dgettext('blog',
+                    'Are you sure you want to permanently delete this blog entry?');
+            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link,
+                            true);
 
             $confirm_vars['LINK'] = Icon::show('delete');
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
@@ -541,7 +556,8 @@ class Blog {
 
     public function getListSummary()
     {
-        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getSummary(true)))), 0, 60);
+        return substr(ltrim(strip_tags(str_replace('<br />', ' ',
+                                        $this->getSummary(true)))), 0, 60);
     }
 
     public function post_entry()
@@ -560,10 +576,12 @@ class Blog {
         $summary_and_entry = $_POST['summary'];
 
         if (empty($summary_and_entry)) {
-            $this->_error[] = dgettext('blog', 'Your submission must have some content.');
+            $this->_error[] = dgettext('blog',
+                    'Your submission must have some content.');
         } else {
             // We don't catch the regular expression result because we only care about matches
-            preg_replace_callback('@(.*?)<hr[^>]*/>(.*)@s', function($matches) {
+            preg_replace_callback('@(.*?)<hr[^>]*/>(.*)@s',
+                    function($matches) {
                         $GLOBALS['split_summary'] = $matches;
                     }, $summary_and_entry);
             if (isset($GLOBALS['split_summary'])) {

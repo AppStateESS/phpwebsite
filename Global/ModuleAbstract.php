@@ -98,7 +98,10 @@ abstract class ModuleAbstract extends Data {
 
     public function loadData()
     {
-        // This must be called for the module to be identifable.
+        // This must be called for the module to be identifiable.
+        if ($this->title->isEmpty()) {
+            throw new \Exception(t('Could not load module - missing title'));
+        }
         $this->loadNamespace();
         $this->loadDependencies();
         $this->loadDirectory();
@@ -196,7 +199,12 @@ abstract class ModuleAbstract extends Data {
 
     public function setTitle($title)
     {
-        $this->title->setValue($title);
+        $this->title->set($title);
+    }
+
+    public function setProperName($name)
+    {
+        $this->proper_name->set($name);
     }
 
     public function getTitle()
@@ -231,7 +239,7 @@ abstract class ModuleAbstract extends Data {
 
     public function destruct()
     {
-        
+
     }
 
 }

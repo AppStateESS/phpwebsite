@@ -454,9 +454,6 @@ class Blog_Admin {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
-        //$newLink = 'index.php?module=blog&amp;action=admin';
-        //$newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
-
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>dgettext('blog', 'List'), 'link'=> $listLink);
 
@@ -471,8 +468,6 @@ class Blog_Admin {
             $approvalLink = 'index.php?module=blog&amp;action=admin';
             $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
         }
-
-        //$tabs['new'] = &$newCommand;
 
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
