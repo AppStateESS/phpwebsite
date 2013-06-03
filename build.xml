@@ -204,4 +204,9 @@
             <arg path="${basedir}/${project.name}.spec" />
         </exec>
     </target>
+
+    <target name="post-rpm">
+        <!-- Required for internal RPM building mechanism, but intentionally
+             left blank -->
+    </target>
 </project>
