@@ -213,7 +213,6 @@ UPDATES;
 
 
             } catch (\Exception $e) {
-                echo $e->getCode();
                 $content[] = 'Error: ' . $e->getMessage();
                 return false;
             }
