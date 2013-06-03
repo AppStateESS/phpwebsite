@@ -210,7 +210,7 @@ class Layout {
 
         $themeFile['file'] = PHPWS_Template::getTplDir($module) . $filename;
         if (is_file($themeFile['file'])) {
-            Layout::addToStyleList($themeFile);
+            Layout::addToStyleList(str_replace(PHPWS_SOURCE_DIR, '', $themeFile));
             return;
         } elseif (FORCE_THEME_TEMPLATES) {
             return;
