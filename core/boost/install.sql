@@ -10,11 +10,10 @@ CREATE TABLE modules (
  PRIMARY KEY (title)
 );
 
-CREATE TABLE IF NOT EXISTS settings (
+CREATE TABLE settings (
   module_name varchar(255) NOT NULL,
   variable_name varchar(255) NOT NULL,
-  setting text NOT NULL,
-  UNIQUE KEY modvar (module_name,variable_name)
+  setting text NOT NULL
 );
 
 
