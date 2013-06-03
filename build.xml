@@ -205,8 +205,8 @@
         </exec>
     </target>
 
-    <target name="post-rpm">
-        <!-- This target require for internal RPM deployer but intentionally
-             left blank. -->
+    <target name="post-rpm" depends="metrics-ci">
+        <!-- This target is used by Jenkins to run metrics AFTER build.  This
+             space intentionally left blank. -->
     </target>
 </project>
