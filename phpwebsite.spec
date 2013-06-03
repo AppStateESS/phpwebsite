@@ -29,10 +29,10 @@ cp -r * "$RPM_BUILD_ROOT%{install_dir}"
 # Default Deletes for clean RPM
 
 rm -Rf "$RPM_BUILD_ROOT%{install_dir}/docs/"
-rm -Rf "$RPM_BUILD_ROOT%{install_dir}/.hg/"
-rm -Rf "$RPM_BUILD_ROOT%{install_dir}/convert/"
+rm -Rf "$RPM_BUILD_ROOT%{install_dir}/.git/"
 rm -Rf "$RPM_BUILD_ROOT%{install_dir}/util/"
-rm -R "$RPM_BUILD_ROOT%{install_dir}/README"
+rm -f "$RPM_BUILD_ROOT%{install_dir}/.gitignore"
+rm -f "$RPM_BUILD_ROOT%{install_dir}/README.md"
 rm -f "$RPM_BUILD_ROOT%{install_dir}/.hgtags"
 rm -f "$RPM_BUILD_ROOT%{install_dir}/build.xml"
 rm -f "$RPM_BUILD_ROOT%{install_dir}/phpwebsite.spec"
