@@ -3,7 +3,7 @@
 
 /**
  * HTTP::Download
- * 
+ *
  * PHP versions 4 and 5
  *
  * @category   HTTP
@@ -73,18 +73,18 @@ define('HTTP_DOWNLOAD_E_INVALID_ARCHIVE_TYPE',  -9);
 /**#@-**/
 // }}}
 
-/** 
+/**
  * Send HTTP Downloads/Responses.
  *
  * With this package you can handle (hidden) downloads.
- * It supports partial downloads, resuming and sending 
+ * It supports partial downloads, resuming and sending
  * raw data ie. from database BLOBs.
- * 
+ *
  * <i>ATTENTION:</i>
- * You shouldn't use this package together with ob_gzhandler or 
- * zlib.output_compression enabled in your php.ini, especially 
+ * You shouldn't use this package together with ob_gzhandler or
+ * zlib.output_compression enabled in your php.ini, especially
  * if you want to send already gzipped data!
- * 
+ *
  * @access   public
  * @version  $Revision: 1.79 $
  */
@@ -99,7 +99,7 @@ class HTTP_Download
      * @var     string
      */
     var $file = '';
-    
+
     /**
      * Data for download
      *
@@ -108,7 +108,7 @@ class HTTP_Download
      * @var     string
      */
     var $data = null;
-    
+
     /**
      * Resource handle for download
      *
@@ -117,7 +117,7 @@ class HTTP_Download
      * @var     int
      */
     var $handle = null;
-    
+
     /**
      * Whether to gzip the download
      *
@@ -125,15 +125,15 @@ class HTTP_Download
      * @var     bool
      */
     var $gzip = false;
-    
+
     /**
      * Whether to allow caching of the download on the clients side
-     * 
+     *
      * @access  protected
      * @var     bool
      */
     var $cache = true;
-    
+
     /**
      * Size of download
      *
@@ -141,7 +141,7 @@ class HTTP_Download
      * @var     int
      */
     var $size = 0;
-    
+
     /**
      * Last modified
      *
@@ -149,7 +149,7 @@ class HTTP_Download
      * @var     int
      */
     var $lastModified = 0;
-    
+
     /**
      * HTTP headers
      *
@@ -163,57 +163,57 @@ class HTTP_Download
         'Accept-Ranges' => 'bytes',
         'X-Sent-By'     => 'PEAR::HTTP::Download'
     );
- 
+
     /**
      * HTTP_Header
-     * 
+     *
      * @access  protected
      * @var     object
      */
     var $HTTP = null;
-    
+
     /**
      * ETag
-     * 
+     *
      * @access  protected
      * @var     string
      */
     var $etag = '';
-    
+
     /**
      * Buffer Size
-     * 
+     *
      * @access  protected
      * @var     int
      */
     var $bufferSize = 2097152;
-    
+
     /**
      * Throttle Delay
-     * 
+     *
      * @access  protected
      * @var     float
      */
     var $throttleDelay = 0;
-    
+
     /**
      * Sent Bytes
-     * 
+     *
      * @access  public
      * @var     int
      */
     var $sentBytes = 0;
     // }}}
-    
+
     // {{{ constructor
     /**
      * Constructor
      *
      * Set supplied parameters.
-     * 
+     *
      * @access  public
      * @param   array   $params     associative array of parameters
-     * 
+     *
      *          <b>one of:</b>
      *                  o 'file'                => path to file for download
      *                  o 'data'                => raw data for download
@@ -228,14 +228,14 @@ class HTTP_Download
      *                  o 'buffersize'          => amount of bytes to buffer
      *                  o 'throttledelay'       => amount of secs to sleep
      *                  o 'cachecontrol'        => cache privacy and validity
-     * 
+     *
      * <br />
-     * 'Content-Disposition' is not HTTP compliant, but most browsers 
+     * 'Content-Disposition' is not HTTP compliant, but most browsers
      * follow this header, so it was borrowed from MIME standard.
-     * 
+     *
      * It looks like this: <br />
      * "Content-Disposition: attachment; filename=example.tgz".
-     * 
+     *
      * @see HTTP_Download::setContentDisposition()
      */
     function HTTP_Download($params = array())
@@ -244,47 +244,47 @@ class HTTP_Download
         $this->setParams($params);
     }
     // }}}
-    
+
     // {{{ public methods
     /**
      * Set parameters
-     * 
+     *
      * Set supplied parameters through its accessor methods.
      *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   array   $params     associative array of parameters
-     * 
+     *
      * @see     HTTP_Download::HTTP_Download()
      */
     function setParams($params)
     {
         foreach((array) $params as $param => $value){
             $method = 'set'. $param;
-            
+
             if (!method_exists($this, $method)) {
                 return PEAR::raiseError(
                     "Method '$method' doesn't exist.",
                     HTTP_DOWNLOAD_E_INVALID_PARAM
                 );
             }
-            
+
             $e = call_user_func_array(array(&$this, $method), (array) $value);
-            
+
             if (PEAR::isError($e)) {
                 return $e;
             }
         }
         return true;
     }
-    
+
     /**
      * Set path to file for download
      *
      * The Last-Modified header will be set to files filemtime(), actually.
      * Returns PEAR_Error (HTTP_DOWNLOAD_E_INVALID_FILE) if file doesn't exist.
      * Sends HTTP 404 status if $send_404 is set to true.
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   string  $file       path to file for download
@@ -308,12 +308,12 @@ class HTTP_Download
         $this->size = filesize($file);
         return true;
     }
-    
+
     /**
      * Set data for download
      *
      * Set $data to null if you want to unset this.
-     * 
+     *
      * @access  public
      * @return  void
      * @param   $data   raw data to send
@@ -323,14 +323,14 @@ class HTTP_Download
         $this->data = $data;
         $this->size = strlen($data);
     }
-    
+
     /**
      * Set resource for download
      *
      * The resource handle supplied will be closed after sending the download.
-     * Returns a PEAR_Error (HTTP_DOWNLOAD_E_INVALID_RESOURCE) if $handle 
+     * Returns a PEAR_Error (HTTP_DOWNLOAD_E_INVALID_RESOURCE) if $handle
      * is no valid resource. Set $handle to null if you want to unset this.
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   int     $handle     resource handle
@@ -342,7 +342,7 @@ class HTTP_Download
             $this->size = 0;
             return true;
         }
-        
+
         if (is_resource($handle)) {
             $this->handle = $handle;
             $filestats    = fstat($handle);
@@ -355,13 +355,13 @@ class HTTP_Download
             HTTP_DOWNLOAD_E_INVALID_RESOURCE
         );
     }
-    
+
     /**
      * Whether to gzip the download
      *
      * Returns a PEAR_Error (HTTP_DOWNLOAD_E_NO_EXT_ZLIB)
      * if ext/zlib is not available/loadable.
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   bool    $gzip   whether to gzip the download
@@ -380,10 +380,10 @@ class HTTP_Download
 
     /**
      * Whether to allow caching
-     * 
+     *
      * If set to true (default) we'll send some headers that are commonly
      * used for caching purposes like ETag, Cache-Control and Last-Modified.
-     * 
+     *
      * If caching is disabled, we'll send the download no matter if it
      * would actually be cached at the client side.
      *
@@ -395,13 +395,13 @@ class HTTP_Download
     {
         $this->cache = (bool) $cache;
     }
-    
+
     /**
      * Whether to allow proxies to cache
-     * 
+     *
      * If set to 'private' proxies shouldn't cache the response.
      * This setting defaults to 'public' and affects only cached responses.
-     * 
+     *
      * @access  public
      * @return  bool
      * @param   string  $cache  private or public
@@ -413,20 +413,20 @@ class HTTP_Download
         {
             case 'private':
             case 'public':
-                $this->headers['Cache-Control'] = 
+                $this->headers['Cache-Control'] =
                     $cache .', must-revalidate, max-age='. abs($maxage);
                 return true;
             break;
         }
         return false;
     }
-    
+
     /**
      * Set ETag
-     * 
+     *
      * Sets a user-defined ETag for cache-validation.  The ETag is usually
      * generated by HTTP_Download through its payload information.
-     * 
+     *
      * @access  public
      * @return  void
      * @param   string  $etag Entity tag used for strong cache validation.
@@ -435,19 +435,19 @@ class HTTP_Download
     {
         $this->etag = (string) $etag;
     }
-    
+
     /**
      * Set Size of Buffer
-     * 
+     *
      * The amount of bytes specified as buffer size is the maximum amount
      * of data read at once from resources or files.  The default size is 2M
      * (2097152 bytes).  Be aware that if you enable gzip compression and
      * you set a very low buffer size that the actual file size may grow
      * due to added gzip headers for each sent chunk of the specified size.
-     * 
+     *
      * Returns PEAR_Error (HTTP_DOWNLOAD_E_INVALID_PARAM) if $size is not
      * greater than 0 bytes.
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   int     $bytes Amount of bytes to use as buffer.
@@ -462,36 +462,36 @@ class HTTP_Download
         $this->bufferSize = abs($bytes);
         return true;
     }
-    
+
     /**
      * Set Throttle Delay
-     * 
+     *
      * Set the amount of seconds to sleep after each chunck that has been
      * sent.  One can implement some sort of throttle through adjusting the
      * buffer size and the throttle delay.  With the following settings
      * HTTP_Download will sleep a second after each 25 K of data sent.
-     * 
+     *
      * <code>
      *  Array(
      *      'throttledelay' => 1,
      *      'buffersize'    => 1024 * 25,
      *  )
      * </code>
-     * 
-     * Just be aware that if gzipp'ing is enabled, decreasing the chunk size 
+     *
+     * Just be aware that if gzipp'ing is enabled, decreasing the chunk size
      * too much leads to proportionally increased network traffic due to added
      * gzip header and bottom bytes around each chunk.
-     * 
+     *
      * @access  public
      * @return  void
-     * @param   float   $seconds    Amount of seconds to sleep after each 
+     * @param   float   $seconds    Amount of seconds to sleep after each
      *                              chunk that has been sent.
      */
     function setThrottleDelay($seconds = 0)
     {
         $this->throttleDelay = abs($seconds) * 1000;
     }
-    
+
     /**
      * Set "Last-Modified"
      *
@@ -499,7 +499,7 @@ class HTTP_Download
      * If you set raw data for download with HTTP_Download::setData() and you
      * want do send an appropiate "Last-Modified" header, you should call this
      * method.
-     * 
+     *
      * @access  public
      * @return  void
      * @param   int     unix timestamp
@@ -508,10 +508,10 @@ class HTTP_Download
     {
         $this->lastModified = $this->headers['Last-Modified'] = (int) $last_modified;
     }
-    
+
     /**
      * Set Content-Disposition header
-     * 
+     *
      * @see HTTP_Download::HTTP_Download
      *
      * @access  public
@@ -520,7 +520,7 @@ class HTTP_Download
      *                                  inline or as attachment
      * @param   string  $file_name      the filename to display in
      *                                  the browser's download window
-     * 
+     *
      * <b>Example:</b>
      * <code>
      * $HTTP_Download->setContentDisposition(
@@ -529,7 +529,7 @@ class HTTP_Download
      * );
      * </code>
      */
-    function setContentDisposition( $disposition    = HTTP_DOWNLOAD_ATTACHMENT, 
+    function setContentDisposition( $disposition    = HTTP_DOWNLOAD_ATTACHMENT,
                                     $file_name      = null)
     {
         $cd = $disposition;
@@ -540,14 +540,14 @@ class HTTP_Download
         }
         $this->headers['Content-Disposition'] = $cd;
     }
-    
+
     /**
      * Set content type of the download
      *
      * Default content type of the download will be 'application/x-octetstream'.
-     * Returns PEAR_Error (HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE) if 
+     * Returns PEAR_Error (HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE) if
      * $content_type doesn't seem to be valid.
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   string  $content_type   content type of file for download
@@ -563,11 +563,11 @@ class HTTP_Download
         $this->headers['Content-Type'] = $content_type;
         return true;
     }
-    
+
     /**
      * Guess content type of file
-     * 
-     * First we try to use PEAR::MIME_Type, if installed, to detect the content 
+     *
+     * First we try to use PEAR::MIME_Type, if installed, to detect the content
      * type, else we check if ext/mime_magic is loaded and properly configured.
      *
      * Returns PEAR_Error if:
@@ -578,7 +578,7 @@ class HTTP_Download
      *      o mime_content_type() couldn't guess content type or returned
      *        a content type considered to be bogus by setContentType()
      *        (HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE)
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      */
@@ -618,7 +618,7 @@ class HTTP_Download
      * Returns PEAR_Error if:
      *   o HTTP headers were already sent (HTTP_DOWNLOAD_E_HEADERS_SENT)
      *   o HTTP Range was invalid (HTTP_DOWNLOAD_E_INVALID_REQUEST)
-     * 
+     *
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   bool    $autoSetContentDisposition Whether to set the
@@ -632,16 +632,16 @@ class HTTP_Download
                 HTTP_DOWNLOAD_E_HEADERS_SENT
             );
         }
-        
+
         if (!ini_get('safe_mode')) {
             @set_time_limit(0);
         }
-        
-        if ($autoSetContentDisposition && 
+
+        if ($autoSetContentDisposition &&
             !isset($this->headers['Content-Disposition'])) {
             $this->setContentDisposition();
         }
-        
+
         if ($this->cache) {
             $this->headers['ETag'] = $this->generateETag();
             if ($this->isCached()) {
@@ -652,19 +652,19 @@ class HTTP_Download
         } else {
             unset($this->headers['Last-Modified']);
         }
-        
+
         if (ob_get_level()) {
-        	while (@ob_end_clean());
+        	while (ob_end_clean());
         }
-        
+
         if ($this->gzip) {
             @ob_start('ob_gzhandler');
         } else {
             ob_start();
         }
-        
+
         $this->sentBytes = 0;
-        
+
         if ($this->isRangeRequest()) {
             $this->HTTP->sendStatusCode(206);
             $chunks = $this->getChunks();
@@ -681,18 +681,18 @@ class HTTP_Download
             $this->HTTP->sendStatusCode(416);
             return $e;
         }
-        
+
         ob_end_flush();
         flush();
         return true;
-    }    
+    }
 
     /**
      * Static send
      *
      * @see     HTTP_Download::HTTP_Download()
      * @see     HTTP_Download::send()
-     * 
+     *
      * @static
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
@@ -715,10 +715,10 @@ class HTTP_Download
         }
         return $d->send();
     }
-    
+
     /**
      * Send a bunch of files or directories as an archive
-     * 
+     *
      * Example:
      * <code>
      *  require_once 'HTTP/Download.php';
@@ -742,22 +742,22 @@ class HTTP_Download
      * @param   string  $add_path   path that should be prepended to the files
      * @param   string  $strip_path path that should be stripped from the files
      */
-    function sendArchive(   $name, 
-                            $files, 
-                            $type       = HTTP_DOWNLOAD_TGZ, 
-                            $add_path   = '', 
+    function sendArchive(   $name,
+                            $files,
+                            $type       = HTTP_DOWNLOAD_TGZ,
+                            $add_path   = '',
                             $strip_path = '')
     {
         require_once 'HTTP/Download/Archive.php';
-        return HTTP_Download_Archive::send($name, $files, $type, 
+        return HTTP_Download_Archive::send($name, $files, $type,
             $add_path, $strip_path);
     }
     // }}}
-    
+
     // {{{ protected methods
-    /** 
+    /**
      * Generate ETag
-     * 
+     *
      * @access  protected
      * @return  string
      */
@@ -767,7 +767,7 @@ class HTTP_Download
             if ($this->data) {
                 $md5 = md5($this->data);
             } else {
-                $fst = is_resource($this->handle) ? 
+                $fst = is_resource($this->handle) ?
                     fstat($this->handle) : stat($this->file);
                 $md5 = md5($fst['mtime'] .'='. $fst['ino'] .'='. $fst['size']);
             }
@@ -775,10 +775,10 @@ class HTTP_Download
         }
         return $this->etag;
     }
-    
-    /** 
+
+    /**
      * Send multiple chunks
-     * 
+     *
      * @access  protected
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   array   $chunks
@@ -802,10 +802,10 @@ class HTTP_Download
         #echo "\r\n--$bound--\r\n";
         return true;
     }
-    
+
     /**
      * Send chunk of data
-     * 
+     *
      * @access  protected
      * @return  mixed   Returns true on success or PEAR_Error on failure.
      * @param   array   $chunk  start and end offset of the chunk to send
@@ -816,16 +816,16 @@ class HTTP_Download
     {
         list($offset, $lastbyte) = $chunk;
         $length = ($lastbyte - $offset) + 1;
-        
+
         if ($length < 1) {
             return PEAR::raiseError(
                 "Error processing range request: $offset-$lastbyte/$length",
                 HTTP_DOWNLOAD_E_INVALID_REQUEST
             );
         }
-        
+
         $range = $offset . '-' . $lastbyte . '/' . $this->size;
-        
+
         if (isset($cType, $bound)) {
             echo    "\r\n--$bound\r\n",
                     "Content-Type: $cType\r\n",
@@ -862,10 +862,10 @@ class HTTP_Download
         }
         return true;
     }
-    
-    /** 
+
+    /**
      * Get chunks to send
-     * 
+     *
      * @access  protected
      * @return  array
      */
@@ -885,10 +885,10 @@ class HTTP_Download
         }
         return $parts;
     }
-    
-    /** 
+
+    /**
      * Check if range is requested
-     * 
+     *
      * @access  protected
      * @return  bool
      */
@@ -899,22 +899,22 @@ class HTTP_Download
         }
         return $this->isValidRange();
     }
-    
-    /** 
+
+    /**
      * Get range request
-     * 
+     *
      * @access  protected
      * @return  array
      */
     function getRanges()
     {
-        return preg_match('/^bytes=((\d*-\d*,? ?)+)$/', 
+        return preg_match('/^bytes=((\d*-\d*,? ?)+)$/',
             @$_SERVER['HTTP_RANGE'], $matches) ? $matches[1] : array();
     }
-    
-    /** 
+
+    /**
      * Check if entity is cached
-     * 
+     *
      * @access  protected
      * @return  bool
      */
@@ -928,10 +928,10 @@ class HTTP_Download
             $this->compareAsterisk('HTTP_IF_NONE_MATCH', $this->etag))
         );
     }
-    
-    /** 
+
+    /**
      * Check if entity hasn't changed
-     * 
+     *
      * @access  protected
      * @return  bool
      */
@@ -960,10 +960,10 @@ class HTTP_Download
         }
         return true;
     }
-    
-    /** 
+
+    /**
      * Compare against an asterisk or check for equality
-     * 
+     *
      * @access  protected
      * @return  bool
      * @param   string  key for the $_SERVER array
@@ -978,7 +978,7 @@ class HTTP_Download
         }
         return false;
     }
-    
+
     /**
      * Send HTTP headers
      *
@@ -999,10 +999,10 @@ class HTTP_Download
             flush();
         }
     }
-    
+
     /**
      * Flush
-     * 
+     *
      * @access  protected
      * @return  void
      * @param   string  $data
@@ -1016,10 +1016,10 @@ class HTTP_Download
         ob_flush();
         flush();
     }
-    
+
     /**
      * Sleep
-     * 
+     *
      * @access  protected
      * @return  void
      */

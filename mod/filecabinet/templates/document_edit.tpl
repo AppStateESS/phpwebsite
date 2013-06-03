@@ -1,4 +1,4 @@
-<h1>{FORM_TITLE}</h1>
+<h2>{FORM_TITLE}</h2>
 {START_FORM}
 <!-- BEGIN error-list -->
 <p class="error">{ERROR}</p>

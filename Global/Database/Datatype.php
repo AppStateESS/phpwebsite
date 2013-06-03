@@ -78,8 +78,8 @@ abstract class Datatype extends \Data {
             throw new \Exception(\t('Unknown data type "%s"', $type));
         }
         $class_name = ucwords($alltypes[$type]);
-        $class_file = "Global/Database/Datatype/$class_name.php";
-        $engine_file = "Global/Database/Engine/$engine/Datatype/$class_name.php";
+        $class_file = PHPWS_SOURCE_DIR . "Global/Database/Datatype/$class_name.php";
+        $engine_file = PHPWS_SOURCE_DIR . "Global/Database/Engine/$engine/Datatype/$class_name.php";
 
         if (is_file($engine_file)) {
             $datatype_name = "\Database\Engine\\$engine\Datatype\\$class_name";
@@ -108,9 +108,14 @@ abstract class Datatype extends \Data {
         }
     }
 
+    /**
+     * Sets whether the database type is NULL (true) or NOT NULL (false)
+     * @param boolean $null
+     */
     public function setIsNull($null)
     {
         $this->is_null = (bool) $null;
+        return $this;
     }
 
     public function setName($name)
@@ -199,6 +204,7 @@ abstract class Datatype extends \Data {
         } else {
             $this->default = new \Variable\String((string) $value);
         }
+        return $this;
     }
 
     /**
@@ -256,6 +262,7 @@ abstract class Datatype extends \Data {
     public function setSize($length)
     {
         $this->size->set($length);
+        return $this;
     }
 
     public function getSize()

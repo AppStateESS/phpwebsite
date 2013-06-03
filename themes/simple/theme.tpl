@@ -3,6 +3,7 @@
 {BASE}
 <title>{PAGE_TITLE}</title>
 {METATAGS} {JAVASCRIPT} {STYLE}
+<link rel="stylesheet" type="text/css" href="{THEME_HTTP}compat.css" />
 </head>
 <body>
 <div id="body-sub">

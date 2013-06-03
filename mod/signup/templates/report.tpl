@@ -16,11 +16,11 @@ body {
     font-size: 10pt;
 }
 
-h1 {
+h2 {
     font-size: 1.2em;
 }
 
-h2 {
+h3 {
     font-size: 1.1em;
 }
 
@@ -47,10 +47,10 @@ div.print {
 <div class="print"><input id="print" type="button" value="{PRINT}"
     onclick="print_page(); return false"
 /></div>
-<h1>{REPORT_TITLE}</h1>
+<h2>{REPORT_TITLE}</h2>
 <!-- BEGIN slot -->
 <div class="slot">
-<h2>{SLOT_TITLE}</h2>
+<h3>{SLOT_TITLE}</h3>
 <!-- BEGIN peeps -->
 <p class="peep">{FIRST_NAME} {LAST_NAME}</p>
 <!-- END peeps --> <!-- BEGIN spaces -->

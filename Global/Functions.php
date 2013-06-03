@@ -14,7 +14,8 @@
  * Any other undeclared classes will need to be required directly.
  * @param string $class_name
  */
-function __autoload($class_name)
+spl_autoload_register('phpwsAutoload');
+function phpwsAutoload($class_name)
 {
     // stores previously found requires
     static $files_found = array();
@@ -26,7 +27,7 @@ function __autoload($class_name)
     }
     $class_name = preg_replace('@^/|/$@', '',
             str_replace('\\', '/', $class_name));
-    $new_mod_file = PHPWS_SOURCE_DIR . preg_replace('|^([^/]+)/(\w+)|',
+    $new_mod_file = PHPWS_SOURCE_DIR . preg_replace('|^([^/]+)/([\w/]+)|',
                     'mod/\\1/class/\\2.php', $class_name);
     $global_file = PHPWS_SOURCE_DIR . 'Global/' . $class_name . '.php';
     $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
@@ -117,31 +118,28 @@ function get_file_permission($file)
     return sprintf("%o", ($stat['mode'] & 000777));
 }
 
+
 /**
- * Plugs in values to a template html file. The html file is expected to have
- * PHP code to echo these variables. The variables names match the keys of the
- * associative array. The values are what is most likely echoed.
+ * Logs a message to the specified $filename in side the defined LOG_DIRECTORY
  *
- * The template designer may perform other functions within the template with
- * the values. (for example, the value may be an array itself and the template
- * iterates through that array to create content).
- *
- * @param string $file Full path to template file
- * @param array $template Associative array of variables to plug into template
- * @return string
- * @throws \Exception
+ * @param string $message
+ * @param string $filename
+ * @return boolean
  */
-function template($file, array $template)
+function logMessage($message, $filename)
 {
-    if (!is_file($file)) {
-        throw new \Exception(t('Template file not found'));
+    if (preg_match('|[/\\\]|', $filename)) {
+        trigger_error('Slashes not allowed in log file names.', E_USER_ERROR);
     }
-    extract($template);
-    ob_start();
-    include $file;
-    $result = ob_get_contents();
-    ob_end_clean();
-    return $result;
+    $log_path = LOG_DIRECTORY . $filename;
+    $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . $message;
+    if (@error_log($message, 3, $log_path)) {
+        chmod($log_path, LOG_PERMISSION);
+        return true;
+    } else {
+        trigger_error("Could not write $filename file. Check error directory setting and file permissions.",
+                E_USER_ERROR);
+    }
 }
 
 /**

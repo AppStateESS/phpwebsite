@@ -8,7 +8,7 @@ function voila(foo) {
     }
 }
 </script>
-<h1>{FORM_TITLE}</h1>
+<h2>{FORM_TITLE}</h2>
 <!-- BEGIN errors -->
 <p class="error">{ERRORS}</p>
 <!-- END errors -->

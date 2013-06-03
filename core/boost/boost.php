@@ -5,7 +5,7 @@
  */
 
 $proper_name  = 'phpWebSite Core';
-$version      = '2.2.0';
+$version      = '2.3.0';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/base/check.xml';
 $dependency   = false;
 $about        = true;

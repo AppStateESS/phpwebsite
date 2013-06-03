@@ -7,7 +7,6 @@ mb_internal_encoding('UTF-8');
 /**
  * Include the defines used in Global library
  */
-require_once 'config/Defines.php';
 
 /**
  * DISPLAY_ERRORS set in Config/Defines.php

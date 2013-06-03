@@ -1,17 +1,31 @@
-<div id="css-user-login"><!-- BEGIN login-form --> {START_FORM} <span
-    id="username-entry"
->{PHPWS_USERNAME_LABEL} {PHPWS_USERNAME}</span> <span id="password-entry">{PHPWS_PASSWORD_LABEL}
-{PHPWS_PASSWORD}</span> <span id="submit-login">{SUBMIT}</span> {END_FORM} <!-- END login-form -->
-<!-- BEGIN links --> <!-- BEGIN new-account --><span
-    id="new-account-link"
->{NEW_ACCOUNT}</span><!-- END new-account --> <!-- BEGIN forgot --><span
-    id="forgot-link"
->{FORGOT}</span><!-- END forgot --> <!-- END links --> <!-- BEGIN user-panel -->
-<div id="user-panel">
-<div class="box-title">
-<h1>{DISPLAY_NAME}</h1>
-</div>
-<span id="home-link">{HOME}</span><span id="panel-link">{PANEL}</span><span
-    id="logout-link"
->{LOGOUT}</span></div>
-<!-- END user-panel --></div>
+<!-- BEGIN login-form -->
+<span class="pull-right">
+<form class="navbar-form {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}" {FORM_ENCODE}>
+{HIDDEN_FIELDS}
+{PHPWS_USERNAME}
+{PHPWS_PASSWORD}
+{SUBMIT}
+</form>
+</span>
+<!-- END login-form -->
+<!-- BEGIN new-account -->
+<li class="pull-right">{NEW_ACCOUNT}</li>
+<!-- END new-account -->
+<!-- BEGIN forgot -->
+<li class="pull-right">{FORGOT}</li>
+<!-- END forgot -->
+<!-- BEGIN user-panel -->
+<!-- END user-panel -->
+<!-- BEGIN logged-in -->
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  {DISPLAY_NAME}
+  <b class="caret"></b>
+</a>
+<ul class="dropdown-menu">
+  <li>{HOME}</li>
+  <li>{PANEL}</li>
+  <li>{LOGOUT}</li>
+</ul>
+</li>
+<!-- END logged-in -->

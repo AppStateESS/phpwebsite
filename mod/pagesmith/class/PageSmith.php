@@ -166,7 +166,6 @@ class PageSmith {
                         break;
 
                     case 1:
-
                         $this->killSaved($this->page->id);
                         PHPWS_Cache::clearCache();
                         if (isset($_POST['save_so_far'])) {
@@ -331,7 +330,8 @@ class PageSmith {
     public function loadPage()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
-        if (@$_REQUEST['id']) {
+
+        if (isset($_REQUEST['id'])) {
             $this->page = new PS_Page($_REQUEST['id']);
         } else {
             $this->page = new PS_Page;
@@ -442,6 +442,14 @@ class PageSmith {
         }
 
         $this->page->save();
+        if (!empty($_POST['publish_date'])) {
+            $this->page->_key->show_after = strtotime($_POST['publish_date']);
+        } else {
+            $this->page->_key->show_after = time();
+        }
+        $this->page->_key->save();
+
+
         PHPWS_Cache::clearCache();
         PHPWS_Core::initModClass('access', 'Shortcut.php');
 

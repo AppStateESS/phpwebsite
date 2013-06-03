@@ -127,7 +127,7 @@ class Categories {
      * Returns a list of category links for a specific module
      */
 
-    public function getCategoryList($module)
+    public static function getCategoryList($module)
     {
         Layout::addStyle('categories');
         $result = Categories::getCategories();
@@ -138,7 +138,7 @@ class Categories {
     /**
      * Creates the links based on categories sent to it
      */
-    private function makeLink($list, $module)
+    private static function makeLink($list, $module)
     {
         $vars['action'] = 'view';
 
@@ -480,7 +480,7 @@ class Categories {
         $db->delete();
     }
 
-    public function delete($category)
+    public static function delete($category)
     {
         $category->kill();
     }

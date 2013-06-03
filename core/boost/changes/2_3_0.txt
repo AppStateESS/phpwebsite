@@ -1,0 +1,6 @@
+2.2.1 changes
+--------------
+
+The main core has undergone a rewrite. Modules are loaded using a new Module class.
+Old modules are still compatible. This changes removed functions from PHPWS_Core.
+Our goal is to eventually remove PHPWS_Core entirely.

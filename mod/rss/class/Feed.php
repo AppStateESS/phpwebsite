@@ -4,24 +4,23 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::initCoreClass('XMLParser.php');
 
 PHPWS_Core::requireConfig('rss');
 
 class RSS_Feed {
-    public $id           = 0;
-    public $title        = NULL;
-    public $address      = NULL;
-    public $display      = 1;
-    public $item_limit   = RSS_FEED_LIMIT;
+
+    public $id = 0;
+    public $title = NULL;
+    public $address = NULL;
+    public $display = 1;
+    public $item_limit = RSS_FEED_LIMIT;
     public $refresh_time = RSS_FEED_REFRESH;
-    public $_error       = NULL;
-    public $_parser      = NULL;
-    public $mapped       = NULL;
+    public $_error = NULL;
+    public $_parser = NULL;
+    public $mapped = NULL;
 
-
-    public function RSS_Feed($id=0)
+    public function RSS_Feed($id = 0)
     {
         $this->id = $id;
 
@@ -60,35 +59,39 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink(Icon::show('refresh', dgettext('rss', 'Reset')), 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('refresh',
+                                dgettext('rss', 'Reset')), 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
-        $this->id, Current_User::getAuthKey());
+                $this->id, Current_User::getAuthKey());
         $jsvars['label'] = Icon::show('edit');
         $jsvars['height'] = '280';
         $links[] = javascript('open_window', $jsvars);
 
-        $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
-        $js['ADDRESS']  = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
-        $this->id, Current_User::getAuthKey());
-        $js['LINK']     = Icon::show('delete');
+        $js['QUESTION'] = dgettext('rss',
+                'Are you sure you want to delete this RSS feed?');
+        $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
+                $this->id, Current_User::getAuthKey());
+        $js['LINK'] = Icon::show('delete');
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' ', $links);
 
         if ($this->display) {
             $vars['command'] = 'turn_off_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'), 'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'),
+                            'rss', $vars);
         } else {
             $vars['command'] = 'turn_on_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'), 'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'),
+                            'rss', $vars);
         }
 
-        $hours   = floor($this->refresh_time / 3600);
+        $hours = floor($this->refresh_time / 3600);
 
         $remaining = $this->refresh_time - ($hours * 3600);
 
-        $minutes = floor( $remaining / 60);
+        $minutes = floor($remaining / 60);
 
         $seconds = $remaining - $minutes * 60;
 
@@ -116,13 +119,14 @@ class RSS_Feed {
 
         $refresh_time = sprintf(dgettext('rss', 'Every %s'), $time);
 
-        $tpl['ADDRESS'] = sprintf('<a href="%s">%s</a>', $this->address, PHPWS_Text::shortenUrl($this->address));
+        $tpl['ADDRESS'] = sprintf('<a href="%s">%s</a>', $this->address,
+                PHPWS_Text::shortenUrl($this->address));
         $tpl['REFRESH_TIME'] = $refresh_time;
 
         return $tpl;
     }
 
-    public function loadParser($use_cache=TRUE)
+    public function loadParser($use_cache = TRUE)
     {
         if (empty($this->address)) {
             return FALSE;
@@ -174,33 +178,43 @@ class RSS_Feed {
 
         if (!isset($_POST['address'])) {
             $error[] = dgettext('rss', 'You must enter an address.');
+        } else {
+            $address = trim($_POST['address']);
+            if (!preg_match('|^https?://|', $address)) {
+                $error[] = dgettext('rss',
+                        'RSS import needs to be an offsite link.');
+            } else {
+                $this->setAddress($address);
+            }
         }
-
-        $this->setAddress($_POST['address']);
 
         if (!$this->loadParser(FALSE)) {
             $error[] = dgettext('rss', 'Invalid feed address.');
         }
 
-        $item_limit = (int)$_POST['item_limit'];
+        $item_limit = (int) $_POST['item_limit'];
 
         if (empty($item_limit)) {
             $this->item_limit = RSS_FEED_LIMIT;
         } elseif ($item_limit > RSS_MAX_FEED) {
-            $error[] = sprintf(dgettext('rss', 'You may not pull more than %s feeds.'), RSS_MAX_FEED);
+            $error[] = sprintf(dgettext('rss',
+                            'You may not pull more than %s feeds.'),
+                    RSS_MAX_FEED);
             $this->item_limit = RSS_FEED_LIMIT;
         } else {
             $this->item_limit = $item_limit;
         }
 
 
-        $refresh_time = (int)$_POST['refresh_time'];
+        $refresh_time = (int) $_POST['refresh_time'];
 
         if ($refresh_time < 60) {
-            $error[] = dgettext('rss', 'Refresh time is too low. It must be over 60 seconds.');
+            $error[] = dgettext('rss',
+                    'Refresh time is too low. It must be over 60 seconds.');
             $this->refresh_time = RSS_FEED_REFRESH;
         } elseif ($refresh_time > 2592000) {
-            $error[] = dgettext('rss', 'You should refresh more often than every month.');
+            $error[] = dgettext('rss',
+                    'You should refresh more often than every month.');
             $this->refresh_time = RSS_FEED_REFRESH;
         } else {
             $this->refresh_time = &$refresh_time;
@@ -245,7 +259,8 @@ class RSS_Feed {
                         break;
                     }
                     if (strlen($item_data['DESCRIPTION']) > RSS_SHORT_DESC_SIZE) {
-                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'], 0, RSS_SHORT_DESC_SIZE) . '...';
+                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'],
+                                        0, RSS_SHORT_DESC_SIZE) . '...';
                     } else {
                         $item_data['SHORT_DESCRIPTION'] = &$item_data['DESCRIPTION'];
                     }
@@ -257,19 +272,18 @@ class RSS_Feed {
                 $tpl['MESSAGE'] = dgettext('rss', 'Unable to list feed.');
             }
         }
-        $tpl['FEED_LINK']  = &$this->mapped['CHANNEL']['LINK'];
+        $tpl['FEED_LINK'] = &$this->mapped['CHANNEL']['LINK'];
 
         if (isset($this->mapped['IMAGE'])) {
             $image = & $this->mapped['IMAGE'];
 
             if (isset($image['LINK'])) {
                 $tpl['IMAGE'] = sprintf('<a href="%s"><img src="%s" title="%s" border="0" /></a>',
-                $image['LINK'], $image['URL'], $image['TITLE']);
+                        $image['LINK'], $image['URL'], $image['TITLE']);
             } else {
                 $tpl['IMAGE'] = sprintf('<img src="%s" title="%s" border="0" />',
-                $image['URL'], $image['TITLE']);
+                        $image['URL'], $image['TITLE']);
             }
-
         } else {
             $tpl['FEED_TITLE'] = &$this->title;
         }
@@ -278,7 +292,6 @@ class RSS_Feed {
 
         return $content;
     }
-
 
     public function pullChannel($data, $version)
     {
@@ -297,7 +310,7 @@ class RSS_Feed {
                             continue;
                         }
                         foreach ($items as $item) {
-                            list(,$resource) = each($item['attributes']);
+                            list(, $resource) = each($item['attributes']);
                             $this->mapped['CHANNEL']['ITEM_RESOURCES'][] = $resource;
                         }
                     } elseif ($version == '2.0' || $version == '0.92') {
@@ -307,7 +320,8 @@ class RSS_Feed {
 
                 case 'IMAGE':
                     if ($version == '1.0' && isset($item['attributes']) && is_array($item['attributes'])) {
-                        foreach ($item['attributes'] as $ignore=>$resource);
+                        foreach ($item['attributes'] as $ignore => $resource)
+                            ;
                         $this->mapped['CHANNEL']['IMAGE'] = $resource;
                     } elseif ($version == '2.0' || $version == '0.92') {
                         $this->pullImage($info['child']);
@@ -316,7 +330,8 @@ class RSS_Feed {
 
                 case 'TEXTINPUT':
                     if (isset($item['attributes']) && is_array($item['attributes'])) {
-                        foreach ($item['attributes'] as $ignore=>$resource);
+                        foreach ($item['attributes'] as $ignore => $resource)
+                            ;
                         $this->mapped['CHANNEL']['TEXTINPUT'] = $resource;
                     }
                     break;
@@ -325,7 +340,6 @@ class RSS_Feed {
                     $this->mapped['CHANNEL'][$name] = $content;
             }
         }
-
     }
 
     public function pullImage($data)
@@ -382,7 +396,6 @@ class RSS_Feed {
                     $this->pullTextInput($sec_value['child']);
                     break;
             }
-
         }
     }
 

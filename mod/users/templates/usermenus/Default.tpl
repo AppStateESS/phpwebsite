@@ -14,7 +14,7 @@
 <!-- END forgot --></div>
 <!-- END links --> <!-- END login-form --> <!-- BEGIN logged-in -->
 <div class="box-title">
-<h1>{DISPLAY_NAME}</h1>
+<h2>{DISPLAY_NAME}</h2>
 </div>
 <div class="box-content">{HOME}<br />
 {MODULES}<br />

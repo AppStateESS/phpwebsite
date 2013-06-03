@@ -64,11 +64,6 @@
                 <exclude name="lib/**" />
                 <modified />
             </fileset>
-
-<!--            <fileset dir="${basedir}/tests">
-                <include name="**/*.php" />
-                <modified />
-            </fileset>-->
         </apply>
     </target>
 
@@ -158,7 +153,9 @@
     </target>
 
     <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
-<!--        <exec executable="phpunit" failonerror="true"/>-->
+        <exec executable="phpunit" failonerror="true">
+            <arg value="-c" /><arg value="${basedir}/phpunit-phpwebsite.xml" />
+        </exec>
     </target>
 
     <target name="phpcb" depends="prepare"
@@ -206,5 +203,10 @@
             <arg value="-bb" />
             <arg path="${basedir}/${project.name}.spec" />
         </exec>
+    </target>
+
+    <target name="post-rpm" depends="metrics-ci">
+        <!-- This target is used by Jenkins to run metrics AFTER build.  This
+             space intentionally left blank. -->
     </target>
 </project>

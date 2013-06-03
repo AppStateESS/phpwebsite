@@ -15,6 +15,7 @@ class PS_Page {
     public $front_page = 0;
     public $parent_page = 0;
     public $page_order = 0;
+    public $publish_date;
     public $_tpl = null;
     public $_sections = array();
 
@@ -34,12 +35,14 @@ class PS_Page {
 
     public function __construct($id = 0)
     {
-        if (!$id) {
-            return;
+        if ($id) {
+            $this->id = (int) $id;
+            $this->init();
         }
 
-        $this->id = (int) $id;
-        $this->init();
+        if (empty($this->publish_date)) {
+            $this->publish_date = time();
+        }
     }
 
     public function init()
@@ -464,14 +467,17 @@ class PS_Page {
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         Layout::getCacheHeaders($this->cacheKey());
+        $save_cache = true;
+
         $cache = PHPWS_Cache::get($this->cacheKey());
 
         $this->loadTemplate();
         $this->_tpl->loadStyle();
         $this->flag();
 
-        if (!empty($cache)) {
-// needed for filecabinet
+        // Page always shown when user is an admin
+        if (!Current_User::allow('pagesmith') && !empty($cache)) {
+            // needed for filecabinet
             javascript('open_window');
             return $cache;
         }
@@ -485,6 +491,12 @@ class PS_Page {
 
         $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
 
+        if (Current_User::allow('pagesmith') && $this->_key->show_after > time()) {
+            $tpl['SHOW_AFTER'] = t('Page hidden until %s',
+                    strftime('%F %H:%M', $this->_key->show_after));
+            $save_cache = false;
+        }
+
         $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith',
                         $this->_tpl->page_path . 'page.tpl');
         $this->pageLinks($tpl);
@@ -494,9 +506,10 @@ class PS_Page {
                     dgettext('pagesmith', 'Back to top'));
         }
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
-
-        Layout::cacheHeaders($this->cacheKey());
-        PHPWS_Cache::save($this->cacheKey(), $content);
+        if ($save_cache) {
+            Layout::cacheHeaders($this->cacheKey());
+            PHPWS_Cache::save($this->cacheKey(), $content);
+        }
         return $content;
     }
 

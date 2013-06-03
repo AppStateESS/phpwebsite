@@ -6,6 +6,8 @@
 <hr />
 <div class="align-center">{SUBMIT} {SAVE_SO_FAR}</div>
 <hr />
+{PUBLISH_DATE_LABEL} {PUBLISH_DATE}
+<hr />
 {TEMPLATE_LIST} {CHANGE_TPL} {ORPHAN_LINK}
 {END_FORM}
 <!-- BEGIN orphans -->

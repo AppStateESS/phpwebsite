@@ -1,0 +1,7 @@
+<ul class="dropdown-menu">
+<?php foreach($tpl as $module_name=>$mod_links): ?>
+<li class="nav-header"><?=$module_name?></li>
+<?php foreach($mod_links as $link): ?>
+<li><?=$link?></li>
+<?php endforeach; endforeach; ?>
+</ul>

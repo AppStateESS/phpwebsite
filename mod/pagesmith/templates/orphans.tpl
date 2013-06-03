@@ -1,6 +1,6 @@
 <hr />
 <a name="orphans"></a>
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 <!-- BEGIN orphan-list -->
 <div id="{ID}" class="orphans">{CONTENT}
 <div class="options">{OPTIONS}</div>

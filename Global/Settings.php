@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Stores and retrieves settings within Modules.
  *
@@ -6,29 +7,30 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-
-
 class Settings extends Data {
 
     public $variables;
+    private static $settings;
 
     public static function get($module_name, $variable_name)
     {
-        $settings = self::singleton();
-        if (!isset($settings->variables[$module_name][$variable_name])) {
-            $settings->loadDefaultSettings($module_name, $variable_name);
+        if (empty(self::$settings)) {
+            self::singleton();
         }
-        return $settings->variables[$module_name][$variable_name];
+        if (!isset(self::$settings->variables[$module_name][$variable_name])) {
+            self::$settings->loadDefaultSettings($module_name, $variable_name);
+        }
+        return self::$settings->variables[$module_name][$variable_name];
     }
 
     public function loadDefaultSettings($module_name, $variable_name)
     {
-        $manager = \ModuleManager::singleton();
-        $module = $manager->getModule($module_name);
+        $module = ModuleController::singleton()->getModule($module_name);
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!isset($settings[$variable_name])) {
-                throw new \Exception(t('Unknown setting "%s:%s"', $module_name, $variable_name));
+                throw new \Exception(t('Unknown setting "%s:%s"', $module_name,
+                        $variable_name));
             }
             $this->set($module_name, $variable_name, $settings[$variable_name]);
         } else {
@@ -41,37 +43,73 @@ class Settings extends Data {
         $settings = self::singleton();
         $settings->variables[$module_name][$variable_name] = $setting;
         $db = \Database::newDB();
-        $s = $db->addTable('Settings');
-        $s->addWhere('module_name', $module_name);
-        $s->addWhere('variable_name', $variable_name);
-        try {
-            $db->delete();
-        } catch (\Exception $e) {
-            //@todo better error handling here
-            throw $e;
+        if (!$db->tableExists('settings')) {
+            self::createSettingsTable();
         }
-
-        $s->addValue('module_name', $module_name);
-        $s->addValue('variable_name', $variable_name);
-        $s->addValue('setting', $setting);
-        $db->insert();
+        $s = $db->addTable('settings');
+        $db->setConditional($db->getConditional($s->getFieldConditional('module_name',
+                                $module_name),
+                        $s->getFieldConditional('variable_name', $variable_name),
+                        'and'));
+        $db->delete();
+        $s->reset();
+        if (is_array($setting)) {
+            foreach ($setting as $value) {
+                $s->addValue('module_name', $module_name);
+                $s->addValue('variable_name', $variable_name);
+                $s->addValue('setting', $value);
+                $db->insert();
+                $s->resetValues();
+            }
+        } else {
+            $s->addValue('module_name', $module_name);
+            $s->addValue('variable_name', $variable_name);
+            $s->addValue('setting', $setting);
+            $db->insert();
+        }
     }
 
-    final public static function singleton($reload=false)
+    public static function createSettingsTable()
     {
-        static $settings = null;
-        if ($reload || empty($settings)) {
-            $settings = new Settings;
+        $db = \Database::newDB();
+        if ($db->tableExists('settings')) {
+            return;
+        }
+        $settings = $db->addTable('settings');
+        $idx[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
+        $idx[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
+        $settings->addDataType('setting', 'varchar')->setIsNull(true);
+        $settings->addIndex($idx);
+        $settings->create();
+    }
+
+    final public static function singleton($reload = false)
+    {
+        if ($reload || empty(self::$settings)) {
+            self::$settings = new Settings;
             $db = Database::newDB();
-            $db->addTable('Settings');
+            if (!$db->tableExists('settings')) {
+                self::createSettingsTable();
+            }
+            $db->addTable('settings');
             $db->loadSelectStatement();
             $rows = $db->fetchAll();
             foreach ($rows as $v) {
+                $module_name = $variable_name = $setting = null;
                 extract($v);
-                $settings->variables[$module_name][$variable_name] = $setting;
+                if (isset(self::$settings->variables[$module_name][$variable_name])) {
+                    if (!is_array(self::$settings->variables[$module_name][$variable_name])) {
+                        $old_val = self::$settings->variables[$module_name][$variable_name];
+                        unset(self::$settings->variables[$module_name][$variable_name]);
+                        self::$settings->variables[$module_name][$variable_name][] = $old_val;
+                    }
+                    self::$settings->variables[$module_name][$variable_name][] = $setting;
+                } else {
+                    self::$settings->variables[$module_name][$variable_name] = $setting;
+                }
             }
         }
-        return $settings;
+        return self::$settings;
     }
 
 }

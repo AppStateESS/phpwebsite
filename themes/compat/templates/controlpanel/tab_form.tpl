@@ -1,4 +1,4 @@
-<h1>{FORM_TITLE}</h1>
+<h2>{FORM_TITLE}</h2>
 <br />
 {START_FORM}
 <strong>{TITLE_LABEL}</strong>

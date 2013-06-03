@@ -9,8 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-if ($_SESSION['User']->isLogged()){
+if ($_SESSION['User']->isLogged()) {
     Layout::add(PHPWS_ControlPanel::display());
 }
-
 ?>

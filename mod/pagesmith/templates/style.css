@@ -72,3 +72,8 @@ a.button {
     white-space: nowrap;
     text-decoration : none;
 }
+
+div.show-after {
+    padding : 4px;
+    border : 2px solid red;
+}

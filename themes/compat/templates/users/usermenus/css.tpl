@@ -9,7 +9,7 @@
 >{FORGOT}</span><!-- END forgot --> <!-- END links --> <!-- BEGIN user-panel -->
 <div id="user-panel">
 <div class="box-title">
-<h1>{DISPLAY_NAME}</h1>
+<h2>{DISPLAY_NAME}</h2>
 </div>
 <span id="home-link">{HOME}</span><span id="panel-link">{PANEL}</span><span
     id="logout-link"

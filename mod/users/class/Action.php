@@ -771,6 +771,8 @@ class User_Action {
                 }
                 break;
 
+            // This is used by auth scripts if they need to return the user to 
+            // where they left off after redirection to another site for SSO
             case 'return_bookmark':
                 PHPWS_Core::popUrlHistory();
                 break;

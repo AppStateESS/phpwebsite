@@ -43,13 +43,7 @@ abstract class DB extends \Data {
      * @access private
      */
     private $tbl_prefix = null;
-
-    /**
-     * An array of where groupings within the query
-     * @var array
-     * @access private
-     */
-    private $where_group_stack = null;
+    private $conditional;
 
     /**
      * An array of joined tables
@@ -183,6 +177,13 @@ abstract class DB extends \Data {
     abstract public function databaseExists($database_name);
 
     /**
+     * Should return true if the passed in table name exists.
+     * @param string
+     * @return boolean
+     */
+    abstract public function tableExists($table_name);
+
+    /**
      * Extended class should return a flat array of table names from the
      * current database.
      * @return array
@@ -277,6 +278,23 @@ abstract class DB extends \Data {
         } elseif (self::$transaction_count < 0) {
             throw new \Exception(t('Transaction not started'));
         }
+    }
+
+    public function setConditional(\Database\Conditional $conditional)
+    {
+        $this->conditional = $conditional;
+    }
+
+    /**
+     * Constructs and returns a Conditional object.
+     * @param mixed $left
+     * @param mixed $right
+     * @param string $operator
+     * @return \Database\Conditional
+     */
+    public function getConditional($left, $right, $operator)
+    {
+        return new Conditional($left, $right, $operator);
     }
 
     /**
@@ -644,7 +662,11 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns the table stack from the DB object
+     * Returns the table stack from the DB object. Only tables added by the dev
+     * will be returned. For a list of all tables, use $db->listTables().
+     * If you need to know if a table is in the database use
+     * $db->tableExists($table_name)
+     *
      * @return array
      */
     public function getAllTables()
@@ -665,7 +687,7 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns the group by object. Expected use is for string output.
+     * Returns the group_by object. Expected use is for string output.
      * @return Group object
      */
     private function getGroupBy()
@@ -815,7 +837,7 @@ abstract class DB extends \Data {
         if (!empty($include_on_join)) {
             foreach ($include_on_join as $module) {
                 if (is_subclass_of($module, 'Resource')) {
-                    $delete_modules[] = $module->hasAlias() ? $module->getAlias() : $module->getQuery();
+                    $delete_modules[] = $module->hasAlias() ? $module->getAlias() : $module->getResourceQuery();
                 }
             }
             $query[] = implode(', ', $delete_modules);
@@ -919,7 +941,7 @@ abstract class DB extends \Data {
      * @param \Database\Alias $alias
      * @return SubSelect
      */
-    public function getSubSelect(DB $DB, $alias)
+    public function getSubSelect(DB $DB, $alias = null)
     {
         return new SubSelect($DB, $alias);
     }
@@ -957,7 +979,7 @@ abstract class DB extends \Data {
      * Fetches a single row and then clears the PDO statement.
      * @return array
      */
-    public function fetchRow()
+    public function fetchOneRow()
     {
         $this->checkStatement();
         $result = $this->pdo_statement->fetch(\PDO::FETCH_ASSOC);
@@ -966,11 +988,12 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Fetches a single row from the database based upon the pdo_statement. fetch
+     * Fetches a row from the database based upon the pdo_statement. fetch()
      * will continue to return rows until no more can be returned. Fetch should
-     * not be used for single row fetch without clearing the statement. If the statement
-     * is not cleared after an incomplete fetch cycle, the next fetch will assume
-     * the current statement should be used unless set otherwise.
+     * not be used for single row fetch without clearing the statement (use
+     * fetchOneRow() instead). If the statement is not cleared after an incomplete
+     * fetch cycle, the next fetch will assume the current statement should be
+     * used unless set otherwise.
      * @return array
      */
     public function fetch()
@@ -983,6 +1006,12 @@ abstract class DB extends \Data {
         return $result;
     }
 
+    /**
+     * Returns a passed $object parameter with values set from the current query.
+     *
+     * @param object $object
+     * @return object
+     */
     public function fetchInto($object)
     {
         $this->checkStatement();
@@ -1003,7 +1032,7 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns a single column from a single row in the current pdo select
+     * Returns a single column from a row in the current pdo select
      * statement. The pointer is then advanced to the next row. Returns null
      * when reaching the end of the result stack.
      *
@@ -1088,7 +1117,7 @@ abstract class DB extends \Data {
             $show_left = true;
             $joined = array();
             foreach ($this->join_tables as $join) {
-                $joined[] = $join->getQuery($show_left);
+                $joined[] = $join->getResourceQuery($show_left);
                 $show_left = false;
             }
             $sources[] = implode(' ', $joined);
@@ -1115,12 +1144,7 @@ abstract class DB extends \Data {
                 }
 
                 if (!$module->isJoined()) {
-                    $sources[] = $module->getQuery();
-                }
-                $twhere = $module->getWhereStack($allow_first_conjunction);
-                if ($twhere) {
-                    $where[] = $twhere;
-                    $allow_first_conjunction = true;
+                    $sources[] = $module->getResourceQuery();
                 }
 
                 if ($mode == DB::SELECT) {
@@ -1143,18 +1167,8 @@ abstract class DB extends \Data {
         }
 
         $data['modules'] = implode(', ', $sources);
-        $conjgroup = !empty($where);
-        $where_groups = $this->whereGroupQuery($conjgroup);
-        if (!empty($where_groups) || !empty($where)) {
-            $slist[] = 'WHERE';
-            if (!empty($where)) {
-                $slist[] = implode(' ', $where);
-            }
-
-            if (!empty($where_groups)) {
-                $slist[] = $where_groups;
-            }
-            $data['where'] = implode(' ', $slist);
+        if (!empty($this->conditional)) {
+            $data['where'] = 'WHERE ' . $this->conditional->__toString();
         }
 
         // Groups used only on selects
@@ -1308,51 +1322,6 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Receives any number of Conditional or Conditional_Group objects as
-     * arguments and groups them into the returned new Conditional_Group.
-     *
-     * @access public
-     * @param \Datebase\Conditional
-     * @return \Database\Conditional_Group
-     */
-    public function groupWhere()
-    {
-        static $position = 0;
-
-        $args = func_get_args();
-        // only one argument was sent and it was an array, in this case
-        // we replace the $args variable with the first value.
-        if (func_num_args() == 1 && is_array($args[0])) {
-            $args = $args[0];
-        }
-
-
-        if (empty($args)) {
-            throw new \Exception(t('Invalid parameters.'));
-        } else {
-            $position++;
-            try {
-                $this->where_group_stack[$position] = new Conditional_Group($this,
-                        $position, $args);
-            } catch (Error $e) {
-                throw new \Exception('groupWhere parameters must be DB Conditional/Conditional_Group objects',
-                $e);
-            }
-            return $this->where_group_stack[$position];
-        }
-    }
-
-    /**
-     * Removes a where group from the stack. This is used internally when a
-     * new group is added to prevent repeats.
-     * @param boolean $position The position of the where group in the stack
-     */
-    public function dropWhereGroup($position)
-    {
-        unset($this->where_group_stack[$position]);
-    }
-
-    /**
      * Tests the operator parameter to see if it is valid
      * @param string $operator
      * @return boolean  True if valid, false if not.
@@ -1416,78 +1385,6 @@ abstract class DB extends \Data {
         return $this->module->numCols();
     }
 
-    /**
-     * Takes an object, parses its variables, and saves them into the current table or tables.
-     * Function checks to see if the object is an extension of Object. If so, it calls the
-     * object's save function. Otherwise, it depends on get_object_vars (which may skip
-     * private variables)
-     * @param object $object
-     */
-    public function saveObject($object)
-    {
-        $insert_object = false;
-
-        if (!is_object($object)) {
-            throw new \Exception(t('Variable is not an object'));
-        }
-
-        if (is_subclass_of($object, 'Object')) {
-            return $object->save();
-        } else {
-            $values = get_object_vars($object);
-        }
-
-        if (empty($values)) {
-            throw new \Exception(t('No values in object to save'));
-        }
-
-        foreach ($this->tables as $tbl) {
-            $primary_key = $tbl->getPrimaryIndex();
-            foreach ($values as $column => $value) {
-                if (DATABASE_CHECK_COLUMNS && !$tbl->columnExists($column)) {
-                    throw new \Exception(t('Column "%s" not found', $column));
-                }
-                // if the column is a primary key and empty, we want to insert
-                if ($column == $primary_key) {
-                    if (empty($value)) {
-                        $insert_object = true;
-                    } else {
-                        if (!$tbl->isJoined()) {
-                            $tbl->addWhere($primary_key, $value);
-                        }
-                        $insert_object = false;
-                    }
-                    continue;
-                }
-                $tbl->addValue($column, $value);
-            }
-        }
-
-        if ($insert_object) {
-            $this->insert();
-        } else {
-            $this->update();
-        }
-    }
-
-    /**
-     * Saves an array of objects
-     * @param array $objects
-     */
-    public function saveAllObjects(array $objects)
-    {
-        foreach ($objects as $obj) {
-            if (!is_object($obj)) {
-                throw new \Exception(t('Array must contain object variables only'));
-            }
-
-            if (is_subclass_of($obj, 'Object')) {
-                $obj->save();
-            } else {
-                $this->saveObject($obj);
-            }
-        }
-    }
 
     /**
      * Safely quotes a value for entry in the database.
@@ -1509,7 +1406,8 @@ abstract class DB extends \Data {
         if (is_string($value)) {
             $result = self::$PDO->quote($value);
             if ($result === false) {
-                throw new \Exception(t('Database connection failed when quoting string'));
+                throw new \Exception(t('Database connection failed when calling "%s"',
+                        'mysql_real_escape_string'));
             } else {
                 return $result;
             }
@@ -1602,7 +1500,7 @@ abstract class DB extends \Data {
     {
         $this->isResourceClass($class_name);
         $this->loadSelectStatement();
-        $vars = $this->fetchRow();
+        $vars = $this->fetchOneRow();
         $object = new $class_name;
         $object->setVars($vars);
         return $object;

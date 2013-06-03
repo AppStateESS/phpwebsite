@@ -128,7 +128,7 @@ class Search_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    public function removeSearchword($keyword, $key_id)
+    public static function removeSearchword($keyword, $key_id)
     {
         $search = new Search((int)$key_id);
         if ($search->_error) {
@@ -140,7 +140,7 @@ class Search_Admin {
         return $search->save();
     }
 
-    public function addKeyword($keyword, $key_id)
+    public static function addKeyword($keyword, $key_id)
     {
         $search = new Search((int)$key_id);
         if ($search->_error) {
@@ -152,7 +152,7 @@ class Search_Admin {
         return $search->save();
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['Search_Message'] = $message;
         PHPWS_Core::reroute('index.php?module=search&command=' . $command);
@@ -168,7 +168,7 @@ class Search_Admin {
         return $message;
     }
 
-    public function addParseWord($words)
+    public static function addParseWord($words)
     {
         if (!isset($_SESSION['Search_Add_Words'])) {
             $_SESSION['Search_Add_Words'] = $words;
@@ -353,7 +353,7 @@ class Search_Admin {
 
     }
 
-    public function setIgnore($kw_list, $ignore)
+    public static function setIgnore($kw_list, $ignore)
     {
         if (!is_array($kw_list)) {
             return FALSE;
@@ -379,7 +379,7 @@ class Search_Admin {
         return $panel;
     }
 
-    public function deleteKeyword()
+    public static function deleteKeyword()
     {
         if (!empty($_GET['keyword'])) {
             $db = new PHPWS_DB('search_stats');
@@ -395,7 +395,7 @@ class Search_Admin {
         return true;
     }
 
-    public function saveSettings()
+    public static function saveSettings()
     {
         if (isset($_POST['show_alternates'])) {
             PHPWS_Settings::set('search', 'show_alternates', 1);

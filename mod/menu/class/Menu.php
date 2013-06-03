@@ -116,7 +116,7 @@ class Menu {
         return $url == $compare;
     }
 
-    public static function getSiteLink($menu_id, $parent_id = 0, $isKeyed = false, $popup = false)
+    public static function getSiteLink($menu_id, $parent_id = 0, $isKeyed = false, $popup = false, $template = '')
     {
         $vars['command'] = 'add_site_link';
         $vars['menu_id'] = $menu_id;
@@ -142,10 +142,20 @@ class Menu {
         $js['width'] = 500;
         $js['height'] = 300;
 
-        return javascript('open_window', $js);
+        // Look for the template file that was passed in
+        $tplDir = PHPWS_Template::getTemplateDirectory('menu');
+        $relativePath = 'menu_layout/' . $template . '/addSiteLink.tpl';
+        $filename = $tplDir . $relativePath;
+        
+        if (file_exists($filename)) {
+            javascript('open_window');
+            return PHPWS_Template::processTemplate($js, 'menu', $relativePath);
+        } else {
+            return javascript('open_window', $js);
+        }
     }
 
-    public static function getAddLink($menu_id, $parent_id = null, $popup = false)
+    public static function getAddLink($menu_id, $parent_id = null, $popup = false, $template = '')
     {
         $key = Key::getCurrent();
         if (empty($key->url)) {
@@ -176,7 +186,13 @@ class Menu {
             $link = null;
         }
 
+        // Look for the template file that was passed in
+        $tplDir = PHPWS_Template::getTemplateDirectory('menu');
+        $relativePath = 'menu_layout/' . $template . '/addMenuLink.tpl';
+        $filename = $tplDir . $relativePath;
+
         if ($key->id) {
+            
             if (!$popup) {
                 return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $link);
             } else {
@@ -199,7 +215,16 @@ class Menu {
                 if ($popup) {
                     return PHPWS_Text::secureLink($link, 'menu', $vars);
                 } else {
-                    return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
+                    // If the template file exists, use it to form the link
+                    if (file_exists($filename)) {
+                        $vars['MENU_ID']   = $menu_id;
+                        $vars['PARENT_ID'] = $parent_id;
+                        $vars['LINK']      = $link;
+                        return PHPWS_Template::processTemplate($vars, 'menu', $relativePath);
+                    }else{
+                        // Return old style link for template compatibility
+                        return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
+                    }
                 }
             }
         }
@@ -215,7 +240,15 @@ class Menu {
         }
     }
 
-    public static function getUnpinLink($menu_id, $key_id, $pin_all = 0)
+    /**
+     * 
+     * @param unknown $menu_id
+     * @param unknown $key_id
+     * @param number $pin_all
+     * @param string $template The name of the menu template being used (e.g. "basic" for templates in /mod/menu/templates/menu_layout/basic/)
+     * @return Ambigous <unknown_type, string, NULL, void, mixed, object>
+     */
+    public static function getUnpinLink($menu_id, $key_id, $pin_all = 0, $template)
     {
         $vars['command'] = 'unpin_menu';
         $vars['menu_id'] = $menu_id;
@@ -230,7 +263,19 @@ class Menu {
         }
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
         $js['LINK'] = MENU_UNPIN;
-        return javascript('confirm', $js);
+        
+        $tplDir = PHPWS_Template::getTemplateDirectory('menu');
+        $relativePath = 'menu_layout/' . $template . '/unpinMenuLink.tpl';
+        $filename = $tplDir . $relativePath;
+        
+        // If the template file exists, use it to form the link
+        if (file_exists($filename)) {
+            javascript('confirm');
+            return PHPWS_Template::processTemplate($js, 'menu', $relativePath);
+        } else {
+            // Do the old style javascript thing for previous template compatibility
+            return javascript('confirm', $js);
+        }
     }
 
     public static function deleteLink($link_id)

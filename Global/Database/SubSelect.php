@@ -17,7 +17,7 @@ class SubSelect extends Resource {
      * @param $alias
      * @return unknown_type
      */
-    public function __construct(DB $DB, $alias)
+    public function __construct(DB $DB, $alias=null)
     {
         parent::__construct($DB, $alias);
     }
@@ -28,16 +28,19 @@ class SubSelect extends Resource {
      */
     public function __toString()
     {
-        return $this->alias;
+        return '(' . $this->db->selectQuery() . ')';
     }
 
     /**
      * Returns the entire subselect for query insertion.
      * @return string
      */
-    public function getQuery()
+    public function getResourceQuery()
     {
-        return sprintf('(%s) AS %s', $this->DB->selectQuery(), $this->getAlias());
+        if (!$this->hasAlias()) {
+            throw new \Exception('Subselect may not be used as a resource without an alias');
+        }
+        return sprintf('%s AS %s', $this->__toString(), $this->getAlias());
     }
 
 }

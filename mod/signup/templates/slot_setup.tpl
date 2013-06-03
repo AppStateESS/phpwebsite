@@ -5,7 +5,7 @@
 <div style="margin-bottom: 1em">{PICK_SLOT}</div>
 <!-- BEGIN slot-list -->
 <div class="slot">
-<h1 style='display:inline;'>{TITLE}</h1><h2 style='display:inline;'> - {EDIT}</h1>
+<h2 style='display:inline;'>{TITLE}</h2><h3 style='display:inline;'> - {EDIT}</h3>
 <p>{OPENINGS} | {LEFT}<br />
 {LINKS}</p>
 </div>

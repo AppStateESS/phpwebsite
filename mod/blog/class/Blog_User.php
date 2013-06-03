@@ -1,17 +1,17 @@
 <?php
+
 /**
  * User functionality in Blog
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 /*
- define('BLOG_CACHE_KEY', 'front_blog_page');
+  define('BLOG_CACHE_KEY', 'front_blog_page');
 
- if (!defined('MAX_BLOG_CACHE_PAGES')) {
- define('MAX_BLOG_CACHE_PAGES', 3);
- }
+  if (!defined('MAX_BLOG_CACHE_PAGES')) {
+  define('MAX_BLOG_CACHE_PAGES', 3);
+  }
  */
 
 class Blog_User {
@@ -20,15 +20,17 @@ class Blog_User {
     {
         $vars['action'] = 'admin';
         $vars['tab'] = 'list';
-        MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
+        MiniAdmin::add('blog',
+                PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog',
+                        $vars));
     }
 
     public static function main()
     {
         if (isset($_REQUEST['blog_id'])) {
-            $blog = new Blog((int)$_REQUEST['blog_id']);
+            $blog = new Blog((int) $_REQUEST['blog_id']);
         } elseif (isset($_REQUEST['id'])) {
-            $blog = new Blog((int)$_REQUEST['id']);
+            $blog = new Blog((int) $_REQUEST['id']);
         } else {
             $blog = new Blog();
         }
@@ -59,29 +61,30 @@ class Blog_User {
 
             case 'view':
                 if (@$_GET['y']) {
-                    $day   = 1;
+                    $day = 1;
                     $month = 1;
-                    $year  = $_GET['y'];
+                    $year = $_GET['y'];
                     if (@$_GET['m']) {
                         $month = $_GET['m'];
 
                         if (@$_GET['d']) {
                             $day = $_GET['d'];
-                            $start_date = mktime(0,0,0, $month, $day, $year);
-                            $end_date   = mktime(23,59,59, $month, $day, $year);
+                            $start_date = mktime(0, 0, 0, $month, $day, $year);
+                            $end_date = mktime(23, 59, 59, $month, $day, $year);
                         } else {
                             $start_day = 1;
-                            $end_day   = (int)date('t', mktime(0,0,0, $month, 1, $year));
-                            $start_date = mktime(0,0,0, $month, 1, $year);
-                            $end_date   = mktime(0,0,0, $month, $end_day, $year);
+                            $end_day = (int) date('t',
+                                            mktime(0, 0, 0, $month, 1, $year));
+                            $start_date = mktime(0, 0, 0, $month, 1, $year);
+                            $end_date = mktime(0, 0, 0, $month, $end_day, $year);
                         }
                     } else {
-                        $start_date = mktime(0,0,0, 1, 1, $year);
-                        $end_date   = mktime(0,0,0, 12, 31, $year);
+                        $start_date = mktime(0, 0, 0, 1, 1, $year);
+                        $end_date = mktime(0, 0, 0, 12, 31, $year);
                     }
                 } else {
                     $start_date = null;
-                    $end_date   = null;
+                    $end_date = null;
                 }
 
                 $content = Blog_User::show($start_date, $end_date);
@@ -91,13 +94,16 @@ class Blog_User {
 
             case 'submit':
                 if (Current_User::allow('blog', 'edit_blog')) {
-                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
+                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog',
+                                    array('action' => 'admin', 'tab' => 'new'),
+                                    1));
                 } elseif (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
                     // Must create a new blog. Don't use above shortcut
                     $blog = new Blog;
                     $content = Blog_User::submitAnonymous($blog);
                 } else {
-                    $content = dgettext('blog', 'Site is not accepting anonymous submissions.');
+                    $content = dgettext('blog',
+                            'Site is not accepting anonymous submissions.');
                 }
                 break;
 
@@ -118,11 +124,11 @@ class Blog_User {
         Layout::add($content);
     }
 
-
     public function postSuggestion(Blog $blog)
     {
         if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-            return dgettext('blog', 'Site is not accepting anonymous submissions.');
+            return dgettext('blog',
+                    'Site is not accepting anonymous submissions.');
         }
 
 
@@ -140,7 +146,8 @@ class Blog_User {
         // Do not let anonymous users use html tags
         $summary = strip_tags($_POST['summary']);
         if (empty($summary)) {
-            $blog->_error[] = dgettext('blog', 'Your submission must have a summary.');
+            $blog->_error[] = dgettext('blog',
+                    'Your submission must have a summary.');
         } else {
             $blog->setSummary($summary);
         }
@@ -152,11 +159,13 @@ class Blog_User {
         if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
             PHPWS_Core::initCoreClass('Captcha.php');
             if (!Captcha::verify()) {
-                $blog->_error[] = dgettext('blog', 'Please enter word in image correctly.');
+                $blog->_error[] = dgettext('blog',
+                        'Please enter word in image correctly.');
             }
-        }  elseif (PHPWS_Core::isPosted() && empty($blog->_error)) {
+        } elseif (PHPWS_Core::isPosted() && empty($blog->_error)) {
             $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
-            $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');
+            $tpl['CONTENT'] = dgettext('blog',
+                    'Your submission is still awaiting approval.');
             return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
         }
 
@@ -168,14 +177,15 @@ class Blog_User {
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $tpl['TITLE'] = dgettext('blog', 'Sorry');
-            $tpl['CONTENT'] =  dgettext('blog', 'A problem occured with your submission. Please try again later.');
+            $tpl['CONTENT'] = dgettext('blog',
+                    'A problem occured with your submission. Please try again later.');
         } else {
             $tpl['TITLE'] = dgettext('blog', 'Thank you');
-            $tpl['CONTENT'] =  dgettext('blog', 'Your entry has been submitted for review.');
+            $tpl['CONTENT'] = dgettext('blog',
+                    'Your entry has been submitted for review.');
         }
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
-
 
     public function submitAnonymous(Blog $blog)
     {
@@ -187,11 +197,11 @@ class Blog_User {
 
     public static function totalEntries(PHPWS_DB $db)
     {
-        $db->addColumn('id',null, null, true);
+        $db->addColumn('id', null, null, true);
         return $db->select('one');
     }
 
-    public static function getEntries(PHPWS_DB $db, $limit, $offset=0)
+    public static function getEntries(PHPWS_DB $db, $limit, $offset = 0)
     {
         $db->resetColumns();
         $db->setLimit($limit, $offset);
@@ -209,7 +219,7 @@ class Blog_User {
 
         // Only logged users may view and user is not logged in
         if (PHPWS_Settings::get('blog', 'logged_users_only') &&
-        !Current_User::isLogged()) {
+                !Current_User::isLogged()) {
             return false;
         }
 
@@ -240,7 +250,7 @@ class Blog_User {
         return true;
     }
 
-    public static function show($start_date=null, $end_date=null)
+    public static function show($start_date = null, $end_date = null)
     {
         if (!Blog_User::allowView()) {
             return null;
@@ -266,33 +276,16 @@ class Blog_User {
         $total_entries = Blog_User::totalEntries($db);
 
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
-        $page = @$_GET['page'];
-
+        if (isset($_GET['page'])) {
+            $page = $_GET['page'];
+        } else {
+            $page = 0;
+        }
         if (!is_numeric($page) || $page < 2) {
             $offset = $page = 0;
         } else {
             $offset = ($page - 1) * $limit;
         }
-
-        /* Updated 1/7/2010 no longer caching. Unable to get previous blog entries
-         * to work properly with current code order.
-         */
-        /*
-         if ($page == 0) {
-         $cache_key = BLOG_CACHE_KEY . '1';
-         } else {
-         $cache_key = BLOG_CACHE_KEY . $page;
-         }
-
-         if ($page <= MAX_BLOG_CACHE_PAGES &&
-         !Current_User::isLogged() &&
-         !Current_User::allow('blog') &&
-         PHPWS_Settings::get('blog', 'cache_view') &&
-         $content = PHPWS_Cache::get($cache_key)) {
-         Layout::getCacheHeaders($cache_key);
-         return $content;
-         }
-         */
         Layout::addStyle('blog');
         $result = Blog_User::getEntries($db, $limit, $offset);
 
@@ -303,7 +296,10 @@ class Blog_User {
 
         if (empty($result)) {
             if (Current_User::allow('blog')) {
-                MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Create first blog entry!'), 'blog', array('action'=>'admin', 'tab'=>'new')));
+                MiniAdmin::add('blog',
+                        PHPWS_Text::secureLink(dgettext('blog',
+                                        'Create first blog entry!'), 'blog',
+                                array('action' => 'admin', 'tab' => 'new')));
             }
 
             return NULL;
@@ -318,7 +314,7 @@ class Blog_User {
 
                 if (PHPWS_Error::isError($past)) {
                     PHPWS_Error::log($past);
-                } elseif($past) {
+                } elseif ($past) {
                     Blog_User::showPast($past);
                 }
             }
@@ -343,14 +339,17 @@ class Blog_User {
         $page_vars['action'] = 'view';
         if ($page > 1) {
             $page_vars['page'] = $page - 1;
-            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Previous page'), 'blog', $page_vars);
+            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog',
+                                    'Previous page'), 'blog', $page_vars);
             if ($limit + $offset < $total_entries) {
                 $page_vars['page'] = $page + 1;
-                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
+                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog',
+                                        'Next page'), 'blog', $page_vars);
             }
         } elseif ($limit + $offset < $total_entries) {
             $page_vars['page'] = 2;
-            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
+            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog',
+                                    'Next page'), 'blog', $page_vars);
         }
 
         $tpl['ENTRIES'] = implode('', $list);
@@ -359,18 +358,19 @@ class Blog_User {
 
         // again only caching first pages
         /*
-        if ($page <= MAX_BLOG_CACHE_PAGES &&
-        !Current_User::isLogged() && !Current_User::allow('blog') &&
-        PHPWS_Settings::get('blog', 'cache_view')) {
-        PHPWS_Cache::save($cache_key, $content);
-        Layout::cacheHeaders($cache_key);
-        }
-        */
+          if ($page <= MAX_BLOG_CACHE_PAGES &&
+          !Current_User::isLogged() && !Current_User::allow('blog') &&
+          PHPWS_Settings::get('blog', 'cache_view')) {
+          PHPWS_Cache::save($cache_key, $content);
+          Layout::cacheHeaders($cache_key);
+          }
+         */
         if (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
             $vars['tab'] = 'new';
-            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'), 'blog', $vars);
+            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'),
+                            'blog', $vars);
             MiniAdmin::add('blog', $link);
         }
 
@@ -387,7 +387,8 @@ class Blog_User {
             return false;
         }
         foreach ($entries as $entry) {
-            $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
+            $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>',
+                        $entry->getViewLink(true), $entry->title));
         }
 
         $tpl['PAST_TITLE'] = dgettext('blog', 'Previous blog entries');
@@ -400,7 +401,7 @@ class Blog_User {
      */
     public static function showSide()
     {
-        switch(PHPWS_Settings::get('blog', 'show_recent')) {
+        switch (PHPWS_Settings::get('blog', 'show_recent')) {
             case 0:
                 // don't show
                 return;
@@ -427,10 +428,12 @@ class Blog_User {
         }
 
         foreach ($result as $entry) {
-            $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
+            $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>',
+                        $entry->getViewLink(true), $entry->title));
         }
 
-        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', dgettext('blog', 'Recent blog entries'));
+        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>',
+                dgettext('blog', 'Recent blog entries'));
         $content = PHPWS_Template::process($tpl, 'blog', 'recent_view.tpl');
         Layout::add($content, 'blog', 'recent_entries');
     }

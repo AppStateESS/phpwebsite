@@ -1,5 +1,5 @@
 <div id="note-read">
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 <span id="date-sent">{DATE_LABEL}: {DATE_SENT}</span><br />
 <span id="sent-by">{SENT_LABEL}: {SENDER}</span> <!-- BEGIN associate --><span
     id="associated-to"

@@ -16,11 +16,11 @@ body {
     font-size: 10pt;
 }
 
-h1 {
+h2 {
     font-size: 1.2em;
 }
 
-h2 {
+h3 {
     font-size: 1.1em;
 }
 
@@ -48,7 +48,7 @@ th {
 </style>
 </head>
 <body>
-<h1>{SHEET_TITLE}</h1>
+<h2>{SHEET_TITLE}</h2>
 {PRINT}
 <table cellpadding="0" cellspacing="10" width="100%">
     <tr>

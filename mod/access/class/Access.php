@@ -257,7 +257,7 @@ class Access {
         }
     }
 
-    public function saveShortcut(Access_Shortcut $shortcut)
+    public static function saveShortcut(Access_Shortcut $shortcut)
     {
         $result = $shortcut->save();
         if (PHPWS_Error::isError($result)) {
@@ -428,7 +428,7 @@ class Access {
         return $db->getObjects('Access_Shortcut');
     }
 
-    public function sendMessage($message, $command)
+    public static function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
@@ -445,7 +445,7 @@ class Access {
         return $message;
     }
 
-    public function postShortcutList()
+    public static function postShortcutList()
     {
         if (!Current_User::authorized('access')) {
             Current_User::disallow();
@@ -481,7 +481,7 @@ class Access {
         }
     }
 
-    public function postDenyAllow()
+    public static function postDenyAllow()
     {
         if (!Current_User::authorized('access', 'admin_options')) {
             Current_User::disallow();
@@ -490,7 +490,7 @@ class Access {
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
-        if (@$_POST['allow_deny_enabled']) {
+        if (!empty($_POST['allow_deny_enabled'])) {
             PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
         } else {
             PHPWS_Settings::set('access', 'allow_deny_enabled', 0);
@@ -599,8 +599,6 @@ class Access {
         $scl = $db->getObjects('Access_Shortcut');
         if (@$sc = $scl[0]) {
             $sc->loadGet();
-        } else {
-            PHPWS_Core::errorPage(404);
         }
     }
 
@@ -669,11 +667,10 @@ class Access {
 
     public static function denied()
     {
-        $message = PHPWS_Settings::get('access', dgettext('access', 'You are denied access to this site.'));
-        Layout::nakedDisplay($message, dgettext('access', 'Sorry'));
+        Error::errorPage('403');
     }
 
-    public function isDenied($ip)
+    public static function isDenied($ip)
     {
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
@@ -695,7 +692,7 @@ class Access {
     /**
      * Adds an ip address to the allow or deny database
      */
-    public function addIP($ip, $allow_or_deny = false)
+    public static function addIP($ip, $allow_or_deny = false)
     {
         $allow_or_deny = (int) (bool) $allow_or_deny;
 
@@ -722,7 +719,7 @@ class Access {
         return $ad->save();
     }
 
-    public function removeIp($ip, $allow_or_deny = false)
+    public static function removeIp($ip, $allow_or_deny = false)
     {
         $allow_or_deny = (int) (bool) $allow_or_deny;
 

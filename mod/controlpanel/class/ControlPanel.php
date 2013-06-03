@@ -140,8 +140,7 @@ class PHPWS_ControlPanel {
 		if ($alpha_order) {
 			$DB->addOrder('label');
 		} else {
-			$DB->addOrder('tab');
-			$DB->addOrder('link_order');
+			$DB->addOrder('label');
 		}
 		$DB->setIndexBy('id');
 		$result = $DB->getObjects('PHPWS_Panel_Link');

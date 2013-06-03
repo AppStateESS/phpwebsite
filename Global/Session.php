@@ -17,6 +17,9 @@ class Session extends Data {
      */
     private $values;
 
+    /**
+     * Creates a session object
+     */
     private function __construct()
     {
         if (isset($_SESSION['Beanie_Session'])) {
@@ -26,6 +29,21 @@ class Session extends Data {
         }
     }
 
+    /**
+     * Starts the session
+     */
+    public static function start()
+    {
+        define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
+        session_name(SESSION_NAME);
+        session_start();
+    }
+
+    /**
+     * Returns the static session object for use.
+     * @staticvar Session $session
+     * @return \Session
+     */
     public static function singleton()
     {
         static $session;
@@ -68,6 +86,7 @@ class Session extends Data {
     {
         unset($this->values[$name]);
     }
+
 }
 
 ?>

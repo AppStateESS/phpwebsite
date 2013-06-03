@@ -16,7 +16,7 @@ abstract class Resource extends Alias {
 
     /**
      * Database object related to this object
-     * @var object
+     * @var \Database\DB
      * @access public
      */
     public $db = null;
@@ -35,12 +35,6 @@ abstract class Resource extends Alias {
     protected $show_all_fields = true;
 
     /**
-     * An array of conditional objects. This array will be emptied as conditional objects
-     * are placed into the DB object
-     */
-    protected $where_stack = array();
-
-    /**
      * Indicates if this resource is being used in a join.
      * @var boolean
      * @access protected
@@ -56,7 +50,7 @@ abstract class Resource extends Alias {
     /**
      * @return string A string representing the contents of this resource
      */
-    abstract public function getQuery();
+    abstract public function getResourceQuery();
 
     /**
      * @param \DB $db Database object this resource is part of
@@ -118,11 +112,11 @@ abstract class Resource extends Alias {
             $field->showInSelect($show_in_select);
         } elseif ($column_name instanceof Expression || $column_name instanceof SubSelect) {
             $field = $column_name;
-            //$field = $this->getField($column_name, $alias, $this);
         } else {
             throw new \Exception(t('Improper parameter'));
         }
         $this->fields[] = $field;
+
         return $field;
     }
 
@@ -140,111 +134,10 @@ abstract class Resource extends Alias {
         }
         $field = new Field($this, $column_name, $alias);
         if (!($field->allowSplat() && $column_name == '*') && (DATABASE_CHECK_COLUMNS && !$this->columnExists($column_name))) {
-            throw new \Exception(t('Column does not exist in %s "%s"', get_class($this), $this->getFullName()));
+            throw new \Exception(t('Column does not exist in %s "%s"',
+                    get_class($this), $this->getFullName()));
         }
         return $field;
-    }
-
-    /**
-     * Receives an associative array of column=>value pairings and returns
-     * an array of Conditional where objects.
-     * @param array $where_array
-     * @return array
-     */
-    public function addWhereArray(array $where_array)
-    {
-        foreach ($where_array as $col => $val) {
-            $ret_array[] = $this->addWhere($col, $val);
-        }
-        return $ret_array;
-    }
-
-    /**
-     * Creates a new Conditional object into and places it on the where_stack.
-     *
-     * @param string|object $column : Name of table column or a conditional object
-     * @param string $value
-     * @param string $operator Comparison operator (e.g. =, >, <, !=)
-     * @param string $conjunction Either AND or OR.
-     * @return object
-     */
-    public function addWhere($column, $value, $operator = null, $conjunction = 'AND')
-    {
-        static $stack_number = 0;
-
-        /**
-         * Prevents endless recursion
-         */
-        if ($value === $this->db) {
-            throw new \Exception(t('Embedding the parent DB object in a conditional is forbidden'));
-            return false;
-        }
-        if ($column instanceof Conditional) {
-            if ($column->table != $this) {
-                throw new \Exception(t('Conditional object referenced incorrect table object'));
-                return false;
-            }
-            $where = $column;
-        } elseif ($column instanceof Expression || $column instanceof SubSelect) {
-            $where = $this->getConditional($column->getAlias(), $value, $operator, $conjunction);
-        } else {
-            $where = $this->getConditional($column, $value, $operator, $conjunction);
-        }
-        $where->stack_number = $stack_number;
-        $this->where_stack[$stack_number] = $where;
-        $stack_number++;
-        return $where;
-    }
-
-    /**
-     * Returns the where objects as a string for use in the final query.
-     *
-     * @param boolean $conjunction If true, the where object from the where stack
-     * will use its conjunction. False prevents this. Used to prevent the first
-     * conjuction in following the "WHERE" clause in the query.
-     * @return string|void
-     */
-    public function getWhereStack($conjunction = true)
-    {
-        if (!empty($this->where_stack)) {
-            foreach ($this->where_stack as $w) {
-                if (!$conjunction) {
-                    $w->disableConjunction();
-                    $conjunction = true;
-                }
-                $where_list[] = $w->__toString();
-            }
-        }
-        if (isset($where_list)) {
-            return implode(' ', $where_list);
-        }
-    }
-
-    /**
-     * Constructs and returns a conditional object.
-     * @param \Database\Column|string $column
-     * @param string $value
-     * @param string $operator
-     * @param string $conjunction
-     * @return \Database\Conditional
-     */
-    public function getConditional($column, $value, $operator = null, $conjunction = null)
-    {
-        $conditional = new Conditional($this, $column, $value, $operator);
-        if (empty($conjunction)) {
-                $conjunction = 'AND';
-        }
-        $conditional->setConjunction($conjunction);
-        return $conditional;
-    }
-
-    /**
-     * Removes a where object from the where_stack property.
-     * @param integer $stack_number
-     */
-    public function dropFromWhereStack($stack_number)
-    {
-        unset($this->where_stack[$stack_number]);
     }
 
     /**
@@ -281,7 +174,7 @@ abstract class Resource extends Alias {
         $direction = trim(strtoupper($direction));
 
         if (!in_array($direction, $allowed_directions)) {
-            throw new \Exception(t('Unknown order direction'));
+            throw new \Exception(t('Unknown order direction: %s', $direction));
         }
 
         // If a random call, return the db os specific function call.

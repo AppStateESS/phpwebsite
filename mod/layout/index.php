@@ -6,12 +6,11 @@
  */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
-    header('HTTP/1.0 403 Forbidden');
-    exit('<h1>403: Forbidden</h1>');
+    Error::errorPage(403);
 }
 
 if ($_REQUEST['module'] != 'layout' || !isset($_REQUEST['action'])) {
-    PHPWS_Core::errorPage('404');
+    Error::errorPage('404');
 }
 
 

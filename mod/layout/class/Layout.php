@@ -121,7 +121,8 @@ class Layout {
         if (!isset($theme_var)) {
             $mod_theme_var = strtoupper(sprintf('%s_%s', $module, $content_var));
 
-            if (in_array($mod_theme_var,
+            if (!empty($_SESSION['Layout_Settings']->_theme_variables) &&
+                    in_array($mod_theme_var,
                             $_SESSION['Layout_Settings']->_theme_variables)) {
                 $theme_var = $mod_theme_var;
             } else {
@@ -161,7 +162,7 @@ class Layout {
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
 
-    public function extraStyle($filename)
+    public static function extraStyle($filename)
     {
         $styles = Layout::getExtraStyles();
         if (!isset($styles[$filename])) {
@@ -205,14 +206,11 @@ class Layout {
 
         $cssFile['file'] = $moduleLoc;
 
-        Layout::addToStyleList($cssFile);
-
         $themeFile['file'] = PHPWS_Template::getTplDir($module) . $filename;
         if (is_file($themeFile['file'])) {
-            Layout::addToStyleList($themeFile);
-            return;
-        } elseif (FORCE_THEME_TEMPLATES) {
-            return;
+            Layout::addToStyleList(str_replace(PHPWS_SOURCE_DIR, '', $themeFile));
+        } else {
+            Layout::addToStyleList($cssFile);
         }
     }
 
@@ -787,7 +785,7 @@ class Layout {
         return $tpl;
     }
 
-    public function moveBoxes($key)
+    public static function moveBoxes($key)
     {
         $_SESSION['Layout_Settings']->_move_box = (bool) $key;
     }
@@ -817,7 +815,7 @@ class Layout {
         $_SESSION['Layout_Settings']->loadBoxes();
     }
 
-    public function resetDefaultBoxes()
+    public static function resetDefaultBoxes()
     {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('theme', Layout::getDefaultTheme());
@@ -982,7 +980,7 @@ class Layout {
         return '<base href="' . PHPWS_Core::getBaseURL() . '" />';
     }
 
-    public function getPageTitle($only_root = FALSE)
+    public static function getPageTitle($only_root = FALSE)
     {
         return $_SESSION['Layout_Settings']->getPageTitle($only_root);
     }
@@ -1134,7 +1132,7 @@ class Layout {
         }
 
         foreach ($settings->_style_sheets as $css) {
-            if (@$css['title']) {
+            if (isset($css['title'])) {
                 $filename = str_ireplace('themes/' . $_SESSION['Layout_Settings']->current_theme . '/',
                         '', $css['file']);
                 $sheets[$filename] = $css['title'];
@@ -1181,12 +1179,22 @@ class Layout {
     public static function cacheHeaders($cache_key)
     {
         $cache_key = 'layout_header' . $cache_key;
+        if (isset($GLOBALS['Layout_JS'])) {
+            $layout_data['Layout_JS'] = $GLOBALS['Layout_JS'];
+        }
+        if (isset($GLOBALS['Style'])) {
+            $layout_data['Style'] = $GLOBALS['Style'];
+        }
+        if (isset($GLOBALS['Extra_Style'])) {
+            $layout_data['Extra_Style'] = $GLOBALS['Extra_Style'];
+        }
 
-        $layout_data['Layout_JS'] = @$GLOBALS['Layout_JS'];
-        $layout_data['Style'] = @$GLOBALS['Style'];
-        $layout_data['Extra_Style'] = @$GLOBALS['Extra_Style'];
-        $layout_data['Layout_Page_Title_Add'] = @$GLOBALS['Layout_Page_Title_Add'];
-        PHPWS_Cache::save($cache_key, serialize($layout_data));
+        if (isset($GLOBALS['Layout_Page_Title'])) {
+            $layout_data['Layout_Page_Title_Add'] = $GLOBALS['Layout_Page_Title_Add'];
+        }
+        if (!empty($layout_data)) {
+            PHPWS_Cache::save($cache_key, serialize($layout_data));
+        }
     }
 
     /**

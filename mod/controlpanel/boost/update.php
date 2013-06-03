@@ -147,9 +147,9 @@ function controlpanel_update(&$content, $currentVersion)
             $link = new PHPWS_Panel_Link;
             $db = Database::newDB();
             $tbl = $db->addTable('controlpanel_link');
-            $tbl->addWhere('itemname', 'controlpanel');
+            $db->setConditional($tbl->getFieldConditional('itemname', 'controlpanel'));
             $db->loadSelectStatement();
-            $row = $db->fetchRow();
+            $row = $db->fetchOneRow();
             PHPWS_Core::plugObject($link, $row);
             $link->kill();
             $content[] = '<pre>2.3.3 changes

@@ -403,7 +403,7 @@ class Blog_Admin {
     }
 
 
-    public function viewVersion($version_id)
+    public function viewVersion()
     {
         $version = new Version('blog_entries', (int)$_REQUEST['version_id']);
         $blog = new Blog;
@@ -453,8 +453,9 @@ class Blog_Admin {
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        $newLink = 'index.php?module=blog&amp;action=admin';
-        $newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
+
+        //$newLink = 'index.php?module=blog&amp;action=admin';
+        //$newCommand = array ('title'=>dgettext('blog', 'New'), 'link'=> $newLink);
 
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>dgettext('blog', 'List'), 'link'=> $listLink);
@@ -471,7 +472,7 @@ class Blog_Admin {
             $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
         }
 
-        $tabs['new'] = &$newCommand;
+        //$tabs['new'] = &$newCommand;
 
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
@@ -498,6 +499,7 @@ class Blog_Admin {
 
         $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
+        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'), 'blog', array('action'=>'admin', 'command'=>'new'), null, t('Create new blog entry'), 'btn');
 
         $pager = new DBPager('blog_entries', 'Blog');
         $pager->addSortHeader('title', dgettext('blog', 'Title'));
@@ -535,7 +537,7 @@ class Blog_Admin {
         }
     }
 
-    public function restoreVersionList(&$blog)
+    public static function restoreVersionList(&$blog)
     {
         PHPWS_Core::initModClass('version', 'Restore.php');
         $vars['action'] = 'admin';
@@ -553,19 +555,19 @@ class Blog_Admin {
         return $result;
     }
 
-    public function restoreBlog($version_id)
+    public static function restoreBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);
         $version->restore();
     }
 
-    public function removePrevBlog($version_id)
+    public static function removePrevBlog($version_id)
     {
         $version = new Version('blog_entries', $version_id);
         $version->delete();
     }
 
-    public function sticky($blog)
+    public static function sticky($blog)
     {
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('sticky', 0, '>');
@@ -591,7 +593,7 @@ class Blog_Admin {
         $db->update();
     }
 
-    public function unsticky($blog)
+    public static function unsticky($blog)
     {
         $blog->sticky = 0;
         $blog->save();

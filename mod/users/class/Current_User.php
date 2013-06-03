@@ -136,6 +136,10 @@ final class Current_User {
         $user = $_SESSION['User'];
         $auth = Current_User::getAuthorization();
 
+        if (empty($auth)) {
+            throw new Exception(t('Failed to retrive the current authorization: %s', $_SESSION['User']->auth_script));
+        }
+
         // If the current user is not verified then
         // either force to authentication page or clear the user session
         if (!$auth->verify()) {

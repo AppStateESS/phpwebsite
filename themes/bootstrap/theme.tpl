@@ -18,7 +18,7 @@
     <link rel="shortcut icon" type="image/x-icon"
         href="{THEME_HTTP}favicon/favicon.ico">
   </head>
-  <body>
+  <body id="bootstrap-theme">
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -27,12 +27,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="index.php?module=controlpanel&command=panel_view">Appalachian State University</a>
+          <a class="brand" href="./">{SITE_NAME}</a>
           <ul class="nav">
             <li class="{CONTENT_PAGE}"><a href="index.php">View Site</a></li>
           </ul>
           <ul class="nav nav-collapse pull-right">
-            <li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle">New Content <b class="caret"></b></a></li>
+            <!--<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle">New Content <b class="caret"></b></a></li>-->
           <!-- BEGIN miniadmin -->
             <li class="dropdown">
               <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
+    <div id="hero" class="container-fluid">
       <div class="row-fluid">
         <div class="span3">
           {DEFAULT}

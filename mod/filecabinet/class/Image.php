@@ -482,6 +482,7 @@ EOF;
         $this->title ($this->width x $this->height)<br><br>$ckbuttons
 </div>
 EOF;
+        $data['width'] = $new_width;
         $data['title'] = $this->title;
         $data['insert'] = $link;
         return json_encode($data);
@@ -596,7 +597,10 @@ EOF;
 
     public function _getDegrees()
     {
-        switch (@$_REQUEST['rotate']) {
+        if (!isset($_REQUEST['rotate'])) {
+            return 0;
+        }
+        switch ($_REQUEST['rotate']) {
             case '90cw':
                 return 270;
 

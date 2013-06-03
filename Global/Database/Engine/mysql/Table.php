@@ -111,7 +111,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
     public function columnExists($column_name)
     {
         $this->db->loadStatement($this->getSchemaQuery($column_name));
-        return (bool) $this->db->fetchRow();
+        return (bool) $this->db->fetchOneRow();
     }
 
     public function getIndexes()
@@ -123,6 +123,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         if (empty($rows)) {
             return null;
         }
+
 
         foreach ($rows as $idx) {
             $info['primary_key'] = $idx['Key_name'] == 'PRIMARY' ? 1 : 0;
@@ -144,9 +145,23 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
             throw new \Exception(t('Cannot get data type, table does not exist'));
         }
         $schema = $this->getSchema($column_name);
-
         $column_type = $schema['DATA_TYPE'];
         $dt = \Database\Datatype::factory($this, $column_name, $column_type);
+
+        $indexes = $this->getIndexes();
+
+        foreach ($indexes as $index_name=> $indices) {
+            foreach ($indices as $idx) {
+                if ($idx['column_name'] == $column_name) {
+                    if ($idx['primary_key']) {
+                        $dt->setIsPrimaryKey(1);
+                    }
+                    if ($idx['unique']) {
+                        $dt->setIsUnique(1);
+                    }
+                }
+            }
+        }
 
         $dt->setIsNull($schema['IS_NULLABLE']);
 
@@ -178,6 +193,49 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         }
         $dt->setDefault($default);
         return $dt;
+    }
+
+    /**
+     * Returns the last id from the PEAR sequence table. Always assumes it will
+     * be in the "id" column per previous PhpWebSite workings.
+     * Returns false if the sequence table does not exist or if it is empty.
+     *
+     * @return integer|false
+     */
+    private function getLastPearSequenceTableId()
+    {
+        $seq_table_name = $this->getFullName(false) . '_seq';
+        $db = \Database::newDB();
+        $tbl = $db->addTable($seq_table_name);
+        $tbl->addField('id');
+        $db->loadSelectStatement();
+        $result = $db->fetchOneRow();
+        return empty($result) ? false : $result['id'];
+    }
+
+    public function hasPearSequenceTable()
+    {
+        $seq_table_name = $this->getFullName(false) . '_seq';
+        $db = \Database::newDB();
+        return $db->tableExists($seq_table_name);
+    }
+
+    /**
+     * Switches from PHPWS_DB's PEAR sequence table dependence to one using
+     * auto_increment.
+     */
+    public function serializePrimaryKey()
+    {
+        if (!$this->hasPearSequenceTable()) {
+            throw new \Exception('There is not a PEAR::DB sequence for this table');
+        }
+
+        $id = $this->getLastPearSequenceTableId();
+        $table_name = $this->getFullName();
+        $sql = "ALTER TABLE $table_name MODIFY id INTEGER NOT NULL AUTO_INCREMENT";
+        $this->db->exec($sql);
+        $sql2 = "ALTER TABLE $table_name AUTO_INCREMENT = $id";
+        $this->db->exec($sql2);
     }
 
 }

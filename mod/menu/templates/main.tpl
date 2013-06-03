@@ -1,5 +1,5 @@
-<div class="panel-title">
-<h1>{TITLE}</h1>
-</div>
-<div class="panel-content"><span class="error">{MESSAGE}</span>
-{CONTENT}</div>
+<h2>{TITLE}</h2>
+<!-- BEGIN alert -->
+<div class="alert">{MESSAGE}</div>
+<!-- END alert -->
+{CONTENT}

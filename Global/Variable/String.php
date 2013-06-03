@@ -46,8 +46,8 @@ class String extends \Variable {
      * @var integer
      */
     protected $limit = 255;
-
     protected $column_type = 'Mediumtext';
+    protected $allow_empty = true;
 
     /**
      * Checks the string to see it is a string, is under limit, and is formatted
@@ -57,16 +57,24 @@ class String extends \Variable {
      */
     protected function verifyValue($value)
     {
+        if (!$this->allow_empty && strlen($value) == 0) {
+            throw new \Exception(t('Value may not be an empty string'));
+        }
+
         if (!is_string($value)) {
-            throw new \Exception(t('Value "%s" is a %s, not a string', gettype($value), $this->varname));
+            throw new \Exception(t('Value "%s" is a %s, not a string',
+                    gettype($value), $this->varname));
         }
 
         if ($this->limit && strlen($value) > $this->limit) {
-            throw new \Exception(t('%s is over the %s character limit', $this->getLabel(), $this->getLimit()));
+            throw new \Exception(t('%s is over the %s character limit',
+                    $this->getLabel(), $this->getLimit()));
         }
 
-        if (isset($this->regexp_match) && !preg_match($this->regexp_match, $value)) {
-            throw new \Exception(t('String variable "%s" is not formatted correctly', $this->getVarName()));
+        if (isset($this->regexp_match) && !preg_match($this->regexp_match,
+                        $value)) {
+            throw new \Exception(t('String variable "%s" is not formatted correctly',
+                    $this->getVarName()));
         }
 
         return true;
@@ -94,7 +102,8 @@ class String extends \Variable {
         }
 
         if (@preg_match($match, $test) === false) {
-            throw new \Exception(t('Regular expression error: %s', preg_error_msg(preg_last_error())));
+            throw new \Exception(t('Regular expression error: %s',
+                    preg_error_msg(preg_last_error())));
         }
         $this->regexp_match = $match;
     }
@@ -149,7 +158,6 @@ class String extends \Variable {
         } else {
             $this->allowed_tags = '<' . implode('><', $args) . '>';
         }
-        $this->allowed_tags = $allowed_tags;
     }
 
     /**
@@ -214,6 +222,21 @@ class String extends \Variable {
     }
 
     /**
+     * Returns true if value may be an empty string, false otherwise. Also accepts
+     * a parameter to set whether variable may be empty or not.
+     * @param boolean $allow
+     * @return boolean
+     */
+    public function allowEmpty($allow = null)
+    {
+        if (!isset($allow)) {
+            return $this->allow_empty;
+        } else {
+            return $this->allow_empty = (bool) $allow;
+        }
+    }
+
+    /**
      * Changes the column name based on the size of the string.
      * NOTE: If the text is extremely long, "Text" may not be enough
      * for MySQL.
@@ -241,5 +264,7 @@ class String extends \Variable {
     {
         $this->limit = 0;
     }
+
 }
+
 ?>

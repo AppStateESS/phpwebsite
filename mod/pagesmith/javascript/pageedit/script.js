@@ -3,9 +3,12 @@ var page_id = 0;
 var section_id = 0;
 var current_block;
 $(document).ready(function() {
-    var editor = CKEDITOR.replace('block-edit-textarea', {customConfig: 'phpws_config.js'});
+    var editor = CKEDITOR.replace('block-edit-textarea');
     initializeDialog(editor);
     editBlock(editor);
+    $.fn.powerTip.defaults.followMouse = 'true';
+    $.fn.powerTip.defaults.offset = '10';
+    $('.block-edit').powerTip();
 });
 function editBlock(editor)
 {
@@ -33,7 +36,7 @@ function initializeDialog(editor)
 {
     $('#block-edit-popup').dialog(
             {
-                position: {my: 'center top', at: 'center top', of: document},
+                position: {my: 'center', at: 'center', of: this},
                 autoOpen: false,
                 width: 650,
                 title: 'Edit text area',
@@ -56,11 +59,11 @@ function updateBlock(editor) {
                 'pid': page_id,
                 'bid': block_id,
                 'content': content,
-                'section_id':section_id
+                'section_id': section_id
             }, function(data) {
-                if (content === '') {
-                    content = '[Click to edit]';
-                }
+        if (content === '') {
+            content = '[Click to edit]';
+        }
         current_block.html(content);
     });
 }

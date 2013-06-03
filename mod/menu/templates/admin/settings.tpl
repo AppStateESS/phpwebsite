@@ -1,37 +1,66 @@
-{START_FORM}
-<table cellpadding="4">
-    <tr>
-        <td><strong>{MAX_LINK_CHARACTERS_LABEL}</strong></td>
-        <td>{MAX_LINK_CHARACTERS}</td>
-    </tr>
-    <tr>
-        <td><strong>{ADMIN_MODE_NOTE}</strong></td>
-        <td>{ADMIN_MODE_1} {ADMIN_MODE_1_LABEL}<br />
-        {ADMIN_MODE_2} {ADMIN_MODE_2_LABEL}</td>
-    </tr>
-    <tr>
-        <td><strong>{FLOAT_MODE_LABEL}</strong></td>
-        <td>{FLOAT_MODE}</td>
-    </tr>
-    <tr>
-        <td><strong>{DRAG_SORT_LABEL}</strong></td>
-        <td>{DRAG_SORT}</td>
-    </tr>
-    <tr>
-        <td><strong>{MINIADMIN_LABEL}</strong></td>
-        <td>{MINIADMIN}</td>
-    </tr>
-    <tr>
-        <td><strong>{HOME_LINK_LABEL}</strong></td>
-        <td>{HOME_LINK}</td>
-    </tr>
-    <tr>
-        <td><strong>{SHOW_ALL_ADMIN_LABEL}</strong></td>
-        <td>{SHOW_ALL_ADMIN}</td>
-    </tr>
-    <tr>
-        <td><strong>{ALWAYS_ADD_LABEL}</strong></td>
-        <td>{ALWAYS_ADD}</td>
-    </tr>
-</table>
-{SUBMIT} {END_FORM}
+<form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}" {FORM_ENCODE}> 
+{HIDDEN_FIELDS}
+
+  <div class="control-group">
+    <label class="control-label" for="{MAX_LINK_CHARACTERS_ID}">{MAX_LINK_CHARACTERS_LABEL_TEXT}</label>
+    <div class="controls">
+      {MAX_LINK_CHARACTERS}
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        {FLOAT_MODE} {FLOAT_MODE_LABEL_TEXT}
+      </label>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        {DRAG_SORT} {DRAG_SORT_LABEL_TEXT}
+      </label>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        {MINIADMIN} {MINIADMIN_LABEL_TEXT}
+      </label>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        {HOME_LINK} {HOME_LINK_LABEL_TEXT}
+      </label>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        {SHOW_ALL_ADMIN} {SHOW_ALL_ADMIN_LABEL_TEXT}
+      </label>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        {ALWAYS_ADD} {ALWAYS_ADD_LABEL_TEXT}
+      </label>
+    </div>
+  </div>
+  
+        
+<div class="control-group">
+  <div class="controls">
+    <button type="submit" id="{SUBMIT_ID}" class="btn btn-primary" name="{SUBMIT_NAME}">{SUBMIT_VALUE}</button>
+  </div>
+</div>
+
+{END_FORM}

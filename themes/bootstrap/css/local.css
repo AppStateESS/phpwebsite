@@ -1,5 +1,4 @@
 @import url("bootstrap.min.css");
-@import url("bootstrap-responsive.min.css");
 
 /* Leave this here if you're using navbar-fixed-top */
 body {
@@ -10,3 +9,27 @@ body {
 .sidebar-nav {
     padding: 9px 0;
 }
+
+th {
+    background-color : #EEEEEE;
+}
+
+th, td {
+    line-height : 1em;
+    text-align : left;
+}
+#hero h2 {font-size : 1.8em}
+#hero h3 {font-size : 1.6em}
+#hero h4 {font-size : 1.4em}
+#hero h5 {font-size : 1.2em}
+
+/* Fixes problem with form inputs in ck dialogs */
+#bootstrap-theme .cke_skin_kama  input.cke_dialog_ui_input_text {
+    font-size:12px; height : 20px;margin-bottom : 0px;
+}
+
+form.form-inline input, form.form-inline select {
+    margin-bottom : 5px;
+}
+
+@import url("bootstrap-responsive.min.css");

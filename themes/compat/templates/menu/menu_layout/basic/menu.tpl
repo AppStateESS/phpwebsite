@@ -1,7 +1,7 @@
 <div class="menu" id="{MENU_ID}">
 <div class="box">
 <div class="box-title">{CLIP}
-<h1>{PIN_LINK} {ADD_LINK} {ADD_SITE_LINK} {TITLE}</h1>
+<h2>{PIN_LINK} {ADD_LINK} {ADD_SITE_LINK} {TITLE}</h2>
 </div>
 <div class="box-content">
 <ul id="sort-{MENU_ID}" class="box-content menu-links">

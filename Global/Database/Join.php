@@ -162,16 +162,16 @@ class Join {
      * @param boolean $show_left
      * @return string
      */
-    public function getQuery($show_left=true)
+    public function getResourceQuery($show_left=true)
     {
         try {
             if ($show_left) {
-                $left_side = $this->left_resource->getQuery();
+                $left_side = $this->left_resource->getResourceQuery();
             } else {
                 $left_side = null;
             }
 
-            $right_side = $this->right_resource->getQuery();
+            $right_side = $this->right_resource->getResourceQuery();
 
             $query = sprintf('%s %s JOIN %s', $left_side, $this->join_type, $right_side);
 

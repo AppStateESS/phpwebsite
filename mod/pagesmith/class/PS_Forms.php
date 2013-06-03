@@ -100,6 +100,20 @@ class PS_Forms {
             return;
         }
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
+
+        $page->loadKey();
+
+
+        if ($page->_key->id && $page->_key->show_after) {
+            $publish_date = $page->_key->show_after;
+        } else {
+            $publish_date = time();
+        }
+
+        $form->addText('publish_date', strftime('%F %H:%M', $publish_date));
+        $form->setSize('publish_date', 15);
+        $form->setLabel('publish_date', 'Show page after this date and time');
+
         $this->pageTemplateForm($form);
 
         $tpl = $form->getTemplate();
@@ -192,7 +206,6 @@ class PS_Forms {
 
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $create = dgettext('pagesmith', 'Create new page');
-        Language::setLocale('de_DE');
         $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$create</a>";
 
         $pager = new DBPager('ps_page', 'PS_Page');
@@ -218,8 +231,16 @@ class PS_Forms {
         javascript('jquery');
         javascript('jquery_ui');
         Layout::addStyle('pagesmith', 'admin.css');
-        Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
+        Layout::addJSHeader('<script type="text/javascript" src="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
                 'pageedit');
+
+        Layout::addJSHeader('<link rel="stylesheet" type="text/css" href="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/jquery.powertip.min.css" />',
+                'ptipcss');
+        Layout::addJSHeader('<script type="text/javascript" src="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/jquery.powertip.min.js"></script>',
+                'ptipjs');
         $edit_button = false;
         $page = $this->ps->page;
 
@@ -249,7 +270,8 @@ class PS_Forms {
                     break;
 
                 case 'text':
-                    $tpl[$name . '_admin'] = 'title="Click to edit" data-page-id="' . $page->id . '" data-block-id="' . $section->id . '"';
+                    $edit_message = t('Click here to edit this content');
+                    $tpl[$name . '_admin'] = "title=\"$edit_message\" data-page-id=\"$page->id\" data-block-id=\"$section->id\"";
                     break;
             }
         }
@@ -304,7 +326,11 @@ class PS_Forms {
         foreach ($this->tpl_list as $template) {
             if ($template->folders) {
                 foreach ($template->folders as $folder_name) {
-                    @$folder_list[$folder_name]++;
+                    if (isset($folder_list[$folder_name])) {
+                        $folder_list[$folder_name]++;
+                    } else {
+                        $folder_list[$folder_name] = 1;
+                    }
                 }
             }
         }
@@ -401,7 +427,6 @@ class PS_Forms {
                 $fdirs[$key] = $key;
             }
         }
-
 
         $form = new PHPWS_Form('upload-templates');
         $form->addHidden('module', 'pagesmith');

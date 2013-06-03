@@ -1,5 +1,5 @@
 {START_FORM}
-<h1>{TITLE}</h1>
+<h2>{TITLE}</h2>
 {SUBMIT}
 <fieldset style="margin: 10px 0"><legend><strong>{DISPLAY}</strong></legend>
 <p>{ORDER_LABEL} {ORDER}</p>

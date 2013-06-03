@@ -95,9 +95,10 @@ class Request extends Data {
      */
     private function __construct()
     {
+        // loadUrl should be before loadGet
+        $this->loadUrl();
         $this->loadGet();
         $this->loadPost();
-        $this->loadUrl();
         $this->loadId();
         $this->loadState();
     }
@@ -110,6 +111,9 @@ class Request extends Data {
     {
         if (!empty($_GET)) {
             $this->get = $_GET;
+            if (!empty($this->get['module'])) {
+                $this->setModule($this->get['module']);
+            }
         }
     }
 
@@ -121,6 +125,9 @@ class Request extends Data {
     {
         if (!empty($_POST)) {
             $this->post = $_POST;
+            if (!empty($_POST['module'])) {
+                $this->setModule($_POST['module']);
+            }
         }
     }
 
@@ -137,14 +144,13 @@ class Request extends Data {
         }
         if (!empty($url) && !preg_match('/^index\.php/i', $url)) {
             $variables = explode('/', $url);
-            $url = preg_replace('/\?.*$/', '', $url);
+            $url1 = preg_replace('/\?.*$/', '', $url);
 
             // strips beginning, end, and double slashes
-            $url = preg_replace('@//+@', '/', $url);
-            $url = preg_replace('@^/|/$@', '', $url);
-
-            $variables = explode('/', $url);
-            $this->setModule(array_shift($variables));
+            $url2 = preg_replace('@//+@', '/', $url1);
+            $url3 = preg_replace('@^/|/$@', '', $url2);
+            $url_arr = explode('/', $url3);
+            $this->setModule(array_shift($url_arr));
         } else {
             $var_pairs = explode('&', str_ireplace('index.php?', '', $url));
             foreach ($var_pairs as $var) {
@@ -516,7 +522,8 @@ class Request extends Data {
                 return $obj->$state();
             }
         }
-        throw new \Exception(t('Pass command called by %s module cannot continue', $class_name));
+        throw new \Exception(t('Pass command called by %s module cannot continue',
+                $class_name));
     }
 
     /**

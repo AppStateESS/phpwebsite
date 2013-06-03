@@ -37,7 +37,7 @@ class Arr extends \Variable {
      * @param string $value Value added to the array
      * @param string $key The index to the value in the array
      */
-    public function push($value, $key=null)
+    public function push($value, $key = null)
     {
         if (is_null($key)) {
             $this->value[] = $value;
@@ -51,7 +51,7 @@ class Arr extends \Variable {
      * @param boolean $with_key
      * @return mixed
      */
-    public function pop($with_key=false)
+    public function pop($with_key = false)
     {
         if ($with_key) {
             end($this->value);
@@ -154,6 +154,109 @@ class Arr extends \Variable {
     public function __set($name, $value)
     {
         $this->push($name, $value);
+    }
+
+    /**
+     * Reindexes a multidimensional array by a specific column in that array.
+     * By default, duplicates are not allowed. If you choose to allow them, then
+     * expect stacked results:
+     *
+     * Example:
+     * <code>
+     * $animals[] = array('id'=>4, 'title'=>'dog');
+     * $animals[] = array('id'=>7, 'title'=>'frog');
+     * $animals[] = array('id'=>11, 'title'=>'bird');
+     * $animals[] = array('id'=>4, 'title'=>'lizard');
+     *
+     * $indexed = new \Variable\Arr($animals);
+     * $indexed->indexByColumn('id', true);
+     *
+     * var_dump($indexed->get());
+     * // echoes
+     * array (size=3)
+     *  4 =>
+     *    array (size=2)
+     *      0 =>
+     *        array (size=2)
+     *          'id' => int 4
+     *          'title' => string 'dog' (length=3)
+     *      1 =>
+     *        array (size=2)
+     *          'id' => int 4
+     *          'title' => string 'lizard' (length=6)
+     *  7 =>
+     *    array (size=1)
+     *      0 =>
+     *        array (size=2)
+     *          'id' => int 7
+     *          'title' => string 'frog' (length=4)
+     *  11 =>
+     *    array (size=1)
+     *      0 =>
+     *        array (size=2)
+     *          'id' => int 11
+     *          'title' => string 'bird' (length=4)
+     * </code>
+     *
+     * In the example above, setting $collapse_on as title would return
+     * <code>
+     * array (size=3)
+     *  4 =>
+     *    array (size=2)
+     *      0 => string 'dog' (length=3)
+     *      1 => string 'lizard' (length=6)
+     *  7 =>
+     *    array (size=1)
+     *      0 => string 'frog' (length=4)
+     *  11 =>
+     *    array (size=1)
+     *      0 => string 'bird' (length=4)
+     * </code>
+     * @param string $column_name Name of column
+     * @param boolean $duplicate_allowed If false, an exception will be throw on
+     * repeated indices. If false, the reindexing will stack rows in an array for
+     * each index.
+     * @param string $collapse_on If set, the index will collapse indexed value
+     *  on that key.
+     * @throws \Exception
+     */
+    public function indexByColumn($column_name, $duplicate_allowed = false, $collapse_on = null)
+    {
+        $duplicate_allowed = (bool) $duplicate_allowed;
+        $new_value = array();
+
+        foreach ($this->value as $val) {
+
+
+            if (!is_array($val)) {
+                throw new \Exception(t('Value of Arr object is not a multidimensional array'));
+            }
+
+            if (!isset($val[$column_name])) {
+                throw new \Exception(t('Could not index array by column name "%s"',
+                        $column_name));
+            }
+            $index = $val[$column_name];
+
+            if (!$duplicate_allowed && isset($new_value[$val[$column_name]])) {
+                throw new \Exception(t('Duplicate index value encountered'));
+            }
+
+            if (!empty($collapse_on)) {
+                if (!isset($val[$collapse_on])) {
+                    throw new \Exception(t('Could not collapse on value "%s"',
+                            $collapse_on));
+                }
+                $val = $val[$collapse_on];
+            }
+
+            if ($duplicate_allowed) {
+                $new_value[$index][] = $val;
+            } else {
+                $new_value[$index] = $val;
+            }
+        }
+        $this->value = $new_value;
     }
 
 }

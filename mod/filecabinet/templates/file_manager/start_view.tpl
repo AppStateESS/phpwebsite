@@ -1,4 +1,4 @@
-<h1>{INSTRUCTION}</h1>
+<h2>{INSTRUCTION}</h2>
 <div id="main-selection">
 <div style="margin-right: 40px">{DOCUMENT_ICON}<br />
 <span class="label">{DOC_LABEL}</span></div>

@@ -22,7 +22,7 @@ function phatform_install(&$content)
     if (!@mkdir('files/phatform/export/')) {
         $content[] = dgettext('phatform', 'Failed to create export directory.');
     }
-
+    copy(PHPWS_SOURCE_DIR . 'mod/phatform/boost/htaccess', PHPWS_HOME_DIR . 'files/phatform/.htaccess');
     return true;
 }
 

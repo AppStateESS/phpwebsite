@@ -4,7 +4,7 @@
  * My Page for users, controls changing password, display name, etc.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @version $Id$
+ * @version $Id: my_page.php 7776 2010-06-11 13:52:58Z jtickle $
  */
 
 // Number of days a remember me cookie will last
@@ -199,7 +199,6 @@ class User_Settings {
         if (isset($message)){
             foreach ($message as $tag=>$error) {
                 $template[$tag] = $error;
-                $template[$tag . '_CLASS'] = 'error';
             }
         }
 
@@ -210,7 +209,7 @@ class User_Settings {
         return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 
-    public function setTZ()
+    public static function setTZ()
     {
         if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/', $_POST['timezone'])) {
             return;
@@ -232,7 +231,7 @@ class User_Settings {
         }
     }
 
-    public function setCP()
+    public static function setCP()
     {
         if (isset($_POST['cp'])) {
             PHPWS_Cookie::write('user_cp', 1);
@@ -241,14 +240,14 @@ class User_Settings {
         }
     }
 
-    public function setEditor()
+    public static function setEditor()
     {
         if (!preg_match('/\W/', $_POST['editor'])) {
             PHPWS_Cookie::write('phpws_editor', $_POST['editor']);
         }
     }
 
-    public function rememberMe()
+    public static function rememberMe()
     {
         // User must authorize locally
         if ( PHPWS_Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
