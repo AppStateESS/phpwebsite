@@ -16,16 +16,6 @@ if (extension_loaded('mbstring')) {
     mb_internal_encoding('UTF-8');
 }
 
-
-/**
- * Include the defines used in Global library
- */
-if (is_file('config/core/config.php')) {
-    require_once 'config/core/config.php';
-} else {
-    header('location: setup/index.php');
-    exit();
-}
 //require_once 'config/Defines.php';
 /**
  * DISPLAY_ERRORS set in Config/Defines.php
