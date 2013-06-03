@@ -55,7 +55,8 @@ class Server {
             // some users reported problems using redirect_url so parsing uri instead
             if ($_SERVER['REQUEST_URI'] != '/') {
                 $root_url = substr($self, 0, strrpos($self, '/'));
-                $address[] = preg_replace("@^$root_url/@", '', $_SERVER['REQUEST_URI']);
+                $address[] = preg_replace("@^$root_url/@", '',
+                        $_SERVER['REQUEST_URI']);
             } else {
                 $address[] = 'index.php';
             }
@@ -85,17 +86,16 @@ class Server {
      */
     public static function getSiteUrl($with_http = true, $with_directory = true)
     {
-        if ($with_http && $with_directory && defined('SITE_URL')) {
-            return SITE_URL;
-        }
         if (!isset($_SERVER['HTTP_HOST'])) {
             throw new Exception('$_SERVER[HTTP_HOST] superglobal does not exist');
         }
-        $address[] = self::getHttp();
+        if ($with_http) {
+            $address[] = self::getHttp();
+        }
         $address[] = $_SERVER['HTTP_HOST'];
-    if ($with_directory) {
-        $address[] = dirname($_SERVER['PHP_SELF']);
-    }
+        if ($with_directory) {
+            $address[] = dirname($_SERVER['PHP_SELF']);
+        }
 
         $url = preg_replace('@\\\@', '/', implode('', $address));
         $url .= '/';
