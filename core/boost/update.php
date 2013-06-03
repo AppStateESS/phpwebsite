@@ -208,7 +208,6 @@ UPDATES;
                 include PHPWS_SOURCE_DIR . 'core/boost/updates/2_3_0.php';
                 update_core_2_3_0();
             } catch (\Exception $e) {
-                echo $e->getCode();
                 $content[] = 'Error: ' . $e->getMessage();
                 return false;
             }
