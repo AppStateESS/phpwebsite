@@ -8,6 +8,7 @@
 define('SITE_HASH', 'x');
 
 class Setup {
+
     private $page_title;
     private $template;
     private $content;
@@ -30,11 +31,15 @@ class Setup {
         return isset(Session::singleton()->admin_logged_in);
     }
 
-    public function showLoginForm()
+    public function login()
     {
+        $request = Request::singleton();
+
         $form = new Form;
+        $hidden = $form->addHidden('action', 'login');
         $user = $form->addTextField('username');
         $pass = $form->addPassword('password');
+
         $user->setLabel(t('Username'));
         $pass->setLabel(t('Password'));
         $form->addSubmit('submit', t('Log In'));
@@ -43,8 +48,32 @@ class Setup {
 
     public function processCommand()
     {
+        if (!$this->isAdminLoggedIn()) {
+            $this->login();
+            return;
+        }
+
         $request = Request::singleton();
+        switch ($request->getState()) {
+            case 'get':
+                $this->get();
+                break;
+            case 'post':
+                $this->post();
+                break;
+        }
     }
+
+    private function get()
+    {
+        $this->content = 'in get';
+    }
+
+    private function post()
+    {
+        $this->content = 'in post';
+    }
+
 }
 
 ?>

@@ -5,7 +5,7 @@
  * @version $Id$
  */
 ini_set('display_errors', 'On');
-error_reporting (-1);
+error_reporting(-1);
 chdir('../');
 define('PHPWS_SOURCE_DIR', getcwd() . '/');
 
@@ -16,12 +16,7 @@ $setup = new Setup;
 
 $setup->initialize();
 
-if ($setup->isAdminLoggedIn()) {
-    $setup->processCommand();
-} else {
-    $setup->showLoginForm();
-}
+$setup->processCommand();
 
 $setup->display();
-
 ?>
