@@ -8,6 +8,7 @@
 define('SITE_HASH', 'x');
 
 class Setup {
+    private $template;
 
     public function initialize()
     {
@@ -25,7 +26,13 @@ class Setup {
         return isset(Session::singleton()->admin_logged_in);
     }
 
-    public function
+    public function showLoginForm()
+    {
+        $form = new Form;
+        $form->addTextField('username');
+        $form->addPassword('password');
+        $content = $form->printTemplate();
+    }
 }
 
 ?>
