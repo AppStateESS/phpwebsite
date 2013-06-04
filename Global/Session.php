@@ -1,11 +1,32 @@
 <?php
 
 /**
- * Controlling session for Beanie. Allows for session to be shared and
- * divided among sites. Using APC.
+ * Session is a replacement class for the $_SESSION array. Obviously, the
+ * superglobal is still being used, but the variables are controlled through
+ * this class.
  *
+ * First pull the singleton
  *
- * @todo Untested and incomplete
+ * $session = Session::singleton();
+ *
+ * Now setting and getting variables is simple:
+ *
+ * $session->foo = 'bar';
+ *
+ * echo $session->foo; // echoes bar
+ *
+ * The Session class is using overloading. So _set and _get are controlling
+ * the setting and getting. You can also use isset and unset like so:
+ *
+ * if (isset($session->foo)) {
+ *      echo 'Foo is here!';
+ * }
+ *
+ * unset($session->foo);
+ *
+ * If a session variable is not set (or unset) and get is called on it an
+ * exception will be called.
+ *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
@@ -46,7 +67,7 @@ class Session extends Data {
      */
     public static function singleton()
     {
-        static $session;
+        static $session = null;
 
         if (empty($session)) {
             $session = new Session;
@@ -54,11 +75,22 @@ class Session extends Data {
         return $session;
     }
 
+    /**
+     * Sets a Session variable
+     * @param string $name
+     * @param mixed $value
+     */
     public function __set($name, $value)
     {
         $this->values[$name] = $value;
     }
 
+    /**
+     * Returns a Session variable if it is set.
+     * @param string $name
+     * @return mixed
+     * @throws \Exception Thrown if session variable is not set.
+     */
     public function __get($name)
     {
         if (!isset($this->values[$name])) {
@@ -67,26 +99,33 @@ class Session extends Data {
         return $this->values[$name];
     }
 
+    /**
+     * Returns true if the Session variable is set.
+     * @param string $name
+     * @return boolean
+     */
     public function __isset($name)
     {
         return isset($this->values[$name]);
     }
 
+    /**
+     * Removes a Session variable from the value stack.
+     * @param string $name
+     */
     public function __unset($name)
     {
         unset($this->values[$name]);
     }
 
+    /**
+     * Completely resets the SESSION superglobal used by the Session class.
+     */
     public function reset()
     {
         unset($_SESSION['Beanie_Session']);
+        self::start();
     }
-
-    public function destroy($name)
-    {
-        unset($this->values[$name]);
-    }
-
 }
 
 ?>
