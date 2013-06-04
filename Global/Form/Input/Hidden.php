@@ -10,7 +10,7 @@ namespace Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Hidden extends \Form\Base {
+class Hidden extends \Form\Input {
 
     /**
      * Value of the hidden element
