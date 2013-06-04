@@ -91,11 +91,13 @@ class Server {
         if (!isset($_SERVER['HTTP_HOST'])) {
             throw new Exception('$_SERVER[HTTP_HOST] superglobal does not exist');
         }
-        $address[] = self::getHttp();
+        if($with_http) {
+            $address[] = self::getHttp();
+        }
         $address[] = $_SERVER['HTTP_HOST'];
-    if ($with_directory) {
-        $address[] = dirname($_SERVER['PHP_SELF']);
-    }
+        if ($with_directory) {
+            $address[] = dirname($_SERVER['PHP_SELF']);
+        }
 
         $url = preg_replace('@\\\@', '/', implode('', $address));
         $url .= '/';

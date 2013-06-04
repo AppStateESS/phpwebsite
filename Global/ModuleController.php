@@ -65,6 +65,9 @@ final class ModuleController {
         }
 
         $this->destructModules();
+
+        // TODO: a more formal and less nasty way to do this, see issue #96
+        PHPWS_Core::pushUrlHistory();
     }
 
     private function callCurrentModule()
