@@ -63,104 +63,12 @@ abstract class Resource extends Alias {
     }
 
     /**
-     * @return null|string Contents of the fields in this resource; null if no
-     *         fields are present
-     */
-    public function getFields()
-    {
-        if (empty($this->fields)) {
-            if ($this->show_all_fields) {
-                if ($this->alias) {
-                    return $this->getAlias() . '.*';
-                } else {
-                    return wrap($this->full_name, $this->db->getDelimiter()) . '.*';
-                }
-            }
-        } else {
-            // previously, I was checking the validity of the field object here.
-            // I am assuming at this point that it is allowed in the fields array
-            // it is ok to use __toString on it. Forcing a field or subselect check
-            // made expressions fail.
-            foreach ($this->fields as $field) {
-                $cols[] = $field;
-            }
-            if (isset($cols)) {
-                return implode(', ', $cols);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Adds a field object to the table object's field stack.
-     * @param mixed $column_name    If not a Field object, then the name of the column in the table or Expresssion
-     * @param string           $alias          An alias to be used within the query for this field.
-     * @param boolean          $show_in_select If true, show in a select query. False, otherwise.
-     * @return Field
-     */
-    public function addField($column_name, $alias = null, $show_in_select = true)
-    {
-        if (is_string($column_name)) {
-            $field = $this->getField($column_name, $alias, $this);
-            $field->showInSelect($show_in_select);
-        } elseif ($column_name instanceof Field) {
-            if (!$column_name->inTableStack($this)) {
-                throw new \Exception(t('Field object referenced different table object'));
-                return false;
-            }
-            $field = $column_name;
-            $field->showInSelect($show_in_select);
-        } elseif ($column_name instanceof Expression || $column_name instanceof SubSelect) {
-            $field = $column_name;
-        } else {
-            throw new \Exception(t('Improper parameter'));
-        }
-        $this->fields[] = $field;
-
-        return $field;
-    }
-
-    /**
-     * Returns a Field object. If the column is NOT in the table, a
-     * Error is thrown by the Field constructor
-     * @param string $column_name Name of the column in this table
-     * @param string $alias       Query alias used when referencing this field
-     * @return Field
-     */
-    public function getField($column_name, $alias = null)
-    {
-        if (!$this->db->allowed($column_name)) {
-            throw new \Exception(t('Improper column name "%s"', $column_name));
-        }
-        $field = new Field($this, $column_name, $alias);
-        if (!($field->allowSplat() && $column_name == '*') && (DATABASE_CHECK_COLUMNS && !$this->columnExists($column_name))) {
-            throw new \Exception(t('Column does not exist in %s "%s"',
-                    get_class($this), $this->getFullName()));
-        }
-        return $field;
-    }
-
-    /**
      * @see \Database\Resource::$joined
      * @param boolean $joined
      */
     public function setJoined($joined)
     {
         $this->joined = (bool) $joined;
-    }
-
-    /**
-     * If passed a parameter, it sets the show_all_fields variable.
-     * Returns variable condition.
-     * @param boolean show
-     * @return boolean
-     */
-    public function showAllFields($show = null)
-    {
-        if (isset($show)) {
-            $this->show_all_fields = (bool) $show;
-        }
-        return $this->show_all_fields;
     }
 
     /**
