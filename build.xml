@@ -6,7 +6,7 @@
     <!-- The current set of directories containing PHP code is /class,
          /core/class, /mod/*/class.  Here, we set this up for consumption
          by the various utilities that the buildscript employs. -->
-    <dirset dir="${basedir}" includes="class,core/class,mod/**/class" id="phpclasses" />
+    <dirset dir="${basedir}" includes="class,core/class,mod/**/class,Global/**" id="phpclasses" />
     <pathconvert pathsep=" " property="phpclass-directories" refid="phpclasses" />
     <pathconvert pathsep="," property="phpclass-directories-comma" refid="phpclasses" />
     <pathconvert pathsep=" " property="phpclass-directories-source" refid="phpclasses">
