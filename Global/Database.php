@@ -131,6 +131,9 @@ class Database {
 
         self::setDefaultDSN(self::newDSN($dbtype, $dbuser, $dbpass, $dbname,
                         $dbhost, $dbport));
+        if (defined('PHPWS_TABLE_PREFIX')) {
+            self::$default_dsn->setTablePrefix(PHPWS_TABLE_PREFIX);
+        }
     }
 
     /**
@@ -184,5 +187,7 @@ class Database {
             return self::$last_query[$end];
         }
     }
+
 }
+
 ?>

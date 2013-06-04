@@ -745,7 +745,7 @@ class User_Action {
                     // here
 
                     if (!$result) {
-                        $title = dgettext('users', 'Sign-in');
+                        $title = dgettext('users', 'Login page');
                         $message = dgettext('users',
                                 'Username and password combination not found.');
                         $content = User_Form::loginPage();
@@ -769,6 +769,12 @@ class User_Action {
                 } else {
                     PHPWS_Core::errorPage('403');
                 }
+                break;
+
+            // This is used by auth scripts if they need to return the user to 
+            // where they left off after redirection to another site for SSO
+            case 'return_bookmark':
+                PHPWS_Core::popUrlHistory();
                 break;
 
             // reset user password
@@ -841,7 +847,7 @@ class User_Action {
                 if (Current_User::isLogged()) {
                     PHPWS_Core::home();
                 }
-                $title = dgettext('users', 'Sign-in');
+                $title = dgettext('users', 'Login Page');
                 $content = User_Form::loginPage();
                 break;
 
@@ -1111,7 +1117,7 @@ class User_Action {
         return Current_User::loginUser($username, $password);
     }
 
-    public static function postGroup(PHPWS_Group $group, $showLikeGroups = false)
+    public function postGroup(PHPWS_Group $group, $showLikeGroups = false)
     {
         $result = $group->setName($_POST['groupname'], true);
         if (PHPWS_Error::isError($result))
