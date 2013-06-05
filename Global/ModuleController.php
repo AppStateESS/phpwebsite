@@ -195,6 +195,7 @@ final class ModuleController {
         $mods->addOrderBy('priority');
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
+            $row = array_map('trim', $row);
             if (isset($row['deprecated']) && !$row['deprecated']) {
                 $module = $this->loadModuleByTitle($row['title']);
             } else {
