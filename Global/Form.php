@@ -71,9 +71,6 @@ class Form extends Tag {
         static $default_id = 1;
         $this->setId('form-' . $default_id);
         $default_id++;
-        $request = \Request::singleton();
-        $this->action = $request->getUrl();
-        // @todo authkey?
     }
 
     /**

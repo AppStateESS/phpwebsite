@@ -7,4 +7,14 @@
 */
 
 body {
+    padding : 2em 2em;
+}
+
+.container {
+    margin : 1em 1em;
+    text-align : center;
+}
+
+.form-input {
+    padding : 5px;
 }

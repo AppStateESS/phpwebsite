@@ -176,6 +176,8 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  */
 define('DATE_SET_SERVER_TIME_ZONE', 'America/New_York');
 
+date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+
 /* * ******************** Logging Settings ********************* */
 
 /**
