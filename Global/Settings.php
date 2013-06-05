@@ -79,8 +79,9 @@ class Settings extends Data {
         $idx[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
         $idx[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
         $settings->addDataType('setting', 'varchar')->setIsNull(true);
-        $settings->addIndex($idx);
         $settings->create();
+        $index = new \Database\Index($idx, 'settings_idx');
+        $index->create();
     }
 
     final public static function singleton($reload = false)

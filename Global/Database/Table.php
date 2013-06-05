@@ -60,11 +60,6 @@ abstract class Table extends Resource {
      */
     protected $incremented_ids = null;
 
-    /**
-     * Indices used in the table
-     * @var array
-     */
-    protected $indices = array();
 
     /**
      * May contain a DB object used for insertion.
@@ -438,25 +433,6 @@ abstract class Table extends Resource {
         }
     }
 
-    public function addIndex()
-    {
-        $columns = \func_get_args();
-        if (empty($columns)) {
-            throw new \Exception(\t('No values were passed'));
-        }
-        foreach ($columns as $col) {
-            if (is_object($col) && ($col instanceof \Database\Field || $col instanceof \Database\Datatype)) {
-                $this->indices[] = $col;
-            } elseif (is_array($col)) {
-                $this->indices[] = $col;
-            } elseif (is_string($col)) {
-                $this->indices[] = new \Database\Field($this, $col, null, false);
-            } else {
-                throw new \Exception(\t('Could not use supplied parameters'));
-            }
-        }
-    }
-
     /**
      * Receives n parameters to create the primary index array: important for
      * create or alter statements. Each parameter must be a
@@ -624,25 +600,6 @@ abstract class Table extends Resource {
         }
     }
 
-    /**
-     * Creates an index name for a set of columns
-     * @param array $field_array
-     * @return string
-     */
-    private function formIndexName(array $field_array)
-    {
-        $fields = array_keys($field_array);
-        if (count($fields) == 1) {
-            foreach ($fields as $name) {
-                return $name . '_idx';
-            }
-        } else {
-            foreach ($fields as $name) {
-                $idx[] = substr($name, 0, 2);
-            }
-            return implode('_', $idx) . 'idx';
-        }
-    }
 
     /**
      * Sets a SQL table option prior to creation.
@@ -711,22 +668,6 @@ abstract class Table extends Resource {
 
         if (!empty($this->constraints)) {
             $sub[] = $this->getConstraintString(true);
-        }
-
-        if (!empty($this->indices)) {
-            foreach ($this->indices as $col) {
-                if (is_array($col)) {
-                    foreach ($col as $subidx) {
-                        $keys[] = $subidx->getName();
-                        $indices = implode(', ', $keys);
-                    }
-                } else {
-                    $indices = $col->getName();
-                }
-                $index_name = preg_replace("/[^a-z]/i", '', $indices);
-
-                $sub[] = 'KEY ' . $index_name . ' (' . $indices . ')';
-            }
         }
 
         $table_options = $this->getTableOptionString();
