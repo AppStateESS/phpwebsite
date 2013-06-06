@@ -81,7 +81,7 @@ final class ModuleController {
         $state = $request->getState();
         if (!method_exists($this->current_module, $state)) {
             throw new \Exception(t('Module "%s" is missing a "%s" state.',
-                    $this->current_module->getName(), $state));
+                    $this->current_module->getTitle(), $state));
         }
         $this->current_module->$state();
         return true;

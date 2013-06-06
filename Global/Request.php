@@ -142,23 +142,25 @@ class Request extends Data {
         if (preg_match('/index\.php$/', $url)) {
             return;
         }
-        if (!empty($url) && !preg_match('/^index\.php/i', $url)) {
-            $variables = explode('/', $url);
-            $url1 = preg_replace('/\?.*$/', '', $url);
+        if (!empty($url)) {
+            if (!preg_match('/^index\.php/i', $url)) {
+                $variables = explode('/', $url);
+                $url1 = preg_replace('/\?.*$/', '', $url);
 
-            // strips beginning, end, and double slashes
-            $url2 = preg_replace('@//+@', '/', $url1);
-            $url3 = preg_replace('@^/|/$@', '', $url2);
-            $url_arr = explode('/', $url3);
-            $this->setModule(array_shift($url_arr));
-        } else {
-            $var_pairs = explode('&', str_ireplace('index.php?', '', $url));
-            foreach ($var_pairs as $var) {
-                list($key, $value) = explode('=', $var);
-                if ($key == 'module') {
-                    $this->setModule($value);
-                } else {
-                    $variables[$key] = $value;
+                // strips beginning, end, and double slashes
+                $url2 = preg_replace('@//+@', '/', $url1);
+                $url3 = preg_replace('@^/|/$@', '', $url2);
+                $url_arr = explode('/', $url3);
+                $this->setModule(array_shift($url_arr));
+            } else {
+                $var_pairs = explode('&', str_ireplace('index.php?', '', $url));
+                foreach ($var_pairs as $var) {
+                    list($key, $value) = explode('=', $var);
+                    if ($key == 'module') {
+                        $this->setModule($value);
+                    } else {
+                        $variables[$key] = $value;
+                    }
                 }
             }
         }
