@@ -14,14 +14,9 @@ mb_internal_encoding('UTF-8');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL | E_STRICT);
 require_once 'config/core/config.php';
-if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
-    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
-} else {
-    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
-}
-date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
-require_once 'Global/Functions.php';
+require_once 'core/conf/defines.dist.php';
 
+require_once 'Global/Functions.php';
 
 set_exception_handler(array('Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
@@ -29,4 +24,6 @@ if (ERRORS_AS_EXCEPTION) {
 }
 
 /* * ************************************************* */
+echo 'This is a test file for phpwebsite functionality';
+/* * *************************************************** */
 ?>
