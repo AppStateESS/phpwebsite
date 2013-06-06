@@ -204,18 +204,6 @@ UPDATES;
             $content[] = "<pre>$changes</pre>";
 
         case version_compare($version, '2.3.0', '<'):
-            try {
-                $db = Database::newDB();
-                $deprecated = $db->addTable('modules')->addDataType('deprecated',
-                        'smallint');
-                $deprecated->setDefault(1);
-                $deprecated->add();
-
-
-            } catch (\Exception $e) {
-                $content[] = 'Error: ' . $e->getMessage();
-                return false;
-            }
             $changes = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/2_3_0.txt');
             $content[] = "<pre>$changes</pre>";
     }

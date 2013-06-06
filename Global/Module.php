@@ -12,11 +12,6 @@ class Module extends \ModuleAbstract implements \SettingDefaults {
     public $unregister;
     public $register;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function run()
     {
         if (is_file($this->directory . 'inc/runtime.php')) {
@@ -58,6 +53,26 @@ class Module extends \ModuleAbstract implements \SettingDefaults {
     {
         if (is_file($this->directory . 'inc/close.php')) {
             include $this->directory . 'inc/close.php';
+        }
+    }
+
+    public function setRegister($register)
+    {
+        $this->register = (bool) $register;
+    }
+
+    public function setUnregister($unregister)
+    {
+        $this->unregister = (bool) $unregister;
+    }
+
+    public function loadData()
+    {
+        parent::loadData();
+        $boost_file = $this->directory . 'boost/boost.php';
+        if (is_file($boost_file)) {
+            include $boost_file;
+            $this->file_version = $version;
         }
     }
 

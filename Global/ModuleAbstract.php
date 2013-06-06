@@ -63,7 +63,18 @@ abstract class ModuleAbstract extends Data {
      * @var boolean
      */
     protected $deprecated = 0;
+
+    /**
+     * Version according to database
+     * @var string
+     */
     protected $version;
+
+    /**
+     * Version according to files
+     * @var string
+     */
+    protected $file_version;
 
     /**
      * A required function accessed on initialization of the software. After loaded
@@ -197,6 +208,11 @@ abstract class ModuleAbstract extends Data {
     public function setTitle($title)
     {
         $this->title->set($title);
+    }
+
+    public function setProperName($name)
+    {
+        $this->proper_name->set($name);
     }
 
     public function getTitle()
