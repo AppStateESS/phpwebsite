@@ -196,7 +196,7 @@ abstract class ModuleAbstract extends Data {
 
     public function setTitle($title)
     {
-        $this->title->setValue($title);
+        $this->title->set($title);
     }
 
     public function getTitle()
@@ -231,7 +231,7 @@ abstract class ModuleAbstract extends Data {
 
     public function destruct()
     {
-        
+
     }
 
 }
