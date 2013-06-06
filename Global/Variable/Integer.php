@@ -45,7 +45,7 @@ class Integer extends \Variable {
         }
 
         if ($value < $this->low_range || $value > $this->high_range) {
-            throw new \Exception(t('%s is outside the allowed range(%s - %s)', $this->getLabel(), $this->low_range, $this->high_range));
+            throw new \Exception(t('Value "%1$s" is outside the allowed range(%2$s - %3$s) of variable "%4$s"', $value, $this->low_range, $this->high_range, $this->getLabel()));
         }
 
         return true;
