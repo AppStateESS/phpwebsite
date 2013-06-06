@@ -180,12 +180,15 @@ class Setup {
                 break;
         }
         echo Request::show();
-        $dsn = new \Database\DSN($request->getPost('database_type'), $request->getPost('database_user'));
+        $dsn = new \Database\DSN($request->getPost('database_type'),
+                $request->getPost('database_user'));
 
         $dsn->setDatabaseName($request->getPost('database_name'));
         $dsn->setHost($request->getPost('database_host'));
         $dsn->setPassword($request->getPost('database_password'));
-        $dsn->setPort($request->getPost('database_port'));
+        if ($request->isPost('database_post')) {
+            $dsn->setPort($request->getPost('database_port'));
+        }
     }
 
     public function setMessage($message)
@@ -197,6 +200,7 @@ class Setup {
     {
         $this->content = $content;
     }
+
 }
 
 ?>
