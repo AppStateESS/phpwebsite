@@ -31,6 +31,7 @@ function phpwsAutoload($class_name)
                     'mod/\\1/class/\\2.php', $class_name);
     $global_file = PHPWS_SOURCE_DIR . 'Global/' . $class_name . '.php';
     $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
+
     if (is_file($new_mod_file)) {
         $files_found[$class_name] = $new_mod_file;
         require_once $new_mod_file;
