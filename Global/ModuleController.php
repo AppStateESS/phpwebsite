@@ -111,6 +111,7 @@ final class ModuleController {
             try {
                 $this->setCurrentModule($module_name);
             } catch (\Exception $e) {
+                // @todo should these be logged?
                 Error::errorPage('404');
             }
         }
@@ -197,7 +198,7 @@ final class ModuleController {
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
             $row = array_map('trim', $row);
-            if (isset($row['deprecated']) && !$row['deprecated']) {
+            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $row['title'] . '/Module.php')) {
                 $module = $this->loadModuleByTitle($row['title']);
                 $module->setActive(1);
             } else {
