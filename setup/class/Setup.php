@@ -12,6 +12,7 @@ class Setup {
     private $content;
     private $toolbar;
     private $title;
+    private $install;
 
     public function initialize()
     {
@@ -133,7 +134,8 @@ class Setup {
 
         switch ($command) {
             case 'install':
-                $this->install();
+                $this->loadInstall();
+                $this->install->get();
                 break;
             case 'dashboard':
                 $this->loadToolbar();
@@ -142,42 +144,10 @@ class Setup {
         }
     }
 
-    private function install()
+    private function loadInstall()
     {
-        $request = Request::singleton();
-        $op = $request->isGetVar('op') ? $request->getGet('op') : 'prompt';
-
-        switch ($op) {
-            case 'prompt':
-                $this->title = t('New installation');
-                $this->content = '<p>You do not have a config/core/config.php file. This must be a new installation.</p>';
-                $this->content .= '<a href="index.php?command=install&op=config_form" class="btn-large btn-primary">Install phpWebSite</a>';
-                break;
-
-            case 'config_form':
-                $this->title = t('Create database configuration file');
-                $this->getConfigForm();
-                break;
-        }
-    }
-
-    private function getConfigForm()
-    {
-        $form = new Form;
-        $form->addClass('form-inline');
-        $form->addHidden('command', 'install');
-        $form->addHidden('action', 'post_config');
-        $form->addRadio('database_type',
-                array('mysql' => 'MySQL', 'pgsql' => 'PostgreSQL'));
-        $form->addTextField('database_name');
-        $form->addTextField('database_user');
-        $form->addTextField('database_password');
-        $form->addTextField('database_host');
-        $form->addTextField('database_port');
-        $form->addTextField('table_prefix');
-        $form->addSubmit('save', t('Create database file'));
-        $this->setTitle(t('Create your database configuration file'));
-        $this->content = $form->__toString();
+        require_once 'setup/class/Install.php';
+        $this->install = new Install($this);
     }
 
     private function postConfigForm()
@@ -195,7 +165,7 @@ class Setup {
 
     }
 
-    private function setTitle($title)
+    public function setTitle($title)
     {
         $this->title = $title;
     }
@@ -203,7 +173,14 @@ class Setup {
     private function post()
     {
         $request = Request::singleton();
+        $command = $request->getPost('command');
 
+        switch ($command) {
+            case 'install':
+                break;
+        }
+
+        Request::show();
         $dsn = new \Database\DSN;
 
         $dsn->setDatabaseName($request->database_name);
@@ -220,6 +197,10 @@ class Setup {
         $this->message = $message;
     }
 
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
 }
 
 ?>
