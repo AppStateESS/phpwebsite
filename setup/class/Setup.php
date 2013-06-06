@@ -126,7 +126,7 @@ class Setup {
 
         if (!is_file('config/core/config.php')) {
             $command = 'install';
-        } elseif (!$request->isGetVar('action')) {
+        } elseif ($request->isGetVar('action')) {
             $command = $request->getGet('action');
         } else {
             $command = 'dashboard';
@@ -179,17 +179,13 @@ class Setup {
             case 'install':
                 break;
         }
-
-        Request::show();
-        $dsn = new \Database\DSN;
-
-        $dsn->setDatabaseName($request->database_name);
-        $dsn->setDatabaseType($request->database_type);
-        $dsn->setHost($request->database_host);
-        $dsn->setPassword($request->database_password);
-
         echo Request::show();
-        exit();
+        $dsn = new \Database\DSN($request->getPost('database_type'), $request->getPost('database_user'));
+
+        $dsn->setDatabaseName($request->getPost('database_name'));
+        $dsn->setHost($request->getPost('database_host'));
+        $dsn->setPassword($request->getPost('database_password'));
+        $dsn->setPort($request->getPost('database_port'));
     }
 
     public function setMessage($message)

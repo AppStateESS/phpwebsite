@@ -14,10 +14,13 @@ define('SETUP_USER_ERROR', -1);
 define('SITE_HASH', 'x');
 define('SETUP_CONFIGURATION_DIRECTORY', 'config/');
 
+
 //require_once 'core/conf/defines.dist.php';
 require_once 'core/conf/defines.php';
 require_once 'Global/Functions.php';
 require_once 'setup/class/Setup.php';
+
+set_exception_handler(array('Error', 'exceptionHandler'));
 
 try {
     $setup = new Setup;
@@ -27,8 +30,7 @@ try {
     if ($e->getCode() == SETUP_USER_ERROR) {
         $setup->setMessage($e->getMessage());
     } else {
-        Error::log($e);
-        Error::errorPage('500');
+        throw $e;
     }
 }
 $setup->display();
