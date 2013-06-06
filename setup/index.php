@@ -14,7 +14,8 @@ define('SETUP_USER_ERROR', -1);
 define('SITE_HASH', 'x');
 define('SETUP_CONFIGURATION_DIRECTORY', 'config/');
 
-require_once 'core/conf/defines.dist.php';
+//require_once 'core/conf/defines.dist.php';
+require_once 'core/conf/defines.php';
 require_once 'Global/Functions.php';
 require_once 'setup/class/Setup.php';
 

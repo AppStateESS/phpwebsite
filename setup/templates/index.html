@@ -22,7 +22,7 @@
         </div>
         <?php endif; ?>
         <div class="hero-unit">
-            <h2><?=$title?></h2>
+            <h2><?=isset($title)?$title:null?></h2>
             <?=$content?>
         </div>
         <script src="http://code.jquery.com/jquery.js"></script>
