@@ -111,6 +111,7 @@ final class ModuleController {
             try {
                 $this->setCurrentModule($module_name);
             } catch (\Exception $e) {
+                // @todo should these be logged?
                 Error::errorPage('404');
             }
         }
@@ -150,6 +151,7 @@ final class ModuleController {
         require_once $module_path;
         $namespace = "$module_title\\Module";
         $module = new $namespace;
+        $module->loadData();
         return $module;
     }
 
@@ -196,8 +198,9 @@ final class ModuleController {
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
             $row = array_map('trim', $row);
-            if (isset($row['deprecated']) && !$row['deprecated']) {
+            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $row['title'] . '/Module.php')) {
                 $module = $this->loadModuleByTitle($row['title']);
+                $module->setActive(1);
             } else {
                 $module = $this->loadPHPWSModule($row);
             }
@@ -241,8 +244,15 @@ final class ModuleController {
         return isset($this->module_stack[$module_title]);
     }
 
+    /**
+     *
+     * @param string $module_title
+     * @return \ModuleAbstract
+     * @throws Exception
+     */
     public function getModule($module_title)
     {
+        $module_title = (string)$module_title;
         if (!isset($this->module_stack[$module_title])) {
             throw new Exception(t('Module "%s" does not exist', $module_title));
         }
