@@ -111,6 +111,7 @@ final class ModuleController {
             try {
                 $this->setCurrentModule($module_name);
             } catch (\Exception $e) {
+                // @todo should these be logged?
                 Error::errorPage('404');
             }
         }
@@ -141,7 +142,7 @@ final class ModuleController {
      * @return \ModuleAbstract
      * @throws \Exception Module.php is missing
      */
-    public function loadModuleByTitle($module_title)
+    public function getModuleByTitle($module_title)
     {
         $module_path = PHPWS_SOURCE_DIR . "mod/$module_title/Module.php";
         if (!is_file($module_path)) {
@@ -150,6 +151,21 @@ final class ModuleController {
         require_once $module_path;
         $namespace = "$module_title\\Module";
         $module = new $namespace;
+
+        return $module;
+    }
+
+
+    private function loadModuleValues(array $values)
+    {
+        $module = $this->getModuleByTitle($values['title']);
+        /**
+         * These are in the old modules table, but will not be used.
+         * @todo Once all modules are updated, dump these columns.
+         */
+        unset($values['register']);
+        unset($values['unregister']);
+        $module->setVars($values);
         $module->loadData();
         return $module;
     }
@@ -165,6 +181,7 @@ final class ModuleController {
         $module = new Module;
         $module->setVars($values);
         $module->loadData();
+        $module->setDeprecated(1);
         return $module;
     }
 
@@ -181,7 +198,7 @@ final class ModuleController {
     public function setCurrentModule($module_name)
     {
         if (!isset($this->module_stack[$module_name])) {
-            $this->loadModuleByTitle($module_name);
+            throw new \Exception(t('Module "%s" not found', $module_name));
         }
         if (!$this->module_stack[$module_name]->isActive()) {
             throw new \Exception('Inactive module accessed');
@@ -196,9 +213,9 @@ final class ModuleController {
         $mods->addOrderBy('priority');
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
-            if (isset($row['deprecated']) && !$row['deprecated']) {
-                $module = $this->loadModuleByTitle($row['title']);
-                $module->setActive(1);
+            $row = array_map('trim', $row);
+            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $row['title'] . '/Module.php')) {
+                $module = $this->loadModuleValues($row);
             } else {
                 $module = $this->loadPHPWSModule($row);
             }
@@ -250,7 +267,7 @@ final class ModuleController {
      */
     public function getModule($module_title)
     {
-        $module_title = (string)$module_title;
+        $module_title = (string) $module_title;
         if (!isset($this->module_stack[$module_title])) {
             throw new Exception(t('Module "%s" does not exist', $module_title));
         }

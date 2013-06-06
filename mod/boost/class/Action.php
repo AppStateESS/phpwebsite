@@ -172,7 +172,7 @@ class Boost_Action {
         return PHPWS_Template::process($template, 'boost', 'main.tpl');
     }
 
-    public function showDependency($base_module_title)
+    public static function showDependency($base_module_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_module_title);

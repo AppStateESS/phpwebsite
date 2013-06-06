@@ -6,7 +6,6 @@ CREATE TABLE modules (
  version CHAR(20) NOT NULL,
  register SMALLINT NOT NULL,
  unregister SMALLINT NOT NULL,
- deprecated smallint not null default 1,
  PRIMARY KEY (title)
 );
 

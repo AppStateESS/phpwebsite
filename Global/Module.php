@@ -12,11 +12,6 @@ class Module extends \ModuleAbstract implements \SettingDefaults {
     public $unregister;
     public $register;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function run()
     {
         if (is_file($this->directory . 'inc/runtime.php')) {
@@ -65,18 +60,23 @@ class Module extends \ModuleAbstract implements \SettingDefaults {
         }
     }
 
-    protected function addPHPWSPanelLinks()
+    public function setRegister($register)
     {
-        include $this->directory . 'boost/controlpanel.php';
-        if (!empty($link)) {
-            foreach ($link as $l) {
-                extract($l);
-                $title = t('Options');
-                $full_link = <<<EOF
-<a href="$url">$title</a>
-EOF;
-                Controlpanel::getToolbar()->addSiteOption($this->title, $full_link);
-            }
+        $this->register = (bool) $register;
+    }
+
+    public function setUnregister($unregister)
+    {
+        $this->unregister = (bool) $unregister;
+    }
+
+    public function loadData()
+    {
+        parent::loadData();
+        $boost_file = $this->directory . 'boost/boost.php';
+        if (is_file($boost_file)) {
+            include $boost_file;
+            $this->file_version = $version;
         }
     }
 
