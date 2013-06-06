@@ -162,7 +162,9 @@ class Request extends Data {
                 }
             }
         }
-        $this->setCommand($variables);
+        if (isset($variables)) {
+            $this->setCommand($variables);
+        }
         $this->url = $url;
     }
 
