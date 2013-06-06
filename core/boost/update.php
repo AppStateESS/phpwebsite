@@ -203,7 +203,7 @@ UPDATES;
             $changes = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/2_2_0.txt');
             $content[] = "<pre>$changes</pre>";
 
-        case version_compare($version, '2.3.1', '<'):
+        case version_compare($version, '2.3.0', '<'):
             try {
                 include PHPWS_SOURCE_DIR . 'core/boost/updates/2_3_0.php';
                 update_core_2_3_0();
