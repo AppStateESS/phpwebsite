@@ -25,9 +25,6 @@ if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
     require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
 }
 
-/*** Time Zone Setting ***/
-date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
-
 /***
  * Error Display and Reporting *
  * DISPLAY_ERRORS is defined in config/defines.php
