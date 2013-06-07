@@ -347,6 +347,15 @@ abstract class DB extends \Data {
     }
 
     /**
+     * If you would prefer to interact directly with PDO, this will return the 
+     * PDO object used for the current connection.
+     */
+    public function getPDO()
+    {
+        return self::$PDO;
+    }
+
+    /**
      * Creates new database
      * @param string $database_name
      * @return boolean True on success

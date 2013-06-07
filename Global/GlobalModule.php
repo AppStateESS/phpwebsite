@@ -9,7 +9,7 @@
 
 require_once PHPWS_SOURCE_DIR . 'Global/Implementations.php';
 
-class GlobalModule extends ModuleAbstract implements SettingDefaults {
+class GlobalModule extends Module implements SettingDefaults {
 
     /**
      * Eventually to be handled by UI
@@ -18,6 +18,11 @@ class GlobalModule extends ModuleAbstract implements SettingDefaults {
     {
         $settings['language'] = DEFAULT_LANGUAGE;
         return $settings;
+    }
+
+    public function getController(Request $request)
+    {
+        // TODO ...?
     }
 
     public function run()
