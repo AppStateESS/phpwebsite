@@ -15,12 +15,20 @@ class Text extends \Form\Input {
      * The character size of the text field
      * @var integer
      */
-    protected $size;
+    protected $size = 20;
+
     /**
      * The maximum number of characters allowed in the text field
      * @var integer
      */
     protected $maxlength;
+
+    /**
+     * The minimum number of characters allowed in a text field
+     * @var integer
+     */
+    protected $minlength;
+
     /**
      * If true, autocomplete will be set to 'yes' in the input. An autocomplete
      * of 'no' instructs browsers to NOT fill in the text field with what it
@@ -29,16 +37,19 @@ class Text extends \Form\Input {
      * @var boolean
      */
     protected $autocomplete;
+
     /**
      * Supported in Opera only
      * @var string
      */
     protected $list;
+
     /**
      * Supported in Opera only
      * @var string
      */
     protected $pattern;
+
     /**
      * If set, this is the text that fills in an unset text field. Usually it
      * is a suggestion of what to type.
@@ -55,17 +66,24 @@ class Text extends \Form\Input {
     /**
      * Sets the size and maxsize parameter the text input
      * @param integer $size
-     * @param integer $maxsize
+     * @param integer $maxlength
      */
-    public function setSize($size, $maxsize=null)
+    public function setSize($size, $maxlength = null)
     {
         $this->size = (int) $size;
-        if ($maxsize) {
-            if ($maxsize < $this->size) {
-                throw new \Exception(t('Max size may not be less than input size'));
-            }
-            $this->maxsize = $maxsize;
+        if ($maxlength) {
+            $this->setMaxLength($maxlength);
         }
+    }
+
+    public function setMaxLength($maxlength)
+    {
+        $this->maxlength = (int) $maxlength;
+    }
+
+    public function setMinLength($minlength)
+    {
+        $this->minlength = (int) $minlength;
     }
 
     /**
@@ -73,7 +91,7 @@ class Text extends \Form\Input {
      * sent. NULL will prevent the parameter from appearing on the input.
      * @param boolean $ac
      */
-    public function setAutocomplete($ac=null)
+    public function setAutocomplete($ac = null)
     {
         if ($ac) {
             $this->autocomplete = 'on';
@@ -95,6 +113,7 @@ class Text extends \Form\Input {
 
         $this->placeholder = $placeholder;
     }
+
 }
 
 ?>
