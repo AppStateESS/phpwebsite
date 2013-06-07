@@ -1,0 +1,96 @@
+/* ---------- Containers ----------- */
+div.controlpanel {
+    padding: 3px;
+}
+
+#cp-subpanel {
+left : -140px;
+}
+
+.frame {
+    margin: 0px 5px 0px 0px;
+    background-color: #BFBFBF;
+    padding: 2px;
+    border: 1px solid black;
+}
+
+.frame .backgrd {
+    margin: 2px;
+    background-color: white;
+    padding: 5px;
+    border-left: 1px solid #696969;
+    border-top: 1px solid #696969;
+    overflow: auto;
+}
+
+/*--------------- Tabs ---------------*/
+.tabmenu li {
+    display: inline;
+    list-style-type: none;
+    font-size: 0.8em;
+    margin-right: 2px;
+}
+
+.tabmenu ul {
+    line-height: 1em;
+}
+
+.tabmenu li a {
+    padding: 3px 5px 2px 5px;
+    border: 1px solid black;
+    /* Gecko browsers */
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+}
+
+.tabmenu li.active a {
+    color: white;
+    background-color: #BFBFBF;
+    border-bottom: none;
+    z-index: 2;
+    padding-bottom: 3px;
+}
+
+.tabmenu li.active a:link,.tabmenu li.active a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+.tabmenu li.inactive a {
+    background-color: #E9E9E9;
+}
+
+.tabmenu li.inactive a:hover {
+    background: #F0F0F0;
+    color: white;
+}
+
+.tabmenu li.inactive a:link,.tabmenu li.inactive a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+/*--------------- Links -----------------*/
+div.link {
+    font-size: .8em;
+    margin: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    float: left;
+    width: 150px;
+    min-height: 95px;
+    display: inline;
+    line-height: 1.2em;
+}
+
+div.link img {
+    float: left;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline;
+}
+
+div.link a {
+    font-size: .9em;
+    font-weight: bold;
+}

@@ -5,12 +5,5 @@
  * @version $Id$
  */
 
-class PHPWS_ControlPanel {
-
-    public static function panelLink($fly_out=false)
-    {
-        return true;
-    }
-    }
-
+require_once PHPWS_SOURCE_DIR . 'mod/controlpanel/class/ControlPanel.php';
 ?>
