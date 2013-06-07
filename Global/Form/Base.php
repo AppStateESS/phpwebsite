@@ -126,7 +126,8 @@ abstract class Base extends \Tag {
         } else {
             $label = & $this->label;
         }
-        return sprintf('<label for="%s">%s</label>', $this->id, $label);
+        $class_name = $this->getType() . '-label';
+        return "<label for=\"$this->id\" class=\"$class_name\">$label</label>";
     }
 
     /**
@@ -181,6 +182,14 @@ abstract class Base extends \Tag {
         return $this->print_label;
     }
 
+    public function setRequired($required=true)
+    {
+        if ($required) {
+            $this->required = 'required';
+        } else {
+            $this->required = null;
+        }
+    }
 }
 
 ?>

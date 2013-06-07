@@ -11,4 +11,9 @@ interface SettingDefaults {
     public function getSettingDefaults();
 }
 
+interface SettingMenu {
+
+    public function getSettingMenu();
+}
+
 ?>
