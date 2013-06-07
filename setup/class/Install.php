@@ -35,15 +35,44 @@ class Install {
 
     public function post()
     {
+        $request = Request::singleton();
+        if (!$request->isPostVar('op')) {
+            throw new Exception(t('Missing post operation'));
+        }
 
+        echo Request::show();
+        switch ($request->getPost('op')) {
+            case 'post_config':
+                $this->postConfig();
+                break;
+        }
+    }
+
+    private function postConfig()
+    {
+        $dsn = new \Database\DSN($request->getPost('database_type'),
+                $request->getPost('database_user'));
+
+        $dsn->setDatabaseName($request->getPost('database_name'));
+        $dsn->setHost($request->getPost('database_host'));
+        $dsn->setPassword($request->getPost('database_password'));
+        if ($request->isPostVar('database_port')) {
+            $dsn->setPort($request->getPost('database_port'));
+        }
+    }
+
+    private function getForm()
+    {
+        $form = new Form;
+        $form->addClass('form-inline');
+        $form->addHidden('sec', 'install');
+        return $form;
     }
 
     private function getConfigForm()
     {
-        $form = new Form;
-        $form->addClass('form-inline');
-        $form->addHidden('command', 'install');
-        $form->addHidden('action', 'post_config');
+        $form = $this->getForm();
+        $form->addHidden('op', 'post_config');
         $form->addRadio('database_type',
                 array('mysql' => 'MySQL', 'pgsql' => 'PostgreSQL'));
         $form->addTextField('database_name');

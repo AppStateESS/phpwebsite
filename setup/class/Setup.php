@@ -53,7 +53,7 @@ class Setup {
 
         $request = Request::singleton();
         $form = new Form;
-        $form->addHidden('action', 'login');
+        $form->addHidden('sec', 'login');
         $user = $form->addTextField('username');
         $pass = $form->addPassword('password');
 
@@ -125,14 +125,14 @@ class Setup {
         $request = Request::singleton();
 
         if (!is_file('config/core/config.php')) {
-            $command = 'install';
-        } elseif ($request->isGetVar('action')) {
-            $command = $request->getGet('action');
+            $section = 'install';
+        } elseif ($request->isGetVar('sec')) {
+            $section = $request->getGet('sec');
         } else {
-            $command = 'dashboard';
+            $section = 'dashboard';
         }
 
-        switch ($command) {
+        switch ($section) {
             case 'install':
                 $this->loadInstall();
                 $this->install->get();
@@ -177,17 +177,9 @@ class Setup {
 
         switch ($command) {
             case 'install':
+                $this->loadInstall();
+                $this->install->post();
                 break;
-        }
-        echo Request::show();
-        $dsn = new \Database\DSN($request->getPost('database_type'),
-                $request->getPost('database_user'));
-
-        $dsn->setDatabaseName($request->getPost('database_name'));
-        $dsn->setHost($request->getPost('database_host'));
-        $dsn->setPassword($request->getPost('database_password'));
-        if ($request->isPost('database_post')) {
-            $dsn->setPort($request->getPost('database_port'));
         }
     }
 
