@@ -98,44 +98,33 @@ class Request extends Data {
 
     /**
      * Builds the current page request object.
-     */
-    public function __construct()
-    {
-        // loadUrl should be before loadGet
-        $this->loadUrl();
-        $this->loadVars();
-        $this->loadData();
-        $this->loadId();
-        $this->loadMethod();
-    }
-
-    /**
-     * Loads the superglobal _REQUEST into the vars variable
-     * @return void
-     */
-    private function loadVars()
-    {
-        if(!empty($_REQUEST)) {
-            $this->vars = $_REQUEST;
-        } else {
-            $this->vars = array();
-        }
-
-        // for compatibility with 1.x
-        if(array_key_exists('module', $this->vars)) {
-            $this->setModule($this->vars['module']);
-        }
-    }
-
-    /**
-     * Reads raw data from the request.
      *
-     * @see getJsonData
-     * @return void
+     * @param $url string The URL
+     * @param $vars array|null Request Variables ($_REQUEST, etc)
+     * @param $data mixed The raw content area of the HTTP request (JSON and 
+     *                    Form data)
      */
-    private function loadData()
+    public function __construct($url, $method, array $vars = null, $data = null)
     {
-        $this->data = file_get_contents('php://input');
+        $this->setUrl($url);
+        $this->setMethod($method);
+
+        if(is_null($vars)) {
+            $vars = array();
+        }
+        $this->setVars($vars);
+
+        $this->setData($data);
+
+        // Extract Command - TODO: revisit this
+        if(!is_null($this->command)) {
+            foreach($this->command as $com) {
+                if(is_numeric($com)) {
+                    $this->id = $com;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -149,6 +138,10 @@ class Request extends Data {
         if (preg_match('/index\.php$/', $url)) {
             return;
         }
+
+        // Ensure consistency in URLs
+        $url = $this->sanitizeUrl($url);
+
         if (!empty($url)) {
             if (!preg_match('/^index\.php/i', $url)) {
                 $variables = explode('/', $url);
@@ -178,20 +171,40 @@ class Request extends Data {
     }
 
     /**
+     * Turns all of the various and wonderful things you can do with a URL into 
+     * a consistent query, for example /a/./b/ becomes /a/b/.
+     * @param string $url The URL to sanitize
+     * @return string The sanitized URL
+     */
+    public function sanitizeUrl($url)
+    {
+        // Repeated Slashes become One Slash
+        $url = preg_replace('@//+@', '/', $url);
+
+        // Fix all instances of dot as "current directory"
+        $url = preg_replace('@^(\./)+@', '', $url);
+        $url = preg_replace('@(/\.)+$@', '/', $url);
+        $url = preg_replace('@/(\./)+@', '/', $url);
+
+        // Ensure Preceding Slash
+        if(substr($url, 0, 1) != '/') {
+            $url = '/' . $url;
+        }
+
+        // Remove Trailing Slash
+        if(substr($url, -1, 1) == '/' && strlen($url) > 1) {
+            $url = substr($url, 0, -1);
+        }
+
+        return $url;
+    }
+
+    /**
      * @return string The currently set url
      */
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Sets the url variable based on the current url.
-     * @return void
-     */
-    public function loadUrl()
-    {
-        $this->setUrl(Server::getCurrentUrl());
     }
 
     /**
@@ -213,28 +226,22 @@ class Request extends Data {
     }
 
     /**
-     * Loads the id contained in the command variable.
-     */
-    private function loadId()
-    {
-        if (empty($this->command)) {
-            return;
-        }
-        foreach ($this->command as $com) {
-            if (is_numeric($com)) {
-                $this->id = $com;
-                break;
-            }
-        }
-    }
-
-    /**
      *
      * @return string
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Sets the Data component, which should hold JSON and Form Post data
+     *
+     * @param $data mixed The Data
+     */
+    protected function setData($data)
+    {
+        $this->data = $data;
     }
 
     /**
@@ -258,15 +265,6 @@ class Request extends Data {
     public function getJsonData()
     {
         return json_decode($this->getRawData());
-    }
-
-    /**
-     * Sets the method of the request (GET, POST, PUT, etc)
-     * @return void
-     */
-    public function loadMethod()
-    {
-        $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
     /**
@@ -294,6 +292,16 @@ class Request extends Data {
     }
 
     // TODO: Add isX methods for Delete, Head, Options, Patch
+    //
+    public function setVars(array $vars)
+    {
+        $this->vars = $vars;
+
+        // 1.x Compatibility
+        if(array_key_exists('module', $vars)) {
+            $this->setModule($vars['module']);
+        }
+    }
 
     /**
      * @return boolean True if the variable is on the REQUEST
@@ -334,8 +342,8 @@ class Request extends Data {
      */
     public function setMethod($method)
     {
-        if (in_array($state, array(self::PUT, self::POST, self::GET))) {
-            $this->state = $state;
+        if (in_array($method, array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
+            $this->method = $method;
         } else {
             throw new \Exception(t('Unknown state type'));
         }
