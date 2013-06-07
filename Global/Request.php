@@ -31,7 +31,7 @@ class Request extends Data {
      * Instantiated object of this class
      * @var Request
      */
-    static $singleton;
+    private static $singleton;
 
 // @todo not sure if below would just be part of put (delete) or get(search)
     /*

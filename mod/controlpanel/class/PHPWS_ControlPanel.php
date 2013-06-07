@@ -11,6 +11,6 @@ class PHPWS_ControlPanel {
     {
         return true;
     }
-}
+    }
 
 ?>
