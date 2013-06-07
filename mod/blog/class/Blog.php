@@ -421,9 +421,9 @@ class Blog {
             $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog',
                                     'Edit'), 'blog', $vars);
             if (!$summarized) {
-                Controlpanel::getToolbar()->addPageOption('blog',
-                        PHPWS_Text::secureLink(dgettext('blog', 'Edit blog'),
-                                'blog', $vars));
+                MiniAdmin::add('blog',
+                        array(PHPWS_Text::secureLink(dgettext('blog',
+                                    'Edit blog'), 'blog', $vars)));
             }
         }
 

@@ -16,6 +16,15 @@
 
 class Blog_User {
 
+    public static function miniAdminList()
+    {
+        $vars['action'] = 'admin';
+        $vars['tab'] = 'list';
+        MiniAdmin::add('blog',
+                PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog',
+                        $vars));
+    }
+
     public static function main()
     {
         if (isset($_REQUEST['blog_id'])) {
@@ -40,6 +49,9 @@ class Blog_User {
             case 'view_comments':
                 Layout::addStyle('blog');
                 Layout::addPageTitle($blog->title);
+                if (Current_User::allow('blog', 'edit_blog')) {
+                    Blog_User::miniAdminList();
+                }
                 if ($blog->publish_date > time() && !Current_User::allow('blog')) {
                     PHPWS_Core::errorPage('404');
                 } else {
@@ -283,6 +295,13 @@ class Blog_User {
         }
 
         if (empty($result)) {
+            if (Current_User::allow('blog')) {
+                MiniAdmin::add('blog',
+                        PHPWS_Text::secureLink(dgettext('blog',
+                                        'Create first blog entry!'), 'blog',
+                                array('action' => 'admin', 'tab' => 'new')));
+            }
+
             return NULL;
         }
 
@@ -336,6 +355,24 @@ class Blog_User {
         $tpl['ENTRIES'] = implode('', $list);
 
         $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
+
+        // again only caching first pages
+        /*
+          if ($page <= MAX_BLOG_CACHE_PAGES &&
+          !Current_User::isLogged() && !Current_User::allow('blog') &&
+          PHPWS_Settings::get('blog', 'cache_view')) {
+          PHPWS_Cache::save($cache_key, $content);
+          Layout::cacheHeaders($cache_key);
+          }
+         */
+        if (Current_User::allow('blog', 'edit_blog')) {
+            Blog_User::miniAdminList();
+            $vars['action'] = 'admin';
+            $vars['tab'] = 'new';
+            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'),
+                            'blog', $vars);
+            MiniAdmin::add('blog', $link);
+        }
 
         return $content;
     }
