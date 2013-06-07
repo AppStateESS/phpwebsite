@@ -13,10 +13,11 @@ final class ModuleController {
     private $module_array_all;
     private $module_array_active;
     private $module_stack;
+    private $request;
 
     /**
      * Current requested module
-     * @var ModuleAbstract
+     * @var Module
      */
     private $current_module;
 
@@ -24,6 +25,7 @@ final class ModuleController {
     {
         $global_module = new GlobalModule;
         $this->module_stack['Global'] = $global_module;
+        $this->request = new \Request();
     }
 
     /**
@@ -77,13 +79,14 @@ final class ModuleController {
         if (empty($this->current_module)) {
             throw new \Exception(t('Current module is not set'));
         }
-        $request = \Request::singleton();
-        $state = $request->getState();
-        if (!method_exists($this->current_module, $state)) {
-            throw new \Exception(t('Module "%s" is missing a "%s" state.',
-                    $this->current_module->getTitle(), $state));
+
+        $controller = $this->current_module->getController($this->request);
+
+        if(!($controller instanceof Controller)) {
+            throw new \Exception(t('Object returned by getController was not a Controller.'));
         }
-        $this->current_module->$state();
+
+        $controller->execute($this->request);
         return true;
     }
 
@@ -100,7 +103,7 @@ final class ModuleController {
      */
     private function loadCurrentModule()
     {
-        $request = Request::singleton();
+        $request = $this->request;
         if (empty($this->module_stack)) {
             throw new \Exception(t('All modules must be loaded prior to current module designation'));
         }
@@ -136,10 +139,10 @@ final class ModuleController {
     }
 
     /**
-     * Returns a ModuleAbstract extended Module based on the $module_title.
+     * Returns a Module subclass based on the $module_title.
      * If the Module.php file is not found, an exception is thrown.
      * @param string $module_title
-     * @return \ModuleAbstract
+     * @return \Module
      * @throws \Exception Module.php is missing
      */
     public function getModuleByTitle($module_title)
@@ -178,14 +181,14 @@ final class ModuleController {
      */
     private function loadPHPWSModule(array $values)
     {
-        $module = new Module;
+        $module = new CompatibilityModule;
         $module->setVars($values);
         $module->loadData();
         $module->setDeprecated(1);
         return $module;
     }
 
-    public function addModule(ModuleAbstract $module)
+    public function addModule(Module $module)
     {
         $this->module_stack[$module->getTitle()] = $module;
     }
@@ -262,7 +265,7 @@ final class ModuleController {
     /**
      *
      * @param string $module_title
-     * @return \ModuleAbstract
+     * @return \Module
      * @throws Exception
      */
     public function getModule($module_title)

@@ -10,22 +10,22 @@ abstract class Register extends Data {
 
     /**
      * Module object of module wanting to register to the parent object
-     * @var ModuleAbstract
+     * @var Module
      */
     protected $registrant;
 
     /**
      *
-     * @param ModuleAbstract $module The module other module register to;
+     * @param Module $module The module other module register to;
      * the parent of this register object
      */
-    public function __construct($module, ModuleAbstract $registrant)
+    public function __construct($module, Module $registrant)
     {
         $this->setParent($module);
         $this->setRegistrant($registrant);
     }
 
-    protected function setRegistrant(ModuleAbstract $registrant)
+    protected function setRegistrant(Module $registrant)
     {
         $this->registrant = $registrant;
     }

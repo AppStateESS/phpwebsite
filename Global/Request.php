@@ -15,43 +15,51 @@ class Request extends Data {
     /**
      * Constant defining a GET request was sent.
      */
+    const GET = 'GET';
 
-    const GET = 1;
+    /**
+     * Constant defining a HEAD request was sent.
+     */
+    const HEAD = 'HEAD';
 
     /**
      * Constant defining a POST request was sent.
      */
-    const POST = 2;
+    const POST = 'POST';
+
     /**
      * Constant defining a PUT request was sent.
      */
-    const PUT = 3;
+    const PUT = 'PUT';
 
     /**
-     * Instantiated object of this class
-     * @var Request
+     * Constant defining a DELETE request was sent.
      */
-    static $singleton;
-
-// @todo not sure if below would just be part of put (delete) or get(search)
-    /*
-      const DELETE = 4;
-      const SEARCH = 5;
-     */
+    const DELETE = 'DELETE';
 
     /**
-     * Holds the current post. Normally, a copy of the _POST superglobal but
-     * it may be set manually for testing purposes.
-     * @var type
+     * Constant defining a OPTIONS request was sent.
      */
-    private $post = null;
+    const OPTIONS = 'OPTIONS';
 
     /**
-     * Holds the current get. Normally, a copy of the _GET superglobal but
-     * it may be set manually for testing purposes.
-     * @var type
+     * Constant defining a PATCH request was sent.
      */
-    private $get = null;
+    const PATCH = 'PATCH';
+
+    /**
+     * Holds the key/value data available from the various request methods
+     * @var vars
+     */
+    protected $vars = null;
+
+    /**
+     * Holds the raw Data field from the Request.  This could be JSON data 
+     * (application/json) or it could be raw form data 
+     * (application/x-www-form-urlencoded or multipart/form-data) - it is up to 
+     * the programmer to decide.
+     */
+    private $data = null;
 
     /**
      * The command requested from the previous page. This can be any string that
@@ -86,49 +94,48 @@ class Request extends Data {
      * GET is the default state
      * @var boolean
      */
-    private $state = self::GET;
+    private $method = null;
 
     /**
-     * Builds the current page request object. Private as it is a singleton.
-     * @see Request::singleton()
-     * @param type $force_reload
+     * Builds the current page request object.
      */
-    private function __construct()
+    public function __construct()
     {
         // loadUrl should be before loadGet
         $this->loadUrl();
-        $this->loadGet();
-        $this->loadPost();
+        $this->loadVars();
+        $this->loadData();
         $this->loadId();
-        $this->loadState();
+        $this->loadMethod();
     }
 
     /**
-     * (Re)loads the superglobal _GET into the get variable
+     * Loads the superglobal _REQUEST into the vars variable
      * @return void
      */
-    public function loadGet()
+    private function loadVars()
     {
-        if (!empty($_GET)) {
-            $this->get = $_GET;
-            if (!empty($this->get['module'])) {
-                $this->setModule($this->get['module']);
-            }
+        if(!empty($_REQUEST)) {
+            $this->vars = $_REQUEST;
+        } else {
+            $this->vars = array();
+        }
+
+        // for compatibility with 1.x
+        if(array_key_exists('module', $this->vars)) {
+            $this->setModule($this->vars['module']);
         }
     }
 
     /**
-     * (Re)loads the superglobal _POST into the post variable
+     * Reads raw data from the request.
+     *
+     * @see getJsonData
      * @return void
      */
-    public function loadPost()
+    private function loadData()
     {
-        if (!empty($_POST)) {
-            $this->post = $_POST;
-            if (!empty($_POST['module'])) {
-                $this->setModule($_POST['module']);
-            }
-        }
+        $this->data = file_get_contents('php://input');
     }
 
     /**
@@ -191,10 +198,9 @@ class Request extends Data {
      * Pops the last command off the GET process string
      * @return string
      */
-    public static function pop()
+    public function pop()
     {
-        $request = self::singleton();
-        return $request->popCommand();
+        return $this->popCommand();
     }
 
     /**
@@ -203,9 +209,7 @@ class Request extends Data {
      */
     public static function shift()
     {
-        $request = self::singleton();
-
-        return $request->shiftCommand();
+        return $this->shiftCommand();
     }
 
     /**
@@ -234,24 +238,35 @@ class Request extends Data {
     }
 
     /**
-     * Sets the state of the request (GET, POST, PUT)
+     * Returns the raw POST data from the request.
+     *
+     * @return string The raw POST data.
+     */
+    public function getRawData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Tries to json_decode the raw POST data from the request.  Please note 
+     * that the programmer must decide if this is what they were expecting.
+     *
+     * Same as a call to json_decode($request->getRawData());
+     *
+     * @return array The json_decoded POST data.
+     */
+    public function getJsonData()
+    {
+        return json_decode($this->getRawData());
+    }
+
+    /**
+     * Sets the method of the request (GET, POST, PUT, etc)
      * @return void
      */
-    public function loadState()
+    public function loadMethod()
     {
-        if (!empty($this->post)) {
-            if (!empty($this->id)) {
-                $this->state = self::PUT;
-            } else {
-                $this->state = self::POST;
-            }
-        } elseif (!empty($this->module)) {
-            $this->state = self::GET;
-        }
-
-        if (!empty($this->get)) {
-            $this->state = self::GET;
-        }
+        $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
     /**
@@ -259,7 +274,7 @@ class Request extends Data {
      */
     public function isPost()
     {
-        return $this->state == self::POST;
+        return $this->method == self::POST;
     }
 
     /**
@@ -267,7 +282,7 @@ class Request extends Data {
      */
     public function isGet()
     {
-        return $this->state == self::GET;
+        return $this->method == self::GET;
     }
 
     /**
@@ -275,37 +290,49 @@ class Request extends Data {
      */
     public function isPut()
     {
-        return $this->state == self::PUT;
+        return $this->method == self::PUT;
     }
 
-    public function isPostVar($variable_name)
-    {
-        return isset($this->post[$variable_name]);
-    }
+    // TODO: Add isX methods for Delete, Head, Options, Patch
 
-    public function isGetVar($variable_name)
+    /**
+     * @return boolean True if the variable is on the REQUEST
+     */
+    public function isVar($variable_name)
     {
-        return isset($this->get[$variable_name]);
-    }
-
-    public function isReqVar($variable_name)
-    {
-        return ($this->isPostVar($variable_name) || $this->isGetVar($variable_name));
+        return array_key_exists($variable_name, $this->vars);
     }
 
     /**
-     * @todo decide if using
-      public function isDelete() {
-      return $this->state == self::DELETE;
-      }
+     * @param $variable_name string The name of the request variable to get
+     * @param $default string|null The default value to return if not set
+     * @return string The value of the requested variable
      */
+    public function getVar($variable_name, $default = null)
+    {
+        if(!$this->isVar($variable_name)) {
+            return $default;
+        }
+
+        return $this->vars[$variable_name];
+    }
+
+    /**
+     * @param $variable_name string The name of the request variable to set
+     * @param $value string The value for the request variable
+     * @return void
+     */
+    public function setVar($variable_name, $value)
+    {
+        $this->vars[$variable_name] = $value;
+    }
 
     /**
      * Manually sets the state of the request.
      * @param integer $state
      * @return void | Exception if unknown type
      */
-    public function setState($state)
+    public function setMethod($method)
     {
         if (in_array($state, array(self::PUT, self::POST, self::GET))) {
             $this->state = $state;
@@ -315,90 +342,12 @@ class Request extends Data {
     }
 
     /**
-     * Returns the current state in plain text
+     * Returns the current request method in plain text
      * @return string
      */
-    public function getState()
+    public function getMethod()
     {
-        switch ($this->state) {
-            case self::PUT:
-                return 'put';
-
-            case self::POST:
-                return 'post';
-            /*
-              case self::DELETE:
-              return 'delete';
-
-              case self::SEARCH:
-              return 'search';
-             */
-            default:
-            case self::GET:
-                return 'get';
-        }
-    }
-
-    /**
-     * Sets a variable in the post array
-     * @param string $variable_name
-     * @param string $value
-     */
-    public function setPost($variable_name, $value)
-    {
-        $this->post[$variable_name] = $value;
-    }
-
-    /**
-     * @param $variable_name
-     * @return array|Exception if variable missing
-     */
-    public function getPost($variable_name = null)
-    {
-        if (is_null($variable_name)) {
-            return $this->post;
-        } else {
-            if (!isset($this->post[$variable_name])) {
-                throw new \Exception(t('Post variable missing'));
-            }
-            return $this->post[$variable_name];
-        }
-    }
-
-    public static function post($variable_name = null)
-    {
-        $request = self::singleton();
-        return $request->getPost($variable_name);
-    }
-
-    public static function get($variable_name = null)
-    {
-        $request = self::singleton();
-        return $request->getGet($variable_name);
-    }
-
-    /**
-     * Sets a variable in the get array
-     * @param array $get
-     */
-    public function setGet($variable_name, $value)
-    {
-        $this->get[$variable_name] = $value;
-    }
-
-    /**
-     * @return array|Exception
-     */
-    public function getGet($variable_name = null)
-    {
-        if (is_null($variable_name)) {
-            return $this->get;
-        } else {
-            if (!isset($this->get[$variable_name])) {
-                throw new \Exception(t('Get variable not found'));
-            }
-            return $this->get[$variable_name];
-        }
+        return $this->method;
     }
 
     /**
@@ -481,21 +430,6 @@ class Request extends Data {
     }
 
     /**
-     * Method used to create the request object.
-     * @staticvar string $request
-     * @param boolean $force_reset If false, the current request is returned (if not null)
-     * @return \Request
-     */
-    public static function singleton($force_reset = false)
-    {
-        if (empty(self::$singleton) || $force_reset) {
-            self::$singleton = new Request;
-        }
-
-        return self::$singleton;
-    }
-
-    /**
      * Passes the get or post state off to the class requested.
      *
      * Example:
@@ -513,13 +447,13 @@ class Request extends Data {
      * @return \Response
      * @throws \Exception
      */
-    public static function pass($namespace)
+    public function pass($namespace)
     {
-        $state = self::$singleton->getState();
+        $state = $this->getState();
 
         $class_name = $namespace;
 
-        while ($command = self::$singleton->shiftCommand()) {
+        while ($command = $this->shiftCommand()) {
             $class_name .= '\\' . $command;
             if (class_exists($class_name) && method_exists($class_name, $state)) {
                 $obj = new $class_name;
