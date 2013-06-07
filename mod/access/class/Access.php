@@ -401,7 +401,7 @@ class Access {
         $js_vars['label'] = dgettext('access', 'Shortcut');
         $js_vars['height'] = '200';
         $js_link = javascript('open_window', $js_vars);
-        Controlpanel::getToolbar()->addPageOption('access', $js_link);
+        MiniAdmin::add('access', $js_link);
     }
 
     public static function cpanel()
