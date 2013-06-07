@@ -381,8 +381,7 @@ class Layout {
                 $unsortedLayout[$theme_var][$order] = $template;
             }
         }
-//var_dump($unsortedLayout);
-//exit();
+
         if (isset($GLOBALS['Layout_Plugs'])) {
             foreach ($GLOBALS['Layout_Plugs'] as $plug_var => $content) {
                 if (!in_array($plug_var, $themeVarList)) {
@@ -391,6 +390,7 @@ class Layout {
                 }
             }
         }
+
         if (isset($themeVarList)) {
             foreach ($themeVarList as $theme_var) {
                 ksort($unsortedLayout[$theme_var]);
@@ -888,10 +888,12 @@ class Layout {
         if (!isset($links)) {
             return;
         }
+
         MiniAdmin::add('layout', $links);
 
         // MiniAdmin runs get before layout and runtime won't work
         // with flagged keys
+        MiniAdmin::get();
     }
 
     public static function styleLink($link, $header = FALSE)
@@ -933,7 +935,6 @@ class Layout {
 
     public static function submitHeaders($theme, &$template)
     {
-        return;
         if (!defined('CURRENT_LANGUAGE')) {
             if (defined('DEFAULT_LANGUAGE')) {
                 define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
@@ -941,6 +942,7 @@ class Layout {
                 define('CURRENT_LANGUAGE', 'en_US');
             }
         }
+
 
         if (XML_MODE == TRUE && stristr($_SERVER['HTTP_ACCEPT'],
                         'application/xhtml+xml')) {
