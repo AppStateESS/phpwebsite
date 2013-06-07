@@ -344,7 +344,7 @@ final class Current_User {
                 Layout::add($content, 'users', 'permissions');
             } else {
                 $links[] = Current_User::popupPermission($key->id, sprintf(dgettext('users', 'Set permissions'), $key->title));
-                Controlpanel::getToolbar()->addPageOption('users', implode('<br />', $links));
+                MiniAdmin::add('users', $links);
             }
         }
     }
