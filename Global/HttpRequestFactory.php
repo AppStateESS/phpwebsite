@@ -16,11 +16,12 @@ class HttpRequestFactory
 
     public function getRequest()
     {
-        $url  = Server::getCurrentUrl();
-        $vars = $_REQUEST;
-        $data = file_get_contents('php://input');
+        $url    = Server::getCurrentUrl();
+        $method = $_SERVER['REQUEST_METHOD'];
+        $vars   = $_REQUEST;
+        $data   = file_get_contents('php://input');
 
-        return new Request($url, $vars, $data);
+        return new Request($url, $method, $vars, $data);
     }
 }
 
