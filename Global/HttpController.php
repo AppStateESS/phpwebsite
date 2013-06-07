@@ -19,11 +19,21 @@
 
 abstract class HttpController implements Controller
 {
-    protected $module;
+    private $module;
 
     public function __construct(Module $module)
     {
         $this->module = $module;
+    }
+
+    /**
+     * Get the Module object that fired off this Controller.
+     *
+     * @return Module The Module that owns this Controller.
+     */
+    protected function getModule()
+    {
+        return $this->module;
     }
 
     public final function execute(Request $request)
