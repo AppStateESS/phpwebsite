@@ -248,6 +248,16 @@ abstract class ModuleAbstract extends Data {
         return $this->active;
     }
 
+    public function post()
+    {
+        Error::errorPage('405');
+    }
+
+    public function get()
+    {
+        Error::errorPage('405');
+    }
+
     public function destruct()
     {
 
