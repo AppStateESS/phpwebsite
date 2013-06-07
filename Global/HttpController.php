@@ -33,6 +33,18 @@ abstract class HttpController implements Controller
         switch($request->getMethod()) {
         case Request::GET:
             return $this->get($request);
+        case Request::HEAD:
+            return $this->head($request);
+        case Request::POST:
+            return $this->post($request);
+        case Request::PUT:
+            return $this->put($request);
+        case Request::DELETE:
+            return $this->delete($request);
+        case Request::OPTIONS:
+            return $this->options($request);
+        case REQUEST::PATCH:
+            return $this->patch($request);
         default:
             $this->methodNotAllowed();
         }
