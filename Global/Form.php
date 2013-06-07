@@ -201,15 +201,7 @@ class Form extends Tag {
      */
     public function addRadio($name, $value, $label = null)
     {
-        $radio = array();
-        if (is_array($value)) {
-            foreach ($value as $rval => $label) {
-                $radio[] = $this->addInput('radio', $name, $rval, $label);
-            }
-            return $radio;
-        } else {
-            return $this->addInput('radio', $name, $value, $label);
-        }
+        return $this->addInput('radio', $name, $value, $label);
     }
 
     /**
@@ -349,7 +341,8 @@ class Form extends Tag {
             if (!empty($hiddens)) {
                 $text .= implode("\n", $hiddens);
             }
-            $text .= "\n<div class=\"form-input\">" . implode("</div>\n<div class=\"form-input\">", $value) . "</div>\n";
+            $text .= "\n<div class=\"form-input\">" . implode("</div>\n<div class=\"form-input\">",
+                            $value) . "</div>\n";
             $this->setText($text);
         }
         $result = parent::__toString();
@@ -410,12 +403,17 @@ class Form extends Tag {
         }
     }
 
-    public function getFormAsArray()
+    /**
+     * Returns an associative array containing all the elements of the form.
+     * @return array
+     */
+    public function getInputStringArray()
     {
         $value['form_start'] = str_replace('</form>', '', parent::__toString());
         $value['form_end'] = '</form>';
         if (!empty($this->inputs)) {
-            foreach ($this->inputs as $input_list) {
+            foreach ($this->inputs as $input_name => $input_list) {
+                $multiple = count($input_list) > 1;
                 foreach ($input_list as $input) {
                     if ($input->getType() == 'hidden') {
                         $value['hidden'][] = $input->__toString();
@@ -423,9 +421,17 @@ class Form extends Tag {
                         $name = $input->getName();
                         if ($input->getLabelLocation()) {
                             $label = $name . '_label';
-                            $value[$label] = $input->getLabel();
+                            if ($multiple) {
+                                $value[$label][] = $input->getLabel();
+                            } else {
+                                $value[$label] = $input->getLabel();
+                            }
                         }
-                        $value[$name] = $input->__toString();
+                        if ($multiple) {
+                            $value[$name][] = $input->__toString();
+                        } else {
+                            $value[$name] = $input->__toString();
+                        }
                     }
                 }
             }
@@ -461,7 +467,7 @@ class Form extends Tag {
             $this->addSubmit();
         }
 
-        $value = $this->getFormAsArray();
+        $value = $this->getInputStringArray();
 
         if ($this->ajax_post) {
             $form_post = Javascript::factory('form_post');

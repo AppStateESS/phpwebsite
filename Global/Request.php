@@ -125,8 +125,8 @@ class Request extends Data {
     {
         if (!empty($_POST)) {
             $this->post = $_POST;
-            if (!empty($_POST['module'])) {
-                $this->setModule($_POST['module']);
+            if (!empty($this->post['module'])) {
+                $this->setModule($this->post['module']);
             }
         }
     }
@@ -555,13 +555,12 @@ class Request extends Data {
             $get_vars = t('Empty');
         }
 
-        $content[] = '<h2>POST</h2>' . $post_vars;
+        $content[] = '<h2>$_POST</h2>' . $post_vars;
         $content[] = '<hr>';
-        $content[] = '<h2>GET</h2>' . $get_vars;
+        $content[] = '<h2>$_GET</h2>' . $get_vars;
 
-        return implode('', $content);
+        echo implode('', $content);
     }
-
 }
 
 ?>

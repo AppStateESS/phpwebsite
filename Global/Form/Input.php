@@ -77,6 +77,6 @@ abstract class Input extends Base {
         return $this->title;
     }
 
-}
+    }
 
 ?>
