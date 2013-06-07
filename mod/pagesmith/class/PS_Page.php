@@ -462,9 +462,9 @@ class PS_Page {
     {
         Layout::addStyle('pagesmith');
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
-            Controlpanel::getToolbar()->addPageOption('pagesmith',
+            MiniAdmin::add('pagesmith',
                     $this->editLink(dgettext('pagesmith', 'Edit this page')));
-            Controlpanel::getToolbar()->addPageOption('pagesmith', $this->frontPageToggle());
+            MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         Layout::getCacheHeaders($this->cacheKey());
         $save_cache = true;
