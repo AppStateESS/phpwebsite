@@ -173,9 +173,12 @@ class Setup {
     private function post()
     {
         $request = Request::singleton();
-        $command = $request->getPost('command');
+        if (!$request->isPostVar('sec')) {
+            throw new Exception(t('Missing setup command'));
+        }
+        $section = $request->getPost('sec');
 
-        switch ($command) {
+        switch ($section) {
             case 'install':
                 $this->loadInstall();
                 $this->install->post();

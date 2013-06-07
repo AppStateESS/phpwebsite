@@ -18,3 +18,8 @@ body {
 .form-input {
     padding : 5px;
 }
+
+label.error {
+    color : red;
+    font-weight:bold;
+}

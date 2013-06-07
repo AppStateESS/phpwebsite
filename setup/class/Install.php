@@ -8,10 +8,12 @@
 class Install {
 
     private $setup;
+    private $dsn;
 
     public function __construct($setup)
     {
         $this->setup = $setup;
+        $this->dsn = new \Database\DSN('mysql', '');
     }
 
     public function get()
@@ -40,7 +42,6 @@ class Install {
             throw new Exception(t('Missing post operation'));
         }
 
-        echo Request::show();
         switch ($request->getPost('op')) {
             case 'post_config':
                 $this->postConfig();
@@ -50,21 +51,21 @@ class Install {
 
     private function postConfig()
     {
-        $dsn = new \Database\DSN($request->getPost('database_type'),
-                $request->getPost('database_user'));
+        $request = Request::singleton();
 
-        $dsn->setDatabaseName($request->getPost('database_name'));
-        $dsn->setHost($request->getPost('database_host'));
-        $dsn->setPassword($request->getPost('database_password'));
+        $this->dsn->setDatabaseType($request->getPost('database_type'));
+        $this->dsn->setUsername($request->getPost('database_user'));
+        $this->dsn->setDatabaseName($request->getPost('database_name'));
+        $this->dsn->setHost($request->getPost('database_host'));
+        $this->dsn->setPassword($request->getPost('database_password'));
         if ($request->isPostVar('database_port')) {
-            $dsn->setPort($request->getPost('database_port'));
+            $this->dsn->setPort($request->getPost('database_port'));
         }
     }
 
     private function getForm()
     {
         $form = new Form;
-        $form->addClass('form-inline');
         $form->addHidden('sec', 'install');
         return $form;
     }
@@ -72,9 +73,14 @@ class Install {
     private function getConfigForm()
     {
         $form = $this->getForm();
+        $form->setId('database-config');
         $form->addHidden('op', 'post_config');
-        $form->addRadio('database_type',
-                array('mysql' => 'MySQL', 'pgsql' => 'PostgreSQL'));
+
+        $types['mysql'] = $form->addRadio('database_type', 'mysql', 'MySQL');
+        $types['pgsql'] = $form->addRadio('database_type', 'pgsql', 'PostgreSQL');
+
+        $types[$this->dsn->getDatabaseType()->__toString()]->setSelection(true);
+
         $form->addTextField('database_name');
         $form->addTextField('database_user');
         $form->addTextField('database_password');
@@ -83,7 +89,7 @@ class Install {
         $form->addTextField('table_prefix');
         $form->addSubmit('save', t('Create database file'));
         $this->setup->setTitle(t('Create your database configuration file'));
-        $this->setup->setContent($form->__toString());
+        $this->setup->setContent($form->printTemplate('setup/templates/forms/dbconfig.html'));
     }
 
 }
