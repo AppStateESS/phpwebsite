@@ -740,7 +740,7 @@ class Calendar_User {
     {
         $vars['aop'] = 'reset_cache';
         $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
-        Controlpanel::getToolbar()->addSiteOption('calendar',
+        MiniAdmin::add('calendar',
                 PHPWS_Text::secureLink(dgettext('calendar', 'Reset cache'),
                         'calendar', $vars));
     }
@@ -816,11 +816,10 @@ class Calendar_User {
         if ($this->calendar->schedule->checkPermissions()) {
             if ($this->calendar->schedule->id) {
                 $allowed = true;
-                Controlpanel::getToolbar()->addCreateOption('calendar',
+                MiniAdmin::add('calendar',
                         $this->calendar->schedule->addEventLink($this->calendar->current_date));
-                Controlpanel::getToolbar()->addSiteOption('calendar',
-                        $this->calendar->schedule->uploadEventsLink()
-                );
+                MiniAdmin::add('calendar',
+                        $this->calendar->schedule->uploadEventsLink());
             } else {
                 $vars = array('aop' => 'create_schedule');
                 $label = dgettext('calendar', 'Create schedule');
@@ -837,8 +836,7 @@ class Calendar_User {
                     $add_schedule = PHPWS_Text::secureLink($label, 'calendar',
                                     $vars);
                 }
-
-                Controlpanel::getToolbar()->addCreateOption('calendar', $add_schedule);
+                MiniAdmin::add('calendar', $add_schedule);
             }
         } else {
             $allowed = false;
