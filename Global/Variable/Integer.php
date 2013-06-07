@@ -53,7 +53,7 @@ class Integer extends \Variable {
 
     public function set($value)
     {
-        return parent::set((int)$value);
+        return parent::set($value);
     }
 
 
