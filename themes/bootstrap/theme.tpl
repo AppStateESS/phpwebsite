@@ -50,6 +50,7 @@
       <div class="row-fluid">
         <div class="span3">
           {DEFAULT}
+          {LIKEBOX_DEFAULT}
         </div>
         <div class="span9">
           {LAYOUT_HEADER}
