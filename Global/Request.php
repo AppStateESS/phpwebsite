@@ -286,7 +286,7 @@ class Request extends Data {
      */
     public function isPostVar($variable_name, $check_empty = false)
     {
-        return $check_empty ? empty($this->post[$variable_name]) : isset($this->post[$variable_name]);
+        return $check_empty ? !empty($this->post[$variable_name]) : isset($this->post[$variable_name]);
     }
 
     /**
@@ -299,7 +299,7 @@ class Request extends Data {
      */
     public function isGetVar($variable_name, $check_empty = false)
     {
-        return $check_empty ? empty($this->get[$variable_name]) : isset($this->get[$variable_name]);
+        return $check_empty ? !empty($this->get[$variable_name]) : isset($this->get[$variable_name]);
     }
 
     /**
