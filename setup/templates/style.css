@@ -21,5 +21,15 @@ body {
 
 label.error {
     color : red;
-    font-weight:bold;
+    display : inline-block;
+    margin : 0px 0px 6px 4px;
+}
+
+label.radio-label {
+    display : inline;
+    margin-right : 1em;
+}
+
+input[type="radio"] {
+    margin : 0px 3px;
 }

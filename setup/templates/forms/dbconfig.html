@@ -1,3 +1,13 @@
+<?=$form_start?>
+<p><?=t('Choose your database type:');?><br>
 <?php foreach ($database_type as $key=>$dtype): ?>
-<?=$dtype, $database_type_label[$key], ' ';?>
-<?php endforeach; ?>
+<?=$dtype, $database_type_label[$key], '<br>';?>
+<?php endforeach; ?></p>
+<p><?=$database_name_label, $database_name?></p>
+<p><?=$database_user_label, $database_user?></p>
+<p><?=$database_password_label, $database_password?></p>
+<p><?=$database_host_label, $database_host?></p>
+<p><?=$database_port_label, $database_port?></p>
+<p><?=$table_prefix_label, $table_prefix?></p>
+<?=$save?>
+<?=$form_end?>

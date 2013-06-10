@@ -54,11 +54,15 @@ class Install {
         $request = Request::singleton();
 
         $this->dsn->setDatabaseType($request->getPost('database_type'));
-        $this->dsn->setUsername($request->getPost('database_user'));
         $this->dsn->setDatabaseName($request->getPost('database_name'));
-        $this->dsn->setHost($request->getPost('database_host'));
-        $this->dsn->setPassword($request->getPost('database_password'));
-        if ($request->isPostVar('database_port')) {
+        $this->dsn->setUsername($request->getPost('database_user'));
+        if ($request->isPostVar('database_password', true)) {
+            $this->dsn->setPassword($request->getPost('database_password'));
+        }
+        if ($request->isPostVar('database_host', true)) {
+            $this->dsn->setHost($request->getPost('database_host'));
+        }
+        if ($request->isPostVar('database_port', true)) {
             $this->dsn->setPort($request->getPost('database_port'));
         }
     }
@@ -81,9 +85,9 @@ class Install {
 
         $types[$this->dsn->getDatabaseType()->__toString()]->setSelection(true);
 
-        $form->addTextField('database_name');
-        $form->addTextField('database_user');
-        $form->addTextField('database_password');
+        $form->addTextField('database_name')->setRequired();
+        $form->addTextField('database_user')->setRequired();
+        $form->addPassword('database_password');
         $form->addTextField('database_host');
         $form->addTextField('database_port');
         $form->addTextField('table_prefix');
