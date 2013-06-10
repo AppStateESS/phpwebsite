@@ -8,6 +8,22 @@
  */
 class Server {
 
+    private static $REQUEST_SINGLETON;
+
+    public static function getCurrentRequest()
+    {
+        if(is_null(self::$REQUEST_SINGLETON)) {
+            $url    = self::getCurrentUrl();
+            $method = $_SERVER['REQUEST_METHOD'];
+            $vars   = $_REQUEST;
+            $data   = file_get_contents('php://input');
+
+            self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data);
+        }
+
+        return self::$REQUEST_SINGLETON
+    }
+
     /**
      * Returns the beginning of a web address based on secure socket status.
      * @return string

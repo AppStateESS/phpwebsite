@@ -25,8 +25,7 @@ final class ModuleController {
     {
         $global_module = new GlobalModule;
         $this->module_stack['Global'] = $global_module;
-        $fac = new HttpRequestFactory();
-        $this->request = $fac->getRequest();
+        $this->request = Server::getCurrentRequest();
     }
 
     /**
