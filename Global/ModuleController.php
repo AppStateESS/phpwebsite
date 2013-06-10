@@ -25,7 +25,7 @@ final class ModuleController {
     {
         $global_module = new GlobalModule;
         $this->module_stack['Global'] = $global_module;
-        $this->request = new \Request();
+        $this->request = Server::getCurrentRequest();
     }
 
     /**

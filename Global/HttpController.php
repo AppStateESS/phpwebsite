@@ -19,11 +19,21 @@
 
 abstract class HttpController implements Controller
 {
-    protected $module;
+    private $module;
 
     public function __construct(Module $module)
     {
         $this->module = $module;
+    }
+
+    /**
+     * Get the Module object that fired off this Controller.
+     *
+     * @return Module The Module that owns this Controller.
+     */
+    protected function getModule()
+    {
+        return $this->module;
     }
 
     public final function execute(Request $request)
@@ -33,6 +43,18 @@ abstract class HttpController implements Controller
         switch($request->getMethod()) {
         case Request::GET:
             return $this->get($request);
+        case Request::HEAD:
+            return $this->head($request);
+        case Request::POST:
+            return $this->post($request);
+        case Request::PUT:
+            return $this->put($request);
+        case Request::DELETE:
+            return $this->delete($request);
+        case Request::OPTIONS:
+            return $this->options($request);
+        case REQUEST::PATCH:
+            return $this->patch($request);
         default:
             $this->methodNotAllowed();
         }
