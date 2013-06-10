@@ -276,19 +276,44 @@ class Request extends Data {
         return $this->state == self::PUT;
     }
 
-    public function isPostVar($variable_name)
+    /**
+     * Returns true is the $variable_name is set in the $this->post variable. If
+     * check_empty is true, then empty() will be used in place of isset.
+     *
+     * @param string $variable_name
+     * @param boolean $check_empty
+     * @return boolean
+     */
+    public function isPostVar($variable_name, $check_empty = false)
     {
-        return isset($this->post[$variable_name]);
+        return $check_empty ? empty($this->post[$variable_name]) : isset($this->post[$variable_name]);
     }
 
-    public function isGetVar($variable_name)
+    /**
+     * Returns true is the $variable_name is set in the $this->get variable. If
+     * check_empty is true, then empty() will be used in place of isset.
+     *
+     * @param string $variable_name
+     * @param boolean $check_empty
+     * @return boolean
+     */
+    public function isGetVar($variable_name, $check_empty = false)
     {
-        return isset($this->get[$variable_name]);
+        return $check_empty ? empty($this->get[$variable_name]) : isset($this->get[$variable_name]);
     }
 
-    public function isReqVar($variable_name)
+    /**
+     * Returns true is the $variable_name is set in the $this->post or $this->get
+     * variable. If check_empty is true, then empty() will be used in place of isset.
+     *
+     * @param string $variable_name
+     * @param boolean $check_empty
+     * @return boolean
+     */
+    public function isReqVar($variable_name, $check_empty = false)
     {
-        return ($this->isPostVar($variable_name) || $this->isGetVar($variable_name));
+        return ($this->isPostVar($variable_name, $check_empty) || $this->isGetVar($variable_name,
+                        $check_empty));
     }
 
     /**
@@ -561,6 +586,7 @@ class Request extends Data {
 
         echo implode('', $content);
     }
+
 }
 
 ?>
