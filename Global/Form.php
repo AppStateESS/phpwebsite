@@ -307,14 +307,6 @@ class Form extends Tag {
      */
     public function __toString()
     {
-        /*
-         * @todo come back to this
-          $head = Head::singleton();
-          $head->includeCSS('Global/Templates/Form/style.css');
-          $response = \Response::singleton();
-          $problems = $response->getProblems();
-         */
-
         $text = null;
 
         if (empty($this->id)) {
@@ -331,10 +323,6 @@ class Form extends Tag {
                         $hiddens[] = $input->__toString();
                     } else {
                         $value[] = $input->printWithLabel();
-                    }
-
-                    if (isset($problems[$input->getName()])) {
-                        $value[] = '<div class="form-problem"><span>' . $problems[$input->getName()] . '</span></div>';
                     }
                 }
             }
@@ -418,9 +406,8 @@ class Form extends Tag {
                     if ($input->getType() == 'hidden') {
                         $value['hidden'][] = $input->__toString();
                     } else {
-                        $name = $input->getName();
                         if ($input->getLabelLocation()) {
-                            $label = $name . '_label';
+                            $label = $input_name . '_label';
                             if ($multiple) {
                                 $value[$label][] = $input->getLabel();
                             } else {
@@ -428,9 +415,9 @@ class Form extends Tag {
                             }
                         }
                         if ($multiple) {
-                            $value[$name][] = $input->__toString();
+                            $value[$input_name][] = $input->__toString();
                         } else {
-                            $value[$name] = $input->__toString();
+                            $value[$input_name] = $input->__toString();
                         }
                     }
                 }
@@ -451,7 +438,6 @@ class Form extends Tag {
      */
     public function printTemplate($template)
     {
-        $value = array();
         $head = new \Head;
         $head->includeCSS('Global/Templates/Form/style.css');
 
@@ -546,6 +532,6 @@ class Form extends Tag {
         $this->method = 'post';
     }
 
-}
+    }
 
 ?>
