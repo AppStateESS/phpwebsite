@@ -31,7 +31,7 @@ class Request extends Data {
      * Instantiated object of this class
      * @var Request
      */
-    static $singleton;
+    private static $singleton;
 
 // @todo not sure if below would just be part of put (delete) or get(search)
     /*
@@ -373,31 +373,40 @@ class Request extends Data {
     }
 
     /**
-     * @param $variable_name
-     * @return array|Exception if variable missing
+     * Returns a variable from the post.
+     *
+     * @param string $variable_name If entered, tries to return the requested
+     *  variable from the post. If null, the entire post associative array is returned.
+     * @param type $null_if_empty If true and a variable is not found, a null is
+     *  returned instead of a thrown exception
+     * @return null
+     * @throws \Exception
      */
-    public function getPost($variable_name = null)
+    public function getPost($variable_name = null, $null_if_empty = false)
     {
         if (is_null($variable_name)) {
             return $this->post;
         } else {
             if (!isset($this->post[$variable_name])) {
+                if ($null_if_empty) {
+                    return null;
+                }
                 throw new \Exception(t('Post variable missing'));
             }
             return $this->post[$variable_name];
         }
     }
 
-    public static function post($variable_name = null)
+    public static function post($variable_name = null, $null_if_empty = false)
     {
         $request = self::singleton();
-        return $request->getPost($variable_name);
+        return $request->getPost($variable_name, $null_if_empty);
     }
 
-    public static function get($variable_name = null)
+    public static function get($variable_name = null, $null_if_empty = false)
     {
         $request = self::singleton();
-        return $request->getGet($variable_name);
+        return $request->getGet($variable_name, $null_if_empty);
     }
 
     /**
@@ -410,14 +419,25 @@ class Request extends Data {
     }
 
     /**
-     * @return array|Exception
+     * Returns a variable from the get.
+     *
+     * @param string $variable_name If entered, tries to return the requested
+     *  variable from the get. If null, the entire get associative array is returned.
+     * @param type $null_if_empty If true and a variable is not found, a null is
+     *  returned instead of a thrown exception
+     * @return null
+     * @throws \Exception
      */
-    public function getGet($variable_name = null)
+
+    public function getGet($variable_name = null, $null_if_empty = false)
     {
         if (is_null($variable_name)) {
             return $this->get;
         } else {
             if (!isset($this->get[$variable_name])) {
+                if ($null_if_empty) {
+                    return null;
+                }
                 throw new \Exception(t('Get variable not found'));
             }
             return $this->get[$variable_name];
