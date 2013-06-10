@@ -21,7 +21,7 @@ class Server {
             self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data);
         }
 
-        return self::$REQUEST_SINGLETON
+        return self::$REQUEST_SINGLETON;
     }
 
     /**
