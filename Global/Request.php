@@ -457,7 +457,7 @@ class Request extends Data {
      */
     public function pass($namespace)
     {
-        $state = $this->getState();
+        $state = $this->getMethod();
 
         $class_name = $namespace;
 
@@ -479,6 +479,31 @@ class Request extends Data {
     public static function isAjax()
     {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+    }
+
+    public static function show()
+    {
+        if (!empty($_POST)) {
+            ob_start();
+            var_dump($_POST);
+            $post_vars = ob_get_clean();
+        } else {
+            $post_vars = t('Empty');
+        }
+
+        if (!empty($_GET)) {
+            ob_start();
+            var_dump($_GET);
+            $get_vars = ob_get_clean();
+        } else {
+            $get_vars = t('Empty');
+        }
+
+        $content[] = '<h2>$_POST</h2>' . $post_vars;
+        $content[] = '<hr>';
+        $content[] = '<h2>$_GET</h2>' . $get_vars;
+
+        echo implode('', $content);
     }
 
 }

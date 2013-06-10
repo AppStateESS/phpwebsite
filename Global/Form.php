@@ -71,9 +71,6 @@ class Form extends Tag {
         static $default_id = 1;
         $this->setId('form-' . $default_id);
         $default_id++;
-        $request = \Request::singleton();
-        $this->action = $request->getUrl();
-        // @todo authkey?
     }
 
     /**
@@ -204,15 +201,7 @@ class Form extends Tag {
      */
     public function addRadio($name, $value, $label = null)
     {
-        $radio = array();
-        if (is_array($value)) {
-            foreach ($value as $rval => $label) {
-                $radio[] = $this->addInput('radio', $name, $rval, $label);
-            }
-            return $radio;
-        } else {
-            return $this->addInput('radio', $name, $value, $label);
-        }
+        return $this->addInput('radio', $name, $value, $label);
     }
 
     /**
@@ -318,14 +307,6 @@ class Form extends Tag {
      */
     public function __toString()
     {
-        /*
-         * @todo come back to this
-          $head = Head::singleton();
-          $head->includeCSS('Global/Templates/Form/style.css');
-          $response = \Response::singleton();
-          $problems = $response->getProblems();
-         */
-
         $text = null;
 
         if (empty($this->id)) {
@@ -343,16 +324,13 @@ class Form extends Tag {
                     } else {
                         $value[] = $input->printWithLabel();
                     }
-
-                    if (isset($problems[$input->getName()])) {
-                        $value[] = '<div class="form-problem"><span>' . $problems[$input->getName()] . '</span></div>';
-                    }
                 }
             }
             if (!empty($hiddens)) {
                 $text .= implode("\n", $hiddens);
             }
-            $text .= "\n<div class=\"form-input\">" . implode("</div>\n<div class=\"form-input\">", $value) . "</div>\n";
+            $text .= "\n<div class=\"form-input\">" . implode("</div>\n<div class=\"form-input\">",
+                            $value) . "</div>\n";
             $this->setText($text);
         }
         $result = parent::__toString();
@@ -413,22 +391,34 @@ class Form extends Tag {
         }
     }
 
-    public function getFormAsArray()
+    /**
+     * Returns an associative array containing all the elements of the form.
+     * @return array
+     */
+    public function getInputStringArray()
     {
         $value['form_start'] = str_replace('</form>', '', parent::__toString());
         $value['form_end'] = '</form>';
         if (!empty($this->inputs)) {
-            foreach ($this->inputs as $input_list) {
+            foreach ($this->inputs as $input_name => $input_list) {
+                $multiple = count($input_list) > 1;
                 foreach ($input_list as $input) {
                     if ($input->getType() == 'hidden') {
                         $value['hidden'][] = $input->__toString();
                     } else {
-                        $name = $input->getName();
                         if ($input->getLabelLocation()) {
-                            $label = $name . '_label';
-                            $value[$label] = $input->getLabel();
+                            $label = $input_name . '_label';
+                            if ($multiple) {
+                                $value[$label][] = $input->getLabel();
+                            } else {
+                                $value[$label] = $input->getLabel();
+                            }
                         }
-                        $value[$name] = $input->__toString();
+                        if ($multiple) {
+                            $value[$input_name][] = $input->__toString();
+                        } else {
+                            $value[$input_name] = $input->__toString();
+                        }
                     }
                 }
             }
@@ -448,7 +438,6 @@ class Form extends Tag {
      */
     public function printTemplate($template)
     {
-        $value = array();
         $head = new \Head;
         $head->includeCSS('Global/Templates/Form/style.css');
 
@@ -464,7 +453,7 @@ class Form extends Tag {
             $this->addSubmit();
         }
 
-        $value = $this->getFormAsArray();
+        $value = $this->getInputStringArray();
 
         if ($this->ajax_post) {
             $form_post = Javascript::factory('form_post');
@@ -543,6 +532,6 @@ class Form extends Tag {
         $this->method = 'post';
     }
 
-}
+    }
 
 ?>

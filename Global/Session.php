@@ -25,7 +25,7 @@
  * unset($session->foo);
  *
  * If a session variable is not set (or unset) and get is called on it an
- * exception will be called.
+ * exception will be thrown.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package Global
