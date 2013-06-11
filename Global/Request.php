@@ -15,6 +15,7 @@ class Request extends Data {
     /**
      * Constant defining a GET request was sent.
      */
+
     const GET = 'GET';
 
     /**
@@ -54,9 +55,9 @@ class Request extends Data {
     protected $vars = null;
 
     /**
-     * Holds the raw Data field from the Request.  This could be JSON data 
-     * (application/json) or it could be raw form data 
-     * (application/x-www-form-urlencoded or multipart/form-data) - it is up to 
+     * Holds the raw Data field from the Request.  This could be JSON data
+     * (application/json) or it could be raw form data
+     * (application/x-www-form-urlencoded or multipart/form-data) - it is up to
      * the programmer to decide.
      */
     private $data = null;
@@ -101,7 +102,7 @@ class Request extends Data {
      *
      * @param $url string The URL
      * @param $vars array|null Request Variables ($_REQUEST, etc)
-     * @param $data mixed The raw content area of the HTTP request (JSON and 
+     * @param $data mixed The raw content area of the HTTP request (JSON and
      *                    Form data)
      */
     public function __construct($url, $method, array $vars = null, $data = null)
@@ -109,7 +110,7 @@ class Request extends Data {
         $this->setUrl($url);
         $this->setMethod($method);
 
-        if(is_null($vars)) {
+        if (is_null($vars)) {
             $vars = array();
         }
         $this->setVars($vars);
@@ -117,9 +118,9 @@ class Request extends Data {
         $this->setData($data);
 
         // Extract Command - TODO: revisit this
-        if(!is_null($this->command)) {
-            foreach($this->command as $com) {
-                if(is_numeric($com)) {
+        if (!is_null($this->command)) {
+            foreach ($this->command as $com) {
+                if (is_numeric($com)) {
                     $this->id = $com;
                     break;
                 }
@@ -171,7 +172,7 @@ class Request extends Data {
     }
 
     /**
-     * Turns all of the various and wonderful things you can do with a URL into 
+     * Turns all of the various and wonderful things you can do with a URL into
      * a consistent query, for example /a/./b/ becomes /a/b/.
      * @param string $url The URL to sanitize
      * @return string The sanitized URL
@@ -187,12 +188,12 @@ class Request extends Data {
         $url = preg_replace('@/(\./)+@', '/', $url);
 
         // Ensure Preceding Slash
-        if(substr($url, 0, 1) != '/') {
+        if (substr($url, 0, 1) != '/') {
             $url = '/' . $url;
         }
 
         // Remove Trailing Slash
-        if(substr($url, -1, 1) == '/' && strlen($url) > 1) {
+        if (substr($url, -1, 1) == '/' && strlen($url) > 1) {
             $url = substr($url, 0, -1);
         }
 
@@ -255,7 +256,7 @@ class Request extends Data {
     }
 
     /**
-     * Tries to json_decode the raw POST data from the request.  Please note 
+     * Tries to json_decode the raw POST data from the request.  Please note
      * that the programmer must decide if this is what they were expecting.
      *
      * Same as a call to json_decode($request->getRawData());
@@ -298,7 +299,7 @@ class Request extends Data {
         $this->vars = $vars;
 
         // 1.x Compatibility
-        if(array_key_exists('module', $vars)) {
+        if (array_key_exists('module', $vars)) {
             $this->setModule($vars['module']);
         }
     }
@@ -318,8 +319,12 @@ class Request extends Data {
      */
     public function getVar($variable_name, $default = null)
     {
-        if(!$this->isVar($variable_name)) {
-            return $default;
+        if (!$this->isVar($variable_name)) {
+            if (isset($default)) {
+                return $default;
+            } else {
+                throw new Exception(t('Variable "%s" not found', $variable_name));
+            }
         }
 
         return $this->vars[$variable_name];
@@ -342,7 +347,8 @@ class Request extends Data {
      */
     public function setMethod($method)
     {
-        if (in_array($method, array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
+        if (in_array($method,
+                        array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
             $this->method = $method;
         } else {
             throw new \Exception(t('Unknown state type'));
