@@ -82,7 +82,7 @@ final class ModuleController {
 
         $controller = $this->current_module->getController($this->request);
 
-        if(!($controller instanceof Controller)) {
+        if (!($controller instanceof Controller)) {
             throw new \Exception(t('Object returned by getController was not a Controller.'));
         }
 

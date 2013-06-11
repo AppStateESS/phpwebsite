@@ -40,11 +40,16 @@ class Access_Shortcut {
     public function loadGet()
     {
         $url = explode(':', $this->url);
-        $_REQUEST['module'] = $_GET['module'] = array_shift($url);
+        $request = \Server::getCurrentRequest();
+        $module = array_shift($url);
+        $request->setVar('module', $module);
+        $request->setModule($module);
+        $_REQUEST['module'] = $_GET['module'] = $module;
 
         $url_count = count($url);
 
         if ($url_count == 1) {
+            $request->setVar('id', $url[0]);
             $_REQUEST['id'] = $_GET['id'] = $url[0];
         } else {
             for ($i = 0; $i < $url_count; $i++) {

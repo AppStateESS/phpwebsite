@@ -10,6 +10,10 @@ class Server {
 
     private static $REQUEST_SINGLETON;
 
+    /**
+     *
+     * @return \Request
+     */
     public static function getCurrentRequest()
     {
         if(is_null(self::$REQUEST_SINGLETON)) {
