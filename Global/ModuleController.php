@@ -82,7 +82,7 @@ final class ModuleController {
 
         $controller = $this->current_module->getController($this->request);
 
-        if(!($controller instanceof Controller)) {
+        if (!($controller instanceof Controller)) {
             throw new \Exception(t('Object returned by getController was not a Controller.'));
         }
 
@@ -297,7 +297,7 @@ final class ModuleController {
             $url = substr($url, 0, $qpos);
         }
 
-        $aUrl = explode('/', $url);
+        $aUrl = explode('/', preg_replace('|/+$|', '', $url));
         $module = array_shift($aUrl);
 
         $mods = PHPWS_Core::getModules(true, true);

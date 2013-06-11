@@ -40,11 +40,16 @@ class Access_Shortcut {
     public function loadGet()
     {
         $url = explode(':', $this->url);
-        $_REQUEST['module'] = $_GET['module'] = array_shift($url);
+        $request = \Server::getCurrentRequest();
+        $module = array_shift($url);
+        $request->setVar('module', $module);
+        $request->setModule($module);
+        $_REQUEST['module'] = $_GET['module'] = $module;
 
         $url_count = count($url);
 
         if ($url_count == 1) {
+            $request->setVar('id', $url[0]);
             $_REQUEST['id'] = $_GET['id'] = $url[0];
         } else {
             for ($i = 0; $i < $url_count; $i++) {
@@ -57,8 +62,15 @@ class Access_Shortcut {
                 if (preg_match('/\[\]/', $key)) {
                     $key = preg_replace('/[\[\]]/', '', $key);
                     $_REQUEST[$key][] = $_GET[$key][] = $val;
+                    $keyed_array[$key][] = $val;
                 } else {
                     $_REQUEST[$key] = $_GET[$key] = $val;
+                    $request->setVar($key, $val);
+                }
+            }
+            if (!empty($keyed_array)) {
+                foreach ($keyed_array as $key=>$vals) {
+                    $request->setVar($key, $vals);
                 }
             }
         }
