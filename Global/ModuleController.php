@@ -297,7 +297,7 @@ final class ModuleController {
             $url = substr($url, 0, $qpos);
         }
 
-        $aUrl = explode('/', $url);
+        $aUrl = explode('/', preg_replace('|/+$|', '', $url));
         $module = array_shift($aUrl);
 
         $mods = PHPWS_Core::getModules(true, true);

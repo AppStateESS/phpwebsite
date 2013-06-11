@@ -62,8 +62,15 @@ class Access_Shortcut {
                 if (preg_match('/\[\]/', $key)) {
                     $key = preg_replace('/[\[\]]/', '', $key);
                     $_REQUEST[$key][] = $_GET[$key][] = $val;
+                    $keyed_array[$key][] = $val;
                 } else {
                     $_REQUEST[$key] = $_GET[$key] = $val;
+                    $request->setVar($key, $val);
+                }
+            }
+            if (!empty($keyed_array)) {
+                foreach ($keyed_array as $key=>$vals) {
+                    $request->setVar($key, $vals);
                 }
             }
         }
