@@ -68,7 +68,7 @@ abstract class Base extends \Tag {
             $default_ids[$this->tag_type] = 1;
         }
 
-        $id_name = preg_replace('|\W+|', '-', $name);
+        $id_name = preg_replace('|\W+|', '-', $this->name);
         if (isset($default_ids[$id_name])) {
             $default_ids[$id_name]++;
             $id_name = $id_name . '-' . $default_ids[$id_name];
@@ -94,7 +94,7 @@ abstract class Base extends \Tag {
         if (!$this->isProper($name)) {
             throw new \Exception(t('Improper name "%s"', $name));
         }
-        $this->name = $name;
+        $this->name = trim($name);
     }
 
     /**
