@@ -16,12 +16,14 @@ abstract class Base extends \Tag {
      * @var string
      */
     protected $name = null;
+
     /**
      * The label tag associated with this input. Should contain information
      * as to the function of the input or its title.
      * @var string
      */
     private $label = null;
+
     /**
      * Indicates if input uses a label and where to print it. Submit and button
      * do not
@@ -31,16 +33,19 @@ abstract class Base extends \Tag {
      * @var boolean
      */
     protected $label_location = -1;
+
     /**
      * @see Tag::$tag_type
      * @var string
      */
     protected $tag_type = 'input';
+
     /**
      * The input type parameter
      * @var string
      */
     protected $type = 'text';
+
     /**
      * Sets the input as required.
      * @var boolean
@@ -54,16 +59,23 @@ abstract class Base extends \Tag {
      * @param mixed $value Default value sent (radio, checkbox) or filled in (text)
      * @param string $label Label associated with input
      */
-    public function __construct($name, $value=null, $label=null)
+    public function __construct($name, $value = null, $label = null)
     {
         static $default_ids = array();
+
         $this->setName($name);
         if (!isset($default_ids[$this->tag_type])) {
             $default_ids[$this->tag_type] = 1;
         }
 
-        $this->setId($this->tag_type . '-' . $default_ids[$this->tag_type]);
-        $default_ids[$this->tag_type]++;
+        $id_name = preg_replace('|[\W_]+|', '-', $this->name);
+        if (isset($default_ids[$id_name])) {
+            $default_ids[$id_name]++;
+            $id_name = $id_name . '-' . $default_ids[$id_name];
+        } else {
+            $default_ids[$id_name] = 0;
+        }
+        $this->setId($id_name);
 
         $this->setLabel($label);
 
@@ -82,14 +94,14 @@ abstract class Base extends \Tag {
         if (!$this->isProper($name)) {
             throw new \Exception(t('Improper name "%s"', $name));
         }
-        $this->name = $name;
+        $this->name = trim($name);
     }
 
     /**
      * @see Base::$label_location
      * @param integer $loc
      */
-    public function setLabelLocation($loc=1)
+    public function setLabelLocation($loc = 1)
     {
         $this->label_location = (int) $loc;
     }
@@ -182,7 +194,7 @@ abstract class Base extends \Tag {
         return $this->print_label;
     }
 
-    public function setRequired($required=true)
+    public function setRequired($required = true)
     {
         if ($required) {
             $this->required = 'required';
@@ -190,6 +202,7 @@ abstract class Base extends \Tag {
             $this->required = null;
         }
     }
+
 }
 
 ?>

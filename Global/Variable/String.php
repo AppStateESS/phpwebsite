@@ -62,8 +62,8 @@ class String extends \Variable {
         }
 
         if (!is_string($value)) {
-            throw new \Exception(t('Value "%s" is a %s, not a string',
-                    gettype($value), $this->varname));
+            throw new \Exception(t('Value "%1$s" is a %2$s, not a string',
+                    $this->varname, gettype($value)));
         }
 
         if ($this->limit && strlen($value) > $this->limit) {
