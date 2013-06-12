@@ -108,6 +108,13 @@ class Tag extends Data {
      * @var string
      */
     private $miscellaneous;
+
+    /**
+     * Array of data attributes added to a tag
+     * @var array
+     */
+    private $data;
+
     /**
      * @param string $tag_type The tag element e.g. "p" for paragraph
      * @param string $text  The tag content, what the tag wraps aroun
@@ -121,7 +128,7 @@ class Tag extends Data {
         if (isset($text)) {
             $this->setText($text);
         }
-        $this->ignore_variables = array('open', 'tag_type', 'error', 'text', 'ignore_variables', 'events', 'parent');
+        $this->ignore_variables = array('open', 'tag_type', 'error', 'text', 'ignore_variables', 'events', 'parent', 'data');
     }
 
     public function addEvent(Event $event)
@@ -148,6 +155,40 @@ class Tag extends Data {
     }
 
     /**
+     * Adds a data attribute to the tag:
+     * Example:
+     * <code>
+     * $tag = new Tag('p', 'hello');
+     * $tag->addData('foo-bar', 1);
+     * var_dump($tag->__toString());
+     * // echoes <p data-foo-bar="1">hello</p>
+     * </code>
+     * @param string $name
+     * @param string $value
+     */
+    public function addData($name, $value)
+    {
+        if (is_numeric($value)) {
+            $value = (string) $value;
+        }
+        $oName = new \Variable\Attribute($name, 'dataNameAttribute');
+        $oValue = new \Variable\String($value, 'dataValueAttribute');
+        $this->data[$oName->get()] = $oValue->get();
+    }
+
+    /**
+     * Returns data strings for buildTag
+     * @return string
+     */
+    private function getData()
+    {
+        foreach ($this->data as $name => $value) {
+            $attr[] = "data-$name=\"$value\"";
+        }
+        return implode(' ', $attr);
+    }
+
+    /**
      * Sets the tag element type (e.g. paragraph tag type is "p")
      * @param string $tag_type
      */
@@ -169,13 +210,16 @@ class Tag extends Data {
         }
         $data[] = '<' . $this->tag_type;
         if (empty($this->ignore_variables)) {
-            trigger_error(t('The Tag parent class "%s" failed to call __construct', get_parent_class($this)), E_USER_ERROR);
+            trigger_error(t('The Tag parent class "%s" failed to call __construct',
+                            get_parent_class($this)), E_USER_ERROR);
             exit();
         }
 
-        $tag_parameters = array_diff_key(get_object_vars($this), array_flip($this->ignore_variables));
+        $tag_parameters = array_diff_key(get_object_vars($this),
+                array_flip($this->ignore_variables));
         $tag_parameters['class'] = $this->getClass();
         $tag_parameters['style'] = $this->getStyle();
+
         if (!empty($tag_parameters)) {
             foreach ($tag_parameters as $pname => $param) {
                 if (is_null($param)) {
@@ -190,10 +234,15 @@ class Tag extends Data {
                         $data[] = $pname;
                     }
                 } else {
-                    throw new \Exception(t('Unaccepted tag parameter "%s" is of type (%s)', $pname, gettype($param)));
+                    throw new \Exception(t('Unaccepted tag parameter "%s" is of type (%s)',
+                            $pname, gettype($param)));
                 }
             }
         }
+        if (!empty($this->data)) {
+            $data[] = $this->getData();
+        }
+
         if (!empty($this->events)) {
             $data[] = implode(' ', $this->events);
         }
