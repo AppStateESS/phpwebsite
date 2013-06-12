@@ -12,14 +12,15 @@
  * @license http://opensource.org/licenses/gpl-3.0.html GNU GPLv3
  * @copyright Copyright 2013, Appalachian State University & Contributors
  */
-
 /**
  * Include the defines used in Global library
  */
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
 } else {
-    header('location: setup/index.php');
+    $url = 'http://' . $_SERVER['HTTP_HOST'] . str_replace('index.php', '',
+                    $_SERVER['PHP_SELF']) . 'setup/index.php';
+    echo 'Configuration file not found. <a href="' . $url . '">Continue to setup</a>.';
     exit();
 }
 
