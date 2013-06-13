@@ -4,42 +4,42 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
-define('CAL_VIEW_ALL',         1); // everyone can see this calendar
-define('CAL_VIEW_SOME',        2); // most will see the open and close details only
-define('CAL_VIEW_LIMIT',       3); // only people given express permission can view
+define('CAL_VIEW_ALL', 1); // everyone can see this calendar
+define('CAL_VIEW_SOME', 2); // most will see the open and close details only
+define('CAL_VIEW_LIMIT', 3); // only people given express permission can view
 
 PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
 class Calendar_Schedule {
+
     /**
      * @var integer
      */
-    public $id          = 0;
+    public $id = 0;
 
     /**
      * Key id for associations
      * @var integer
      */
-    public $key_id      = 0;
+    public $key_id = 0;
 
     /**
      * @var integer
      */
-    public $title       = null;
+    public $title = null;
 
     /**
      * information about the schedule
      * @var string
      */
-    public $summary     = null;
+    public $summary = null;
 
     /**
      * User's id associated to this schedule. If zero
      * no association exists
      * @var integer
      */
-    public $user_id     = 0;
+    public $user_id = 0;
 
     /**
      * Determines if anonymous users can see this schedule or
@@ -62,7 +62,6 @@ class Calendar_Schedule {
      */
     public $contact_email = null;
 
-
     /**
      * Phone number of contact for schedule
      *
@@ -81,28 +80,27 @@ class Calendar_Schedule {
      * Last error recorded by the class
      * @var object
      */
-    public $_error         = null;
+    public $_error = null;
 
     /**
      * Key object for this schedule
      * @var object
      */
-    public $_key           = null;
+    public $_key = null;
 
-
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
         } else {
-            $this->id = (int)$id;
+            $this->id = (int) $id;
             $this->init();
         }
     }
 
-    function downloadEventsLink($label=null, $icon=false)
+    function downloadEventsLink($label = null, $icon = false)
     {
-        $vars['aop']    = 'download_event';
+        $vars['aop'] = 'download_event';
         $vars['sch_id'] = $this->id;
         $vars['js'] = 1;
 
@@ -117,10 +115,9 @@ class Calendar_Schedule {
         return PHPWS_Text::secureLink($label, 'calendar', $vars);
     }
 
-
-    function uploadEventsLink($label=null, $icon=false)
+    function uploadEventsLink($label = null, $icon = false)
     {
-        $vars['aop']    = 'upload_event';
+        $vars['aop'] = 'upload_event';
         $vars['sch_id'] = $this->id;
         $vars['js'] = 1;
 
@@ -138,7 +135,7 @@ class Calendar_Schedule {
         return javascript('open_window', $js);
     }
 
-    public function addEventLink($default_date=NULL, $icon=false)
+    public function addEventLink($default_date = NULL, $icon = false)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
@@ -151,18 +148,19 @@ class Calendar_Schedule {
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
-            $this->id, $default_date);
+                    $this->id, $default_date);
             $vars['link_title'] = dgettext('calendar', 'Add event');
             $vars['label'] = $add_label;
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $vars);
         } else {
-            return PHPWS_Text::moduleLink($add_label, 'calendar', array('aop'=>'create_event', 'sch_id' => $this->id, 'date' => $default_date));
+            return PHPWS_Text::moduleLink($add_label, 'calendar',
+                            array('aop' => 'create_event', 'sch_id' => $this->id, 'date' => $default_date));
         }
     }
 
-    public function addSuggestLink($default_date=NULL)
+    public function addSuggestLink($default_date = NULL)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
@@ -172,20 +170,19 @@ class Calendar_Schedule {
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;uop=suggest_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
-            $this->id, $default_date);
+                    $this->id, $default_date);
             $vars['link_title'] = $vars['label'] = $suggest_label;
             $vars['width'] = CALENDAR_SUGGEST_WIDTH;
             $vars['height'] = CALENDAR_SUGGEST_HEIGHT;
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink($suggest_label, 'calendar',
-            array('uop'    => 'suggest_event',
-                                                'sch_id' => $this->id,
-                                                'date'   => $default_date)
+                            array('uop' => 'suggest_event',
+                        'sch_id' => $this->id,
+                        'date' => $default_date)
             );
         }
     }
-
 
     /**
      * Creates an event and repeat table for the schedule
@@ -196,7 +193,7 @@ class Calendar_Schedule {
         $recurr = $this->getRecurrenceTable();
         if (empty($table) || empty($recurr)) {
             return PHPWS_Error::get(CAL_CANNOT_MAKE_EVENT_TABLE, 'calendar',
-                                    'Calendar_Schedule::createEventTable');
+                            'Calendar_Schedule::createEventTable');
         }
 
         $template['TABLE'] = $table;
@@ -208,7 +205,7 @@ class Calendar_Schedule {
 
         if (!is_file($file)) {
             return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'calendar',
-                                    'Calendar_Schedule::createEventTable', $file);
+                            'Calendar_Schedule::createEventTable', $file);
         }
 
         $query = PHPWS_Template::process($template, 'calendar', $file, true);
@@ -244,7 +241,6 @@ class Calendar_Schedule {
         }
     }
 
-
     /**
      * Edit form for a schedule
      */
@@ -271,10 +267,11 @@ class Calendar_Schedule {
 
         if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
             if (Current_User::allow('calendar', 'edit_public')) {
-                $form->addRadio('public', array(0,1));
-                $form->setLabel('public', array(dgettext('calendar', 'Private'),
-                dgettext('calendar', 'Public')));
-                $form->setMatch('public', (int)$this->public);
+                $form->addRadio('public', array(0, 1));
+                $form->setLabel('public',
+                        array(dgettext('calendar', 'Private'),
+                    dgettext('calendar', 'Public')));
+                $form->setMatch('public', (int) $this->public);
             } else {
                 $form->addTplTag('PUBLIC', dgettext('calendar', 'Private'));
                 $form->addHidden('public', 0);
@@ -290,7 +287,8 @@ class Calendar_Schedule {
         $upcoming[3] = dgettext('calendar', 'Show upcoming month');
 
         $form->addSelect('show_upcoming', $upcoming);
-        $form->setLabel('show_upcoming', dgettext('calendar', 'Show upcoming events'));
+        $form->setLabel('show_upcoming',
+                dgettext('calendar', 'Show upcoming events'));
         $form->setMatch('show_upcoming', $this->show_upcoming);
 
         $form->addSubmit(dgettext('calendar', 'Save'));
@@ -298,13 +296,16 @@ class Calendar_Schedule {
         $template = $form->getTemplate();
 
         if (isset($_REQUEST['js'])) {
-            $template['CLOSE'] = javascript('close_window', array('value' => dgettext('calendar', 'Cancel')));
+            $template['CLOSE'] = javascript('close_window',
+                    array('value' => dgettext('calendar', 'Cancel')));
         }
 
         $template['PUBLIC_LABEL'] = dgettext('calendar', 'Availability');
-        return PHPWS_Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
+        return PHPWS_Template::process($template, 'calendar',
+                        'admin/forms/edit_schedule.tpl');
     }
 
+    /*
     public function getCurrentUserSchedule()
     {
         $user_id = Current_User::getId();
@@ -320,9 +321,11 @@ class Calendar_Schedule {
             return $schedule;
         }
     }
+     *
+     */
 
-
-    public function getDB() {
+    public function getDB()
+    {
         $db = new PHPWS_DB('calendar_schedule');
         return $db;
     }
@@ -345,7 +348,6 @@ class Calendar_Schedule {
         return $this->_key;
     }
 
-
     public function getRecurrenceTable()
     {
         if (!$this->id) {
@@ -355,8 +357,7 @@ class Calendar_Schedule {
         }
     }
 
-
-    public function getViewLink($formatted=true)
+    public function getViewLink($formatted = true)
     {
         $vars['sch_id'] = $this->id;
 
@@ -370,6 +371,9 @@ class Calendar_Schedule {
     public function init()
     {
         $db = $this->getDB();
+        if (empty($this->id)) {
+            return;
+        }
         $result = $db->loadObject($this);
 
         if (PHPWS_Error::isError($result)) {
@@ -385,14 +389,13 @@ class Calendar_Schedule {
         PHPWS_Core::initModClass('calendar', 'Event.php');
 
         if (!empty($_REQUEST['event_id'])) {
-            $event = new Calendar_Event((int)$_REQUEST['event_id'], $this);
+            $event = new Calendar_Event((int) $_REQUEST['event_id'], $this);
         } else {
             $event = new Calendar_Event(0, $this);
         }
 
         return $event;
     }
-
 
     /**
      * Apply the results from the scheduler form
@@ -413,37 +416,40 @@ class Calendar_Schedule {
             $this->user_id = Current_User::getId();
         }
 
-        $this->show_upcoming = (int)$_POST['show_upcoming'];
+        $this->show_upcoming = (int) $_POST['show_upcoming'];
 
         return true;
     }
 
-    public function checkPermissions($authorized=false)
+    public function checkPermissions($authorized = false)
     {
         if ($this->public) {
             if ($authorized) {
-                return Current_User::authorized('calendar', 'edit_public', $this->id, 'schedule');
+                return Current_User::authorized('calendar', 'edit_public',
+                                $this->id, 'schedule');
             } else {
-                return Current_User::allow('calendar', 'edit_public', $this->id, 'schedule');
+                return Current_User::allow('calendar', 'edit_public', $this->id,
+                                'schedule');
             }
         } else {
             if ($authorized) {
-                if ( Current_User::getAuthKey() == $_REQUEST['authkey'] &&
-                $this->user_id == Current_User::getId()) {
+                if (Current_User::getAuthKey() == $_REQUEST['authkey'] &&
+                        $this->user_id == Current_User::getId()) {
                     return true;
                 } else {
-                    return Current_User::authorized('calendar', 'edit_private', $this->id, 'schedule');
+                    return Current_User::authorized('calendar', 'edit_private',
+                                    $this->id, 'schedule');
                 }
             } else {
                 if ($this->user_id == Current_User::getId()) {
                     return true;
                 } else {
-                    return Current_User::allow('calendar', 'edit_private', $this->id, 'schedule');
+                    return Current_User::allow('calendar', 'edit_private',
+                                    $this->id, 'schedule');
                 }
             }
         }
     }
-
 
     public function rowTags()
     {
@@ -452,26 +458,27 @@ class Calendar_Schedule {
             $links[] = $this->uploadEventsLink(null, true);
             $links[] = $this->downloadEventsLink(null, true);
 
-            $vars = array('aop'=>'edit_schedule', 'sch_id' => $this->id);
+            $vars = array('aop' => 'edit_schedule', 'sch_id' => $this->id);
 
             $label = Icon::show('edit');
             if (javascriptEnabled()) {
                 $vars['js'] = 1;
                 $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-                $js_vars['label']   = & $label;
-                $js_vars['width']   = 640;
-                $js_vars['height']  = 600;
+                $js_vars['label'] = & $label;
+                $js_vars['width'] = 640;
+                $js_vars['height'] = 600;
                 $links[] = javascript('open_window', $js_vars);
             } else {
                 $links[] = PHPWS_Text::secureLink($label, 'calendar',
-                array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
+                                array('aop' => 'edit_schedule', 'sch_id' => $this->id));
             }
         }
 
         if (Current_User::allow('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
-            $js['QUESTION'] = dgettext('calendar', 'Are you sure you want to delete this schedule?');
-            $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
-            $this->id, Current_User::getAuthKey());
+            $js['QUESTION'] = dgettext('calendar',
+                    'Are you sure you want to delete this schedule?');
+            $js['ADDRESS'] = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
+                    $this->id, Current_User::getAuthKey());
             $js['LINK'] = Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
@@ -481,7 +488,9 @@ class Calendar_Schedule {
             if ($public_schedule != $this->id) {
                 $link_vars['aop'] = 'make_default_public';
                 $link_vars['sch_id'] = $this->id;
-                $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Make default public'), 'calendar', $link_vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('calendar',
+                                        'Make default public'), 'calendar',
+                                $link_vars);
             } else {
                 $links[] = dgettext('calendar', 'Default public');
             }
@@ -556,14 +565,14 @@ class Calendar_Schedule {
 
         $db = new PHPWS_DB($event_table);
 
-        $db->addWhere('start_time', $start_search, '>=', null,  'start');
-        $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
+        $db->addWhere('start_time', $start_search, '>=', null, 'start');
+        $db->addWhere('start_time', $end_search, '<', 'AND', 'start');
 
-        $db->addWhere('end_time',   $end_search,   '<=', null,  'end');
-        $db->addWhere('end_time',   $start_search, '>',  'AND', 'end');
+        $db->addWhere('end_time', $end_search, '<=', null, 'end');
+        $db->addWhere('end_time', $start_search, '>', 'AND', 'end');
 
-        $db->addWhere('start_time', $start_search, '<',  null,  'middle');
-        $db->addWhere('end_time',   $end_search,   '>',  'AND', 'middle');
+        $db->addWhere('start_time', $start_search, '<', null, 'middle');
+        $db->addWhere('end_time', $end_search, '>', 'AND', 'middle');
 
         $db->setGroupConj('end', 'OR');
         $db->setGroupConj('middle', 'OR');
@@ -612,7 +621,7 @@ class Calendar_Schedule {
 
     public function setPublic($public)
     {
-        $this->public = (bool)$public;
+        $this->public = (bool) $public;
     }
 
     public function setSummary($summary)
@@ -644,14 +653,14 @@ class Calendar_Schedule {
 
     function exportEvents($start_time, $end_time)
     {
-        $start_time = (int)$start_time;
-        $end_time = (int)$end_time;
+        $start_time = (int) $start_time;
+        $end_time = (int) $end_time;
 
         if (empty($start_time) || empty($end_time) ||
-        $start_time > $end_time) {
+                $start_time > $end_time) {
             $events = null;
         } else {
-            $events = $this->getEvents((int)$start_time, (int)$end_time);
+            $events = $this->getEvents((int) $start_time, (int) $end_time);
         }
 
         if (!empty($events)) {
@@ -673,14 +682,14 @@ class Calendar_Schedule {
     function allowICalDownload()
     {
         if ($this->id &&
-        ( ( $this->public && ( Current_User::isLogged() || PHPWS_Settings::get('calendar', 'anon_ical') ) ) ||
-        $this->checkPermissions() )
+                ( ( $this->public && ( Current_User::isLogged() || PHPWS_Settings::get('calendar',
+                        'anon_ical') ) ) ||
+                $this->checkPermissions() )
         ) {
             return true;
         } else {
             return false;
         }
-
     }
 
 }
