@@ -215,8 +215,8 @@ class PHPWS_Boost {
             // $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
             // H 0120 display also the msgs for log
             /*
-            $content[] = str_replace('<br /><br /><br />', '<br />',
-                    implode('<br />', $mod_content));
+              $content[] = str_replace('<br /><br /><br />', '<br />',
+              implode('<br />', $mod_content));
              *
              */
             // $content[] = dgettext('boost', 'Installation complete!');
@@ -1063,7 +1063,12 @@ class PHPWS_Boost {
             // used as the "local" directory in updateFiles
             $GLOBALS['boost_branch_dir'] = $branch->directory;
 
-            $branch->loadBranchDB();
+            if (PHPWS_Error::isError($branch->loadBranchDB())) {
+                $content[] = dgettext('boost',
+                        'Problem connecting to the branch. May be too many connections.');
+                PHPWS_DB::disconnect();
+                continue;
+            }
 
             // create a new boost based on the branch database
             $branch_boost = new PHPWS_Boost;
@@ -1078,9 +1083,9 @@ class PHPWS_Boost {
                 PHPWS_Error::log($result);
                 $content[] = dgettext('boost', 'Unable to update branch.');
             }
+            PHPWS_DB::disconnect();
         }
         $GLOBALS['Boost_In_Branch'] = false;
-        PHPWS_DB::disconnect();
     }
 
     public static function getAllMods()
