@@ -97,6 +97,11 @@ define('USE_PUTENV', false);
 /* * *************** Database ********************************** */
 
 /**
+ * If true, use persistent connections. Default is FALSE
+ */
+define('DB_PERSISTENT_CONNECTION', FALSE);
+
+/**
  * If true, a table existence will be check prior to inserting it into a DB
  * object. The default is FALSE. Change to true for debugging ONLY.
  * > 1.8.0
