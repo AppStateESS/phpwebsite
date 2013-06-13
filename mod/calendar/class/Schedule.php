@@ -305,25 +305,6 @@ class Calendar_Schedule {
                         'admin/forms/edit_schedule.tpl');
     }
 
-    /*
-    public function getCurrentUserSchedule()
-    {
-        $user_id = Current_User::getId();
-
-        $schedule = new Calendar_Schedule;
-
-        $db = Calendar_Schedule::getDB();
-        $db->addWhere('user_id', $user_id);
-        $result = $db->loadObject($schedule);
-        if (PHPWS_Error::isError($result) || !$result) {
-            return $result;
-        } else {
-            return $schedule;
-        }
-    }
-     *
-     */
-
     public function getDB()
     {
         $db = new PHPWS_DB('calendar_schedule');
