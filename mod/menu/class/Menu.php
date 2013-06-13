@@ -141,12 +141,13 @@ class Menu {
         }
         $js['width'] = 500;
         $js['height'] = 300;
+        $js['ICON'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/menu/img/icon_link.png" />';
 
         // Look for the template file that was passed in
         $tplDir = PHPWS_Template::getTemplateDirectory('menu');
         $relativePath = 'menu_layout/' . $template . '/addSiteLink.tpl';
         $filename = $tplDir . $relativePath;
-        
+
         if (file_exists($filename)) {
             javascript('open_window');
             return PHPWS_Template::processTemplate($js, 'menu', $relativePath);
@@ -192,7 +193,7 @@ class Menu {
         $filename = $tplDir . $relativePath;
 
         if ($key->id) {
-            
+
             if (!$popup) {
                 return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $link);
             } else {
@@ -220,6 +221,7 @@ class Menu {
                         $vars['MENU_ID']   = $menu_id;
                         $vars['PARENT_ID'] = $parent_id;
                         $vars['LINK']      = $link;
+                        $vars['ICON']      = Icon::show('add');
                         return PHPWS_Template::processTemplate($vars, 'menu', $relativePath);
                     }else{
                         // Return old style link for template compatibility
@@ -241,7 +243,7 @@ class Menu {
     }
 
     /**
-     * 
+     *
      * @param unknown $menu_id
      * @param unknown $key_id
      * @param number $pin_all
@@ -263,11 +265,12 @@ class Menu {
         }
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
         $js['LINK'] = MENU_UNPIN;
-        
+        $js['ICON'] = '<img src="'.PHPWS_SOURCE_HTTP.'mod/menu/img/remove.png" />';
+
         $tplDir = PHPWS_Template::getTemplateDirectory('menu');
         $relativePath = 'menu_layout/' . $template . '/unpinMenuLink.tpl';
         $filename = $tplDir . $relativePath;
-        
+
         // If the template file exists, use it to form the link
         if (file_exists($filename)) {
             javascript('confirm');

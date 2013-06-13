@@ -30,34 +30,45 @@ class MiniAdmin {
     public static function get()
     {
         $modlist = PHPWS_Core::getModuleNames();
-        if (empty($GLOBALS['MiniAdmin'])) {
-            return;
+
+        if (!isset($GLOBALS['MiniAdmin'])) {
+            return NULL;
         }
+
+        $oTpl = new PHPWS_Template('miniadmin');
+        $oTpl->setFile(MINIADMIN_TEMPLATE);
+
+        $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
+
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
+
             if (!isset($modlist[$module])) {
                 continue;
             }
-
-            $mod_title = (string) $modlist[$module];
-
-            if (isset($GLOBALS['MiniAdmin'][$module]['title_link'])) {
-                $module_name = sprintf('<a href="%s">%s</a>',
-                        $GLOBALS['MiniAdmin'][$module]['title_link'], $mod_title);
-            } else {
-                $module_name = $mod_title;
-            }
-
             if (isset($links['links'])) {
                 foreach ($links['links'] as $link) {
-                    $tpl[$module_name][] = PHPWS_Text::fixAmpersand($link);
+                    $oTpl->setCurrentBlock('links');
+                    $oTpl->setData(array('LINE_MODULE' => $modlist[$module],
+                        'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
+                    $oTpl->parseCurrentBlock();
                 }
-            }
-            $mod_links['tpl'] = $tpl;
-        }
 
-        $tobj = new \Template($mod_links);
-        $tobj->setModuleTemplate('miniadmin', 'mini_admin.html');
-        Layout::set($tobj->get(), 'miniadmin', 'mini_admin');
+            }
+            $oTpl->setCurrentBlock('module');
+            $mod_title = $modlist[$module];
+
+            if (isset($GLOBALS['MiniAdmin'][$module]['title_link'])) {
+                $mod_title = sprintf('<a href="%s">%s</a>',
+                        $GLOBALS['MiniAdmin'][$module]['title_link'], $mod_title);
+            }
+
+            $oTpl->setData(array('MODULE' => $mod_title));
+            $oTpl->parseCurrentBlock();
+        }
+        $oTpl->setData($tpl);
+        $content = $oTpl->get();
+
+        Layout::set($content, 'miniadmin', 'mini_admin');
     }
 
     public static function setTitle($module, $link, $add_authkey = false)
