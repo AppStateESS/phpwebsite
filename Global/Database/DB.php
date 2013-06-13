@@ -2,6 +2,9 @@
 
 namespace Database;
 
+if (!defined('DB_PERSISTENT_CONNECTION')) {
+    define('DB_PERSISTENT_CONNECTION', false);
+}
 /**
  * The DB class object helps construct a database query. It is abstract and meant
  * for extension by different database engines in the Engine directory.
@@ -341,13 +344,13 @@ abstract class DB extends \Data {
         if (!isset(self::$pdo_stack[$hash])) {
             self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(),
                     $this->dsn->getUsername(), $this->dsn->getPassword(),
-                    array(\PDO::ATTR_PERSISTENT => true, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+                    array(\PDO::ATTR_PERSISTENT => DB_PERSISTENT_CONNECTION, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         }
         self::$PDO = self::$pdo_stack[$hash];
     }
 
     /**
-     * If you would prefer to interact directly with PDO, this will return the 
+     * If you would prefer to interact directly with PDO, this will return the
      * PDO object used for the current connection.
      */
     public function getPDO()

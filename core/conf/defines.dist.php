@@ -16,22 +16,6 @@
  */
 
 
-/* * ************************************************************
- * The settings in this file affect the hub and all branches
- * Most of the defines from this file were originally in the
- * config.php file. That file now contains hub/branch specific
- * information.
- *
- * PLEASE NOTE: WE DO NOT RECOMMEND EDITING THIS FILE.  If you
- * need to change it, copy it first to core/conf/defines.php,
- * and that file will be loaded instead.  Otherwise, next time
- * you update phpWebSite, this file will be replaced and your
- * changes lost.
- *
- * @author Matthew McNaney <mcnaney at gmail dot com>
- * @version $Id$
- */
-
 /**
  * The default template to use in Global/Error/Pages/ when a error is reported.
  * @see Error::errorPage()
@@ -113,6 +97,11 @@ define('USE_PUTENV', false);
 /* * *************** Database ********************************** */
 
 /**
+ * If true, use persistent connections. Default is FALSE
+ */
+define('DB_PERSISTENT_CONNECTION', FALSE);
+
+/**
  * If true, a table existence will be check prior to inserting it into a DB
  * object. The default is FALSE. Change to true for debugging ONLY.
  * > 1.8.0
@@ -175,8 +164,6 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  * http://us3.php.net/manual/en/timezones.php
  */
 define('DATE_SET_SERVER_TIME_ZONE', 'America/New_York');
-
-date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
 
 /* * ******************** Logging Settings ********************* */
 
