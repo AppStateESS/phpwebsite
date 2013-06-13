@@ -240,7 +240,7 @@ class Branch {
             return false;
         }
 
-        return PHPWS_DB::loadDB($this->dsn, $this->prefix);
+        return PHPWS_DB::loadDB($this->dsn, $this->prefix, false, false);
     }
 
     /**
