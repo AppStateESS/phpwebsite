@@ -132,7 +132,7 @@ function logMessage($message, $filename)
         trigger_error('Slashes not allowed in log file names.', E_USER_ERROR);
     }
     $log_path = LOG_DIRECTORY . $filename;
-    $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . $message;
+    $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . $message . "\n";
     if (@error_log($message, 3, $log_path)) {
         chmod($log_path, LOG_PERMISSION);
         return true;
