@@ -589,13 +589,8 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         $document = new PHPWS_Document($document_id);
-
-        if (!empty($document->_errors)) {
-            foreach ($document->_errors as $err) {
-                PHPWS_Error::log($err);
-            }
-            Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
-            return;
+        if (empty($document->id)) {
+            Error::errorPage('404');
         }
 
         $folder = new Folder($document->folder_id);
