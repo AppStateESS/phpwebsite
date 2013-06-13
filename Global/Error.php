@@ -97,12 +97,12 @@ class Error {
 
     /**
      * Returns a line describing the error and where it occurred.
+     *
+     * Time stamp handled by logging function
      * @return string
      */
     private static function getErrorInfo(Exception $error, $error_stack = true, $xdebug = false)
     {
-        // Windows doesn't do %T
-        $time = strftime('%Y%m%d-%H:%M:%S');
         $file = $error->getFile();
         $line = $error->getLine();
         if ($xdebug) {
@@ -114,11 +114,11 @@ class Error {
         }
 
         if ($error_stack) {
-            return sprintf("[%s] %s in %s on line %s\n%s\n\n", $time,
-                    $error->getMessage(), $file_info, $line, $trace);
+            return sprintf("%s in %s on line %s\n%s\n\n", $error->getMessage(),
+                    $file_info, $line, $trace);
         } else {
-            return sprintf("[%s] %s in %s on line %s\n\n", $time,
-                    $error->getMessage(), $file_info, $line);
+            return sprintf("%s in %s on line %s\n\n", $error->getMessage(),
+                    $file_info, $line);
         }
     }
 
@@ -126,7 +126,9 @@ class Error {
     {
         $class = $type = NULL;
         $trace = $error->getTrace();
-
+        if (empty($trace)) {
+            return null;
+        }
         foreach ($trace as $key => $value) {
             // Sometimes file is not set
             // @todo investigate on PEAR errors
