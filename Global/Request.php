@@ -305,11 +305,22 @@ class Request extends Data {
     }
 
     /**
+     * @param string $variable_name
      * @return boolean True if the variable is on the REQUEST
      */
     public function isVar($variable_name)
     {
         return array_key_exists($variable_name, $this->vars);
+    }
+
+    /**
+     * Returns true is variable is not set or is empty (0, '', null)
+     * @param string $variable_name
+     * @return boolean true
+     */
+    public function isEmpty($variable_name)
+    {
+        return array_key_exists($variable_name, $this->vars) && empty($this->vars[$variable_name]);
     }
 
     /**
