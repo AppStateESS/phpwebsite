@@ -29,5 +29,19 @@ require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
 $controller = ModuleController::singleton();
 $controller->execute();
 
+
+/**
+ * "BG Mode" - Used to echo raw output from the session.
+ * @deprecated - Will be removed in 1.9.x release.
+ * @see ModuleController
+ */
+if (isset($_SESSION['BG'])) {
+    ob_end_clean();
+    echo $_SESSION['BG'];
+    unset($_SESSION['BG']);
+} else {
+    ob_end_flush();
+}
+
 PHPWS_unBootstrap();
 ?>
