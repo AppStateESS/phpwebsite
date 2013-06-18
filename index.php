@@ -40,14 +40,9 @@ $controller->execute();
 
 
 /**
-<<<<<<< HEAD
  * "BG Mode" - Used to echo raw output from the session,
  * usually for AJAX requests contaning JSON.
- * @deprecated - Will be removed in the next *major* release (version 2.0).
-=======
- * "BG Mode" - Used to echo raw output from the session.
- * @deprecated - Will be removed in 2.0.0 release.
->>>>>>> branch 'master' of git@github.com:/AppStateESS/phpwebsite
+ * @deprecated - Will be removed in the next *major* release (version 2.0.0).
  * @see ModuleController
  */
 if (isset($_SESSION['BG'])) {
