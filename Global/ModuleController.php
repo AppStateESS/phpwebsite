@@ -15,6 +15,10 @@ final class ModuleController {
     private $module_stack;
     private $request;
 
+    // This is a temporary thing to prevent Layout from running in the event of 
+    // a JSON request or otherwise non-HTML response.
+    private $skipLayout = false;
+
     /**
      * Current requested module
      * @var Module
@@ -55,21 +59,43 @@ final class ModuleController {
 
         Session::start();
 
-        /**
-         * Call each module's run method
-         */
-        $this->loadRunTime();
-
         $this->loadCurrentModule();
 
+        $this->loadRunTime();
+
         if ($this->current_module) {
-            $this->callCurrentModule();
+            $response = $this->callCurrentModule();
+
+            $this->renderResponse($response);
         }
 
         $this->destructModules();
 
         // TODO: a more formal and less nasty way to do this, see issue #96
         PHPWS_Core::pushUrlHistory();
+    }
+
+    private function renderResponse(\Response $response)
+    {
+        $view = $response->getView();
+
+        // For Compatibility only - modules that make an end-run around the new 
+        // system and speak to Layout directly should return a Response 
+        // containing a NullView in order to skip the new rendering process.
+        if($view instanceof NullView) return;
+
+        $rendered = $view->render();
+
+        // This could probably be done smarter
+        if($view->getContentType() == 'text/html') {
+            Layout::add($rendered);
+            $this->skipLayout = false;
+        } else {
+            echo $rendered;
+            $this->skipLayout = true;
+        }
+
+        // TODO: Response headers
     }
 
     private function callCurrentModule()
@@ -86,13 +112,20 @@ final class ModuleController {
             throw new \Exception(t('Object returned by getController was not a Controller.'));
         }
 
-        $controller->execute($this->request);
-        return true;
+        $this->beforeRun($this->request, $controller);
+        $response = $controller->execute($this->request);
+        $this->afterRun($this->request, $response, $controller);
+
+        return $response;
     }
 
     private function destructModules()
     {
         foreach ($this->module_stack as $mod) {
+            // This is a temporary thing to prevent Layout from running in the 
+            // event of a JSON request or otherwise non-HTML Response.
+            if($this->skipLayout && strtolower($mod->getTitle()) == 'layout') continue;
+
             $mod->destruct();
         }
     }
@@ -120,11 +153,36 @@ final class ModuleController {
         }
     }
 
+    /**
+     * This function handles runtime.php for CompatibilityModules only.
+     * @deprecated - to be replaced by a more event-style interface
+     * @see beforeRun
+     * @see afterRun
+     */
     private function loadRunTime()
     {
         foreach ($this->module_stack as $mod) {
+            if (! $mod instanceof CompatibilityModule) continue;
             if ($mod->isActive()) {
                 $mod->run();
+            }
+        }
+    }
+
+    private function beforeRun(\Request &$request, \Controller $controller)
+    {
+        foreach ($this->module_stack as $mod) {
+            if ($mod->isActive()) {
+                $mod->beforeRun($request, $controller);
+            }
+        }
+    }
+
+    private function afterRun(\Request $request, \Response &$response)
+    {
+        foreach ($this->module_stack as $mod) {
+            if($mod->isActive()) {
+                $mod->afterRun($request, $response);
             }
         }
     }

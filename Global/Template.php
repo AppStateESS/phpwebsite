@@ -5,20 +5,22 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Template {
+class Template implements View {
 
     private $file;
     private $variables;
     private $encode = false;
     private $encode_type = ENT_QUOTES;
+    private $content_type;
 
     /**
-     *
-     * @param array $variables Values shown inside the template
-     * @param string $file Direct path to template file
-     * @param boolean $encode If true (default), encode the output
+     * @param array|null $variables Values shown inside the template
+     * @param string|null $file Direct path to template file
+     * @param boolean|null $encode If true (default), encode the output
+     * @param string|null $contentType The MIME-type of the rendered template, 
+     * default is text/html
      */
-    public function __construct(array $variables = null, $file = null, $encode = null)
+    public function __construct(array $variables = null, $file = null, $encode = null, $contentType = 'text/html')
     {
         if (isset($file)) {
             $this->setFile($file);
@@ -31,6 +33,8 @@ class Template {
         if (isset($encode)) {
             $this->setEncode($encode);
         }
+
+        $this->setContentType($contentType);
     }
 
     public function addVariables(array $variables)
@@ -43,6 +47,16 @@ class Template {
     public function setEncodeType($type)
     {
         $this->encode_type = $type;
+    }
+
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+    }
+
+    public function getContentType()
+    {
+        return $this->contentType;
     }
 
     public function setEncode($encode)
@@ -96,6 +110,10 @@ class Template {
         return $this->__toString();
     }
 
+    public function render()
+    {
+        return $this->__toString();
+    }
 }
 
 ?>

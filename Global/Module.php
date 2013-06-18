@@ -79,12 +79,32 @@ abstract class Module extends Data {
     /**
      * If you would like code from your module to run on every request, after 
      * sessions are available and immediately before the target module is loaded,
-     * override the run function.  By default, it does nothing.
+     * override the beforeRun function.  By default, it does nothing.
      *
-     * @see ModuleManager::run()
-     * @return boolean
+     * You may change the request at this time, or interact with the controller 
+     * before it runs.  The request is passed in by reference, so if you need 
+     * to, you can completely replace it with a different Request object.
+     *
+     * @see ModuleManager::beforeRun()
+     * @return void
      */
-    public function run()
+    public function beforeRun(\Request &$request, \Controller $controller)
+    {
+    }
+
+    /**
+     * If you would like code from your module to run on every request,
+     * immediately after the target module is run, override the afterRun function.
+     * By default, it does nothing.
+     *
+     * You may change the response at this time and access the request for 
+     * reference.  The response is passed in by reference, so if you need to, 
+     * you can completely replace it with a different Response object.
+     *
+     * @see ModuleManager::afterRun()
+     * @return void
+     */
+    public function afterRun(\Request $request, \Response &$response)
     {
     }
 

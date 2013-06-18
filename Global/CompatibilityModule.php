@@ -44,9 +44,15 @@ class CompatibilityModule extends \Module implements \SettingDefaults, \Controll
         return $this;
     }
 
+    public function getView(Http\AcceptIterator $iter)
+    {
+        return new NullView();
+    }
+
     public function execute(\Request $request)
     {
         include $this->directory . 'index.php';
+        return new Response(new NullView());
     }
 
     public function destruct()
