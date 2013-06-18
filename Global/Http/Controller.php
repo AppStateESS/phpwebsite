@@ -116,14 +116,26 @@ abstract class Controller implements \Controller
 
         $iter = $request->getAccept()->getIterator();
 
+        $view = null;
         foreach($iter as $type) {
-            if($type->matches('application/json'))
-                return $this->getJsonView($data);
-            if($type->matches('application/xml'))
-                return $this->getXmlView($data);
-            if($type->matches('text/html'))
-                return $this->getHtmlView($data);
+            if($type->matches('application/json')) {
+                $view = $this->getJsonView($data);
+                break;
+            }
+            if($type->matches('application/xml')) {
+                $view = $this->getXmlView($data);
+                break;
+            }
+            if($type->matches('text/html')) {
+                $view = $this->getHtmlView($data);
+                break;
+            }
         }
+
+        if(is_null($view))
+            throw new NotAcceptableException($request);
+
+        return $view;
     }
 
     public function getJsonView($data)
@@ -135,14 +147,14 @@ abstract class Controller implements \Controller
     {
         // TODO: Find a nice way to just XML encode anything and provide a 
         // default view here.
-        throw new NotAcceptableException('application/xml');
+        return null;
     }
 
     public function getHtmlView($data)
     {
         // TODO: Find a nice way to just HTML encode anything and provide a 
         // default view here.
-        throw new NotAcceptableException('text/html');
+        return null;
     }
 }
 
