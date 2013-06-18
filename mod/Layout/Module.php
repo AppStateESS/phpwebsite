@@ -9,11 +9,6 @@ namespace Layout;
  */
 class Module extends \Module implements \SettingDefaults {
 
-    public function run()
-    {
-
-    }
-
     public function init()
     {
         require_once PHPWS_SOURCE_DIR . 'mod/Layout/class/Layout.php';

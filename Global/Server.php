@@ -21,8 +21,9 @@ class Server {
             $method = $_SERVER['REQUEST_METHOD'];
             $vars   = $_REQUEST;
             $data   = file_get_contents('php://input');
+            $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
 
-            self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data);
+            self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data, $accept);
         }
 
         return self::$REQUEST_SINGLETON;

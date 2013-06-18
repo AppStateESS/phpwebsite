@@ -5,40 +5,47 @@
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
-abstract class Response
+class Response
 {
-    protected $data;
-    protected $viewConfig;
+    protected $code;
+    protected $view;
 
-    public function __construct($data)
+    public function __construct(View $view, $code = 200)
     {
-        $this->data = $data;
+        $this->view = $view;
+        $this->code = $code;
     }
 
-    public function getData()
+    public function getCode()
     {
-        return $this->data;
+        return $this->code;
     }
 
-    public function setViewForType($mimetype, View $view)
+    public function getPhrase()
     {
-        // TODO: Validate Mime Type
-        $this->viewConfig[$mimetype] = $view;
+        return get_status_text($this->code);
     }
 
-    public function hasViewForType($mimetype)
+    public function getHttpVersion()
     {
-        return array_key_exists($mimetype, $this->viewConfig);
+        return 'HTTP/1.1';
     }
 
-    public function getViewForType($mimetype)
+    public function getStatusLine()
     {
-        if(!$this->hasViewForType($mimetype)) {
-            // TODO: Better Exception
-            throw new Exception("No view has been configured for type $mimetype");
-        }
+        return $this->getHttpVersion() . ' ' . 
+               $this->getCode() . ' ' . 
+               $this->getPhrase();
+    }
 
-        return $this->viewConfig[$mimetype];
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    public function setView(View $view)
+    {
+        $this->view = $view;
     }
 }
 

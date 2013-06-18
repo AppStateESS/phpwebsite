@@ -83,18 +83,18 @@ class Request extends Data {
     private $url = null;
 
     /**
-     * The id of the item/content/element that is acted upon on the current command.
-     * @todo Is the id always going to be an id especially since md5 id was discussed? Might drop
-     * @var integer
-     */
-    private $id = null;
-
-    /**
      * The state of the current command
      * GET is the default state
      * @var boolean
      */
     private $method = null;
+
+    /**
+     * An instance of Http\Accept, which should be used to determine the type of 
+     * data that will be sent to the client.
+     * @var Http\Accept
+     */
+    private $accept;
 
     /**
      * Builds the current page request object.
@@ -103,18 +103,21 @@ class Request extends Data {
      * @param $vars array|null Request Variables ($_REQUEST, etc)
      * @param $data mixed The raw content area of the HTTP request (JSON and 
      *                    Form data)
+     * @param $accept Http\Accept
      */
-    public function __construct($url, $method, array $vars = null, $data = null)
+    public function __construct($url, $method, array $vars = null,
+        $data = null, Http\Accept $accept = null)
     {
         $this->setUrl($url);
         $this->setMethod($method);
 
-        if(is_null($vars)) {
-            $vars = array();
-        }
+        if(is_null($vars)) $vars = array();
         $this->setVars($vars);
 
         $this->setData($data);
+
+        if(is_null($accept)) $accept = array();
+        $this->setAccept($accept);
 
         // Extract Command - TODO: revisit this
         if(!is_null($this->command)) {
@@ -223,15 +226,6 @@ class Request extends Data {
     public static function shift()
     {
         return $this->shiftCommand();
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -411,6 +405,24 @@ class Request extends Data {
     public function getModule()
     {
         return $this->module;
+    }
+
+    /**
+     * Sets the Accept object
+     * @param $accept Http\Accept The Accept object for this request
+     */
+    public function setAccept(Http\Accept $accept)
+    {
+        $this->accept = $accept;
+    }
+
+    /**
+     * Gets the Accept object
+     * @return Http\Accept The Accept object for this request
+     */
+    public function getAccept()
+    {
+        return $this->accept;
     }
 
     /**
