@@ -19,8 +19,6 @@ final class ModuleController {
     // a JSON request or otherwise non-HTML response.
     private $skipLayout = false;
 
-    private $content;
-
     /**
      * Current requested module
      * @var Module
@@ -80,6 +78,12 @@ final class ModuleController {
     private function renderResponse(\Response $response)
     {
         $view = $response->getView();
+
+        // For Compatibility only - modules that make an end-run around the new 
+        // system and speak to Layout directly should return a Response 
+        // containing a NullView in order to skip the new rendering process.
+        if($view instanceof NullView) return;
+
         $rendered = $view->render();
 
         // This could probably be done smarter
