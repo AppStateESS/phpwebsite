@@ -12,6 +12,15 @@
  * @license http://opensource.org/licenses/gpl-3.0.html GNU GPLv3
  * @copyright Copyright 2013, Appalachian State University & Contributors
  */
+
+/****
+ * Begin output buffering right away.
+ * This is important to prevent stray output
+ * from being included in AJAX/JSON responses.
+ */
+ob_start();
+
+
 /**
  * Include the defines used in Global library
  */
@@ -31,14 +40,15 @@ $controller->execute();
 
 
 /**
- * "BG Mode" - Used to echo raw output from the session.
- * @deprecated - Will be removed in 1.9.x release.
+ * "BG Mode" - Used to echo raw output from the session,
+ * usually for AJAX requests contaning JSON.
+ * @deprecated - Will be removed in the next *major* release (version 2.0).
  * @see ModuleController
  */
 if (isset($_SESSION['BG'])) {
-    ob_end_clean();
-    echo $_SESSION['BG'];
-    unset($_SESSION['BG']);
+    ob_end_clean();         // Stop output buffering and clear the buffer, without outputting anything
+    echo $_SESSION['BG'];   // Echo any json data from the session
+    unset($_SESSION['BG']); // Clear the session'd data (for next request)
 } else {
     ob_end_flush();
 }
