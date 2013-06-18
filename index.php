@@ -32,7 +32,7 @@ $controller->execute();
 
 /**
  * "BG Mode" - Used to echo raw output from the session.
- * @deprecated - Will be removed in 1.9.x release.
+ * @deprecated - Will be removed in 2.0.0 release.
  * @see ModuleController
  */
 if (isset($_SESSION['BG'])) {
