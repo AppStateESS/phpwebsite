@@ -36,5 +36,5 @@ define('RETURN_BLANK_TEMPLATES', true);
  * as it reveals your installation path.
  */
 
-define('LABEL_TEMPLATES', false);
+define('LABEL_TEMPLATES', true);
 ?>
