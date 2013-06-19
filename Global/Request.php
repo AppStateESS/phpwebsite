@@ -122,12 +122,12 @@ class Request extends Data {
     public function setUrl($url)
     {
         if (preg_match('/index\.php$/', $url)) {
+            $this->url = '/';
             return;
         }
 
         // Ensure consistency in URLs
-        $url = $this->sanitizeUrl($url);
-        $this->url = $url;
+        $this->url = $this->sanitizeUrl($url);
     }
 
     /**
@@ -327,15 +327,24 @@ class Request extends Data {
         return $this->accept;
     }
 
-    public function getSubRequest($removePattern = '@^/[^/]+')
+    public function getCurrentToken()
     {
-        $url = preg_replace($removePattern, '', $this->getUrl());
+        preg_match('@^(/[^/]*)@', $this->getUrl(), $matches);
+
+        if($matches[0] == '/') return '/';
+
+        return substr($matches[0], 1);
+    }
+
+    public function getNextRequest()
+    {
+        $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
 
         return new Request(
             $url,
             $this->getMethod(),
             $this->getVars(),
-            $this->getData(),
+            $this->getRawData(),
             $this->getAccept());
     }
 

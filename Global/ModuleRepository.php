@@ -27,7 +27,6 @@ final class ModuleRepository
         $this->modules[] = new GlobalModule();
 
         $this->loadSiteModules();
-        $this->loadCurrentModule();
     }
 
     protected function loadSiteModules()
@@ -55,34 +54,6 @@ final class ModuleRepository
     protected function addModule($module)
     {
         $this->modules[] = $module;
-    }
-
-    protected function loadCurrentModule()
-    {
-        $request = \Server::getCurrentRequest();
-
-        // Try the Old Fashioned Way
-        if($request->isVar('module')) {
-            $title = $request->getVar('module');
-        }
-
-        // Otherwise, get the first token off of the Request
-        else {
-            preg_match('@^/([^/]+)@', $request->getUrl(), $matches);
-
-            if(empty($matches)) {
-                $this->currentModule = null;
-                return;
-            }
-
-            $title = $matches[1];
-        }
-
-        if(!$this->hasModule($title)) {
-            throw new \Http\NotFoundException($request);
-        }
-
-        $this->currentModule = $this->getModule($title);
     }
 
     protected function loadModule(array $values)
@@ -114,6 +85,11 @@ final class ModuleRepository
         $module->loadData();
         $module->setDeprecated(1);
         return $module;
+    }
+
+    public function setCurrentModule(Module $module)
+    {
+        $this->currentModule = $module;
     }
 
     public function getCurrentModule()

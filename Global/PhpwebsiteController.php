@@ -38,28 +38,57 @@ class PhpwebsiteController implements Controller {
 
         Session::start();
 
-        $this->current_module = ModuleRepository::getInstance()->getCurrentModule();
+        $module = $this->determineCurrentModule($request);
 
         $this->loadRunTime();
 
-        try {
-            if ($this->current_module) {
-                $response = $this->current_module->execute($request);
-
+        if($module) {
+            try {
+                $response = $module->execute($request->getNextRequest());
                 $this->renderResponse($response);
             }
-        }
-        catch(Http\Exception $e) {
-            $this->renderResponse($e->getResponse());
-        }
-        catch(Exception $e) {
-            $this->renderResponse(new Http\InternalServerErrorResponse(null, $e));
+            catch(Http\Exception $e) {
+                $this->renderResponse($e->getResponse());
+            }
+            catch(Exception $e) {
+                $this->renderResponse(new Http\InternalServerErrorResponse(null, $e));
+            }
         }
 
         $this->destructModules();
 
         // TODO: a more formal and less nasty way to do this, see issue #96
         PHPWS_Core::pushUrlHistory();
+    }
+
+    protected function determineCurrentModule(\Request $request)
+    {
+        // Try the Old Fashioned Way first
+        if($request->isVar('module')) {
+            $title = $request->getVar('module');
+        }
+
+        // Otherwise, get the first token off of the Request
+        else {
+            $title = $request->getCurrentToken();
+
+            if($title == '/') {
+                // @todo Configured Default Module
+                return null;
+            }
+        }
+
+        $mr = ModuleRepository::getInstance();
+
+        if(!$mr->hasModule($title)) {
+            throw new \Http\NotFoundException($request);
+        }
+
+        $module = $mr->getModule($title);
+
+        $mr->setCurrentModule($module);
+
+        return $module;
     }
 
     private function renderResponse(\Response $response)
