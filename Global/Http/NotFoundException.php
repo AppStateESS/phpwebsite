@@ -9,9 +9,9 @@ namespace Http;
 
 class NotFoundException extends Exception
 {
-    protected function createResponse(\Request $request)
+    protected function createResponse(\Request $request, \Exception $previous = null)
     {
-        return new NotFoundResponse($request);
+        return new NotFoundResponse($request, $previous);
     }
 }
 

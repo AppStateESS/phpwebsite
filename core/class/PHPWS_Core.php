@@ -31,9 +31,9 @@ class PHPWS_Core {
     public static function getModules($active = true, $just_title = false)
     {
         if ($active) {
-            $mods = ModuleController::singleton()->getModuleArrayActive();
+            $mods = ModuleRepository::getInstance()->getActiveModules();
         } else {
-            $mods = ModuleController::singleton()->getModuleArrayAll();
+            $mods = ModuleRepository::getInstance()->getAllModules();
         }
 
         if ($just_title) {
@@ -51,7 +51,7 @@ class PHPWS_Core {
      */
     public static function getModuleNames()
     {
-        $mods = ModuleController::singleton()->getModuleStack();
+        $mods = ModuleRepository::getInstance()->getAllModules();
 
         foreach ($mods as $o) {
             $listing[$o->getTitle()] = $o->getProperName();
@@ -297,7 +297,7 @@ class PHPWS_Core {
      */
     public static function moduleExists($module_title)
     {
-        return ModuleController::singleton()->moduleIsInstalled($module_title);
+        return ModuleRepository::getInstance()->isModuleInstalled($module_title);
     }
 
     /**
@@ -305,7 +305,9 @@ class PHPWS_Core {
      */
     public static function getCurrentModule()
     {
-        return ModuleController::singleton()->getCurrentModuleTitle();
+        $active = ModuleRepository::getInstance()->getCurrentModule();
+        if(is_null($active)) return null;
+        return $active->getTitle();
     }
 
     /**
@@ -509,7 +511,7 @@ class PHPWS_Core {
      */
     public static function installModList($active_only = false)
     {
-        return ModuleController::singleton()->getModuleArrayActive();
+        return ModuleRepository::getInstance()->getActiveModules();
     }
 
     /**

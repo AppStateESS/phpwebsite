@@ -9,12 +9,47 @@ namespace Http;
 
 abstract class ErrorResponse extends \Response
 {
-    public function __construct(\Request $request)
+    protected $request;
+    protected $backtrace;
+    protected $exception;
+
+    public function __construct(\Request $request = null, \Exception $previous = null)
     {
-        parent::__construct($this->createErrorView($request, $this), $code);
+        if(is_null($request)) {
+            $request = \Server::getCurrentRequest();
+        }
+
+        $this->request = $request;
+        $this->code = $this->getHttpResponseCode();
+        $this->backtrace = debug_backtrace();
+        $this->exception = $previous;
     }
 
     protected abstract function getHttpResponseCode();
+
+    public function getView()
+    {
+        if(is_null($this->view)) {
+            $this->view = $this->createErrorView($this->request, $this);
+        }
+
+        return $this->view;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    public function getBacktrace()
+    {
+        return $this->backtrace;
+    }
+
+    public function getException()
+    {
+        return $this->exception;
+    }
 
     protected function createErrorView(\Request $request, \Response $response)
     {

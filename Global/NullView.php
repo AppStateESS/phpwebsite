@@ -11,9 +11,14 @@ class NullView implements View
     {
     }
 
-    public function render($data)
+    public function render()
     {
         return "";
+    }
+
+    public function getContentType()
+    {
+        return 'text/html';
     }
 }
 

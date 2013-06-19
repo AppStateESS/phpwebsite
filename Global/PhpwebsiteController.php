@@ -1,15 +1,15 @@
 <?php
 
 /*
- * Main controller class for the project
+ * Main controller class for phpWebSite.  Implements Controller, so it can be 
+ * used like any other Controller in the system.
  *
  * @author Jeremy Booker
  * @package
  */
 
-final class ModuleController {
+class PhpwebsiteController implements Controller {
 
-    static private $controller;
     private $module_array_all;
     private $module_array_active;
     private $module_stack;
@@ -25,29 +25,8 @@ final class ModuleController {
      */
     private $current_module;
 
-    protected function __construct()
+    public function execute(\Request $request)
     {
-        $global_module = new GlobalModule;
-        $this->module_stack['Global'] = $global_module;
-        $this->request = Server::getCurrentRequest();
-    }
-
-    /**
-     *
-     * @return ModuleController
-     */
-    public static function singleton()
-    {
-        if (empty(self::$controller)) {
-            self::$controller = new ModuleController;
-        }
-        return self::$controller;
-    }
-
-    public function execute()
-    {
-        $this->loadSiteModules();
-
         if (strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE) {
             $this->forwardInfo();
         }
@@ -59,14 +38,22 @@ final class ModuleController {
 
         Session::start();
 
-        $this->loadCurrentModule();
+        $this->current_module = ModuleRepository::getInstance()->getCurrentModule();
 
         $this->loadRunTime();
 
-        if ($this->current_module) {
-            $response = $this->callCurrentModule();
+        try {
+            if ($this->current_module) {
+                $response = $this->current_module->execute($request);
 
-            $this->renderResponse($response);
+                $this->renderResponse($response);
+            }
+        }
+        catch(Http\Exception $e) {
+            $this->renderResponse($e->getResponse());
+        }
+        catch(Exception $e) {
+            $this->renderResponse(new Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
@@ -98,58 +85,14 @@ final class ModuleController {
         // TODO: Response headers
     }
 
-    private function callCurrentModule()
-    {
-        // Current module is not set (e.g. home page)
-        // @see self::setCurrentModule
-        if (empty($this->current_module)) {
-            throw new \Exception(t('Current module is not set'));
-        }
-
-        $controller = $this->current_module->getController($this->request);
-
-        if (!($controller instanceof Controller)) {
-            throw new \Exception(t('Object returned by getController was not a Controller.'));
-        }
-
-        $this->beforeRun($this->request, $controller);
-        $response = $controller->execute($this->request);
-        $this->afterRun($this->request, $response, $controller);
-
-        return $response;
-    }
-
     private function destructModules()
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             // This is a temporary thing to prevent Layout from running in the 
             // event of a JSON request or otherwise non-HTML Response.
             if($this->skipLayout && strtolower($mod->getTitle()) == 'layout') continue;
 
             $mod->destruct();
-        }
-    }
-
-    /**
-     * Grabs the name of the current module, then makes a reference
-     * to it in the current_module variable.
-     */
-    private function loadCurrentModule()
-    {
-        $request = $this->request;
-        if (empty($this->module_stack)) {
-            throw new \Exception(t('All modules must be loaded prior to current module designation'));
-        }
-        $module_name = $request->getModule();
-        if ($module_name) {
-            // We are catching this as a bad module name could just be a badly
-            // entered url.
-            try {
-                $this->setCurrentModule($module_name);
-            } catch (\Exception $e) {
-                // @todo should these be logged?
-                Error::errorPage('404');
-            }
         }
     }
 
@@ -161,7 +104,7 @@ final class ModuleController {
      */
     private function loadRunTime()
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             if (! $mod instanceof CompatibilityModule) continue;
             if ($mod->isActive()) {
                 $mod->run();
@@ -171,7 +114,7 @@ final class ModuleController {
 
     private function beforeRun(\Request &$request, \Controller $controller)
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             if ($mod->isActive()) {
                 $mod->beforeRun($request, $controller);
             }
@@ -180,7 +123,7 @@ final class ModuleController {
 
     private function afterRun(\Request $request, \Response &$response)
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             if($mod->isActive()) {
                 $mod->afterRun($request, $response);
             }
@@ -189,7 +132,7 @@ final class ModuleController {
 
     private function loadModuleInits()
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             if ($mod->isActive()) {
                 $mod->init();
             }
@@ -213,36 +156,6 @@ final class ModuleController {
         $namespace = "$module_title\\Module";
         $module = new $namespace;
 
-        return $module;
-    }
-
-
-    private function loadModuleValues(array $values)
-    {
-        $module = $this->getModuleByTitle($values['title']);
-        /**
-         * These are in the old modules table, but will not be used.
-         * @todo Once all modules are updated, dump these columns.
-         */
-        unset($values['register']);
-        unset($values['unregister']);
-        $module->setVars($values);
-        $module->loadData();
-        return $module;
-    }
-
-    /**
-     * Loads a Module object based on the values array. This array is a row
-     * from the modules table.
-     * @param array $values
-     * @return \Module
-     */
-    private function loadPHPWSModule(array $values)
-    {
-        $module = new CompatibilityModule;
-        $module->setVars($values);
-        $module->loadData();
-        $module->setDeprecated(1);
         return $module;
     }
 
@@ -289,21 +202,6 @@ final class ModuleController {
         if (empty($this->module_array_active)) {
             throw new \Exception(t('No active active modules installed'));
         }
-    }
-
-    public function getModuleArrayAll()
-    {
-        return $this->module_array_all;
-    }
-
-    public function getModuleArrayActive()
-    {
-        return $this->module_array_active;
-    }
-
-    public function getModuleStack()
-    {
-        return $this->module_stack;
     }
 
     public function getCurrentModuleTitle()
