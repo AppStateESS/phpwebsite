@@ -73,7 +73,7 @@ abstract class Base extends \Tag {
             $default_ids[$id_name]++;
             $id_name = $id_name . '-' . $default_ids[$id_name];
         } else {
-            $default_ids[$id_name] = 0;
+            $default_ids[$id_name] = 1;
         }
         $this->setId($id_name);
 

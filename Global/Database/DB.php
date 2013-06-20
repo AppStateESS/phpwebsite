@@ -207,6 +207,12 @@ abstract class DB extends \Data {
     abstract public function getRandomCall();
 
     /**
+     * Should return an array of database names in alphabetical order.
+     */
+    abstract public function listDatabases();
+
+
+    /**
      * Accepts a DSN object to create a new
      * @param \Database\DSN $dsn
      */
@@ -1532,7 +1538,6 @@ abstract class DB extends \Data {
             throw new \Exception(t('Class must be of type Resource'));
         }
     }
-
 }
 
 ?>
