@@ -33,12 +33,6 @@ class Form extends Tag {
     protected $method = 'post';
 
     /**
-     * Indicates if a submit button has been created yet.
-     * @var boolean
-     */
-    private $submit_button = false;
-
-    /**
      * Indicates if the form is being posted via Ajax.
      * @var boolean
      */
@@ -128,9 +122,6 @@ class Form extends Tag {
             $input->setLabel($label);
         }
         $this->inputs[$name][] = $input;
-        if ($type == 'submit') {
-            $this->submit_button = true;
-        }
         return $input;
     }
 
@@ -312,9 +303,6 @@ class Form extends Tag {
         if (empty($this->id)) {
             $this->loadId();
         }
-        if (!$this->submit_button) {
-            $this->addSubmit();
-        }
         if (!empty($this->inputs)) {
             $value = array();
             foreach ($this->inputs as $input_list) {
@@ -448,9 +436,6 @@ class Form extends Tag {
 
         if (empty($this->id)) {
             $this->loadId();
-        }
-        if (!$this->submit_button) {
-            $this->addSubmit();
         }
 
         $value = $this->getInputStringArray();
