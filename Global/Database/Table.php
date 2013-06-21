@@ -789,6 +789,14 @@ abstract class Table extends Resource {
         return $result;
     }
 
+    /**
+     * Returns a Conditional object based on a field in the current table.
+     *
+     * @param string $field_name Column to compare against
+     * @param string $value Value to compare column against
+     * @param string $operator If NULL, is set to equal (=)
+     * @return \Database\Conditional
+     */
     public function getFieldConditional($field_name, $value, $operator = null)
     {
         if ($operator == null) {
