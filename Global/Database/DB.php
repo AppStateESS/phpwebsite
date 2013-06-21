@@ -5,6 +5,7 @@ namespace Database;
 if (!defined('DB_PERSISTENT_CONNECTION')) {
     define('DB_PERSISTENT_CONNECTION', false);
 }
+
 /**
  * The DB class object helps construct a database query. It is abstract and meant
  * for extension by different database engines in the Engine directory.
@@ -205,6 +206,11 @@ abstract class DB extends \Data {
      * @return string
      */
     abstract public function getRandomCall();
+
+    /**
+     * Should return an array of database names in alphabetical order.
+     */
+    abstract public function listDatabases();
 
     /**
      * Accepts a DSN object to create a new
@@ -988,6 +994,18 @@ abstract class DB extends \Data {
     }
 
     /**
+     * Loads the select statement and fetches one row.
+     * @return array
+     */
+    public function selectOneRow()
+    {
+        if (empty($this->pdo_statement)) {
+            $this->loadSelectStatement();
+        }
+        return $this->fetchOneRow();
+    }
+
+    /**
      * Fetches a single row and then clears the PDO statement.
      * @return array
      */
@@ -1018,6 +1036,14 @@ abstract class DB extends \Data {
         return $result;
     }
 
+    public function selectInto($object)
+    {
+        if (empty($this->pdo_statement)) {
+            $this->loadSelectStatement();
+        }
+        $this->fetchInto($object);
+    }
+
     /**
      * Returns a passed $object parameter with values set from the current query.
      *
@@ -1035,12 +1061,30 @@ abstract class DB extends \Data {
         return $result;
     }
 
+    /**
+     * Fetches all rows based on the current pdo_statement and returns them.
+     * @return array
+     */
     public function fetchAll()
     {
         $this->checkStatement();
         $result = $this->pdo_statement->fetchAll(\PDO::FETCH_ASSOC);
         $this->clearStatement();
         return $result;
+    }
+
+    /**
+     * Loads the select query and calls self::fetchColumn
+     *
+     * @param integer $column
+     * @return string
+     */
+    public function selectColumn($column = 0)
+    {
+        if (empty($this->pdo_statement)) {
+            $this->loadSelectStatement();
+        }
+        return $this->fetchColumn($column);
     }
 
     /**
@@ -1396,7 +1440,6 @@ abstract class DB extends \Data {
         }
         return $this->module->numCols();
     }
-
 
     /**
      * Safely quotes a value for entry in the database.
