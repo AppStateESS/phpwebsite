@@ -289,9 +289,22 @@ abstract class DB extends \Data {
         }
     }
 
+    /**
+     * Sets the conditional for use in select or update queries.
+     * 
+     * @param \Database\Conditional $conditional
+     */
     public function setConditional(\Database\Conditional $conditional)
     {
         $this->conditional = $conditional;
+    }
+
+    /**
+     * Sets the conditional for the current DB object
+     */
+    public function clearConditional()
+    {
+        $this->conditional = null;
     }
 
     /**
