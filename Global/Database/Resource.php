@@ -29,10 +29,10 @@ abstract class Resource extends Alias {
     protected $fields = array();
 
     /**
-     * If true, then a select query will call all rows of this object.
+     * If true, then a select or delete query will include the table in the query.
      * @var boolean
      */
-    protected $show_all_fields = true;
+    protected $use_in_query = true;
 
     /**
      * Indicates if this resource is being used in a join.
@@ -213,7 +213,7 @@ abstract class Resource extends Alias {
         $this->joined = null;
         $this->orders = null;
         $this->random_order = false;
-        $this->show_all_fields = true;
+        $this->use_in_query = true;
         $this->where_stack = null;
     }
 
