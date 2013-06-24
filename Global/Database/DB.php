@@ -291,7 +291,7 @@ abstract class DB extends \Data {
 
     /**
      * Sets the conditional for use in select or update queries.
-     * 
+     *
      * @param \Database\Conditional $conditional
      */
     public function setConditional(\Database\Conditional $conditional)
@@ -314,8 +314,15 @@ abstract class DB extends \Data {
      * @param string $operator
      * @return \Database\Conditional
      */
-    public function getConditional($left, $right, $operator)
+    public function getConditional($left, $right, $operator=null)
     {
+        if (is_null($operator)) {
+            if ($left instanceof \Database\Conditional && $right instanceof \Database\Conditional) {
+                $operator = 'AND';
+            } else {
+                $operator = '=';
+            }
+        }
         return new Conditional($left, $right, $operator);
     }
 
