@@ -289,9 +289,22 @@ abstract class DB extends \Data {
         }
     }
 
+    /**
+     * Sets the conditional for use in select or update queries.
+     *
+     * @param \Database\Conditional $conditional
+     */
     public function setConditional(\Database\Conditional $conditional)
     {
         $this->conditional = $conditional;
+    }
+
+    /**
+     * Sets the conditional for the current DB object
+     */
+    public function clearConditional()
+    {
+        $this->conditional = null;
     }
 
     /**
@@ -301,8 +314,15 @@ abstract class DB extends \Data {
      * @param string $operator
      * @return \Database\Conditional
      */
-    public function getConditional($left, $right, $operator)
+    public function getConditional($left, $right, $operator=null)
     {
+        if (is_null($operator)) {
+            if ($left instanceof \Database\Conditional && $right instanceof \Database\Conditional) {
+                $operator = 'AND';
+            } else {
+                $operator = '=';
+            }
+        }
         return new Conditional($left, $right, $operator);
     }
 
@@ -573,13 +593,27 @@ abstract class DB extends \Data {
      * Adds a table object to the table stack. If you need a table object associated
      * with the current DB, use buildTable.
      *
+     * use_in_query determines whether the table is used in a delete or select
+     * query.
+     *
+     * Example:
+     * <code>
+     * $db->addTable('foo', null, true);
+     * $db->addTable('bar', null, true);
+     *
+     * echo $db->selectQuery();
+     * // select foo.* from foo, bar;
+     *
+     * echo $db->deleteQuery();
+     * // delete foo.* from foo, bar;
+     * </code>
+     *
      * @param string table_name
      * @param string alias Table designation/nickname
-     * @param boolean show_all_fields If true, use table.* in a select query.
-     * False, ignore table in result.
+     * @param boolean use_in_query If true, use table in select or delete query.
      * @return \Database\Table : reference to the object in the tables stack
      */
-    public function addTable($table_name, $alias = null, $show_all_fields = true)
+    public function addTable($table_name, $alias = null, $use_in_query = true)
     {
         $index = !empty($alias) ? $alias : $table_name;
 
@@ -592,7 +626,7 @@ abstract class DB extends \Data {
         $table = $this->buildTable($table_name, $alias);
 
         // @see \Database\Resource::$show_all_fields
-        $table->showAllFields($show_all_fields);
+        $table->useInQuery($use_in_query);
         $this->tables[$index] = $table;
         return $table;
     }
@@ -842,6 +876,7 @@ abstract class DB extends \Data {
         $delete_modules = array();
         $query = array();
         $modules = array();
+        $columns = array();
         /**
          * Next two variables are extracted from pullResourceData
          */
@@ -851,6 +886,10 @@ abstract class DB extends \Data {
         $query[] = 'DELETE';
         $data = $this->pullResourceData(self::DELETE);
         extract($data);
+
+        if (!empty($columns)) {
+            $query[] = implode(', ', $columns);
+        }
 
         if (!empty($include_on_join)) {
             foreach ($include_on_join as $module) {
@@ -1193,7 +1232,7 @@ abstract class DB extends \Data {
 
         if ($modules) {
             foreach ($modules as $module) {
-                if ($mode == DB::SELECT && $field_list = $module->getFields()) {
+                if (($mode == DB::SELECT || $mode == DB::DELETE) && $field_list = $module->getFields()) {
                     $data['columns'][] = $field_list;
                 } elseif ($mode == DB::UPDATE && $value_list = $module->getValues()) {
                     $data['columns'][] = $value_list;
