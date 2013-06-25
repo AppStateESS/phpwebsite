@@ -11,7 +11,51 @@ Misclassified Response
 <?php endif; ?>
 </h1>
 <p><strong><?php echo "$code $phrase"; ?></strong></p>
-<p>For URL <?php echo $url; ?> method <?php echo $method; ?>; backtrace:</p>
-<pre><?php echo $backtrace; ?></pre>
+<p>For URL <?php echo $url; ?> method <?php echo $method; ?></p>
+
+<?php 
+if($backtrace) {
+    render_backtrace($backtrace);
+}
+?>
+
+<?php if($exception): ?>
+<p>
+    This error was originally caused by an uncaught exception 
+    "<tt><?php echo $exception->getMessage(); ?></tt>"
+    with code <tt><?php echo $exception->getCode(); ?></tt>
+    in file <tt><?php echo $exception->getFile(); ?></tt>
+    on line <tt><?php echo $exception->getLine(); ?></tt>.
+</p>
+<?php render_backtrace($exception->getTrace()); ?>
+<?php else: ?>
+<p>This error was not caused by an uncaught exception.</p>
+<?php endif; ?>
+
 <a href="#">Contact the Webmaster</a>
 </div>
+
+<?php
+function render_backtrace($backtrace) {
+?>
+<table class="table">
+  <tr>
+    <th>Stack Depth</th>
+    <th>Line</th>
+    <th>File</th>
+    <th>Function</th>
+    <th>Class</th>
+  </tr>
+<?php foreach($backtrace as $depth => $trace): ?>
+  <tr>
+    <td><?php echo $depth; ?></td>
+    <td><?php echo $trace['line']; ?></td>
+    <td><?php echo $trace['file']; ?></td>
+    <td><?php echo $trace['function']; ?></td>
+    <td><?php echo $trace['class']; ?></td>
+  </tr>
+<?php endforeach; ?>
+</table>
+<?php
+}
+?>

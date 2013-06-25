@@ -17,7 +17,8 @@ class HtmlErrorView extends \Template
         $vars['module']    = $request->getModule();
         $vars['code']      = $response->getCode();
         $vars['phrase']    = $response->getPhrase();
-        $vars['backtrace'] = json_encode($response->getBacktrace());
+        $vars['backtrace'] = $response->getBacktrace();
+        $vars['exception'] = $response->getException();
 
         parent::__construct($vars, PHPWS_SOURCE_DIR . 'Global/Templates/Http/HtmlError.tpl.php', false);
     }

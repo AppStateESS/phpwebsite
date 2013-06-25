@@ -53,7 +53,9 @@ class PHPWS_Core {
                 $oldmod['version']     = $mod->getVersion();
                 $oldmod['register']    = false;     // @deprecated please remove
                 $oldmod['unregister']  = false;     // @deprecated please remove
+                $oldmods[] = $oldmod;
             }
+            return $oldmods;
         }
     }
 
