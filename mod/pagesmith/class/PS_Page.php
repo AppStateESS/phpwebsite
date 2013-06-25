@@ -126,8 +126,13 @@ class PS_Page {
                                 $section);
                         // we don't want smarttags parsed
                         $this->_content[$secname] = $this->_sections[$secname]->getContent(!$form_mode);
-                    } else {
+                    } elseif (!empty($section['content'])) {
                         $this->_orphans[$secname] = $section;
+                    } else {
+                        $db = \Database::newDB();
+                        $db->setConditional($db->addTable('ps_text')->getFieldConditional('id',
+                                        $section['id']));
+                        $db->delete();
                     }
                 }
             }
@@ -155,8 +160,13 @@ class PS_Page {
                             $this->_sections[$secname]->loadFiller();
                         }
                         $this->_content[$secname] = $this->_sections[$secname]->getContent();
-                    } else {
+                    } elseif ($section['type_id'] > 0) {
                         $this->_orphans[$secname] = $section;
+                    } else {
+                        $db = \Database::newDB();
+                        $db->setConditional($db->addTable('ps_block')->getFieldConditional('id',
+                                        $section['id']));
+                        $db->delete();
                     }
                 }
             }

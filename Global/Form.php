@@ -426,8 +426,9 @@ class Form extends Tag {
      */
     public function printTemplate($template)
     {
-        $head = new \Head;
-        $head->includeCSS('Global/Templates/Form/style.css');
+        // @todo implement Head again or clone
+        //$head = new \Head;
+        //$head->includeCSS('Global/Templates/Form/style.css');
 
         # @todo not doing anything with the problems pulled from the response,
         # expecting results within the included template perhaps
