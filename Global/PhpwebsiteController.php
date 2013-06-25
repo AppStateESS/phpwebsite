@@ -69,6 +69,14 @@ class PhpwebsiteController implements Controller {
             $title = $request->getVar('module');
         }
 
+        // Try the Somewhat Old Fashioned Access Way Next
+        // Accessing $_REQUEST directly because this is how access module works
+        // @todo: replace this with a new shortcutting system that does not 
+        // modify $_REQUEST
+        if(array_key_exists('module', $_REQUEST)) {
+            $title = $_REQUEST['module'];
+        }
+
         // Otherwise, get the first token off of the Request
         else {
             $title = $request->getCurrentToken();

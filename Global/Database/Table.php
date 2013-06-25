@@ -789,6 +789,14 @@ abstract class Table extends Resource {
         return $result;
     }
 
+    /**
+     * Returns a Conditional object based on a field in the current table.
+     *
+     * @param string $field_name Column to compare against
+     * @param string $value Value to compare column against
+     * @param string $operator If NULL, is set to equal (=)
+     * @return \Database\Conditional
+     */
     public function getFieldConditional($field_name, $value, $operator = null)
     {
         if ($operator == null) {
@@ -805,7 +813,7 @@ abstract class Table extends Resource {
     public function getFields()
     {
         if (empty($this->fields)) {
-            if ($this->show_all_fields) {
+            if ($this->use_in_query) {
                 if ($this->alias) {
                     return $this->getAlias() . '.*';
                 } else {
@@ -877,17 +885,17 @@ abstract class Table extends Resource {
     }
 
     /**
-     * If passed a parameter, it sets the show_all_fields variable.
+     * If passed a parameter, it sets the use_in_query variable.
      * Returns variable condition.
-     * @param boolean show
+     * @param boolean $use
      * @return boolean
      */
-    public function showAllFields($show = null)
+    public function useInQuery($use = null)
     {
-        if (isset($show)) {
-            $this->show_all_fields = (bool) $show;
+        if (isset($use)) {
+            $this->use_in_query = (bool) $use;
         }
-        return $this->show_all_fields;
+        return $this->use_in_query;
     }
 }
 

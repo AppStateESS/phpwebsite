@@ -37,7 +37,11 @@ class PHPWS_Core {
         }
 
         if ($just_title) {
-            return array_keys($mods);
+            $titles = array();
+            foreach($mods as $mod) {
+                $titles[] = $mod->getTitle();
+            }
+            return $titles;
         } else {
             return $mods;
         }
@@ -297,7 +301,7 @@ class PHPWS_Core {
      */
     public static function moduleExists($module_title)
     {
-        return ModuleRepository::getInstance()->isModuleInstalled($module_title);
+        return ModuleRepository::getInstance()->hasModule($module_title);
     }
 
     /**

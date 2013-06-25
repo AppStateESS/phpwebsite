@@ -40,7 +40,7 @@ if (isset($_SESSION['BG'])) {
     ob_end_clean();
     echo $_SESSION['BG'];
     unset($_SESSION['BG']);
-} else {
+} elseif (ob_get_length()) {
     ob_end_flush();
 }
 
