@@ -35,8 +35,9 @@ if (is_file('config/core/config.php')) {
 
 require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
 
-$controller = ModuleController::singleton();
-$controller->execute();
+$request = \Server::getCurrentRequest();
+$controller = new PhpwebsiteController();
+$controller->execute($request);
 
 
 /**

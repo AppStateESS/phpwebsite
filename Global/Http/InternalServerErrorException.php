@@ -7,11 +7,11 @@ namespace Http;
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
-class NotAcceptableException extends Exception
+class InternalServerErrorException extends Exception
 {
     protected function createResponse(\Request $request, \Exception $previous = null)
     {
-        return new NotAcceptableResponse($request, $previous);
+        return new InternalServerErrorResponse($request, $previous);
     }
 }
 

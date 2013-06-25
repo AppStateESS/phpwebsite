@@ -25,7 +25,7 @@ class Settings extends Data {
 
     public function loadDefaultSettings($module_name, $variable_name)
     {
-        $module = ModuleController::singleton()->getModule($module_name);
+        $module = ModuleRepository::singleton()->getModule($module_name);
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!isset($settings[$variable_name])) {
