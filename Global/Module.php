@@ -246,14 +246,6 @@ abstract class Module extends Data implements Controller {
     }
 
     /**
-     * @return string
-     */
-    public function getProperName()
-    {
-        return $this->proper_name;
-    }
-
-    /**
      * Assures dependencies required by the current module have been loaded.     */
     private function loadDependencies()
     {
@@ -283,14 +275,19 @@ abstract class Module extends Data implements Controller {
         $this->title->set($title);
     }
 
+    public function getTitle()
+    {
+        return (string) $this->title;
+    }
+
     public function setProperName($name)
     {
         $this->proper_name->set($name);
     }
 
-    public function getTitle()
+    public function getProperName()
     {
-        return (string) $this->title;
+        return (string) $this->proper_name;
     }
 
     public function setPriority($priority)
@@ -298,9 +295,19 @@ abstract class Module extends Data implements Controller {
         $this->priority = (int) $priority;
     }
 
+    public function getPriority()
+    {
+        return (int) $this->priority;
+    }
+
     public function setActive($active)
     {
         $this->active = (bool) $active;
+    }
+
+    public function isActive()
+    {
+        return (bool) $this->active;
     }
 
     public function setVersion($version)
@@ -308,17 +315,20 @@ abstract class Module extends Data implements Controller {
         $this->version = $version;
     }
 
+    public function getVersion()
+    {
+        return (string) $this->version;
+    }
+
     public function setDeprecated($deprecated)
     {
         $this->deprecated = (bool) $deprecated;
     }
 
-    public function isActive()
+    public function isDeprecated($deprecated)
     {
-        return $this->active;
+        return (bool) $this->deprecated;
     }
-
-
 }
 
 ?>

@@ -43,7 +43,17 @@ class PHPWS_Core {
             }
             return $titles;
         } else {
-            return $mods;
+            $oldmods = array();
+            foreach($mods as $mod) {
+                $oldmod = array();
+                $oldmod['title']       = $mod->getTitle();
+                $oldmod['proper_name'] = $mod->getProperName();
+                $oldmod['priority']    = $mod->getPriority();
+                $oldmod['active']      = $mod->isActive();
+                $oldmod['version']     = $mod->getVersion();
+                $oldmod['register']    = false;     // @deprecated please remove
+                $oldmod['unregister']  = false;     // @deprecated please remove
+            }
         }
     }
 
