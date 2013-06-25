@@ -109,7 +109,9 @@ class Request extends Data {
 
         $this->setData($data);
 
-        if(is_null($accept)) $accept = array();
+        // @todo I am a bit worried about the default here; in fact, it should 
+        // probably not be allowed to be null at all.
+        if(is_null($accept)) $accept = new Http\Accept('text/html');
         $this->setAccept($accept);
     }
 
