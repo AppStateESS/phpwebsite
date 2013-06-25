@@ -77,3 +77,10 @@ div.show-after {
     padding : 4px;
     border : 2px solid red;
 }
+
+.ui-dialog .ui-dialog-titlebar-close span.ui-button-icon-primary {
+    margin : 0px 0px 0px 0px;
+    top : 0px;
+    left : 0px;
+
+}
