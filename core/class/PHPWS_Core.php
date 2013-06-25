@@ -297,7 +297,7 @@ class PHPWS_Core {
      */
     public static function moduleExists($module_title)
     {
-        return ModuleRepository::getInstance()->isModuleInstalled($module_title);
+        return ModuleRepository::getInstance()->hasModule($module_title);
     }
 
     /**

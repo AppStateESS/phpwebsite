@@ -33,6 +33,11 @@ class DB extends \Database\DB {
         return '`';
     }
 
+    public function listDatabases()
+    {
+        return $this->query('SHOW DATABASES');
+    }
+
     /**
      * Returns true if the table name exists in the database.
      * To see if the table is currently in the DB object stack,
