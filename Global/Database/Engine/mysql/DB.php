@@ -80,6 +80,26 @@ class DB extends \Database\DB {
 
         return $this->query("CREATE DATABASE $database_name COLLATE " . MYSQL_COLLATE . ' CHARACTER SET ' . MYSQL_CHARACTER_SET);
     }
+
+    /**
+     * Returns the databases in the current connection.
+     * @return array
+     */
+    public function listDatabases()
+    {
+        $databases = null;
+        $sql = 'SELECT SCHEMA_NAME AS `Database` FROM INFORMATION_SCHEMA.SCHEMATA ORDER BY `Database`';
+        $this->loadStatement($sql);
+        while ($row = $this->fetch()) {
+            if (in_array($row['Database'],
+                            array('information_schema', 'performance_schema', 'mysql'))) {
+                continue;
+            }
+            $databases[] = $row['Database'];
+        }
+        return $databases;
+    }
+
 }
 
 ?>
