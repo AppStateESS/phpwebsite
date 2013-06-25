@@ -40,6 +40,7 @@ function initializeDialog(editor)
                 autoOpen: false,
                 width: 650,
                 title: 'Edit text area',
+                modal: true,
                 buttons: [{text: "Save",
                         click: function() {
                             updateBlock(editor);
