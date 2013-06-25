@@ -299,7 +299,7 @@ function get_status_text($code)
         case 505: $text = 'HTTP Version not supported';
             break;
         default:
-            exit('Unknown http status code "' . htmlentities($code) . '"');
+            $text = 'Unknown http status code "' . htmlentities($code) . '"';
             break;
     }
     return $text;

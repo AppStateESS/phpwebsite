@@ -62,7 +62,7 @@ class MiniAdmin {
                         $GLOBALS['MiniAdmin'][$module]['title_link'], $mod_title);
             }
 
-            $oTpl->setData(array('MODULE' => $mod_title));
+            $oTpl->setData(array('MODULE' => (string)$mod_title));
             $oTpl->parseCurrentBlock();
         }
         $oTpl->setData($tpl);

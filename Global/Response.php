@@ -23,7 +23,7 @@ class Response
 
     public function getPhrase()
     {
-        return get_status_text($this->code);
+        return get_status_text($this->getCode());
     }
 
     public function getHttpVersion()

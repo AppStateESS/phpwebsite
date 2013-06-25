@@ -63,13 +63,6 @@ class Request extends Data {
     private $data = null;
 
     /**
-     * The command requested from the previous page. This can be any string that
-     * directs the current module to action.
-     * @var array
-     */
-    private $command = null;
-
-    /**
      * The currently requested module. This will be contained in the
      * POST/GET/PUT.
      *
@@ -121,16 +114,6 @@ class Request extends Data {
 
         if(is_null($accept)) $accept = array();
         $this->setAccept($accept);
-
-        // Extract Command - TODO: revisit this
-        if (!is_null($this->command)) {
-            foreach ($this->command as $com) {
-                if (is_numeric($com)) {
-                    $this->id = $com;
-                    break;
-                }
-            }
-        }
     }
 
     /**
@@ -142,38 +125,12 @@ class Request extends Data {
     public function setUrl($url)
     {
         if (preg_match('/index\.php$/', $url)) {
+            $this->url = '/';
             return;
         }
 
         // Ensure consistency in URLs
-        $url = $this->sanitizeUrl($url);
-
-        if (!empty($url)) {
-            if (!preg_match('/^index\.php/i', $url)) {
-                $variables = explode('/', $url);
-                $url1 = preg_replace('/\?.*$/', '', $url);
-
-                // strips beginning, end, and double slashes
-                $url2 = preg_replace('@//+@', '/', $url1);
-                $url3 = preg_replace('@^/|/$@', '', $url2);
-                $url_arr = explode('/', $url3);
-                $this->setModule(array_shift($url_arr));
-            } else {
-                $var_pairs = explode('&', str_ireplace('index.php?', '', $url));
-                foreach ($var_pairs as $var) {
-                    list($key, $value) = explode('=', $var);
-                    if ($key == 'module') {
-                        $this->setModule($value);
-                    } else {
-                        $variables[$key] = $value;
-                    }
-                }
-            }
-        }
-        if (isset($variables)) {
-            $this->setCommand($variables);
-        }
-        $this->url = $url;
+        $this->url = $this->sanitizeUrl($url);
     }
 
     /**
@@ -211,24 +168,6 @@ class Request extends Data {
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Pops the last command off the GET process string
-     * @return string
-     */
-    public function pop()
-    {
-        return $this->popCommand();
-    }
-
-    /**
-     * Shifts the first command off the GET process string
-     * @return string
-     */
-    public static function shift()
-    {
-        return $this->shiftCommand();
     }
 
     /**
@@ -372,43 +311,6 @@ class Request extends Data {
     }
 
     /**
-     * Sets the commands expected of the module
-     * @param array $command
-     */
-    public function setCommand(array $command)
-    {
-        $this->command = $command;
-    }
-
-    /**
-     * Returns the commands expected of the module
-     * @return array
-     */
-    public function getCommand()
-    {
-        return $this->command;
-    }
-
-    public function getCommandAsDirectory()
-    {
-        return implode('/', $this->command);
-    }
-
-    public function getCommandAsNamespace()
-    {
-        return implode('\\', $this->command);
-    }
-
-    /**
-     *
-     * @return boolean True if the command variable contains data.
-     */
-    public function hasCommand()
-    {
-        return !empty($this->command);
-    }
-
-    /**
      * The current module needed to be acted upon
      * @param string $module
      */
@@ -444,28 +346,25 @@ class Request extends Data {
         return $this->accept;
     }
 
-    /**
-     * Pops the first value off the command stack. If the stack needs resetting,
-     * call loadUrl
-     */
-    public function shiftCommand()
+    public function getCurrentToken()
     {
-        if (empty($this->command) || !is_array($this->command)) {
-            return null;
-        }
-        return array_shift($this->command);
+        preg_match('@^(/[^/]*)@', $this->getUrl(), $matches);
+
+        if($matches[0] == '/') return '/';
+
+        return substr($matches[0], 1);
     }
 
-    /**
-     * Pops the last value off the command stack.
-     * loadUrl to reset
-     */
-    public function popCommand()
+    public function getNextRequest()
     {
-        if (empty($this->command) || !is_array($this->command)) {
-            return null;
-        }
-        return array_pop($this->command);
+        $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
+
+        return new Request(
+            $url,
+            $this->getMethod(),
+            $this->getVars(),
+            $this->getRawData(),
+            $this->getAccept());
     }
 
     /**
