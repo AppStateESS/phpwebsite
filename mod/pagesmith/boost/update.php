@@ -360,6 +360,7 @@ Fixed bug causing blank editors on edit.</pre>';
 ---------------
 - Fixed error message
 - Empty orphans are removed automatically.
+- Dialog editor made modal.
 </pre>';
     } // end switch
 
