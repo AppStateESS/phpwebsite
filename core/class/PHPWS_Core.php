@@ -37,7 +37,11 @@ class PHPWS_Core {
         }
 
         if ($just_title) {
-            return array_keys($mods);
+            $titles = array();
+            foreach($mods as $mod) {
+                $titles[] = $mod->getTitle();
+            }
+            return $titles;
         } else {
             return $mods;
         }
