@@ -300,8 +300,13 @@ define('CAPTCHA_NAME', 'freecap');
 /**
  * If true, <script> tags can be submitted by a user who has scripting permissions.
  * Generally, leaving this false is the best course.
+ * If you wish to allow a specific branch to use script tags, put the define below in
+ * its index.php file.
  */
-define('ALLOW_SCRIPT_TAGS', false);
+
+if (!defined('ALLOW_SCRIPT_TAGS')) {
+    define('ALLOW_SCRIPT_TAGS', false);
+}
 
 /* * ********************** Cosign Settings ****************** */
 /**

@@ -715,12 +715,7 @@ class PHPWS_Core {
 
     public static function allowScriptTags()
     {
-        if (ALLOW_SCRIPT_TAGS && class_exists('Current_User') &&
-                Current_User::allow('users', 'scripting')) {
-            return true;
-        } else {
-            return false;
-        }
+        return ALLOW_SCRIPT_TAGS;
     }
 
     public static function getBaseURL()
