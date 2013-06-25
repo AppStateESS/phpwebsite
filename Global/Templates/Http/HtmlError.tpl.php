@@ -13,7 +13,7 @@ Misclassified Response
 <p><strong><?php echo "$code $phrase"; ?></strong></p>
 <p>For URL <?php echo $url; ?> method <?php echo $method; ?></p>
 
-<?php 
+<?php
 if($backtrace) {
     render_backtrace($backtrace);
 }
@@ -21,7 +21,7 @@ if($backtrace) {
 
 <?php if($exception): ?>
 <p>
-    This error was originally caused by an uncaught exception 
+    This error was originally caused by an uncaught exception
     "<tt><?php echo $exception->getMessage(); ?></tt>"
     with code <tt><?php echo $exception->getCode(); ?></tt>
     in file <tt><?php echo $exception->getFile(); ?></tt>
@@ -49,10 +49,10 @@ function render_backtrace($backtrace) {
 <?php foreach($backtrace as $depth => $trace): ?>
   <tr>
     <td><?php echo $depth; ?></td>
-    <td><?php echo $trace['line']; ?></td>
-    <td><?php echo $trace['file']; ?></td>
+    <td><?php echo isset($trace['line']) ? $trace['line'] : 'N/A'; ?></td>
+    <td><?php echo isset($trace['file']) ? $trace['file'] : 'N/A'; ?></td>
     <td><?php echo $trace['function']; ?></td>
-    <td><?php echo $trace['class']; ?></td>
+    <td><?php echo isset($trace['class']) ? $trace['class'] : 'N/A'; ?></td>
   </tr>
 <?php endforeach; ?>
 </table>
