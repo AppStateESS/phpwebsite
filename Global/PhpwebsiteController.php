@@ -31,28 +31,29 @@ class PhpwebsiteController implements Controller {
             $this->forwardInfo();
         }
 
-        /**
-         * Call each module's init method
-         */
-        $this->loadModuleInits();
+        try {
 
-        Session::start();
+            /**
+             * Call each module's init method
+             */
+            $this->loadModuleInits();
 
-        $module = $this->determineCurrentModule($request);
+            Session::start();
 
-        $this->loadRunTime();
+            $module = $this->determineCurrentModule($request);
 
-        if($module) {
-            try {
+            $this->loadRunTime();
+
+            if($module) {
                 $response = $module->execute($request->getNextRequest());
                 $this->renderResponse($response);
             }
-            catch(Http\Exception $e) {
-                $this->renderResponse($e->getResponse());
-            }
-            catch(Exception $e) {
-                $this->renderResponse(new Http\InternalServerErrorResponse(null, $e));
-            }
+        }
+        catch(Http\Exception $e) {
+            $this->renderResponse($e->getResponse());
+        }
+        catch(Exception $e) {
+            $this->renderResponse(new Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
