@@ -53,7 +53,7 @@ abstract class Controller implements \Controller
         case REQUEST::PATCH:
             $response = $this->patch($request); break;
         default:
-            $response = $this->methodNotAllowed(); break;
+            $response = new MethodNotAllowedResponse($request); break;
         }
 
         $this->onAfterExecute($request, $response);
@@ -69,43 +69,39 @@ abstract class Controller implements \Controller
     {
     }
 
-    protected function methodNotAllowed()
-    {
-    }
-
     public function get(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function head(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function post(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function put(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function delete(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function options(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function patch(\Request $request)
     {
-        $this->methodNotAllowed();
+        return new MethodNotAllowedResponse($request);
     }
 
     public function getView($data, \Request $request = null)

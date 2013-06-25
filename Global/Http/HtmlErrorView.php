@@ -20,7 +20,7 @@ class HtmlErrorView extends \Template
         $vars['backtrace'] = $response->getBacktrace();
         $vars['exception'] = $response->getException();
 
-        parent::__construct($vars, PHPWS_SOURCE_DIR . 'Global/Templates/Http/HtmlError.tpl.php', false);
+        parent::__construct($vars, PHPWS_SOURCE_DIR . 'Global/Templates/Http/HtmlError.html', false);
     }
 }
 
