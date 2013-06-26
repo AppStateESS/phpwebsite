@@ -608,6 +608,12 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Added checkbox in Settings to turn off autofloating of images in the ckeditor.
 </pre>';
             return true;
+        case version_compare($version, '2.4.4', '<'):
+            $content[] = '<pre>2.4.4 changes
+-----------------------
++ Fixed document upload bug.
+</pre>';
+            return true;
     }
 }
 
