@@ -98,7 +98,7 @@ function users_install(&$content)
 
 function userForm(&$user, $errors=NULL){
     PHPWS_Core::initCoreClass('Form.php');
-    PHPWS_Core::initModClass('users', 'Form.php');
+    PHPWS_Core::initModClass('users', 'User_Form.php');
 
     $form = new PHPWS_Form;
 

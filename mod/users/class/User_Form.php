@@ -353,6 +353,13 @@ class User_Form {
         $pager->setModule('users');
         $pager->setTemplate('manager/groups.tpl');
         $pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_groups&amp;authkey=' . Current_User::getAuthKey());
+        
+        // If no order was set, then set it to default by user name
+        if (!isset($pager->orderby)) {
+           $pager->orderby = 'name';
+           $pager->orderby_dir = 'asc'; 
+        }
+        
         $pager->addPageTags($pageTags);
         $pager->addRowTags('getTplTags');
         $pager->addToggle('class="toggle1"');
