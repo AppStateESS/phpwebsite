@@ -154,7 +154,7 @@ final class Current_User {
             $auth->forceLogin();
         }
 
-        PHPWS_Core::initModClass('users', 'Form.php');
+        PHPWS_Core::initModClass('users', 'User_Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
             Layout::set($login, 'users', 'login_box', false);
