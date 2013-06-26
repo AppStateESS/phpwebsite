@@ -10,6 +10,7 @@
             var folder_closed = '{SOURCE_HTTP}mod/filecabinet/templates/ckeditor/images/directory.png';
             var folder_type = '{FOLDER_TYPE}';
             var authkey = '{AUTHKEY}';
+            var autofloat = {AUTOFLOAT};
         </script>
         <script src="{SOURCE_HTTP}javascript/jquery/jquery.js" type="text/javascript"></script>
         <script src="{SOURCE_HTTP}javascript/jquery_ui/jquery-ui.js" type="text/javascript"></script>

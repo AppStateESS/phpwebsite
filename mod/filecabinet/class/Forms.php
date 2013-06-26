@@ -448,6 +448,10 @@ class Cabinet_Form {
         $form->setLabel('base_doc_directory',
                 dgettext('filecabinet', 'Base document directory'));
 
+        $form->addCheckBox('autofloat',1);
+        $form->setMatch('autofloat', PHPWS_Settings::get('filecabinet', 'autofloat'));
+        $form->setLabel('autofloat', dgettext('filecabinet', 'Float new images under 300px to the right of content'));
+
         $form->addText('max_image_dimension',
                 PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         $form->setLabel('max_image_dimension',
@@ -599,6 +603,7 @@ If you are sure, type Y-E-S below.'),
 
     public function classifyFile($files)
     {
+        $tpl = null;
         $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
         $classify_dir = $this->cabinet->getClassifyDir();
 
@@ -612,7 +617,6 @@ If you are sure, type Y-E-S below.'),
             $files = array($files);
         }
 
-        $db = new PHPWS_DB('folders');
         // image folders
         $image_folders = Cabinet::listFolders(IMAGE_FOLDER, true);
 
@@ -678,7 +682,7 @@ If you are sure, type Y-E-S below.'),
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'post_classifications');
 
-        if (isset($tpl)) {
+        if (!empty($tpl)) {
             $form_template = $form->getTemplate(true, true, $tpl);
             $this->cabinet->content = PHPWS_Template::process($form_template,
                             'filecabinet', 'classify_file.tpl');
@@ -690,6 +694,9 @@ If you are sure, type Y-E-S below.'),
 
     public function fileTypes()
     {
+        $known_images = null;
+        $known_media = null;
+        $known_documents = null;
         include PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/known_types.php';
 
         $image_types = explode(',',
@@ -856,6 +863,8 @@ If you are sure, type Y-E-S below.'),
                     (int) $_POST['max_pinned_documents']);
         }
 
+        PHPWS_Settings::set('filecabinet', 'autofloat',
+                (int) isset($_POST['autofloat']));
         PHPWS_Settings::set('filecabinet', 'use_ffmpeg',
                 (int) isset($_POST['use_ffmpeg']));
         PHPWS_Settings::set('filecabinet', 'auto_link_parent',
