@@ -1,10 +1,7 @@
-<div id="search-box">
-  {START_FORM}
-  {SEARCH} {GO}
-  <div id="search-alternates">
-    {ALTERNATE_1} {ALTERNATE_1_LABEL}
-    {ALTERNATE_2} {ALTERNATE_2_LABEL}
-    {ALTERNATE_3} {ALTERNATE_3_LABEL}
-  </div>
-  {END_FORM}
+<div id="">
+  <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}" {FORM_ENCODE}>
+    {HIDDEN_FIELDS}
+
+    {SEARCH} <button type="submit" class="btn" id={GO_ID}>{GO_VALUE}</button>
+  </form>
 </div>
