@@ -233,7 +233,7 @@ class Comment_Thread {
 
     public function priorReport()
     {
-        return Icon::show('reported', null, 'comments');
+        return Icon::show('error', 'Reported');
     }
 
     public function setReturnUrl($url)
