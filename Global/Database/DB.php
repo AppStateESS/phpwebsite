@@ -887,10 +887,6 @@ abstract class DB extends \Data {
         $data = $this->pullResourceData(self::DELETE);
         extract($data);
 
-        if (!empty($columns)) {
-            $query[] = implode(', ', $columns);
-        }
-
         if (!empty($include_on_join)) {
             foreach ($include_on_join as $module) {
                 if (is_subclass_of($module, 'Resource')) {
@@ -1232,7 +1228,7 @@ abstract class DB extends \Data {
 
         if ($modules) {
             foreach ($modules as $module) {
-                if (($mode == DB::SELECT || $mode == DB::DELETE) && $field_list = $module->getFields()) {
+                if (($mode == DB::SELECT) && $field_list = $module->getFields()) {
                     $data['columns'][] = $field_list;
                 } elseif ($mode == DB::UPDATE && $value_list = $module->getValues()) {
                     $data['columns'][] = $value_list;
