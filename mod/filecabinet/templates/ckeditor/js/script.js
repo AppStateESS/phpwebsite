@@ -193,7 +193,7 @@ function fileClick(folder_line)
 
         $.getJSON(file_link, function(data) {
             $('div#files').html(data.html);
-            if (data.width < 300) {
+            if (autofloat && data.width < 300) {
                 data.insert = data.insert.replace(/style="(.*)"/, 'style="$1;float:right;margin:0px 0px 8px 8px;"');
             }
             insert_text = data.insert;

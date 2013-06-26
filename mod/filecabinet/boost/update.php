@@ -602,6 +602,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 -----------------------
 + Added error logging to image resize.
 </pre>';
+        case version_compare($version, '2.4.3', '<'):
+            $content[] = '<pre>2.4.3 changes
+-----------------------
++ Added checkbox in Settings to turn off autofloating of images in the ckeditor.
+</pre>';
             return true;
     }
 }
