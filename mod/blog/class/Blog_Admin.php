@@ -494,7 +494,9 @@ class Blog_Admin {
 
         $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
-        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'), 'blog', array('action'=>'admin', 'command'=>'new'), null, t('Create new blog entry'), 'btn');
+        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'), 'blog', array('action'=>'admin', 'command'=>'new'), null, t('Create new blog entry'), 'btn btn-success pull-right');
+        $pageTags['ADD_URI'] = PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'command'=>'new'), true);
+        $pageTags['ADD_TEXT'] = t('Create new blog entry');
 
         $pager = new DBPager('blog_entries', 'Blog');
         $pager->addSortHeader('title', dgettext('blog', 'Title'));
