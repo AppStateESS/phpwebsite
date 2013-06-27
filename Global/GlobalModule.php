@@ -20,6 +20,11 @@ class GlobalModule extends Module implements SettingDefaults {
         return $settings;
     }
 
+    public function getTitle()
+    {
+        return 'Global';
+    }
+
     public function getController(Request $request)
     {
         // TODO ...?
