@@ -90,7 +90,9 @@ class Branch_Admin {
      */
     public function direct()
     {
-        if (!@$command = $_REQUEST['command']) {
+        if (isset($_REQUEST['command'])) {
+            $command = $_REQUEST['command'];
+        } else {
             $command = $this->panel->getCurrentTab();
         }
 
@@ -234,14 +236,6 @@ class Branch_Admin {
             $this->content[] = dgettext('branch', 'Copied admin file to branch.');
         }
 
-        /*
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $this->branch->directory . 'javascript/editors/fckeditor')) {
-            $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
-            return false;
-        } else {
-            $this->content[] = dgettext('branch', 'Copied FCKeditor to branch.');
-        }
-*/
         if (is_file(PHPWS_SOURCE_DIR . 'core/inc/htaccess')) {
             $this->content[] = dgettext('branch', '.htaccess detected on hub. Attempting to create default file on branch.');
             if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $this->branch->directory . '.htaccess')) {
@@ -298,14 +292,14 @@ class Branch_Admin {
             include(PHPWS_SOURCE_DIR . 'core/boost/boost.php');
             $db->addValue('version', $version);
             $result = $db->insert();
-            $db->disconnect();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 return $result;
             }
+            $db->loadDB();
             return true;
         } else {
-            $db->disconnect();
+            $db->loadDB();
             return $result;
         }
     }
