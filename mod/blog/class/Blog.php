@@ -530,9 +530,11 @@ class Blog {
         }
 
         if (Current_User::isUnrestricted('blog')) {
+            /*
             $link['command'] = 'restore';
             $icon = Icon::show('redo', dgettext('blog', 'Restore'));
             $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+            */
 
 
             if ($this->sticky) {

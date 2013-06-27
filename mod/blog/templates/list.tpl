@@ -1,26 +1,28 @@
-<p>{ADD}</p>
-<table cellpadding="4" cellspacing="1" width="98%">
+<p>
+  <a href="{ADD_URI}" title="{ADD_TEXT}" style="margin-bottom: 10px;" class="btn btn-success pull-right">{ADD_TEXT}</a>
+</p>
+<table style="border-spacing:1px;width:98%;">
     <tr style="vertical-align: top">
-        <th width="25%">{TITLE_SORT}</th>
-        <th width="30%">{SUMMARY}</th>
-        <th width="25%">{CREATE_DATE_SORT}<br />
+        <th style="width:25%;padding:4px">{TITLE_SORT}</th>
+        <th style="width:30%;padding:4px">{SUMMARY}</th>
+        <th style="width:25%;padding:4px">{CREATE_DATE_SORT}<br />
         {PUBLISH_DATE_SORT}<br />
         {EXPIRE_DATE_SORT}</th>
-        <th width="20%">{ACTION}</th>
+        <th style="width:20%;padding:4px">{ACTION}</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr{TOGGLE}>
-        <td>{TITLE}</td>
-        <td>{SUMMARY}</td>
-        <td><span class="smaller">{CREATE_DATE}<br />
+        <td style="padding:4px">{TITLE}</td>
+        <td style="padding:4px">{SUMMARY}</td>
+        <td style="padding:4px"><span class="smaller">{CREATE_DATE}<br />
         {PUBLISH_DATE}<br />
         {EXPIRE_DATE}</span></td>
-        <td>{ACTION}</td>
+        <td style="padding:4px">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
-<div class="align-center">{TOTAL_ROWS}<br />
+<div style="text-align:center;margin:auto;">{TOTAL_ROWS}<br />
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
 <div class="align-right">{SEARCH}</div>

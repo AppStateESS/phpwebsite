@@ -172,7 +172,7 @@ class Blog_Admin {
                 break;
 
             case 'list':
-                $title = dgettext('blog', 'Blog Archive');
+                $title = dgettext('blog', 'Blog Entries');
                 $content = Blog_Admin::entry_list();
                 break;
 
@@ -457,6 +457,7 @@ class Blog_Admin {
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>dgettext('blog', 'List'), 'link'=> $listLink);
 
+        /*
         if (Current_User::isUnrestricted('blog')) {
             $version = new Version('blog_entries');
             $unapproved = $version->countUnapproved();
@@ -468,10 +469,11 @@ class Blog_Admin {
             $approvalLink = 'index.php?module=blog&amp;action=admin';
             $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
         }
+        */
 
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
-            $tabs['approval'] = &$approvalCommand;
+            //$tabs['approval'] = &$approvalCommand;
         }
 
         if (Current_User::allow('blog', 'settings')) {
@@ -494,7 +496,9 @@ class Blog_Admin {
 
         $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION']  = dgettext('blog', 'Action');
-        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'), 'blog', array('action'=>'admin', 'command'=>'new'), null, t('Create new blog entry'), 'btn');
+        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'), 'blog', array('action'=>'admin', 'command'=>'new'), null, t('Create new blog entry'), 'btn btn-success pull-right');
+        $pageTags['ADD_URI'] = PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'command'=>'new'), true);
+        $pageTags['ADD_TEXT'] = t('Create new blog entry');
 
         $pager = new DBPager('blog_entries', 'Blog');
         $pager->addSortHeader('title', dgettext('blog', 'Title'));
