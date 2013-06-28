@@ -299,6 +299,46 @@ abstract class DB extends \Data {
         $this->conditional = $conditional;
     }
 
+
+    /**
+     * Allows the developer to string together several conditionals at once
+     * instead of setting them individually. The Conditionals WILL ALWAYS
+     * be compared using AND. If you don't want to stack them with ANDS then combine
+     * your OR conditionals into a new conditional and THEN include it in the stack.
+     *
+     * Example:
+     * <code>
+     * $db = Database::newDB();
+     * $t1 = $db->addTable('alpha');
+     * $c1 = $t1->getFieldConditional('id', 5);
+     * $c2 = $t1->getFieldConditional('name', 'Tom');
+     * $db->stackConditionals($c1, $c2);
+     * </code>
+     *
+     * @return void
+     * @throws Exception If arguments are not Conditionals or empty
+     */
+    public function stackConditionals()
+    {
+        $args = func_get_args();
+        $current_conditional = null;
+        if (empty($args)) {
+            throw new Exception(t('No arguments sent to stackConditionals'));
+        }
+        foreach ($args as $conditional) {
+            if (!($conditional instanceof \Database\Conditional)) {
+                throw new Exception(t('Argument sent to stackConditionals was not a Database\Conditional object'));
+            }
+            if (empty($current_conditional)) {
+                $current_conditional = $conditional;
+            } else {
+                $current_conditional = new \Database\Conditional($current_conditional,
+                        $conditional, 'AND');
+            }
+        }
+        $this->setConditional($current_conditional);
+    }
+
     /**
      * Sets the conditional for the current DB object
      */
@@ -314,7 +354,7 @@ abstract class DB extends \Data {
      * @param string $operator
      * @return \Database\Conditional
      */
-    public function getConditional($left, $right, $operator=null)
+    public function getConditional($left, $right, $operator = null)
     {
         if (is_null($operator)) {
             if ($left instanceof \Database\Conditional && $right instanceof \Database\Conditional) {
@@ -1109,7 +1149,8 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Loads the select query and calls self::fetchColumn
+     * Loads the select query and calls self::fetchColumn.
+     * Like fetchColumn, only a single row is returned per iteration.
      *
      * @param integer $column
      * @return string
