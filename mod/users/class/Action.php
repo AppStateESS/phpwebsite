@@ -9,7 +9,7 @@
  */
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 PHPWS_Core::requireConfig('users');
-PHPWS_Core::initModClass('users', 'Form.php');
+PHPWS_Core::initModClass('users', 'User_Form.php');
 //PHPWS_Core::initCoreClass('Form.php');
 
 

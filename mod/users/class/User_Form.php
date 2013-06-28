@@ -353,13 +353,13 @@ class User_Form {
         $pager->setModule('users');
         $pager->setTemplate('manager/groups.tpl');
         $pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_groups&amp;authkey=' . Current_User::getAuthKey());
-        
+
         // If no order was set, then set it to default by user name
         if (!isset($pager->orderby)) {
            $pager->orderby = 'name';
-           $pager->orderby_dir = 'asc'; 
+           $pager->orderby_dir = 'asc';
         }
-        
+
         $pager->addPageTags($pageTags);
         $pager->addRowTags('getTplTags');
         $pager->addToggle('class="toggle1"');
@@ -579,6 +579,18 @@ class User_Form {
             foreach ($message as $tag => $error) {
                 $template[strtoupper($tag) . '_ERROR'] = $error;
             }
+        }
+
+        $group_ids = $user->getGroups();
+
+        $db = Database::newDB();
+        $t1 = $db->addTable('users_groups');
+        $f1 = $t1->addField('name');
+        $c1 = $t1->getFieldConditional('id', $group_ids, 'in');
+        $c2 = $t1->getFieldConditional('user_id', 0);
+        $db->stackConditionals($c1, $c2);
+        while($group = $db->selectColumn()) {
+            $template['members'][] = array('NAME' => $group);
         }
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
