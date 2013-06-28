@@ -99,6 +99,9 @@ class Conditional extends \Data {
             case 'NULL':
                 return 'NULL';
 
+            case 'array':
+                return "('" . implode("','", $value) . "')";
+
             default:
                 return "'$value'";
         }
