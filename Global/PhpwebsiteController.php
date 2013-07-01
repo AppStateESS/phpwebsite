@@ -50,12 +50,14 @@ class PhpwebsiteController implements Controller {
 
             if ($module) {
                 $response = $module->execute($request->getNextRequest());
-                $this->renderResponse($response);
+                $this->renderResponse($request, $response);
             }
-        } catch (Http\Exception $e) {
-            $this->renderResponse($e->getResponse());
-        } catch (Exception $e) {
-            $this->renderResponse(new Http\InternalServerErrorResponse(null, $e));
+        }
+        catch(Http\Exception $e) {
+            $this->renderResponse($request, $e->getResponse());
+        }
+        catch(Exception $e) {
+            $this->renderResponse($request, new Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
@@ -102,8 +104,14 @@ class PhpwebsiteController implements Controller {
         return $module;
     }
 
-    private function renderResponse(\Response $response)
+    private function renderResponse(\Request $request, \Response $response)
     {
+        // Temporary until proper error pages are fully implemented
+        // @todo customizable, editable error pages that don't dump a bunch of 
+        // stack if it's not needed or if debug is disabled
+        if($response instanceof \Html\NotFoundResponse) {
+            Error::errorPage(404);
+        }
         $view = $response->getView();
 
         // For Compatibility only - modules that make an end-run around the new
@@ -114,8 +122,12 @@ class PhpwebsiteController implements Controller {
 
         $rendered = $view->render();
 
-        // This could probably be done smarter
-        if ($view->getContentType() == 'text/html') {
+        // @todo an interface to get at request headers in the Request object... 
+        // lol oops
+        $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) &&
+                 $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+
+        if($view->getContentType() == 'text/html' && !$ajax) {
             Layout::add($rendered);
             $this->skipLayout = false;
         } else {
