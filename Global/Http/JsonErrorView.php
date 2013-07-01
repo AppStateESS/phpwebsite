@@ -20,7 +20,7 @@ class JsonErrorView extends \JsonView
         $json['backtrace'] = $response->getBacktrace();
         $json['exception'] = $response->getException();
 
-        parent::__construct($json);
+        parent::__construct(array('error' => $json));
     }
 }
 
