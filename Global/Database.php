@@ -81,9 +81,6 @@ class Database {
      */
     public static function newDSN($database_type, $username, $password = null, $database_name = null, $host = null, $port = null)
     {
-        if (empty($host)) {
-            $host = 'localhost';
-        }
         $dsn = new \Database\DSN($database_type, $username, $password,
                 $database_name, $host, $port);
         return $dsn;
