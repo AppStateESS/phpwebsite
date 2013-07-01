@@ -845,7 +845,9 @@ class Calendar_Event {
             }
         }
 
-        $description = strip_tags(str_ireplace('<br />', '\n', $this->getDescription()));
+        $description = strip_tags(str_ireplace('', '', $this->getDescription()));
+        $description = preg_replace(array('/^\s\s+/', '/\s\s+$/', '/\s\s+/u'), array('', '', ' '), $description);
+        
         if (!empty($description)) {
             $tpl['DESCRIPTION'] = & $description;
         }
