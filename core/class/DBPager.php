@@ -1185,27 +1185,29 @@ class DBPager {
         return $values;
     }
 
-    function getReportLink()
+    public function getReportLink()
     {
         $values = $this->getLinkValues();
         $module = $values['module'];
         unset($values['module']);
 
-        if ($this->allow_partial_report) {
-            $values['dbprt'] = 'csva';
-            $all = PHPWS_Text::moduleLink(_('All'), $module, $values, null,
-                            _('Download a complete CSV file'));
-
-            $values['dbprt'] = 'csvp';
-            $part = PHPWS_Text::moduleLink(_('Partial'), $module, $values, null,
-                            _('Download a partial CSV file'));
-
-            return sprintf(_('CSV Report - %s | %s'), $all, $part);
-        } else {
-            $values['dbprt'] = 'csva';
-            return PHPWS_Text::moduleLink(_('CSV Report'), $module, $values,
-                            null, _('Download a complete CSV file'));
-        }
+        $values['dbprt'] = 'csva';
+        return PHPWS_Text::moduleLink(_('Export to Spreadsheet'), $module, $values, null, _('Export to Spreadsheet'));
+    }
+    
+    /**
+     * Provides just the URI to download a CSV export of this pageer's search results.
+     * @author Jeremy Booker
+     * @return string URI for CSV export
+     */
+    public function getExportURI()
+    {
+        $values = $this->getLinkValues();
+        $module = $values['module'];
+        unset($values['module']);
+        
+        $values['dbprt'] = 'csva';
+        return PHPWS_Text::linkAddress($module, $values);
     }
 
     public function getLimitList()
@@ -1446,7 +1448,8 @@ class DBPager {
         }
 
         if (!empty($this->report_row)) {
-            $template['CSV_REPORT'] = $this->getReportLink();
+            $template['CSV_REPORT']    = $this->getReportLink();
+            $template['EXPORT_URI'] = $this->getExportURI();
         }
     }
 

@@ -25,5 +25,5 @@
 <div style="text-align:center;margin:auto;">{TOTAL_ROWS}<br />
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
+<a href="{EXPORT_URI}" class="btn pull-right"><i class="icon-download-alt"></i> Export to Spreadsheet</a>
 <div class="align-right">{SEARCH}</div>
-{CSV_REPORT}

@@ -318,6 +318,12 @@ function blog_update(&$content, $currentVersion)
 ---------------------
 + Rewrote image url hiding script
 </pre>';
+
+        case version_compare($currentVersion, '1.10.1', '<'):
+            $content[] = '<pre>1.10.1 changes
+---------------------
++ Blog guesses an entry point for an hr tag.
+</pre>';
     } // end of switch
     return true;
 }

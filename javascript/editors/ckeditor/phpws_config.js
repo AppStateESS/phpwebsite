@@ -11,7 +11,7 @@ basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
 CKEDITOR.editorConfig = function(config)
 {
     config.toolbar = 'MyToolbar';
-    config.extraPlugins = 'filecabinet,autogrow,menubutton,scayt,youtube';
+    config.extraPlugins = 'filecabinet,autogrow,menubutton,scayt,youtube,floatleft,floatright';
     config.scayt_autoStartup = true;
     config.scayt_sLang = 'en_US';
     config.removePlugins = 'resize';
@@ -23,7 +23,7 @@ CKEDITOR.editorConfig = function(config)
                 ['Source', 'Maximize'],
                 ['Cut', 'Copy', 'PasteText'],
                 ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
-                ['Filecabinet', 'Youtube', 'Table', 'HorizontalRule', 'SpecialChar'],
+                ['Filecabinet', 'floatleft', 'floatright', 'Youtube', 'Table', 'HorizontalRule', 'SpecialChar'],
                 ['Link', 'Unlink', 'Anchor'],
                 '/',
                 ['Bold', 'Italic', 'Strike', '-', 'Subscript', 'Superscript'],
