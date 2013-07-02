@@ -380,22 +380,20 @@ class PS_Forms {
                 dgettext('pagesmith', 'Add "Back to top" links at page bottom.'));
 
 
-        $vars['aop'] = 'shorten_links';
-        $form->addTplTag('SHORTEN_MENU_LINKS',
-                PHPWS_Text::secureLink(dgettext('pagesmith',
-                                'Shorten all menu links'), 'pagesmith', $vars));
-        $form->addTplTag('SHORT_EXAMPLE',
-                'index.php?module=pagesmith&uop=view_page&id=2 => pagesmith/2');
-
-        $vars['aop'] = 'lengthen_links';
-        $form->addTplTag('LENGTHEN_MENU_LINKS',
-                PHPWS_Text::secureLink(dgettext('pagesmith',
-                                'Lengthen all menu links'), 'pagesmith', $vars));
         $form->addTplTag('LENGTH_EXAMPLE',
                 'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');
 
 
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
+        
+        $tpl['SHORTEN_MENU_LINKS']  = PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', array('aop'=>'shorten_links'));
+        $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'shorten_links'), true);
+        
+        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', array('aop'=>'lengthen_links'));
+        $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'lengthen_links'), true);
+        
+        $form->mergeTemplate($tpl);
+        
         $this->ps->content = PHPWS_Template::process($form->getTemplate(),
                         'pagesmith', 'settings.tpl');
     }
