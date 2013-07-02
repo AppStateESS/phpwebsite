@@ -1066,7 +1066,8 @@ class PHPWS_Boost {
             if (PHPWS_Error::isError($branch->loadBranchDB())) {
                 $content[] = dgettext('boost',
                         'Problem connecting to the branch. May be too many connections.');
-                PHPWS_DB::disconnect();
+                //PHPWS_DB::disconnect();
+                PHPWS_DB::loadDB();
                 continue;
             }
 
@@ -1083,7 +1084,8 @@ class PHPWS_Boost {
                 PHPWS_Error::log($result);
                 $content[] = dgettext('boost', 'Unable to update branch.');
             }
-            PHPWS_DB::disconnect();
+                PHPWS_DB::loadDB();
+            //PHPWS_DB::disconnect();
         }
         $GLOBALS['Boost_In_Branch'] = false;
     }
