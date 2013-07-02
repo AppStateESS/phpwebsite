@@ -17,7 +17,7 @@ class PHPWS_Group {
     public $_groups = NULL;
     public $_error = NULL;
 
-    public function __construct($id=NULL, $loadGroups=TRUE)
+    public function __construct($id = NULL, $loadGroups = TRUE)
     {
         if (!empty($id)) {
             $this->setId($id);
@@ -91,14 +91,18 @@ class PHPWS_Group {
         $this->setMembers($result);
     }
 
-    public function setName($name, $test=FALSE)
+    public function setName($name, $test = FALSE)
     {
         if ($test == TRUE) {
-            if (empty($name) || preg_match('/[^\w\s]+/', $name))
-                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
+            if (empty($name) || preg_match('/[^\w\s\-:&\.]+/', $name)) {
+                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users',
+                                'setName');
+            }
 
-            if (strlen($name) < GROUPNAME_LENGTH)
-                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
+            if (strlen($name) < GROUPNAME_LENGTH) {
+                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users',
+                                'setName');
+            }
 
             $db = new PHPWS_DB('users_groups');
             $db->addWhere('name', $name);
@@ -108,7 +112,8 @@ class PHPWS_Group {
                 if (PHPWS_Error::logIfError($result))
                     return $result;
                 else
-                    return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
+                    return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users',
+                                    'setName');
             } else {
                 $this->name = $name;
                 return TRUE;
@@ -162,7 +167,7 @@ class PHPWS_Group {
         return $db->delete();
     }
 
-    public function addMember($member, $test=FALSE)
+    public function addMember($member, $test = FALSE)
     {
         if ($test == TRUE) {
             $db = new PHPWS_DB('users_groups');
@@ -248,7 +253,7 @@ class PHPWS_Group {
         return true;
     }
 
-    public function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
+    public function allow($module, $permission = NULL, $item_id = NULL, $itemname = NULL)
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
@@ -256,7 +261,8 @@ class PHPWS_Group {
             $this->loadPermissions();
         }
 
-        return $this->_permission->allow($module, $permission, $item_id, $itemname);
+        return $this->_permission->allow($module, $permission, $item_id,
+                        $itemname);
     }
 
     public function getPermissionLevel($module)
@@ -270,7 +276,7 @@ class PHPWS_Group {
         return $this->_permission->getPermissionLevel($module);
     }
 
-    public function loadPermissions($loadAll=TRUE)
+    public function loadPermissions($loadAll = TRUE)
     {
         if ($loadAll && isset($this->_groups)) {
             $groups = $this->_groups;
@@ -289,16 +295,20 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar,
+                        NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users',
+                        $linkVar);
         $linkVar['command'] = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink(Icon::show('users', dgettext('users', 'Members')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(Icon::show('users',
+                                dgettext('users', 'Members')), 'users', $linkVar);
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
-        $removelink['QUESTION'] = dgettext('users', 'Are you SURE you want to remove this group?');
+        $removelink['QUESTION'] = dgettext('users',
+                'Are you SURE you want to remove this group?');
         $removelink['LINK'] = Icon::show('delete', dgettext('users', 'Remove'));
         $links[] = Layout::getJavascript('confirm', $removelink);
 

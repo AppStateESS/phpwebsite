@@ -771,7 +771,7 @@ class User_Action {
                 }
                 break;
 
-            // This is used by auth scripts if they need to return the user to 
+            // This is used by auth scripts if they need to return the user to
             // where they left off after redirection to another site for SSO
             case 'return_bookmark':
                 PHPWS_Core::popUrlHistory();
@@ -1117,7 +1117,7 @@ class User_Action {
         return Current_User::loginUser($username, $password);
     }
 
-    public function postGroup(PHPWS_Group $group, $showLikeGroups = false)
+    public static function postGroup(PHPWS_Group $group, $showLikeGroups = false)
     {
         $result = $group->setName($_POST['groupname'], true);
         if (PHPWS_Error::isError($result))

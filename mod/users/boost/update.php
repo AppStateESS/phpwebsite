@@ -394,6 +394,13 @@ timeout INT NOT NULL default 0,
 + Fixed 500 error on My Page
 </pre>';
 
+                case version_compare($currentVersion, '2.7.5', '<'):
+            $content[] = '<pre>2.7.5 changes
+------------------------
++ Loosened group name restrictions
++ User edit page shows group membership
+</pre>';
+
 
     } // End of switch statement
 

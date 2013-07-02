@@ -531,10 +531,10 @@ class Blog {
 
         if (Current_User::isUnrestricted('blog')) {
             /*
-            $link['command'] = 'restore';
-            $icon = Icon::show('redo', dgettext('blog', 'Restore'));
-            $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
-            */
+              $link['command'] = 'restore';
+              $icon = Icon::show('redo', dgettext('blog', 'Restore'));
+              $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
+             */
 
 
             if ($this->sticky) {
@@ -576,6 +576,15 @@ class Blog {
             $this->title = strip_tags($_POST['title']);
         }
         $summary_and_entry = $_POST['summary'];
+
+        if (!$this->id && strlen($summary_and_entry) > 1000) {
+            $paragraphs = explode('<p>', $summary_and_entry);
+            if (count($paragraphs) > 3) {
+                $paragraphs[2] .= '<hr />';
+                $summary_and_entry = implode('<p>', $paragraphs);
+            }
+        }
+
 
         if (empty($summary_and_entry)) {
             $this->_error[] = dgettext('blog',
