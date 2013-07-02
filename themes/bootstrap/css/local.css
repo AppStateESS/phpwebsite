@@ -9,15 +9,21 @@ body {
 }
 
 /***** Table Styles ******/
-/* Set a background color */
+
+/***
+ * Set a background color
+ *
+ * Note: Commented out because this is already handled by Bootstrap.
+ * See the '.table-striped' class at: http://twitter.github.io/bootstrap/base-css.html#tables
 th {
     background-color : #EEEEEE;
 }
+*/
 
 /** 
  * Left algin cell text, set line height
  * Note: Commented out because this is already handled by Bootstrap.
-/* See the '.table' class at: http://twitter.github.io/bootstrap/base-css.html#tables
+ * See the '.table' class at: http://twitter.github.io/bootstrap/base-css.html#tables
 th, td {
    line-height : 1em;
    text-align : left;
@@ -26,8 +32,9 @@ th, td {
 
 
 /**
- * Font sizes are in a specific ratio, so this should really be done
- * though configuration in LESS (the recompile CSS).
+ * TODO: Font sizes are in a specific ratio, so this should really be done
+ * though configuration in LESS (variables.less), then rebuild the CSS.
+ * See: http://twitter.github.io/bootstrap/base-css.html#typography under the heading "Built with Less"
  */ 
 #hero h2 {font-size : 1.8em}
 #hero h3 {font-size : 1.6em}

@@ -1,7 +1,7 @@
 <div style="margin-bottom : 10px">
   <a href="{NEW_PAGE_LINK_URI}" class="btn btn-success">{NEW_PAGE_LINK_TEXT}</a>
 </div>
-<table class="table" style="width:95%">
+<table class="table table-striped" style="width:95%">
     <tr>
         <th width="5%">{ID_SORT} {ID_LABEL}</th>
         <th>{TITLE_SORT}</th>
