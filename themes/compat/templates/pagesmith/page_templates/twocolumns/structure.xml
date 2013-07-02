@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<template>
+	<title>Two columns</title>
+	<summary>Two columns of text, each crowned by a small block.</summary>
+	<thumbnail>twocol.png</thumbnail>
+	<style>page.css</style>
+	<structure>
+		<section>
+			<name>header1</name>
+			<type>header</type>
+		</section>
+		<section>
+			<name>text1</name>
+			<type>text</type>
+		</section>
+		<section>
+			<name>block1</name>
+			<type>block</type>
+			<width>200</width>
+			<height>200</height>
+		</section>
+		<section>
+			<name>header2</name>
+			<type>header</type>
+		</section>
+		<section>
+			<name>text2</name>
+			<type>text</type>
+		</section>
+		<section>
+			<name>block2</name>
+			<type>block</type>
+			<width>200</width>
+			<height>200</height>
+		</section>
+	</structure>
+	<folders>
+		<name>two-column</name>
+		<name>multiple-image</name>
+	</folders>
+</template>

@@ -205,8 +205,10 @@ class PS_Forms {
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
 
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
-        $create = dgettext('pagesmith', 'Create new page');
-        $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$create</a>";
+        $createText = dgettext('pagesmith', 'New Page');
+        $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$createText/a>";
+        $pgtags['NEW_PAGE_LINK_URI']  = "index.php?module=pagesmith&amp;aop=menu&amp;tab=new";
+        $pgtags['NEW_PAGE_LINK_TEXT'] = $createText;
 
         $pager = new DBPager('ps_page', 'PS_Page');
         $pager->cacheQueries();

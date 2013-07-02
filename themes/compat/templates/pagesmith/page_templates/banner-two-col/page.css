@@ -1,0 +1,12 @@
+div#banner-two-col-image1 {
+	margin: 0px 0px 10px 0px;
+}
+
+div#banner-page h2 {
+	margin-bottom: 1em;
+}
+
+table.banner-two-col-table td {
+	width: 50%;
+	vertical-align: top;
+}

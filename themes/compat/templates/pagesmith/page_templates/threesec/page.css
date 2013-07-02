@@ -1,0 +1,31 @@
+div#threesec-block1 {
+    float: right;
+    display: inline;
+    margin: 0px 0px 10px 10px;
+}
+
+div#threesec-block2 {
+    float: left;
+    display: inline;
+    margin: 0px 10px 10px 0px;
+}
+
+div#threesec-block3 {
+    float: right;
+    display: inline;
+    margin: 0px 0px 10px 10px;
+}
+
+div#threesec-page {
+    background-color: white;
+    color: inherit;
+    overflow: hidden;
+}
+
+div#threesec-page h2 {
+    margin-bottom: 1em;
+}
+
+div#threesec-page div.section {
+    margin-bottom: 2em;
+}

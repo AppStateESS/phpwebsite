@@ -1,0 +1,8 @@
+.block-edit:hover {
+    cursor : pointer;
+}
+
+.block-edit a {
+    pointer-events : none;
+    cursor : default;
+}
