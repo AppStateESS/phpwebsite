@@ -45,12 +45,12 @@ function hideSelect(radio_value)
         {VIEW_PERMISSION_2} {VIEW_PERMISSION_2_LABEL}<br />
         {VIEW_PERMISSION_3} {VIEW_PERMISSION_3_LABEL}</td>
         <td>
-        <div class="smaller">{VIEW_SELECT}</div>
+        <div>{VIEW_SELECT}</div>
         </td>
     </tr>
 </table>
 <h3>{EDIT_SELECT_LABEL}</h3>
-<div class="smaller">{EDIT_SELECT}</div>
+<div>{EDIT_SELECT}</div>
 <hr />
 {SUBMIT} {CANCEL} {END_FORM}</div>
 </div>

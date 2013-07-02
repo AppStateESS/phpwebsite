@@ -7,7 +7,7 @@
 <ul class="no-bullet">
     <!-- BEGIN item_list -->
     <li><a href="{LINK}">{TITLE}</a>
-    <p class="smaller">{SHORT_DESCRIPTION}</p>
+    <p><small>{SHORT_DESCRIPTION}</small></p>
     </li>
     <!-- END item_list -->
 </ul>

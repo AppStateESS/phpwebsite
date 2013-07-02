@@ -18,7 +18,7 @@
 {EMPTY_MESSAGE}
 <hr />
 <!-- BEGIN ignored -->
-<div class="smaller"><i>{REMOVED_LABEL}:</i> {IGNORED_WORDS}</div>
+<div><small><em>{REMOVED_LABEL}:</em> {IGNORED_WORDS}</small></div>
 <!-- END ignored -->
 {TOTAL_ROWS}
 <br />

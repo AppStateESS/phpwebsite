@@ -39,7 +39,7 @@
     </tr>
     <tr>
         <td>{START_DATE_LABEL}<br />
-        <span style="font-weight: normal" class="smaller">YYYY/MM/DD</span>
+        <small style="font-weight: normal">YYYY/MM/DD</small>
         </td>
         <td>{START_DATE} {START_CAL} <span id="start-time"
             style="display: inline"
@@ -48,7 +48,7 @@
     </tr>
     <tr>
         <td>{END_DATE_LABEL}<br />
-        <span style="font-weight: normal" class="smaller">YYYY/MM/DD</span></td>
+        <small style="font-weight: normal">YYYY/MM/DD</small></td>
         <td>{END_DATE} {END_CAL} <span id="end-time"
             style="display: inline"
         >{END_TIME_HOUR}:{END_TIME_MINUTE}</span> {SHOW_BUSY}

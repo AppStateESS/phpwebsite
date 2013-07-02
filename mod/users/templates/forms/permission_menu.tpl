@@ -14,10 +14,10 @@
     <li>{VIEW_PERMISSION_2} {VIEW_PERMISSION_2_LABEL}</li>
     <li>{VIEW_PERMISSION_3} {VIEW_PERMISSION_3_LABEL}</li>
 </ul>
-<div class="smaller">{VIEW_SELECT}</div>
+<div>{VIEW_SELECT}</div>
 <hr />
 <h3>{EDIT_SELECT_LABEL}</h3>
-<div class="smaller">{EDIT_SELECT}</div>
+<div>{EDIT_SELECT}</div>
 <hr />
 <div class="align-center">{SUBMIT}</div>
 {END_FORM}</div>

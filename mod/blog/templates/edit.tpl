@@ -17,15 +17,15 @@
         <p id="image-url">{IMAGE_URL_LABEL}<br />
             {IMAGE_URL}</p>
         <!-- END image -->
-        <p>{PUBLISH_DATE_LABEL} <span class="smaller">{EXAMPLE}</span><br />
+        <p>{PUBLISH_DATE_LABEL} <small>{EXAMPLE}</small><br />
             {PUBLISH_DATE} {PUBLISH_CAL}</p>
-        <p>{EXPIRE_DATE_LABEL} <span class="smaller">{EXAMPLE}</span><br />
+        <p>{EXPIRE_DATE_LABEL} <small>{EXAMPLE}</small><br />
             {EXPIRE_DATE} {EXPIRE_CAL}</p>
         <!-- BEGIN comments -->
         <p>{ALLOW_COMMENTS} {ALLOW_COMMENTS_LABEL}<br />
             {ALLOW_ANON} {ALLOW_ANON_LABEL}<br />
             {COMMENT_APPROVAL}</p>
-        <!-- END comments --></p>
+        <!-- END comments -->
     </div>
     <!-- BEGIN captcha --><p>{CAPTCHA_IMAGE}<br />{CAPTCHA} {CAPTCHA_LABEL}<!-- END captcha -->
 </div>

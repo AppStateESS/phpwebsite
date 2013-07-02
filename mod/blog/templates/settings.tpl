@@ -39,7 +39,7 @@
     {ALLOW_ANONYMOUS_SUBMITS} {ALLOW_ANONYMOUS_SUBMITS_LABEL_TEXT}
   </label>
   <!-- BEGIN menu-link -->
-  <span class="smaller">{MENU_LINK}</span>
+  <small>{MENU_LINK}</small>
   <!-- END menu-link -->
   <label class="checkbox">
     {CAPTCHA_SUBMISSIONS} {CAPTCHA_SUBMISSIONS_LABEL_TEXT}

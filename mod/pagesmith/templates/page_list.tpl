@@ -17,7 +17,7 @@
         <!-- END subpages --></td>
         <td>{CREATE_DATE}<br />
         {LAST_UPDATED}</td>
-        <td class="smaller">{ACTION}</td>
+        <td>{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>
