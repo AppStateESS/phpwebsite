@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Main controller class for phpWebSite.  Implements Controller, so it can be 
+ * Main controller class for phpWebSite.  Implements Controller, so it can be
  * used like any other Controller in the system.
  *
  * @author Jeremy Booker
@@ -14,8 +14,7 @@ class PhpwebsiteController implements Controller {
     private $module_array_active;
     private $module_stack;
     private $request;
-
-    // This is a temporary thing to prevent Layout from running in the event of 
+    // This is a temporary thing to prevent Layout from running in the event of
     // a JSON request or otherwise non-HTML response.
     private $skipLayout = false;
 
@@ -39,12 +38,17 @@ class PhpwebsiteController implements Controller {
             $this->loadModuleInits();
 
             Session::start();
-
+            /**
+             * Moved from Bootstrap, eventually to be deprecated
+             */
+            if (!PHPWS_Core::checkBranch()) {
+                throw new Exception('Unknown branch called');
+            }
             $module = $this->determineCurrentModule($request);
 
             $this->loadRunTime();
 
-            if($module) {
+            if ($module) {
                 $response = $module->execute($request->getNextRequest());
                 $this->renderResponse($request, $response);
             }
@@ -65,15 +69,15 @@ class PhpwebsiteController implements Controller {
     protected function determineCurrentModule(\Request $request)
     {
         // Try the Old Fashioned Way first
-        if($request->isVar('module')) {
+        if ($request->isVar('module')) {
             $title = $request->getVar('module');
         }
 
         // Try the Somewhat Old Fashioned Access Way Next
         // Accessing $_REQUEST directly because this is how access module works
-        // @todo: replace this with a new shortcutting system that does not 
+        // @todo: replace this with a new shortcutting system that does not
         // modify $_REQUEST
-        if(array_key_exists('module', $_REQUEST)) {
+        if (array_key_exists('module', $_REQUEST)) {
             $title = $_REQUEST['module'];
         }
 
@@ -81,7 +85,7 @@ class PhpwebsiteController implements Controller {
         else {
             $title = $request->getCurrentToken();
 
-            if($title == '/') {
+            if ($title == '/') {
                 // @todo Configured Default Module
                 return null;
             }
@@ -89,7 +93,7 @@ class PhpwebsiteController implements Controller {
 
         $mr = ModuleRepository::getInstance();
 
-        if(!$mr->hasModule($title)) {
+        if (!$mr->hasModule($title)) {
             throw new \Http\NotFoundException($request);
         }
 
@@ -110,10 +114,11 @@ class PhpwebsiteController implements Controller {
         }
         $view = $response->getView();
 
-        // For Compatibility only - modules that make an end-run around the new 
-        // system and speak to Layout directly should return a Response 
+        // For Compatibility only - modules that make an end-run around the new
+        // system and speak to Layout directly should return a Response
         // containing a NullView in order to skip the new rendering process.
-        if($view instanceof NullView) return;
+        if ($view instanceof NullView)
+            return;
 
         $rendered = $view->render();
 
@@ -136,9 +141,10 @@ class PhpwebsiteController implements Controller {
     private function destructModules()
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
-            // This is a temporary thing to prevent Layout from running in the 
+            // This is a temporary thing to prevent Layout from running in the
             // event of a JSON request or otherwise non-HTML Response.
-            if($this->skipLayout && strtolower($mod->getTitle()) == 'layout') continue;
+            if ($this->skipLayout && strtolower($mod->getTitle()) == 'layout')
+                continue;
 
             $mod->destruct();
         }
@@ -153,7 +159,8 @@ class PhpwebsiteController implements Controller {
     private function loadRunTime()
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
-            if (! $mod instanceof CompatibilityModule) continue;
+            if (!$mod instanceof CompatibilityModule)
+                continue;
             if ($mod->isActive()) {
                 $mod->run();
             }
@@ -172,7 +179,7 @@ class PhpwebsiteController implements Controller {
     private function afterRun(\Request $request, \Response &$response)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
-            if($mod->isActive()) {
+            if ($mod->isActive()) {
                 $mod->afterRun($request, $response);
             }
         }
