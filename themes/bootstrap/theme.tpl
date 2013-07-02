@@ -4,9 +4,11 @@
     {BASE}
     <title>{PAGE_TITLE}</title>
     {METATAGS}
-    {STYLE}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{THEME_HTTP}css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="{THEME_HTTP}css/local.css" rel="stylesheet" media="screen">
+    <link href="{THEME_HTTP}css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    {STYLE}
     <link rel="apple-touch-icon-precomposed" sizes="144x144"
         href="{THEME_HTTP}favicon/apple-touch-icon-144x144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114"

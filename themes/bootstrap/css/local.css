@@ -1,5 +1,3 @@
-@import url("bootstrap.min.css");
-
 /* Leave this here if you're using navbar-fixed-top */
 body {
     padding-top: 60px;
@@ -10,14 +8,27 @@ body {
     padding: 9px 0;
 }
 
+/***** Table Styles ******/
+/* Set a background color */
 th {
     background-color : #EEEEEE;
 }
 
+/* Left algin cell text, set line height */
 th, td {
     line-height : 1em;
     text-align : left;
 }
+
+/* Set cell padding for cells on some tables */
+.padded-table td, .padded-table th {
+	padding: 3px;
+}
+
+/**
+ * Font sizes are in a specific ratio, so this should really be done
+ * though configuration in LESS (the recompile CSS).
+ */ 
 #hero h2 {font-size : 1.8em}
 #hero h3 {font-size : 1.6em}
 #hero h4 {font-size : 1.4em}
@@ -31,5 +42,3 @@ th, td {
 form.form-inline input, form.form-inline select {
     margin-bottom : 5px;
 }
-
-@import url("bootstrap-responsive.min.css");
