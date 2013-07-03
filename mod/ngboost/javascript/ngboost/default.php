@@ -9,5 +9,6 @@ $data['ngboostmsg040'] = dgettext('ngboost','are you sure to uninstall');
 $data['ngboostmsg050'] = dgettext('ngboost','are you sure to purge');
 
 javascript('jquery');
+Layout::addJSHeader('<script type="text/javascript" src="'.PHPWS_SOURCE_HTTP.'javascript/jquery/jquery.mb.browser.min.js"></script>', 'browser');
 
 ?>
