@@ -7,16 +7,16 @@
 
   // a pear addition
   require_once 'Archive/Tar.php';
- 
-  // me 
-  define (NGBU,'ngBackup');
-	
+
+  // me
+  define ('NGBU','ngBackup');
+
   class ngBackup {
-	
+
 	var $context = NGBU;
 	var $msg = '';
 	var $rp = false;
-		
+
 	function __construct() {
 		$this->context=PHPWS_Core::getCurrentModule();
 	}
@@ -24,14 +24,14 @@
 	public function getRepositoryPath()
 	{
 		// API	string|false=ngBackup::getRepositoryPath();
-		
+
 		$subdir=str_replace('/','.',trim(str_replace($_SERVER['SERVER_NAME'],'',PHPWS_Core::getHomeHttp(false)),'/'));
 		$u=explode('/',$_SERVER['DOCUMENT_ROOT']);
 		array_pop($u);
 		$compath=implode('/',$u);
-		
+
 		$reposit=$compath.'/.repository/'.$subdir.'/';
-		
+
 		if (file_exists($compath)) {
 			@mkdir($compath.'/.repository',0750);
 			if (!file_exists($reposit)) {
@@ -48,12 +48,12 @@
 		}
 		return false;
 	}
-	
+
 	public function getTableList($returnprefixed=true)
 	{
 		// API:	$object = new ngBackup();
 		//		array|false = $object->getTableList();
-		
+
 		if ($this->context) {
 			$ar=PHPWS_DB::listTables();
 			$this->prefix=PHPWS_DB::getPrefix();
@@ -83,16 +83,16 @@
 		}
 		return false;
 	}
-	
+
 	public function backupMod($mod)
 	{
 		// API:	$object = new ngBackup();
 		//		cc = $object->backupMod(module|'core');
-		
+
 		if (isset($this)) {
 			// if (Current_User::allow(NGBU, 'com_export')) {}
 			if (1==1) {
-				$this->rp=ngBackup::getRepositoryPath();				
+				$this->rp=ngBackup::getRepositoryPath();
 				if ($this->rp) {
 					if ($mod == 'core') {
 						$s1=$this->_backupFS('core1v4');
@@ -106,7 +106,7 @@
 				} else {
 					// error repository path
 					return 3;
-				} 
+				}
 			} else {
 				// missing perms
 				return 2;
@@ -115,7 +115,7 @@
 		// no obj context
 		return 1;
 	}
-			
+
 	public function _backupFS($mod) {
 		if (isset($this)) {
 			// if (Current_User::allow(NGBU, 'com_export')) { }
@@ -152,7 +152,7 @@
 							$tal[]=PHPWS_SOURCE_DIR . 'locale';
 							$tal[]=PHPWS_SOURCE_DIR . 'logs';
 							$tal[]=PHPWS_SOURCE_DIR . 'setup';
-							// 
+							//
 							$tal[]=PHPWS_SOURCE_DIR . 'templates';
 							//
 							$tal[]=PHPWS_SOURCE_DIR . 'README';
@@ -184,11 +184,11 @@
 					if (isset($_SESSION['ngboost']['BUSIGN']['fs'])) {
 						file_put_contents($this->rp.'.'.$_SESSION['ngboost']['BUSIGN']['fs'].'.txt',$tgz."\n",FILE_APPEND);
 					}
-					$this->msg=' '.'to'.' '.$tgz; 
+					$this->msg=' '.'to'.' '.$tgz;
 					return $this->msg;
 			} else {
-					return 3;  
-				} 
+					return 3;
+				}
 			} else {
 				return 2;
 			}
@@ -198,28 +198,28 @@
 	public function restoreMod($fn) {
 		if (isset($this)) {
 			if (1==1) {
-				$this->rp=ngBackup::getRepositoryPath();				
+				$this->rp=ngBackup::getRepositoryPath();
 				if ($this->rp) {
-				
+
 					// design sysbu for fs
 					list($mod,$sysbu,$stamp,$butype,$more) = explode('.',$fn,5);
 					$ar=explode('.',$more);
 					$ftype=array_pop($ar);
 					$site=implode('.',$ar);
-					
+
 					// design distro src
 					list($modv,$ftype2) = explode('.',$fn,2);
 					list($mod2,$vsn2) = explode('_',$modv,2);
-					
-					if (($sysbu=='sysbu' && $butype=='fs' && $ftype=='tgz') 
+
+					if (($sysbu=='sysbu' && $butype=='fs' && $ftype=='tgz')
 					||  ($ftype2=='tar.gz' && $vsn2)) {
 						if (file_exists($this->rp.$fn)) {
 							$tar = new Archive_Tar($this->rp.$fn);
-							
+
 							// to regard empty dirs in tar
 							$ar=$tar->listContent();
 							$this->_mkDirsIfEmpty($ar);
-							
+
 							$cc=$tar->extract(PHPWS_SOURCE_DIR);
 							if ($cc) {
 								return '0' . $mod . ' ' . 'restored from' . ' ' . $fn;
@@ -243,7 +243,7 @@
 		// no obj context
 		return 1;
 	}
-	
+
 	public function exportTable($table,$filestamp=false) {
 		if (isset($this)) {
 			if (Current_User::allow('ngboost')) {
@@ -272,7 +272,7 @@
 								$msg='3,unable to open file '.$this->bufilename;
 							} else {
 								for ($i=0; $i < $rsn; $i++) {
-									$row=$rows->fetchRow(DB_FETCHMODE_ASSOC);	
+									$row=$rows->fetchRow(DB_FETCHMODE_ASSOC);
 									$sql='INSERT INTO ' . $table . ' SET ';
 									foreach ($row as $k => $v) {
 										// ignore empty fields
@@ -298,8 +298,8 @@
 						$msg='1,'.'not exported, table is empty';
 					}
 				} else {
-					$msg='2,'.'error with repository';  
-				} 
+					$msg='2,'.'error with repository';
+				}
 			} else {
 				$msg='2,' . 'no permission';
 			}
@@ -357,7 +357,7 @@
 						}
 					}
 					fclose($fr);
-					
+
 					$msg.='<br />'
 					.	dgettext('ngboost','Import done for').' '.$tbl.', '
 					.	$ccn.' '.dgettext('ngboost','rows').', '
@@ -366,10 +366,10 @@
 					$msg='3,'.dgettext('ngboost','unable to open file').' '.$filename;
 				}
 			} else {
-				$msg='3,'.dgettext('ngboost','error with repository');  
-			} 
+				$msg='3,'.dgettext('ngboost','error with repository');
+			}
 		} else {
-			$msg='3,'.dgettext('ngboost','programming error, no object context');  
+			$msg='3,'.dgettext('ngboost','programming error, no object context');
 		}
 		return $msg;
 	}
@@ -454,16 +454,16 @@
 			}
 		}
 	}
-	
+
 	public function _getInstallSql($module) {
 		return;
 		// just drafty
                 $file = $mod->getDirectory() . 'boost/install.sql';
                 $db = new PHPWS_DB;
                 $result = $db->importFile($mod->getDirectory() . 'boost/install.sql');
-	}			
+	}
 
-	
+
 	public function _cvFilePerms($perms)
 	{
 		// format unix perms
@@ -495,7 +495,7 @@
 				 (($perms & 0x0200) ? 'T' : '-'));
 		return $info;
 	}
-	
+
   }
 
 ?>
