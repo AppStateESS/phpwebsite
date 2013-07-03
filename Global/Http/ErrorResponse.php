@@ -22,9 +22,6 @@ abstract class ErrorResponse extends \Response
         $this->request = $request;
         $this->code = $this->getHttpResponseCode();
         $this->backtrace = debug_backtrace();
-        foreach ($this->backtrace as & $row) {
-            $row['file'] = \Error::xdebugLink($row['file'], $row['line']);
-        }
         $this->exception = $previous;
     }
 

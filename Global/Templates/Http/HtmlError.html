@@ -24,7 +24,7 @@ if($backtrace) {
     This error was originally caused by an uncaught exception
     "<tt><?php echo $exception->getMessage(); ?></tt>"
     with code <tt><?php echo $exception->getCode(); ?></tt>
-    in file <tt><?php echo $exception->getFile(); ?></tt>
+    in file <tt><?php echo \Error::xdebugLink($exception->getFile(), $exception->getLine()); ?></tt>
     on line <tt><?php echo $exception->getLine(); ?></tt>.
 </p>
 <?php render_backtrace($exception->getTrace()); ?>
@@ -50,7 +50,7 @@ function render_backtrace($backtrace) {
   <tr>
     <td><?php echo $depth; ?></td>
     <td><?php echo isset($trace['line']) ? $trace['line'] : 'N/A'; ?></td>
-    <td><?php echo isset($trace['file']) ? $trace['file'] : 'N/A'; ?></td>
+    <td><?php echo isset($trace['file']) ? \Error::xdebugLink($trace['file'], $trace['line']) : 'N/A'; ?></td>
     <td><?php echo $trace['function']; ?></td>
     <td><?php echo isset($trace['class']) ? $trace['class'] : 'N/A'; ?></td>
   </tr>
