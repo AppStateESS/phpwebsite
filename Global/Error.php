@@ -146,7 +146,7 @@ class Error {
         return implode("<br>", $row);
     }
 
-    private static function xdebugLink($file, $line)
+    public static function xdebugLink($file, $line)
     {
         return '<a href="xdebug://' . $file . '@' . $line . '">' . $file . '</a>';
     }
