@@ -39,21 +39,27 @@ class PhpwebsiteController implements Controller {
             $this->loadModuleInits();
 
             Session::start();
+            /**
+             * Moved from Bootstrap, eventually to be deprecated
+             */
+            if (!PHPWS_Core::checkBranch()) {
+                throw new Exception('Unknown branch called');
+            }
+
+            $this->runTime($request);
 
             $module = $this->determineCurrentModule($request);
-
-            $this->loadRunTime();
-
-            if($module) {
+            if ($module) {
+                $this->beforeRun($request, $this);
                 $response = $module->execute($request->getNextRequest());
                 $this->renderResponse($request, $response);
+                $this->afterRun($request, $response);
             }
-        }
-        catch(Http\Exception $e) {
+        } catch (Http\Exception $e) {
             $this->renderResponse($request, $e->getResponse());
-        }
-        catch(Exception $e) {
-            $this->renderResponse($request, new Http\InternalServerErrorResponse(null, $e));
+        } catch (Exception $e) {
+            $this->renderResponse($request,
+                    new Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
@@ -103,9 +109,9 @@ class PhpwebsiteController implements Controller {
     private function renderResponse(\Request $request, \Response $response)
     {
         // Temporary until proper error pages are fully implemented
-        // @todo customizable, editable error pages that don't dump a bunch of 
+        // @todo customizable, editable error pages that don't dump a bunch of
         // stack if it's not needed or if debug is disabled
-        if($response instanceof \Html\NotFoundResponse) {
+        if ($response instanceof \Html\NotFoundResponse) {
             Error::errorPage(404);
         }
         $view = $response->getView();
@@ -117,12 +123,12 @@ class PhpwebsiteController implements Controller {
 
         $rendered = $view->render();
 
-        // @todo an interface to get at request headers in the Request object... 
+        // @todo an interface to get at request headers in the Request object...
         // lol oops
         $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) &&
-                 $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+                $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 
-        if($view->getContentType() == 'text/html' && !$ajax) {
+        if ($view->getContentType() == 'text/html' && !$ajax) {
             Layout::add($rendered);
             $this->skipLayout = false;
         } else {
@@ -144,37 +150,24 @@ class PhpwebsiteController implements Controller {
         }
     }
 
-    /**
-     * This function handles runtime.php for CompatibilityModules only.
-     * @deprecated - to be replaced by a more event-style interface
-     * @see beforeRun
-     * @see afterRun
-     */
-    private function loadRunTime()
+    private function beforeRun(\Request $request, \Controller $controller)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
-            if (! $mod instanceof CompatibilityModule) continue;
-            if ($mod->isActive()) {
-                $mod->run();
-            }
+            $mod->beforeRun($request, $controller);
         }
     }
 
-    private function beforeRun(\Request &$request, \Controller $controller)
+    private function runTime(\Request $request)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
-            if ($mod->isActive()) {
-                $mod->beforeRun($request, $controller);
-            }
+            $mod->runTime($request);
         }
     }
 
     private function afterRun(\Request $request, \Response &$response)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
-            if($mod->isActive()) {
-                $mod->afterRun($request, $response);
-            }
+            $mod->afterRun($request, $response);
         }
     }
 
