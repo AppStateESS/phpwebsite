@@ -12,7 +12,6 @@ interface View {
     /**
      * This function must return a STRING REPRESENTATION of the set data.
      *
-     * @param $data mixed The data to render
      * @return string The rendered data
      */
     public function render();

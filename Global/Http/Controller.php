@@ -33,28 +33,28 @@ abstract class Controller implements \Controller
         return $this->module;
     }
 
-    public final function execute(\Request $request)
+    public function execute(\Request $request)
     {
         $this->onBeforeExecute($request);
 
         switch($request->getMethod()) {
         case \Request::GET:
             $response = $this->get($request); break;
-        case \Request::HEAD:
-            $response = $this->head($request); break;
         case \Request::POST:
             $response = $this->post($request); break;
         case \Request::PUT:
             $response = $this->put($request); break;
         case \Request::DELETE:
             $response = $this->delete($request); break;
-        case \Request::OPTIONS:
-            $response = $this->options($request); break;
-        case REQUEST::PATCH:
+        case \Request::PATCH:
             $response = $this->patch($request); break;
         default:
             $response = new MethodNotAllowedResponse($request); break;
         }
+
+        //@todo If request method is OPTIONS, we need to add an Allow header 
+        //based on the user's permissions.
+        //@todo something similar for HEAD
 
         $this->onAfterExecute($request, $response);
 

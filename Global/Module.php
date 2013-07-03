@@ -240,9 +240,84 @@ abstract class Module extends Data implements Controller {
         $this->icon = new \Image($src);
     }
 
+    /**
+     * Builds the absolute path to the root directory of your module.
+     *
+     * This functionality will be REMOVED in 2.x.  Please instead use:
+     *
+     * @see getTemplatePath
+     * @see getConfigurationPath
+     * @see getStaticPath
+     *
+     * @return string Absolute path to your module, such as 
+     * `/path/to/phpwebsite/mod/mymod`
+     *
+     * @deprecated
+     */
     public function getDirectory()
     {
         return $this->directory;
+    }
+
+    /**
+     * Builds the absolute path to a given template file.
+     *
+     * $file can be a path in and of itself, such as `admin/view.html`.  This 
+     * will become `/path/to/phpwebsite/mod/mymod/templates/admin/view.html` 
+     * unless overridden to provide a different path.
+     *
+     * Please do not override this in your own code.  Right now it's simply 
+     * building a static path but this will eventually be used to implement 
+     * modules that can be located *anywhere* on the server.
+     *
+     * @param $file string The module-relative path to a specific template
+     * @return string The absolute path to a specific template
+     */
+    public function getTemplatePath($file)
+    {
+        return $this->directory . 'templates/' . $file;
+    }
+
+    /**
+     * Builds the absolute path to a given configuration file.
+     *
+     * $file can be a path in and of itself, such as `admin/config.ini`.  This 
+     * will become `/path/to/phpwebsite/mod/mymod/conf/admin/config.ini` unless 
+     * overridden to provide a different path.
+     *
+     * Please do not override this in your own code.  Right now it's simply 
+     * building a static path but this will eventually be used to implement 
+     * modules that can be located *anywhere* on the server.
+     *
+     * @param $file string The module-relative path to a specific conf file
+     * @return string The absolute path to a specific conf file
+     */
+    public function getConfigurationPath($file)
+    {
+        return $this->directory . 'conf/' . $file;
+    }
+
+    /**
+     * Builds the absolute path to static content in your module.
+     *
+     * NOTE: This is a bit of a change from old modules, which separated Images 
+     * and Javascript.  In phpWebSite 2.x, all of your module's static content 
+     * will be located in one place, which for now is mod/yourmod/static.
+     *
+     * $file can be a path in and of itself, such as `admin/thing.js`.  This 
+     * will become `/path/to/phpwebsite/mod/mymod/static/admin/thing.js` unless 
+     * overridden to provide a different path.
+     *
+     * Please do not override this in your own code.  Right now it's simply 
+     * building a static path but this will eventually be used to implement 
+     * modules that can be located *anywhere* on the server.
+     *
+     * @param $file string The module-relative path to specific static content
+     * @return string The absolute path to specific static content
+     */
+    public function getStaticPath($file)
+    {
+        return $this->directory . 'static/' . $file;
     }
 
     /**
