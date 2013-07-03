@@ -77,19 +77,20 @@ abstract class Module extends Data implements Controller {
     protected $file_version;
 
     /**
-     * If you would like code from your module to run on every request, after 
+     * If you would like code from your module to run on every request, after
      * sessions are available and immediately before the target module is loaded,
      * override the beforeRun function.  By default, it does nothing.
      *
-     * You may change the request at this time, or interact with the controller 
-     * before it runs.  The request is passed in by reference, so if you need 
+     * You may change the request at this time, or interact with the controller
+     * before it runs.  The request is passed in by reference, so if you need
      * to, you can completely replace it with a different Request object.
      *
      * @see ModuleManager::beforeRun()
      * @return void
      */
-    public function beforeRun(\Request &$request, \Controller $controller)
+    public function beforeRun(\Request $request, \Controller $controller)
     {
+
     }
 
     /**
@@ -97,8 +98,8 @@ abstract class Module extends Data implements Controller {
      * immediately after the target module is run, override the afterRun function.
      * By default, it does nothing.
      *
-     * You may change the response at this time and access the request for 
-     * reference.  The response is passed in by reference, so if you need to, 
+     * You may change the response at this time and access the request for
+     * reference.  The response is passed in by reference, so if you need to,
      * you can completely replace it with a different Response object.
      *
      * @see ModuleManager::afterRun()
@@ -106,6 +107,7 @@ abstract class Module extends Data implements Controller {
      */
     public function afterRun(\Request $request, \Response &$response)
     {
+
     }
 
     /**
@@ -116,6 +118,12 @@ abstract class Module extends Data implements Controller {
      */
     public function init()
     {
+
+    }
+
+    public function runTime(\Request $request)
+    {
+
     }
 
     /**
@@ -124,27 +132,28 @@ abstract class Module extends Data implements Controller {
      * implement this method if you would like for your module to run code at
      * the end of any request.  By default, it does nothing.
      *
-     * NOTE: Not to be confused with __destruct, this is NOT called upon 
+     * NOTE: Not to be confused with __destruct, this is NOT called upon
      * garbage collection, it is called at the end of phpWebSite execution.
      */
     public function destruct()
     {
+
     }
 
     /**
-     * This method is how your module tells phpWebSite which controller to run 
-     * for a particular request.  We highly recommend using the Request object 
-     * to ensure that every single possible interaction with your module happens 
-     * using proper HTTP URLs, and we strongly discourage using query string 
+     * This method is how your module tells phpWebSite which controller to run
+     * for a particular request.  We highly recommend using the Request object
+     * to ensure that every single possible interaction with your module happens
+     * using proper HTTP URLs, and we strongly discourage using query string
      * parameters to determine how the request is routed within your module.
      *
-     * NOTE: If your module is very simple, you may implement Controller on your 
-     * Module instance and then implement an execute function.  We strongly 
-     * discourage this and highly recommend that you use your Module instance to 
+     * NOTE: If your module is very simple, you may implement Controller on your
+     * Module instance and then implement an execute function.  We strongly
+     * discourage this and highly recommend that you use your Module instance to
      * return a HttpRequest object, especially if you want RESTful interaction.
      *
      * @param $request Request The Request object for this request
-     * @return Controller A Controller object that will be called to run your 
+     * @return Controller A Controller object that will be called to run your
      *                    module
      */
     public abstract function getController(Request $request);
@@ -167,7 +176,7 @@ abstract class Module extends Data implements Controller {
     {
         $controller = $this->getController($request);
 
-        if(!($controller instanceof Controller)) {
+        if (!($controller instanceof Controller)) {
             throw new \Exception(t('Object returned by getController was not a Controller.'));
         }
 
@@ -176,7 +185,7 @@ abstract class Module extends Data implements Controller {
         $response = $controller->execute($request);
 
         // TODO: Implement event manager and fire an afterExecute event
-        
+
         return $response;
     }
 
@@ -329,6 +338,7 @@ abstract class Module extends Data implements Controller {
     {
         return (bool) $this->deprecated;
     }
+
 }
 
 ?>
