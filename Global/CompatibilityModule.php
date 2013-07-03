@@ -7,12 +7,12 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class CompatibilityModule extends \Module implements \SettingDefaults, \Controller {
+class CompatibilityModule extends \Module implements \SettingDefaults {
 
     public $unregister;
     public $register;
 
-    public function run()
+    public function runTime(\Request $request)
     {
         if (is_file($this->directory . 'inc/runtime.php')) {
             include $this->directory . 'inc/runtime.php';
@@ -81,7 +81,6 @@ class CompatibilityModule extends \Module implements \SettingDefaults, \Controll
             $this->file_version = $version;
         }
     }
-
 }
 
 ?>
