@@ -3,15 +3,15 @@
 namespace Http;
 
 /**
- * HttpController Abstract Class.  We highly recommend extending this for each 
- * controller that can be returned by your Module instance.  It makes RESTful 
+ * HttpController Abstract Class.  We highly recommend extending this for each
+ * controller that can be returned by your Module instance.  It makes RESTful
  * APIs easy and fun!
  *
- * All methods are implemented by default to return 405 Method Not Allowed.  
+ * All methods are implemented by default to return 405 Method Not Allowed.
  * Override only the methods that you require within your software.
  *
- * Additionally, onBeforeExecute() and onAfterExecute() can optionally be 
- * overridden within your module to do things at execute time regardless of HTTP 
+ * Additionally, onBeforeExecute() and onAfterExecute() can optionally be
+ * overridden within your module to do things at execute time regardless of HTTP
  * request method.
  *
  * @package Global
@@ -107,7 +107,7 @@ abstract class Controller implements \Controller
     public function getView($data, \Request $request = null)
     {
         if(is_null($request)) {
-            $request = Server::getCurrentRequest();
+            $request = \Server::getCurrentRequest();
         }
 
         $iter = $request->getAccept()->getIterator();
@@ -141,14 +141,14 @@ abstract class Controller implements \Controller
 
     public function getXmlView($data)
     {
-        // TODO: Find a nice way to just XML encode anything and provide a 
+        // TODO: Find a nice way to just XML encode anything and provide a
         // default view here.
         return null;
     }
 
     public function getHtmlView($data)
     {
-        // TODO: Find a nice way to just HTML encode anything and provide a 
+        // TODO: Find a nice way to just HTML encode anything and provide a
         // default view here.
         return null;
     }
