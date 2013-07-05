@@ -23,6 +23,8 @@ abstract class Controller implements \Controller
 {
     private $module;
 
+    abstract public function getHtmlView($data);
+
     public function __construct(\Module $module)
     {
         $this->module = $module;
@@ -33,7 +35,7 @@ abstract class Controller implements \Controller
         return $this->module;
     }
 
-    public final function execute(\Request $request)
+    public function execute(\Request $request)
     {
         $this->onBeforeExecute($request);
 
@@ -111,7 +113,6 @@ abstract class Controller implements \Controller
         }
 
         $iter = $request->getAccept()->getIterator();
-
         $view = null;
         foreach($iter as $type) {
             if($type->matches('application/json')) {
@@ -127,7 +128,6 @@ abstract class Controller implements \Controller
                 break;
             }
         }
-
         if(is_null($view)) {
             throw new NotAcceptableException($request);
         }
@@ -147,12 +147,6 @@ abstract class Controller implements \Controller
         return null;
     }
 
-    public function getHtmlView($data)
-    {
-        // TODO: Find a nice way to just HTML encode anything and provide a
-        // default view here.
-        return null;
-    }
 }
 
 ?>
