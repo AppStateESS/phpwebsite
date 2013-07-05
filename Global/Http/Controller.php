@@ -128,8 +128,9 @@ abstract class Controller implements \Controller
             }
         }
 
-        if(is_null($view))
+        if(is_null($view)) {
             throw new NotAcceptableException($request);
+        }
 
         return $view;
     }
