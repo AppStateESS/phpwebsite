@@ -1281,7 +1281,7 @@ class User_Action {
         return true;
     }
 
-    public function dropAuthorization($script_id)
+    public static function dropAuthorization($script_id)
     {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int) $script_id);
