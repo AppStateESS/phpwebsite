@@ -6,3 +6,7 @@
     pointer-events : none;
     cursor : default;
 }
+
+div.ui-dialog {
+    z-index: 10;
+}
