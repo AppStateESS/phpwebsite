@@ -128,6 +128,8 @@ class PhpwebsiteController implements Controller {
                  $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 
         if($view->getContentType() == 'text/html' && !$ajax) {
+            // @todo Replace Layout
+            PHPWS_Core::initModClass('layout', 'Layout.php');
             Layout::add($rendered);
             $this->skipLayout = false;
         } else {
