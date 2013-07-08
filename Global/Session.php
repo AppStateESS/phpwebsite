@@ -31,6 +31,8 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
+require_once PHPWS_SOURCE_DIR . 'Global/Data.php';
+
 class Session extends Data {
 
     /**
@@ -126,6 +128,7 @@ class Session extends Data {
         unset($_SESSION['Beanie_Session']);
         self::start();
     }
+
 }
 
 ?>
