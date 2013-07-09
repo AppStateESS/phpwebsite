@@ -320,6 +320,11 @@ abstract class Data {
         return $vars;
     }
 
+    /**
+     * Returns an array of variables that can produce printable strings.
+     * @return array
+     * @throws \Exception
+     */
     public function getStringVars()
     {
         $vars = $this->getVars();
