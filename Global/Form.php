@@ -267,13 +267,57 @@ class Form extends Tag {
     }
 
     /**
+     * Adds an Email input
+     * @param string $name
+     * @param string $value
+     * @return \Form\Input\Email
+     */
+    public function addEmail($name, $value = null)
+    {
+        return $this->addInput('email', $name, $value);
+    }
+
+    /**
+     * Adds an Date input
+     * @param string $name
+     * @param string $value
+     * @return \Form\Input\Email
+     */
+    public function addDate($name, $value = null)
+    {
+        return $this->addInput('date', $name, $value);
+    }
+
+    /**
+     * Adds an Datetime input
+     * @param string $name
+     * @param string $value
+     * @return \Form\Input\Email
+     */
+    public function addDatetime($name, $value = null)
+    {
+        return $this->addInput('datetime', $name, $value);
+    }
+
+    /**
+     * Adds an Color input
+     * @param string $name
+     * @param string $value
+     * @return \Form\Input\Email
+     */
+    public function addColor($name, $value = null)
+    {
+        return $this->addInput('color', $name, $value);
+    }
+
+    /**
      *
      * @param string $name
      * @param string $value
      * @param string $label
      * @return \Form\Input\File
      */
-    public function addFile($name, $value, $label = null)
+    public function addFile($name, $value = null, $label = null)
     {
         return $this->addInput('file', $name, $value, $label);
     }
