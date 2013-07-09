@@ -23,7 +23,7 @@ abstract class Controller implements \Controller
 {
     private $module;
 
-    abstract public function getHtmlView($data);
+    abstract protected function getHtmlView($data, \Request $request);
 
     public function __construct(\Module $module)
     {
@@ -116,15 +116,15 @@ abstract class Controller implements \Controller
         $view = null;
         foreach($iter as $type) {
             if($type->matches('application/json')) {
-                $view = $this->getJsonView($data);
+                $view = $this->getJsonView($data, $request);
                 break;
             }
             if($type->matches('application/xml')) {
-                $view = $this->getXmlView($data);
+                $view = $this->getXmlView($data, $request);
                 break;
             }
             if($type->matches('text/html')) {
-                $view = $this->getHtmlView($data);
+                $view = $this->getHtmlView($data, $request);
                 break;
             }
         }
@@ -135,12 +135,12 @@ abstract class Controller implements \Controller
         return $view;
     }
 
-    public function getJsonView($data)
+    protected function getJsonView($data, \Request $request)
     {
         return new \JsonView($data);
     }
 
-    public function getXmlView($data)
+    protected function getXmlView($data, \Request $request)
     {
         // TODO: Find a nice way to just XML encode anything and provide a
         // default view here.
