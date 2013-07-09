@@ -429,7 +429,6 @@ class Form extends Tag {
         // @todo implement Head again or clone
         //$head = new \Head;
         //$head->includeCSS('Global/Templates/Form/style.css');
-
         # @todo not doing anything with the problems pulled from the response,
         # expecting results within the included template perhaps
         //$response = \Response::singleton();
@@ -460,7 +459,7 @@ class Form extends Tag {
      */
     public function plugInput($input)
     {
-        if (!$input instanceof \Form\Base && !$input instanceof \Form\Choice) {
+        if (!$input instanceof \Form\Base) {
             throw new \Exception(t('plugInput only accepts Input and Choice class objects'));
         }
         $this->inputs[$input->getName()][] = $input;
@@ -500,6 +499,14 @@ class Form extends Tag {
         return $this->inputs;
     }
 
+    /**
+     * Returns an array of input (\Form\Choice or \Form\Input) objects from the
+     * Form if it has been previously set.
+     *
+     * @param string $name
+     * @return \Form\Base
+     * @throws \Exception
+     */
     public function getInput($name)
     {
         if (!isset($this->inputs[$name])) {
@@ -518,6 +525,22 @@ class Form extends Tag {
         $this->method = 'post';
     }
 
+    /**
+     * Returns the array of inputs associated with the name if the count > 1
+     * or a single input object if not.
+     * @param string $name
+     * @return \Form\Base | array
+     */
+    public function __get($name)
+    {
+        $input = $this->getInput($name);
+        if (count($input) == 1) {
+            return $input[0];
+        } else {
+            return $input;
+        }
     }
+
+}
 
 ?>
