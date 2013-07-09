@@ -211,7 +211,8 @@ abstract class Data {
     public function debugToString()
     {
         if (!method_exists($this, '__toString')) {
-            throw new \Exception(t('Class "%s" does not contain a __toString method', get_class($this)));
+            throw new \Exception(t('Class "%s" does not contain a __toString method',
+                    get_class($this)));
         }
         if (function_exists('xdebug_var_dump')) {
             // xdebug adds <pre> tags
@@ -229,15 +230,18 @@ abstract class Data {
     private function checkVariableName($variable_name)
     {
         if (!is_string($variable_name)) {
-            throw new \Exception(t('Variable name expects a string not a %s', gettype($variable_name)));
+            throw new \Exception(t('Variable name expects a string not a %s',
+                    gettype($variable_name)));
         }
 
         if (preg_match('/\W/', $variable_name)) {
-            throw new \Exception(t('Illegally formatted variable name "%s"', $variable_name));
+            throw new \Exception(t('Illegally formatted variable name "%s"',
+                    $variable_name));
         }
 
         if (!property_exists($this, $variable_name)) {
-            throw new \Exception(t('Variable name "%s" not found in object', $variable_name));
+            throw new \Exception(t('Variable name "%s" not found in object',
+                    $variable_name));
         }
     }
 
@@ -342,7 +346,8 @@ abstract class Data {
     {
         foreach ($vars as $key => $value) {
             if (!property_exists($this, $key)) {
-                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
+                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
+                        $key, get_class($this)));
             }
             if ($this->$key instanceof Variable) {
                 if (!is_null($value)) {
@@ -353,7 +358,8 @@ abstract class Data {
                 if (method_exists($this, $func)) {
                     $this->$func($value);
                 } else {
-                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
+                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
+                            $key, get_class($this)));
                 }
             } else {
                 $this->$key = $value;
@@ -399,7 +405,8 @@ abstract class Data {
         }
 
         if (!is_writable(dirname($file_path))) {
-            throw new \Exception(t('Cannot write file to directory "%s"', dirname($file_path) . '/'));
+            throw new \Exception(t('Cannot write file to directory "%s"',
+                    dirname($file_path) . '/'));
         }
 
         $vars = $this->getVars();
@@ -437,7 +444,7 @@ abstract class Data {
     }
 
     /**
-     * Return a form object based on the variable in the current object.
+     * Return a form object based on the Variables in the current object.
      * @return \Form
      */
     public function pullForm()
@@ -445,7 +452,9 @@ abstract class Data {
         $vars = $this->getVars();
         $form = new \Form;
         foreach ($vars as $parameter) {
-            $form->addVariable($parameter);
+            if ($parameter instanceof \Variable) {
+                $form->addVariable($parameter);
+            }
         }
         return $form;
     }
