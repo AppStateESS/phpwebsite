@@ -7,7 +7,7 @@
  *
  * First pull the singleton
  *
- * $session = Session::singleton();
+ * $session = Session::getInstance();
  *
  * Now setting and getting variables is simple:
  *
@@ -36,30 +36,53 @@ require_once PHPWS_SOURCE_DIR . 'Global/Data.php';
 class Session extends Data {
 
     /**
+     * Values of the PHPWS Session
      * @var array
      */
     private $values;
+
+    /**
+     * Indicates if session_start has been called
+     * @var boolean
+     */
+    private static $started = false;
+
+    /**
+     * Name of the current session
+     * @var string
+     */
+    private static $session_name = null;
 
     /**
      * Creates a session object
      */
     private function __construct()
     {
-        if (isset($_SESSION['Beanie_Session'])) {
-            $this->values = & $_SESSION['Beanie_Session'];
-        } else {
-            $_SESSION['Beanie_Session'] = & $this->values;
+        if (!self::$started) {
+            self::start();
         }
+        $this->values = & $_SESSION['PHPWS'];
     }
 
     /**
      * Starts the session
      */
-    public static function start()
+    public static function start($session_name = null)
     {
-        define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
-        session_name(SESSION_NAME);
+        if (self::$started) {
+            throw new \Exception(t('Session has already been started'));
+        }
+        if (!isset($session_name)) {
+            self::$session_name = md5(SITE_HASH . $_SERVER['REMOTE_ADDR']);
+        } else {
+            self::$session_name = $session_name;
+        }
+        session_name(self::$session_name);
         session_start();
+        self::$started = true;
+        if (!isset($_SESSION['PHPWS'])) {
+            $_SESSION['PHPWS'] = array();
+        }
     }
 
     /**
@@ -67,7 +90,7 @@ class Session extends Data {
      * @staticvar Session $session
      * @return \Session
      */
-    public static function singleton()
+    public static function getInstance()
     {
         static $session = null;
 
@@ -125,8 +148,9 @@ class Session extends Data {
      */
     public function reset()
     {
-        unset($_SESSION['Beanie_Session']);
-        self::start();
+        unset($_SESSION['PHPWS']);
+        $_SESSION['PHPWS'] = array();
+        $this->values = array();
     }
 
 }
