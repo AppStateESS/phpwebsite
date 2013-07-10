@@ -9,12 +9,7 @@
 class Pager {
 
     /**
-     * @var \Database\DB
-     */
-    protected $db;
-
-    /**
-     * Total rows found from the database select
+     * Total rows
      * @var integer
      */
     protected $total_rows;
@@ -61,19 +56,19 @@ class Pager {
      */
     protected $prev_page_marker;
 
+    /**
+     * Path to template file
+     * @var string
+     */
+    protected $template;
+
     public function __construct()
     {
+        $this->template = new \Template;
+        $this->template->setFile(PHPWS_SOURCE_DIR . 'Global/Templates/Pager/default.html');
+
         $this->first_marker = t('First');
         $this->last_marker = t('Last');
-    }
-
-    /**
-     * Database object used to pull rows from
-     * @param \Database $db
-     */
-    public function setDB(\Database $db)
-    {
-        $this->db = $db;
     }
 
     /**
@@ -112,7 +107,6 @@ class Pager {
         if (!is_integer($page)) {
             throw new Exception(t('setCurrentPage integer'));
         }
-
     }
 
     /**
@@ -123,6 +117,116 @@ class Pager {
     {
         $this->first_marker = $marker;
     }
+
+    /**
+     * @param array $rows
+     */
+    public function setRows(array $rows)
+    {
+        $this->rows = $rows;
+        $row = current($rows);
+        $keys = array_keys($row);
+        foreach ($keys as $header) {
+            $this->headers[$header] = ucwords(str_replace('_', ' ', $header));
+        }
+    }
+
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
+    public function getTemplateArray()
+    {
+
+    }
+
+    /**
+     * Sorts the rows currently set in the Pager. If the rows displayed by the
+     * pager are a partial set, you may not want to use this method.
+     */
+    public function sortCurrentRows()
+    {
+        $args = func_get_args();
+        usort($this->rows,
+                call_user_func_array(array('self', 'make_comparer'), $args));
+    }
+
+    /**
+     * This is a callable component of usort.
+     *
+     * For simple ascending sorts (multiple column included):
+     * usort($row, make_comparer('column_name'[, 'other_column_name']);
+     *
+     * For setting a descending sort
+     * usort($rows, make_comparer(array('column_name', SORT_DESC)));
+     *
+     * To include a function result on a column
+     * usort($rows, make_comparer(array('column_name', SORT_ASC, 'function_name')));
+     *
+     * From stackoverflow.com : user - jon
+     * http://stackoverflow.com/questions/96759/how-do-i-sort-a-multidimensional-array-in-php
+     * http://stackoverflow.com/users/50079/jon
+     * @return type
+     */
+    public static function make_comparer()
+    {
+        // Normalize criteria up front so that the comparer finds everything tidy
+        $criteria = func_get_args();
+        foreach ($criteria as $index => $criterion) {
+            $criteria[$index] = is_array($criterion) ? array_pad($criterion, 3,
+                            null) : array($criterion, SORT_ASC, null);
+        }
+
+        return function($first, $second) use ($criteria) {
+                    foreach ($criteria as $criterion) {
+                        // How will we compare this round?
+                        list($column, $sortOrder, $projection) = $criterion;
+                        $sortOrder = $sortOrder === SORT_DESC ? -1 : 1;
+
+                        // If a projection was defined project the values now
+                        if ($projection) {
+                            $lhs = call_user_func($projection, $first[$column]);
+                            $rhs = call_user_func($projection, $second[$column]);
+                        } else {
+                            $lhs = $first[$column];
+                            $rhs = $second[$column];
+                        }
+
+                        // Do the actual comparison; do not return if equal
+                        if ($lhs < $rhs) {
+                            return -1 * $sortOrder;
+                        } else if ($lhs > $rhs) {
+                            return 1 * $sortOrder;
+                        }
+                    }
+
+                    return 0; // tiebreakers exhausted, so $first == $second
+                };
+    }
+
+    public function createSortHeaders()
+    {
+        $icon = '<i class="icon-arrow-down"></i>';
+        foreach ($this->headers as $column_name => $print_name)
+        {
+            $rows[] = "<a href='#' data-column_name='$column_name'>$print_name $icon</a>";
+        }
+        return $rows;
+    }
+
+    public function get()
+    {
+        $this->template->add('headers', $this->createSortHeaders());
+        $this->template->add('rows', $this->rows);
+        return $this->template->__toString();
+    }
+
+    public function __toString()
+    {
+        return $this->get();
+    }
+
 }
 
 ?>
