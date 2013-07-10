@@ -17,7 +17,7 @@ class Template implements View {
      * @param array|null $variables Values shown inside the template
      * @param string|null $file Direct path to template file
      * @param boolean|null $encode If true (default), encode the output
-     * @param string|null $contentType The MIME-type of the rendered template, 
+     * @param string|null $contentType The MIME-type of the rendered template,
      * default is text/html
      */
     public function __construct(array $variables = null, $file = null, $encode = null, $contentType = 'text/html')
@@ -37,6 +37,10 @@ class Template implements View {
         $this->setContentType($contentType);
     }
 
+    /**
+     * Adds an associative array of variables to the pager
+     * @param array $variables
+     */
     public function addVariables(array $variables)
     {
         foreach ($variables as $key => $val) {
