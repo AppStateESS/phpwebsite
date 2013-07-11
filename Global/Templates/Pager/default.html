@@ -1,18 +1,24 @@
 <table class="table table-striped">
     <thead>
-    <tr>
-        <?php foreach($headers as $header):?>
-        <th><?=$header?></th>
-        <?php endforeach;?>
-    </tr>
+        <tr>
+            <?php foreach($headers as $header):?>
+            <th><?=$header?></th>
+            <?php endforeach;?>
+        </tr>
     </thead>
-    <tbody>
-    <?php foreach($rows as $row):?>
-    <tr>
-        <?php foreach($row as $value):?>
-        <td><?=$value?></td>
+    <tbody class="pager-body">
+        <?php foreach($rows as $row):?>
+        <tr>
+            <?php foreach($row as $value):?>
+            <td><?=$value?></td>
+            <?php endforeach;?>
+        </tr>
         <?php endforeach;?>
-    </tr>
-    <?php endforeach;?>
     </tbody>
 </table>
+<script type="text/javascript">
+    $(window).load(function() {
+        $('.sort-header').click(function(){
+        });
+    });
+</script>

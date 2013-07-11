@@ -62,6 +62,12 @@ class Pager {
      */
     protected $template;
 
+    /**
+     * Stack of row sorts by column
+     * @var string
+     */
+    protected $sort_by;
+
     public function __construct()
     {
         $this->template = new \Template;
@@ -69,6 +75,11 @@ class Pager {
 
         $this->first_marker = t('First');
         $this->last_marker = t('Last');
+
+        $request = \Server::getCurrentRequest();
+        if ($request->isVar('sortby')) {
+            $this->sort_by = $request->getVar('sortby');
+        }
     }
 
     /**
@@ -131,8 +142,11 @@ class Pager {
         }
     }
 
-    public function getRows()
+    public function getAllRows()
     {
+        if (!empty($this->sort_by)) {
+            $this->sortCurrentRows($this->sort_by);
+        }
         return $this->rows;
     }
 
@@ -145,11 +159,25 @@ class Pager {
      * Sorts the rows currently set in the Pager. If the rows displayed by the
      * pager are a partial set, you may not want to use this method.
      */
-    public function sortCurrentRows()
+    public function sortCurrentRows($column_name, $direction = null, $function_call = null)
     {
-        $args = func_get_args();
+        if (empty($direction)) {
+            $direction = SORT_ASC;
+        }
+        if (empty($this->rows)) {
+            throw new \Exception(t('No rows to set'));
+        }
+        if (!isset($this->headers[$column_name])) {
+            throw new \Exception(t('Column name "%s" is not known', $column_name));
+        }
+
+        if (isset($function_call) && !function_exists($function_call)) {
+            throw new \Exception(t('Function "%s" does not exist',
+                    $function_call));
+        }
         usort($this->rows,
-                call_user_func_array(array('self', 'make_comparer'), $args));
+                call_user_func_array(array('self', 'make_comparer'),
+                        array(array($column_name, $direction, $function_call))));
     }
 
     /**
@@ -205,20 +233,44 @@ class Pager {
                 };
     }
 
-    public function createSortHeaders()
+    public function getHeaders()
     {
-        $icon = '<i class="icon-arrow-down"></i>';
-        foreach ($this->headers as $column_name => $print_name)
-        {
-            $rows[] = "<a href='#' data-column_name='$column_name'>$print_name $icon</a>";
+        $icon_down = '<i class="icon-arrow-down"></i>';
+        $icon_up = '<i class="icon-arrow-up"></i>';
+        foreach ($this->headers as $column_name => $print_name) {
+            if (isset($this->sort_by[$column_name])) {
+                if ($this->sort_by == 1) {
+                    $icon = $icon_up;
+                } else {
+                    $icon = $icon_down;
+                }
+            } else {
+                $icon = null;
+            }
+            $rows[] = "<a href='javascript::void()' data-column_name='$column_name' class='sort-header'>$print_name $icon</a>";
         }
         return $rows;
     }
 
+    public function getHeaderValues()
+    {
+        $icon = '<i class="icon-arrow-down"></i>';
+        foreach ($this->headers as $column_name => $print_name) {
+            $rows[] = array('column_name' => $column_name, 'print_name' => $print_name, 'icon' => $icon);
+        }
+        return $rows;
+    }
+
+    public function buildTemplate()
+    {
+        $this->template->add('header_values', $this->getHeaderValues());
+        $this->template->add('headers', $this->getHeaders());
+        $this->template->add('rows', $this->getAllRows());
+    }
+
     public function get()
     {
-        $this->template->add('headers', $this->createSortHeaders());
-        $this->template->add('rows', $this->rows);
+        $this->buildTemplate();
         return $this->template->__toString();
     }
 
