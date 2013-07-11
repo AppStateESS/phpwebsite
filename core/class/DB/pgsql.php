@@ -94,21 +94,17 @@ class pgsql_PHPWS_SQL {
 
     public function readyImport(&$query){
 
-        $from = array('/datetime/i',
-                      '/double\((\d+),(\d+)\)/Uie'
-                      );
-                      $to   = array('timestamp without time zone',
-                      "'numeric(' . (\\1 + \\2) . ', \\2)'"
-                      );
-                      $query = preg_replace($from, $to, $query);
+        $from = array('/datetime/i', '/double\((\d+),(\d+)\)/Uie');
+        $to   = array('timestamp without time zone', "'numeric(' . (\\1 + \\2) . ', \\2)'");
+        $query = @preg_replace($from, $to, $query);
 
-                      if (preg_match('/id int [\w\s]* primary key[\w\s]*,/iU', $query)){
-                          $tableName = PHPWS_DB::extractTableName($query);
+        if (preg_match('/id int [\w\s]* primary key[\w\s]*,/iU', $query)){
+            $tableName = PHPWS_DB::extractTableName($query);
 
-                          $query = preg_replace('/primary key/i', '', $query);
-                          $query = preg_replace('/if exists /i', '', $query);
-                          $query = preg_replace('/\);/', ', PRIMARY KEY (id));', $query);
-                      }
+            $query = preg_replace('/primary key/i', '', $query);
+            $query = preg_replace('/if exists /i', '', $query);
+            $query = preg_replace('/\);/', ', PRIMARY KEY (id));', $query);
+        }
     }
 
     public function randomOrder()
