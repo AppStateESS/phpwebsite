@@ -22,6 +22,7 @@ class Template implements View {
      */
     public function __construct(array $variables = null, $file = null, $encode = null, $contentType = 'text/html')
     {
+        $this->variables = array();
         if (isset($file)) {
             $this->setFile($file);
         }
@@ -117,6 +118,15 @@ class Template implements View {
     public function render()
     {
         return $this->__toString();
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getVariables()
+    {
+        return $this->variables;
     }
 }
 
