@@ -1,26 +1,27 @@
 <?php
+
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class Branch {
-    public $id          = null;
-    public $branch_name = null;
-    public $directory   = null;
-    public $url         = null;
-    public $site_hash   = null;
-    public $dsn         = null;
-    public $prefix      = null;
 
-    public function __construct($id=0, $load_dsn=false)
+    public $id = null;
+    public $branch_name = null;
+    public $directory = null;
+    public $url = null;
+    public $site_hash = null;
+    public $dsn = null;
+    public $prefix = null;
+
+    public function __construct($id = 0, $load_dsn = false)
     {
         $this->site_hash = md5(rand());
         if (!$id) {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $this->init();
     }
 
@@ -43,13 +44,16 @@ class Branch {
         }
 
         foreach ($config as $row) {
-            if (preg_match('/phpws_dsn/i', $row) && preg_match('/^define/i', $row)) {
+            if (preg_match('/phpws_dsn/i', $row) && preg_match('/^define/i',
+                            $row)) {
                 $sub = explode(',', $row);
                 $this->dsn = preg_replace("@'|\);$@", '', trim($sub[1]));
             }
 
-            if (preg_match('/phpws_table_prefix/i', $row) && preg_match('/^define/i', $row)) {
-                $this->prefix = preg_replace('/phpws_table_prefix|define|[\s\'"(),;]/i', '', trim($row));
+            if (preg_match('/phpws_table_prefix/i', $row) && preg_match('/^define/i',
+                            $row)) {
+                $this->prefix = preg_replace('/phpws_table_prefix|define|[\s\'"(),;]/i',
+                        '', trim($row));
             }
 
             if (!empty($this->dsn) && (!$prefix_used || !empty($this->prefix))) {
@@ -118,7 +122,8 @@ class Branch {
         } else {
             $http = &$this->url;
         }
-        return sprintf('<a href="%s">%s</a>', $http, PHPWS_Text::shortenUrl($http));
+        return sprintf('<a href="%s">%s</a>', $http,
+                PHPWS_Text::shortenUrl($http));
     }
 
     public function createDirectories()
@@ -156,24 +161,29 @@ class Branch {
     {
         $tpl['URL'] = $this->getUrl();
 
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'branch', array('command'=>'edit_branch', 'branch_id'=>$this->id));
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'branch',
+                        array('command' => 'edit_branch', 'branch_id' => $this->id));
 
-        $js['question'] = dgettext('branch', 'Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
-        $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
+        $js['question'] = dgettext('branch',
+                'Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
+        $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s',
+                $this->id, Current_User::getAuthKey());
         $js['value_name'] = 'branch_name';
         $js['link'] = Icon::show('delete');
 
         $links[] = javascript('prompt', $js);
 
-        $links[] = PHPWS_Text::secureLink(Icon::show('install', dgettext('branch', 'Modules')), 'branch',
-        array('command'=>'branch_modules', 'branch_id'=>$this->id));
-        $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>', $this->directory,
-        PHPWS_Text::shortenUrl($this->directory));
+        $links[] = PHPWS_Text::secureLink(Icon::show('install',
+                                dgettext('branch', 'Modules')), 'branch',
+                        array('command' => 'branch_modules', 'branch_id' => $this->id));
+        $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>',
+                $this->directory, PHPWS_Text::shortenUrl($this->directory));
         $tpl['ACTION'] = implode(' ', $links);
         return $tpl;
     }
 
-    public static function getHubPrefix() {
+    public static function getHubPrefix()
+    {
         $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
         if ($handle) {
             $search_for = '^define\(\'PHPWS_TABLE_PREFIX\',';
@@ -181,7 +191,8 @@ class Branch {
                 $buffer = fgets($handle, 4096);
                 $buffer = str_replace(' ', '', $buffer);
                 if (preg_match('/' . $search_for . '/', $buffer)) {
-                    $prefix = preg_replace('/^define\(\'PHPWS_TABLE_PREFIX\',\'(.*)\'\);/Ui', '\\1', $buffer);
+                    $prefix = preg_replace('/^define\(\'PHPWS_TABLE_PREFIX\',\'(.*)\'\);/Ui',
+                            '\\1', $buffer);
                     return trim($prefix);
                     break;
                 }
@@ -201,7 +212,8 @@ class Branch {
                 $buffer = fgets($handle, 4096);
                 $buffer = str_replace(' ', '', $buffer);
                 if (preg_match('/' . $search_for . '/', $buffer)) {
-                    $dsn = preg_replace('/^define\(\'PHPWS_DSN\',\'(.*)\'\);/Ui', '\\1', $buffer);
+                    $dsn = preg_replace('/^define\(\'PHPWS_DSN\',\'(.*)\'\);/Ui',
+                            '\\1', $buffer);
                     return trim($dsn);
                     break;
                 }
@@ -223,11 +235,10 @@ class Branch {
             return FALSE;
         }
 
+        $prefix = Branch::getHubPrefix();
+        PHPWS_DB::loadDB($dsn, $prefix);
         $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
         $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
-
-        $prefix = Branch::getHubPrefix();
-        return PHPWS_DB::loadDB($dsn, $prefix);
     }
 
     /**
@@ -240,7 +251,7 @@ class Branch {
             return false;
         }
 
-        return PHPWS_DB::loadDB($this->dsn, $this->prefix);
+        return PHPWS_DB::loadDB($this->dsn, $this->prefix, false, false);
     }
 
     /**
@@ -278,9 +289,8 @@ class Branch {
     public static function checkCurrentBranch()
     {
         if (isset($_SESSION['Approved_Branch'])) {
-            return (bool)$_SESSION['Approved_Branch'];
+            return (bool) $_SESSION['Approved_Branch'];
         }
-
         Branch::loadHubDB();
 
         if (!PHPWS_DB::isConnected()) {
@@ -293,7 +303,6 @@ class Branch {
         $result = $db->select('row');
 
         PHPWS_DB::loadDB();
-
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $_SESSION['Approved_Branch'] = FALSE;
@@ -386,7 +395,6 @@ class Branch {
         } else {
             return $result;
         }
-
     }
 
     /**
@@ -411,6 +419,7 @@ class Branch {
 
         return true;
     }
+
 }
 
 ?>

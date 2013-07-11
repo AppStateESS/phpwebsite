@@ -7,34 +7,23 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class View extends Data {
+
+interface View {
+    /**
+     * This function must return a STRING REPRESENTATION of the set data.
+     *
+     * @return string The rendered data
+     */
+    public function render();
 
     /**
-     * Returns the data in this object as XML
-     * @return string
+     * This function must return the Content-type of the data after it is 
+     * rendered.  The Content-type will be used in determining how to decorate 
+     * your view.
+     *
+     * @return string The MIME-type of the rendered view
      */
-    public function getXML()
-    {
-
-    }
-
-    /**
-     * Returns the data in this object in JSON encoded format
-     * @return string
-     */
-    public function getJSON()
-    {
-        return json_encode($this->getVars());
-    }
-
-    /**
-     * Returns the data in this object as HTML
-     * @return string
-     */
-    public function getHTML()
-    {
-
-    }
+    public function getContentType();
 }
 
 ?>

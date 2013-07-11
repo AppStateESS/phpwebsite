@@ -63,6 +63,25 @@ class DB extends \Database\DB {
         return $table_list;
     }
 
+    /**
+     * Returns the databases in the current connection.
+     * @return array
+     */
+    public function listDatabases()
+    {
+        $databases = null;
+        $sql = 'SELECT datname FROM pg_database ORDER BY datname';
+        $this->loadStatement($sql);
+        while ($row = $this->fetch()) {
+            if (in_array($row['datname'],
+                            array('postgres', 'template0', 'template1'))) {
+                continue;
+            }
+            $databases[] = $row['datname'];
+        }
+        return $databases;
+    }
+
 }
 
 ?>

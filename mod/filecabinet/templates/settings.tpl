@@ -8,6 +8,7 @@
     <p>{ALLOW_DIRECT_LINKS} <strong>{ALLOW_DIRECT_LINKS_LABEL}</strong></p>
 </fieldset>
 <fieldset><legend><strong>{IMAGE_SETTINGS}</strong></legend>
+    <p>{AUTOFLOAT} <strong>{AUTOFLOAT_LABEL}</strong></p>
     <p>{CAPTION_IMAGES} <strong>{CAPTION_IMAGES_LABEL}</strong></p>
     <p>{POPUP_IMAGE_NAVIGATION} <strong>{POPUP_IMAGE_NAVIGATION_LABEL}</strong></p>
     <p><strong>{MAX_IMAGE_DIMENSION_LABEL}</strong> {MAX_IMAGE_DIMENSION}</p>

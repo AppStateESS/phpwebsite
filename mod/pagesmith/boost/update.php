@@ -354,6 +354,14 @@ Fixed bug causing blank editors on edit.</pre>';
 + Mouseover edit behavior changed.
 + Publish on date added.
 </pre>';
+
+            case version_compare($currentVersion, '1.5.2', '<'):
+            $content[] = '<pre>1.5.2 changes
+---------------
+- Fixed error message
+- Empty orphans are removed automatically.
+- Dialog editor made modal.
+</pre>';
     } // end switch
 
     return true;

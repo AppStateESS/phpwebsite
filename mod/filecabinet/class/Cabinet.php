@@ -1517,6 +1517,7 @@ class Cabinet {
         $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
         $tpl['AUTHKEY'] = Current_User::getAuthKey();
         $tpl['NEW_FOLDER'] = '<input type="button" id="create-folder" name="create-folder" value="'. dgettext('filecabinet', 'Add folder') .'" />';
+        $tpl['AUTOFLOAT'] = PHPWS_Settings::get('filecabinet', 'autofloat');
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
 
         echo $content;

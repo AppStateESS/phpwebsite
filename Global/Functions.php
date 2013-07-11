@@ -132,7 +132,7 @@ function logMessage($message, $filename)
         trigger_error('Slashes not allowed in log file names.', E_USER_ERROR);
     }
     $log_path = LOG_DIRECTORY . $filename;
-    $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . $message;
+    $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . trim($message) . "\n";
     if (@error_log($message, 3, $log_path)) {
         chmod($log_path, LOG_PERMISSION);
         return true;
@@ -298,7 +298,7 @@ function get_status_text($code)
         case 505: $text = 'HTTP Version not supported';
             break;
         default:
-            exit('Unknown http status code "' . htmlentities($code) . '"');
+            $text = 'Unknown http status code "' . htmlentities($code) . '"';
             break;
     }
     return $text;

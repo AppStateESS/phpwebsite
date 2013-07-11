@@ -97,6 +97,11 @@ define('USE_PUTENV', false);
 /* * *************** Database ********************************** */
 
 /**
+ * If true, use persistent connections. Default is FALSE
+ */
+define('DB_PERSISTENT_CONNECTION', FALSE);
+
+/**
  * If true, a table existence will be check prior to inserting it into a DB
  * object. The default is FALSE. Change to true for debugging ONLY.
  * > 1.8.0
@@ -208,9 +213,9 @@ ini_set('include_path', '.:' . PHPWS_SOURCE_DIR . 'lib/pear/');
  * This the absolute upload limit in bytes. No matter what the code or
  * module says the user can upload, this amount, if checked, will trump
  * it.
- * This should be set reasonably high. The default is ~5mb
+ * This should be set reasonably high. The default is 500mb
  */
-define('ABSOLUTE_UPLOAD_LIMIT', '15000000');
+define('ABSOLUTE_UPLOAD_LIMIT', '500000000');
 
 
 /* * ****************** CACHING ********************************* */

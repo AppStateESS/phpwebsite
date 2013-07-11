@@ -12,7 +12,7 @@ $permissions['delete_users']     = dgettext('users', 'Delete Users');
 $permissions['add_edit_groups']  = dgettext('users', 'Add / Edit Groups');
 $permissions['delete_groups']    = dgettext('users', 'Delete Groups');
 $permissions['edit_permissions'] = dgettext('users', 'Edit Permissions');
-$permissions['scripting']        = dgettext('users', 'Allow script tag input');
+$permissions['scripting']        = '<del>' . dgettext('users', 'Allow script tag input') . '</del>';
 /**
  * Also controls individual user authorization setting
  */

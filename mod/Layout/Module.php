@@ -7,12 +7,7 @@ namespace Layout;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Module extends \ModuleAbstract implements \SettingDefaults {
-
-    public function run()
-    {
-
-    }
+class Module extends \Module implements \SettingDefaults {
 
     public function init()
     {

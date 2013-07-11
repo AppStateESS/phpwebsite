@@ -27,6 +27,7 @@ function editBlock(editor)
         function(data) {
             editor.setData(data);
             $('#block-edit-popup').dialog('open');
+            $('.ui-dialog').before('<div id="overlay" style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay" />');
         }
         );
     });
@@ -45,7 +46,10 @@ function initializeDialog(editor)
                             updateBlock(editor);
                             $(this).dialog('close');
                         }
-                    }]
+                    }],
+                close: function() {
+                    $('#overlay').remove();
+                }
             }
     );
 }

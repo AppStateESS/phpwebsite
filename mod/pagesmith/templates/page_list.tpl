@@ -1,5 +1,7 @@
-<div style="margin-bottom : 10px">{NEW}</div>{TOTAL_ROWS}
-<table cellpadding="5" width="95%">
+<div style="margin-bottom : 10px">
+  <a href="{NEW_PAGE_LINK_URI}" class="btn btn-success">{NEW_PAGE_LINK_TEXT}</a>
+</div>
+<table class="table table-striped" style="width:95%">
     <tr>
         <th width="5%">{ID_SORT} {ID_LABEL}</th>
         <th>{TITLE_SORT}</th>
@@ -15,12 +17,14 @@
         <!-- END subpages --></td>
         <td>{CREATE_DATE}<br />
         {LAST_UPDATED}</td>
-        <td class="smaller">{ACTION}</td>
+        <td>{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
-<div align="center"><b>{PAGE_LABEL}</b><br />
+<div align="center">
+{TOTAL_ROWS}
+<b>{PAGE_LABEL}</b><br />
 {PAGES}<br />
 {LIMITS}</div>
 {SEARCH}

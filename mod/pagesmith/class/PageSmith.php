@@ -421,7 +421,9 @@ class PageSmith {
                 continue;
             } else {
                 $some_content = true;
-                $this->page->_sections[$section_name]->type_id = $_POST[$section_name];
+                if (isset($this->page->_sections[$section_name])) {
+                    $this->page->_sections[$section_name]->type_id = $_POST[$section_name];
+                }
             }
         }
 

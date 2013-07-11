@@ -1,67 +1,63 @@
 <?php
 
 /*
- * Main controller class for the project
+ * Main controller class for phpWebSite.  Implements Controller, so it can be
+ * used like any other Controller in the system.
  *
  * @author Jeremy Booker
  * @package
  */
 
-final class ModuleController {
+class PhpwebsiteController implements Controller {
 
-    static private $controller;
     private $module_array_all;
     private $module_array_active;
     private $module_stack;
+    private $request;
+    // This is a temporary thing to prevent Layout from running in the event of
+    // a JSON request or otherwise non-HTML response.
+    private $skipLayout = false;
 
     /**
      * Current requested module
-     * @var ModuleAbstract
+     * @var Module
      */
     private $current_module;
 
-    protected function __construct()
+    public function execute(\Request $request)
     {
-        $global_module = new GlobalModule;
-        $this->module_stack['Global'] = $global_module;
-    }
-
-    /**
-     *
-     * @return ModuleController
-     */
-    public static function singleton()
-    {
-        if (empty(self::$controller)) {
-            self::$controller = new ModuleController;
-        }
-        return self::$controller;
-    }
-
-    public function execute()
-    {
-        $this->loadSiteModules();
-
         if (strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE) {
             $this->forwardInfo();
         }
 
-        /**
-         * Call each module's init method
-         */
-        $this->loadModuleInits();
+        try {
 
-        Session::start();
+            /**
+             * Call each module's init method
+             */
+            $this->loadModuleInits();
 
-        /**
-         * Call each module's run method
-         */
-        $this->loadRunTime();
+            Session::start();
+            /**
+             * Moved from Bootstrap, eventually to be deprecated
+             */
+            if (!PHPWS_Core::checkBranch()) {
+                throw new Exception('Unknown branch called');
+            }
+            $module = $this->determineCurrentModule($request);
 
-        $this->loadCurrentModule();
+            $this->loadRunTime();
 
-        if ($this->current_module) {
-            $this->callCurrentModule();
+            if ($module) {
+                $response = $module->execute($request->getNextRequest());
+                $this->renderResponse($request, $response);
+            }
+        }
+        catch(Http\Exception $e) {
+            $this->renderResponse($request, $e->getResponse());
+        }
+        catch(Exception $e) {
+            $this->renderResponse($request, new Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
@@ -70,65 +66,130 @@ final class ModuleController {
         PHPWS_Core::pushUrlHistory();
     }
 
-    private function callCurrentModule()
+    protected function determineCurrentModule(\Request $request)
     {
-        // Current module is not set (e.g. home page)
-        // @see self::setCurrentModule
-        if (empty($this->current_module)) {
-            throw new \Exception(t('Current module is not set'));
+        // Try the Old Fashioned Way first
+        if ($request->isVar('module')) {
+            $title = $request->getVar('module');
         }
-        $request = \Request::singleton();
-        $state = $request->getState();
-        if (!method_exists($this->current_module, $state)) {
-            throw new \Exception(t('Module "%s" is missing a "%s" state.',
-                    $this->current_module->getName(), $state));
+
+        // Try the Somewhat Old Fashioned Access Way Next
+        // Accessing $_REQUEST directly because this is how access module works
+        // @todo: replace this with a new shortcutting system that does not
+        // modify $_REQUEST
+        if (array_key_exists('module', $_REQUEST)) {
+            $title = $_REQUEST['module'];
         }
-        $this->current_module->$state();
-        return true;
+
+        // Otherwise, get the first token off of the Request
+        else {
+            $title = $request->getCurrentToken();
+
+            if ($title == '/') {
+                // @todo Configured Default Module
+                return null;
+            }
+        }
+
+        $mr = ModuleRepository::getInstance();
+
+        if (!$mr->hasModule($title)) {
+            throw new \Http\NotFoundException($request);
+        }
+
+        $module = $mr->getModule($title);
+
+        $mr->setCurrentModule($module);
+
+        return $module;
+    }
+
+    private function renderResponse(\Request $request, \Response $response)
+    {
+        // Temporary until proper error pages are fully implemented
+        // @todo customizable, editable error pages that don't dump a bunch of 
+        // stack if it's not needed or if debug is disabled
+        if($response instanceof \Html\NotFoundResponse) {
+            Error::errorPage(404);
+        }
+        $view = $response->getView();
+
+        // For Compatibility only - modules that make an end-run around the new
+        // system and speak to Layout directly should return a Response
+        // containing a NullView in order to skip the new rendering process.
+        if ($view instanceof NullView)
+            return;
+
+        $rendered = $view->render();
+
+        // @todo an interface to get at request headers in the Request object... 
+        // lol oops
+        $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) &&
+                 $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+
+        if($view->getContentType() == 'text/html' && !$ajax) {
+            // @todo Replace Layout
+            PHPWS_Core::initModClass('layout', 'Layout.php');
+            Layout::add($rendered);
+            $this->skipLayout = false;
+        } else {
+            echo $rendered;
+            $this->skipLayout = true;
+        }
+
+        // TODO: Response headers
     }
 
     private function destructModules()
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+            // This is a temporary thing to prevent Layout from running in the
+            // event of a JSON request or otherwise non-HTML Response.
+            if ($this->skipLayout && strtolower($mod->getTitle()) == 'layout')
+                continue;
+
             $mod->destruct();
         }
     }
 
     /**
-     * Grabs the name of the current module, then makes a reference
-     * to it in the current_module variable.
+     * This function handles runtime.php for CompatibilityModules only.
+     * @deprecated - to be replaced by a more event-style interface
+     * @see beforeRun
+     * @see afterRun
      */
-    private function loadCurrentModule()
-    {
-        $request = Request::singleton();
-        if (empty($this->module_stack)) {
-            throw new \Exception(t('All modules must be loaded prior to current module designation'));
-        }
-        $module_name = $request->getModule();
-        if ($module_name) {
-            // We are catching this as a bad module name could just be a badly
-            // entered url.
-            try {
-                $this->setCurrentModule($module_name);
-            } catch (\Exception $e) {
-                // @todo should these be logged?
-                Error::errorPage('404');
-            }
-        }
-    }
-
     private function loadRunTime()
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+            if (!$mod instanceof CompatibilityModule)
+                continue;
             if ($mod->isActive()) {
                 $mod->run();
             }
         }
     }
 
+    private function beforeRun(\Request &$request, \Controller $controller)
+    {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+            if ($mod->isActive()) {
+                $mod->beforeRun($request, $controller);
+            }
+        }
+    }
+
+    private function afterRun(\Request $request, \Response &$response)
+    {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+            if ($mod->isActive()) {
+                $mod->afterRun($request, $response);
+            }
+        }
+    }
+
     private function loadModuleInits()
     {
-        foreach ($this->module_stack as $mod) {
+        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             if ($mod->isActive()) {
                 $mod->init();
             }
@@ -136,10 +197,10 @@ final class ModuleController {
     }
 
     /**
-     * Returns a ModuleAbstract extended Module based on the $module_title.
+     * Returns a Module subclass based on the $module_title.
      * If the Module.php file is not found, an exception is thrown.
      * @param string $module_title
-     * @return \ModuleAbstract
+     * @return \Module
      * @throws \Exception Module.php is missing
      */
     public function getModuleByTitle($module_title)
@@ -155,37 +216,7 @@ final class ModuleController {
         return $module;
     }
 
-
-    private function loadModuleValues(array $values)
-    {
-        $module = $this->getModuleByTitle($values['title']);
-        /**
-         * These are in the old modules table, but will not be used.
-         * @todo Once all modules are updated, dump these columns.
-         */
-        unset($values['register']);
-        unset($values['unregister']);
-        $module->setVars($values);
-        $module->loadData();
-        return $module;
-    }
-
-    /**
-     * Loads a Module object based on the values array. This array is a row
-     * from the modules table.
-     * @param array $values
-     * @return \Module
-     */
-    private function loadPHPWSModule(array $values)
-    {
-        $module = new Module;
-        $module->setVars($values);
-        $module->loadData();
-        $module->setDeprecated(1);
-        return $module;
-    }
-
-    public function addModule(ModuleAbstract $module)
+    public function addModule(Module $module)
     {
         $this->module_stack[$module->getTitle()] = $module;
     }
@@ -230,21 +261,6 @@ final class ModuleController {
         }
     }
 
-    public function getModuleArrayAll()
-    {
-        return $this->module_array_all;
-    }
-
-    public function getModuleArrayActive()
-    {
-        return $this->module_array_active;
-    }
-
-    public function getModuleStack()
-    {
-        return $this->module_stack;
-    }
-
     public function getCurrentModuleTitle()
     {
         if (empty($this->current_module)) {
@@ -262,7 +278,7 @@ final class ModuleController {
     /**
      *
      * @param string $module_title
-     * @return \ModuleAbstract
+     * @return \Module
      * @throws Exception
      */
     public function getModule($module_title)
@@ -294,7 +310,7 @@ final class ModuleController {
             $url = substr($url, 0, $qpos);
         }
 
-        $aUrl = explode('/', $url);
+        $aUrl = explode('/', preg_replace('|/+$|', '', $url));
         $module = array_shift($aUrl);
 
         $mods = PHPWS_Core::getModules(true, true);
