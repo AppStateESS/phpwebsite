@@ -9,17 +9,17 @@ class Message {
 
     public static function set($message)
     {
-        \Session::singleton()->message = $message;
+        \Session::getInstance()->message = $message;
     }
 
     public static function get()
     {
-        if (isset(\Session::singleton()->message)) {
-            $message = \Session::singleton()->message;
+        if (isset(\Session::getInstance()->message)) {
+            $message = \Session::getInstance()->message;
         } else {
             $message = null;
         }
-        unset(\Session::singleton()->message);
+        unset(\Session::getInstance()->message);
         return $message;
     }
 
