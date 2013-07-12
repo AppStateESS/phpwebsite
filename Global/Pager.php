@@ -57,29 +57,75 @@ class Pager {
     protected $prev_page_marker;
 
     /**
-     * Path to template file
-     * @var string
+     * Template object
+     * @var \Template
      */
     protected $template;
 
     /**
-     * Stack of row sorts by column
-     * @var string
+     * What column and direction we are sorting in
+     * $this->sort_by['column']
+     * $this->sort_by['direction']
+     * @var array
      */
     protected $sort_by;
 
+    /**
+     * Array of sorting headers for top of pager
+     * @var array
+     */
+    protected $headers;
+
+    /**
+     * Id of pager table. This can either be set by the programmer or
+     * it will get defaulted and set to the $pager_id variable. If missing
+     * from the pager template, the pager will not work.
+     * @var string
+     */
+    protected $id;
+    protected $data_url;
+
     public function __construct()
     {
-        $this->template = new \Template;
-        $this->template->setFile(PHPWS_SOURCE_DIR . 'Global/Templates/Pager/default.html');
+        javascript('jquery');
 
         $this->first_marker = t('First');
         $this->last_marker = t('Last');
 
         $request = \Server::getCurrentRequest();
-        if ($request->isVar('sortby')) {
-            $this->sort_by = $request->getVar('sortby');
+        if ($request->isVar('sort_by')) {
+            $sort_by = $request->getVar('sort_by');
+            if (strstr($sort_by, ':')) {
+                list($column, $direction) = explode(':', $sort_by);
+            } else {
+                $column = $sort_by;
+                $direction = null;
+            }
+            $this->setSortBy($column, $direction);
         }
+    }
+
+    public function setTemplate(\Template $template)
+    {
+        if (!is_file($template->getFile())) {
+            throw new \Exception(t('Could not find template file: %t',
+                    $template->getFile()));
+        }
+        $this->template = $template;
+    }
+
+    public function setId($id)
+    {
+        $attr = new \Variable\Attribute($id);
+        $this->id = $attr->getValue();
+    }
+
+    public function getId()
+    {
+        if (empty($this->id)) {
+            $this->id = randomString(12);
+        }
+        return $this->id;
     }
 
     /**
@@ -93,6 +139,15 @@ class Pager {
             throw new Exception(t('setTotalItems expected an integer'));
         }
         $this->total_items = (int) $rows;
+    }
+
+    public function setSortBy($column_name, $direction = null)
+    {
+        if (empty($direction)) {
+            $direction = SORT_ASC;
+        }
+        $this->sort_by['column'] = $column_name;
+        $this->sort_by['direction'] = $direction;
     }
 
     /**
@@ -135,10 +190,16 @@ class Pager {
     public function setRows(array $rows)
     {
         $this->rows = $rows;
-        $row = current($rows);
-        $keys = array_keys($row);
-        foreach ($keys as $header) {
-            $this->headers[$header] = ucwords(str_replace('_', ' ', $header));
+    }
+
+    public function setHeaders(array $headers)
+    {
+        if (is_assoc($headers)) {
+            $this->headers = $headers;
+        } else {
+            foreach ($headers as $header) {
+                $this->headers[$header] = ucwords(str_replace('_', ' ', $header));
+            }
         }
     }
 
@@ -148,11 +209,6 @@ class Pager {
             $this->sortCurrentRows($this->sort_by);
         }
         return $this->rows;
-    }
-
-    public function getTemplateArray()
-    {
-
     }
 
     /**
@@ -247,7 +303,7 @@ class Pager {
             } else {
                 $icon = null;
             }
-            $rows[] = "<a href='javascript::void()' data-column_name='$column_name' class='sort-header'>$print_name $icon</a>";
+            $rows[$column_name] = "<a href='javascript:void(0)' data-column-name='$column_name' class='sort-header'>$print_name $icon</a>";
         }
         return $rows;
     }
@@ -261,11 +317,41 @@ class Pager {
         return $rows;
     }
 
-    public function buildTemplate()
+    public function populateTemplate()
     {
+        if (empty($this->template)) {
+            throw new \Exception(t('Template not set'));
+        }
+        if (empty($this->headers)) {
+            throw new \Exception(t('Headers not set, cannot populate template'));
+        }
         $this->template->add('header_values', $this->getHeaderValues());
-        $this->template->add('headers', $this->getHeaders());
-        $this->template->add('rows', $this->getAllRows());
+        $this->template->add('header', $this->getHeaders());
+        $this->template->add('pager_id', $this->getId());
+        $this->template->add('pager_javascript', $this->getJavascript());
+    }
+
+    protected function getJavascript()
+    {
+        javascript('jquery');
+        $source_http = PHPWS_SOURCE_HTTP;
+        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>");
+        $file = PHPWS_SOURCE_DIR . 'Global/Templates/Pager/trigger.html';
+        $template = new \Template(null, $file);
+        $template->add('data_url', $this->data_url);
+        return $template->get();
+    }
+
+    public function getJson()
+    {
+        if ($this->sort_by) {
+            $this->sortCurrentRows($this->sort_by['column'],
+                    $this->sort_by['direction']);
+        }
+        if (!empty($this->rows)) {
+            $data[$this->id]['rows'] = $this->rows;
+        }
+        return $data;
     }
 
     public function get()
@@ -277,6 +363,11 @@ class Pager {
     public function __toString()
     {
         return $this->get();
+    }
+
+    public function setDataUrl($url)
+    {
+        $this->data_url = $url;
     }
 
 }
