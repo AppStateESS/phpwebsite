@@ -87,6 +87,15 @@ class Template implements View {
         $this->file = $file;
     }
 
+    /**
+     * Retures path to current template file.
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
     private function encode($content)
     {
         if (is_array($content)) {
