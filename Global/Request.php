@@ -281,6 +281,15 @@ class Request extends Data {
     }
 
     /**
+     * Returns all the variables set in the vars variable.
+     * @return array
+     */
+    public function getRequestVars()
+    {
+        return $this->vars;
+    }
+
+    /**
      * @param $variable_name string The name of the request variable to set
      * @param $value string The value for the request variable
      * @return void
@@ -366,7 +375,7 @@ class Request extends Data {
         return new Request(
             $url,
             $this->getMethod(),
-            $this->getVars(),
+            $this->getRequestVars(),
             $this->getRawData(),
             $this->getAccept());
     }
