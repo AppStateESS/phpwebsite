@@ -14,7 +14,6 @@ class PhpwebsiteController implements Controller {
     private $module_array_active;
     private $module_stack;
     private $request;
-
     // This is a temporary thing to prevent Layout from running in the event of
     // a JSON request or otherwise non-HTML response.
     private $skipLayout = false;
@@ -27,12 +26,7 @@ class PhpwebsiteController implements Controller {
 
     public function execute(\Request $request)
     {
-        if (strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE) {
-            $this->forwardInfo();
-        }
-
         try {
-
             /**
              * Call each module's init method
              */
@@ -71,7 +65,7 @@ class PhpwebsiteController implements Controller {
     protected function determineCurrentModule(\Request $request)
     {
         // Try the Old Fashioned Way first
-        if($request->isVar('module')) {
+        if ($request->isVar('module')) {
             $title = $request->getVar('module');
         }
 
@@ -79,7 +73,7 @@ class PhpwebsiteController implements Controller {
         // Accessing $_REQUEST directly because this is how access module works
         // @todo: replace this with a new shortcutting system that does not
         // modify $_REQUEST
-        if(array_key_exists('module', $_REQUEST)) {
+        if (array_key_exists('module', $_REQUEST)) {
             $title = $_REQUEST['module'];
         }
 
@@ -87,7 +81,7 @@ class PhpwebsiteController implements Controller {
         else {
             $title = $request->getCurrentToken();
 
-            if($title == '/') {
+            if ($title == '/') {
                 // @todo Configured Default Module
                 return null;
             }
@@ -95,7 +89,7 @@ class PhpwebsiteController implements Controller {
 
         $mr = ModuleRepository::getInstance();
 
-        if(!$mr->hasModule($title)) {
+        if (!$mr->hasModule($title)) {
             throw new \Http\NotFoundException($request);
         }
 
@@ -119,7 +113,8 @@ class PhpwebsiteController implements Controller {
         // For Compatibility only - modules that make an end-run around the new
         // system and speak to Layout directly should return a Response
         // containing a NullView in order to skip the new rendering process.
-        if($view instanceof NullView) return;
+        if ($view instanceof NullView)
+            return;
 
         $rendered = $view->render();
 
@@ -144,7 +139,8 @@ class PhpwebsiteController implements Controller {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             // This is a temporary thing to prevent Layout from running in the
             // event of a JSON request or otherwise non-HTML Response.
-            if($this->skipLayout && strtolower($mod->getTitle()) == 'layout') continue;
+            if ($this->skipLayout && strtolower($mod->getTitle()) == 'layout')
+                continue;
 
             $mod->destruct();
         }
@@ -274,77 +270,7 @@ class PhpwebsiteController implements Controller {
         return $this->module_stack[$module_title];
     }
 
-    private function forwardInfo()
-    {
-        $url = PHPWS_Core::getCurrentUrl();
 
-        if ($url == 'index.php' || $url == '') {
-            return;
-        }
-
-        if (UTF8_MODE) {
-            $preg = '/[^\w\-\pL]/u';
-        } else {
-            $preg = '/[^\w\-]/';
-        }
-
-        // Should ignore the ? and everything after it
-        $qpos = strpos($url, '?');
-        if ($qpos !== FALSE) {
-            $url = substr($url, 0, $qpos);
-        }
-
-        $aUrl = explode('/', preg_replace('|/+$|', '', $url));
-        $module = array_shift($aUrl);
-
-        $mods = PHPWS_Core::getModules(true, true);
-
-        if (!in_array($module, $mods)) {
-            $GLOBALS['Forward'] = $module;
-            return;
-        }
-
-        if (preg_match('/[^\w\-]/', $module)) {
-            return;
-        }
-
-        $_REQUEST['module'] = $_GET['module'] = & $module;
-
-        $count = 1;
-        $continue = 1;
-        $i = 0;
-
-        // Try and save some old links references
-        if (count($aUrl) == 1) {
-            $_GET['id'] = $_REQUEST['id'] = $aUrl[0];
-            return;
-        }
-
-        while (isset($aUrl[$i])) {
-            $key = $aUrl[$i];
-            if (!$i && is_numeric($key)) {
-                $_GET['id'] = $key;
-                return;
-            }
-            $i++;
-            if (isset($aUrl[$i])) {
-                $value = $aUrl[$i];
-                if (preg_match('/&/', $value)) {
-                    $remain = explode('&', $value);
-                    $j = 1;
-                    $value = $remain[0];
-                    while (isset($remain[$j])) {
-                        $sub = explode('=', $remain[$j]);
-                        $_REQUEST[$sub[0]] = $_GET[$sub[0]] = $sub[1];
-                        $j++;
-                    }
-                }
-
-                $_GET[$key] = $_REQUEST[$key] = $value;
-            }
-            $i++;
-        }
-    }
 
 }
 
