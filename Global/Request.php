@@ -84,7 +84,7 @@ class Request extends Data {
     private $method = null;
 
     /**
-     * An instance of Http\Accept, which should be used to determine the type of 
+     * An instance of Http\Accept, which should be used to determine the type of
      * data that will be sent to the client.
      * @var Http\Accept
      */
@@ -112,7 +112,7 @@ class Request extends Data {
 
         $this->setData($data);
 
-        // @todo I am a bit worried about the default here; in fact, it should 
+        // @todo I am a bit worried about the default here; in fact, it should
         // probably not be allowed to be null at all.
         if(is_null($accept)) $accept = new Http\Accept('text/html');
         $this->setAccept($accept);
@@ -161,6 +161,8 @@ class Request extends Data {
             $url = substr($url, 0, -1);
         }
 
+        // Strip parameters
+        $url = preg_replace('/(\?|&)\w.*$/', '', $url);
         return $url;
     }
 
