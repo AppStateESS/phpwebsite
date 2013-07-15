@@ -1,62 +1,80 @@
+
 $(window).load(function() {
-    Pager.init();
+    Pagers = new PagerList;
+    Pagers.loadPagers();
+    console.log(Pagers);
 });
 
-var Pager = {};
+function PagerList() {
+    this.pagers = new Object;
 
-Pager.init = function() {
-    Pager.rows = new Array;
-    Pager.getPagerIds();
-    $('a.sort-header').click(function() {
-    });
+    this.loadPagers = function()
+    {
+        $this = this;
+        $('.pager').each(function() {
+            var pager_dom = $(this);
+            var pager_id = pager_dom.attr('id');
 
-    Pager.pager_ids.forEach(Pager.loadPager);
-
-    //Pager.pager_ids.forEach(Pager.getData);
-};
-
-Pager.loadPager = function(pager_id)
-{
-    Pager.pagers[pager_id].getData(pager_id);
-    console.log(pager_id);
-}
-
-Pager.getData = function(pager_id) {
-    var url = Pager.currentURL();
-    $.get(url, {
-        'pager_id': pager_id
-    },
-    function(data) {
-        if (data.error) {
-            return;
-        }
-        var rows = data[pager_id].rows;
-        Pager.fillRows(pager_id, rows);
-        //console.log(rows);
-        //console.log(data[pager_id].rows);
-        //console.log(rows);
-    }, 'json');
-}
-
-Pager.fillRows = function(pager_id, rows) {
-    var tpl_rows = $('#' + pager_id + ' .pager-row');
-    console.log(rows);
+            new_pager = new Pager(pager_id, pager_dom);
+            new_pager.init();
+            if (new_pager.rows !== undefined) {
+                $this.pagers[new_pager.id] = new_pager;
+            }
+        });
+    };
 }
 
 
-Pager.currentURL = function() {
-    var unfiltered_url = document.URL;
-    return unfiltered_url.replace(/\&.*$/g, '');
-};
+function Pager(id, page) {
+    var $this = this;
+    this.id = id;
+    this.page = page;
 
-Pager.plugRows = function() {
+
+    this.loadData = function() {
+        var url = this.currentURL();
+        var all_good = true;
+        $.ajax({
+            'url': url,
+            'dataType': 'json',
+            'data': {'pager_id': $this.id},
+            'async': false,
+            'success': function(data) {
+                if (data.error || data.rows.length < 1) {
+                    return;
+                } else {
+                    $this.rows = data.rows;
+                }
+            }
+        });
+    };
+
+    this.loadRowTemplate = function() {
+        this.row_template = $('#' + this.id + ' .pager-row');
+        this.columns = this.row_template.find('.pager-column');
+        //this.row_template.remove();
+    };
+
+
+    this.currentURL = function() {
+        var unfiltered_url = document.URL;
+        return unfiltered_url.replace(/\&.*$/g, '');
+    };
+
+    this.plugRows = function() {
+    };
+
+    this.init = function() {
+        this.loadRowTemplate();
+        this.columns.each(function() {
+            $(this).html('test');
+        });
+
+        var result = this.loadData();
+        this.loadData();
+    };
+
+    //var column_example = $('.animal').children(this.row_template);
+    //console.log(column_example.html());
 }
 
-Pager.getPagerIds = function() {
-    Pager.pager_ids = new Array();
-    var i = 0;
-    $('.pager').each(function() {
-        Pager.pager_ids[i] = $(this).attr('id');
-        i++;
-    });
-}
