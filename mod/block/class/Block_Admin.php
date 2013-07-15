@@ -357,6 +357,7 @@ class Block_Admin {
                                 'Create new block'), 'block',
                         array('action' => 'new'), null,
                         dgettext('block', 'Create new block'), 'button');
+        $pageTags['NEW_BLOCK_URI'] = PHPWS_Text::linkAddress('block', array('action' => 'new'), true);
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION'] = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');

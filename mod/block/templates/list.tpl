@@ -1,12 +1,15 @@
-<div style="margin : 8px 0px">{NEW_BLOCK}</div>
-<table cellpadding="4" cellspacing="1" width="100%">
+<p>
+  <a href="{NEW_BLOCK_URI}" class="btn btn-primary">Create a New Block</a>
+</p>
+
+<table class="table table-striped" width="100%">
     <tr>
         <th>{TITLE_SORT}</th>
         <th>{CONTENT}</th>
         <th>{ACTION}</th>
     </tr>
     <!-- BEGIN listrows -->
-    <tr{TOGGLE}>
+    <tr>
         <td>{TITLE}</td>
         <td>{CONTENT}</td>
         <td>{ACTION}</td>
