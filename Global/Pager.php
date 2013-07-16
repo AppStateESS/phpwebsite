@@ -93,14 +93,9 @@ class Pager {
         $this->last_marker = t('Last');
 
         $request = \Server::getCurrentRequest();
-        if ($request->isVar('sort_by')) {
-            $sort_by = $request->getVar('sort_by');
-            if (strstr($sort_by, ':')) {
-                list($column, $direction) = explode(':', $sort_by);
-            } else {
-                $column = $sort_by;
-                $direction = null;
-            }
+        if ($request->isVar('sort_by') && $request->isVar('direction')) {
+            $column = $request->getVar('sort_by');
+            $direction = $request->getVar('direction');
             $this->setSortBy($column, $direction);
         }
     }
@@ -117,7 +112,7 @@ class Pager {
     public function setId($id)
     {
         $attr = new \Variable\Attribute($id);
-        $this->id = $attr->getValue();
+        $this->id = $attr->get();
     }
 
     public function getId()
@@ -293,17 +288,24 @@ class Pager {
     {
         $icon_down = '<i class="icon-arrow-down"></i>';
         $icon_up = '<i class="icon-arrow-up"></i>';
+        $icon_stay = '<i class="icon-stop"></i>';
         foreach ($this->headers as $column_name => $print_name) {
             if (isset($this->sort_by[$column_name])) {
-                if ($this->sort_by == 1) {
+                if ($this->sort_by['direction'] == SORT_DESC) {
+                    $sort = SORT_REGULAR;
                     $icon = $icon_up;
-                } else {
+                } elseif ($this->sort_by['direction'] == SORT_ASC) {
+                    $sort = SORT_DESC;
                     $icon = $icon_down;
+                } else {
+                    $icon = $icon_stay;
+                    $sort = SORT_ASC;
                 }
             } else {
+                $sort = null;
                 $icon = null;
             }
-            $rows[$column_name] = "<a href='javascript:void(0)' data-column-name='$column_name' class='sort-header'>$print_name $icon</a>";
+            $rows[$column_name] = "<a href='javascript:void(0)' data-direction='$sort' data-column-name='$column_name' class='sort-header'>$print_name $icon</a>";
         }
         return $rows;
     }
@@ -344,13 +346,16 @@ class Pager {
 
     public function getJson()
     {
+        $data = null;
+        if (empty($this->rows)) {
+            return array('rows' => null, 'error' => t('No rows found'));
+        }
+        $data['message'] = $this->sort_by;
         if ($this->sort_by) {
             $this->sortCurrentRows($this->sort_by['column'],
                     $this->sort_by['direction']);
         }
-        if (!empty($this->rows)) {
-            $data[$this->id]['rows'] = $this->rows;
-        }
+        $data['rows'] = $this->rows;
         return $data;
     }
 

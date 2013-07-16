@@ -8,7 +8,15 @@ $(window).load(function() {
     Pagers = new PagerList;
     Pagers.loadPagers();
     Pagers.fillRows();
+
+    $('.sort-header').click(function() {
+        var column_name = $(this).data('column-name');
+        var direction = $(this).data('direction');
+        var pager_id = $(this).parents('.pager').attr('id');
+        Pagers.setSort(pager_id, column_name, direction);
+    });
 });
+
 
 function PagerList() {
     this.pagers = new Object;
@@ -37,6 +45,10 @@ function PagerList() {
             pager.plugRows();
         });
     };
+
+    this.setSort = function(pager_id, column_name, direction) {
+        this.pagers[pager_id].setSort(column_name, direction);
+    };
 }
 
 
@@ -44,8 +56,14 @@ function Pager(id, page) {
     var $this = this;
     this.id = id;
     this.page = page;
-    //this.column_names = new Array();
+    this.sort_by = '';
+    this.direction = '';
 
+    this.setSort = function(column_name, direction)
+    {
+        this.sort_by = column_name;
+        this.direction = direction;
+    };
 
     this.loadData = function() {
         var url = this.currentURL();
@@ -67,7 +85,6 @@ function Pager(id, page) {
 
     this.loadRowTemplate = function() {
         this.row_template = $('#' + this.id + ' .pager-row');
-        //this.columns = this.row_template.find('.pager-column');
         this.row_template.remove();
     };
 
@@ -91,7 +108,6 @@ function Pager(id, page) {
 
     this.init = function() {
         this.loadRowTemplate();
-        var result = this.loadData();
         this.loadData();
     };
 }
