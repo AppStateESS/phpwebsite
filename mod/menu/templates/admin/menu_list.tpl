@@ -1,10 +1,10 @@
-<table cellpadding="4" cellspacing="1" width="100%">
+<table class="table table-striped" width="100%">
     <tr>
         <th>{TITLE_SORT}</th>
         <th>{ACTION}</th>
     </tr>
     <!-- BEGIN listrows -->
-    <tr{TOGGLE}>
+    <tr>
         <td>{TITLE}</td>
         <td>{ACTION}</td>
     </tr>
