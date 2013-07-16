@@ -1,12 +1,18 @@
+jQuery.fn.outerHTML = function(s) {
+    return (s)
+            ? this.before(s).remove()
+            : jQuery("<p>").append(this.eq(0).clone()).html();
+};
 
 $(window).load(function() {
     Pagers = new PagerList;
     Pagers.loadPagers();
-    console.log(Pagers);
+    Pagers.fillRows();
 });
 
 function PagerList() {
     this.pagers = new Object;
+    this.pager_ids = new Array;
 
     this.loadPagers = function()
     {
@@ -19,7 +25,16 @@ function PagerList() {
             new_pager.init();
             if (new_pager.rows !== undefined) {
                 $this.pagers[new_pager.id] = new_pager;
+                $this.pager_ids.push(new_pager.id);
             }
+        });
+    };
+
+    this.fillRows = function() {
+        $this = this;
+        this.pager_ids.forEach(function(val) {
+            var pager = $this.pagers[val];
+            pager.plugRows();
         });
     };
 }
@@ -29,6 +44,7 @@ function Pager(id, page) {
     var $this = this;
     this.id = id;
     this.page = page;
+    //this.column_names = new Array();
 
 
     this.loadData = function() {
@@ -51,8 +67,8 @@ function Pager(id, page) {
 
     this.loadRowTemplate = function() {
         this.row_template = $('#' + this.id + ' .pager-row');
-        this.columns = this.row_template.find('.pager-column');
-        //this.row_template.remove();
+        //this.columns = this.row_template.find('.pager-column');
+        this.row_template.remove();
     };
 
 
@@ -62,19 +78,20 @@ function Pager(id, page) {
     };
 
     this.plugRows = function() {
+        this.rows.forEach(function(row) {
+            new_row = $this.row_template.clone();
+
+            for (var key in row) {
+                var cname = '.' + key;
+                $(cname, new_row).html(row[key]);
+            }
+            $('.pager-body').append(new_row.outerHTML());
+        });
     };
 
     this.init = function() {
         this.loadRowTemplate();
-        this.columns.each(function() {
-            $(this).html('test');
-        });
-
         var result = this.loadData();
         this.loadData();
     };
-
-    //var column_example = $('.animal').children(this.row_template);
-    //console.log(column_example.html());
 }
-
