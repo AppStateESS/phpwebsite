@@ -35,6 +35,18 @@ require_once PHPWS_SOURCE_DIR . 'Global/Data.php';
 
 class Session extends Data {
 
+	/**
+	 * Holds the singleton instance of this class.
+	 * @var unknown
+	 */
+	private static $instance;
+	
+	/**
+	 * The name of the top-level session variable everything is stored in.
+	 * @var unknown
+	 */
+	const SESSION_KEY = 'PHPWS';
+	
     /**
      * Values of the PHPWS Session
      * @var array
@@ -45,46 +57,15 @@ class Session extends Data {
      * Indicates if session_start has been called
      * @var boolean
      */
-    private static $started = false;
+    private $started = false;
 
     /**
      * Name of the current session
      * @var string
      */
-    private static $session_name = null;
+    private $sessionName = null;
 
-    /**
-     * Creates a session object
-     */
-    private function __construct()
-    {
-        if (!self::$started) {
-            self::start();
-        }
-        $this->values = & $_SESSION['PHPWS'];
-    }
-
-    /**
-     * Starts the session
-     */
-    public static function start($session_name = null)
-    {
-        if (self::$started) {
-            throw new \Exception(t('Session has already been started'));
-        }
-        if (!isset($session_name)) {
-            self::$session_name = md5(SITE_HASH . $_SERVER['REMOTE_ADDR']);
-        } else {
-            self::$session_name = $session_name;
-        }
-        session_name(self::$session_name);
-        session_start();
-        self::$started = true;
-        if (!isset($_SESSION['PHPWS'])) {
-            $_SESSION['PHPWS'] = array();
-        }
-    }
-
+    
     /**
      * Returns the static session object for use.
      * @staticvar Session $session
@@ -92,14 +73,61 @@ class Session extends Data {
      */
     public static function getInstance()
     {
-        static $session = null;
-
-        if (empty($session)) {
-            $session = new Session;
+    	if (!isset(self::$instance)) {
+    		self::$instance = new Session;
+    	}
+    
+    	return self::$instance;
+    }
+    
+    /**
+     * Creates a session object
+     */
+    private function __construct()
+    {
+    	// If the session hasn't been started, then start it
+        if ($this->started) {
+            $this->start();
         }
-        return $session;
+        
+        // Grab a reference to the session variable we're using
+        $this->values = & $_SESSION[self::SESSION_KEY];
     }
 
+    /**
+     * Starts the session
+     */
+    private function start()
+    {
+    	// Check that the session hasn't already been started
+        if ($this->started) {
+            throw new \Exception(t('Session has already been started'));
+        }
+        
+        // Generate the session name, if not already set
+        if (!isset($this->sessionName)) {
+        	// NB: This session name will not work if used behind a reverse proxy.
+        	// It also won't work for two users who are behind the same proxy.
+            $this->sessionName = md5(SITE_HASH . $_SERVER['REMOTE_ADDR']);
+        }
+        
+        // Set the session name and start the session
+        session_name($this->sessionName);
+        session_start();
+        
+        $this->started = true;
+        
+        // Initialize a variable on the session to store everything
+        if (!isset($_SESSION[self::SESSION_KEY])) {
+            $_SESSION[self::SESSION_KEY] = array();
+        }
+    }
+
+    private function close()
+    {
+    	
+    }
+    
     /**
      * Sets a Session variable
      * @param string $name
@@ -148,11 +176,9 @@ class Session extends Data {
      */
     public function reset()
     {
-        unset($_SESSION['PHPWS']);
-        $_SESSION['PHPWS'] = array();
-        $this->values = array();
+        unset($_SESSION[self::SESSION_KEY]);
+        $_SESSION[self::SESSION_KEY] = array();
     }
-
 }
 
 ?>
