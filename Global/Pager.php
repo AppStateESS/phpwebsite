@@ -96,7 +96,9 @@ class Pager {
         if ($request->isVar('sort_by') && $request->isVar('direction')) {
             $column = $request->getVar('sort_by');
             $direction = $request->getVar('direction');
-            $this->setSortBy($column, $direction);
+            if (!empty($column)) {
+                $this->setSortBy($column, $direction);
+            }
         }
     }
 
@@ -302,8 +304,8 @@ class Pager {
                     $sort = SORT_ASC;
                 }
             } else {
-                $sort = null;
-                $icon = null;
+                $sort = SORT_ASC;
+                $icon = $icon_stay;
             }
             $rows[$column_name] = "<a href='javascript:void(0)' data-direction='$sort' data-column-name='$column_name' class='sort-header'>$print_name $icon</a>";
         }
@@ -350,7 +352,6 @@ class Pager {
         if (empty($this->rows)) {
             return array('rows' => null, 'error' => t('No rows found'));
         }
-        $data['message'] = $this->sort_by;
         if ($this->sort_by) {
             $this->sortCurrentRows($this->sort_by['column'],
                     $this->sort_by['direction']);
