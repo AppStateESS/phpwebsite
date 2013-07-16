@@ -192,6 +192,15 @@ class Blog {
             return strftime($type, time());
         }
     }
+    
+    public function getPublishDateShort()
+    {
+    	if (!is_null($this->publish_date)) {
+    		return date('F j, Y', $this->publish_date);
+    	}else{
+    		return null;
+    	}
+    }
 
     public function getExpireDate()
     {
@@ -346,6 +355,7 @@ class Blog {
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
         $template['POSTED_ON'] = dgettext('blog', 'Posted at');
+        $template['PUBLISHED'] = dgettext('blog', 'Published');
         if ($this->author_id) {
             $template['AUTHOR'] = $this->author;
         } else {
@@ -379,6 +389,8 @@ class Blog {
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
                 $this->getViewLink(true), $this->title);
+        
+        $template['TITLE_NO_LINK'] = $this->title;
 
         if ($this->publish_date > time()) {
             $template['UNPUBLISHED'] = dgettext('blog', 'Unpublished');
@@ -386,7 +398,8 @@ class Blog {
             $template['UNPUBLISHED'] = dgettext('blog', 'Expired');
         }
 
-        $template['LOCAL_DATE'] = $this->getPublishDate();
+        $template['LOCAL_DATE']		= $this->getPublishDate();
+        $template['PUBLISHED_DATE'] = $this->getPublishDateShort();
 
         $summary = $this->getSummary(true);
         $entry = $this->getEntry(true);
@@ -420,6 +433,8 @@ class Blog {
 
             $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog',
                                     'Edit'), 'blog', $vars);
+            $template['EDIT_URI'] = PHPWS_Text::linkAddress('blog', $vars, true);
+            
             if (!$summarized) {
                 MiniAdmin::add('blog',
                         array(PHPWS_Text::secureLink(dgettext('blog',
@@ -483,6 +498,7 @@ class Blog {
 
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
         $template['POSTED_ON'] = dgettext('blog', 'Posted on');
+        $template['PUBLISHED'] = dgettext('blog', 'Published');
         $template['AUTHOR'] = $this->author;
 
         if ($summarized) {

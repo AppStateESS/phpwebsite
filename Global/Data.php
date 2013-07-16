@@ -41,7 +41,7 @@ abstract class Data {
     protected $parent;
 
     /**
-     * Returns true is parameter is private
+     * Returns true if parameter is private
      * @param string $variable_name
      * @return boolean
      */
@@ -52,7 +52,7 @@ abstract class Data {
     }
 
     /**
-     * Returns true is parameter is protected
+     * Returns true if parameter is protected
      * @param string $variable_name
      * @return boolean
      */
@@ -63,7 +63,7 @@ abstract class Data {
     }
 
     /**
-     * Returns true is parameter is public
+     * Returns true if parameter is public
      * @param string $variable_name
      * @return boolean
      */

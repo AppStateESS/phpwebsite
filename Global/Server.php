@@ -194,7 +194,7 @@ class Server {
         }
 
         $url = preg_replace('@\\\@', '/', implode('', $address));
-        $url .= '/';
+        //$url .= '/';  // Appending this extra slash breaks URL generation for Shortcuts. See Issue #106
         return $url;
     }
 
