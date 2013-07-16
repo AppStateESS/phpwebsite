@@ -1,7 +1,5 @@
 <h2>{TITLE}</h2>
 <!-- BEGIN message -->
-<div class="alert">
-{MESSAGE}
-</div>
+<h3>{MESSAGE}</h3>
 <!-- END message -->
 <div>{CONTENT}</div>
