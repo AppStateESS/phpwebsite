@@ -140,9 +140,19 @@ class Session extends Data {
         session_write_close();
     }
 
-    public function hasStarted()
+    /**
+     * Checks the status of the php Session. Returns true if a session has be started, false otherwise.
+     * @return boolean
+     */
+    public function isActive()
     {
-        //TODO
+        $status = session_status();
+
+        if ($status == PHP_SESSION_ACTIVE) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -153,6 +163,10 @@ class Session extends Data {
      */
     public function __set($name, $value)
     {
+        if(!$this->isActive()){
+            throw new Exception('Session is not active.');
+        }
+
         $this->values[$name] = $value;
     }
 
@@ -165,9 +179,14 @@ class Session extends Data {
      */
     public function __get($name)
     {
+        if(!$this->isActive()){
+            throw new Exception('Session is not active.');
+        }
+
         if (!isset($this->values[$name])) {
             throw new \Exception(t('Variable "%s" not set in the Session', $name));
         }
+
         return $this->values[$name];
     }
 
@@ -179,6 +198,10 @@ class Session extends Data {
      */
     public function __isset($name)
     {
+        if(!$this->isActive()){
+            throw new Exception('Session is not active.');
+        }
+
         return isset($this->values[$name]);
     }
 
@@ -189,6 +212,10 @@ class Session extends Data {
      */
     public function __unset($name)
     {
+        if(!$this->isActive()){
+            throw new Exception('Session is not active.');
+        }
+
         unset($this->values[$name]);
     }
 
@@ -197,6 +224,10 @@ class Session extends Data {
      */
     public function reset()
     {
+        if(!$this->isActive()){
+            throw new Exception('Session is not active.');
+        }
+
         unset($_SESSION[self::SESSION_KEY]);
         $_SESSION[self::SESSION_KEY] = array();
     }
