@@ -14,7 +14,7 @@
 			</ul>
 		</div>
     <!-- END menu_admin -->
-		<h5>{TITLE}</h5>
+		<h5 class="menu-title">{TITLE}</h5>
 	</div>
 	<ul id="sort-{MENU_ID}" class="nav nav-tabs nav-stacked">
 	  {LINKS}
