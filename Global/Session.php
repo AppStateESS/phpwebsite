@@ -81,7 +81,7 @@ class Session extends Data {
     }
     
     /**
-     * Creates a session object
+     * Private constructor for singleton pattern. Creates a session object
      */
     private function __construct()
     {
@@ -123,9 +123,13 @@ class Session extends Data {
         }
     }
 
-    private function close()
+    /**
+     * Closes the session.
+     */
+    public function close()
     {
-    	
+    	$this->started = false;
+    	session_write_close();
     }
     
     /**
