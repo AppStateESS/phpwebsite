@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Session is a replacement class for the $_SESSION array. Obviously, the
+ * Session is a replacement class for the $_SESSION array.
+ * Obviously, the
  * superglobal is still being used, but the variables are controlled through
  * this class.
  *
@@ -19,7 +20,7 @@
  * the setting and getting. You can also use isset and unset like so:
  *
  * if (isset($session->foo)) {
- *      echo 'Foo is here!';
+ * echo 'Foo is here!';
  * }
  *
  * unset($session->foo);
@@ -33,63 +34,70 @@
  */
 require_once PHPWS_SOURCE_DIR . 'Global/Data.php';
 
+
 class Session extends Data {
 
-	/**
-	 * Holds the singleton instance of this class.
-	 * @var unknown
-	 */
-	private static $instance;
-	
-	/**
-	 * The name of the top-level session variable everything is stored in.
-	 * @var unknown
-	 */
-	const SESSION_KEY = 'PHPWS';
-	
+    /**
+     * Holds the singleton instance of this class.
+     *
+     * @var unknown
+     */
+    private static $instance;
+
+    /**
+     * The name of the top-level session variable everything is stored in.
+     *
+     * @var unknown
+     */
+    const SESSION_KEY = 'PHPWS';
+
     /**
      * Values of the PHPWS Session
+     *
      * @var array
      */
     private $values;
 
     /**
      * Indicates if session_start has been called
+     *
      * @var boolean
      */
     private $started = false;
 
     /**
      * Name of the current session
+     *
      * @var string
      */
     private $sessionName = null;
 
-    
     /**
      * Returns the static session object for use.
+     *
      * @staticvar Session $session
      * @return \Session
      */
     public static function getInstance()
     {
-    	if (!isset(self::$instance)) {
-    		self::$instance = new Session;
-    	}
-    
-    	return self::$instance;
+        if (!isset(self::$instance)) {
+            self::$instance = new Session();
+        }
+
+        return self::$instance;
     }
-    
+
     /**
-     * Private constructor for singleton pattern. Creates a session object
+     * Private constructor for singleton pattern.
+     * Creates a session object
      */
     private function __construct()
     {
-    	// If the session hasn't been started, then start it
-        if ($this->started) {
+        // If the session hasn't been started, then start it
+        if (!$this->started) {
             $this->start();
         }
-        
+
         // Grab a reference to the session variable we're using
         $this->values = & $_SESSION[self::SESSION_KEY];
     }
@@ -99,24 +107,24 @@ class Session extends Data {
      */
     private function start()
     {
-    	// Check that the session hasn't already been started
+        // Check that the session hasn't already been started
         if ($this->started) {
             throw new \Exception(t('Session has already been started'));
         }
-        
+
         // Generate the session name, if not already set
         if (!isset($this->sessionName)) {
-        	// NB: This session name will not work if used behind a reverse proxy.
-        	// It also won't work for two users who are behind the same proxy.
+            // NB: This session name will not work if used behind a reverse proxy.
+            // It also won't work for two users who are behind the same proxy.
             $this->sessionName = md5(SITE_HASH . $_SERVER['REMOTE_ADDR']);
         }
-        
+
         // Set the session name and start the session
         session_name($this->sessionName);
-        session_start();
-        
+        //session_start();
+
         $this->started = true;
-        
+
         // Initialize a variable on the session to store everything
         if (!isset($_SESSION[self::SESSION_KEY])) {
             $_SESSION[self::SESSION_KEY] = array();
@@ -128,12 +136,18 @@ class Session extends Data {
      */
     public function close()
     {
-    	$this->started = false;
-    	session_write_close();
+        $this->started = false;
+        session_write_close();
     }
-    
+
+    public function hasStarted()
+    {
+        //TODO
+    }
+
     /**
      * Sets a Session variable
+     *
      * @param string $name
      * @param mixed $value
      */
@@ -144,6 +158,7 @@ class Session extends Data {
 
     /**
      * Returns a Session variable if it is set.
+     *
      * @param string $name
      * @return mixed
      * @throws \Exception Thrown if session variable is not set.
@@ -158,6 +173,7 @@ class Session extends Data {
 
     /**
      * Returns true if the Session variable is set.
+     *
      * @param string $name
      * @return boolean
      */
@@ -168,6 +184,7 @@ class Session extends Data {
 
     /**
      * Removes a Session variable from the value stack.
+     *
      * @param string $name
      */
     public function __unset($name)
