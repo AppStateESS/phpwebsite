@@ -121,7 +121,7 @@ class Session extends Data {
 
         // Set the session name and start the session
         session_name($this->sessionName);
-        //session_start();
+        session_start();
 
         $this->started = true;
 
