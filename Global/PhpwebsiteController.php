@@ -32,7 +32,8 @@ class PhpwebsiteController implements Controller {
              */
             $this->loadModuleInits();
 
-            Session::start();
+            $session = Session::getInstance();
+            
             /**
              * Moved from Bootstrap, eventually to be deprecated
              */
