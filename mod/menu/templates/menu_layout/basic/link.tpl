@@ -18,7 +18,7 @@
             </ul>
         </div>
     <!-- END admin_links -->
-  
+
   <a
     href="{LINK_URL}"
     class="{ACTIVE}
@@ -26,10 +26,10 @@
     dropdown-toggle" data-toggle="{LINK_DROPDOWN}
     <!--  END dropdown -->
     ">{LINK_TEXT}</a>
-    
+
       <!-- BEGIN sublink -->
       <div class="well">
-      <ul>
+      <ul class="menu-sub-{LEVEL}">
         {SUBLINK}
       </ul>
       </div>
