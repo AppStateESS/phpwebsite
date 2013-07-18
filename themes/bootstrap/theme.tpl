@@ -30,9 +30,6 @@
             <span class="icon-bar"></span>
           </button>
           <a class="brand" href="./">{SITE_NAME}</a>
-          <ul class="nav">
-            <li class="{CONTENT_PAGE}"><a href="index.php">View Site</a></li>
-          </ul>
           <ul class="nav nav-collapse pull-right">
             <!--<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle">New Content <b class="caret"></b></a></li>-->
           <!-- BEGIN miniadmin -->
