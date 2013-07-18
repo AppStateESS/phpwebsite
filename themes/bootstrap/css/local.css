@@ -54,4 +54,14 @@ form.form-inline input, form.form-inline select {
     .mini-calendar, .breadcrumb, .division-link, .menu-title {
         display : none;
     }
+
+    .menu {
+        margin-top : 30px;
+        overflow : auto;
+        height : 200px;
+    }
+
+    .search-container {
+    }
+
 }
