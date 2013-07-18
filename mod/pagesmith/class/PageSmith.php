@@ -403,10 +403,13 @@ class PageSmith {
 
         if (!$this->page->id) {
             $unsaved_sections = $this->getUndoSession(0);
-            foreach ($unsaved_sections as $secname => $sec_content) {
-                $secname = preg_replace('/[\w\-]+(text\d+)$/', '\\1', $secname);
-                $some_content = true;
-                $this->page->_sections[$secname]->setContent(array_pop($sec_content));
+            if (!empty($unsaved_sections)) {
+                foreach ($unsaved_sections as $secname => $sec_content) {
+                    $secname = preg_replace('/[\w\-]+(text\d+)$/', '\\1',
+                            $secname);
+                    $some_content = true;
+                    $this->page->_sections[$secname]->setContent(array_pop($sec_content));
+                }
             }
         }
 
