@@ -249,37 +249,14 @@ class Menu_Item {
         Key::restrictView($db);
         $db->addOrder('link_order');
         $db->setIndexBy('id');
-        //$data = $db->select();
         $data = $db->getObjects('Menu_Link');
-        /*
-          if (empty($data) || PHPWS_Error::logIfError($data)) {
-          return NULL;
-          }
-         */
+
+        if (empty($data) || PHPWS_Error::logIfError($data)) {
+            return NULL;
+        }
+
         $final = $this->formLink($data);
-        // Create a matrix to index by parent id so we don't have to keep looping through the list
-        /*
-          $hash = array();
-          foreach ($data as $key => $row) {
-          $hash[$row['parent']][] = $key;
-          }
 
-          // Locate the desired record(s)
-          if (empty($hash[$parent])) {
-          return NULL;
-          }
-
-          $final = array();
-          foreach ($hash[$parent] as $rowId) {
-          $link = new Menu_Link();
-          PHPWS_Core::plugObject($link, $data[$rowId]);
-          // Get the children for each parent using the $result data array as reference
-          $link->loadChildren($data, $hash);
-          $link->_menu = & $this;
-          $final[$link->id] = $link;
-          }
-         *
-         */
         $GLOBALS['MENU_LINKS'][$this->id] = $final;
         return $final;
     }
@@ -290,7 +267,6 @@ class Menu_Item {
             $link->_menu = $this;
             if ($link->parent == 0) {
                 $new_list[$link->id] = $link;
-                unset($data[$key]);
             } elseif (isset($new_list[$link->parent])) {
                 $new_list[$link->parent]->_children[$link->id] = $link;
             } elseif (isset($data[$link->parent])) {
