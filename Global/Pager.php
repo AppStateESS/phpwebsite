@@ -140,11 +140,23 @@ class Pager {
 
     public function setSortBy($column_name, $direction = null)
     {
-        if (empty($direction)) {
+        if (!isset($direction)) {
             $direction = SORT_ASC;
         }
         $this->sort_by['column'] = $column_name;
         $this->sort_by['direction'] = $direction;
+    }
+
+    /**
+     * Sets the total amount of rows in use. By default, pager uses a count of
+     * the rows sent to setRows. This can be overwritten or prevented by
+     * setting the total_rows value here.
+     *
+     * @param integer $total_rows
+     */
+    public function setTotalRows($total_rows)
+    {
+        $this->total_rows = (int)$total_rows;
     }
 
     /**
@@ -187,6 +199,9 @@ class Pager {
     public function setRows(array $rows)
     {
         $this->rows = $rows;
+        if (!isset($this->total_rows)) {
+            $this->total_rows = count($rows);
+        }
     }
 
     public function setHeaders(array $headers)
@@ -263,7 +278,7 @@ class Pager {
                     foreach ($criteria as $criterion) {
                         // How will we compare this round?
                         list($column, $sortOrder, $projection) = $criterion;
-                        $sortOrder = $sortOrder === SORT_DESC ? -1 : 1;
+                        $sortOrder = $sortOrder == SORT_DESC ? -1 : 1;
 
                         // If a projection was defined project the values now
                         if ($projection) {
@@ -333,6 +348,12 @@ class Pager {
         $this->template->add('header', $this->getHeaders());
         $this->template->add('pager_id', $this->getId());
         $this->template->add('pager_javascript', $this->getJavascript());
+        $this->template->add('page_listing', $this->getPageList());
+    }
+
+    public function getPageList()
+    {
+
     }
 
     protected function getJavascript()
@@ -340,10 +361,6 @@ class Pager {
         javascript('jquery');
         $source_http = PHPWS_SOURCE_HTTP;
         \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>");
-        $file = PHPWS_SOURCE_DIR . 'Global/Templates/Pager/trigger.html';
-        $template = new \Template(null, $file);
-        $template->add('data_url', $this->data_url);
-        return $template->get();
     }
 
     public function getJson()
@@ -352,7 +369,7 @@ class Pager {
         if (empty($this->rows)) {
             return array('rows' => null, 'error' => t('No rows found'));
         }
-        if ($this->sort_by) {
+        if ($this->sort_by && $this->sort_by['direction'] != 0) {
             $this->sortCurrentRows($this->sort_by['column'],
                     $this->sort_by['direction']);
         }
