@@ -22,7 +22,7 @@ function formatBootstrap() {
                 var submenu = $('.menu .nav').height();
                 $('ul.nav > li.menu-link > div').animate({right: '+=1500', 'duration': 'slow', 'easing': 'linear'});
                 $('ul.nav > li.menu-link > div').css('minHeight', submenu);
-                $('ul.nav > li.menu-link > div').prepend('<div id="menu-chevron"><i class="icon-chevron-left icon-white"></i></div><div class="submenu-label">Submenu of ' + $('li.current-link a').html() + '</div>' );
+                $('ul.nav > li.menu-link > div').prepend('<div id="menu-chevron"><i class="icon-chevron-left icon-white"></i></div><div id="submenu-label">Submenu of ' + $('li.current-link a').html() + '</div>' );
                 $('#menu-chevron').css('height', $('ul.nav > li.menu-link > div').height());
             }
         } else {
@@ -31,6 +31,7 @@ function formatBootstrap() {
                 $('ul.nav > li.menu-link > div').css('minHeight', '');
             }
             $('#menu-chevron').remove();
+            $('#submenu-label').remove();
             this.subnav_up = false;
         }
     }

@@ -112,6 +112,6 @@ form.form-inline input, form.form-inline select {
     }
 }
 
-.submenu-label {
+#submenu-label {
     background-color :  #e3e3e3;text-align : right;padding : 3px; font-weight:bold;
 }
