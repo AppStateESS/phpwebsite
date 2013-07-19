@@ -19,7 +19,7 @@
 	<ul id="sort-{MENU_ID}" class="nav nav-tabs nav-stacked">
 	  {LINKS}
 	</ul>
-	<div class="align-center">
+	<div>
 		<!-- BEGIN pin -->
 		{PIN_PAGE}<br />
 		<!-- END pin -->
