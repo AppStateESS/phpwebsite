@@ -10,9 +10,25 @@ $(window).load(function() {
     Pagers.fillRows();
 
     $('.sort-header').click(function() {
-        var column_name = $(this).data('column-name');
-        var direction = $(this).data('direction');
+        var column_name = $(this).attr('data-column-name');
+        var direction = $(this).attr('data-direction');
         var pager_id = $(this).parents('.pager').attr('id');
+        var current_icon = $('i', this);
+        $('.sort-header i').attr('class', 'icon-stop');
+        switch (direction) {
+            case '4':
+                $(this).attr('data-direction', 3);
+                current_icon.attr('class', 'icon-arrow-up');
+                break;
+            case '3':
+                $(this).attr('data-direction', 0);
+                current_icon.attr('class', 'icon-arrow-down');
+                break;
+            case '0':
+                $(this).attr('data-direction', 4);
+                current_icon.attr('class', 'icon-stop');
+                break;
+        }
         Pagers.setSort(pager_id, column_name, direction);
         Pagers.reload(pager_id);
     });
@@ -64,7 +80,7 @@ function Pager(id, page) {
     this.sort_by = '';
     this.direction = 0;
 
-    this.reload  = function()
+    this.reload = function()
     {
         this.clearRows();
         this.loadData();
@@ -88,7 +104,7 @@ function Pager(id, page) {
         $.ajax({
             'url': url,
             'dataType': 'json',
-            'data': {'pager_id': $this.id, 'sort_by':this.sort_by, 'direction':this.direction},
+            'data': {'pager_id': $this.id, 'sort_by': this.sort_by, 'direction': this.direction},
             'async': false,
             'success': function(data) {
                 if (data.error || data.rows.length < 1) {
