@@ -56,12 +56,62 @@ form.form-inline input, form.form-inline select {
     }
 
     .menu {
-        margin-top : 30px;
-        overflow : auto;
-        height : 200px;
+        margin-left : -15px;
+        margin-right : -15px;
+        margin-bottom : 20px;
     }
 
-    .search-container {
+    .menu .nav {
+        position : relative;
     }
 
+    .menu ul.nav {
+    }
+
+    .menu .nav-tabs .menu-link a.dropdown-toggle {
+        border-radius : 0px;
+    }
+
+    .menu .menu-sub-1 {
+        position : absolute;
+        top : 0px;
+        right : -1500px;
+        width : 100%;
+        background-color : white;
+        border-radius : 0;
+        margin-bottom : 0px;
+        padding : 0px;
+        border-top : none;
+        border-bottom : none;
+    }
+
+    .menu .menu-sub-1 ul {
+        list-style: none;
+        margin : 0px;
+        margin-left : 20px;
+    }
+    .menu .menu-sub-1 a {
+        border-bottom : 1px solid #e3e3e3;
+        padding : 6px;
+        display : block;
+    }
+
+    div#menu-chevron {
+        float:left;
+        background-color : white;
+        background-color : black;
+        width : 20px;
+        cursor: pointer;
+        position : relative;
+        text-align : center;
+    }
+    div#menu-chevron i {
+        position : absolute;
+        top : 50%;
+        left : 3px;
+    }
+}
+
+.submenu-label {
+    background-color :  #e3e3e3;text-align : right;padding : 3px; font-weight:bold;
 }
