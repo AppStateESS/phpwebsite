@@ -15,6 +15,7 @@ $(window).load(function() {
         var pager_id = $(this).parents('.pager').attr('id');
         var current_icon = $('i', this);
         $('.sort-header i').attr('class', 'icon-stop');
+        $('.sort-header').attr('data-direction', 4);
         switch (direction) {
             case '4':
                 $(this).attr('data-direction', 3);
