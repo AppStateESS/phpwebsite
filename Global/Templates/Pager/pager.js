@@ -8,37 +8,61 @@ $(window).load(function() {
     Pagers = new PagerList;
     Pagers.loadPagers();
     Pagers.fillRows();
-
-    $('.sort-header').click(function() {
-        var column_name = $(this).attr('data-column-name');
-        var direction = $(this).attr('data-direction');
-        var pager_id = $(this).parents('.pager').attr('id');
-        var current_icon = $('i', this);
-        $('.sort-header i').attr('class', 'icon-stop');
-        $('.sort-header').attr('data-direction', 4);
-        switch (direction) {
-            case '4':
-                $(this).attr('data-direction', 3);
-                current_icon.attr('class', 'icon-arrow-up');
-                break;
-            case '3':
-                $(this).attr('data-direction', 0);
-                current_icon.attr('class', 'icon-arrow-down');
-                break;
-            case '0':
-                $(this).attr('data-direction', 4);
-                current_icon.attr('class', 'icon-stop');
-                break;
-        }
-        Pagers.setSort(pager_id, column_name, direction);
-        Pagers.reload(pager_id);
-    });
+    Pagers.loadEvents();
 });
+
 
 
 function PagerList() {
     this.pagers = new Object;
     this.pager_ids = new Array;
+    $this = this;
+
+
+    this.sortHeaderClick = function()
+    {
+        $('.sort-header').click(function() {
+            var column_name = $(this).attr('data-column-name');
+            var direction = $(this).attr('data-direction');
+            var pager_id = $(this).parents('.pager').attr('id');
+            var current_icon = $('i', this);
+            $('.sort-header i').attr('class', 'icon-stop');
+            $('.sort-header').attr('data-direction', 4);
+            switch (direction) {
+                case '4':
+                    $(this).attr('data-direction', 3);
+                    current_icon.attr('class', 'icon-arrow-up');
+                    break;
+                case '3':
+                    $(this).attr('data-direction', 0);
+                    current_icon.attr('class', 'icon-arrow-down');
+                    break;
+                case '0':
+                    $(this).attr('data-direction', 4);
+                    current_icon.attr('class', 'icon-stop');
+                    break;
+            }
+            $this.setSort(pager_id, column_name, direction);
+            $this.reload(pager_id);
+            $this.pageChangeClick();
+        });
+    }
+
+    this.pageChangeClick = function()
+    {
+        $('.pager-page-no').click(function() {
+            var pager_id = $(this).parents('.pager').attr('id');
+            var current_page = $(this).data('pageNo');
+            $this.setCurrentPage(pager_id, current_page);
+            $this.reload(pager_id);
+            $this.pageChangeClick();
+        });
+    }
+
+    this.loadEvents = function() {
+        this.sortHeaderClick();
+        this.pageChangeClick();
+    }
 
     this.reload = function(pager_id) {
         this.pagers[pager_id].reload();
@@ -64,9 +88,13 @@ function PagerList() {
         $this = this;
         this.pager_ids.forEach(function(val) {
             var pager = $this.pagers[val];
-            pager.plugRows();
+            pager.insertContent();
         });
     };
+
+    this.setCurrentPage = function(pager_id, current_page) {
+        this.pagers[pager_id].setCurrentPage(current_page);
+    }
 
     this.setSort = function(pager_id, column_name, direction) {
         this.pagers[pager_id].setSort(column_name, direction);
@@ -80,12 +108,20 @@ function Pager(id, page) {
     this.page = page;
     this.sort_by = '';
     this.direction = 0;
+    this.rows_per_page = 10;
+    this.current_page = 1;
+    this.page_listing = '';
 
     this.reload = function()
     {
         this.clearRows();
         this.loadData();
-        this.plugRows();
+        this.insertContent();
+    }
+
+    this.setCurrentPage = function(current_page)
+    {
+        this.current_page = current_page;
     }
 
     this.clearRows = function()
@@ -105,13 +141,20 @@ function Pager(id, page) {
         $.ajax({
             'url': url,
             'dataType': 'json',
-            'data': {'pager_id': $this.id, 'sort_by': this.sort_by, 'direction': this.direction},
+            'data': {
+                'pager_id': $this.id,
+                'sort_by': this.sort_by,
+                'direction': this.direction,
+                'rpp': this.rows_per_page,
+                'current_page': this.current_page
+            },
             'async': false,
             'success': function(data) {
                 if (data.error || data.rows.length < 1) {
                     return;
                 } else {
                     $this.rows = data.rows;
+                    $this.page_listing = data.page_listing;
                 }
             }
         });
@@ -128,7 +171,7 @@ function Pager(id, page) {
         return unfiltered_url.replace(/\&.*$/g, '');
     };
 
-    this.plugRows = function() {
+    this.insertContent = function() {
         this.rows.forEach(function(row) {
             new_row = $this.row_template.clone();
 
@@ -138,9 +181,15 @@ function Pager(id, page) {
             }
             $('.pager-body').append(new_row.outerHTML());
         });
+        $('.page-listing', this.page).html(this.page_listing);
+    };
+
+    this.loadRowsPerPage = function() {
+        this.rows_per_page = this.page.data('rpp');
     };
 
     this.init = function() {
+        this.loadRowsPerPage();
         this.loadRowTemplate();
         this.loadData();
     };

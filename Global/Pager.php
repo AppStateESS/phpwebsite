@@ -18,7 +18,7 @@ class Pager {
      * Number of rows to show per page
      * @var integer
      */
-    protected $rows_per_page;
+    protected $rows_per_page = 10;
 
     /**
      * Number of page links to show.
@@ -100,6 +100,13 @@ class Pager {
                 $this->setSortBy($column, $direction);
             }
         }
+
+        if ($request->isVar('rpp')) {
+            $this->setRowsPerPage((int) $request->getVar('rpp'));
+        }
+        if ($request->isVar('current_page')) {
+            $this->setCurrentPage((int) $request->getVar('current_page'));
+        }
     }
 
     public function setTemplate(\Template $template)
@@ -135,7 +142,7 @@ class Pager {
         if (!is_integer($rows)) {
             throw new Exception(t('setTotalItems expected an integer'));
         }
-        $this->total_items = (int) $rows;
+        $this->rows_per_page = (int) $rows;
     }
 
     public function setSortBy($column_name, $direction = null)
@@ -156,7 +163,7 @@ class Pager {
      */
     public function setTotalRows($total_rows)
     {
-        $this->total_rows = (int)$total_rows;
+        $this->total_rows = (int) $total_rows;
     }
 
     /**
@@ -182,6 +189,7 @@ class Pager {
         if (!is_integer($page)) {
             throw new Exception(t('setCurrentPage integer'));
         }
+        $this->current_page = $page;
     }
 
     /**
@@ -348,12 +356,6 @@ class Pager {
         $this->template->add('header', $this->getHeaders());
         $this->template->add('pager_id', $this->getId());
         $this->template->add('pager_javascript', $this->getJavascript());
-        $this->template->add('page_listing', $this->getPageList());
-    }
-
-    public function getPageList()
-    {
-
     }
 
     protected function getJavascript()
@@ -373,8 +375,33 @@ class Pager {
             $this->sortCurrentRows($this->sort_by['column'],
                     $this->sort_by['direction']);
         }
-        $data['rows'] = $this->rows;
+
+        $data['total_rows'] = $this->total_rows;
+        $data['current_page'] = $this->current_page;
+        $data['rows_per_page'] = $this->rows_per_page;
+        $data['page_listing'] = $this->getPageListing();
+        $start_count = ($this->current_page - 1) * $this->rows_per_page;
+        //$data['rows'] = $this->rows;
+        $data['rows'] = array_slice($this->rows, $start_count,
+                $this->rows_per_page);
         return $data;
+    }
+
+    public function getPageListing()
+    {
+        if ($this->total_rows > 0) {
+            $number_of_pages = ceil($this->total_rows / $this->rows_per_page);
+        }
+        $content[] = '<ul>';
+        for ($i = 1; $i <= $number_of_pages; $i++) {
+            if ($i == $this->current_page) {
+                $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-primary btn-mini'>$i</button></li>";
+            } else {
+                $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-mini'>$i</button></li>";
+            }
+        }
+        $content[] = '</ul>';
+        return implode('', $content);
     }
 
     public function get()
