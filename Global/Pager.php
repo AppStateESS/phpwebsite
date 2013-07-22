@@ -24,7 +24,7 @@ class Pager {
      * Number of page links to show.
      * @var integer
      */
-    protected $page_link_number;
+    protected $page_link_number = 10;
 
     /**
      * Currently page viewed.
@@ -107,6 +107,11 @@ class Pager {
         if ($request->isVar('current_page')) {
             $this->setCurrentPage((int) $request->getVar('current_page'));
         }
+
+        $this->next_page_marker = "<i class='icon-forward'></i>";
+        $this->prev_page_marker = "<i class='icon-backward'></i>";
+        $this->first_marker = "<i class='icon-fast-backward'></i>";
+        $this->last_marker = "<i class='icon-fast-forward'></i>";
     }
 
     public function setTemplate(\Template $template)
@@ -122,6 +127,11 @@ class Pager {
     {
         $attr = new \Variable\Attribute($id);
         $this->id = $attr->get();
+    }
+
+    public function setLastMarker($marker)
+    {
+        $this->last_marker = $marker;
     }
 
     public function getId()
@@ -387,12 +397,36 @@ class Pager {
         return $data;
     }
 
+    /**
+     * Sets marker used for next button
+     * @param string $marker
+     */
+    public function setNextPageMarker($marker)
+    {
+        $this->next_page_marker = $marker;
+    }
+
+    /**
+     * Sets marker used for previous button
+     * @param string $marker
+     */
+    public function setPreviousPageMarker($marker)
+    {
+        $this->prev_page_marker = $marker;
+    }
+
     public function getPageListing()
     {
         if ($this->total_rows > 0) {
             $number_of_pages = ceil($this->total_rows / $this->rows_per_page);
         }
         $content[] = '<ul>';
+        $content[] = "<li><button data-page-no='1' class='pager-page-no btn-mini'>$this->first_marker</button></li>";
+
+        if ($this->current_page > 1) {
+            $count = $this->current_page - 1;
+            $content[] = "<li><button data-page-no='$count' class='pager-page-no btn-mini'>$this->prev_page_marker</button></li>";
+        }
         for ($i = 1; $i <= $number_of_pages; $i++) {
             if ($i == $this->current_page) {
                 $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-primary btn-mini'>$i</button></li>";
@@ -400,13 +434,18 @@ class Pager {
                 $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-mini'>$i</button></li>";
             }
         }
+        if ($this->current_page != ($i - 1)) {
+            $forward = $this->current_page + 1;
+            $content[] = "<li><button data-page-no='{$forward}' class='pager-page-no btn-mini'>$this->next_page_marker</button></li>";
+        }
+        $content[] = "<li><button data-page-no='$number_of_pages' class='pager-page-no btn-mini'>$this->last_marker</button></li>";
         $content[] = '</ul>';
         return implode('', $content);
     }
 
     public function get()
     {
-        $this->buildTemplate();
+        $this->populateTemplate();
         return $this->template->__toString();
     }
 
