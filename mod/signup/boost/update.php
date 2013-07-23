@@ -165,6 +165,10 @@ function signup_update(&$content, $currentVersion)
  - Emails sent according to last search.
  - UI additions to ease administration.
 </pre>';
+        case version_compare($currentVersion, '1.3.4', '<'):
+            $content[] = '<pre>1.3.4 changes
+-----------------
++ Fixed bad form on moving slot member</pre>';
     }
     return true;
 }
