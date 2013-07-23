@@ -135,11 +135,11 @@ class Signup_Slot {
         if ($this->s_order > 1) {
             $vars['aop'] = 'move_top';
             $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'), 'signup', $vars);
-            
+
             $vars['aop'] = 'move_up';
             $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
         }
-        
+
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
         $db->addColumn('id', null, null, true);
@@ -219,7 +219,7 @@ class Signup_Slot {
                     $form->addSelect('mv_slot', $options);
                     $form->addSubmit(dgettext('signup', 'Go'));
                     $tmptpl = $form->getTemplate();
-                    $subtpl['MOVE'] = implode("\n", $tmptpl);
+                    $subtpl['MOVE'] = $tmptpl['START_FORM'] . $tmptpl['MV_SLOT'] . $tmptpl['SUBMIT'] . $tmptpl['END_FORM'];
                 } else {
                     $subtpl['MOVE'] = dgettext('signup', 'Other slots full');
                 }
