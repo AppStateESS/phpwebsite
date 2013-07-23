@@ -369,8 +369,8 @@ class Pager {
         $data['current_page'] = $this->current_page;
         $data['rows_per_page'] = $this->rows_per_page;
         $data['page_listing'] = $this->getPageListing();
+        $data['pager_search'] = $this->getPageSearch();
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
-        //$data['rows'] = $this->rows;
         $data['rows'] = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
         return $data;
@@ -383,6 +383,25 @@ class Pager {
     public function setNextPageMarker($marker)
     {
         $this->next_page_marker = $marker;
+    }
+
+    public function getPageSearch()
+    {
+        $search = t('Search');
+        $content = <<<EOF
+<div class="btn-group">
+  <input type="text" name="search_box" class="input-medium search-query" />
+  <button class="btn btn-small pager-search-submit">$search</button>
+  <button class="btn dropdown-toggle btn-small" data-toggle="dropdown">
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li>test 1</li>
+    <li>test 2</li>
+  </ul>
+</div>
+EOF;
+        return $content;
     }
 
     /**
