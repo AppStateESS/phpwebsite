@@ -24,25 +24,13 @@ class Pager {
      * Number of page links to show.
      * @var integer
      */
-    protected $page_link_number = 10;
+    protected $max_page_links = 8;
 
     /**
      * Currently page viewed.
      * @var integer
      */
     protected $current_page = 1;
-
-    /**
-     * Character, word, or tag used in first page link
-     * @var string
-     */
-    protected $first_marker;
-
-    /**
-     * Character, word, or tag used in last page link
-     * @var string
-     */
-    protected $last_marker;
 
     /**
      * Character, word, or tag used for next page link
@@ -181,12 +169,12 @@ class Pager {
      * @param integer $page_no
      * @throws Exception Thrown if integer not sent.
      */
-    public function setPageLinkNumber($page_no)
+    public function setMaxPageLinks($page_no)
     {
         if (!is_integer($page_no)) {
-            throw new Exception(t('setPageLinkNumber integer'));
+            throw new Exception(t('setMaxPageLinks expects an integer'));
         }
-        $this->page_link_number = $page_no;
+        $this->max_page_links = $page_no;
     }
 
     /**
@@ -200,15 +188,6 @@ class Pager {
             throw new Exception(t('setCurrentPage integer'));
         }
         $this->current_page = $page;
-    }
-
-    /**
-     * First string used as a link to the first page.
-     * @param string $marker
-     */
-    public function setFirstMarker($marker)
-    {
-        $this->first_marker = $marker;
     }
 
     /**
@@ -321,8 +300,8 @@ class Pager {
 
     public function getHeaders()
     {
-        $icon_down = '<i class="icon-arrow-down"></i>';
-        $icon_up = '<i class="icon-arrow-up"></i>';
+        $icon_down = '<i class="icon-chevron-down"></i>';
+        $icon_up = '<i class="icon-chevron-up"></i>';
         $icon_stay = '<i class="icon-stop"></i>';
         foreach ($this->headers as $column_name => $print_name) {
             if (isset($this->sort_by[$column_name])) {
@@ -420,25 +399,62 @@ class Pager {
         if ($this->total_rows > 0) {
             $number_of_pages = ceil($this->total_rows / $this->rows_per_page);
         }
+        $penultimate = $number_of_pages - 1;
         $content[] = '<ul>';
-        $content[] = "<li><button data-page-no='1' class='pager-page-no btn-mini'>$this->first_marker</button></li>";
+
+        if ($number_of_pages > $this->max_page_links) {
+            $halfway = floor($this->max_page_links / 2);
+            $left = $this->current_page - $halfway;
+            $right = $this->current_page + $halfway;
+
+            if ($left < 3) {
+                $right += ($left * -1);
+                $left = 3;
+            }
+
+            if ($right >= $penultimate) {
+                $left -= $right - $penultimate;
+                $right = $penultimate - 1;
+            }
+
+            $left_select = ($this->current_page - $halfway) > 3;
+            $right_select = ($this->current_page + $halfway) < $penultimate - 1;
+        } else {
+            $left_select = $right_select = false;
+            $left = 3;
+            $right = $number_of_pages;
+        }
 
         if ($this->current_page > 1) {
             $count = $this->current_page - 1;
             $content[] = "<li><button data-page-no='$count' class='pager-page-no btn-mini'>$this->prev_page_marker</button></li>";
         }
-        for ($i = 1; $i <= $number_of_pages; $i++) {
+
+        $current_page = $this->current_page == 1 ? ' btn-primary' : null;
+        $content[] = "<li><button data-page-no='1' class='pager-page-no btn-mini$current_page'>1</button></li>";
+        $current_page = $this->current_page == 2 ? ' btn-primary' : null;
+        $content[] = "<li><button data-page-no='2' class='pager-page-no btn-mini$current_page'>2</button></li>";
+        if ($left_select) {
+            $content[] = '<li><button class="btn-disabled btn-mini">&hellip;</button></li>';
+        }
+        for ($i = $left; $i <= $right; $i++) {
             if ($i == $this->current_page) {
                 $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-primary btn-mini'>$i</button></li>";
             } else {
                 $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-mini'>$i</button></li>";
             }
         }
-        if ($this->current_page != ($i - 1)) {
+        if ($right_select) {
+            $content[] = '<li><button class="btn-disabled btn-mini">&hellip;</button></li>';
+        }
+        $current_page = $this->current_page == $penultimate ? ' btn-primary' : null;
+        $content[] = "<li><button data-page-no='$penultimate' class='pager-page-no btn-mini$current_page'>$penultimate</button></li>";
+        $current_page = $this->current_page == $number_of_pages ? ' btn-primary' : null;
+        $content[] = "<li><button data-page-no='$number_of_pages' class='pager-page-no btn-mini$current_page'>$number_of_pages</button></li>";
+        if ($this->current_page != $number_of_pages) {
             $forward = $this->current_page + 1;
             $content[] = "<li><button data-page-no='{$forward}' class='pager-page-no btn-mini'>$this->next_page_marker</button></li>";
         }
-        $content[] = "<li><button data-page-no='$number_of_pages' class='pager-page-no btn-mini'>$this->last_marker</button></li>";
         $content[] = '</ul>';
         return implode('', $content);
     }
