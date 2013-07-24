@@ -210,8 +210,6 @@ function Pager(page) {
         this.loadData();
         if (this.rows === undefined) {
             $('.pager-listing', this.page).html('No result found.');
-        } else {
-            //this.insertContent();
         }
     };
 
