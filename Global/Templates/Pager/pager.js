@@ -60,9 +60,6 @@ function PagerList() {
     this.initialize = function()
     {
         this.loadPagers();
-        this.sortHeaderClick();
-        this.pageChangeClick();
-        this.searchClick();
     };
 
     /**
@@ -108,7 +105,7 @@ function PagerList() {
             $this.processData(pager_id);
             $this.pageChangeClick();
         });
-    }
+    };
 
     this.pageChangeClick = function()
     {
@@ -119,7 +116,7 @@ function PagerList() {
             $this.processData(pager_id);
             $this.pageChangeClick();
         });
-    }
+    };
 
     this.searchClick = function() {
         $('.pager-search-submit').click(function() {
@@ -127,7 +124,7 @@ function PagerList() {
             var search_text = $(this).
                     this.pagers[pager_id].setSearch();
         });
-    }
+    };
 
 
     this.processData = function(pager_id) {
@@ -145,7 +142,7 @@ function PagerList() {
 
     this.setCurrentPage = function(pager_id, current_page) {
         this.pagers[pager_id].setCurrentPage(current_page);
-    }
+    };
 
     this.setSort = function(pager_id, column_name, direction) {
         this.pagers[pager_id].setSort(column_name, direction);
@@ -214,7 +211,7 @@ function Pager(page) {
         if (this.rows === undefined) {
             $('.pager-listing', this.page).html('No result found.');
         } else {
-            this.insertContent();
+            //this.insertContent();
         }
     };
 
@@ -241,6 +238,10 @@ function Pager(page) {
                     return;
                 } else {
                     $this.importContent(data);
+                    $this.insertContent();
+                    Pagers.sortHeaderClick();
+                    Pagers.pageChangeClick();
+                    Pagers.searchClick();
                 }
             }
         });
@@ -277,7 +278,6 @@ function Pager(page) {
 
     /**
      * Fills in the template with data pulled from loadData
-     * @param Object data JSON object from loadData's ajax call
      * @returns void
      */
     this.insertContent = function() {

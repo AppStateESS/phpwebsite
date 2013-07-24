@@ -333,7 +333,7 @@ class Pager {
         }
         return $rows;
     }
-     * 
+     *
      */
 
     public function populateTemplate()
@@ -341,11 +341,6 @@ class Pager {
         if (empty($this->template)) {
             throw new \Exception(t('Template not set'));
         }
-        if (empty($this->headers)) {
-            throw new \Exception(t('Headers not set, cannot populate template'));
-        }
-        //$this->template->add('header_values', $this->getHeaderValues());
-        //$this->template->add('header', $this->getHeaders());
         $this->template->add('pager_id', $this->getId());
         $this->template->add('pager_javascript', $this->getJavascript());
     }
