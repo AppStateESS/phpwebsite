@@ -49,14 +49,8 @@ class Pager {
      * @var \Template
      */
     protected $template;
-
-    /**
-     * What column and direction we are sorting in
-     * $this->sort_by['column']
-     * $this->sort_by['direction']
-     * @var array
-     */
-    protected $sort_by;
+    protected $sort_column;
+    protected $sort_direction;
 
     /**
      * Array of sorting headers for top of pager
@@ -148,8 +142,8 @@ class Pager {
         if (!isset($direction)) {
             $direction = SORT_ASC;
         }
-        $this->sort_by['column'] = $column_name;
-        $this->sort_by['direction'] = $direction;
+        $this->sort_direction = $direction;
+        $this->sort_column = $column_name;
     }
 
     /**
@@ -214,8 +208,8 @@ class Pager {
 
     public function getAllRows()
     {
-        if (!empty($this->sort_by)) {
-            $this->sortCurrentRows($this->sort_by);
+        if (!empty($this->sort_column)) {
+            $this->sortCurrentRows();
         }
         return $this->rows;
     }
@@ -224,15 +218,15 @@ class Pager {
      * Sorts the rows currently set in the Pager. If the rows displayed by the
      * pager are a partial set, you may not want to use this method.
      */
-    public function sortCurrentRows($column_name, $direction = null, $function_call = null)
+    public function sortCurrentRows($function_call = null)
     {
-        if (empty($direction)) {
-            $direction = SORT_ASC;
+        if (empty($this->sort_direction)) {
+            $this->sort_direction = SORT_ASC;
         }
         if (empty($this->rows)) {
             throw new \Exception(t('No rows to set'));
         }
-        if (!isset($this->headers[$column_name])) {
+        if (!isset($this->headers[$this->sort_column])) {
             throw new \Exception(t('Column name "%s" is not known', $column_name));
         }
 
@@ -242,7 +236,7 @@ class Pager {
         }
         usort($this->rows,
                 call_user_func_array(array('self', 'make_comparer'),
-                        array(array($column_name, $direction, $function_call))));
+                        array(array($this->sort_column, $this->sort_direction, $function_call))));
     }
 
     /**
@@ -304,16 +298,20 @@ class Pager {
         $icon_up = '<i class="icon-chevron-up"></i>';
         $icon_stay = '<i class="icon-stop"></i>';
         foreach ($this->headers as $column_name => $print_name) {
-            if (isset($this->sort_by[$column_name])) {
-                if ($this->sort_by['direction'] == SORT_DESC) {
-                    $sort = SORT_REGULAR;
-                    $icon = $icon_up;
-                } elseif ($this->sort_by['direction'] == SORT_ASC) {
-                    $sort = SORT_DESC;
-                    $icon = $icon_down;
-                } else {
-                    $icon = $icon_stay;
-                    $sort = SORT_ASC;
+            if ($this->sort_column == $column_name) {
+                switch ($this->sort_direction) {
+                    case SORT_DESC:
+                        $sort = SORT_REGULAR;
+                        $icon = $icon_up;
+                        break;
+                    case SORT_ASC:
+                        $sort = SORT_DESC;
+                        $icon = $icon_down;
+                        break;
+                    default:
+                        $icon = $icon_stay;
+                        $sort = SORT_ASC;
+                        break;
                 }
             } else {
                 $sort = SORT_ASC;
@@ -325,14 +323,14 @@ class Pager {
     }
 
     /*
-    public function getHeaderValues()
-    {
-        $icon = '<i class="icon-arrow-down"></i>';
-        foreach ($this->headers as $column_name => $print_name) {
-            $rows[] = array('column_name' => $column_name, 'print_name' => $print_name, 'icon' => $icon);
-        }
-        return $rows;
-    }
+      public function getHeaderValues()
+      {
+      $icon = '<i class="icon-arrow-down"></i>';
+      foreach ($this->headers as $column_name => $print_name) {
+      $rows[] = array('column_name' => $column_name, 'print_name' => $print_name, 'icon' => $icon);
+      }
+      return $rows;
+      }
      *
      */
 
@@ -358,11 +356,9 @@ class Pager {
         if (empty($this->rows)) {
             return array('rows' => null, 'error' => t('No rows found'));
         }
-        if ($this->sort_by && $this->sort_by['direction'] != 0) {
-            $this->sortCurrentRows($this->sort_by['column'],
-                    $this->sort_by['direction']);
+        if (!empty($this->sort_column) && $this->sort_direction != 0) {
+            $this->sortCurrentRows();
         }
-
         $data['headers'] = $this->getHeaders();
         $data['total_rows'] = $this->total_rows;
         $data['current_page'] = $this->current_page;
