@@ -324,6 +324,7 @@ class Pager {
         return $rows;
     }
 
+    /*
     public function getHeaderValues()
     {
         $icon = '<i class="icon-arrow-down"></i>';
@@ -332,6 +333,8 @@ class Pager {
         }
         return $rows;
     }
+     * 
+     */
 
     public function populateTemplate()
     {
@@ -341,8 +344,8 @@ class Pager {
         if (empty($this->headers)) {
             throw new \Exception(t('Headers not set, cannot populate template'));
         }
-        $this->template->add('header_values', $this->getHeaderValues());
-        $this->template->add('header', $this->getHeaders());
+        //$this->template->add('header_values', $this->getHeaderValues());
+        //$this->template->add('header', $this->getHeaders());
         $this->template->add('pager_id', $this->getId());
         $this->template->add('pager_javascript', $this->getJavascript());
     }
@@ -365,6 +368,7 @@ class Pager {
                     $this->sort_by['direction']);
         }
 
+        $data['headers'] = $this->getHeaders();
         $data['total_rows'] = $this->total_rows;
         $data['current_page'] = $this->current_page;
         $data['rows_per_page'] = $this->rows_per_page;

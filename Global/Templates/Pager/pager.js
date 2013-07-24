@@ -4,13 +4,52 @@ jQuery.fn.outerHTML = function(s) {
             : jQuery("<p>").append(this.eq(0).clone()).html();
 };
 
+var hasher = new Hasher;
+
 $(window).load(function() {
+    hasher.initialize();
     Pagers = new PagerList;
-    Pagers.loadPagers();
-    Pagers.fillRows();
-    Pagers.loadEvents();
+    Pagers.initialize();
 });
 
+
+function Hasher() {
+    $this = this;
+    this.values = new Object;
+    this.full_hash = window.location.hash;
+
+    this.initialize = function()
+    {
+        // ignore empty hash
+        if (this.full_hash.length < 2) {
+            return;
+        }
+
+        var hash = this.full_hash.replace(/^#/, '');
+        var hash_array = hash.split('&');
+        hash_array.forEach(function(data) {
+            var key_val = hash.split('=');
+            var pager_id = key_val.shift();
+            var pager_values = key_val.shift();
+            var sub_values = pager_values.split(';');
+            sub_values.forEach(function(sub) {
+                var tsub = sub.split(':');
+                if ($this.values[pager_id] === undefined) {
+                    $this.values[pager_id] = new Object;
+                }
+                $this.values[pager_id][tsub[0]] = tsub[1];
+            });
+        });
+    };
+
+    this.getValue = function(pager_id, key)
+    {
+        if (this.values[pager_id] === undefined) {
+            return;
+        }
+        return this.values[pager_id][key];
+    };
+}
 
 
 function PagerList() {
@@ -18,17 +57,26 @@ function PagerList() {
     this.pager_ids = new Array;
     var $this = this;
 
+    this.initialize = function()
+    {
+        this.loadPagers();
+        this.sortHeaderClick();
+        this.pageChangeClick();
+        this.searchClick();
+    };
+
+    /**
+     * loads all pager on the current page
+     * @returns {undefined}
+     */
     this.loadPagers = function()
     {
         $('.pager').each(function() {
-            var pager_dom = $(this);
-            var pager_id = pager_dom.attr('id');
-
-            new_pager = new Pager(pager_id, pager_dom);
-            new_pager.init();
-            if (new_pager.rows !== undefined) {
-                $this.pagers[new_pager.id] = new_pager;
-                $this.pager_ids.push(new_pager.id);
+            var pager = new Pager($(this));
+            pager.initialize();
+            if (pager.rows !== undefined) {
+                $this.pagers[pager.id] = pager;
+                $this.pager_ids.push(pager.id);
             }
         });
     };
@@ -57,7 +105,8 @@ function PagerList() {
                     break;
             }
             $this.setSort(pager_id, column_name, direction);
-            $this.reload(pager_id);
+            $this.processData(pager_id);
+            $this.pageChangeClick();
         });
     }
 
@@ -67,28 +116,22 @@ function PagerList() {
             var pager_id = $(this).parents('.pager').attr('id');
             var current_page = $(this).data('pageNo');
             $this.setCurrentPage(pager_id, current_page);
-            $this.reload(pager_id);
+            $this.processData(pager_id);
             $this.pageChangeClick();
         });
-    }
-
-    this.loadEvents = function() {
-        this.sortHeaderClick();
-        this.pageChangeClick();
-        this.searchClick();
     }
 
     this.searchClick = function() {
         $('.pager-search-submit').click(function() {
             var pager_id = $(this).parents('.pager').attr('id');
             var search_text = $(this).
-            this.pagers[pager_id].setSearch();
+                    this.pagers[pager_id].setSearch();
         });
     }
 
 
-    this.reload = function(pager_id) {
-        this.pagers[pager_id].reload();
+    this.processData = function(pager_id) {
+        this.pagers[pager_id].processData();
     };
 
 
@@ -96,7 +139,7 @@ function PagerList() {
         $this = this;
         this.pager_ids.forEach(function(val) {
             var pager = $this.pagers[val];
-            pager.insertContent();
+            //pager.insertContent();
         });
     };
 
@@ -109,11 +152,11 @@ function PagerList() {
     };
 }
 
-
-function Pager(id, page) {
+function Pager(page) {
     var $this = this;
-    this.id = id;
+
     this.page = page;
+    this.id = this.page.attr('id');
     this.sort_by = '';
     this.direction = 0;
     this.rows_per_page = 10;
@@ -122,45 +165,66 @@ function Pager(id, page) {
     this.search_box = '';
     this.search_phrase = '';
     this.search_column = '';
+    this.current_url = '';
+    this.row_template = '';
+    this.headers = '';
+    this.header_template = '';
 
-    this.reload = function()
+    this.initialize = function() {
+        this.sort_by = hasher.getValue(this.id, 's');
+        this.direction = hasher.getValue(this.id, 'd');
+        this.rows_per_page = hasher.getValue(this.id, 'rpp');
+        this.current_page = hasher.getValue(this.id, 'cp');
+        this.search_phrase = hasher.getValue(this.id, 'sp');
+        this.search_column = hasher.getValue(this.id, 'sc');
+
+        this.current_url = this.currentURL();
+        this.loadRowsPerPage();
+        this.loadRowTemplate();
+        this.loadHeaderTemplate();
+        this.processData();
+    };
+
+    this.loadRowsPerPage = function() {
+        if (this.rows_per_page > 0) {
+            return;
+        }
+        rpp = hasher.getValue(this.pager_id, 'rpp');
+        if (rpp > 0) {
+            this.rows_per_page = rpp;
+        } else {
+            this.rows_per_page = this.page.data('rpp');
+        }
+    };
+
+    this.loadRowTemplate = function() {
+        this.row_template = $('#' + this.id + ' .pager-row');
+        this.row_template.remove();
+    };
+
+    this.loadHeaderTemplate = function()
+    {
+        this.header_template = $('#' + this.id + ' .pager-header');
+    };
+
+    this.processData = function()
     {
         this.clearRows();
         this.loadData();
-        this.insertContent();
-        this.searchReady();
-    }
-
-    this.searchReady = function()
-    {
-        /*
-         $('.pager-search-submit').click(function() {
-         console.log(this.html());
-         });
-         */
-    }
-
-    this.setCurrentPage = function(current_page)
-    {
-        this.current_page = current_page;
-    }
-
-    this.clearRows = function()
-    {
-        $('#' + this.id + ' .pager-row').remove();
-    }
-
-    this.setSort = function(column_name, direction)
-    {
-        this.sort_by = column_name;
-        this.direction = direction;
+        if (this.rows === undefined) {
+            $('.pager-listing', this.page).html('No result found.');
+        } else {
+            this.insertContent();
+        }
     };
 
+    /**
+     * Accesses the current page with a JSON request to receive pager data.
+     * @returns void
+     */
     this.loadData = function() {
-        var url = this.currentURL();
-        var all_good = true;
         $.ajax({
-            'url': url,
+            'url': this.current_url,
             'dataType': 'json',
             'data': {
                 'pager_id': $this.id,
@@ -176,25 +240,46 @@ function Pager(id, page) {
                 if (data.error || data.rows.length < 1) {
                     return;
                 } else {
-                    $this.rows = data.rows;
-                    $this.page_listing = data.page_listing;
-                    $this.search_box = data.pager_search;
+                    $this.importContent(data);
                 }
             }
         });
     };
 
-    this.loadRowTemplate = function() {
-        this.row_template = $('#' + this.id + ' .pager-row');
-        this.row_template.remove();
+
+    this.importContent = function(data) {
+        this.rows = data.rows;
+        this.page_listing = data.page_listing;
+        this.search_box = data.pager_search;
+        this.headers = data.headers;
     };
 
+    this.setCurrentPage = function(current_page)
+    {
+        this.current_page = current_page;
+    };
+
+    this.clearRows = function()
+    {
+        $('#' + this.id + ' .pager-row').remove();
+    };
+
+    this.setSort = function(column_name, direction)
+    {
+        this.sort_by = column_name;
+        this.direction = direction;
+    };
 
     this.currentURL = function() {
         var unfiltered_url = document.URL;
         return unfiltered_url.replace(/\&.*$/g, '');
     };
 
+    /**
+     * Fills in the template with data pulled from loadData
+     * @param Object data JSON object from loadData's ajax call
+     * @returns void
+     */
     this.insertContent = function() {
         this.rows.forEach(function(row) {
             new_row = $this.row_template.clone();
@@ -205,17 +290,16 @@ function Pager(id, page) {
             }
             $('.pager-body').append(new_row.outerHTML());
         });
-        $('.page-listing', this.page).html(this.page_listing);
+        $('.pager-listing', this.page).html(this.page_listing);
         $('.pager-search', this.page).html(this.search_box);
+        this.fillHeader();
     };
 
-    this.loadRowsPerPage = function() {
-        this.rows_per_page = this.page.data('rpp');
+    this.fillHeader = function() {
+        $.each(this.headers, function(key, value) {
+            var class_name = '.pager-header.' + key;
+            $(class_name, this.header_template).html(value);
+        });
     };
 
-    this.init = function() {
-        this.loadRowsPerPage();
-        this.loadRowTemplate();
-        this.loadData();
-    };
 }
