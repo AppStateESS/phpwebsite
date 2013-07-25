@@ -227,7 +227,8 @@ class Pager {
             throw new \Exception(t('No rows to set'));
         }
         if (!isset($this->headers[$this->sort_column])) {
-            throw new \Exception(t('Column name "%s" is not known', $this->sort_column));
+            throw new \Exception(t('Column name "%s" is not known',
+                    $this->sort_column));
         }
 
         if (isset($function_call) && !function_exists($function_call)) {
@@ -374,13 +375,13 @@ class Pager {
         $content = <<<EOF
 <div class="btn-group">
   <input type="text" name="search_box" class="input-medium search-query" />
-  <button class="btn btn-small pager-search-submit">$search</button>
+  <button class="btn btn-small pager-search-submit">$search
   <button class="btn dropdown-toggle btn-small" data-toggle="dropdown">
     <span class="caret"></span>
-  </button>
+
   <ul class="dropdown-menu">
-    <li>test 1</li>
-    <li>test 2</li>
+    <li>test 1</a></li>
+    <li>test 2</a></li>
   </ul>
 </div>
 EOF;
@@ -406,12 +407,11 @@ EOF;
 
         if ($number_of_pages > $this->max_page_links) {
             $halfway = floor($this->max_page_links / 2);
-            $left = $this->current_page - $halfway;
-            $right = $this->current_page + $halfway;
-
-            if ($left < 3) {
-                $right += ($left * -1);
-                $left = 3;
+            $left = $this->current_page - $halfway + 2;
+            $right = $this->current_page + $halfway - 2;
+            if ($left < 2) {
+                $right += ($left * -1) + 2;
+                $left = 1;
             }
 
             if ($right >= $penultimate) {
@@ -419,44 +419,48 @@ EOF;
                 $right = $penultimate - 1;
             }
 
-            $left_select = ($this->current_page - $halfway) > 3;
-            $right_select = ($this->current_page + $halfway) < $penultimate - 1;
+            $left_select = ($this->current_page - $halfway) > 1;
+            $right_select = ($this->current_page + $halfway) <= $penultimate;
         } else {
             $left_select = $right_select = false;
-            $left = 3;
+            $left = 1;
             $right = $number_of_pages;
         }
 
+
         if ($this->current_page > 1) {
             $count = $this->current_page - 1;
-            $content[] = "<li><button data-page-no='$count' class='pager-page-no btn-mini'>$this->prev_page_marker</button></li>";
+            $content[] = "<li><a href='javascript:void(0)' data-page-no='$count' class='pager-page-no'>$this->prev_page_marker</a></li>";
         }
 
-        $current_page = $this->current_page == 1 ? ' btn-primary' : null;
-        $content[] = "<li><button data-page-no='1' class='pager-page-no btn-mini$current_page'>1</button></li>";
-        $current_page = $this->current_page == 2 ? ' btn-primary' : null;
-        $content[] = "<li><button data-page-no='2' class='pager-page-no btn-mini$current_page'>2</button></li>";
+        $current_page = $this->current_page == 1 ? ' class="active"' : null;
+        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='1' class='pager-page-no'>1</a></li>";
+        $current_page = $this->current_page == 2 ? ' class="active"' : null;
+        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='2' class='pager-page-no'>2</a></li>";
         if ($left_select) {
-            $content[] = '<li><button class="btn-disabled btn-mini">&hellip;</button></li>';
+            $content[] = "<li><a href='javascript:void(0)' class='btn-disabled disabled'>&hellip;</a></li>";
         }
         for ($i = $left; $i <= $right; $i++) {
+            if ($i < 3 || $i >= $penultimate) {
+                continue;
+            }
             if ($i == $this->current_page) {
-                $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-primary btn-mini'>$i</button></li>";
+                $content[] = "<li class='active'><a href='javascript:void(0)' data-page-no='$i' class='pager-page-no'>$i</a></li>";
             } else {
-                $content[] = "<li><button data-page-no='$i' class='pager-page-no btn-mini'>$i</button></li>";
+                $content[] = "<li><a href='javascript:void(0)' data-page-no='$i' class='pager-page-no'>$i</a></li>";
             }
         }
         if ($right_select) {
-            $content[] = '<li><button class="btn-disabled btn-mini">&hellip;</button></li>';
+            $content[] = "<li><a href='javascript:void(0)' class='disabled'>&hellip;</a></li>";
         }
-        $current_page = $this->current_page == $penultimate ? ' btn-primary' : null;
-        $content[] = "<li><button data-page-no='$penultimate' class='pager-page-no btn-mini$current_page'>$penultimate</button></li>";
-        $current_page = $this->current_page == $number_of_pages ? ' btn-primary' : null;
-        $content[] = "<li><button data-page-no='$number_of_pages' class='pager-page-no btn-mini$current_page'>$number_of_pages</button></li>";
+        $current_page = $this->current_page == $penultimate ? ' class="active"' : null;
+        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$penultimate' class='pager-page-no'>$penultimate</a></li>";
+        $current_page = $this->current_page == $number_of_pages ? ' class="active"' : null;
+        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$number_of_pages' class='pager-page-no'>$number_of_pages</a></li>";
         if ($this->current_page != $number_of_pages) {
             $forward = $this->current_page + 1;
-            $content[] = "<li><button data-page-no='{$forward}' class='pager-page-no btn-mini'>$this->next_page_marker</button></li>";
         }
+            $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
         $content[] = '</ul>';
         return implode('', $content);
     }
