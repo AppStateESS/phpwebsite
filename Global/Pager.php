@@ -227,7 +227,7 @@ class Pager {
             throw new \Exception(t('No rows to set'));
         }
         if (!isset($this->headers[$this->sort_column])) {
-            throw new \Exception(t('Column name "%s" is not known', $column_name));
+            throw new \Exception(t('Column name "%s" is not known', $this->sort_column));
         }
 
         if (isset($function_call) && !function_exists($function_call)) {
@@ -321,18 +321,6 @@ class Pager {
         }
         return $rows;
     }
-
-    /*
-      public function getHeaderValues()
-      {
-      $icon = '<i class="icon-arrow-down"></i>';
-      foreach ($this->headers as $column_name => $print_name) {
-      $rows[] = array('column_name' => $column_name, 'print_name' => $print_name, 'icon' => $icon);
-      }
-      return $rows;
-      }
-     *
-     */
 
     public function populateTemplate()
     {
