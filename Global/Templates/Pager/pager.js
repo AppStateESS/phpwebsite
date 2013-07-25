@@ -122,6 +122,7 @@ function PagerList() {
             var pager_id = $(this).parents('.pager-listing', this).attr('id');
             $this.setCurrentSearch(pager_id);
             $this.processData(pager_id);
+            $this.pageChangeClick(pager_id);
         });
     };
 

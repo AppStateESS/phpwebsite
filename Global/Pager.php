@@ -27,6 +27,12 @@ class Pager {
     protected $max_page_links = 8;
 
     /**
+     * Number of pages containing the current rows.
+     * @var integer
+     */
+    protected $number_of_pages;
+
+    /**
      * Currently page viewed.
      * @var integer
      */
@@ -335,6 +341,16 @@ class Pager {
         return $rows;
     }
 
+    public function getNumberOfPages()
+    {
+        if (isset($this->number_of_pages)) {
+            return $this->number_of_pages;
+        }
+
+        $this->number_of_pages = ceil($this->total_rows / $this->rows_per_page);
+        return $this->number_of_pages;
+    }
+
     public function populateTemplate()
     {
         if (empty($this->template)) {
@@ -359,13 +375,14 @@ class Pager {
         }
         if (!empty($this->search_phrase)) {
             $this->filterRows();
-            $this->current_page = 1;
+            if ($this->current_page > $this->getNumberofPages()) {
+                $this->current_page = 1;
+            }
         }
 
         if (!empty($this->sort_column) && $this->sort_direction != 0) {
             $this->sortCurrentRows();
         }
-
 
         $data['headers'] = $this->getHeaders();
         $data['total_rows'] = $this->total_rows;
@@ -388,7 +405,7 @@ class Pager {
         $search_array = explode(' ', $this->search_phrase);
         foreach ($this->rows as $row) {
             foreach ($search_array as $find) {
-                if (array_search($find, $row)) {
+                if (stristr(implode(' ', $row), $find)) {
                     $new_rows[] = $row;
                 }
             }
@@ -436,15 +453,13 @@ EOF;
 
     public function getPageListing()
     {
-        if ($this->total_rows > 0) {
-            $number_of_pages = ceil($this->total_rows / $this->rows_per_page);
-        } else {
+        if ($this->total_rows < 1) {
             return "<li class='active'><a href='javascript:void(0)' data-page-no='1' class='pager-page-no'>1</a></li>";
         }
-        $penultimate = $number_of_pages - 1;
+        $penultimate = $this->getNumberOfPages() - 1;
         $content[] = '<ul>';
 
-        if ($number_of_pages > $this->max_page_links) {
+        if ($this->getNumberOfPages() > $this->max_page_links) {
             $halfway = floor($this->max_page_links / 2);
             $left = $this->current_page - $halfway + 2;
             $right = $this->current_page + $halfway - 2;
@@ -463,7 +478,7 @@ EOF;
         } else {
             $left_select = $right_select = false;
             $left = 1;
-            $right = $number_of_pages;
+            $right = $this->getNumberOfPages();
         }
 
 
@@ -494,9 +509,9 @@ EOF;
         }
         $current_page = $this->current_page == $penultimate ? ' class="active"' : null;
         $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$penultimate' class='pager-page-no'>$penultimate</a></li>";
-        $current_page = $this->current_page == $number_of_pages ? ' class="active"' : null;
-        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$number_of_pages' class='pager-page-no'>$number_of_pages</a></li>";
-        if ($this->current_page != $number_of_pages) {
+        $current_page = $this->current_page == $this->number_of_pages ? ' class="active"' : null;
+        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$this->number_of_pages' class='pager-page-no'>$this->number_of_pages</a></li>";
+        if ($this->current_page != $this->number_of_pages) {
             $forward = $this->current_page + 1;
             $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
         }
