@@ -51,6 +51,8 @@ class Pager {
     protected $template;
     protected $sort_column;
     protected $sort_direction;
+    protected $search_phrase;
+    protected $search_column;
 
     /**
      * Array of sorting headers for top of pager
@@ -83,17 +85,27 @@ class Pager {
             }
         }
 
-        if ($request->isVar('rpp')) {
-            $this->setRowsPerPage((int) $request->getVar('rpp'));
+        if ($request->isVar('row_per_page')) {
+            $this->setRowsPerPage((int) $request->getVar('row_per_page'));
         }
+
         if ($request->isVar('current_page')) {
             $this->setCurrentPage((int) $request->getVar('current_page'));
+        }
+
+        if ($request->isVar('search_phrase')) {
+            $this->setSearchPhrase($request->getVar('search_phrase'));
         }
 
         $this->next_page_marker = "<i class='icon-forward'></i>";
         $this->prev_page_marker = "<i class='icon-backward'></i>";
         $this->first_marker = "<i class='icon-fast-backward'></i>";
         $this->last_marker = "<i class='icon-fast-forward'></i>";
+    }
+
+    public function setSearchPhrase($phrase)
+    {
+        $this->search_phrase = preg_replace('/\s{2,}/', ' ', trim($phrase));
     }
 
     public function setTemplate(\Template $template)
@@ -345,9 +357,16 @@ class Pager {
         if (empty($this->rows)) {
             return array('rows' => null, 'error' => t('No rows found'));
         }
+        if (!empty($this->search_phrase)) {
+            $this->filterRows();
+            $this->current_page = 1;
+        }
+
         if (!empty($this->sort_column) && $this->sort_direction != 0) {
             $this->sortCurrentRows();
         }
+
+
         $data['headers'] = $this->getHeaders();
         $data['total_rows'] = $this->total_rows;
         $data['current_page'] = $this->current_page;
@@ -358,6 +377,24 @@ class Pager {
         $data['rows'] = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
         return $data;
+    }
+
+    private function filterRows()
+    {
+        if (empty($this->search_phrase)) {
+            return;
+        }
+        $new_rows = array();
+        $search_array = explode(' ', $this->search_phrase);
+        foreach ($this->rows as $row) {
+            foreach ($search_array as $find) {
+                if (array_search($find, $row)) {
+                    $new_rows[] = $row;
+                }
+            }
+        }
+        $this->rows = $new_rows;
+        $this->total_rows = count($new_rows);
     }
 
     /**
@@ -401,6 +438,8 @@ EOF;
     {
         if ($this->total_rows > 0) {
             $number_of_pages = ceil($this->total_rows / $this->rows_per_page);
+        } else {
+            return "<li class='active'><a href='javascript:void(0)' data-page-no='1' class='pager-page-no'>1</a></li>";
         }
         $penultimate = $number_of_pages - 1;
         $content[] = '<ul>';

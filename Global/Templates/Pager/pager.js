@@ -121,6 +121,7 @@ function PagerList() {
         $('.pager-search-submit').click(function() {
             var pager_id = $(this).parents('.pager-listing', this).attr('id');
             $this.setCurrentSearch(pager_id);
+            $this.processData(pager_id);
         });
     };
 
@@ -185,7 +186,6 @@ function Pager(page) {
     this.loadSearch = function() {
         var search_phrase = $('.search-query', this.page).val();
         this.search_phrase = search_phrase.replace(/[^\w\s]/gi, '');
-        console.log(this.search_phrase);
     };
 
     this.loadRowsPerPage = function() {
@@ -224,6 +224,17 @@ function Pager(page) {
      * @returns void
      */
     this.loadData = function() {
+        if (this.search_phrase !== undefined) {
+            var search_phrase = encodeURI(this.search_phrase);
+        } else {
+            var search_phrase = '';
+        }
+        if (this.search_column !== undefined) {
+            var search_column = encodeURI(this.search_column);
+        } else {
+            var search_column = '';
+        }
+
         $.ajax({
             'url': this.current_url,
             'dataType': 'json',
@@ -231,10 +242,10 @@ function Pager(page) {
                 'pager_id': $this.id,
                 'sort_by': this.sort_by,
                 'direction': this.direction,
-                'rpp': this.rows_per_page,
+                'row_per_page': this.rows_per_page,
                 'current_page': this.current_page,
-                'search_phrase': this.search_phrase,
-                'search_column': this.search_column
+                'search_phrase': search_phrase,
+                'search_column': search_column
             },
             'async': false,
             'success': function(data) {
