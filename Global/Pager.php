@@ -459,8 +459,8 @@ EOF;
         $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$number_of_pages' class='pager-page-no'>$number_of_pages</a></li>";
         if ($this->current_page != $number_of_pages) {
             $forward = $this->current_page + 1;
-        }
             $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
+        }
         $content[] = '</ul>';
         return implode('', $content);
     }
