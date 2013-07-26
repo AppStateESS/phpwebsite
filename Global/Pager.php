@@ -427,9 +427,14 @@ class Pager {
     public function getPageSearch()
     {
         $search = t('Search');
+        if (!empty($this->search_phrase)) {
+            $icon = '<a href="javascript:void(0)" class="search-clear"><i style="position:absolute; top:7px;left:2px;color:red" class="icon-remove-circle"></i></a>';
+        } else {
+            $icon = null;
+        }
         $content = <<<EOF
-<div class="btn-group">
-  <input type="text" name="search_box" class="input-medium search-query" />
+<div style="position : relative" class="btn-group">
+  $icon<input type="text" name="search_box" class="input-medium search-query" value="$this->search_phrase" />
   <button class="btn btn-small pager-search-submit">$search
   <button class="btn dropdown-toggle btn-small" data-toggle="dropdown">
     <span class="caret"></span>

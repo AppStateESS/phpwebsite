@@ -163,6 +163,11 @@ function PagerList() {
                 $this.pageChangeClick(pager_id);
             }
         });
+
+        $('.search-clear').click(function(){
+            var pager_id = $(this).parents('.pager-listing', this).attr('id');
+            $this.pagers[pager_id].clearSearch();
+        });
     };
 
     this.setCurrentSearch = function(pager_id) {
@@ -257,6 +262,13 @@ function Pager(page) {
         if (this.rows === undefined) {
             $('.pagination', this.page).html('No result found.');
         }
+    };
+
+    this.clearSearch = function()
+    {
+        this.search_phrase = '';
+        this.search_column = '';
+        this.processData();
     };
 
     /**
