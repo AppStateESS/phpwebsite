@@ -111,7 +111,7 @@ class Pager {
 
     public function setSearchPhrase($phrase)
     {
-        $this->search_phrase = preg_replace('/\s{2,}/', ' ', trim($phrase));
+        $this->search_phrase = preg_replace('/\s{2,}/', ' ', trim(rawurldecode($phrase)));
     }
 
     public function setTemplate(\Template $template)
@@ -407,6 +407,7 @@ class Pager {
             foreach ($search_array as $find) {
                 if (stristr(implode(' ', $row), $find)) {
                     $new_rows[] = $row;
+                    break;
                 }
             }
         }
