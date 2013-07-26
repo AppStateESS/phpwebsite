@@ -26,6 +26,11 @@ function Hasher() {
         }
 
         var hash = this.full_hash.replace(/^#/, '');
+        this.decode();
+    };
+
+    this.decode = function()
+    {
         var hash_array = hash.split('&');
         hash_array.forEach(function(data) {
             var key_val = hash.split('=');
@@ -42,12 +47,32 @@ function Hasher() {
         });
     };
 
+    this.encode = function()
+    {
+        var url = '';
+        for (var key in this.values) {
+            url = url + key + '=';
+            for (var key2 in this.values[key]) {
+                url = url + key2 + ':' + this.values[key][key2] + ';';
+            }
+        }
+        console.log(url);
+    };
+
     this.getValue = function(pager_id, key)
     {
         if (this.values[pager_id] === undefined) {
             return;
         }
         return this.values[pager_id][key];
+    };
+
+    this.setValue = function(pager_id, key, value)
+    {
+        if ($this.values[pager_id] === undefined) {
+            $this.values[pager_id] = new Object;
+        }
+        this.values[pager_id][key] = value;
     };
 }
 
@@ -103,6 +128,9 @@ function PagerList() {
             }
             $this.setSort(pager_id, column_name, direction);
             $this.processData(pager_id);
+            hasher.setValue(pager_id, 'sort_by', column_name);
+            hasher.setValue(pager_id, 'direction', direction);
+            hasher.encode();
         });
     };
 
@@ -113,6 +141,8 @@ function PagerList() {
             var current_page = $(this).data('pageNo');
             $this.setCurrentPage(pager_id, current_page);
             $this.processData(pager_id);
+            hasher.setValue(pager_id, 'current_page', current_page);
+            hasher.encode();
         });
     };
 
@@ -123,6 +153,15 @@ function PagerList() {
             $this.setCurrentSearch(pager_id);
             $this.processData(pager_id);
             $this.pageChangeClick(pager_id);
+        });
+
+        $('.search-query').keypress(function(event) {
+            if (event.which == 13) {
+                var pager_id = $(this).parents('.pager-listing', this).attr('id');
+                $this.setCurrentSearch(pager_id);
+                $this.processData(pager_id);
+                $this.pageChangeClick(pager_id);
+            }
         });
     };
 
@@ -250,15 +289,11 @@ function Pager(page) {
             },
             'async': false,
             'success': function(data) {
-                if (data.error || data.rows.length < 1) {
-                    return;
-                } else {
-                    $this.importContent(data);
-                    $this.insertContent();
-                    Pagers.sortHeaderClick();
-                    Pagers.pageChangeClick();
-                    Pagers.searchClick();
-                }
+                $this.importContent(data);
+                $this.insertContent();
+                Pagers.sortHeaderClick();
+                Pagers.pageChangeClick();
+                Pagers.searchClick();
             }
         });
     };

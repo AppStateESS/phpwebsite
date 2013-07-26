@@ -454,7 +454,7 @@ EOF;
     public function getPageListing()
     {
         if ($this->total_rows < 1) {
-            return "<li class='active'><a href='javascript:void(0)' data-page-no='1' class='pager-page-no'>1</a></li>";
+            return t('No result found');
         }
         $penultimate = $this->getNumberOfPages() - 1;
         $content[] = '<ul>';
