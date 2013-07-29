@@ -25,12 +25,12 @@ function Hasher() {
             return;
         }
 
-        var hash = this.full_hash.replace(/^#/, '');
         this.decode();
     };
 
     this.decode = function()
     {
+        var hash = this.full_hash.replace(/^#/, '');
         var hash_array = hash.split('&');
         hash_array.forEach(function(data) {
             var key_val = hash.split('=');
@@ -164,7 +164,7 @@ function PagerList() {
             }
         });
 
-        $('.search-clear').click(function(){
+        $('.search-clear').click(function() {
             var pager_id = $(this).parents('.pager-listing', this).attr('id');
             $this.pagers[pager_id].clearSearch();
         });
