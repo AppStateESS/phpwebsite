@@ -89,6 +89,24 @@ abstract class Column extends Alias {
         return $this->resource === $table;
     }
 
+    /**
+     *
+     * @return \Database\Resource
+     */
+    public function getTable()
+    {
+        return $this->getResource();
+    }
+
+    /**
+     *
+     * @return \Database\Resource
+     */
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
 }
 
 ?>
