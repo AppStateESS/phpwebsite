@@ -79,9 +79,6 @@ class Pager {
     {
         javascript('jquery');
 
-        $this->first_marker = t('First');
-        $this->last_marker = t('Last');
-
         $request = \Server::getCurrentRequest();
         if ($request->isVar('sort_by') && $request->isVar('direction')) {
             $column = $request->getVar('sort_by');
@@ -105,13 +102,12 @@ class Pager {
 
         $this->next_page_marker = "<i class='icon-forward'></i>";
         $this->prev_page_marker = "<i class='icon-backward'></i>";
-        $this->first_marker = "<i class='icon-fast-backward'></i>";
-        $this->last_marker = "<i class='icon-fast-forward'></i>";
     }
 
     public function setSearchPhrase($phrase)
     {
-        $this->search_phrase = preg_replace('/\s{2,}/', ' ', trim(rawurldecode($phrase)));
+        $this->search_phrase = preg_replace('/\s{2,}/', ' ',
+                trim(rawurldecode($phrase)));
     }
 
     public function setTemplate(\Template $template)
@@ -379,7 +375,6 @@ class Pager {
                 $this->current_page = 1;
             }
         }
-
         if (!empty($this->sort_column) && $this->sort_direction != 0) {
             $this->sortCurrentRows();
         }
@@ -494,35 +489,41 @@ EOF;
 
         $current_page = $this->current_page == 1 ? ' class="active"' : null;
         $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='1' class='pager-page-no'>1</a></li>";
-        $current_page = $this->current_page == 2 ? ' class="active"' : null;
-        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='2' class='pager-page-no'>2</a></li>";
-        if ($left_select) {
-            $content[] = "<li><a href='javascript:void(0)' class='btn-disabled disabled'>&hellip;</a></li>";
-        }
-        for ($i = $left; $i <= $right; $i++) {
-            if ($i < 3 || $i >= $penultimate) {
-                continue;
-            }
-            if ($i == $this->current_page) {
-                $content[] = "<li class='active'><a href='javascript:void(0)' data-page-no='$i' class='pager-page-no'>$i</a></li>";
-            } else {
-                $content[] = "<li><a href='javascript:void(0)' data-page-no='$i' class='pager-page-no'>$i</a></li>";
-            }
-        }
-        if ($right_select) {
-            $content[] = "<li><a href='javascript:void(0)' class='disabled'>&hellip;</a></li>";
+
+        if ($this->getNumberOfPages() > 1) {
+            $current_page = $this->current_page == 2 ? ' class="active"' : null;
+            $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='2' class='pager-page-no'>2</a></li>";
         }
 
-        if ($penultimate > 2) {
-            $current_page = $this->current_page == $penultimate ? ' class="active"' : null;
-            $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$penultimate' class='pager-page-no'>$penultimate</a></li>";
-        }
+        if ($this->getNumberOfPages() > 2) {
+            if ($left_select) {
+                $content[] = "<li><a href='javascript:void(0)' class='btn-disabled disabled'>&hellip;</a></li>";
+            }
+            for ($i = $left; $i <= $right; $i++) {
+                if ($i < 3 || $i >= $penultimate) {
+                    continue;
+                }
+                if ($i == $this->current_page) {
+                    $content[] = "<li class='active'><a href='javascript:void(0)' data-page-no='$i' class='pager-page-no'>$i</a></li>";
+                } else {
+                    $content[] = "<li><a href='javascript:void(0)' data-page-no='$i' class='pager-page-no'>$i</a></li>";
+                }
+            }
+            if ($right_select) {
+                $content[] = "<li><a href='javascript:void(0)' class='disabled'>&hellip;</a></li>";
+            }
 
-        $current_page = $this->current_page == $this->number_of_pages ? ' class="active"' : null;
-        $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$this->number_of_pages' class='pager-page-no'>$this->number_of_pages</a></li>";
-        if ($this->current_page != $this->number_of_pages) {
-            $forward = $this->current_page + 1;
-            $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
+            if ($penultimate > 2) {
+                $current_page = $this->current_page == $penultimate ? ' class="active"' : null;
+                $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$penultimate' class='pager-page-no'>$penultimate</a></li>";
+            }
+
+            $current_page = $this->current_page == $this->number_of_pages ? ' class="active"' : null;
+            $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$this->number_of_pages' class='pager-page-no'>$this->number_of_pages</a></li>";
+            if ($this->current_page != $this->number_of_pages) {
+                $forward = $this->current_page + 1;
+                $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
+            }
         }
         $content[] = '</ul>';
         return implode('', $content);
