@@ -469,6 +469,9 @@ abstract class DB extends \Data {
         }
 
         \Database::logQuery($sql);
+        if (empty(self::$PDO)) {
+            $this->loadPDO();
+        }
         return self::$PDO->query($sql);
     }
 
