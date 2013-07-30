@@ -353,6 +353,11 @@ abstract class Table extends Resource {
         $this->incremented_ids = null;
     }
 
+    public function resetFields()
+    {
+        $this->fields = array();
+    }
+
     /**
      * Constructs an insertQuery.
      * @param boolean $use_bind_vars If TRUE, bind variable format will be followed
