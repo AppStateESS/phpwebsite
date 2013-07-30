@@ -37,7 +37,14 @@ class DatabasePager extends Pager {
             $this->setRowOrder();
         }
 
+        if (empty($this->total_rows)) {
+            $this->loadTotalRows();
+        }
+
+        $this->processLimit();
+
         $this->setRows($this->db->select());
+
         if (empty($this->rows)) {
             return array('rows' => null, 'error' => t('No rows found'));
         }
@@ -53,6 +60,16 @@ class DatabasePager extends Pager {
         return $data;
     }
 
+    private function loadTotalRows()
+    {
+        $db_clone = clone($this->db);
+        $db_clone->loadPDO();
+
+        $db_clone->addExpression('count(*) as _row_count');
+        $count_result = $db_clone->selectOneRow();
+        $this->setTotalRows($count_result['_row_count']);
+    }
+
     /**
      * An associate array of Database\Field objects. The key of the array is
      * the cooresponding header title.
@@ -61,6 +78,12 @@ class DatabasePager extends Pager {
     public function setTableHeaders(array $table_headers)
     {
         $this->table_headers = $table_headers;
+    }
+
+    private function processLimit()
+    {
+        $offset = ($this->current_page - 1) * $this->rows_per_page;
+        $this->db->setLimit($this->rows_per_page, $offset);
     }
 
     public function setRowOrder()
