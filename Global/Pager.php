@@ -104,6 +104,13 @@ class Pager {
         $this->prev_page_marker = "<i class='icon-backward'></i>";
     }
 
+    public static function prepare()
+    {
+        javascript('jquery');
+        $source_http = PHPWS_SOURCE_HTTP;
+        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>");
+    }
+
     public function setSearchPhrase($phrase)
     {
         $this->search_phrase = preg_replace('/\s{2,}/', ' ',
@@ -358,7 +365,6 @@ class Pager {
 
     protected function getJavascript()
     {
-        javascript('jquery');
         $source_http = PHPWS_SOURCE_HTTP;
         \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>");
     }
