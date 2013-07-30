@@ -353,6 +353,9 @@ abstract class Table extends Resource {
         $this->incremented_ids = null;
     }
 
+    /**
+     * Nulls out the object's fields parameter.
+     */
     public function resetFields()
     {
         $this->fields = array();
