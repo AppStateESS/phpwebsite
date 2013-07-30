@@ -354,7 +354,7 @@ abstract class DB extends \Data {
      * @param string $operator
      * @return \Database\Conditional
      */
-    public function getConditional($left, $right, $operator = null)
+    public function createConditional($left, $right, $operator = null)
     {
         if (is_null($operator)) {
             if ($left instanceof \Database\Conditional && $right instanceof \Database\Conditional) {
@@ -364,6 +364,15 @@ abstract class DB extends \Data {
             }
         }
         return new Conditional($left, $right, $operator);
+    }
+
+    /**
+     * Returns the currently set conditional from the DB object.
+     * @return \Database\Conditional
+     */
+    public function getConditional()
+    {
+        return $this->conditional;
     }
 
     /**
