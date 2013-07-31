@@ -66,6 +66,10 @@ class DatabasePager extends Pager {
     {
         $current_conditional = $this->db->getConditional();
         foreach ($this->table_headers as $field) {
+            // If search column is set, then we only match on that column.
+            if (!empty($this->search_column) && $this->search_column != $field->getName()) {
+                continue;
+            }
             if (!isset($conditional)) {
                 $conditional = $this->db->createConditional($field,
                         $this->search_phrase, 'like');
