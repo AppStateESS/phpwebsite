@@ -47,10 +47,6 @@ class DatabasePager extends Pager {
 
         $this->setRows($this->db->select());
 
-        if (empty($this->rows)) {
-            return array('rows' => null, 'error' => t('No rows found'));
-        }
-
         $data = null;
         $data['headers'] = $headers;
         $data['total_rows'] = $this->total_rows;
