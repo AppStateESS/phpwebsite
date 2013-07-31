@@ -148,8 +148,10 @@ function PagerList() {
 
     this.searchClick = function() {
         $this = this;
+        var pager_id = '';
+
         $('.pager-search-submit').click(function() {
-            var pager_id = $(this).parents('.pager-listing', this).attr('id');
+            pager_id = $(this).parents('.pager-listing', this).attr('id');
             $this.setCurrentSearch(pager_id);
             $this.processData(pager_id);
             $this.pageChangeClick(pager_id);
@@ -157,18 +159,27 @@ function PagerList() {
 
         $('.search-query').keypress(function(event) {
             if (event.which == 13) {
-                var pager_id = $(this).parents('.pager-listing', this).attr('id');
+                pager_id = $(this).parents('.pager-listing', this).attr('id');
                 $this.setCurrentSearch(pager_id);
                 $this.processData(pager_id);
                 $this.pageChangeClick(pager_id);
             }
         });
 
+        $('.pager-search-column').click(function() {
+            pager_id = $(this).parents('.pager-listing', this).attr('id');
+            $this.setSearchColumn(pager_id, $(this).data('searchColumn'), $(this).html());
+        });
+
         $('.search-clear').click(function() {
-            var pager_id = $(this).parents('.pager-listing', this).attr('id');
+            pager_id = $(this).parents('.pager-listing', this).attr('id');
             $this.pagers[pager_id].clearSearch();
         });
     };
+
+    this.setSearchColumn = function(pager_id, search_column, column_name) {
+        this.pagers[pager_id].setSearchColumn(search_column, column_name);
+    }
 
     this.setCurrentSearch = function(pager_id) {
         this.pagers[pager_id].loadSearch();
@@ -208,6 +219,7 @@ function Pager(page) {
     this.search_box = '';
     this.search_phrase = '';
     this.search_column = '';
+    this.column_name = '';
     this.current_url = '';
     this.row_template = '';
     this.headers = '';
@@ -231,6 +243,13 @@ function Pager(page) {
     this.loadSearch = function() {
         var search_phrase = $('.search-query', this.page).val();
         this.search_phrase = search_phrase.replace(/[^\w\s]/gi, '');
+    };
+
+    this.setSearchColumn = function(search_column, column_name) {
+        this.search_column = search_column;
+        this.column_name = column_name;
+        var button_content = $('.pager-search-submit', this.page).html().replace(/: \w+/, '');
+        $('.pager-search-submit', this.page).html(button_content + ': ' + this.column_name);
     };
 
     this.loadRowsPerPage = function() {
