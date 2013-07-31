@@ -299,8 +299,8 @@ class Pager {
         return function($first, $second) use ($criteria) {
                     foreach ($criteria as $criterion) {
                         // How will we compare this round?
-                        list($column, $sortOrder, $projection) = $criterion;
-                        $sortOrder = $sortOrder == SORT_DESC ? -1 : 1;
+                        list($column, $checkOrder, $projection) = $criterion;
+                        $sortOrder = $checkOrder == SORT_DESC ? -1 : 1;
 
                         // If a projection was defined project the values now
                         if ($projection) {
@@ -381,9 +381,6 @@ class Pager {
     public function getJson()
     {
         $data = null;
-        if (empty($this->rows)) {
-            return array('rows' => null, 'error' => t('No rows found'));
-        }
         if (!empty($this->search_phrase)) {
             $this->filterRows();
             if ($this->current_page > $this->getNumberofPages()) {
