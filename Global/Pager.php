@@ -100,6 +100,10 @@ class Pager {
             $this->setSearchPhrase($request->getVar('search_phrase'));
         }
 
+        if ($request->isVar('search_column')) {
+            $this->setSearchColumn($request->getVar('search_column'));
+        }
+
         $this->next_page_marker = "<i class='icon-forward'></i>";
         $this->prev_page_marker = "<i class='icon-backward'></i>";
     }
@@ -115,6 +119,11 @@ class Pager {
     {
         $this->search_phrase = preg_replace('/\s{2,}/', ' ',
                 trim(rawurldecode($phrase)));
+    }
+
+    public function setSearchColumn($column)
+    {
+        $this->search_column = trim(rawurldecode($column));
     }
 
     public function setTemplate(\Template $template)
@@ -391,6 +400,7 @@ class Pager {
         $data['rows_per_page'] = $this->rows_per_page;
         $data['page_listing'] = $this->getPageListing();
         $data['pager_search'] = $this->getPageSearch();
+        $data['search_column'] = $this->search_column;
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
         $data['rows'] = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
@@ -428,21 +438,30 @@ class Pager {
     public function getPageSearch()
     {
         $search = t('Search');
+
+        if ($this->search_column) {
+            $search .= ' : ' . $this->headers[$this->search_column];
+        }
+
         if (!empty($this->search_phrase)) {
             $icon = '<a href="javascript:void(0)" class="search-clear"><i style="position:absolute; top:7px;left:2px;color:red" class="icon-remove-circle"></i></a>';
         } else {
             $icon = null;
         }
+        $columns = '';
+        foreach ($this->headers as $key => $value) {
+            $columns .= "<li><a data-search-column='$key' class='pager-search-column' href='javascript:void(0)'>$value</a></li>";
+        }
+
         $content = <<<EOF
 <div style="position : relative" class="btn-group">
-  $icon<input type="text" name="search_box" class="input-medium search-query" value="$this->search_phrase" />
+  $icon<input type="text" name="search_box" style="padding-left : 15px" class="input-medium search-query" value="$this->search_phrase" />
   <button class="btn btn-small pager-search-submit">$search
   <button class="btn dropdown-toggle btn-small" data-toggle="dropdown">
     <span class="caret"></span>
-
+  </button>
   <ul class="dropdown-menu">
-    <li>test 1</a></li>
-    <li>test 2</a></li>
+    $columns
   </ul>
 </div>
 EOF;
