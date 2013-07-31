@@ -18,7 +18,7 @@ class JsonErrorView extends \JsonView
         $json['code']      = $response->getCode();
         $json['phrase']    = $response->getPhrase();
         $json['backtrace'] = $response->getBacktrace();
-        $json['exception'] = strip_tags($response->getException());
+        $json['exception'] = $response->getException();
 
         parent::__construct(array('error' => $json));
     }
