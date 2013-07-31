@@ -47,7 +47,7 @@ class Settings extends Data {
             self::createSettingsTable();
         }
         $s = $db->addTable('settings');
-        $db->setConditional($db->getConditional($s->getFieldConditional('module_name',
+        $db->setConditional($db->createConditional($s->getFieldConditional('module_name',
                                 $module_name),
                         $s->getFieldConditional('variable_name', $variable_name),
                         'and'));
