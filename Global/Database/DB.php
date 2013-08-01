@@ -299,6 +299,21 @@ abstract class DB extends \Data {
         $this->conditional = $conditional;
     }
 
+    /**
+     * Adds a new conditional on to the current conditional, if exists. Sets
+     * conditional parameter if not yet set.
+     * @param \Database\Conditional $conditional
+     */
+    public function addConditional(\Database\Conditional $conditional)
+    {
+        if (empty($this->conditional)) {
+            $this->setConditional($conditional);
+        } else {
+            $new_conditional = new \Database\Conditional($this->conditional,
+                    $conditional, 'AND');
+            $this->setConditional($new_conditional);
+        }
+    }
 
     /**
      * Allows the developer to string together several conditionals at once
