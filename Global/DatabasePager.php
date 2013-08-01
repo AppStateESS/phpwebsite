@@ -25,9 +25,14 @@ class DatabasePager extends Pager {
         parent::__construct();
     }
 
-    public function getJson()
+
+    public function getAllRows()
     {
-        $headers = $this->getHeaders();
+        return $this->rows;
+    }
+
+    public function processRows()
+    {
         if (!empty($this->search_phrase)) {
             $this->loadSearchConditionals();
             if ($this->current_page > $this->getNumberofPages()) {
@@ -44,18 +49,7 @@ class DatabasePager extends Pager {
 
         $this->processLimit();
 
-
         $this->setRows($this->db->select());
-
-        $data = null;
-        $data['headers'] = $headers;
-        $data['total_rows'] = $this->total_rows;
-        $data['current_page'] = $this->current_page;
-        $data['rows_per_page'] = $this->rows_per_page;
-        $data['page_listing'] = $this->getPageListing();
-        $data['pager_search'] = $this->getPageSearch();
-        $data['rows'] = $this->rows;
-        return $data;
     }
 
     private function loadSearchConditionals()
