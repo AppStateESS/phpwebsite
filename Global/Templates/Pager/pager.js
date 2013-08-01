@@ -222,6 +222,7 @@ function Pager(page) {
     this.column_name = '';
     this.current_url = '';
     this.row_template = '';
+    this.row_id_column = '';
     this.headers = '';
     this.header_template = '';
 
@@ -309,6 +310,7 @@ function Pager(page) {
         $.ajax({
             'url': this.current_url,
             'dataType': 'json',
+            'async': false,
             'data': {
                 'pager_id': $this.id,
                 'sort_by': this.sort_by,
@@ -318,8 +320,10 @@ function Pager(page) {
                 'search_phrase': search_phrase,
                 'search_column': search_column
             },
-            'async': false,
             'success': function(data) {
+                if (data.error !== undefined) {
+                    $('body').append('<table>' + data.error.exception.xdebug_message + '</table>');
+                }
                 $this.importContent(data);
                 $this.insertContent();
                 Pagers.sortHeaderClick();
@@ -335,6 +339,7 @@ function Pager(page) {
         this.page_listing = data.page_listing;
         this.search_box = data.pager_search;
         this.headers = data.headers;
+        this.row_id_column = data.row_id_column;
     };
 
     this.setCurrentPage = function(current_page)
@@ -363,12 +368,16 @@ function Pager(page) {
      * @returns void
      */
     this.insertContent = function() {
+        $this = this;
         this.rows.forEach(function(row) {
             new_row = $this.row_template.clone();
-
             for (var key in row) {
+                if (key == $this.row_id_column) {
+                    $(new_row).attr('data-row-id', row[key]);
+                }
                 var cname = '.' + key;
                 $(cname, new_row).html(row[key]);
+
             }
             $('.pager-body').append(new_row.outerHTML());
         });
