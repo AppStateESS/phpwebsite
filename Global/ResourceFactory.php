@@ -67,7 +67,7 @@ class ResourceFactory {
             $last_id = (int) $tbl->getLastId();
             $resource->setId($last_id);
         } else {
-            $tbl->addWhere('id', $id);
+            $db->addConditional($tbl->getFieldConditional('id', $id));
             $db->update();
         }
         return $resource;
