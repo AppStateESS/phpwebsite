@@ -48,13 +48,11 @@ class DatabasePager extends Pager {
         }
 
         $this->processLimit();
-
         $this->setRows($this->db->select());
     }
 
     private function loadSearchConditionals()
     {
-        $current_conditional = $this->db->getConditional();
         foreach ($this->table_headers as $field) {
             // If search column is set, then we only match on that column.
             if (!empty($this->search_column) && $this->search_column != $field->getName()) {
@@ -62,19 +60,14 @@ class DatabasePager extends Pager {
             }
             if (!isset($conditional)) {
                 $conditional = $this->db->createConditional($field,
-                        $this->search_phrase, 'like');
+                        '%' . $this->search_phrase . '%', 'like');
             } else {
                 $conditional = $this->db->createConditional($conditional,
                         $this->db->createConditional($field,
                                 '%' . $this->search_phrase . '%', 'like'), 'OR');
             }
         }
-        if ($current_conditional instanceof \Database\Conditional) {
-            $this->db->setConditional($this->db->createConditional($current_conditional,
-                            $conditional));
-        } else {
-            $this->db->setConditional($conditional);
-        }
+        $this->db->addConditional($conditional);
     }
 
     private function loadTotalRows()
