@@ -75,6 +75,12 @@ class Pager {
     protected $id;
     protected $data_url;
 
+    /**
+     * Column that identifies the row
+     * @var string
+     */
+    protected $row_id_column;
+
     public function __construct()
     {
         javascript('jquery');
@@ -213,6 +219,12 @@ class Pager {
         }
         $this->current_page = $page;
     }
+
+    public function setRowIdColumn($column)
+    {
+        $this->row_id_column = $column;
+    }
+
 
     /**
      * @param array $rows
@@ -381,6 +393,31 @@ class Pager {
     public function getJson()
     {
         $data = null;
+
+        if (empty($this->rows)) {
+            $this->processRows();
+        }
+
+        return $this->assignData();
+    }
+
+    protected function assignData()
+    {
+        $data = array();
+        $data['headers'] = $this->getHeaders();
+        $data['total_rows'] = $this->total_rows;
+        $data['current_page'] = $this->current_page;
+        $data['rows_per_page'] = $this->rows_per_page;
+        $data['page_listing'] = $this->getPageListing();
+        $data['search_column'] = $this->search_column;
+        $data['pager_search'] = $this->getPageSearch();
+        $data['row_id_column'] = $this->row_id_column;
+        $data['rows'] = $this->rows;
+        return $data;
+    }
+
+    public function processRows()
+    {
         if (!empty($this->search_phrase)) {
             $this->filterRows();
             if ($this->current_page > $this->getNumberofPages()) {
@@ -391,17 +428,9 @@ class Pager {
             $this->sortCurrentRows();
         }
 
-        $data['headers'] = $this->getHeaders();
-        $data['total_rows'] = $this->total_rows;
-        $data['current_page'] = $this->current_page;
-        $data['rows_per_page'] = $this->rows_per_page;
-        $data['page_listing'] = $this->getPageListing();
-        $data['pager_search'] = $this->getPageSearch();
-        $data['search_column'] = $this->search_column;
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
-        $data['rows'] = array_slice($this->rows, $start_count,
+        $this->rows = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
-        return $data;
     }
 
     private function filterRows()
@@ -463,6 +492,11 @@ class Pager {
 </div>
 EOF;
         return $content;
+    }
+
+    public function getRows()
+    {
+        return $this->rows;
     }
 
     /**
