@@ -5,13 +5,12 @@ jQuery.fn.outerHTML = function(s) {
 };
 
 var hasher = new Hasher;
+var Pagers = new PagerList;
 
 $(window).load(function() {
     hasher.initialize();
-    Pagers = new PagerList;
     Pagers.initialize();
 });
-
 
 function Hasher() {
     $this = this;
@@ -69,8 +68,8 @@ function Hasher() {
 
     this.setValue = function(pager_id, key, value)
     {
-        if ($this.values[pager_id] === undefined) {
-            $this.values[pager_id] = new Object;
+        if (this.values[pager_id] === undefined) {
+            this.values[pager_id] = new Object;
         }
         this.values[pager_id][key] = value;
     };
@@ -85,6 +84,20 @@ function PagerList() {
     this.initialize = function()
     {
         this.loadPagers();
+    };
+
+    this.options = function(data)
+    {
+        if (data.callback !== undefined) {
+            this.callback = data.callback;
+        }
+    };
+
+    this.triggerCallback = function()
+    {
+        if (this.callback !== undefined && typeof(this.callback) === "function") {
+            this.callback();
+        }
     };
 
     /**
@@ -329,6 +342,7 @@ function Pager(page) {
                 Pagers.sortHeaderClick();
                 Pagers.pageChangeClick();
                 Pagers.searchClick();
+                Pagers.triggerCallback();
             }
         });
     };
