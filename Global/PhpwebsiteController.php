@@ -33,7 +33,7 @@ class PhpwebsiteController implements Controller {
             $this->loadModuleInits();
 
             $session = Session::getInstance();
-            
+
             /**
              * Moved from Bootstrap, eventually to be deprecated
              */
@@ -49,6 +49,9 @@ class PhpwebsiteController implements Controller {
                 $response = $module->execute($request->getNextRequest());
                 $this->renderResponse($request, $response);
                 $this->afterRun($request, $response);
+                if ($response instanceof \Http\RedirectResponse) {
+                    $response->forward();
+                }
             }
         } catch (Http\Exception $e) {
             $this->renderResponse($request, $e->getResponse());
@@ -109,6 +112,11 @@ class PhpwebsiteController implements Controller {
         if ($response instanceof \Html\NotFoundResponse) {
             Error::errorPage(404);
         }
+
+        if ($response instanceof \Http\RedirectResponse) {
+            return;
+        }
+
         $view = $response->getView();
 
         // For Compatibility only - modules that make an end-run around the new
@@ -270,8 +278,6 @@ class PhpwebsiteController implements Controller {
         }
         return $this->module_stack[$module_title];
     }
-
-
 
 }
 
