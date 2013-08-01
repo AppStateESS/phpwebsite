@@ -142,7 +142,7 @@ class Server {
     public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
         if (!$relative) {
-            $address[] = self::getSiteUrl();
+            $address[] = self::getSiteUrl() . '/';
         }
 
         $self = & $_SERVER['PHP_SELF'];
@@ -169,7 +169,6 @@ class Server {
             $address[] = '?';
             $address[] = $_SERVER['QUERY_STRING'];
         }
-
         $address = implode('', $address);
         return preg_replace('@^/?@', '', $address);
     }
