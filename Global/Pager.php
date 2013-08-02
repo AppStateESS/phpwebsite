@@ -225,7 +225,6 @@ class Pager {
         $this->row_id_column = $column;
     }
 
-
     /**
      * @param array $rows
      */
@@ -576,10 +575,10 @@ EOF;
 
             $current_page = $this->current_page == $this->number_of_pages ? ' class="active"' : null;
             $content[] = "<li$current_page><a href='javascript:void(0)' data-page-no='$this->number_of_pages' class='pager-page-no'>$this->number_of_pages</a></li>";
-            if ($this->current_page != $this->number_of_pages) {
-                $forward = $this->current_page + 1;
-                $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
-            }
+        }
+        if ($this->current_page != $this->number_of_pages) {
+            $forward = $this->current_page + 1;
+            $content[] = "<li><a href='javascript:void(0)' data-page-no='{$forward}' class='pager-page-no'>$this->next_page_marker</a></li>";
         }
         $content[] = '</ul>';
         return implode('', $content);
