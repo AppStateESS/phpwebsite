@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function(config)
     config.toolbar_MyToolbar =
             [
                 ['Source', 'Maximize'],
-                ['Cut', 'Copy', 'PasteText'],
+                ['Cut', 'Copy', 'PasteText', 'PasteFromWord'],
                 ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'SelectAll', 'RemoveFormat'],
                 ['Filecabinet', 'floatleft', 'floatright', 'Youtube', 'Table', 'HorizontalRule', 'SpecialChar'],
                 ['Link', 'Unlink', 'Anchor'],
