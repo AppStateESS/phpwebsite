@@ -13,7 +13,6 @@ $(window).load(function() {
 });
 
 function Hasher() {
-    $this = this;
     this.values = new Object;
     this.full_hash = window.location.hash;
 
@@ -29,6 +28,7 @@ function Hasher() {
 
     this.decode = function()
     {
+        $this = this;
         var hash = this.full_hash.replace(/^#/, '');
         var hash_array = hash.split('&');
         hash_array.forEach(function(data) {
@@ -52,10 +52,12 @@ function Hasher() {
         for (var key in this.values) {
             url = url + key + '=';
             for (var key2 in this.values[key]) {
-                url = url + key2 + ':' + this.values[key][key2] + ';';
+                if (key2 != '') {
+                    url = url + key2 + ':' + this.values[key][key2] + ';';
+                }
             }
         }
-        console.log(url);
+        window.location.hash = '#' + url;
     };
 
     this.getValue = function(pager_id, key)
@@ -141,8 +143,8 @@ function PagerList() {
             }
             $this.setSort(pager_id, column_name, direction);
             $this.processData(pager_id);
-            hasher.setValue(pager_id, 'sort_by', column_name);
-            hasher.setValue(pager_id, 'direction', direction);
+            hasher.setValue(pager_id, 's', column_name);
+            hasher.setValue(pager_id, 'd', direction);
             hasher.encode();
         });
     };
@@ -154,7 +156,7 @@ function PagerList() {
             var current_page = $(this).data('pageNo');
             $this.setCurrentPage(pager_id, current_page);
             $this.processData(pager_id);
-            hasher.setValue(pager_id, 'current_page', current_page);
+            hasher.setValue(pager_id, 'cp', current_page);
             hasher.encode();
         });
     };
