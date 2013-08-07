@@ -73,10 +73,10 @@ abstract class Resource extends Alias {
 
     /**
      * Set a column to order by and the direction to do so.
-     * @param string $column
+     * @param \Database\Field $column
      * @param string $direction Either ASC or DESC
      */
-    public function addOrderBy($column, $direction = 'ASC')
+    public function addOrderBy(\Database\Field $column, $direction = 'ASC')
     {
         static $allowed_directions = array('ASC', 'DESC', 'RAND', 'RANDOM');
         $direction = trim(strtoupper($direction));
@@ -93,8 +93,17 @@ abstract class Resource extends Alias {
         if (DATABASE_CHECK_COLUMNS && !$this->columnExists($column)) {
             throw new \Exception(t('Table column "%s" is not known', $column));
         } else {
-            $this->orders[] = $this->__toString() . ".$column $direction";
+            if ($column->hasAlias()) {
+                $this->orders[] = $column->getAlias() . " $direction";
+            } else {
+                $this->orders[] = $column->getFullName() . " $direction";
+            }
         }
+    }
+
+    public function resetOrderBy()
+    {
+        $this->orders = null;
     }
 
     /**
