@@ -32,6 +32,23 @@ class Field extends Column {
     protected $splat = false;
 
     /**
+     * If true, a "count" expression will be used on the field. An Expression
+     * object could be used for this purpose, but it is so common, it is
+     * included here.
+     *
+     * @var boolean
+     */
+    protected $show_count = false;
+
+    /**
+     * If true, a "distinct" expression will be used on the field. An Expression
+     * object could be used for this purpose, but it is so common, it is
+     * included here.
+     *
+     * @var boolean
+     */
+    protected $show_distinct = false;
+    /**
      *
      * @param \Database\Resource $resource
      * @param string $name
@@ -46,6 +63,15 @@ class Field extends Column {
         if ($alias) {
             $this->setAlias($alias);
         }
+    }
+
+
+    public function showDistinct($show=true) {
+        $this->show_distinct = (bool) $show;
+    }
+
+    public function showCount($show=true) {
+        $this->show_count = (bool) $show;
     }
 
     /**
@@ -75,13 +101,18 @@ class Field extends Column {
      */
     public function __toString()
     {
-        if ($this->alias) {
-            return $this->getFullName() . " AS $this->alias";
-        } else {
-            return $this->getFullName();
+        $full_name = $this->getFullName();
+        if ($this->show_distinct) {
+            $full_name = "distinct($full_name)";
         }
-    }
 
+        if ($this->show_count) {
+            $full_name = "count($full_name)";
+        }
+
+        return $this->alias ? $full_name . ' AS ' . $this->alias : $full_name;
+    }
+    
     public function rename($new_name)
     {
         $this->resource->renameField($this, $new_name);
