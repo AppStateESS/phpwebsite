@@ -212,6 +212,21 @@ abstract class DB extends \Data {
      */
     abstract public function listDatabases();
 
+
+    /**
+     * Clones object and every variable. Simple clone will cause problems with
+     * table references and the like.
+     * Copied from php.net
+     */
+    function __clone()
+    {
+        foreach ($this as $key => $val) {
+            if (is_object($val) || (is_array($val))) {
+                $this->{$key} = unserialize(serialize($val));
+            }
+        }
+    }
+
     /**
      * Accepts a DSN object to create a new
      * @param \Database\DSN $dsn
@@ -778,6 +793,26 @@ abstract class DB extends \Data {
         $group_class = "Database\Engine\\$engine\Group";
         $this->group_by = new $group_class($fields, $group_type);
         return $this->group_by;
+    }
+
+    /**
+     * Clears the group_by parameter
+     */
+    public function clearGroupBy()
+    {
+        $this->group_by = null;
+    }
+
+    public function clearTableFields()
+    {
+        foreach ($this->tables as $t) {
+            $t->resetFields();
+        }
+    }
+
+    public function clearExpressions()
+    {
+        $this->expressions = null;
     }
 
     /**
@@ -1391,8 +1426,15 @@ abstract class DB extends \Data {
             if ($fields_present) {
                 $query[] = ', ';
             }
-            $query[] = implode(', ', $this->expressions);
-            //$query[] = implode(', ', $this->expressions);
+
+            $comma = false;
+            foreach ($this->expressions as $e) {
+                $query[] = $e->__toString();
+                if ($comma) {
+                    $query[] = ', ';
+                }
+                $comma = true;
+            }
             $fields_present = true;
         }
 
