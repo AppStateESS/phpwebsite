@@ -230,7 +230,7 @@ class PhpwebsiteController implements Controller {
     {
         $db = Database::newDB();
         $mods = $db->addTable('modules');
-        $mods->addOrderBy('priority');
+        $mods->addOrderBy($mods->getField('priority'));
         $db->loadSelectStatement();
         while ($row = $db->fetch()) {
             $row = array_map('trim', $row);
