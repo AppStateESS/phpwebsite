@@ -810,6 +810,13 @@ abstract class DB extends \Data {
         }
     }
 
+    public function clearOrderBy()
+    {
+        foreach ($this->tables as $t) {
+            $t->resetOrderBy();
+        }
+    }
+
     public function clearExpressions()
     {
         $this->expressions = null;
