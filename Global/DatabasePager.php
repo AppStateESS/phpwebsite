@@ -25,7 +25,6 @@ class DatabasePager extends Pager {
         parent::__construct();
     }
 
-
     public function getAllRows()
     {
         return $this->rows;
@@ -75,6 +74,18 @@ class DatabasePager extends Pager {
         $db_clone = clone($this->db);
         $db_clone->loadPDO();
 
+        // Remove tables fields (including splat) from select query
+        $tables = $db_clone->getAllTables();
+        foreach ($tables as $t) {
+            $t->useInQuery(false);
+        }
+
+        // Remove tables fields (including splat) from select query
+        $db_clone->clearTableFields();
+        $db_clone->clearExpressions();
+        $db_clone->clearGroupBy();
+        $db_clone->clearOrderBy();
+
         $db_clone->addExpression('count(*) as _row_count');
         $count_result = $db_clone->selectOneRow();
         $this->setTotalRows($count_result['_row_count']);
@@ -105,12 +116,13 @@ class DatabasePager extends Pager {
 
         /* @var $field \Database\Field */
         $field = $this->table_headers[$this->sort_column];
-        if (!is_a($field, '\Database\Field')) {
-            throw new Exception(t('Sort column "%s" is not a Field object',
+        if (!is_a($field, '\Database\Field') && !is_a($field,
+                        '\Database\Expression')) {
+            throw new Exception(t('Sort column "%s" is not a Field or Expression object',
                     $this->sort_column));
         }
 
-        $field->getTable()->addOrderBy($this->sort_column,
+        $field->getTable()->addOrderBy($field,
                 $this->sort_direction == SORT_ASC ? 'asc' : 'desc');
     }
 
