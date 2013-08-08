@@ -265,7 +265,7 @@ class Block_Admin {
             $db = Database::newDB();
             $blocks = $db->addTable('block');
             $blocks->addField('id');
-            $blocks->addOrderBy($blocks->addField('title'););
+            $blocks->addOrderBy($blocks->addField('title'));
             $db->loadSelectStatement();
             while ($b = $db->fetch()) {
                 /**
