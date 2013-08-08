@@ -62,9 +62,6 @@ class DSN extends \Data {
      */
     public function __construct($database_type, $username, $password=null, $database_name=null, $host=null, $port=null)
     {
-        if (empty($host)) {
-            $host = 'localhost';
-        }
         $this->database_type = \Variable::factory('string', $database_type, 'database_type');
         $this->database_type->setLimit(12);
         $this->database_type->setLabel(t('Database type'));
