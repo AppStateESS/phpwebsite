@@ -19,6 +19,8 @@ abstract class ErrorResponse extends \Response
             $request = \Server::getCurrentRequest();
         }
 
+        parent::__construct(null, $this->getHttpResponseCode());
+
         $this->request = $request;
         $this->code = $this->getHttpResponseCode();
         $this->backtrace = debug_backtrace();
