@@ -22,7 +22,7 @@ abstract class Base extends \Tag {
      * as to the function of the input or its title.
      * @var string
      */
-    private $label = null;
+    protected $label = null;
 
     /**
      * Indicates if input uses a label and where to print it. Submit and button
@@ -159,7 +159,7 @@ abstract class Base extends \Tag {
     {
         switch ($this->label_location) {
             case -1:
-                return $this->getLabel() . ' ' . parent::__toString();
+                return $this->getLabel() . ' ' . $this->__toString();
                 break;
 
             case 0:

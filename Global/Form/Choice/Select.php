@@ -92,42 +92,6 @@ class Select extends \Form\Choice {
     {
         $this->multiple = (bool) $multiple;
     }
-
-    /**
-     * Sets the label for the select input.
-     * @param string $label
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-    }
-
-    /**
-     * Indicates whether the output should contain a label.
-     * @param boolean $bool
-     */
-    public function setPrintLabel($bool)
-    {
-        $this->print_label = (bool) $bool;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getPrintLabel()
-    {
-        return $this->print_label;
-    }
-
-    /**
-     * Prefixes the select's label to the select tag.
-     * @return string
-     */
-    public function printWithLabel()
-    {
-        return $this->label . ' ' . $this->__toString();
-    }
-
 }
 
 ?>
