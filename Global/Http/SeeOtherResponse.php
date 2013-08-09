@@ -12,7 +12,7 @@ namespace Http;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-abstract class SeeOtherResponse extends RedirectResponse
+class SeeOtherResponse extends RedirectResponse
 {
     protected function getHttpResponseCode()
     {
