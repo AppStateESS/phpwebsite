@@ -48,6 +48,7 @@ class DatabasePager extends Pager {
 
         $this->processLimit();
         $this->setRows($this->db->select());
+        $this->executeCallback();
     }
 
     private function loadSearchConditionals()

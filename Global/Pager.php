@@ -39,6 +39,12 @@ class Pager {
     protected $current_page = 1;
 
     /**
+     * A function called on the rows set to be displayed.
+     * @var string|array
+     */
+    protected $callback;
+
+    /**
      * Character, word, or tag used for next page link
      * @var string
      */
@@ -139,6 +145,11 @@ class Pager {
                     $template->getFile()));
         }
         $this->template = $template;
+    }
+
+    public function setCallback($callback)
+    {
+        $this->callback = $callback;
     }
 
     public function setId($id)
@@ -391,8 +402,6 @@ class Pager {
 
     public function getJson()
     {
-        $data = null;
-
         if (empty($this->rows)) {
             $this->processRows();
         }
@@ -430,6 +439,21 @@ class Pager {
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
         $this->rows = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
+
+        $this->executeCallback();
+    }
+
+    protected function executeCallback()
+    {
+        if (!empty($this->callback)) {
+            foreach ($this->rows as $key => $value) {
+                if (is_string($this->callback) || is_array($this->callback)) {
+                    $this->rows[$key] = call_user_func($this->callback, $value);
+                } else {
+                    throw new \Exception(t('Unknown callback type'));
+                }
+            }
+        }
     }
 
     private function filterRows()
