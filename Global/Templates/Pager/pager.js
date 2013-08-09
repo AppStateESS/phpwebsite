@@ -95,6 +95,11 @@ function PagerList() {
         }
     };
 
+    this.reload = function(pager_id)
+    {
+        this.pagers[pager_id].processData();
+    };
+
     this.triggerCallback = function()
     {
         if (this.callback !== undefined && typeof(this.callback) === "function") {
