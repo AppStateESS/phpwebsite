@@ -9,7 +9,6 @@
                     onOk: function() {
                         val = this.getContentElement('general', 'content').getInputElement().getValue();
                         val = val.replace(/.*v\=(\w+).*/gi, '$1');
-                        console.log(val);
                         var text = '<iframe title="YouTube video player" class="youtube-player" type="text/html" width="480" height="390" src="http://www.youtube.com/embed/'
                                 //+this.getContentElement('general','content').getInputElement().getValue()
                                 + val

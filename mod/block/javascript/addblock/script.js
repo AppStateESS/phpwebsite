@@ -31,7 +31,6 @@ $(window).ready(function() {
                 $(this).data('key-id') + '&authkey=' + $(this).data('auth-key');
         $.get(link, function(data) {
             dblock.html(data);
-            console.log(data);
             if (!editor_called) {
                 CKEDITOR.replace('block-form_block_content');
                 editor_called = true;

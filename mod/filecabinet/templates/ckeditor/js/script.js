@@ -3,7 +3,6 @@ var CKEDITOR = window.parent.CKEDITOR;
 var oEditor = CKEDITOR.instances.editorName;
 
 var okListener = function(ev) {
-    console.log(insert_text);
     this._.editor.insertHtml(insert_text);
     CKEDITOR.dialog.getCurrent().removeListener("ok", okListener);
     CKEDITOR.dialog.getCurrent().removeListener("cancel", cancelListener);
