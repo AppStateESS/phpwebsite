@@ -1,5 +1,7 @@
 <?php
 
+namespace Http;
+
 /**
  * Description
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
@@ -13,8 +15,8 @@ abstract class RedirectResponse extends \Response
 
     public function __construct($url)
     {
-        parent::__construct(null, $this->getHttpResponseCode());
         $this->url = $url;
+        $this->code = $this->getHttpResponseCode();
     }
 
     public function getUrl()
