@@ -802,6 +802,31 @@ class PHPWS_Form {
     }
 
     /**
+     * Adds an extra tag (or any arbitrary string) to the HTML output
+     * for the given element name.
+     *
+     * @param string $name Element Name
+     * @param string $tag String/tag to add.
+     * @return boolean
+     */
+    public function addExtraTag($name, $tag)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core',
+                    'PHPWS_Form::setExtra', array($name));
+        }
+    
+        foreach ($this->_elements[$name] as $key => $element) {
+            $result = $this->_elements[$name][$key]->addExtraTag($tag);
+            if (PHPWS_Error::isError($result)) {
+                return $result;
+            }
+        }
+    
+        return true;
+    }
+    
+    /**
      * Lets you enter a width style to a text field or area
      *
      * Instead of setting a column number, you may prefer applying
@@ -1132,6 +1157,28 @@ class PHPWS_Form {
         }
     }
 
+    /**
+     * Adds a CSS class to the given element name. Will not overwrite
+     * previously added classes.
+     *
+     * @param string $name Element name
+     * @param string $className CSS class name
+     */
+    public function addCssClass($name, $className)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core',
+                    'PHPWS_Form::setClass', array($name));
+        }
+    
+        foreach ($this->_elements[$name] as $key => $element) {
+            $result = $this->_elements[$name][$key]->addCssClass($className);
+            if (PHPWS_Error::isError($result)) {
+                return $result;
+            }
+        }
+    }
+    
     public function setId($name, $id_name)
     {
         if (!$this->testName($name)) {
@@ -2473,6 +2520,19 @@ class Form_Element {
         $this->css_class = $css_class;
     }
 
+    /**
+     * Adds a CSS class to this element. Does not overwrite previously added classes.
+     * @param unknown $className
+     */
+    public function addCssClass($className)
+    {
+        if(!isset($this->css_class)){
+            $this->css_class = $className;
+        }else{
+            $this->css_class .= (' ' . $className);
+        }
+    }
+    
     public function getClass($formMode = false)
     {
         if (!$formMode) {
@@ -2519,6 +2579,21 @@ class Form_Element {
     public function setExtra($extra)
     {
         $this->extra = $extra;
+    }
+    
+    /**
+     * Adds an extra tag (or any arbitrary string)to the HTML markup
+     * for this form element. Will not overwrite any existing extra tags.
+     *
+     * @param string $tag
+     */
+    public function addExtraTag($tag)
+    {
+        if(!isset($this->extra)){
+            $this->extra = $tag;
+        }else{
+            $this->extra .= (' ' . $tag);
+        }
     }
 
     public function getExtra()
