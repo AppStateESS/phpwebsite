@@ -1207,6 +1207,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
+    }
     
 
     /**
