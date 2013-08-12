@@ -354,6 +354,14 @@ abstract class Table extends Resource {
     }
 
     /**
+     * Nulls out the object's fields parameter.
+     */
+    public function resetFields()
+    {
+        $this->fields = array();
+    }
+
+    /**
      * Constructs an insertQuery.
      * @param boolean $use_bind_vars If TRUE, bind variable format will be followed
      * in the query's construction

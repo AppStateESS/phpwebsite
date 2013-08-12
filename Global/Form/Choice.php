@@ -15,6 +15,7 @@ abstract class Choice extends Base {
      * @var string
      */
     protected $tag_type = 'select';
+
     /**
      * Type of choice - option, radio, or checkbox
      * @var unknown_type
@@ -27,16 +28,13 @@ abstract class Choice extends Base {
      * @var array
      */
     protected $options;
+
     /**
      * The default choice shown among the available selections.
      * @var string
      */
     protected $selection;
-    /**
-     * The inputs label tag
-     * @var string
-     */
-    protected $label;
+
     /**
      * If true, use breaks instead of newlines on options print out. Breaks are
      * used for radio and checkboxes and not used for selects and multiples.
@@ -59,34 +57,16 @@ abstract class Choice extends Base {
      * @param array $options
      * @param unknown_type $value
      */
-    public function __construct($name, $options=null, $value=null)
+    public function __construct($name, $options = null, $value = null)
     {
         parent::__construct($name);
         $this->setName($name);
         if (!empty($options)) {
             $this->addOptions($options);
         }
-        $this->addIgnoreVariables('breaks', 'type', 'label', 'selection', 'options');
+        $this->addIgnoreVariables('breaks', 'type', 'label', 'selection',
+                'options');
         $this->setSelection($value);
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        if (!$this->isProper($name)) {
-            throw new \Exception(t('Improper input name "%s"', $name));
-        }
-        $this->name = $name;
-    }
-
-    /**
-     * @return string Name of current choice input
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -106,20 +86,11 @@ abstract class Choice extends Base {
         }
 
         if (!empty($selection) && (!isset($this->options[$selection]))) {
-            throw new \Exception(t('Selection value "%s" not among current options', $selection));
+            throw new \Exception(t('Selection value "%s" not among current options',
+                    $selection));
         }
         $this->options[$selection]->setSelection(true);
         $this->selection = $selection;
-    }
-
-    /**
-     * Indicates if the text passed will work as an input name.
-     * @param string $text
-     * @return boolean
-     */
-    public function isProper($text)
-    {
-        return preg_match('/^[a-z][\w\-\:\.]*/i', $text);
     }
 
 }

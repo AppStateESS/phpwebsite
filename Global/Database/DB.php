@@ -212,6 +212,21 @@ abstract class DB extends \Data {
      */
     abstract public function listDatabases();
 
+
+    /**
+     * Clones object and every variable. Simple clone will cause problems with
+     * table references and the like.
+     * Copied from php.net
+     */
+    function __clone()
+    {
+        foreach ($this as $key => $val) {
+            if (is_object($val) || (is_array($val))) {
+                $this->{$key} = unserialize(serialize($val));
+            }
+        }
+    }
+
     /**
      * Accepts a DSN object to create a new
      * @param \Database\DSN $dsn
@@ -299,6 +314,21 @@ abstract class DB extends \Data {
         $this->conditional = $conditional;
     }
 
+    /**
+     * Adds a new conditional on to the current conditional, if exists. Sets
+     * conditional parameter if not yet set.
+     * @param \Database\Conditional $conditional
+     */
+    public function addConditional(\Database\Conditional $conditional)
+    {
+        if (empty($this->conditional)) {
+            $this->setConditional($conditional);
+        } else {
+            $new_conditional = new \Database\Conditional($this->conditional,
+                    $conditional, 'AND');
+            $this->setConditional($new_conditional);
+        }
+    }
 
     /**
      * Allows the developer to string together several conditionals at once
@@ -354,7 +384,7 @@ abstract class DB extends \Data {
      * @param string $operator
      * @return \Database\Conditional
      */
-    public function getConditional($left, $right, $operator = null)
+    public function createConditional($left, $right, $operator = null)
     {
         if (is_null($operator)) {
             if ($left instanceof \Database\Conditional && $right instanceof \Database\Conditional) {
@@ -364,6 +394,15 @@ abstract class DB extends \Data {
             }
         }
         return new Conditional($left, $right, $operator);
+    }
+
+    /**
+     * Returns the currently set conditional from the DB object.
+     * @return \Database\Conditional
+     */
+    public function getConditional()
+    {
+        return $this->conditional;
     }
 
     /**
@@ -469,6 +508,9 @@ abstract class DB extends \Data {
         }
 
         \Database::logQuery($sql);
+        if (empty(self::$PDO)) {
+            $this->loadPDO();
+        }
         return self::$PDO->query($sql);
     }
 
@@ -751,6 +793,33 @@ abstract class DB extends \Data {
         $group_class = "Database\Engine\\$engine\Group";
         $this->group_by = new $group_class($fields, $group_type);
         return $this->group_by;
+    }
+
+    /**
+     * Clears the group_by parameter
+     */
+    public function clearGroupBy()
+    {
+        $this->group_by = null;
+    }
+
+    public function clearTableFields()
+    {
+        foreach ($this->tables as $t) {
+            $t->resetFields();
+        }
+    }
+
+    public function clearOrderBy()
+    {
+        foreach ($this->tables as $t) {
+            $t->resetOrderBy();
+        }
+    }
+
+    public function clearExpressions()
+    {
+        $this->expressions = null;
     }
 
     /**
@@ -1364,8 +1433,15 @@ abstract class DB extends \Data {
             if ($fields_present) {
                 $query[] = ', ';
             }
-            $query[] = implode(', ', $this->expressions);
-            //$query[] = implode(', ', $this->expressions);
+
+            $comma = false;
+            foreach ($this->expressions as $e) {
+                $query[] = $e->__toString();
+                if ($comma) {
+                    $query[] = ', ';
+                }
+                $comma = true;
+            }
             $fields_present = true;
         }
 

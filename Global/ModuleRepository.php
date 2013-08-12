@@ -33,7 +33,7 @@ final class ModuleRepository
     {
         $db = Database::newDB();
         $mods = $db->addTable('modules');
-        $mods->addOrderBy('priority');
+        $mods->addOrderBy($mods->getField('priority'));
         $db->loadSelectStatement();
 
         while($row = $db->fetch()) {

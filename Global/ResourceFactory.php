@@ -67,7 +67,7 @@ class ResourceFactory {
             $last_id = (int) $tbl->getLastId();
             $resource->setId($last_id);
         } else {
-            $tbl->addWhere('id', $id);
+            $db->addConditional($tbl->getFieldConditional('id', $id));
             $db->update();
         }
         return $resource;
@@ -89,14 +89,14 @@ class ResourceFactory {
         return $id;
     }
 
-    public function removeFromDB(\Resource $resource, $table_name = null)
+    public static function deleteResource(\Resource $resource, $table_name = null)
     {
         if (empty($table_name)) {
             $table_name = $resource->getTable();
         }
         $db = \Database::newDB();
         $tbl = $db->addTable($table_name);
-        $tbl->addWhere('id', $this->pullId($resource));
+        $db->addConditional($tbl->getFieldConditional('id', self::pullId($resource) ));
         $db->delete();
     }
 
