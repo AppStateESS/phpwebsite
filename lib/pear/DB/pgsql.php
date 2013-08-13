@@ -899,7 +899,7 @@ class DB_pgsql extends DB_common
              * Probably received a table name.
              * Create a result resource identifier.
              */
-            $id = @pg_exec($this->connection, "SELECT * FROM $result LIMIT 0");
+            $id = pg_exec($this->connection, "SELECT * FROM $result LIMIT 0");
             $got_string = true;
         } elseif (isset($result->result)) {
             /*
