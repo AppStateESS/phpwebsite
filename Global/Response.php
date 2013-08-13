@@ -10,7 +10,7 @@ class Response
     protected $code;
     protected $view;
 
-    public function __construct(View $view, $code = 200)
+    public function __construct(View $view=null, $code = 200)
     {
         $this->view = $view;
         $this->code = $code;
@@ -33,8 +33,8 @@ class Response
 
     public function getStatusLine()
     {
-        return $this->getHttpVersion() . ' ' . 
-               $this->getCode() . ' ' . 
+        return $this->getHttpVersion() . ' ' .
+               $this->getCode() . ' ' .
                $this->getPhrase();
     }
 
