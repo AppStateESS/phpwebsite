@@ -229,6 +229,9 @@ class PHPWS_DB {
     public function inDatabase($table, $column = null)
     {
         $table = PHPWS_DB::addPrefix(strip_tags($table));
+        if (!PHPWS_DB::allowed($table)) {
+            return false;
+        }
 
         PHPWS_DB::touchDB();
         static $database_info = null;
@@ -779,11 +782,13 @@ class PHPWS_DB {
         if (is_string($value)) {
             if (substr_count($value, '.') == 1) {
                 list($join_table, $join_column) = explode('.', $value);
-                if (isset($this->table_as[$join_table])) {
+                if (!empty($this->table_as) && isset($this->table_as[$join_table])) {
                     $where->setJoin(true);
-                } elseif ($this->inDatabase($join_table, $join_column)) {
-                    $where->setJoin(true);
-                    $this->addTable($join_table);
+                } else {
+                    if ($this->inDatabase($join_table, $join_column)) {
+                        $where->setJoin(true);
+                        $this->addTable($join_table);
+                    }
                 }
             }
         }
@@ -2264,7 +2269,7 @@ class PHPWS_DB {
 
     public function quote($text)
     {
-        return $GLOBALS['PHPWS_DB']['connection']->quote($text);
+        return $GLOBALS['PHPWS_DB']['connection']->quoteSmart($text);
     }
 
     public static function extractTableName($sql_value)
