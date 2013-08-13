@@ -214,6 +214,11 @@ class Layout {
         }
     }
 
+    /**
+     *
+     * @param type $value
+     * @return void
+     */
     public static function addToStyleList($value)
     {
         $alternate = FALSE;
