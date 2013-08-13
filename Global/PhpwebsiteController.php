@@ -4,6 +4,8 @@
  * Main controller class for phpWebSite.  Implements Controller, so it can be
  * used like any other Controller in the system.
  *
+ * @author Jeff Tickle
+ * @author Matthew McNaney
  * @author Jeremy Booker
  * @package
  */
