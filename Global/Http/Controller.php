@@ -137,7 +137,7 @@ abstract class Controller implements \Controller
 
     protected function getJsonView($data, \Request $request)
     {
-        return new \JsonView($data);
+        return new \View\JsonView($data);
     }
 
     protected function getXmlView($data, \Request $request)

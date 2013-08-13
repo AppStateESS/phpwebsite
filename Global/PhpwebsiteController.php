@@ -122,7 +122,7 @@ class PhpwebsiteController implements Controller {
         // For Compatibility only - modules that make an end-run around the new
         // system and speak to Layout directly should return a Response
         // containing a NullView in order to skip the new rendering process.
-        if ($view instanceof NullView) {
+        if ($view instanceof \View\NullView) {
             return;
         }
 

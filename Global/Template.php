@@ -110,6 +110,14 @@ class Template implements View {
 
     public function __toString()
     {
+        return $this->get();
+    }
+
+    public function get()
+    {
+        if (empty($this->file)) {
+            throw new \Exception('Template file not set');
+        }
         $template_content_array = $this->encode ? $this->encode($this->variables) : $this->variables;
         extract($template_content_array);
         ob_start();
@@ -117,11 +125,6 @@ class Template implements View {
         $result = ob_get_contents();
         ob_end_clean();
         return $result;
-    }
-
-    public function get()
-    {
-        return $this->__toString();
     }
 
     public function render()

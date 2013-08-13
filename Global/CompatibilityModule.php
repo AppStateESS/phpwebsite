@@ -46,13 +46,13 @@ class CompatibilityModule extends \Module implements \SettingDefaults {
 
     public function getView(Http\AcceptIterator $iter)
     {
-        return new NullView();
+        return new \View\NullView;
     }
 
     public function execute(\Request $request)
     {
         include $this->directory . 'index.php';
-        return new Response(new NullView());
+        return new Response(new \View\NullView());
     }
 
     public function destruct()

@@ -59,11 +59,11 @@ abstract class ErrorResponse extends \Response
 
         foreach($iter as $type) {
             if($type->matches('application/json'))
-                return new \Http\JsonErrorView($request, $response);
+                return new \View\JsonErrorView($request, $response);
             if($type->matches('application/xml'))
-                return new \Http\XmlErrorView($request, $response);
+                return new \View\XmlErrorView($request, $response);
             if($type->matches('text/html'))
-                return new \Http\HtmlErrorView($request, $response);
+                return new \View\HtmlErrorView($request, $response);
         }
     }
 }

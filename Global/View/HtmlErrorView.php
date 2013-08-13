@@ -1,6 +1,6 @@
 <?php
 
-namespace Http;
+namespace View;
 
 /**
  * TODO: This should all be handled in templates that are 100% user-editable.
