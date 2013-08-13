@@ -356,8 +356,8 @@ class User_Form {
 
         // If no order was set, then set it to default by user name
         if (!isset($pager->orderby)) {
-           $pager->orderby = 'name';
-           $pager->orderby_dir = 'asc';
+            $pager->orderby = 'name';
+            $pager->orderby_dir = 'asc';
         }
 
         $pager->addPageTags($pageTags);
@@ -582,15 +582,16 @@ class User_Form {
         }
 
         $group_ids = $user->getGroups();
-
-        $db = Database::newDB();
-        $t1 = $db->addTable('users_groups');
-        $f1 = $t1->addField('name');
-        $c1 = $t1->getFieldConditional('id', $group_ids, 'in');
-        $c2 = $t1->getFieldConditional('user_id', 0);
-        $db->stackConditionals($c1, $c2);
-        while($group = $db->selectColumn()) {
-            $template['members'][] = array('NAME' => $group);
+        if ($group_ids) {
+            $db = Database::newDB();
+            $t1 = $db->addTable('users_groups');
+            $f1 = $t1->addField('name');
+            $c1 = $t1->getFieldConditional('id', $group_ids, 'in');
+            $c2 = $t1->getFieldConditional('user_id', 0);
+            $db->stackConditionals($c1, $c2);
+            while ($group = $db->selectColumn()) {
+                $template['members'][] = array('NAME' => $group);
+            }
         }
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
