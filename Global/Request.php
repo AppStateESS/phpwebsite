@@ -380,6 +380,21 @@ class Request extends Data {
         return substr($matches[0], 1);
     }
 
+    /**
+     * Pops the last token off the Request and returns a new Request object. So
+     * <code>
+     * # using a url like "moduleName/Alpha/Beta"
+     *
+     * echo $request->getCurrentToken();
+     * // prints "Alpha"
+     *
+     * $new_r = $request->getNextRequest();
+     * echo $new_r->getCurrentToken();
+     * // prints "Beta"
+     * </code>
+     *
+     * @return \Request
+     */
     public function getNextRequest()
     {
         $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
