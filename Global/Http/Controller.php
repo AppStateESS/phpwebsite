@@ -58,6 +58,11 @@ abstract class Controller implements \Controller
             $response = new MethodNotAllowedResponse($request); break;
         }
 
+
+        if (!is_a($response, '\Response')) {
+            throw new \Exception(t("Controller %s did not return a response object for the %s method", get_class($this), $request->getMethod()));
+        }
+
         $this->onAfterExecute($request, $response);
 
         return $response;
