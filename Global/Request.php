@@ -243,6 +243,18 @@ class Request extends Data {
         }
     }
 
+
+    /**
+     * Checks to see if the $variable_name exists in the $vars parameter. If so,
+     * it is returned, else the $then parameter is returned.
+     * @param string $variable_name
+     * @param mixed $then
+     * @return mixed
+     */
+    public function ifNotVarThen($variable_name, $then) {
+        return $this->isVar($variable_name) ? $this->getVar($variable_name) : $then;
+    }
+
     /**
      * @param string $variable_name
      * @return boolean True if the variable is on the REQUEST
