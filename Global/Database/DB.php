@@ -83,10 +83,11 @@ abstract class DB extends \Data {
 
     /**
      * Field object you want a select result indexed by
+     * Note: currently not operational
      * @see DB::setIndexBy
      * @var object
      */
-    private $index_by = null;
+    //private $index_by = null;
 
     /**
      * Last queried PSOStatement. Nulls out when complete
@@ -906,6 +907,8 @@ abstract class DB extends \Data {
     }
 
     /**
+     * Note: Currently not operational
+     * 
      * Accepts a table field for indexing a select result.
      * For example:
      * $id_field = $table->getField('id');
@@ -917,10 +920,13 @@ abstract class DB extends \Data {
      *
      * @param Field $field
      */
+    /*
     public function setIndexBy(Field $field)
     {
         $this->index_by = $field;
     }
+     *
+     */
 
     /**
      * Runs insert on all tables in the database object
