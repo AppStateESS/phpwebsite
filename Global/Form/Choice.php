@@ -91,6 +91,7 @@ abstract class Choice extends Base {
         }
         $this->options[$selection]->setSelection(true);
         $this->selection = $selection;
+        return $this;
     }
 
 }

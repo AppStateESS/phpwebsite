@@ -95,6 +95,7 @@ abstract class Base extends \Tag {
             throw new \Exception(t('Improper name "%s"', $name));
         }
         $this->name = trim($name);
+        return $this;
     }
 
     /**
@@ -104,6 +105,7 @@ abstract class Base extends \Tag {
     public function setLabelLocation($loc = 1)
     {
         $this->label_location = (int) $loc;
+        return $this;
     }
 
     /**
@@ -122,6 +124,7 @@ abstract class Base extends \Tag {
     public function setLabel($label)
     {
         $this->label = $label;
+        return $this;
     }
 
     /**
@@ -179,6 +182,7 @@ abstract class Base extends \Tag {
     public function setPrintLabel($bool)
     {
         $this->print_label = (bool) $bool;
+        return $this;
     }
 
     public function getType()
@@ -194,6 +198,11 @@ abstract class Base extends \Tag {
         return $this->print_label;
     }
 
+    /**
+     * Sets the field as required before form submission.
+     * @param boolean $required
+     * @return \Form\Base
+     */
     public function setRequired($required = true)
     {
         if ($required) {
@@ -201,6 +210,7 @@ abstract class Base extends \Tag {
         } else {
             $this->required = null;
         }
+        return $this;
     }
 
 }

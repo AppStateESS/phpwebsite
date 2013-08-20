@@ -49,6 +49,7 @@ abstract class Input extends Base {
         if (isset($value)) {
             $this->value = $value;
         }
+        return $this;
     }
 
     /**
@@ -67,6 +68,7 @@ abstract class Input extends Base {
     public function setTitle($title)
     {
         $this->title = strip_tags($title);
+        return $this;
     }
 
     /**
