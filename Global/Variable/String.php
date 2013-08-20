@@ -58,7 +58,8 @@ class String extends \Variable {
     protected function verifyValue($value)
     {
         if (!$this->allow_empty && strlen($value) == 0) {
-            throw new \Exception(t('Value may not be an empty string'));
+            throw new \Exception(t('Value "%1$s" may not be an empty string',
+                    $this->varname));
         }
 
         if (!is_string($value)) {
