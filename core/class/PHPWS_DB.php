@@ -144,7 +144,7 @@ class PHPWS_DB {
         }
 
         $pear_db = new DB;
-        $connect = $pear_db->connect($dsn);
+        $connect = $pear_db->connect($dsn, array('persistent'=>false));
 
         if (PHPWS_Error::isError($connect)) {
             if (CLEAR_DSN) {
