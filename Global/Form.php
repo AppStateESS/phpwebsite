@@ -65,6 +65,7 @@ class Form extends Tag {
         static $default_id = 1;
         $this->setId('form-' . $default_id);
         $default_id++;
+        $this->addClass('phpws-form');
     }
 
     /**
@@ -552,6 +553,8 @@ class Form extends Tag {
      * or
      * $input = current($form->getInput('first_name')); (php 5.3 and under)
      *
+     * See also __get.
+     *
      * @param string $name
      * @return array Array of all \Form\Base extended objects under the passed name.
      * @throws \Exception
@@ -568,6 +571,8 @@ class Form extends Tag {
      * Like getInput BUT only returns a single input. If the input requested via
      * the name parameter has multiple objects, an exception will be thrown instead.
      *
+     * See also __get.
+     *
      * @param string $name
      * @return \Form\Base
      * @throws \Exception
@@ -577,7 +582,7 @@ class Form extends Tag {
         if (!isset($this->inputs[$name])) {
             throw new \Exception(t('Input "%s" does not exist', $name));
         }
-        if (count($this->inputs) > 1) {
+        if (count($this->inputs[$name]) > 1) {
             throw new \Exception(t('Input "%s" contains multiple objects', $name));
         }
         return $this->inputs[$name][0];
@@ -607,6 +612,17 @@ class Form extends Tag {
         } else {
             return $input;
         }
+    }
+
+    /**
+     * Loads the javascript file that helps enforce required fields. This may
+     * eventually be incorporated into __toString or getInputStringArray.
+     */
+    public static function requiredScript()
+    {
+        javascript('jquery');
+        \Layout::addJSHeader("<script type='text/javascript' src='" .
+                PHPWS_SOURCE_HTTP . "Global/Templates/Form/required.js'></script>");
     }
 
 }
