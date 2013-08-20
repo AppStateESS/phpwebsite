@@ -20,8 +20,7 @@ class Bool extends \Variable {
      * @var string
      */
     protected $input_type = 'checkbox';
-
-    protected $column_type = 'tinyint';
+    protected $column_type = 'smallint';
 
     /**
      * Checks if value is a boolean
@@ -49,6 +48,17 @@ class Bool extends \Variable {
     {
         $val = $this->value ? 'true' : 'false';
         return "var {$this->varname} : $val;";
+    }
+
+    /**
+     * For database result, we are returning a 1 for true or a 0 for false. This
+     * is because the default column type for a Bool object is a smallint
+     *
+     * @return integer
+     */
+    public function toDatabase()
+    {
+        return $this->value ? 1 : 0;
     }
 
 }
