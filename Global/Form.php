@@ -547,8 +547,13 @@ class Form extends Tag {
      * Returns an array of input (\Form\Choice or \Form\Input) objects from the
      * Form if it has been previously set.
      *
+     * If you expect only one answer then:
+     * $input = $form->getInput('first_name')[0]; (php 5.4 and above only)
+     * or
+     * $input = current($form->getInput('first_name')); (php 5.3 and under)
+     *
      * @param string $name
-     * @return \Form\Base
+     * @return array Array of all \Form\Base extended objects under the passed name.
      * @throws \Exception
      */
     public function getInput($name)
@@ -557,6 +562,25 @@ class Form extends Tag {
             throw new \Exception(t('Input "%s" does not exist', $name));
         }
         return $this->inputs[$name];
+    }
+
+    /**
+     * Like getInput BUT only returns a single input. If the input requested via
+     * the name parameter has multiple objects, an exception will be thrown instead.
+     *
+     * @param string $name
+     * @return \Form\Base
+     * @throws \Exception
+     */
+    public function getSingleInput($name)
+    {
+        if (!isset($this->inputs[$name])) {
+            throw new \Exception(t('Input "%s" does not exist', $name));
+        }
+        if (count($this->inputs) > 1) {
+            throw new \Exception(t('Input "%s" contains multiple objects', $name));
+        }
+        return $this->inputs[$name][0];
     }
 
     public function useGetMethod()
