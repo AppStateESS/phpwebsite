@@ -1,11 +1,27 @@
+<li id="{ID}" class="dropdown menu-link link-level-{LEVEL} {CURRENT_LINK}">
+  <!-- BEGIN admin_links -->
+        <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#"> <i class="icon-cog">
+              </i><span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>{EDIT_LINK}</li>
+                <li>{DELETE_LINK}</li>
+                <li>{LINK_INDENT}</li>
+                <li>{LINK_OUTDENT}</li>
+                <li>{PIN_LINK}</li>
+                <li>{ADD_LINK}</li>
+                <li>{ADD_SITE_LINK}</li>
+                <li>{MOVE_LINK_UP}</li>
+                <li>{MOVE_LINK_DOWN}</li>
+            </ul>
+        </div>
+    <!-- END admin_links -->
+  <a href="{LINK_URL}" class="{ACTIVE}dropdown-toggle" data-toggle="{LINK_DROPDOWN}">{LINK_TEXT}</a>
+    <!-- BEGIN sublink -->
+      <ul class="dropdown-menu">
+        {SUBLINK}
+      </ul>
+  <!-- END sublink -->
+</li>
 
-<li id="{ID}" class="menu-link link-level-{LEVEL} {CURRENT_LINK}">
-<!-- BEGIN add-link --> <span class="menu-admin"> {ADMIN} <!-- BEGIN admin-links -->
-<span class="menu-link-pop">{EDIT_LINK} {DELETE_LINK} {LINK_INDENT} {LINK_OUTDENT}
-{PIN_LINK} {ADD_LINK} {ADD_SITE_LINK} 
-{MOVE_LINK_UP} {MOVE_LINK_DOWN} </span> <!-- END admin-links --> </span> <!-- END add-link -->
-{LINK}<!-- BEGIN sublink -->
-<ul id="{PARENT_ID}">
-    {SUBLINK}
-</ul>
-<!-- END sublink --></li>
