@@ -1,4 +1,5 @@
-<li id="{ID}" class="{DD} menu-link link-level-{LEVEL} {CURRENT_LINK}">
+<li id="{ID}" class="menu-link link-level-{LEVEL} {CURRENT_LINK} {DD}">
+
   <!-- BEGIN admin_links -->
         <div class="btn-group pull-right">
             <a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#"> <i class="icon-cog">
@@ -17,10 +18,11 @@
             </ul>
         </div>
     <!-- END admin_links -->
-<a href="{LINK_URL}" class="{ACTIVE}<!--  BEGIN dropdown -->{DROPDOWN_TOGGLE}" {LINK_DROPDOWN}<!--  END dropdown -->>{LINK_TEXT}</a>
-<!-- BEGIN sublink -->
+ <a href="{LINK_URL}" class="{ACTIVE} <!--  BEGIN dropdown -->{DROPDOWN_TOGGLE}" data-toggle="{LINK_DROPDOWN}<!--  END dropdown -->">{LINK_TEXT}</a>
+      <!-- BEGIN sublink -->
       <ul class="dropdown-menu">
         {SUBLINK}
       </ul>
-<!-- END sublink -->
+  <!-- END sublink -->
 </li>
+
