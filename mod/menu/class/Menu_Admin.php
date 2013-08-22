@@ -237,7 +237,7 @@ class Menu_Admin {
                 if (isset($_REQUEST['key_id'])) {
                     $result = Menu_Admin::addLink($menu, $_REQUEST['key_id'], $parent_id);
                 } elseif (isset($_REQUEST['url'])) {
-                    $result = Menu_Admin::addRawLink($menu, $_REQUEST['link_title'], $_REQUEST['url'], $parent_id);
+                    $result = Menu_Admin::addRawLink($menu, $_REQUEST['link_title'], $_REQUEST['url'],  $_REQUEST['dropdown'], $parent_id);
                 } else {
                     Menu_Admin::finish();
                 }
@@ -693,6 +693,8 @@ class Menu_Admin {
         $form->addText('url', $link->url);
         $form->setLabel('url', dgettext('menu', 'Url'));
         $form->setSize('url', 50);
+		$form->addCheck('dropdown', '1');
+		$form->setLabel('dropdown', dgettext('menu', 'Make this menu item a dropdown link only'));
 
         $form->addSubmit(dgettext('menu', 'Save link'));
 
@@ -727,8 +729,10 @@ class Menu_Admin {
         } else {
             $link->setUrl($_POST['url']);
         }
-
-        $link->key_id = 0;
+		
+		$link->setIsDropdownLink($_POST['dropdown']);
+        
+		$link->key_id = 0;
         if (!$link->menu_id) {
             $link->menu_id =  $_POST['menu_id'];
         }
@@ -791,7 +795,7 @@ class Menu_Admin {
         return $content;
     }
 
-    public function finish()
+    public static function finish()
     {
         if (isset($_GET['pu'])) {
             javascript('close_refresh');
@@ -803,13 +807,6 @@ class Menu_Admin {
 
     public static function saveSettings()
     {
-        if ($_POST['admin_mode'] == 'on') {
-            $_SESSION['Menu_Admin_Mode'] = true;
-        } else {
-            $_SESSION['Menu_Admin_Mode'] = false;
-            unset($_SESSION['Menu_Admin_Mode']);
-        }
-
         if (!empty($_POST['max_link_characters'])) {
             $chars = (int)$_POST['max_link_characters'];
             if ($chars > 10 && $chars < 1000) {
