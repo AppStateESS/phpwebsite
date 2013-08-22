@@ -38,21 +38,21 @@ class PHPWS_Core {
 
         if ($just_title) {
             $titles = array();
-            foreach($mods as $mod) {
+            foreach ($mods as $mod) {
                 $titles[] = $mod->getTitle();
             }
             return $titles;
         } else {
             $oldmods = array();
-            foreach($mods as $mod) {
+            foreach ($mods as $mod) {
                 $oldmod = array();
-                $oldmod['title']       = $mod->getTitle();
+                $oldmod['title'] = $mod->getTitle();
                 $oldmod['proper_name'] = $mod->getProperName();
-                $oldmod['priority']    = $mod->getPriority();
-                $oldmod['active']      = $mod->isActive();
-                $oldmod['version']     = $mod->getVersion();
-                $oldmod['register']    = false;     // @deprecated please remove
-                $oldmod['unregister']  = false;     // @deprecated please remove
+                $oldmod['priority'] = $mod->getPriority();
+                $oldmod['active'] = $mod->isActive();
+                $oldmod['version'] = $mod->getVersion();
+                $oldmod['register'] = false;     // @deprecated please remove
+                $oldmod['unregister'] = false;     // @deprecated please remove
                 $oldmods[] = $oldmod;
             }
             return $oldmods;
@@ -149,11 +149,14 @@ class PHPWS_Core {
     public static function _getPostKey()
     {
         $key = serialize($_POST);
-
         if (isset($_FILES)) {
             foreach ($_FILES as $file) {
                 extract($file);
-                $key .= $name . $type . $size;
+                if (is_array($name)) {
+                    $key .= $name[0] . $type[0] . $size[0];
+                } else {
+                    $key .= $name . $type . $size;
+                }
             }
         }
 
@@ -322,7 +325,8 @@ class PHPWS_Core {
     public static function getCurrentModule()
     {
         $active = ModuleRepository::getInstance()->getCurrentModule();
-        if(is_null($active)) return null;
+        if (is_null($active))
+            return null;
         return $active->getTitle();
     }
 
@@ -728,7 +732,7 @@ class PHPWS_Core {
     // TODO: A more formal and less nasty way to do this, issue #96
     public static function pushUrlHistory()
     {
-        if(!isset($_SESSION['PHPWS_UrlHistory'])) {
+        if (!isset($_SESSION['PHPWS_UrlHistory'])) {
             $_SESSION['PHPWS_UrlHistory'] = array();
         }
 
@@ -738,7 +742,7 @@ class PHPWS_Core {
     // TODO: A more formal and less nasty way to do this, issue #96
     public static function popUrlHistory()
     {
-        if(!isset($_SESSION['PHPWS_UrlHistory']) || count($_SESSION['PHPWS_UrlHistory']) == 0) {
+        if (!isset($_SESSION['PHPWS_UrlHistory']) || count($_SESSION['PHPWS_UrlHistory']) == 0) {
             PHPWS_Core::home();
         }
 
