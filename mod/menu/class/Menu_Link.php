@@ -19,6 +19,7 @@ class Menu_Link {
     public $key_id = NULL;
     public $title = NULL;
     public $url = NULL;
+	public $dropdown = NULL;
     public $parent = 0;
     public $active = 1;
     public $link_order = 1;
@@ -106,7 +107,19 @@ class Menu_Link {
     {
         $this->key_id = (int) $key_id;
     }
-
+	
+	public function setIsDropdownLink($dropdown)
+    {
+        $this->dropdown = (int) $dropdown;
+    }
+	
+	public function getIsDropdownLink($dropdown)
+    {
+		return $this->dropdown;
+    }
+	
+		
+	
     public function setTitle($title)
     {
         $title = strip_tags(trim($title));
@@ -245,6 +258,11 @@ class Menu_Link {
 
         $current_link = false;
         $current_key = Key::getCurrent();
+	    
+		
+	
+//		$template['DROPDOWN_TOGGLE'] = $dropdown; // booststrap theme
+
         if (!empty($current_key)) {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
@@ -255,11 +273,30 @@ class Menu_Link {
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
+			if ($this->dropdown > 0) {
+			$template['DROPDOWN_TOGGLE'] = 'dropdown-toggle';
+			$template['DD'] = 'dropdown';
+			$template['LINK_DROPDOWN'] = 'data-toggle="dropdown"';
+				} else { 
+			$template['DROPDOWN_TOGGLE'] = '';
+			$template['DD'] = '';
+			$template['LINK_DROPDOWN'] = '';
+			}
         }
         if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl() && $this->url != 'index.php') {
             $current_link = true;
             $current_parent[] = $this->id;
             $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
+            $template['ACTIVE'] = 'active'; // booststrap theme
+			if ($this->dropdown > 0) {
+			$template['DROPDOWN_TOGGLE'] = 'dropdown-toggle';
+			$template['DD'] = 'dropdown';
+			$template['LINK_DROPDOWN'] = 'data-toggle="dropdown"';
+				} else { 
+			$template['DROPDOWN_TOGGLE'] = '';
+			$template['DD'] = '';
+			$template['LINK_DROPDOWN'] = '';
+			}
         }
 
         if ($this->childIsCurrentUrl()) {
@@ -274,6 +311,9 @@ class Menu_Link {
             $this->_loadAdminLinks($template);
 
             $template['LINK'] = $link;
+            $template['LINK_URL'] = $this->url;
+//            $template['LINK_DROPDOWN'] = 'data-toggle="dropdown"'; // Dummy tag to make dropdowns work
+            $template['LINK_TEXT'] = $this->title;
             if (!empty($this->_children)) {
                 foreach ($this->_children as $kid) {
                     $kid->_menu = & $this->_menu;
@@ -288,9 +328,9 @@ class Menu_Link {
                 $template['PARENT_ID'] = sprintf('menu-parent-%s', $this->id);
             }
 
-            $template['LEVEL'] = $level;
+            $template['DOWNLOAD_TOGGLE'] = $this->dropdown; // booststrap theme
+			$template['LEVEL'] = $level;
             $template['ID'] = sprintf('menu-link-%s', $this->id);
-
             $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
             return PHPWS_Template::process($template, 'menu', $tpl_file);
         } else {
@@ -370,6 +410,7 @@ class Menu_Link {
                     $template['EDIT_LINK'] = $this->editLink($popup);
 
                     if (!PHPWS_Settings::get('menu', 'drag_sort')) {
+                        // Create 'Move link up' button
                         $vars['command'] = 'move_link_up';
                         $up_link = MENU_LINK_UP;
                         if ($popup) {
@@ -382,6 +423,7 @@ class Menu_Link {
                                     $this->menu_id, $this->id, 'up', $up_link);
                         }
 
+                        // Create 'Move link down' button
                         $down_link = MENU_LINK_DOWN;
                         $vars['command'] = 'move_link_down';
                         if ($popup) {
@@ -397,12 +439,15 @@ class Menu_Link {
                         }
                     }
 
+                    // Create the 'link indent' button
+                    //TODO: remove the magic number
                     if ($this->link_order != 1) {
                         $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
                                 $this->menu_id, $this->id,
                                 MENU_LINK_INDENT_INCREASE);
                     }
 
+                    // Create the 'outdent' button if this link has a parent (i.e. is not a top-level link)
                     if ($this->parent) {
                         $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
                                 $this->menu_id, $this->id,
