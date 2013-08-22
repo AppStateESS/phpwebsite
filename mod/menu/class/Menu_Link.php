@@ -276,7 +276,7 @@ class Menu_Link {
 			if ($this->dropdown > 0) {
 			$template['DROPDOWN_TOGGLE'] = 'dropdown-toggle';
 			$template['DD'] = 'dropdown';
-			$template['LINK_DROPDOWN'] = 'data-toggle="dropdown"';
+			$template['LINK_DROPDOWN'] = 'dropdown';
 				} else { 
 			$template['DROPDOWN_TOGGLE'] = '';
 			$template['DD'] = '';
@@ -288,10 +288,11 @@ class Menu_Link {
             $current_parent[] = $this->id;
             $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             $template['ACTIVE'] = 'active'; // booststrap theme
+			
 			if ($this->dropdown > 0) {
 			$template['DROPDOWN_TOGGLE'] = 'dropdown-toggle';
 			$template['DD'] = 'dropdown';
-			$template['LINK_DROPDOWN'] = 'data-toggle="dropdown"';
+			$template['LINK_DROPDOWN'] = 'dropdown';
 				} else { 
 			$template['DROPDOWN_TOGGLE'] = '';
 			$template['DD'] = '';
