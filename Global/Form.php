@@ -24,7 +24,7 @@ class Form extends Tag {
      * The url target of the form
      * @var string
      */
-    protected $action = './';
+    protected $action;
 
     /**
      * The method (get/post) in which the form should sent.
@@ -62,6 +62,7 @@ class Form extends Tag {
     public function __construct()
     {
         parent::__construct('form');
+        $this->action = \Server::getCurrentUrl();
         static $default_id = 1;
         $this->setId('form-' . $default_id);
         $default_id++;
