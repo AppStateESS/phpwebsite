@@ -1417,7 +1417,7 @@ class DBPager {
                 $template['END_FORM'];
     }
 
-    private function getNavigation(&$template)
+    protected function getNavigation(&$template)
     {
         if ($this->total_rows < 1) {
             $total_row = $start_row = $end_row = 1;
