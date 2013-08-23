@@ -1,6 +1,3 @@
-<?php
-// +----------------------------------------------------------------------+
-// | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
@@ -39,22 +36,3 @@
 // | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
 // | POSSIBILITY OF SUCH DAMAGE.                                          |
 // +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
-// +----------------------------------------------------------------------+
-//
-// $Id: mysql.php,v 1.9 2006/06/18 21:59:05 lsmith Exp $
-//
-
-require_once 'MDB2/Driver/Native/Common.php';
-
-/**
- * MDB2 MySQL driver for the native module
- *
- * @package MDB2
- * @category Database
- * @author  Lukas Smith <smith@pooteeweet.org>
- */
-class MDB2_Driver_Native_mysql extends MDB2_Driver_Native_Common
-{
-}
-?>
