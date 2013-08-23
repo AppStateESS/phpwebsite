@@ -18,12 +18,9 @@ namespace Http;
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
+abstract class Controller implements \Controller {
 
-abstract class Controller implements \Controller
-{
     private $module;
-
-    abstract protected function getHtmlView($data, \Request $request);
 
     public function __construct(\Module $module)
     {
@@ -39,28 +36,37 @@ abstract class Controller implements \Controller
     {
         $this->onBeforeExecute($request);
 
-        switch($request->getMethod()) {
-        case \Request::GET:
-            $response = $this->get($request); break;
-        case \Request::HEAD:
-            $response = $this->head($request); break;
-        case \Request::POST:
-            $response = $this->post($request); break;
-        case \Request::PUT:
-            $response = $this->put($request); break;
-        case \Request::DELETE:
-            $response = $this->delete($request); break;
-        case \Request::OPTIONS:
-            $response = $this->options($request); break;
-        case REQUEST::PATCH:
-            $response = $this->patch($request); break;
-        default:
-            $response = new MethodNotAllowedResponse($request); break;
+        switch ($request->getMethod()) {
+            case \Request::GET:
+                $response = $this->get($request);
+                break;
+            case \Request::HEAD:
+                $response = $this->head($request);
+                break;
+            case \Request::POST:
+                $response = $this->post($request);
+                break;
+            case \Request::PUT:
+                $response = $this->put($request);
+                break;
+            case \Request::DELETE:
+                $response = $this->delete($request);
+                break;
+            case \Request::OPTIONS:
+                $response = $this->options($request);
+                break;
+            case REQUEST::PATCH:
+                $response = $this->patch($request);
+                break;
+            default:
+                $response = new MethodNotAllowedResponse($request);
+                break;
         }
 
 
         if (!is_a($response, '\Response')) {
-            throw new \Exception(t("Controller %s did not return a response object for the %s method", get_class($this), $request->getMethod()));
+            throw new \Exception(t("Controller %s did not return a response object for the %s method",
+                    get_class($this), $request->getMethod()));
         }
 
         $this->onAfterExecute($request, $response);
@@ -70,10 +76,17 @@ abstract class Controller implements \Controller
 
     public function onBeforeExecute(\Request &$request)
     {
+
     }
 
     public function onAfterExecute(\Request $request, \Response &$response)
     {
+
+    }
+
+    protected function getHtmlView($data, \Request $request)
+    {
+        throw new \Http\MethodNotAllowedException($request);
     }
 
     public function get(\Request $request)
@@ -83,7 +96,7 @@ abstract class Controller implements \Controller
 
     public function head(\Request $request)
     {
-        return new MethodNotAllowedResponse($request);
+
     }
 
     public function post(\Request $request)
@@ -113,27 +126,27 @@ abstract class Controller implements \Controller
 
     public function getView($data, \Request $request = null)
     {
-        if(is_null($request)) {
+        if (is_null($request)) {
             $request = \Server::getCurrentRequest();
         }
 
         $iter = $request->getAccept()->getIterator();
         $view = null;
-        foreach($iter as $type) {
-            if($type->matches('application/json')) {
+        foreach ($iter as $type) {
+            if ($type->matches('application/json')) {
                 $view = $this->getJsonView($data, $request);
                 break;
             }
-            if($type->matches('application/xml')) {
+            if ($type->matches('application/xml')) {
                 $view = $this->getXmlView($data, $request);
                 break;
             }
-            if($type->matches('text/html')) {
+            if ($type->matches('text/html')) {
                 $view = $this->getHtmlView($data, $request);
                 break;
             }
         }
-        if(is_null($view)) {
+        if (is_null($view)) {
             throw new NotAcceptableException($request);
         }
 
