@@ -24,7 +24,6 @@
  * @version    CVS: $Id: pgsql.php,v 1.138 2007/09/21 13:40:41 aharvey Exp $
  * @link       http://pear.php.net/package/DB
  */
-
 /**
  * Obtain the DB_common class so it can be extended from
  */
@@ -46,8 +45,7 @@ require_once 'DB/common.php';
  * @version    Release: 1.7.13
  * @link       http://pear.php.net/package/DB
  */
-class DB_pgsql extends DB_common
-{
+class DB_pgsql extends DB_common {
     // {{{ properties
 
     /**
@@ -76,13 +74,13 @@ class DB_pgsql extends DB_common
      * @var array
      */
     var $features = array(
-        'limit'         => 'alter',
-        'new_link'      => '4.3.0',
-        'numrows'       => true,
-        'pconnect'      => true,
-        'prepare'       => false,
-        'ssl'           => true,
-        'transactions'  => true,
+        'limit' => 'alter',
+        'new_link' => '4.3.0',
+        'numrows' => true,
+        'pconnect' => true,
+        'prepare' => false,
+        'ssl' => true,
+        'transactions' => true,
     );
 
     /**
@@ -103,7 +101,6 @@ class DB_pgsql extends DB_common
      * @var array
      */
     var $dsn = array();
-
 
     /**
      * Should data manipulation queries be committed automatically?
@@ -142,7 +139,6 @@ class DB_pgsql extends DB_common
      * @access private
      */
     var $_num_rows = array();
-
 
     // }}}
     // {{{ constructor
@@ -261,9 +257,7 @@ class DB_pgsql extends DB_common
             $params[0] .= ' service=' . $dsn['service'];
         }
 
-        if (isset($dsn['new_link'])
-            && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true))
-        {
+        if (isset($dsn['new_link']) && ($dsn['new_link'] == 'true' || $dsn['new_link'] === true)) {
             if (version_compare(phpversion(), '4.3.0', '>=')) {
                 $params[] = PGSQL_CONNECT_FORCE_NEW;
             }
@@ -274,19 +268,16 @@ class DB_pgsql extends DB_common
         $ini = ini_get('track_errors');
         $php_errormsg = '';
         if ($ini) {
-            $this->connection = @call_user_func_array($connect_function,
-                                                      $params);
+            $this->connection = @call_user_func_array($connect_function, $params);
         } else {
             @ini_set('track_errors', 1);
-            $this->connection = @call_user_func_array($connect_function,
-                                                      $params);
+            $this->connection = @call_user_func_array($connect_function, $params);
             @ini_set('track_errors', $ini);
         }
 
         if (!$this->connection) {
-            return $this->raiseError(DB_ERROR_CONNECT_FAILED,
-                                     null, null, null,
-                                     $php_errormsg);
+            return $this->raiseError(DB_ERROR_CONNECT_FAILED, null, null, null,
+                            $php_errormsg);
         }
         return DB_OK;
     }
@@ -332,7 +323,11 @@ class DB_pgsql extends DB_common
             }
             $this->transaction_opcount++;
         }
-        $result = @pg_exec($this->connection, $query);
+        try {
+            $result = pg_exec($this->connection, $query);
+        } catch (\Exception $e) {
+            $result = false;
+        }
         if (!$result) {
             return $this->pgsqlRaiseError();
         }
@@ -354,14 +349,13 @@ class DB_pgsql extends DB_common
             $this->affected = @pg_affected_rows($result);
             return DB_OK;
         } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW)\s/si',
-                             $query))
-        {
-            $this->row[(int)$result] = 0; // reset the row counter.
+                        $query)) {
+            $this->row[(int) $result] = 0; // reset the row counter.
             $numrows = $this->numRows($result);
             if (is_object($numrows)) {
                 return $numrows;
             }
-            $this->_num_rows[(int)$result] = $numrows;
+            $this->_num_rows[(int) $result] = $numrows;
             $this->affected = 0;
             return $result;
         } else {
@@ -412,7 +406,7 @@ class DB_pgsql extends DB_common
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
-        $result_int = (int)$result;
+        $result_int = (int) $result;
         $rownum = ($rownum !== null) ? $rownum : $this->row[$result_int];
         if ($rownum >= $this->_num_rows[$result_int]) {
             return null;
@@ -457,8 +451,8 @@ class DB_pgsql extends DB_common
     function freeResult($result)
     {
         if (is_resource($result)) {
-            unset($this->row[(int)$result]);
-            unset($this->_num_rows[(int)$result]);
+            unset($this->row[(int) $result]);
+            unset($this->_num_rows[(int) $result]);
             $this->affected = 0;
             return @pg_freeresult($result);
         }
@@ -472,7 +466,7 @@ class DB_pgsql extends DB_common
      * @deprecated  Deprecated in release 1.6.0
      * @internal
      */
-    function quote($str=null)
+    function quote($str = null)
     {
         return $this->quoteSmart($str);
     }
@@ -489,7 +483,8 @@ class DB_pgsql extends DB_common
      * @see DB_common::quoteSmart()
      * @since Method available since release 1.7.8.
      */
-    function quoteBoolean($boolean) {
+    function quoteBoolean($boolean)
+    {
         return $boolean ? 'TRUE' : 'FALSE';
     }
 
@@ -610,7 +605,11 @@ class DB_pgsql extends DB_common
         if ($this->transaction_opcount > 0) {
             // (disabled) hack to shut up error messages from libpq.a
             //@fclose(@fopen("php://stderr", "w"));
-            $result = @pg_exec($this->connection, 'end;');
+            try {
+                $result = pg_exec($this->connection, 'end;');
+            } catch (\Exception $e) {
+                $result = false;
+            }
             $this->transaction_opcount = 0;
             if (!$result) {
                 return $this->pgsqlRaiseError();
@@ -630,7 +629,11 @@ class DB_pgsql extends DB_common
     function rollback()
     {
         if ($this->transaction_opcount > 0) {
-            $result = @pg_exec($this->connection, 'abort;');
+            try {
+                $result = pg_exec($this->connection, 'abort;');
+            } catch (\Exception $e) {
+                $result = false;
+            }
             $this->transaction_opcount = 0;
             if (!$result) {
                 return $this->pgsqlRaiseError();
@@ -679,7 +682,7 @@ class DB_pgsql extends DB_common
             $result = $this->query("SELECT NEXTVAL('${seqname}')");
             $this->popErrorHandling();
             if ($ondemand && DB::isError($result) &&
-                $result->getCode() == DB_ERROR_NOSUCHTABLE) {
+                    $result->getCode() == DB_ERROR_NOSUCHTABLE) {
                 $repeat = true;
                 $this->pushErrorHandling(PEAR_ERROR_RETURN);
                 $result = $this->createSequence($seq_name);
@@ -735,7 +738,7 @@ class DB_pgsql extends DB_common
     function dropSequence($seq_name)
     {
         return $this->query('DROP SEQUENCE '
-                            . $this->getSequenceName($seq_name));
+                        . $this->getSequenceName($seq_name));
     }
 
     // }}}
@@ -821,45 +824,45 @@ class DB_pgsql extends DB_common
         if (!isset($error_regexps)) {
             $error_regexps = array(
                 '/column .* (of relation .*)?does not exist/i'
-                    => DB_ERROR_NOSUCHFIELD,
+                => DB_ERROR_NOSUCHFIELD,
                 '/(relation|sequence|table).*does not exist|class .* not found/i'
-                    => DB_ERROR_NOSUCHTABLE,
+                => DB_ERROR_NOSUCHTABLE,
                 '/index .* does not exist/'
-                    => DB_ERROR_NOT_FOUND,
+                => DB_ERROR_NOT_FOUND,
                 '/relation .* already exists/i'
-                    => DB_ERROR_ALREADY_EXISTS,
+                => DB_ERROR_ALREADY_EXISTS,
                 '/(divide|division) by zero$/i'
-                    => DB_ERROR_DIVZERO,
+                => DB_ERROR_DIVZERO,
                 '/pg_atoi: error in .*: can\'t parse /i'
-                    => DB_ERROR_INVALID_NUMBER,
+                => DB_ERROR_INVALID_NUMBER,
                 '/invalid input syntax for( type)? (integer|numeric)/i'
-                    => DB_ERROR_INVALID_NUMBER,
+                => DB_ERROR_INVALID_NUMBER,
                 '/value .* is out of range for type \w*int/i'
-                    => DB_ERROR_INVALID_NUMBER,
+                => DB_ERROR_INVALID_NUMBER,
                 '/integer out of range/i'
-                    => DB_ERROR_INVALID_NUMBER,
+                => DB_ERROR_INVALID_NUMBER,
                 '/value too long for type character/i'
-                    => DB_ERROR_INVALID,
+                => DB_ERROR_INVALID,
                 '/attribute .* not found|relation .* does not have attribute/i'
-                    => DB_ERROR_NOSUCHFIELD,
+                => DB_ERROR_NOSUCHFIELD,
                 '/column .* specified in USING clause does not exist in (left|right) table/i'
-                    => DB_ERROR_NOSUCHFIELD,
+                => DB_ERROR_NOSUCHFIELD,
                 '/parser: parse error at or near/i'
-                    => DB_ERROR_SYNTAX,
+                => DB_ERROR_SYNTAX,
                 '/syntax error at/'
-                    => DB_ERROR_SYNTAX,
+                => DB_ERROR_SYNTAX,
                 '/column reference .* is ambiguous/i'
-                    => DB_ERROR_SYNTAX,
+                => DB_ERROR_SYNTAX,
                 '/permission denied/'
-                    => DB_ERROR_ACCESS_VIOLATION,
+                => DB_ERROR_ACCESS_VIOLATION,
                 '/violates not-null constraint/'
-                    => DB_ERROR_CONSTRAINT_NOT_NULL,
+                => DB_ERROR_CONSTRAINT_NOT_NULL,
                 '/violates [\w ]+ constraint/'
-                    => DB_ERROR_CONSTRAINT,
+                => DB_ERROR_CONSTRAINT,
                 '/referential integrity violation/'
-                    => DB_ERROR_CONSTRAINT,
+                => DB_ERROR_CONSTRAINT,
                 '/more expressions than target columns/i'
-                    => DB_ERROR_VALUE_COUNT_ON_ROW,
+                => DB_ERROR_VALUE_COUNT_ON_ROW,
             );
         }
         foreach ($error_regexps as $regexp => $code) {
@@ -929,7 +932,7 @@ class DB_pgsql extends DB_common
         }
 
         $count = @pg_numfields($id);
-        $res   = array();
+        $res = array();
 
         if ($mode) {
             $res['num_fields'] = $count;
@@ -938,12 +941,10 @@ class DB_pgsql extends DB_common
         for ($i = 0; $i < $count; $i++) {
             $res[$i] = array(
                 'table' => $got_string ? $case_func($result) : '',
-                'name'  => $case_func(@pg_fieldname($id, $i)),
-                'type'  => @pg_fieldtype($id, $i),
-                'len'   => @pg_fieldsize($id, $i),
-                'flags' => $got_string
-                           ? $this->_pgFieldFlags($id, $i, $result)
-                           : '',
+                'name' => $case_func(@pg_fieldname($id, $i)),
+                'type' => @pg_fieldtype($id, $i),
+                'len' => @pg_fieldsize($id, $i),
+                'flags' => $got_string ? $this->_pgFieldFlags($id, $i, $result) : '',
             );
             if ($mode & DB_TABLEINFO_ORDER) {
                 $res['order'][$res[$i]['name']] = $i;
@@ -992,18 +993,24 @@ class DB_pgsql extends DB_common
             $tableWhere = "tab.relname = '$table_name'";
         }
 
-        $result = @pg_exec($this->connection, "SELECT f.attnotnull, f.atthasdef
+        $q = "SELECT f.attnotnull, f.atthasdef
                                 FROM $from
                                 WHERE tab.relname = typ.typname
                                 AND typ.typrelid = f.attrelid
                                 AND f.attname = '$field_name'
-                                AND $tableWhere");
+                                AND $tableWhere";
+        try {
+            $result = pg_exec($this->connection, $q);
+        } catch (\Exception $e) {
+            $result = false;
+        }
         if (@pg_numrows($result) > 0) {
             $row = @pg_fetch_row($result, 0);
-            $flags  = ($row[0] == 't') ? 'not_null ' : '';
+            $flags = ($row[0] == 't') ? 'not_null ' : '';
 
             if ($row[1] == 't') {
-                $result = @pg_exec($this->connection, "SELECT a.adsrc
+                $result = @pg_exec($this->connection,
+                                "SELECT a.adsrc
                                     FROM $from, pg_attrdef a
                                     WHERE tab.relname = typ.typname AND typ.typrelid = f.attrelid
                                     AND f.attrelid = a.adrelid AND f.attname = '$field_name'
@@ -1015,7 +1022,8 @@ class DB_pgsql extends DB_common
         } else {
             $flags = '';
         }
-        $result = @pg_exec($this->connection, "SELECT i.indisunique, i.indisprimary, i.indkey
+        $result = @pg_exec($this->connection,
+                        "SELECT i.indisunique, i.indisprimary, i.indkey
                                 FROM $from, pg_index i
                                 WHERE tab.relname = typ.typname
                                 AND typ.typrelid = f.attrelid
@@ -1024,7 +1032,7 @@ class DB_pgsql extends DB_common
                                 AND $tableWhere");
         $count = @pg_numrows($result);
 
-        for ($i = 0; $i < $count ; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $row = @pg_fetch_row($result, $i);
             $keys = explode(' ', $row[2]);
 
@@ -1103,7 +1111,6 @@ class DB_pgsql extends DB_common
     }
 
     // }}}
-
 }
 
 /*
@@ -1112,5 +1119,4 @@ class DB_pgsql extends DB_common
  * c-basic-offset: 4
  * End:
  */
-
 ?>
