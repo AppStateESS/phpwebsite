@@ -50,6 +50,27 @@ form.form-inline input, form.form-inline select {
     margin-bottom : 5px;
 }
 
+ul.nav li.menu-link div.well {
+    padding : 4px;
+    margin-bottom : 0px;
+}
+
+ul.nav li.menu-link ul {
+    margin-left : 15px;
+}
+
+ul.nav li.menu-link ul li.menu-link {
+    list-style-type : none;
+}
+
+ul li.menu-link div.menu-sub-2 {
+    margin-top : 4px;
+}
+
+ul.dropdown-menu {
+    min-width : 50px;
+}
+
 @media (max-width: 767px) {
     .mini-calendar, .breadcrumb, .division-link, .menu-title {
         display : none;
