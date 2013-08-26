@@ -86,13 +86,17 @@ ul.dropdown-menu {
         position : relative;
     }
 
-    .menu ul.nav {
-    }
-
     .menu .nav-tabs .menu-link a.dropdown-toggle {
         border-radius : 0px;
     }
 
+    div.menu > div > div.btn-group {
+        display : block;
+        z-index : 99;
+    }
+
+
+    /*
     .menu .menu-sub-1 {
         position : absolute;
         top : 0px;
@@ -105,18 +109,19 @@ ul.dropdown-menu {
         border-top : none;
         border-bottom : none;
     }
-
+*/
     .menu .menu-sub-1 ul {
         list-style: none;
         margin : 0px;
         margin-left : 20px;
     }
+    /*
     .menu .menu-sub-1 a {
         border-bottom : 1px solid #e3e3e3;
         padding : 6px;
         display : block;
     }
-
+*/
     div#menu-chevron {
         float:left;
         background-color : white;
