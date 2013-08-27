@@ -100,6 +100,10 @@ ul.dropdown-menu {
     border-radius : 0px;
 }
 
+.nav-tabs {
+    margin-bottom : 8px;
+}
+
 div.menu > div > div.btn-group {
     display : block;
     z-index : 99;
