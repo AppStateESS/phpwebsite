@@ -458,7 +458,7 @@ class PS_Page {
     public function flag()
     {
         $this->loadKey();
-        if (!$this->front_page && $this->key_id) {
+        if (!PHPWS_Core::atHome() && $this->key_id) {
             $this->_key->flag();
         }
     }
