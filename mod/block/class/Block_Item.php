@@ -14,6 +14,7 @@ class Block_Item {
     public $content = null;
     public $file_id = 0;
     public $hide_title = 0;
+    public $hide_narrow = 0;
     public $_pin_key = null;
 
     public function __construct($id = null)
@@ -195,6 +196,9 @@ class Block_Item {
         $template = array('CONTENT' => $this->getContent(), 'OPT' => $opt, 'EDIT' => $edit, 'ID' => $this->getId());
         if (!$this->hide_title) {
             $template['TITLE'] = $this->getTitle();
+        }
+        if ($this->hide_narrow) {
+            $template['HIDDEN'] = ' hidden-xs';
         }
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
     }

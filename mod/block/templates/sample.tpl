@@ -1,4 +1,4 @@
-<div class="block" id="block-{ID}">
+<div class="block{HIDDEN}" id="block-{ID}">
 <div class="box"><!-- BEGIN options -->
 <div style="float: right">{EDIT} {OPT}</div>
 <!-- END options --> <!-- BEGIN title -->

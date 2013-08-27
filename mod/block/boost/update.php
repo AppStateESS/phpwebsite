@@ -140,6 +140,17 @@ Please download version 1.1.2.</pre>';
 + Removed copy and pin single functionality.
 + Added ability to post block to page through the miniadmin link.
 </pre>';
+
+        case version_compare($currentVersion, '1.3.7', '<'):
+            $db = Database::newDB();
+            $btable = $db->addTable('block');
+            $dt = $btable->addDataType('hide_narrow', 'smallint');
+            $dt->add();
+
+            $content[] = '<pre>1.3.7 changes
+---------------
++ Added option to hide a block when width is minimized.
+</pre>';
     }
     return TRUE;
 }
