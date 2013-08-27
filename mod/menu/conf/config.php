@@ -8,7 +8,7 @@
 // you can ignore the below
 // define('MENU_TITLE_LIMIT', 32);
 
-define('MENU_CURRENT_LINK_STYLE', 'current-link');
+define('MENU_CURRENT_LINK_STYLE', 'current-link active');
 
 define('MENU_LINK_ADD', sprintf('<img src="%smod/menu/img/gtk-add.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Add link'), dgettext('menu', 'Add link')));
 

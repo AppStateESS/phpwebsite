@@ -1,10 +1,10 @@
 <div class="menu" id="{MENU_ID}">
 	<div>
 	<!-- BEGIN menu_admin -->
-		<div class="btn-group pull-right">
-			<a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#"> <i class="icon-list">
+		<div class="btn-group">
+			<button class="btn dropdown-toggle btn-sm pull-right" data-toggle="dropdown"> <i class="icon-list">
 			  </i> Menu Options <span class="caret"></span>
-			</a>
+			</button>
 			<ul class="dropdown-menu">
 				<li>{PIN_LINK}</li>
 				<li>{ADD_LINK}</li>
@@ -15,8 +15,9 @@
 		</div>
     <!-- END menu_admin -->
 		<h5 class="menu-title">{TITLE}</h5>
+        <div class="clearfix"></div>
 	</div>
-	<ul id="sort-{MENU_ID}" class="nav nav-tabs nav-stacked">
+	<ul id="sort-{MENU_ID}" class="nav nav-pills nav-stacked">
 	  {LINKS}
 	</ul>
 	<div>
