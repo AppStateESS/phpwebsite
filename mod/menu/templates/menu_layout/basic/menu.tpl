@@ -17,7 +17,7 @@
 		<h5 class="menu-title">{TITLE}</h5>
         <div class="clearfix"></div>
 	</div>
-	<ul id="sort-{MENU_ID}" class="nav nav-pills nav-stacked">
+	<ul id="sort-{MENU_ID}" class="nav nav-pills nav-stacked menu-links">
 	  {LINKS}
 	</ul>
 	<div>
