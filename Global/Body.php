@@ -22,7 +22,7 @@ class Body extends \Data {
     const Footer = 4;
 
     private static $sections = null;
-    private static $theme = 'Themes/bootstrap/index.html';
+    private static $theme = 'themes/bootstrap/index.html';
 
     public static function add($content, $key = 'default', $section_default = self::Body)
     {
