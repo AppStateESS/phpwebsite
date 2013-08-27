@@ -2,11 +2,9 @@
 
 <!-- BEGIN message -->
 <div class="row">
-  <div class="span6">
     <div class="alert">
-      {MESSAGE}
+        {MESSAGE}
     </div>
-  </div>
 </div>
 <!-- END message -->
 
