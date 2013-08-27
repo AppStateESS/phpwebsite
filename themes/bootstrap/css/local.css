@@ -68,13 +68,13 @@
         margin-top : 4px;
     }
 
-    ul.dropdown-menu {
-        min-width : 50px;
-    }
 
     #submenu-label {
         background-color :  #e3e3e3;text-align : right;padding : 3px; font-weight:bold;
     }
+}
+ul.dropdown-menu {
+    min-width : 50px;
 }
 
 #hero {
@@ -105,35 +105,31 @@ div.menu > div > div.btn-group {
     z-index : 99;
 }
 
+.btn {
+    z-index : 10;
+}
+
 .menu .menu-sub-1 ul {
     list-style: none;
     margin : 0px;
-    margin-left : 20px;
+    padding : 0px;
+    margin-left : 5%;
 }
 
 nav ul.dropdown-menu {
     padding:5px;
 }
 
-/*
-.menu .menu-sub-1 {
-    position : absolute;
-    top : 0px;
-    right : -1500px;
-    width : 100%;
-    background-color : white;
-    border-radius : 0;
-    margin-bottom : 0px;
+.menu .menu-sub-1, .menu .menu-sub-2 {
     padding : 0px;
-    border-top : none;
-    border-bottom : none;
+    margin : 0px;
 }
-
 .menu .menu-sub-1 a {
-    border-bottom : 1px solid #e3e3e3;
-    padding : 6px;
+    padding : 9px 4px 9px 14px;
     display : block;
 }
+
+/*
 div#menu-chevron {
     float:left;
     background-color : white;

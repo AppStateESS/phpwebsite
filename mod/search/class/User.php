@@ -125,7 +125,11 @@ class Search_User {
 
     public static function searchPost()
     {
-        $search_phrase = @$_GET['search'];
+        if (isset($_GET['search'])) {
+            $search_phrase = $_GET['search'];
+        } else {
+            $search_phrase = '';
+        }
         $search_phrase = str_replace('+', ' ', $search_phrase);
         $search_phrase = Search::filterWords($search_phrase);
 
