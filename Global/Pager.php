@@ -493,7 +493,7 @@ class Pager {
         }
 
         if (!empty($this->search_phrase)) {
-            $icon = '<a href="javascript:void(0)" class="search-clear"><i style="position:absolute; top:7px;left:2px;color:red" class="icon-remove-circle"></i></a>';
+            $icon = '<div style="position:absolute; top:6px;left:6px;"><a href="javascript:void(0)" class="search-clear" style="color:#d9534f"><span class="glyphicon glyphicon-remove"></span></a></div>';
         } else {
             $icon = null;
         }
@@ -503,16 +503,18 @@ class Pager {
         }
 
         $content = <<<EOF
-<div style="position : relative" class="btn-group">
-  $icon<input type="text" name="search_box" style="padding-left : 15px" class="input-medium search-query" value="$this->search_phrase" />
-  <button class="btn btn-small pager-search-submit">$search
-  <button class="btn dropdown-toggle btn-small" data-toggle="dropdown">
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    $columns
-  </ul>
-</div>
+    <div style="position : relative" class="pull-right">
+    $icon<input type="text" name="search_box" style="margin-left : 4px; padding-left : 17px;width : 200px" class="input-sm form-control search-query" value="$this->search_phrase" />
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-default btn-sm pager-search-submit">$search
+        <button class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown">
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+        $columns
+        </ul>
+    </div>
 EOF;
         return $content;
     }
@@ -537,7 +539,7 @@ EOF;
             return t('No result found');
         }
         $penultimate = $this->getNumberOfPages() - 1;
-        $content[] = '<ul>';
+        $content[] = '<ul class="pagination">';
 
         if ($this->getNumberOfPages() > $this->max_page_links) {
             $halfway = floor($this->max_page_links / 2);
