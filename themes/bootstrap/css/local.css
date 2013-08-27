@@ -129,21 +129,6 @@ ul.dropdown-menu {
     display : block;
 }
 
-/*
-div#menu-chevron {
-    float:left;
-    background-color : white;
-    background-color : black;
-    width : 20px;
-    cursor: pointer;
-    position : relative;
-    text-align : center;
+.ui-dialog {
+    z-index : 100;
 }
-div#menu-chevron i {
-    position : absolute;
-    top : 50%;
-    left : 3px;
-}
-*/
-
-
