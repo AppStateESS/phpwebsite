@@ -2,7 +2,7 @@
 <br />
 <br />
 <h2>{AUTH_LIST_LABEL}</h2>
-<table cellpadding="4" width="100%">
+<table class="table table-striped">
     <tr>
         <th>{DEFAULT_LABEL}</th>
         <th>{DISPLAY_LABEL}</th>

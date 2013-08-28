@@ -1,5 +1,5 @@
 <div style="margin-bottom : 10px">{NEW_USER}</div> {TOTAL_ROWS}
-<table border="0" cellspacing="1" cellpadding="4" width="100%" id="user-manager">
+<table id="user-manager" class="table table-striped">
     <tr>
         <th>{USERNAME_SORT}<br />
             {DISPLAY_NAME_SORT}</th>

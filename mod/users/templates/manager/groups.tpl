@@ -1,10 +1,10 @@
 {TITLE}
 <div style="margin : 10px 0px">{NEW_GROUP}</div>
 {NAV_INFO}
-<table border="0" cellspacing="1" cellpadding="4" width="100%">
+<table class="table table-striped">
     <tr>
-        <th width="20%">{NAME_SORT}</th>
-        <th width="15%">{MEMBERS_LABEL}</th>
+        <th>{NAME_SORT}</th>
+        <th>{MEMBERS_LABEL}</th>
         <th>{ACTIONS_LABEL}</th>
     </tr>
     <!-- BEGIN listrows -->
