@@ -19,7 +19,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">phpWebSite</a>
+                    <a class="navbar-brand" href="#">{SITE_TITLE}</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     {SEARCH_SEARCH_BOX}
