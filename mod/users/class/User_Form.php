@@ -281,6 +281,7 @@ class User_Form {
         }
 
         $form->addSelect('search_group', $groups);
+        $form->addCssClass('search_group', 'form-control');
         if (isset($_GET['search_group'])) {
             $form->setMatch('search_group', $_GET['search_group']);
         }

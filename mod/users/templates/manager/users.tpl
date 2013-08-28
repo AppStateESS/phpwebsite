@@ -49,10 +49,10 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group">
-              <label for="group-search_search_group">Group </label> {SEARCH_GROUP}
+              <label for="group-search_search_group" style="display:none;">Group</label>{SEARCH_GROUP}
             </div>
             <div class="form-group">
-              {GROUP_SUB}
+              <button type="submit" class="btn btn-default">{GROUP_SUB_VALUE}</button>
             </div>
           </div>
         </div>
