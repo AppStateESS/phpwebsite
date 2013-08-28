@@ -166,10 +166,13 @@ class Blog_Form {
         $form->addText('blog_limit', PHPWS_Settings::get('blog', 'blog_limit'));
         $form->setSize('blog_limit', 2, 2);
         $form->setLabel('blog_limit', dgettext('blog', 'Blog view limit'));
+        $form->addCssClass('blog_limit', 'form-control');
 
         $form->addText('past_entries', PHPWS_Settings::get('blog', 'past_entries'));
         $form->setLabel('past_entries', dgettext('blog', 'Number of past entries'));
         $form->setSize('past_entries', 2, 2);
+        $form->addCssClass('past_entries', 'form-control');
+
 
         $form->addCheck('allow_comments', 1);
         $form->setLabel('allow_comments', dgettext('blog', 'Allow comments by default'));
@@ -225,6 +228,7 @@ class Blog_Form {
             $form->addMultiple('view_only', $groups);
             $form->setLabel('view_only', dgettext('blog', 'Limit blog to specific groups'));
             $form->setMatch('view_only', $group_match);
+            $form->addCssClass('view_only', 'form-control');
         }
 
         $show[0] = dgettext('blog', 'Do not show');
@@ -234,6 +238,7 @@ class Blog_Form {
         $form->addSelect('show_recent', $show);
         $form->setLabel('show_recent', dgettext('blog', 'Show recent entries'));
         $form->setMatch('show_recent', PHPWS_Settings::get('blog', 'show_recent'));
+        $form->addCssClass('show_recent', 'form-control');
 
         /*
           $cache_view = PHPWS_Settings::get('blog', 'cache_view');
@@ -256,10 +261,12 @@ class Blog_Form {
         $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
         $form->setLabel('max_width', dgettext('blog', 'Maximum image width (50-2048)'));
         $form->setSize('max_width', 4, 4);
+        $form->addCssClass('max_width', 'form-control');
 
         $form->addTextField('max_height', PHPWS_Settings::get('blog', 'max_height'));
         $form->setLabel('max_height', dgettext('blog', 'Maximum image height (50-2048)'));
         $form->setSize('max_height', 4, 4);
+        $form->addCssClass('max_height', 'form-control');
 
         $form->addSubmit(dgettext('blog', 'Save settings'));
 
@@ -267,7 +274,8 @@ class Blog_Form {
             javascript('datepicker');
             $form->addText('purge_date', date('m/d/Y', time() - 31536000));
             $form->setLabel('purge_date', dgettext('blog', 'Purge all entries before this date'));
-            $form->setClass('purge_date', 'datepicker');
+            $form->addCssClass('purge_date', 'datepicker');
+            $form->addCssClass('purge_date', 'form-control');
 
             $form->addSubmit('purge_confirm', dgettext('blog', 'Confirm purge'));
         }
