@@ -4,7 +4,7 @@
   <a href="{NEW_USER_URI}" class="btn btn-primary"><i class="icon-plus"></i> Add user</a>
 </div>
 
-<table class="table table-striped" id="user-manager">
+<table class="table table-striped table-hover" id="user-manager">
   <tr>
     <th>{DISPLAY_NAME_SORT}</th>
     <th>{USERNAME_SORT}</th>
