@@ -1,17 +1,14 @@
-<div class="pull-right">{SEARCH}</div>
-
-<div style="margin : 10px 0px">
-  <a href="{ADD_GROUP_URI}" class="btn btn-primary"><i class="icon-plus"></i> Create new gruop</a>
-</div>
-
-<table class="table table-striped table-hover">
+{TITLE}
+<div style="margin : 10px 0px">{NEW_GROUP}</div>
+{NAV_INFO}
+<table class="table table-striped">
     <tr>
         <th>{NAME_SORT}</th>
         <th>{MEMBERS_LABEL}</th>
         <th>{ACTIONS_LABEL}</th>
     </tr>
     <!-- BEGIN listrows -->
-    <tr>
+    <tr{TOGGLE}>
         <td>{NAME}</td>
         <td>{MEMBERS}</td>
         <td>{ACTIONS}</td>
@@ -20,6 +17,7 @@
 </table>
 {EMPTY_MESSAGE} {DEFAULT_SUBMIT}
 <br />
-<div style="text-align: center;">{TOTAL_ROWS}<br />
+<div class="align-center">{TOTAL_ROWS}<br />
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
+<div class="align-right">{SEARCH}</div>
