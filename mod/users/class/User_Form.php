@@ -294,6 +294,7 @@ class User_Form {
                                     'Create new user'), 'users',
                             array('action' => 'admin', 'command' => 'new_user'),
                             null, dgettext('users', 'Create new user'), 'button');
+            $pageTags['NEW_USER_URI'] = PHPWS_Text::linkAddress('users', array('action' => 'admin', 'command' => 'new_user'));
         }
 
         $pager = new DBPager('users', 'PHPWS_User');
