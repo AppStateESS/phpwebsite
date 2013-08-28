@@ -147,8 +147,8 @@ class Setup {
         if (!file_put_contents($filename, implode("\n", $config_file))) {
             return false;
         } else {
-            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>",
-                    str_replace('setup/', '', PHPWS_Core::getHomeHttp()));
+            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '//%s');\n?>",
+                    str_replace('setup/', '', PHPWS_Core::getHomeHttp(false)));
             return file_put_contents($location . 'source.php', $source_http);
         }
     }
