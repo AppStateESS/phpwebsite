@@ -294,6 +294,7 @@ class User_Form {
                                     'Create new user'), 'users',
                             array('action' => 'admin', 'command' => 'new_user'),
                             null, dgettext('users', 'Create new user'), 'button');
+            $pageTags['NEW_USER_URI'] = PHPWS_Text::linkAddress('users', array('action' => 'admin', 'command' => 'new_user'));
         }
 
         $pager = new DBPager('users', 'PHPWS_User');
@@ -348,6 +349,7 @@ class User_Form {
                                 'Create new group'), 'users',
                         array('action' => 'admin', 'command' => 'new_group'),
                         null, dgettext('users', 'Create new group'), 'button');
+        $pageTags['ADD_GROUP_URI'] = PHPWS_Text::linkAddress('users', array('action' => 'admin', 'command' => 'new_group'));
 
         $pager = new DBPager('users_groups', 'PHPWS_Group');
         $pager->setModule('users');

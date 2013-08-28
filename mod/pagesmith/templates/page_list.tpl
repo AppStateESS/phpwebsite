@@ -1,5 +1,5 @@
 <div style="margin-bottom : 10px">
-  <a href="{NEW_PAGE_LINK_URI}" class="btn btn-success">{NEW_PAGE_LINK_TEXT}</a>
+  <a href="{NEW_PAGE_LINK_URI}" class="btn btn-success"><i class="icon-file-text"></i> {NEW_PAGE_LINK_TEXT}</a>
 </div>
 <table class="table table-striped" style="width:95%">
     <tr>
