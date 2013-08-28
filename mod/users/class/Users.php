@@ -201,13 +201,11 @@ class PHPWS_User {
                 $this->isDuplicateDisplayName($username, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
                             'setUsername', $username);
-            ;
         }
 
         if ($this->isDuplicateGroup($username, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users',
                             'setUsername', $username);
-            ;
         }
 
         $this->username = $username;
@@ -349,13 +347,11 @@ class PHPWS_User {
         if (!PHPWS_Text::isValidInput($email, 'email')) {
             return PHPWS_Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
         }
+        $this->email = $email;
 
         if ($this->isDuplicateEmail()) {
             return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'setEmail');
         }
-
-        // Only if all these tests pass, modify the member variable
-        $this->email = $email;
 
         return true;
     }
@@ -403,7 +399,6 @@ class PHPWS_User {
                 $this->isDuplicateDisplayName($name, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
                             'setDisplayName', $name);
-            ;
         }
 
         $this->display_name = $name;

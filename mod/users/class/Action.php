@@ -631,7 +631,7 @@ class User_Action {
             }
         }
 
-        if (isset($_POST['display_name'])) {
+        if (!isset($error['USERNAME_ERROR']) && isset($_POST['display_name'])) {
             $result = $user->setDisplayName($_POST['display_name']);
             if (PHPWS_Error::isError($result)) {
                 $error['DISPLAY_ERROR'] = $result->getMessage();
@@ -665,7 +665,6 @@ class User_Action {
             setcookie('phpws_default_language', $locale,
                     time() + CORE_COOKIE_TIMEOUT);
         }
-
         if (isset($error)) {
             return $error;
         } else {
