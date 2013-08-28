@@ -492,12 +492,10 @@ class Menu_Item {
                                     $this->pin_all, $this->template);
                 }
 
-                if ($admin_link) {
-                    $vars['command'] = 'disable_admin_mode';
-                    $vars['return'] = 1;
-                    $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF,
-                                    'menu', $vars);
-                }
+                $vars['command'] = 'disable_admin_mode';
+                $vars['return'] = 1;
+                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF,
+                                'menu', $vars);
 
                 if (isset($_SESSION['Menu_Pin_Links'])) {
                     $tpl['PIN_LINK'] = $this->getPinLink($this->id);
@@ -518,7 +516,6 @@ class Menu_Item {
                                 isset($key), null, $this->template);
             }
         }
-
 
         $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($edit);

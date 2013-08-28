@@ -177,7 +177,7 @@ class Menu {
 
         $vars['parent'] = (int) $parent_id;
         if ($key->id || $key->module == 'home') {
-            $link = '<i class="icon-plus"></i> ' . dgettext('menu',
+            $link = '<i class="icon-fixed-width icon-plus"></i> ' . dgettext('menu',
                             'Link current page');
             if ($parent_id) {
                 $link = MENU_SUBLINK_ADD;
