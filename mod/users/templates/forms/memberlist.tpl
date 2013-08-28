@@ -1,4 +1,4 @@
-<table cellpadding="5" width="100%">
+<table class="table">
     <tr>
         <!-- BEGIN rows -->
         <td>{NAMES}</td>
