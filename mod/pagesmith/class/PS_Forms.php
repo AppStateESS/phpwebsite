@@ -76,11 +76,6 @@ class PS_Forms {
         $form->addHidden('tpl', $page->template);
         $form->addHidden('pid', $page->parent_page);
 
-        $form->addText('title', $page->title);
-        $form->setSize('title', 30, 255);
-        $form->setExtra('title', 'onchange="update_title()"');
-        $form->setLabel('title', dgettext('pagesmith', 'Page title'));
-
         $template_list = $this->ps->getTemplateList();
 
         $form->addSelect('template_list', $template_list);
@@ -281,9 +276,9 @@ class PS_Forms {
         $template_file = $page->_tpl->page_path . 'page.tpl';
 
         if (empty($page->title)) {
-            $tpl['page_title'] = dgettext('pagesmith', 'Page Title (edit above)');
+            $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;color : #969696">' . dgettext('pagesmith', 'Page Title (click to edit)') . '</span>';
         } else {
-            $tpl['page_title'] = $page->title;
+            $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;">' . $page->title . '</span>';
         }
         $pg_tpl = PHPWS_Template::process($tpl, 'pagesmith', $template_file);
 
@@ -385,15 +380,15 @@ class PS_Forms {
 
 
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
-        
+
         $tpl['SHORTEN_MENU_LINKS']  = PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', array('aop'=>'shorten_links'));
         $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'shorten_links'), true);
-        
+
         $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', array('aop'=>'lengthen_links'));
         $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'lengthen_links'), true);
-        
+
         $form->mergeTemplate($tpl);
-        
+
         $this->ps->content = PHPWS_Template::process($form->getTemplate(),
                         'pagesmith', 'settings.tpl');
     }

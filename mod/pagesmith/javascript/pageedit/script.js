@@ -5,6 +5,7 @@ var current_block;
 $(document).ready(function() {
     var editor = CKEDITOR.replace('block-edit-textarea');
     initializeDialog(editor);
+    initializePageTitleEdit();
     editBlock(editor);
     $.fn.powerTip.defaults.followMouse = 'true';
     $.fn.powerTip.defaults.offset = '10';
@@ -33,6 +34,14 @@ function editBlock(editor)
     });
 }
 
+function initializePageTitleEdit()
+{
+    $('#page-title-edit').click(function() {
+        $('#page-title-input').val($('#page-title-edit').html());
+        $('#title-edit-popup').dialog('open');
+    });
+}
+
 function initializeDialog(editor)
 {
     $('#block-edit-popup').dialog(
@@ -45,6 +54,7 @@ function initializeDialog(editor)
                         click: function() {
                             updateBlock(editor);
                             $(this).dialog('close');
+                            $('#overlay').remove();
                         }
                     }],
                 close: function() {
@@ -52,6 +62,29 @@ function initializeDialog(editor)
                 }
             }
     );
+    $('#title-edit-popup').dialog(
+            {
+                position: {my: 'center', at: 'center', of: this},
+                autoOpen: false,
+                width: 650,
+                title: 'Edit page title',
+                buttons: [{text: "Save",
+                        click: function() {
+                            var title_input = $('#page-title-input').val();
+                            title_input = title_input.replace('/[<>]/gi', '');
+                            $('#page-title-hidden').val(title_input);
+                            $('#page-title-edit').html(title_input);
+                            $('#page-title-edit').css('color', 'inherit');
+                            $(this).dialog('close');
+                            $('#overlay').remove();
+                        }
+                    }],
+                close: function() {
+                    $('#overlay').remove();
+                }
+            }
+    );
+
 }
 
 function updateBlock(editor) {
