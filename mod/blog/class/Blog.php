@@ -434,10 +434,6 @@ class Blog {
             }
         }
 
-        if (!$summarized) {
-            $key->flag();
-        }
-
         if (PHPWS_Settings::get('blog', 'show_category_icons')) {
             $result = Categories::getIcons($key);
             if (!empty($result)) {
@@ -466,6 +462,8 @@ class Blog {
         if ($summarized) {
             $view_tpl = 'view_list.tpl';
         } else {
+            $template['COMMENT_SCRIPT'] = PHPWS_Settings::get('blog', 'comment_script');
+            $key->flag();
             $view_tpl = 'view_full.tpl';
         }
         return PHPWS_Template::process($template, 'blog', $view_tpl);

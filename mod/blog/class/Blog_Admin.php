@@ -385,6 +385,8 @@ class Blog_Admin {
             PHPWS_Settings::reset('blog', 'blog_limit');
         }
 
+        PHPWS_Settings::set('blog', 'comment_script', $_POST['comment_script']);
+
         PHPWS_Settings::save('blog');
     }
 

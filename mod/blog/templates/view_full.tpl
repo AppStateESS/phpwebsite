@@ -30,5 +30,5 @@
     <!-- BEGIN entry-content -->
     <div class="entry-content"><p>{ENTRY}</p></div>
     <!-- END entry-content -->
-
 </article>
+{COMMENT_SCRIPT}

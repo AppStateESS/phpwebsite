@@ -25,5 +25,6 @@ $settings['show_category_icons']     = true;
 $settings['image_link']              = 'readmore';
 $settings['view_only']               = '';
 $settings['logged_users_only']       = 0;
+$settings['comment_script']          = '';
 
 ?>

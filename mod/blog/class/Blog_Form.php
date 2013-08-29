@@ -221,6 +221,11 @@ class Blog_Form {
         $form->setSize('max_height', 4, 4);
         $form->addCssClass('max_height', 'form-control');
 
+        $form->addTextArea('comment_script', PHPWS_Settings::get('blog', 'comment_script'));
+        $form->setLabel('comment_script', dgettext('blog', 'Paste in your comment code here (e.g. Disqus, Livefyre, Facebook, etc.)'));
+        $form->addCssClass('comment_script', 'form-control');
+
+
         $form->addSubmit(dgettext('blog', 'Save settings'));
 
         if (Current_User::isDeity()) {
@@ -243,6 +248,7 @@ class Blog_Form {
         $template['CATEGORY_LABEL'] = dgettext('blog', 'Category');
         $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
         $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');
+        $template['COMMENTS_LABEL'] = dgettext('blog', 'Commenting');
 
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');
     }
