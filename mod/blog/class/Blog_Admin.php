@@ -310,20 +310,6 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'show_recent', $_POST['show_recent']);
         }
 
-        isset($_POST['allow_comments']) ?
-        PHPWS_Settings::set('blog', 'allow_comments', 1) :
-        PHPWS_Settings::set('blog', 'allow_comments', 0);
-
-        isset($_POST['anonymous_comments']) ?
-        PHPWS_Settings::set('blog', 'anonymous_comments', 1) :
-        PHPWS_Settings::set('blog', 'anonymous_comments', 0);
-
-        /*
-         isset($_POST['cache_view']) ?
-         PHPWS_Settings::set('blog', 'cache_view', 1) :
-         PHPWS_Settings::set('blog', 'cache_view', 0);
-         */
-
         isset($_POST['captcha_submissions']) ?
         PHPWS_Settings::set('blog', 'captcha_submissions', 1) :
         PHPWS_Settings::set('blog', 'captcha_submissions', 0);

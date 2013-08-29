@@ -16,12 +16,11 @@
         <!-- BEGIN image -->
         <div class="entry-image">{IMAGE}</div>
         <!-- END image -->
-        
         {SUMMARY}
         <!-- BEGIN read-more -->
         {READ_MORE}
         <!-- END read-more -->
     </div>
-    
+
 </article>
 <hr />

@@ -115,12 +115,6 @@ class Blog_XML extends MyServer {
             $blog->setEntry($mt_text_more);
         }
 
-        if (isset($mt_allow_comments)) {
-            $blog->allow_comments = (bool)$mt_allow_comments;
-        } else {
-            $blog->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
-        }
-
         if (PHPWS_Settings::get('blog', 'obey_publish')) {
             $blog->approved = $publish;
         } else {
@@ -155,7 +149,6 @@ class Blog_XML extends MyServer {
         }
         $d['permalink'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
-        $d['mt_allow_comments'] = $blog->allow_comments;
         $d['mt_allow_pings'] = 0;
         $d['mt_convert_breaks'] = 0;
         $result = Layout::getMetaPage($blog->key_id);

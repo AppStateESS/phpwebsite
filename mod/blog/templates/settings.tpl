@@ -60,18 +60,6 @@
       </fieldset>
 
       <fieldset>
-        <legend>{COMMENT_LABEL}</legend>
-
-        <div class="checkbox">
-          <label> {ALLOW_COMMENTS} {ALLOW_COMMENTS_LABEL_TEXT}</label>
-        </div>
-
-        <div class="checkbox">
-          <label> {ANONYMOUS_COMMENTS} {ANONYMOUS_COMMENTS_LABEL_TEXT}</label>
-        </div>
-      </fieldset>
-
-      <fieldset>
         <legend>Image Manager</legend>
         <div class="checkbox">
           <label>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</label>
@@ -89,7 +77,7 @@
         <legend>Purge</legend>
         <div class="form-group">{PURGE_DATE_LABEL} {PURGE_DATE}</div>
 
-        <button class="btn btn-default pull-right" id="{PURGE_CONFIRM_ID}">{PURGE_CONFIRM_VALUE}</button>
+        <button class="btn btn-danger pull-right" id="{PURGE_CONFIRM_ID}">{PURGE_CONFIRM_VALUE}</button>
       </fieldset>
       <!-- END purge -->
 

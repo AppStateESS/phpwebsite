@@ -48,7 +48,6 @@ class Blog {
         $this->update_date = time();
 
         if (empty($id)) {
-            $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
             $this->image_link = PHPWS_Settings::get('blog', 'image_link');
             return;
         }
@@ -192,14 +191,14 @@ class Blog {
             return strftime($type, time());
         }
     }
-    
+
     public function getPublishDateShort()
     {
-    	if (!is_null($this->publish_date)) {
-    		return date('F j, Y', $this->publish_date);
-    	}else{
-    		return null;
-    	}
+        if (!is_null($this->publish_date)) {
+            return date('F j, Y', $this->publish_date);
+        } else {
+            return null;
+        }
     }
 
     public function getExpireDate()
@@ -280,11 +279,6 @@ class Blog {
             if ($update) {
                 $db->saveObject($this);
             }
-            PHPWS_Core::initModClass('comments', 'Comments.php');
-            $thread = Comments::getThread($this->key_id);
-            $thread->allowAnonymous($this->allow_anon);
-            $thread->setApproval($this->_comment_approval);
-            $thread->save();
 
             $search = new Search($this->key_id);
             $search->resetKeywords();
@@ -377,8 +371,6 @@ class Blog {
             PHPWS_Core::errorPage(404);
         }
 
-        PHPWS_Core::initModClass('comments', 'Comments.php');
-
         $key = new Key($this->key_id);
 
         if (!$key->allowView() || !Blog_User::allowView()) {
@@ -389,7 +381,7 @@ class Blog {
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
                 $this->getViewLink(true), $this->title);
-        
+
         $template['TITLE_NO_LINK'] = $this->title;
 
         if ($this->publish_date > time()) {
@@ -398,7 +390,7 @@ class Blog {
             $template['UNPUBLISHED'] = dgettext('blog', 'Expired');
         }
 
-        $template['LOCAL_DATE']		= $this->getPublishDate();
+        $template['LOCAL_DATE'] = $this->getPublishDate();
         $template['PUBLISHED_DATE'] = $this->getPublishDateShort();
 
         $summary = $this->getSummary(true);
@@ -434,7 +426,7 @@ class Blog {
             $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog',
                                     'Edit'), 'blog', $vars);
             $template['EDIT_URI'] = PHPWS_Text::linkAddress('blog', $vars, true);
-            
+
             if (!$summarized) {
                 MiniAdmin::add('blog',
                         array(PHPWS_Text::secureLink(dgettext('blog',
@@ -442,38 +434,8 @@ class Blog {
             }
         }
 
-        if ($this->allow_comments && $this->approved) {
-            $comments = Comments::getThread($key);
-
-            if ($summarized && !empty($comments)) {
-                $link = $comments->countComments(true);
-                $comment_link = new PHPWS_Link($link, 'blog',
-                        array('id' => $this->id));
-                $comment_link->setRewrite();
-                $comment_link->setAnchor('comments');
-                $template['COMMENT_LINK'] = $comment_link->get();
-
-                if (isset($template['READ_MORE'])) {
-                    $template['SEPARATOR'] = '|';
-                }
-
-                $last_poster = $comments->getLastPoster();
-
-                if (!empty($last_poster)) {
-                    $template['LAST_POSTER_LABEL'] = dgettext('blog',
-                            'Last poster');
-                    $template['LAST_POSTER'] = $last_poster;
-                }
-            } elseif ($this->id) {
-                if ($comments) {
-                    $template['COMMENTS'] = $comments->view();
-                }
-                $key->flag();
-            }
-        } else {
-            if (!$summarized) {
-                $key->flag();
-            }
+        if (!$summarized) {
+            $key->flag();
         }
 
         if (PHPWS_Settings::get('blog', 'show_category_icons')) {
@@ -622,20 +584,6 @@ class Blog {
 
         if (isset($_POST['image_id'])) {
             $this->image_id = (int) $_POST['image_id'];
-        }
-
-        if (isset($_POST['allow_comments'])) {
-            $this->allow_comments = 1;
-        } else {
-            $this->allow_comments = 0;
-        }
-
-        $this->_comment_approval = (int) $_POST['comment_approval'];
-
-        if (isset($_POST['allow_anon'])) {
-            $this->allow_anon = 1;
-        } else {
-            $this->allow_anon = 0;
         }
 
         if (isset($_POST['thumbnail'])) {

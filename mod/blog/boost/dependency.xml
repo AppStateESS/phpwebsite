@@ -25,12 +25,6 @@
 		<url>http://phpwebsite.appstate.edu/downloads/modules/categories/</url>
 	</module>
 	<module>
-		<title>comments</title>
-		<properName>Comments</properName>
-		<version>1.2.4</version>
-		<url>http://phpwebsite.appstate.edu/downloads/modules/comments/</url>
-	</module>
-	<module>
 		<title>search</title>
 		<properName>Search</properName>
 		<version>0.4.0</version>
