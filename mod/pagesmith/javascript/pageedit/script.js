@@ -28,7 +28,7 @@ function editBlock(editor)
         function(data) {
             editor.setData(data);
             $('#block-edit-popup').dialog('open');
-            $('.ui-dialog').before('<div id="overlay" style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay" />');
+            $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
         }
         );
     });
@@ -37,8 +37,11 @@ function editBlock(editor)
 function initializePageTitleEdit()
 {
     $('#page-title-edit').click(function() {
-        $('#page-title-input').val($('#page-title-edit').html());
+        if (!$('#page-title-edit').data('new')) {
+            $('#page-title-input').val($('#page-title-edit').html());
+        }
         $('#title-edit-popup').dialog('open');
+        $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
     });
 }
 
@@ -54,11 +57,11 @@ function initializeDialog(editor)
                         click: function() {
                             updateBlock(editor);
                             $(this).dialog('close');
-                            $('#overlay').remove();
+                            $('.dialog-overlay').remove();
                         }
                     }],
                 close: function() {
-                    $('#overlay').remove();
+                    $('.dialog-overlay').remove();
                 }
             }
     );
@@ -76,11 +79,10 @@ function initializeDialog(editor)
                             $('#page-title-edit').html(title_input);
                             $('#page-title-edit').css('color', 'inherit');
                             $(this).dialog('close');
-                            $('#overlay').remove();
                         }
                     }],
                 close: function() {
-                    $('#overlay').remove();
+                    $('.dialog-overlay').remove();
                 }
             }
     );

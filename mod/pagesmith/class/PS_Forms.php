@@ -276,7 +276,7 @@ class PS_Forms {
         $template_file = $page->_tpl->page_path . 'page.tpl';
 
         if (empty($page->title)) {
-            $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;color : #969696">' . dgettext('pagesmith', 'Page Title (click to edit)') . '</span>';
+            $tpl['page_title'] = '<span id="page-title-edit" data-new="true" style="cursor:pointer;color : #969696">' . dgettext('pagesmith', 'Page Title (click to edit)') . '</span>';
         } else {
             $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;">' . $page->title . '</span>';
         }
