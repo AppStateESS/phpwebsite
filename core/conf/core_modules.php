@@ -16,11 +16,8 @@ $core_modules = array('users',
                       'version',
                       'clipboard',
                       'demographics',
-                      'comments',
                       'search',
                       'miniadmin',
                       'access'
                       );
-
-
                       ?>
