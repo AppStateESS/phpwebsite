@@ -133,20 +133,6 @@ class Branch_Admin {
                 $this->edit_basic();
                 break;
 
-            case 'branch_modules':
-                $this->edit_modules();
-                break;
-
-            case 'save_branch_modules':
-                if ($this->saveBranchModules()) {
-                    $this->message = dgettext('branch', 'Module list saved successfully.');
-                    $this->message .= sprintf('<br /><a href="http://%s">%s</a>', $this->branch->url, dgettext('branch', 'Go to the branch site...'));
-                } else {
-                    $this->message = dgettext('branch', 'An error occurred when trying to save the module list.');
-                }
-                $this->edit_modules();
-                break;
-
             case 'post_basic':
                 if (!$this->branch->id) {
                     $new_branch = true;
@@ -188,9 +174,6 @@ class Branch_Admin {
                 $result =  $this->core_module_installation();
                 if ($result) {
                     $this->content[] = dgettext('branch', 'All done!');
-                    $this->content[] = PHPWS_Text::secureLink(dgettext('branch', 'Set up allowed modules'),
-                                                          'branch', array('command' => 'branch_modules',
-                                                                          'branch_id' => $this->branch->id));
                     $this->resetAdmin();
                 } elseif ($_SESSION['Boost']->currentDone()) {
                     $meta = sprintf('index.php?module=branch&command=core_module_installation&branch_id=%s&authkey=%s', $this->branch->id, Current_User::getAuthKey());
@@ -828,59 +811,6 @@ class Branch_Admin {
     }
 
     /**
-     * Form that allows the hub admin determine which modules a
-     * branch can install.
-     */
-    public function edit_modules()
-    {
-        PHPWS_Core::initCoreClass('File.php');
-        $this->title = sprintf(dgettext('branch', 'Module access for "%s"'), $this->branch->branch_name);
-
-        $content = null;
-
-        $core_mods = PHPWS_Core::coreModList();
-        $all_mods = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', true);
-        $all_mods = array_diff($all_mods, $core_mods);
-
-        foreach ($all_mods as $key => $module) {
-            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/boost.php')) {
-                $dir_mods[] = $module;
-            }
-        }
-
-        $db = new PHPWS_DB('branch_mod_limit');
-        $db->addWhere('branch_id', $this->branch->id);
-        $db->addColumn('module_name');
-        $branch_mods = $db->select('col');
-
-        unset($dir_mods[array_search('branch', $dir_mods)]);
-        sort($dir_mods);
-        $form = new PHPWS_Form('module_list');
-        $form->useRowRepeat();
-
-        $form->addHidden('module', 'branch');
-        $form->addHidden('command', 'save_branch_modules');
-        $form->addHidden('branch_id', $this->branch->id);
-
-        $form->addCheck('module_name', $dir_mods);
-        $form->setLabel('module_name', $dir_mods);
-        if (!empty($branch_mods)) {
-            $form->setMatch('module_name', $branch_mods);
-        }
-
-        $form->addSubmit('submit', dgettext('branch', 'Save'));
-
-        $form->addTplTag('CHECK_ALL', javascript('check_all', array('checkbox_name' => 'module_name')));
-
-        $template = $form->getTemplate();
-
-        $template['DIRECTIONS'] = dgettext('branch', 'Unchecked modules cannot be installed on this branch.');
-
-        $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
-        $this->content = & $content;
-    }
-
-    /**
      * Lists the branches on the system
      */
     public function listBranches()
@@ -900,30 +830,6 @@ class Branch_Admin {
         $pager->setSearch('branch_name');
         $this->title = dgettext('branch', 'Branch List');
         $this->content = $pager->get();
-    }
-
-    public function saveBranchModules()
-    {
-        $db = new PHPWS_DB('branch_mod_limit');
-        $db->addWhere('branch_id', (int)$_POST['branch_id']);
-        $db->delete();
-        $db->reset();
-
-        if (empty($_POST['module_name']) || !is_array($_POST['module_name'])) {
-            return;
-        }
-
-        foreach ($_POST['module_name'] as $module) {
-            $db->addValue('branch_id', (int)$_POST['branch_id']);
-            $db->addValue('module_name', $module);
-            $result = $db->insert();
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
-                return false;
-            }
-            $db->reset();
-        }
-        return true;
     }
 
     public static function getBranches($load_db_info=false)

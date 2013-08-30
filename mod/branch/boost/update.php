@@ -132,6 +132,13 @@ function branch_update(&$content, $version)
 -------------
 + Removed javascript directory creation
 </pre>';
+        case version_compare($version, '1.3.4', '<'):
+            $db = \Database::newDB();
+            $db->addTable('branch_mod_limit')->drop();
+            $content[] = '<pre>1.3.4 Changes
+-------------
++ Remove module limitations on branches.
+</pre>';
     }
     return true;
 }
