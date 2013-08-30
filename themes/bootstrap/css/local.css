@@ -136,3 +136,21 @@ ul.dropdown-menu {
 .ui-dialog {
     z-index : 100;
 }
+
+button.ui-dialog-titlebar-close {
+    position : relative;
+}
+
+button.ui-dialog-titlebar-close:before {
+    content: "\f00d";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+/*--adjust as necessary--*/
+    color: #505050;
+    font-size: 14px;
+    position: absolute;
+    top: -3px;
+    left: 2px;
+}
