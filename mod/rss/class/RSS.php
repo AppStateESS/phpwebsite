@@ -1,15 +1,19 @@
 <?php
+
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class RSS {
 
     public static function registerModule($module, &$content)
     {
-        $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
+        if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/rss.php')) {
+            $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
+        } else {
+            $reg_file = false;
+        }
 
         if ($reg_file == FALSE) {
             PHPWS_Boost::addLog($module, dgettext('rss', 'No RSS file found.'));
@@ -23,8 +27,10 @@ class RSS {
         $oChannel->module = $module;
 
         if (!isset($channel) || !is_array($channel)) {
-            $content[] = dgettext('rss', 'RSS file found but no channel information.');
-            PHPWS_Boost::addLog($module, dgettext('rss', 'RSS file found but no channel information.'));
+            $content[] = dgettext('rss',
+                    'RSS file found but no channel information.');
+            PHPWS_Boost::addLog($module,
+                    dgettext('rss', 'RSS file found but no channel information.'));
         }
 
         $oModule = new PHPWS_Module($module);
@@ -48,11 +54,16 @@ class RSS {
         $result = $oChannel->save();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            PHPWS_Boost::addLog($module, dgettext('rss', 'An error occurred registering to RSS module.'));
-            $content[] = dgettext('rss', 'An error occurred registering to RSS module.');
+            PHPWS_Boost::addLog($module,
+                    dgettext('rss',
+                            'An error occurred registering to RSS module.'));
+            $content[] = dgettext('rss',
+                    'An error occurred registering to RSS module.');
             return NULL;
         } else {
-            $content[] = sprintf(dgettext('rss', 'RSS registration to %s module successful.'), $oModule->proper_name);
+            $content[] = sprintf(dgettext('rss',
+                            'RSS registration to %s module successful.'),
+                    $oModule->proper_name);
             return TRUE;
         }
     }
@@ -104,7 +115,7 @@ class RSS {
         }
 
         Layout::addLink(sprintf('<link rel="alternate" type="application/rss+xml" title="%s" href="%s" />',
-        $channel->title, $channel->getAddress(FALSE)));
+                        $channel->title, $channel->getAddress(FALSE)));
     }
 
 }
