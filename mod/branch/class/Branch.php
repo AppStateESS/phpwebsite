@@ -234,6 +234,7 @@ class Branch {
 
         $prefix = Branch::getHubPrefix();
         PHPWS_DB::loadDB($dsn, $prefix);
+        \Database::phpwsDSNLoader($dsn, $prefix);
         $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
         $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
     }
@@ -247,7 +248,7 @@ class Branch {
         if (empty($this->dsn)) {
             return false;
         }
-
+        \Database::phpwsDSNLoader($this->dsn, $this->prefix);
         return PHPWS_DB::loadDB($this->dsn, $this->prefix, false, false);
     }
 
