@@ -257,9 +257,36 @@ UPDATES;
             if ($db->tableExists('comments_user_ranks_seq')) {
                 $db->buildTable('comments_user_ranks_seq')->drop();
             }
+
+            $db = \Database::newDB();
+            if ($db->tableExists('categories')) {
+                $db->buildTable('categories')->drop();
+            }
+            if ($db->tableExists('categories_seq')) {
+                $db->buildTable('categories_seq')->drop();
+            }
+            if ($db->tableExists('categories_permissions')) {
+                $db->buildTable('categories_permissions')->drop();
+            }
+            if ($db->tableExists('category_items')) {
+                $db->buildTable('category_items')->drop();
+            }
+            if ($db->tableExists('category_items_seq')) {
+                $db->buildTable('category_items_seq')->drop();
+            }
+
+            $db = \Database::newDB();
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'categories'));
+            $db->delete();
+
+            $db = \Database::newDB();
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'categories'));
+            $db->delete();
+
             $content[] = '<pre>Core 2.3.1 Changes
 -------------------
-+ Removing Comments
++ Removed Comments module
++ Removed Categories module
 </pre>';
     }
     return true;
