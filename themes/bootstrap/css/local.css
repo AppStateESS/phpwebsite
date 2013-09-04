@@ -153,3 +153,14 @@ button.ui-dialog-titlebar-close:before {
     top: -2px;
     left: 3px;
 }
+
+.admin-icons [class^="icon-"], .admin-icons [class*="icon-"] {
+    font-size : 20px;
+    margin-right : 5px;
+    color : #5d5d5d;
+}
+
+.admin-icons [class^="icon-"]:hover,table [class*="icon-"]:hover, .admin-icons  .glyphicon:hover {
+    text-decoration : none;
+    color : black;
+}

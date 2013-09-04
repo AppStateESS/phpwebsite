@@ -15,7 +15,7 @@
         <div class="subpage">{SUBPAGES}</div>
         <!-- END subpages --></td>
         <td>{LAST_UPDATED}</td>
-        <td>{ACTION}</td>
+        <td class="admin-icons">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>

@@ -462,7 +462,8 @@ class Blog {
         if ($summarized) {
             $view_tpl = 'view_list.tpl';
         } else {
-            $template['COMMENT_SCRIPT'] = PHPWS_Settings::get('blog', 'comment_script');
+            $template['COMMENT_SCRIPT'] = PHPWS_Settings::get('blog',
+                            'comment_script');
             $key->flag();
             $view_tpl = 'view_full.tpl';
         }
@@ -491,6 +492,8 @@ class Blog {
 
             $link['command'] = 'edit';
             $icon = Icon::show('edit');
+            $icon = '<i class="icon-edit" title="' . dgettext('blog',
+                            'Edit blog entry') . '"></i>';
             $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
         }
 
@@ -501,7 +504,8 @@ class Blog {
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link,
                             true);
 
-            $confirm_vars['LINK'] = Icon::show('delete');
+            $confirm_vars['LINK'] = '<i class="icon-trash" title="' . dgettext('blog',
+                            'Delete blog entry') . '"></i>';
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
@@ -516,10 +520,13 @@ class Blog {
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
                 $icon = Icon::show('unsticky');
+                $icon = '<i class="icon-flag" title="' . dgettext('blog',
+                            'Remove from front page') . '"></i>';
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = Icon::show('sticky');
+                $icon = '<i class="icon-flag-alt" title="' . dgettext('blog',
+                            'Force to front page') . '"></i>';
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }
