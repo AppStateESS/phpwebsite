@@ -9,7 +9,7 @@ class RSS {
 
     public static function registerModule($module, &$content)
     {
-        if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/rss.php')) {
+        if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/conf/rss.php')) {
             $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
         } else {
             $reg_file = false;
