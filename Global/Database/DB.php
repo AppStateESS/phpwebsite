@@ -529,6 +529,9 @@ abstract class DB extends \Data {
         }
 
         \Database::logQuery($sql);
+        if (empty(self::$PDO)) {
+            $this->loadPDO();
+        }
         return self::$PDO->exec($sql);
     }
 
@@ -908,7 +911,7 @@ abstract class DB extends \Data {
 
     /**
      * Note: Currently not operational
-     * 
+     *
      * Accepts a table field for indexing a select result.
      * For example:
      * $id_field = $table->getField('id');
