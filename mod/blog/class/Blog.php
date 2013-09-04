@@ -434,26 +434,6 @@ class Blog {
             }
         }
 
-        if (PHPWS_Settings::get('blog', 'show_category_icons')) {
-            $result = Categories::getIcons($key);
-            if (!empty($result)) {
-                if (PHPWS_Settings::get('blog', 'single_cat_icon')) {
-                    $template['cat-icons'][] = array('CAT_ICON' => array_shift($result));
-                } else {
-                    foreach ($result as $icon) {
-                        $template['cat-icons'][] = array('CAT_ICON' => $icon);
-                    }
-                }
-            }
-        }
-
-        if (PHPWS_Settings::get('blog', 'show_category_links')) {
-            $result = Categories::getSimpleLinks($key);
-            if (!empty($result)) {
-                $template['CATEGORIES'] = implode(', ', $result);
-            }
-        }
-
         $template['POSTED_BY'] = dgettext('blog', 'Posted by');
         $template['POSTED_ON'] = dgettext('blog', 'Posted on');
         $template['PUBLISHED'] = dgettext('blog', 'Published');

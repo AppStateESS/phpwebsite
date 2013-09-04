@@ -41,19 +41,6 @@
             </fieldset>
 
             <fieldset>
-                <legend>{CATEGORY_LABEL}</legend>
-                <div class="checkbox">
-                    <label>{SHOW_CATEGORY_LINKS} {SHOW_CATEGORY_LINKS_LABEL_TEXT}</label>
-                </div>
-                <div class="checkbox">
-                    <label>{SHOW_CATEGORY_ICONS} {SHOW_CATEGORY_ICONS_LABEL_TEXT}</label>
-                </div>
-                <div class="checkbox" style="margin-left: 1.5em;">
-                    <label>{SINGLE_CAT_ICON} {SINGLE_CAT_ICON_LABEL_TEXT}</label>
-                </div>
-            </fieldset>
-
-            <fieldset>
                 <legend>{SUBMISSION_LABEL}</legend>
                 <div class="checkbox">
                     <label>{ALLOW_ANONYMOUS_SUBMITS} {ALLOW_ANONYMOUS_SUBMITS_LABEL_TEXT}</label>

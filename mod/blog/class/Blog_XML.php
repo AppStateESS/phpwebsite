@@ -30,7 +30,6 @@ class Blog_XML extends MyServer {
             case 'new':
             case 'list':
             case 'edit':
-            case 'category':
             case 'media':
                 if (!Current_User::allow('blog', 'edit_blog')) {
                     return new IXR_Error(4020, 'You do not have permission to edit entries.');
@@ -160,7 +159,6 @@ class Blog_XML extends MyServer {
         }
 
         /* Get category list */
-        //$d['categories'] = Categories::getCategories('list');
         return $d;
     }
 

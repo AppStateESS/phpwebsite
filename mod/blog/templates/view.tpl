@@ -9,15 +9,6 @@
                                                 title="{PUBLISHED_DATE}"
                                                 >{LOCAL_DATE}</abbr></h3>
     </div>
-    <!-- BEGIN categories -->
-    <div class="blog-category-links">{CATEGORIES}</div>
-    <!-- END categories --> <!-- BEGIN icons -->
-    <ul class="blog-category-icons">
-        <!-- BEGIN cat-icons -->
-        <li>{CAT_ICON}</li>
-        <!-- END cat-icons -->
-    </ul>
-    <!-- END icons -->
     <div class="box-content">
         <div class="entry-summary"><!-- BEGIN image -->
             <div class="entry-image">{IMAGE}</div>

@@ -165,18 +165,6 @@ class Blog_Form {
         $form->setLabel('home_page_display', dgettext('blog', 'Show blog on home page'));
         $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
 
-        $form->addCheck('show_category_links', 1);
-        $form->setLabel('show_category_links', dgettext('blog', 'Show category links'));
-        $form->setMatch('show_category_links', PHPWS_Settings::get('blog', 'show_category_links'));
-
-        $form->addCheck('show_category_icons', 1);
-        $form->setLabel('show_category_icons', dgettext('blog', 'Show category icons'));
-        $form->setMatch('show_category_icons', PHPWS_Settings::get('blog', 'show_category_icons'));
-
-        $form->addCheck('single_cat_icon', 1);
-        $form->setLabel('single_cat_icon', dgettext('blog', 'Only show one category icon'));
-        $form->setMatch('single_cat_icon', PHPWS_Settings::get('blog', 'single_cat_icon'));
-
         $form->addCheck('logged_users_only', 1);
         $form->setLabel('logged_users_only', dgettext('blog', 'Logged user view only'));
         $form->setMatch('logged_users_only', PHPWS_Settings::get('blog', 'logged_users_only'));
@@ -245,7 +233,6 @@ class Blog_Form {
         }
 
         $template['VIEW_LABEL'] = dgettext('blog', 'View');
-        $template['CATEGORY_LABEL'] = dgettext('blog', 'Category');
         $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
         $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');
         $template['COMMENTS_LABEL'] = dgettext('blog', 'Commenting');
