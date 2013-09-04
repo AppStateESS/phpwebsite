@@ -157,7 +157,7 @@ button.ui-dialog-titlebar-close:before {
 .admin-icons [class^="icon-"], .admin-icons [class*="icon-"] {
     font-size : 20px;
     margin-right : 5px;
-    color : #5d5d5d;
+    color : #6b6b6b;
 }
 
 .admin-icons [class^="icon-"]:hover,table [class*="icon-"]:hover, .admin-icons  .glyphicon:hover {
