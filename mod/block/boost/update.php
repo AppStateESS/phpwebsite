@@ -115,25 +115,8 @@ Please download version 1.1.2.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '1.3.6', '<'):
-            require_once PHPWS_SOURCE_DIR . 'core/class/Form.php';
-            require_once PHPWS_SOURCE_DIR . 'mod/block/class/Block_Item.php';
-            require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/class/File_Assoc.php';
-            require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/class/Cabinet.php';
+            moveBlockImages();
 
-            $db = Database::newDB();
-            $block = $db->addTable('block');
-            $db->setConditional($block->getFieldConditional('file_id', 0, '>'));
-            $db->loadSelectStatement();
-
-            while ($block = $db->fetchObject('Block_Item')) {
-                $file = new FC_File_Assoc($block->file_id);
-                $file->_use_style = false;
-                $tag = $file->getTag();
-                $old_content = $block->getContent();
-                $new_content = "<div>$tag</div>" . $old_content;
-                $block->setContent($new_content);
-                $block->save();
-            }
             $content[] = '<pre>1.3.6 changes
 ---------------
 + Moved File Cabinet material to block content.
@@ -142,17 +125,44 @@ Please download version 1.1.2.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '1.3.7', '<'):
+            if ($currentVersion == '1.3.6' && PHPWS_Boost::inBranch()) {
+                moveBlockImages();
+            }
             $db = Database::newDB();
             $btable = $db->addTable('block');
             $dt = $btable->addDataType('hide_narrow', 'smallint');
             $dt->add();
 
-            $content[] = '<pre>1.3.7 changes
+            $content[] = '<pre>1.3.7
 ---------------
++ Moved File Cabinet material to block content (did not work on branches from 1.3.6).
 + Added option to hide a block when width is minimized.
 </pre>';
     }
     return TRUE;
+}
+
+function moveBlockImages()
+{
+    require_once PHPWS_SOURCE_DIR . 'core/class/Form.php';
+    require_once PHPWS_SOURCE_DIR . 'mod/block/class/Block_Item.php';
+    require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/class/File_Assoc.php';
+    require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/class/Cabinet.php';
+
+    $db = Database::newDB();
+    $block = $db->addTable('block');
+    $db->setConditional($block->getFieldConditional('file_id', 0, '>'));
+    $db->loadSelectStatement();
+
+    while ($block = $db->fetchObject('Block_Item')) {
+        $file = new FC_File_Assoc($block->file_id);
+        $file->_use_style = false;
+        $tag = $file->getTag();
+        $old_content = $block->getContent();
+        $new_content = "<div>$tag</div>" . $old_content;
+        $block->setContent($new_content);
+        $block->save();
+    }
 }
 
 ?>

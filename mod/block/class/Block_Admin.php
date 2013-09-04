@@ -43,7 +43,7 @@ class Block_Admin {
         $tabs['list'] = array('title' => dgettext('block', 'List'), 'link' => $linkBase);
         $tabs['settings'] = array('title' => dgettext('block', 'Settings'), 'link' => $linkBase);
 
-        $panel = new PHPWS_Panel('categories');
+        $panel = new PHPWS_Panel('block');
         $panel->enableSecure();
         $panel->quickSetTabs($tabs);
 
