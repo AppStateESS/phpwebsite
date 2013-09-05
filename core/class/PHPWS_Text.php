@@ -874,7 +874,11 @@ class PHPWS_Text {
     public static function xml2php($file, $level = 0)
     {
         $xml_parser = xml_parser_create();
-        $contents = @file_get_contents($file);
+        try {
+            $contents = file_get_contents($file);
+        } catch (Exception $exc) {
+            return false;
+        }
         if (!$contents) {
             return false;
         }
