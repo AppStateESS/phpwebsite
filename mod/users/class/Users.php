@@ -901,7 +901,7 @@ class PHPWS_User {
             'user_id' => $this->id), true);
         $link->setSalted();
         $jsvar['ADDRESS'] = $link->getAddress();
-        $jsvar['LINK'] = Icon::show('delete');
+        $jsvar['LINK'] = '<i class="icon-trash" title="'.dgettext('users', 'Delete user') .'"></i>';
 
         $linkVar['command'] = 'editUser';
         $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar);

@@ -1,4 +1,4 @@
-<table cellpadding="4" cellspacing="1" width="98%">
+<table class="table table-striped table-hover">
     <tr style="vertical-align: top">
         <th>{NAME_SORT}</th>
         <th>{TYPE_SORT}</th>

@@ -1346,7 +1346,7 @@ class Calendar_Admin {
         $page_tags['AVAILABILITY_LABEL'] = dgettext('calendar', 'Availability');
 
         $vars = array('aop'=>'create_schedule');
-        $label = dgettext('calendar', 'Create schedule');
+        $label = '<i class="icon-file-text"></i> ' . dgettext('calendar', 'Create schedule');
 
         if (javascriptEnabled()) {
             $vars['js'] = 1;
@@ -1354,6 +1354,7 @@ class Calendar_Admin {
             $js_vars['label']   = $label;
             $js_vars['width']   = 640;
             $js_vars['height']  = 640;
+            $js_vars['class'] = 'btn btn-success';
             $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
         } else {
             $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);

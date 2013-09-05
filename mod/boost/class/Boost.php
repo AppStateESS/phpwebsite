@@ -149,7 +149,7 @@ class PHPWS_Boost {
 
             // H0120
             $mod_content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
-            //	$content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
+            $content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
                 $mod_content[] = dgettext('boost', 'Importing SQL install file.');
@@ -214,11 +214,9 @@ class PHPWS_Boost {
                                     str_replace('<br />', "\n", $mod_content))));
             // $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
             // H 0120 display also the msgs for log
-            /*
+
               $content[] = str_replace('<br /><br /><br />', '<br />',
               implode('<br />', $mod_content));
-             *
-             */
             // $content[] = dgettext('boost', 'Installation complete!');
         }
         return implode('<br />', $content);

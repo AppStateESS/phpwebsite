@@ -18,7 +18,7 @@
     <td>{EMAIL}</td>
     <td style="font-size: .8em;">{LAST_LOGGED}</td>
     <td align="left">{ACTIVE}</td>
-    <td>{ACTIONS}</td>
+    <td class="admin-icons">{ACTIONS}</td>
   </tr>
   <!-- END listrows -->
 </table>

@@ -2,7 +2,7 @@
 {PAGE_FIX}<br />
 {MENU_FIX} (<i>{MENU_WARNING}</i>)
 {START_FORM}
-<table width="99%" cellpadding="3">
+<table class="table table-striped table-hover">
     <tr>
         <th width="%3">&nbsp;</th>
         <th>{URL_LABEL} {KEYWORD_SORT}</th>

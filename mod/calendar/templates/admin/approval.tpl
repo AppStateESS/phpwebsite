@@ -1,4 +1,4 @@
-<table width="100%" cellpadding="4">
+<table class="table table-striped table-hover">
     <tr>
         <th>{TITLE_LABEL}</th>
         <th>{LOCATION_LABEL}</th>

@@ -3,7 +3,7 @@
 {PAGES}<br />
 {LIMITS}<br />
 {SEARCH}</div>
-<table width="98%" cellpadding="4" cellspacing="1">
+<table class="table table-striped table-hover">
     <tr>
         <th>{BRANCH_NAME_LABEL} {BRANCH_NAME_SORT}</th>
         <th>{DIRECTORY_LABEL}</th>
