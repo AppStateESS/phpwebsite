@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Boost2_3_2\n"
+"Project-Id-Version: PHPWS1_7_2,Boost2_3_5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2010-02-05 15:21+0100\n"
+"POT-Creation-Date: 2010-02-05 15:21+0100\n"
+"PO-Revision-Date: 2012-12-27 14:14+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,6 +36,12 @@ msgstr "%s Module Afhankelijkheden"
 msgid "About"
 msgstr "Toelichting"
 
+msgid "about"
+msgstr "toelichting"
+
+msgid "Action"
+msgstr "Actie"
+
 msgid "An error occurred during registration."
 msgstr "Er is bij de registratie een fout opgetreden."
 
@@ -52,10 +58,10 @@ msgid "An error occurred while installing this module."
 msgstr "Het installeren van de module is mislukt."
 
 msgid "An error occurred while registering the %s module."
-msgstr "Er is een fout opgetreden bij het registreren van de &s module."
+msgstr "Er is een fout opgetreden bij het registreren van de %s module."
 
 msgid "An error occurred while unregistering the %s module."
-msgstr "Er is een fout opgetreden bij het deregistreren van de &s module."
+msgstr "Er is een fout opgetreden bij het deregistreren van de %s module."
 
 msgid "An error occurred while unregistering."
 msgstr "Er is een fout opgetreden bij het deregistreren."
@@ -68,6 +74,15 @@ msgstr "Er is een wijziging beschikbaar!"
 
 msgid "Are you sure you want to uninstall this module? All data will be deleted."
 msgstr "Wilt u deze module verwijderen? Alle gegevens gaan verloren."
+
+msgid "Backup"
+msgstr "Backup"
+
+msgid "BackupAll"
+msgstr "BackupAll"
+
+msgid "BackupBranch"
+msgstr "BackupBranch"
 
 msgid "Boost"
 msgstr "Boost"
@@ -91,6 +106,9 @@ msgid "Check"
 msgstr "Controleer"
 
 msgid "Check all"
+msgstr "Alles controleren"
+
+msgid "CheckAll"
 msgstr "Alles controleren"
 
 msgid "Check disabled"
@@ -179,7 +197,7 @@ msgid "Current version"
 msgstr "Huidige versie"
 
 msgid "Current Version"
-msgstr "Huidige version"
+msgstr "Huidige versie"
 
 msgid "Current stable version"
 msgstr "Huidige stabiele versie"
@@ -190,17 +208,29 @@ msgstr "Import database mislukt."
 msgid "Depended upon"
 msgstr "Afhankelijk van"
 
+msgid "DependedUpon"
+msgstr "Afhankelijk van"
+
 msgid "Dependencies"
 msgstr "Afhankelijkheden"
+
+msgid "Dir"
+msgstr "Dir"
+
+msgid "DistroServer"
+msgstr "DistroServer"
 
 msgid "Download"
 msgstr "Download"
 
 msgid "Download here"
-msgstr "Download hier"
+msgstr "Download link"
 
 msgid "Failed"
 msgstr "Mislukt"
+
+msgid "Failed directory backup: %s to %s"
+msgstr "Back-up map %s naar %s is mislukt."
 
 msgid "Failed directory copy: %s to %s"
 msgstr "Kopieren map %s naar %s is mislukt"
@@ -219,6 +249,12 @@ msgstr "Verwijderen map mislukt."
 
 msgid "Finished uninstalling module!"
 msgstr "Module is verwijderd!"
+
+msgid "GetNew"
+msgstr "GetNew"
+
+msgid "If sure, please type the name of the module below: %s"
+msgstr "Tik ter bevestiging de naam van de module in: %s"
 
 msgid "Import successful."
 msgstr "Import gelukt."
@@ -247,6 +283,9 @@ msgstr "Bestand installatie niet geimplementeerd."
 msgid "Installing"
 msgstr "Installatie loopt"
 
+msgid "IsLocal"
+msgstr "IsLocal"
+
 msgid "Key unregistration successful."
 msgstr "Key registratie verwijderd."
 
@@ -262,14 +301,14 @@ msgstr "MD5 Som"
 msgid "Missing dependency"
 msgstr "Afhankelijkheid ontbreekt"
 
+msgid "MissingDependency"
+msgstr "Afhankelijkheid ontbreekt"
+
 msgid "Module"
 msgstr "Module"
 
 msgid "Module Needed"
 msgstr "Nodige module"
-
-msgid "Module title"
-msgstr "Naam Module"
 
 msgid "Module Title"
 msgstr "Naam Module"
@@ -284,13 +323,16 @@ msgid "Module is missing register file."
 msgstr "Registreer bestand module ontbreekt."
 
 msgid "Module is missing register function."
-msgstr "De module heeft geen functie registreer. "
+msgstr "De module heeft geen functie registreer."
 
 msgid "Module is not installed."
 msgstr "Module is niet geinstalleerd."
 
 msgid "Module revert finished!"
 msgstr "Module is teruggezet."
+
+msgid "Module title"
+msgstr "Module naam"
 
 msgid "Module's settings could not be removed. See your error log."
 msgstr "Instellingen module niet verwijderd. Controleer de logfile."
@@ -501,6 +543,9 @@ msgstr "Wijzigen branch %s loopt"
 
 msgid "Updating core"
 msgstr "Wijzigen core"
+
+msgid "Version"
+msgstr "Versie"
 
 msgid "Version Needed"
 msgstr "Versie nodig"

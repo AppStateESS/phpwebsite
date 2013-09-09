@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Branch1_2_0\n"
+"Project-Id-Version: PHPWS1_7_2,Branch1_3_1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2010-01-30 17:36+0100\n"
+"POT-Creation-Date: 2009-08-13 13:35-0400\n"
+"PO-Revision-Date: 2012-12-26 13:41+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -77,6 +77,9 @@ msgstr "Verder met installatie branch core"
 
 msgid "Continue..."
 msgstr "verder..."
+
+msgid "Copied FCKeditor to branch."
+msgstr "FCKeditor in branch aangemaakt."
 
 msgid "Copied admin file to branch."
 msgstr "Administratiebestand branch aangemaakt."
@@ -153,6 +156,9 @@ msgstr "Wijzigen branch"
 msgid "Enter your site's url address."
 msgstr "Voer de URL van de site in."
 
+msgid "Failed to copy FCKeditor to branch."
+msgstr "Kopieren FCKeditor naar branch mislukt."
+
 msgid "Failed to copy admin file to branch."
 msgstr "Kopieren administratie branch bestand mislukt."
 
@@ -170,6 +176,12 @@ msgstr "Kopieren thema bestanden naar branch mislukt."
 
 msgid "Failed to create config.php file in the branch."
 msgstr "Aanmaken config.php in branch mislukt."
+
+msgid "Full directory path"
+msgstr "Volledig pad"
+
+msgid "Go to the branch site..."
+msgstr "Ga naar de site..."
 
 msgid "ID hash"
 msgstr "ID hash"

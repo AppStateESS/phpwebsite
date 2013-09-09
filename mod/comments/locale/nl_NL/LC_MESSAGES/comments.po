@@ -1,0 +1,815 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR  HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_7_2,Comments1_3_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-02-03 22:12+0100\n"
+"PO-Revision-Date: 2013-02-06 14:36+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+
+msgid "%1$s - by %2$s from %3$s"
+msgstr "%1$s - van %2$s van %3$s"
+
+msgid "%d comment"
+msgid_plural "%d comments"
+msgstr[0] "%d commentaar"
+msgstr[1] "%d commentaren"
+
+msgid "%s's Website"
+msgstr "%ss Website"
+
+msgid "(Anon)"
+msgstr "(Anoniem)"
+
+msgid "-- Choose a folder --"
+msgstr "-- kies een map --"
+
+msgid "A problem occurred when trying to save your comment."
+msgstr "Er is een fout opgetreden bij het bewaren van het commentaar."
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All Members"
+msgstr "Alle leden"
+
+msgid "All comments preapproved"
+msgstr "Commentaar standaard goedkeuren"
+
+msgid "All comments require approval"
+msgstr "Al het commentaar moet goedgekeurd worden"
+
+msgid "All user postcounts have been recalculated"
+msgstr "Voor alle gebruikers zijn de aantal posts opnieuw bepaald."
+
+msgid "All users"
+msgstr "Alle gebruikers"
+
+msgid "Allow anonymous naming"
+msgstr "Anonieme namen toestaan"
+
+msgid "Allow images in signatures"
+msgstr "Afbeeldingen in handtekening toestaan"
+
+msgid "Allow this group's users to use remote custom avatars after"
+msgstr "Toestaan dat de groepsleden externe avatars gebruiken"
+
+msgid "Allow this groups's users to upload custom avatars after"
+msgstr "Toestaan dat de groepsleden avatars uploaden"
+
+msgid "Allow user avatars"
+msgstr "Avatar gebruiker toestaan"
+
+msgid "Allow user signatures"
+msgstr "Gebruikers handtekening toestaan"
+
+msgid "Allow users to monitor threads via email"
+msgstr "Toestaan dat gebruikers threads volgen met e-mail"
+
+msgid "An error occurred when trying to remove comments."
+msgstr "Er is een fout opgetreden bij het verwijderen van het commentaar."
+
+msgid "Anonymous"
+msgstr "Anoniem"
+
+msgid "Anonymous comments require approval"
+msgstr "Anoniem commentaar moet goedgekeurd worden"
+
+msgid "Anonymous users only"
+msgstr "Alleen anonieme gebruikers"
+
+msgid "Approval (%s)"
+msgstr "Goedkeuren (%s)"
+
+msgid "Approval icon"
+msgstr "Icoon goedkeuren"
+
+msgid "Approve checked"
+msgstr "Keur de geselecteerde goed"
+
+msgid "Approve this comment"
+msgstr "Keur dit commentaar goed"
+
+msgid "Are you sure you want to delete every comment ever written by %s?"
+msgstr "Wilt u alle reacties geschreven door %s verwijderen?"
+
+msgid "Are you sure you want to delete every comment ever written from this ip address: %s?"
+msgstr "Wilt u alle reacties geschreven vanaf IP-adres: %s verwijderen?"
+
+msgid "Are you sure you want to delete the checked items?"
+msgstr "Wilt u de geselecteerde items verwijderen?"
+
+msgid "Are you sure you want to delete this comment?"
+msgstr "Wilt u dit commentaar verwijderen?"
+
+msgid "Are you sure you want to delete this user rank?"
+msgstr "Wilt u deze gebruikersrang verwijderen?"
+
+msgid "Are you sure you want to remove this rank?"
+msgstr "Wilt u deze rang verwijderen?"
+
+msgid "Are you sure you want to split the topic from this position?"
+msgstr "Wilt u dit onderwerp hier delen?"
+
+msgid "Author"
+msgstr "Auteur"
+
+msgid "Automatically monitor topics that I post in"
+msgstr "Automatisch topics volgen waarin ik heb gepost"
+
+msgid "Avatar"
+msgstr "Avatar"
+
+msgid "Avatar Settings"
+msgstr "Avatar Instellingen"
+
+msgid "Avatar settings"
+msgstr "Avatar instellingen"
+
+msgid "Avatar graphics must be from offsite."
+msgstr "Avatar afbeeldingen moeten extern zijn."
+
+msgid "Back to Top"
+msgstr "Naar boven"
+
+msgid "Ban user"
+msgstr "Ban gebruiker"
+
+msgid "Ban user account"
+msgstr "Ban gebruikerscode"
+
+msgid "Be particularly careful with this next option.  If you select it, the only way that you can restore your monitors is to manually re-select each topic!"
+msgstr "Let op, deze optie kan niet ongedaan gemaakt worden. U dient dan handmatig alle topics opnieuw te selecteren om weer te gaan volgen."
+
+msgid "CAPTCHA use"
+msgstr "CAPTCHA gebruik"
+
+msgid "Change settings"
+msgstr "Wijzig instellingen"
+
+msgid "Choose an action"
+msgstr "Kies een actie"
+
+msgid "Clear"
+msgstr "Wis"
+
+msgid "Clear checked"
+msgstr "Wis de geselecteerde"
+
+msgid "Clear this report"
+msgstr "Wis dit rapport"
+
+msgid "Closed topic"
+msgstr "Gesloten topic"
+
+msgid "Comment"
+msgstr "Commentaar"
+
+msgid "Comment Settings"
+msgstr "Commentaar Instellingen"
+
+msgid "Comment from: %s"
+msgstr "Commentaar van: %s"
+
+msgid "Comment history for %s"
+msgstr "Commentaar geschiedenis %s"
+
+msgid "Comment missing thread information."
+msgstr "Bij commentaar ontbreekt de thread-informatie."
+
+msgid "Comment order preference"
+msgstr "Voorkeur volgorde commentaar"
+
+msgid "Comment settings"
+msgstr "Commentaar instellingen"
+
+msgid "Comments"
+msgstr "Commentaren"
+
+msgid "Comments (if any) removed successfully"
+msgstr "Commentaren (indien aanwezig) zijn verwijderd"
+
+msgid "Comments Made by %s"
+msgstr "Commentaren van %s"
+
+msgid "Contact Email"
+msgstr "Contact e-mailadres"
+
+msgid "Control administrative options for comments."
+msgstr "Administratieve opties voor commentaar."
+
+msgid "Could not access image url."
+msgstr "URL afbeelding niet te benaderen."
+
+msgid "Could not verify file dimensions."
+msgstr "Kan niet de grootte van het bestand controleren."
+
+msgid "Create member"
+msgstr "Nieuw lid"
+
+msgid "Create new member rank"
+msgstr "Nieuwe gebruikersrang"
+
+msgid "Created on"
+msgstr "Aangemaakt op"
+
+msgid "Current Avatar"
+msgstr "Huidige avatar"
+
+msgid "Default approval"
+msgstr "Standaard goedkeuren"
+
+msgid "Default order"
+msgstr "Standaard volgorde"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete all comments"
+msgstr "Verwijder alle commentaren"
+
+msgid "Delete checked"
+msgstr "Verwijder de geselecteerde"
+
+msgid "Delete comments"
+msgstr "Verwijder commentaren"
+
+msgid "Delete rank"
+msgstr "Verwijder rang"
+
+msgid "Delete this comment"
+msgstr "Verwijder dit commentaar"
+
+msgid "Delete user rank"
+msgstr "Verwijder rang gebruiker"
+
+msgid "Deny IP address"
+msgstr "Niet toestaan IP-adres"
+
+msgid "Disable anonymous posting"
+msgstr "Uitschakelen anoniem posten"
+
+msgid "Display"
+msgstr "Toon"
+
+msgid "Do not show"
+msgstr "Niet tonen"
+
+msgid "Don't use"
+msgstr "Niet gebruiken"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit comments"
+msgstr "Wijzigen commentaar"
+
+msgid "Edit this comment"
+msgstr "Wijzig dit commentaar"
+
+msgid "Edited"
+msgstr "Gewijzigd"
+
+msgid "Edited by"
+msgstr "Gewijzigd door"
+
+msgid "Edited on"
+msgstr "Gewijzigd op"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Enable anonymous posting"
+msgstr "Inschakelen anoniem posten"
+
+msgid "Enable avatar selection"
+msgstr "Inschakelen kiezen avatar"
+
+msgid "Enter a URL to an online image. (ex: `http://othersite.com/avatar.png`)"
+msgstr "Vul de URL van uw afbeelding in. (bijv: `http://othersite.com/avatar.png`"
+
+msgid "Entry"
+msgstr "Invoer"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Error occurred trying to create new thread."
+msgstr "Er is een fout opgetreden bij het starten van een thread."
+
+msgid "Feature Summary"
+msgstr "Optie samenvatting"
+
+msgid "Forum"
+msgstr "Forum"
+
+msgid "From"
+msgstr "Van"
+
+msgid "Get anonymous posters' names"
+msgstr "Haal namen anonieme posters op"
+
+msgid "Go"
+msgstr "Start"
+
+msgid "Go back"
+msgstr "Terug"
+
+msgid "Go back to settings..."
+msgstr "Terug naar instellingen..."
+
+msgid "HTML tags are <b>off</b>"
+msgstr "HTML tags <b>mogen</b> gebruikt worden"
+
+msgid "HTML tags are <b>on</b>"
+msgstr "HTML tags mogen <b>niet</b> gebruikt worden"
+
+msgid "IP"
+msgstr "IP"
+
+msgid "Image"
+msgstr "Afbeelding"
+
+msgid "Image signatures not allowed."
+msgstr "Handtekeningen met afbeeldingen niet toegestaan."
+
+msgid "In"
+msgstr "In"
+
+msgid "In response to"
+msgstr "In antwoord op"
+
+msgid "In Topic"
+msgstr "In topic"
+
+msgid "Joined"
+msgstr "Gekoppeld"
+
+msgid "Location"
+msgstr "Plaats"
+
+msgid "Lock this Thread"
+msgstr "Sluit deze thread af"
+
+msgid "Lock user"
+msgstr "Afsluiten gebruiker"
+
+msgid "Locked"
+msgstr "Afgesloten"
+
+msgid "Member"
+msgstr "Lid"
+
+msgid "Member Ranks"
+msgstr "Lid Rang"
+
+msgid "Member ranks"
+msgstr "Lid rang"
+
+msgid "Minimum Posts"
+msgstr "Minimum aantal posts"
+
+msgid "Missing default rank"
+msgstr "Standaard rang ontbreekt"
+
+msgid "Missing thread information."
+msgstr "Thread informatie ontbreekt."
+
+msgid "Moderation"
+msgstr "Beheer"
+
+msgid "Moderator"
+msgstr "Beheerder"
+
+msgid "Monitor this Thread"
+msgstr "Volg deze thread"
+
+msgid "Monitoring Topics"
+msgstr "Volg topics"
+
+msgid "Move to another Topic"
+msgstr "Verplaats naar ander topic"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Newest first"
+msgstr "Nieuwste eerst"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "No comments"
+msgstr "Geen commentaar"
+
+msgid "No comments made"
+msgstr "Geen commentaar toegevoegd"
+
+msgid "No comments reported"
+msgstr "Geen commentaar gemeld"
+
+msgid "No image folders found"
+msgstr "Geen map met afbeeldingen gevonden"
+
+msgid "No more comments"
+msgstr "Niet meer commentaar"
+
+msgid "No subject"
+msgstr "Geen onderwerp"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "Note: Avatar images must be no greater than %1$s pixels high by %2$s pixels wide, and its filesize can be no greater than %3$sKb."
+msgstr "Nb. een avatar moet groter zijn dan %1$s pixels hoog en %2$s pixels breed, met een maximale bestandsgrootte van %2$sKb."
+
+msgid "Oldest first"
+msgstr "Oudste eerst"
+
+msgid "Pear BB code is <b>on</b>"
+msgstr "Pear BB code is <b>actief</b>"
+
+msgid "Permanently stop monitoring all topics"
+msgstr "Stop volgen alle topics"
+
+msgid "Personal Information"
+msgstr "Persoonlijke gegevens"
+
+msgid "Please copy the word in the above image."
+msgstr "Vul het woord in het bovenstaande plaatje in."
+
+msgid "Please try again later."
+msgstr "Probeer het later opnieuw."
+
+msgid "Post Comment"
+msgstr "Commentaar posten"
+
+msgid "Post New Comment"
+msgstr "Post nieuw commentaar"
+
+msgid "Post level"
+msgstr "Post niveau"
+
+msgid "Posted by"
+msgstr "Gepost door"
+
+msgid "Posted on"
+msgstr "Gepost op"
+
+msgid "Posts"
+msgstr "Posts"
+
+msgid "Posts will not be seen until approved"
+msgstr "Posts zijn pas te zien na goedkeuring"
+
+msgid "Profanity is <b>allowed</b>"
+msgstr "Vloeken <b>mag</b>"
+
+msgid "Profanity is <b>not allowed</b>"
+msgstr "Vloeken mag <b>niet</b>"
+
+msgid "Punish this user"
+msgstr "Straf deze gebruiker"
+
+msgid "Punish users"
+msgstr "Straf gebruikers"
+
+msgid "Quote"
+msgstr "Quote"
+
+msgid "Quote this comment"
+msgstr "Quote deze bijdrage"
+
+msgid "Rank Image"
+msgstr "Rang afbeelding"
+
+msgid "Rank Name"
+msgstr "Rang naam"
+
+msgid "Rank title"
+msgstr "Rang titel"
+
+msgid "Re:"
+msgstr "Re:"
+
+msgid "Reason"
+msgstr "Reden"
+
+msgid "Reason for edit"
+msgstr "Reden voor wijziging"
+
+msgid "Recent comments"
+msgstr "Recente commentaren"
+
+msgid "Removal icon"
+msgstr "verwijdering icoon"
+
+msgid "Remove IP denial"
+msgstr "Verwijder IP belemmering"
+
+msgid "Remove ban"
+msgstr "Verwijder ban"
+
+msgid "Remove checked"
+msgstr "Verwijder geselecteerde"
+
+msgid "Remove this comment"
+msgstr "Verwijder dit commentaar"
+
+msgid "Removing module's comments."
+msgstr "Verwijderen module commentaar."
+
+msgid "Repeat Image"
+msgstr "Afbeelding herhalen"
+
+msgid "Replies to this comment"
+msgstr "Reacties op dit commentaar."
+
+msgid "Reply"
+msgstr "Reageer"
+
+msgid "Reply to this comment"
+msgstr "Reageer op dit commentaar"
+
+msgid "Report"
+msgstr "Meld"
+
+msgid "Report this comment to an administrator"
+msgstr "Meld dit commentaar bij de beheerders"
+
+msgid "Reported (%s)"
+msgstr "Gemeld (%s)"
+
+msgid "Reported!"
+msgstr "Gemeld!"
+
+msgid "Return to the thread..."
+msgstr "Terug naar thread..."
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Save avatars locally"
+msgstr "Avatars lokaal opslaan"
+
+msgid "Save member"
+msgstr "Opslaan lid"
+
+msgid "Save rank"
+msgstr "Opslaan rang"
+
+msgid "See all comments by %s"
+msgstr "Toon al het commentaar van %s"
+
+msgid "Select an avatar from the gallery"
+msgstr "Selecteer een avatar uit de galerij"
+
+msgid "Select the desired action for the checked comments"
+msgstr "Selecteer de actie voor het geselecteerde commentaar"
+
+msgid "Select this Comment"
+msgstr "Selecteer dit commentaar"
+
+msgid "Send a copy of each new comment to the Forum Moderator(s)"
+msgstr "Stuur kopie van elk nieuw commentaar naar de forumbeheerder(s)"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings saved."
+msgstr "Instellingen opgeslagen."
+
+msgid "Show last %d"
+msgstr "Toon laatste %d"
+
+msgid "Signature"
+msgstr "Handtekening"
+
+msgid "Since yesterday"
+msgstr "Sinds gisteren"
+
+msgid "Smilies are <b>off</b>"
+msgstr "Smilies mogen <b>niet</b> gebruikt worden"
+
+msgid "Smilies are <b>on</b>"
+msgstr "Smilies <b>mogen</b> gebruikt worden"
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Sorry, but you do not have rights to alter ranks."
+msgstr "Sorry, u heeft niet het recht om de rangen te wijzigen."
+
+msgid "Sorry, but you do not have rights to alter settings."
+msgstr "Sorry, u heeft niet het recht om de instellingen te wijzigen."
+
+msgid "Sorry, module phpwsBB is not installed."
+msgstr "Sorry, de module phpwsBB is niet geinstalleerd."
+
+msgid "Split Topic"
+msgstr "Splits topic"
+
+msgid "Split to a new topic"
+msgstr "Splits in een nieuw topic"
+
+msgid "Split topic from this position"
+msgstr "Splits topic vanaf hier"
+
+msgid "Stack this Rank?"
+msgstr "Deze rang stapelen?"
+
+msgid "Stop Monitoring"
+msgstr "Stop volgen"
+
+msgid "Subject"
+msgstr "Onderwerp"
+
+msgid "Subject line of email notifying users of a new comment"
+msgstr "Onderwerp regel e-mail om gebruiker in te lichten over een nieuw commentaar"
+
+msgid "Subject/Comment"
+msgstr "Onderwerp/Commentaar"
+
+msgid "Submit a new topic"
+msgstr "Start een nieuw topic"
+
+msgid "Super Moderator"
+msgstr "Super Moderator"
+
+msgid "T.R."
+msgstr "aantal keer gemeld"
+
+msgid "Temporarily stop monitoring all topics"
+msgstr "Tijdelijk stoppen met volgen topics"
+
+msgid "Text of email notifying users of a new comment"
+msgstr "Tekst van e-mail om gebruiker in te lichten over een nieuw commentaar"
+
+msgid "That name is not allowed. Try another."
+msgstr "Naam is niet toegestaan. Probeer een andere."
+
+msgid "The following filters are <b>on</b>"
+msgstr "De volgende filters zijn actief"
+
+msgid "There was a problem saving your image."
+msgstr "Er is een fout opgetreden bij het opslaan van de afbeelding."
+
+msgid "This is the current member ranking system.<br />Don't worry about the order - the Rank types will re-order themselves by posting level."
+msgstr "Dit is de huidige indeling van de rangen.<br />De volgorde is niet van belang, die wordt door het niveau van posten bepaald."
+
+msgid "This month"
+msgstr "Deze maand"
+
+msgid "This signature appears at the bottom of your comments.  It must be less than 255 characters, not annoying and compliant with site rules."
+msgstr "Deze handtekening komt onder uw bijdragen te staan. Het zijn max. 255 tekens, het mag niet beledigend zijn of strijdig met de onze regels van de website."
+
+msgid "This topic is locked"
+msgstr "Dit topic is geblokkeerd"
+
+msgid "This topic is locked.  No more comments"
+msgstr "Dit topic is geblokkeerd, er kan niet meer in gepost worden."
+
+msgid "This week"
+msgstr "Deze week"
+
+msgid "Thread Monitor"
+msgstr "Thread Monitor"
+
+msgid "Times reported"
+msgstr "Aantal keren gemeld"
+
+msgid "Today"
+msgstr "Vandaag"
+
+msgid "Total comments in %s"
+msgstr "Aantal commentaren in %s"
+
+msgid "Unable to post to this thread."
+msgstr "U kunt niet posten in deze thread."
+
+msgid "Unacceptable file type."
+msgstr "Bestandstype niet toegestaan."
+
+msgid "Unacceptable image file."
+msgstr "Afbeelding niet toegestaan."
+
+msgid "Unban user"
+msgstr "Hef ban gebruiker op"
+
+msgid "Unlock this Thread"
+msgstr "Geef de thread vrij"
+
+msgid "Unlock user"
+msgstr "Laat de gebruiker weer toe"
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Upload an avatar image from your computer"
+msgstr "Upload een avatar van uw PC"
+
+msgid "Use a private local image"
+msgstr "Gebruik een eigen afbeelding"
+
+msgid "Use a remotely-hosted image"
+msgstr "Gebruik een externe afbeelding"
+
+msgid "User Group"
+msgstr "Gebruikersgroep"
+
+msgid "User profile"
+msgstr "Profiel gebruiker"
+
+msgid "View the last post"
+msgstr "Toon laatste post"
+
+msgid "Views"
+msgstr "Getoond"
+
+msgid "Visitor posts will not be seen until approved"
+msgstr "Een post van een bezoeker is pas na goedkeuring zichtbaar"
+
+msgid "We are holding your comment for approval"
+msgstr "Uw bijdrage wordt door ons nog beoordeeld"
+
+msgid "Website"
+msgstr "Website"
+
+msgid "When you create a new topic or post a comment, you can choose to automatically receive email notification of new replies to that topic."
+msgstr "Na het aanmaken van een topic of het doen van een post kunt u een automatische e-mail bericht ontvangen als er nieuwe posts op hetzelfde topic gedaan worden."
+
+msgid "Where are you?"
+msgstr "Waar ben je?"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You are a <b>Supermoderator</b>"
+msgstr "U bent een hoofdbeheerder"
+
+msgid "You are a listed moderator of the following forums:"
+msgstr "U bent beheerder van de volgende forums:"
+
+msgid "You failed verification. Try again."
+msgstr "De verificatie is mislukt. Probeer opnieuw."
+
+msgid "You may add an avatar using ONE of the methods below."
+msgstr "U mag een avatar op een van de onderstaande manieren toevoegen."
+
+msgid "You must include a subject or comment."
+msgstr "U moet een onderwerp of een commentaar opgeven."
+
+msgid "You <b>are not</b> a listed moderator of any forums"
+msgstr "U bent geen beheerder van een forum"
+
+msgid "You <b>can</b> create new topics in this forum"
+msgstr "U mag in dit forum een topic beginnen"
+
+msgid "You <b>can</b> post comments in this forum"
+msgstr "U mag posten in dit forum"
+
+msgid "You <b>cannot</b> create new topics in this forum"
+msgstr "U mag in dit forum geen nieuw topic beginnen"
+
+msgid "You <b>cannot</b> post comments in this forum"
+msgstr "U mag niet posten in dit forum"
+
+msgid "Your Signature"
+msgstr "Uw handtekening"
+
+msgid "Your avatar must be smaller than %sx%spx."
+msgstr "Uw avatar moet kleiner zijn dan %sx%spx."
+
+msgid "Your contact email is formatted improperly."
+msgstr "Het formaat van uw e-mailadres is fout."
+
+msgid "Your name cannot be shorter than 2 characters."
+msgstr "Uw naam moet langer zijn dan 2 tekens."
+
+msgid "[IMG] is <b>allowed</b>"
+msgstr "[IMG] is <b>toegestaan</b>"
+
+msgid "[IMG] is <b>not allowed</b>"
+msgstr "[IMG] is <b>niet</b> toegestaan"
+
+msgid "cbparser BB code is <b>on</b>"
+msgstr "cbparser BB code is <b>actief</b>"
+
+msgid "ex.: images/comments/Member.gif"
+msgstr "bijv.: images/comments/Member.gif"
+
+msgid "posts"
+msgstr "posts"
+

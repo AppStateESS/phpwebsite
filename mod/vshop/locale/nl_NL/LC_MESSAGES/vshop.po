@@ -1,0 +1,771 @@
+# vshop - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: vshop.po 7520 2010-04-19 02:42:46Z verdon $
+# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_7_2,vshop0_6_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-14 15:18-0500\n"
+"PO-Revision-Date: 2013-01-30 13:25+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "% Rate"
+msgstr "% Tarief"
+
+msgid "% Shipping rate (if using a percentage rate)"
+msgstr "% Transporttarief (bij tarief als percentage)"
+
+msgid "% rate * total"
+msgstr "% tarief * totaal"
+
+msgid "% rate * weight"
+msgstr "% tarief * gewicht"
+
+msgid "%s Cart"
+msgstr "%s Winkelmandje"
+
+msgid "%s Departments"
+msgstr "%s Afdelingen"
+
+msgid "%s Items"
+msgstr "%s Items"
+
+msgid "%s Orders"
+msgstr "%s Orders"
+
+msgid "%s Purchase"
+msgstr "%s Aankopen"
+
+msgid "%s Taxes"
+msgstr "%s Belastingen"
+
+msgid "%s in stock"
+msgstr "%s in voorraad"
+
+msgid "%s successfully added to your cart."
+msgstr "%s toegevoegd aan uw winkelmandje."
+
+msgid "%s successfully removed from your cart."
+msgstr "%s verwijderd uit uw winkelmandje."
+
+msgid ".00 Shipping flat rate (if using flat rate per order)"
+msgstr ".00 Vlak transporttarief (bij gebruik vlak tarief per order)"
+
+msgid "A new order has been placed by %s at %s."
+msgstr "Er is een nieuwe order van %s geplaatst bij %s."
+
+msgid "A new order has been placed."
+msgstr "Er is een nieuwe order."
+
+msgid "Abandoned Orders"
+msgstr "Mislukte orders"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "Add Item"
+msgstr "Item toevoegen"
+
+msgid "Add Tax"
+msgstr "Belasting toevoegen"
+
+msgid "Add item to %s"
+msgstr "Item toevoegen aan %s"
+
+msgid "Add new department"
+msgstr "Afdeling toevoegen"
+
+msgid "Add new tax"
+msgstr "Nieuwe belasting toevoegen"
+
+msgid "Add to cart"
+msgstr "Toevoegen aan winkelmandje"
+
+msgid "Add/Edit/Delete inventory"
+msgstr "Beheer inventaris"
+
+msgid "Address 1"
+msgstr "Adres 1"
+
+msgid "Address 2"
+msgstr "Adres 2"
+
+msgid "An error occurred when accessing this dept's items."
+msgstr "Het benaderen van de items van de afdeling is mislukt."
+
+msgid "An order has been updated."
+msgstr "Een order is gewijzigd."
+
+msgid "An order status has been updated."
+msgstr "De status van een order is gewijzigd."
+
+msgid "Any applicable taxes and shipping/handling fees will be calculated and displayed when you click Continue below."
+msgstr "Mogelijke belastingen en transport/afhandelingskosten worden bepaald en getoond nadat u op Verder heeft geklikt."
+
+msgid "Are you sure you want to cancel order %s from %s?"
+msgstr "Wilt u order %s van %s annuleren? "
+
+msgid "Are you sure you want to completely clear the contents of your cart?"
+msgstr "Wilt u uw hele winkelmandje legen?"
+
+msgid "Are you sure you want to delete order %s from %s?"
+msgstr "Wilt u order %s van %s verwijderen?"
+
+msgid "Are you sure you want to delete the department %s?"
+msgstr "Wilt u afdeling %s verwijderen?"
+
+msgid "Are you sure you want to delete the item %s?"
+msgstr "Wilt u item %s verwijderen?"
+
+msgid "Are you sure you want to delete the tax %s?"
+msgstr "Wilt u de belasting %s verwijderen?"
+
+msgid "Available departments"
+msgstr "Beschikbare afdelingen"
+
+msgid "Belongs to: %s"
+msgstr "Behoort bij: %s"
+
+msgid "Billing information"
+msgstr "Factuur informatie"
+
+msgid "Browse  all items"
+msgstr "Toon alle items"
+
+msgid "Browse all items"
+msgstr "Toon alle items"
+
+msgid "Cancel"
+msgstr "Annuleren"
+
+msgid "Cancelled Orders"
+msgstr "Geannuleerde orders"
+
+msgid "Cart contents"
+msgstr "Inhoud winkelmandje"
+
+msgid "Change settings and configurations"
+msgstr "Wijzigen instellingen en configuratie"
+
+msgid "Check your %s then create a %s to begin"
+msgstr "Controleer uw %s en maak om te beginnen een %s aan"
+
+msgid "Check your currency code for formatting errors."
+msgstr "Controleer uw geldsoort."
+
+msgid "Check your e-mail address for formatting errors."
+msgstr "Controleer uw e-mailadres."
+
+msgid "Check your secure URL for formatting errors."
+msgstr "Controleer uw veilige URL."
+
+msgid "Checkout"
+msgstr "Controle"
+
+msgid "Checkout instructions"
+msgstr "Instructies controleren"
+
+msgid "Cheque / Money Order"
+msgstr "Cheque / Geld"
+
+msgid "City"
+msgstr "Plaats"
+
+msgid "Clear Cart"
+msgstr "Winkelmandje legen"
+
+msgid "Click on \"New item\" to start."
+msgstr "Klik op \"Nieuw item\" om te beginnen."
+
+msgid "Comments"
+msgstr "Opmerkingen"
+
+msgid "Confirm order"
+msgstr "Bevestig order"
+
+msgid "Continue"
+msgstr "Verder"
+
+msgid "Continue to payment"
+msgstr "Verder met betaling"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Create"
+msgstr "Aanmaken"
+
+msgid "Create %s department"
+msgstr "Aanmaken %s afdeling"
+
+msgid "Currency and Weight"
+msgstr "Geldsoort en Gewicht"
+
+msgid "Currency code (ISO 3 letter code, eg. USD, CAD)"
+msgstr "Code geldsoort (ISO 3 lettercode, bijv. EUR, USD)"
+
+msgid "Currency marker position"
+msgstr "Plaats geldcode t.o.v. bedrag"
+
+msgid "Currency symbol"
+msgstr "Geldteken"
+
+msgid "Customer details"
+msgstr "Gegevens klant"
+
+msgid "Customer remarks:"
+msgstr "Opmerkingen klant:"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Department"
+msgstr "Afdeling"
+
+msgid "Department deleted."
+msgstr "Afdeling verwijderd."
+
+msgid "Department saved successfully."
+msgstr "Afdeling opgeslagen."
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Display currency code"
+msgstr "Wijzig geldsoort"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "E-mail:"
+msgstr "E-mail:"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit department"
+msgstr "Wijzig afdeling"
+
+msgid "Edit item"
+msgstr "Wijzig item"
+
+msgid "Edit order"
+msgstr "Wijzig volgorde"
+
+msgid "Edit tax"
+msgstr "Wijzigen belasting"
+
+msgid "Enable %s sidebox"
+msgstr "Inschakelen %s vak"
+
+msgid "Enable images and files on department and item records"
+msgstr "Inschakelen afbeeldingen en bestanden bij afdelingen en items"
+
+msgid "Error occurred when saving department."
+msgstr "Opslaan afdeling is mislukt."
+
+msgid "Error occurred when saving item."
+msgstr "Opslaan item is mislukt."
+
+msgid "Error occurred when saving order."
+msgstr "Opslaan order is mislukt."
+
+msgid "Error occurred when saving tax."
+msgstr "Opslaan belasting is mislukt."
+
+msgid "Fatal error: Cannot create item. Missing department id."
+msgstr "FOUT: Aanmaken item is mislukt, er is geen id van de afdeling."
+
+msgid "First name"
+msgstr "Voornaam"
+
+msgid "Flat rate per item"
+msgstr "Vlak tarief per item"
+
+msgid "Flat rate per order"
+msgstr "Vlak tarief per order"
+
+msgid "Free shipping"
+msgstr "Gratis transport"
+
+msgid "Free shipping if total is over xx.xx (0 to disable)"
+msgstr "Gratis transport indien meer dan xx.xx (0 : uitschakelen)"
+
+msgid "Free shipping on items over %s"
+msgstr "Gratis transport van items boven %s"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "IP Address:"
+msgstr "IP Adres:"
+
+msgid "If you would like to help out with the ongoing development of vShop, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
+msgstr "Als u wilt helpen met het ontwikkelen van vShop, of van een andere module van Verdon Vaillancourt, %s klik hier %s (opent in een nieuw scherm)."
+
+msgid "Important Information"
+msgstr "Belangrijke informatie"
+
+msgid "Important Note on Payment Methods:"
+msgstr "Toelichting over methodes van betalen:"
+
+msgid "Item deleted."
+msgstr "Item verwijderd."
+
+msgid "Item details"
+msgstr "Item details"
+
+msgid "Item saved successfully."
+msgstr "Item opgeslagen."
+
+msgid "Items"
+msgstr "Items"
+
+msgid "Last name"
+msgstr "Achternaam"
+
+msgid "Leading"
+msgstr "Voor"
+
+msgid "List Depts"
+msgstr "Lijst Afd."
+
+msgid "List Items"
+msgstr "Toon Items"
+
+msgid "List all departments"
+msgstr "Toon alle afdelingen"
+
+msgid "Maximum image height (50-600)"
+msgstr "Maximum hoogte afbeelding (50-600)"
+
+msgid "Maximum image width (50-600)"
+msgstr "Maximum breedte afbeelding (50-600)"
+
+msgid "Minimum shipping charge of x.xx (0 to disable)"
+msgstr "Minimum transport toeslag van  x.xx (0 : uitschakelen)"
+
+msgid "Minimum shipping of %s"
+msgstr "Minimum transport van %s."
+
+msgid "Modified"
+msgstr "Aangepast"
+
+msgid "Module title"
+msgstr "Module naam"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "New Department"
+msgstr "Nieuwe afdeling"
+
+msgid "New Dept"
+msgstr "Nieuwe Afd"
+
+msgid "New Item"
+msgstr "Nieuw Item"
+
+msgid "New Tax"
+msgstr "Nieuwe belasting"
+
+msgid "New item step one"
+msgstr "Nieuw item stap 1"
+
+msgid "No shipping rate provided"
+msgstr "Geen transporttarief bekend"
+
+msgid "No weight provided"
+msgstr "Gewicht niet aangegeven"
+
+msgid "Order"
+msgstr "Order"
+
+msgid "Order #"
+msgstr "Order #"
+
+msgid "Order %s Status"
+msgstr "Order %s Status"
+
+msgid "Order %s status updated."
+msgstr "Order %s status gewijzigd."
+
+msgid "Order cancelled"
+msgstr "Order geannuleerd"
+
+msgid "Order deleted."
+msgstr "Order verwijderd."
+
+msgid "Order details"
+msgstr "Order details"
+
+msgid "Order id# %s at %s has been updated."
+msgstr "Order nr %s bij %s is gewijzigd."
+
+msgid "Order id# %s has been updated at %s."
+msgstr "Order nr %s is gewijzigd bij %s."
+
+msgid "Order placed from this IP address: %s."
+msgstr "Order is gedaan op IP-adres: %s"
+
+msgid "Order saved successfully."
+msgstr "Order opgeslagen."
+
+msgid "Order status"
+msgstr "Order status"
+
+msgid "Order status:"
+msgstr "Order status:"
+
+msgid "Ordered"
+msgstr "Besteld"
+
+msgid "Orders"
+msgstr "Orders"
+
+msgid "Out of stock"
+msgstr "Niet in voorraad"
+
+msgid "Payment"
+msgstr "Betaling"
+
+msgid "Payment Method"
+msgstr "Betalingsmethode"
+
+msgid "Payment Method(s)"
+msgstr "Betalingsmethode(s)"
+
+msgid "Payment information"
+msgstr "Betalingsinformatie"
+
+msgid "Payment method:"
+msgstr "Betalingsmethode:"
+
+msgid "Paypal / Credit Card"
+msgstr "Paypal / Creditcard"
+
+msgid "Pending"
+msgstr "Lopend"
+
+msgid "Phone"
+msgstr "Telefoon"
+
+msgid "Phone:"
+msgstr "Telefoon:"
+
+msgid "Postal/Zip code"
+msgstr "Postcode"
+
+msgid "Price"
+msgstr "Prijs"
+
+msgid "Process orders"
+msgstr "Verwerk orders"
+
+msgid "Processing"
+msgstr "Verwerking"
+
+msgid "Product Total"
+msgstr "Product Totaal"
+
+msgid "Province/State"
+msgstr "Provincie/Staat"
+
+msgid "Qty"
+msgstr "Aantal"
+
+msgid "Qty in stock"
+msgstr "Aantal in voorraad"
+
+msgid "Random Item"
+msgstr "Willekeurig item"
+
+msgid "Rate"
+msgstr "Tarief"
+
+msgid "Read me"
+msgstr "Lees me"
+
+msgid "Reports"
+msgstr "Overzichten"
+
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+msgid "Secure URL (eg. https://secure.mydomain.com/)"
+msgstr "Veilige URL (bijv. https://secure.mydomain.com/)"
+
+msgid "Select department"
+msgstr "Kies afdeling"
+
+msgid "Send notification?"
+msgstr "Bevestiging versturen?"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Shipped"
+msgstr "Verstuurd"
+
+msgid "Shipping"
+msgstr "In behandeling"
+
+msgid "Shipping calculation method"
+msgstr "Berekeningswijze transportkosten"
+
+msgid "Shipping Charges"
+msgstr "Transport kosten"
+
+msgid "Shipping fee"
+msgstr "Transportkosten"
+
+msgid "Shipping/Handling"
+msgstr "In behandeling"
+
+msgid "Shop Behavior"
+msgstr "Koopgedrag"
+
+msgid "Shop admin e-mail"
+msgstr "E-mail administratie winkel"
+
+msgid "Show sidebox on home page only"
+msgstr "Alleen tonen op hoofdpagina"
+
+msgid "Sidebox text"
+msgstr "Tekst in het vak"
+
+msgid "Skipjack / Credit Card"
+msgstr "Skipjack (laatste 4 cijfers creditcard)"
+
+msgid "Sold out"
+msgstr "Uitverkocht"
+
+msgid "Sorry, the readme file does not exist."
+msgstr "Het readme bestand ontbreekt."
+
+msgid "Sorry, there are no departments available. You will have to create a %s first."
+msgstr "Er is nu geen afdeling."
+
+msgid "Sorry, we do not have enough %s in stock for your request."
+msgstr "Sorry, wij hebben voor uw bestelling niet genoeg van %s in voorraad."
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Stock"
+msgstr "Voorraad"
+
+msgid "Sub-total"
+msgstr "Subtotaal"
+
+msgid "Submit order"
+msgstr "Verstuur order"
+
+msgid "Subtract"
+msgstr "Verwijder"
+
+msgid "Subtract from cart"
+msgstr "Verwijder uit winkelmandje"
+
+msgid "Tax applies to the following zone(s)"
+msgstr "Belasting geldt voor de zone(s) "
+
+msgid "Tax deleted."
+msgstr "Belasting verwijderd."
+
+msgid "Tax details"
+msgstr "Details belastingen"
+
+msgid "Tax saved successfully."
+msgstr "Belasting opgeslagen."
+
+msgid "Taxable"
+msgstr "Belastbaar"
+
+msgid "Taxes"
+msgstr "Belastingen"
+
+msgid "Texts and Messages"
+msgstr "Teksten en berichten"
+
+msgid "Thank You for placing your order with us. Order details are below."
+msgstr "Dank U wel voor uw bestelling bij ons. De details  "
+
+msgid "Thank you for your order."
+msgstr "Dank u wel voor uw bestelling."
+
+msgid "Thanks message to customer"
+msgstr "Bedankbericht aan klant."
+
+msgid "The order status has been changed to %s."
+msgstr "De status van de order is gewijzigd in %s."
+
+msgid "This message from %s was sent from %s."
+msgstr "Dit bericht van %s is verstuurd van %s."
+
+msgid "Title"
+msgstr "Naam"
+
+msgid "Total"
+msgstr "Totaal"
+
+msgid "Total Due"
+msgstr "Totaal te betalen"
+
+msgid "Trailing"
+msgstr "Achter"
+
+msgid "Unit Price"
+msgstr "Prijs per stuk"
+
+msgid "Unit of weight"
+msgstr "Gewicht per stuk"
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Update %s department"
+msgstr "Wijzigen %s afdeling"
+
+msgid "Update %s item"
+msgstr "Wijzigen %s item"
+
+msgid "Update order %s"
+msgstr "Wijzigen order %s"
+
+msgid "Update quantities"
+msgstr "Wijzig hoeveelheid"
+
+msgid "Update tax"
+msgstr "Wijzigen belasting"
+
+msgid "Use SSL checkout"
+msgstr "Gebruik SSL controle"
+
+msgid "Use breadcrumb navigation"
+msgstr "Gebruik breadcrumb navigatie"
+
+msgid "Use inventory control"
+msgstr "Gebruik controle inventaris"
+
+msgid "We did not have enough %s in stock to fully meet your request, but have fulfilled what we could."
+msgstr "We hebben niet genoeg %s in voorraad om aan uw vraag te voldoen, maar we hebben geleverd wat we in voorraad hebben."
+
+msgid "Weight"
+msgstr "Gewicht"
+
+msgid "You must check each payment method you wish to use for configuration. For instance, the Paypal method requires an email address. Please refer to mod/vshop/class/pay_mods/*.php for each method you wish to offer."
+msgstr "U moet elke betalingsmethode die wilt gebruiken, eerst instellen. Bij de methode Paypal moet u een e-mailadres opgeven. Kijk voor elke gewenste methode in  mod/vshop/class/pay_mods/ voor een uitleg."
+
+msgid "You must give this department a description."
+msgstr "U moet een beschrijving van de afdeling invullen."
+
+msgid "You must give this department a title."
+msgstr "U moet de naam van de afdeling invullen."
+
+msgid "You must give this item a description."
+msgstr "U moet een beschrijving van het item invullen."
+
+msgid "You must give this item a title."
+msgstr "U moet de naam van het item invullen."
+
+msgid "You must give this tax a title."
+msgstr "U moet de naam van de belasting invullen."
+
+msgid "You must give this tax at least one zone."
+msgstr "U moet minimaal een zone aangeven voor deze belasting."
+
+msgid "You must provide a city."
+msgstr "U moet een plaats opgeven."
+
+msgid "You must provide a country."
+msgstr "U moet een land opgeven."
+
+msgid "You must provide a first name."
+msgstr "U moet een voornaam opgeven."
+
+msgid "You must provide a last name."
+msgstr "U moet een achternaam opgeven."
+
+msgid "You must provide a postal_code."
+msgstr "U moet een postcode opgeven."
+
+msgid "You must provide a prov/state."
+msgstr "U moet een provincie/staat opgeven."
+
+msgid "You must provide a secure URL."
+msgstr "U moet een veilige URL opgeven."
+
+msgid "You must provide an address."
+msgstr "U moet een adres opgeven."
+
+msgid "You must provide an e-mail address."
+msgstr "U moet een geldig e-mailadres opgeven."
+
+msgid "You must select at least one payment method."
+msgstr "U moet minimaal een betaalwijze invullen."
+
+msgid "Your cart was successfully cleared."
+msgstr "Uw winkelmandje is geleegd. "
+
+msgid "Your cart was successfully updated."
+msgstr "Uw winkelmandje is bijgewerkt."
+
+msgid "Your order has been updated."
+msgstr "Uw order is gewijzigd."
+
+msgid "Your order id# %s at %s has been updated."
+msgstr "Uw order nr %s bij %s is gewijzigd."
+
+msgid "Your order status has been updated."
+msgstr "De status van uw order is gewijzigd."
+
+msgid "Zone(s)"
+msgstr "Zone(s)"
+
+msgid "and items returned to inventory"
+msgstr "en items die weer in de inventaris zijn"
+
+msgid "vShop"
+msgstr "vShop"
+
+msgid "vShop is missing the id."
+msgstr "vShop heeft geen id."
+
+msgid "vShop settings saved."
+msgstr "vShop instellingen opgeslagen."
+
+msgid "vShop tables dropped."
+msgstr "vShop tabellen verwijderd."
+
+msgid "Manage your online shop."
+msgstr "Beheer uw webwinkel."
+

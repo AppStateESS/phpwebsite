@@ -16,15 +16,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-# @version $Id: whatsnew.po,v 1.4 2009/02/11 15:54:28 verdonv Exp $
-# @author Verdon Vaillancourt <verdonv at users dot sourceforge dot net>
+# @version $Id: whatsnew.po 6981 2009-08-13 17:39:37Z matt $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS_1_6_2,WHATSNEW1_0_1\n"
+"Project-Id-Version: PHPWS_1_7_2,WHATSNEW1_0_3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-11 10:49-0500\n"
-"PO-Revision-Date: 2010-02-01 12:04+0100\n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"PO-Revision-Date: 2012-12-26 13:54+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -75,6 +75,9 @@ msgstr "Kies de modules die u wilt uitsluiten van whatsnew."
 msgid "Settings"
 msgstr "Instellingen"
 
+msgid "Show item source module names"
+msgstr "Toon item modulenamen"
+
 msgid "Show item summaries"
 msgstr "Toon item samenvattingen"
 
@@ -91,7 +94,7 @@ msgid "Sidebox title"
 msgstr "Box titel"
 
 msgid "Sorry, no results"
-msgstr "Geen resultaten."
+msgstr "Geen resultaten"
 
 msgid "Sorry, the readme file does not exist."
 msgstr "Het bestand readme ontbreekt."
@@ -107,7 +110,4 @@ msgstr "item"
 
 msgid "items"
 msgstr "items"
-
-msgid "Show item source module names"
-msgstr "Toon item modulenamen"
 

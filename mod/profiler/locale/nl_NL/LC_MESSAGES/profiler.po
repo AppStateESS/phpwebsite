@@ -1,0 +1,235 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_7_2,Profiler0_5_0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-02-10 15:57-0500\n"
+"PO-Revision-Date: 2013-01-30 10:10+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Action"
+msgstr "Actie"
+
+msgid "Add division"
+msgstr "Toevoegen divisie"
+
+msgid "An error occurred when saving your profile."
+msgstr "Opslaan profiel is mislukt."
+
+msgid "Approval"
+msgstr "Goedkeuring"
+
+msgid "Are you sure you want to permanently delete this profile?"
+msgstr "Wilt u dit profiel verwijderen?"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Caption"
+msgstr "Kort"
+
+msgid "Create Division"
+msgstr "Aanmaken divisie"
+
+msgid "Create New Profile"
+msgstr "Aanmaken profiel"
+
+msgid "Create profile"
+msgstr "Aanmaken nieuw profiel"
+
+msgid "Create profiles on individuals for display on site."
+msgstr "Aanmaken profiel voor personen om op de site te tonen."
+
+msgid "Current Profiles"
+msgstr "Huidige profielen"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete Divisions"
+msgstr "Verwijderen divisies"
+
+msgid "Delete Profiles"
+msgstr "Verwijderen profielen"
+
+msgid ""
+"Deleting this division will remove all the profiles under it.\\n"
+"Are you sure you want to do this?"
+msgstr "Wilt u deze divisie met alle bijbehorende profielen verwijderen?"
+
+msgid "Division"
+msgstr "Divisie"
+
+msgid "Division ID"
+msgstr "Divisie ID"
+
+msgid "Division title"
+msgstr "Divisie naam"
+
+msgid "Divisions"
+msgstr "Divisies"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit profile"
+msgstr "Wijzig profiel"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Email address"
+msgstr "E-mailadres"
+
+msgid "Email address does not appear valid."
+msgstr "E-mailadres is fout."
+
+msgid "Enable profile homepage"
+msgstr "Profiel hoofdpagina inschakelen"
+
+msgid "First Name"
+msgstr "Voornaam"
+
+msgid "First name"
+msgstr "Voornaam"
+
+msgid "Full story"
+msgstr "Lang"
+
+msgid "Go back to the Settings page."
+msgstr "Terug naar instellingen."
+
+msgid "Ignoring the repeat."
+msgstr "Herhaling overslaan."
+
+msgid "Large photo"
+msgstr "Grote foto"
+
+msgid "Last Name"
+msgstr "Achternaam"
+
+msgid "Last name"
+msgstr "Achternaam"
+
+msgid "List"
+msgstr "Lijst"
+
+msgid "Medium photo"
+msgstr "Normale foto"
+
+msgid "New"
+msgstr "Nieuw"
+
+msgid "Number of profiles"
+msgstr "Aantal profielen"
+
+msgid "Please create a profile in this category."
+msgstr "Maak a.u.b. in deze categorie een profiel aan."
+
+msgid "Please enter a first name."
+msgstr "Vul de voornaam in."
+
+msgid "Please enter a last name."
+msgstr "Vul de achternaam in."
+
+msgid "Please make a profile division type first."
+msgstr "Maak eerst een divisie type aan."
+
+msgid "Profile not found."
+msgstr "Profiel niet gevonden."
+
+msgid "Profile not set."
+msgstr "Profiel niet ingevuld."
+
+msgid "Profile saved for approval."
+msgstr "Profiel wacht op goedkeuring."
+
+msgid "Profile saved successfully."
+msgstr "Profiel opgeslagen."
+
+msgid "Profile type"
+msgstr "Profiel type"
+
+msgid "Profiler"
+msgstr "Profiler"
+
+msgid "Profiles table removed."
+msgstr "Profiler tabellen verwijderd."
+
+msgid "Read more. . ."
+msgstr "Meer..."
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Save settings"
+msgstr "Opslaan Instellingen"
+
+msgid "Setting saved"
+msgstr "Instellingen opgeslagen"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Small photo"
+msgstr "Kleine foto"
+
+msgid "Sorry"
+msgstr "Sorry"
+
+msgid "Submission Date"
+msgstr "Registratie datum"
+
+msgid "Success"
+msgstr "Succes"
+
+msgid "There is a problem with this Profiler division."
+msgstr "Deze divisie is niet goed."
+
+msgid "There was a problem saving your settings."
+msgstr "Het opslaan van de instellingen is mislukt."
+
+msgid "Title"
+msgstr "Naam"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Uh oh"
+msgstr "Helaas!"
+
+msgid "Update Division"
+msgstr "Wijzig Divisie"
+
+msgid "Update Profile"
+msgstr "Wijzig Profiel"
+
+msgid "Update profile"
+msgstr "Wijzig profiel"
+
+msgid "Web site"
+msgstr "Website"
+
+msgid "Web site address"
+msgstr "Website adres"
+
+msgid "Web site address does not appear valid."
+msgstr "Website adres is fout."
+
+msgid "You recently posted this identical profile."
+msgstr "Er is al een gelijk profiel aanwezig."
+
+msgid "Your title is empty or already in use. Enter another."
+msgstr "Naam is fout of al in gebruik. Probeer opnieuw."
+

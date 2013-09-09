@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Phatform3_1_1\n"
+"Project-Id-Version: PHPWS1_7_2,Phatform3_1_6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2010-02-01 11:42+0100\n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"PO-Revision-Date: 2012-12-26 15:01+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -391,7 +391,7 @@ msgid "Post Process Code"
 msgstr "Post verwerkingscode"
 
 msgid "Predefined Option Set"
-msgstr "Voorgedefineerde optie groep"
+msgstr "Voorgedefinieerde optie groep"
 
 msgid "Previous Entry"
 msgstr "Vorige invoer"
@@ -464,6 +464,9 @@ msgstr "Opgeslagen formulieren"
 
 msgid "Search"
 msgstr "Zoek"
+
+msgid "Session timeout"
+msgstr "Sessie time-out"
 
 msgid "Settings"
 msgstr "Instellingen"
@@ -608,6 +611,9 @@ msgstr "Tonen van archief is afgebroken."
 
 msgid "WARNING!"
 msgstr "Waarschuwing!"
+
+msgid "We are sorry, but your session timed out. You will need to click the Back button on your browser to return to the previous page."
+msgstr "Uw sessie is verlopen, ga in uw browser naar de vorige pagina."
 
 msgid "Yes"
 msgstr "Ja"

@@ -5,18 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Users2_6_4\n"
+"Project-Id-Version: PHPWS1_7_3,Users2_7_4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2010-02-03 19:25+0100\n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"PO-Revision-Date: 2013-08-12 17:06+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Dutch\n"
-"X-Poedit-Country: NETHERLANDS\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: nl_NL\n"
+"X-Generator: Poedit 1.5.5\n"
 
 msgid "\"%s\" permission column created."
 msgstr "\"%s\" rechten kolom aangemaakt."
@@ -42,17 +42,20 @@ msgstr "Een elite gebruiker kan zich niet een normale gebruiker maken."
 msgid "A group with this name already exists."
 msgstr "Er is al een groep met deze naam."
 
-msgid "A problem occurred when accessing user information. Please try again later."
+msgid ""
+"A problem occurred when accessing user information. Please try again later."
 msgstr "Benaderen gebruikers informatie mislukt. Probeer later opnieuw."
 
 msgid "A problem occurred when trying to register this module to My Page."
 msgstr "Het registreren van de module bij Mijn Pagina is mislukt."
 
-msgid "A problem occurred when trying to update your password. Please try again later."
-msgstr "Het wijzigen van uw wachtwoord is mislukt."
-
 msgid "A problem occurred when trying to unregister this module from My Page."
 msgstr "Het deregistreren van de module bij Mijn Pagina is mislukt."
+
+msgid ""
+"A problem occurred when trying to update your password. Please try again "
+"later."
+msgstr "Het wijzigen van uw wachtwoord is mislukt."
 
 msgid "Account Information"
 msgstr "Account Informatie"
@@ -102,10 +105,14 @@ msgstr "Alle bezoekers"
 msgid "Allow Remember Me"
 msgstr "Toestaan Herinner Mij"
 
+msgid "Allow new user creation?"
+msgstr "Toestaan toevoegen user?"
+
 msgid "Allow script tag input"
 msgstr "Toestaan invoer met script tag"
 
-msgid "An error occurred when trying to create your account. Please try again later."
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
 msgstr "Aanmaken van uw account is mislukt."
 
 msgid "An error occurred when trying to save the group."
@@ -123,7 +130,8 @@ msgstr "Er is een fout opgetreden."
 msgid "Are you SURE you want to remove this group?"
 msgstr "Wilt u deze groep verwijderen?"
 
-msgid "Are you certain you want this user to have complete control of this web site?"
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
 msgstr "Wilt u deze gebruiker alle controle over uw website geven?"
 
 msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
@@ -154,9 +162,15 @@ msgid "Cancel"
 msgstr "Afbreken"
 
 msgid "Captcha information was incorrect."
-msgstr "Captcha gegevens waren fout."
+msgstr "Controle woord is fout (Captcha)."
 
 msgid "Change my Settings"
+msgstr "Wijzig mijn instellingen"
+
+msgid "Check all restricted"
+msgstr "Selecteer alle beperkte"
+
+msgid "Check all unrestricted"
 msgstr "Wijzig mijn instellingen"
 
 msgid "Checking %s module"
@@ -165,8 +179,8 @@ msgstr "Controleert %s module"
 msgid "Click here if you are not redirected."
 msgstr "Klik hier als u niet doorverwezen wordt."
 
-msgid "Click here to log in."
-msgstr "Klik hier om in te loggen."
+msgid "Click here to log in"
+msgstr "Klik hier om in te loggen"
 
 msgid "Closest matches below."
 msgstr "Onderstaand beste resultaten."
@@ -201,10 +215,20 @@ msgstr "Er is geen elite hub."
 msgid "Could not find user."
 msgstr "Gebruiker niet bekend."
 
+msgid ""
+"Could not load authentication script. Please contact site administrator."
+msgstr "Authenticatiescript kon niet geladen worden. Licht de webbeheerder in."
+
 msgid "Create Group"
 msgstr "Aanmaken Groep"
 
 msgid "Create User"
+msgstr "Aanmaken gebruiker"
+
+msgid "Create new group"
+msgstr "Aanmaken groep"
+
+msgid "Create new user"
 msgstr "Aanmaken Gebruiker"
 
 msgid "Current Members"
@@ -260,7 +284,7 @@ msgid "Do you wish to notify the new user?"
 msgstr "Wilt u de nieuwe gebruiker inlichten?"
 
 msgid "Drop"
-msgstr "Laat vervallen"
+msgstr "Verwijder uit groep "
 
 msgid "Drop this member from the group."
 msgstr "Verwijder gebruiker uit groep."
@@ -364,8 +388,10 @@ msgstr "Home"
 msgid "If so, you may click the link below to reset it."
 msgstr "Ja? Klik dan op de onderstaande link om het te wissen."
 
-msgid "If you did not wish to reset your password, you may ignore this message."
-msgstr "Als u uw wachtwoord niet wilt terugzetten, sla dan geen acht op dit bericht."
+msgid ""
+"If you did not wish to reset your password, you may ignore this message."
+msgstr ""
+"Als u uw wachtwoord niet wilt terugzetten, sla dan geen acht op dit bericht."
 
 msgid "Immediate"
 msgstr "Direct"
@@ -374,7 +400,7 @@ msgid "Improper permission level for action requested."
 msgstr "U heeft niet genoeg rechten voor deze actie."
 
 msgid "Improperly formatted group name."
-msgstr "Groepsnaam is verkeerd."
+msgstr "Groepsnaam is verkeerd (mogelijk te kort)."
 
 msgid "In group"
 msgstr "In groep"
@@ -494,6 +520,9 @@ msgstr "Nieuwe Groep"
 msgid "New User"
 msgstr "Nieuwe Gebruiker"
 
+msgid "New user CAPTCHA confirmation"
+msgstr "Nieuwe gebruiker CAPTCHA bevestiging"
+
 msgid "New user signup is currently disabled."
 msgstr "Er kunnen tijdelijk geen nieuwe gebruikers aangemaakt worden."
 
@@ -525,7 +554,7 @@ msgid "No restricted edit groups found."
 msgstr "Er is geen beperkte te wijzigen groep."
 
 msgid "No view groups found."
-msgstr "Geen te tonen groepen gevonden."
+msgstr "Geen te tonen groep gevonden."
 
 msgid "No, do not notify"
 msgstr "Nee, niet inlichten"
@@ -540,7 +569,7 @@ msgid "None"
 msgstr "Geen"
 
 msgid "None found"
-msgstr "Niemand gevonden"
+msgstr "Niets gevonden"
 
 msgid "Not allowed"
 msgstr "Niet toegestaan"
@@ -551,8 +580,12 @@ msgstr "Niet in groep"
 msgid "Notify user"
 msgstr "Inlichten gebruiker"
 
-msgid "Once you change your display name, you may not change it again until reset by the site administrator."
-msgstr "Na het wijzigen van de te tonen naam, mag u deze niet opnieuw wijzigen (totdat de webbeheerder dat toestaat)"
+msgid ""
+"Once you change your display name, you may not change it again until reset "
+"by the site administrator."
+msgstr ""
+"Na het wijzigen van de te tonen naam, mag u deze niet opnieuw wijzigen "
+"(totdat de webbeheerder dat toestaat)"
 
 msgid "Only another deity can create a deity."
 msgstr "Alleen een elite gebruiker kan een elite gebruiker toevoegen."
@@ -582,7 +615,9 @@ msgid "Passwords do not match."
 msgstr "De wachtwoorden verschillen."
 
 msgid "Passwords must be reentered on user name change."
-msgstr "Bij het wijzigen van de gebruikersnaam moeten de wachtwoorden opnieuw ingevuld worden."
+msgstr ""
+"Bij het wijzigen van de gebruikersnaam moeten de wachtwoorden opnieuw "
+"ingevuld worden."
 
 msgid "Passwords were not acceptable for the following reason:"
 msgstr "Wachtwoorden zijn afgekeurd vanwege:"
@@ -618,10 +653,10 @@ msgid "Permissions table removed successfully."
 msgstr "Tabel rechten is verwijderd."
 
 msgid "Permissions updated"
-msgstr "Rechten verwijderd"
+msgstr "Rechten bijgewerkt"
 
 msgid "Permissions updated."
-msgstr "Rechten verwijderd."
+msgstr "Rechten bijgewerkt."
 
 msgid "Please change your password immediately after logging in."
 msgstr "Wijzig a.u.b. na inloggen direct uw wachtwoord."
@@ -643,6 +678,9 @@ msgstr "Probeer een andere gebruikersnaam."
 
 msgid "Preferences"
 msgstr "Voorkeuren"
+
+msgid "Preferred editor"
+msgstr "Editor voorkeur"
 
 msgid "Preferred editor (admins only)"
 msgstr "Editor voorkeur (alleen beheerders)"
@@ -689,6 +727,9 @@ msgstr "Zet rechten"
 msgid "Settings"
 msgstr "Instellingen"
 
+msgid "Show login box"
+msgstr "Toon inloggen"
+
 msgid "Sign up"
 msgstr "Aanmelden"
 
@@ -704,8 +745,12 @@ msgstr "Sorry"
 msgid "Sorry but you do not authorize from this site."
 msgstr "U bent nog niet ingelogd op de website."
 
-msgid "Sorry but your authorization is not checked on this site. Please contact %s for information on reseting your password."
-msgstr "U bent nog niet voor de website geautoriseerd. Neem contact op met %s voor informatie over wissen van uw wachtwoord. "
+msgid ""
+"Sorry but your authorization is not checked on this site. Please contact %s "
+"for information on reseting your password."
+msgstr ""
+"U bent nog niet voor de website geautoriseerd. Neem contact op met %s voor "
+"informatie over wissen van uw wachtwoord. "
 
 msgid "Sorry there is a problem with your account."
 msgstr "Er is een probleem met uw account."
@@ -722,8 +767,12 @@ msgstr "Er is een probleem met Mijn Pagina"
 msgid "The user name associated with your email address is \"%s\""
 msgstr "De gebruikersnaam bij uw e-mailadres is \"%s\""
 
-msgid "There is a problem with your authentication method. Contact the site administrator."
-msgstr "Neem contact op met de webbeheerder, er is een probleem met uw manier van autorisatie."
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+"Neem contact op met de webbeheerder, er is een probleem met uw manier van "
+"autorisatie."
 
 msgid "There was a problem with this module's My Page file."
 msgstr "Er is een probleem met het bestand Mijn Pagina van deze module."
@@ -733,10 +782,12 @@ msgstr "Aanmaken account mislukt."
 
 msgid ""
 "This authentication does not exist.<br />\n"
-" If you did not log in within the time frame specified in your email, please apply for another account."
+" If you did not log in within the time frame specified in your email, please "
+"apply for another account."
 msgstr ""
 "Deze authenticatie is onbekend.<br />\n"
-" Als u niet ingelogd bent met de tijdelijke link in uw e-mail, vraag dan om een ander account."
+" Als u niet ingelogd bent met de tijdelijke link in uw e-mail, vraag dan om "
+"een ander account."
 
 msgid "This email address cannot be used."
 msgstr "Dit e-mailadres kan niet gebruikt worden."
@@ -751,7 +802,7 @@ msgid "Tried to perform an admin function in Users."
 msgstr "Admin functie geprobeerd in Users."
 
 msgid "Unable to copy deity login to branch."
-msgstr "Kopieeren login elite naar branch is mislukt."
+msgstr "Kopieren login elite naar branch is mislukt."
 
 msgid "Unable to copy deity user group to branch."
 msgstr "Kopieeren elite gebruikersgroep naar branch is mislukt."
@@ -822,6 +873,9 @@ msgstr "Mode aanmelden gebruiker"
 msgid "User account deactivated."
 msgstr "Account gebruiker niet meer actief."
 
+msgid "User created and notified."
+msgstr "Gebruiker aangemaakt en ingelicht."
+
 msgid "User created successfully."
 msgstr "Gebruiker aangemaakt."
 
@@ -830,9 +884,6 @@ msgstr "Gebruiker aangemaakt. Controleer uw e-mail voor toegangsinformatie."
 
 msgid "User created."
 msgstr "Gebruiker aangemaakt."
-
-msgid "User created and notified."
-msgstr "Gebruiker aangemaakt en ingelicht."
 
 msgid "User deified."
 msgstr "Gebruiker is nu elite gebruiker."
@@ -846,8 +897,10 @@ msgstr "Gebruiker heeft geen rechten groep"
 msgid "User name already in use."
 msgstr "Gebruikersnaam komt al voor."
 
-msgid "User name not found. Check your spelling or enter an email address instead."
-msgstr "Gebruiker niet gevonden. Controleer uw spelling of gebruik uw e-mailadres."
+msgid ""
+"User name not found. Check your spelling or enter an email address instead."
+msgstr ""
+"Gebruiker niet gevonden. Controleer uw spelling of gebruik uw e-mailadres."
 
 msgid "User or display name off limits. Please try another."
 msgstr "Gebruiker of te tonen naam verkeerd. Probeer iets anders."
@@ -865,7 +918,8 @@ msgid "User transformed into a lowly mortal."
 msgstr "Gebruiker is nu een normale gebruiker."
 
 msgid "User tried to login using Remember Me with a malformed cookie."
-msgstr "Gebruiker probeert in te loggen met Herinner mij met een verkeerd cookie."
+msgstr ""
+"Gebruiker probeert in te loggen met Herinner mij met een verkeerd cookie."
 
 msgid "User tried to send bad hash (%s) to confirm user."
 msgstr "Gebruiker geeft een verkeerde hash (%s) door als bevestiging."
@@ -901,7 +955,8 @@ msgid "Users"
 msgstr "Gebruikers"
 
 msgid "Users module will re-register each module's permissions."
-msgstr "De module zal van elke module de gebruikersrechten opnieuw registreren."
+msgstr ""
+"De module zal van elke module de gebruikersrechten opnieuw registreren."
 
 msgid "View restrictions"
 msgstr "Toon beperkingen"
@@ -909,14 +964,25 @@ msgstr "Toon beperkingen"
 msgid "Want to join?"
 msgstr "Wilt u zich aanmelden?"
 
+msgid ""
+"Warning: this user's authorization script is broken. Choose another and "
+"update."
+msgstr ""
+"Waarschuwing: het autorisatie script van deze gebruiker is verminkt. Kies "
+"een ander en wijzig dat."
+
 msgid "We are currently unable to send out email reminders. Try again later."
 msgstr "We kunnen even geen e-mail herinneringen sturen. Probeer later."
 
 msgid "We have sent you an email to reset your password."
 msgstr "We hebben een e-mail gestuurd om uw wachtwoord te wijzigen."
 
-msgid "We have sent you an user name reminder. Please check your email and return to log in."
-msgstr "We hebben u een e-mail gestuurd met een hint voor uw gebruikersnaam. Controleer uw e-mail en probeer opnieuw in te loggen. "
+msgid ""
+"We have sent you an user name reminder. Please check your email and return "
+"to log in."
+msgstr ""
+"We hebben u een e-mail gestuurd met uw gebruikersnaam. Controleer uw e-mail "
+"en probeer opnieuw in te loggen. "
 
 msgid "Welcome!"
 msgstr "Welkom!"
@@ -933,8 +999,8 @@ msgstr "Ja, maak ze elite gebruikers."
 msgid "Yes, make them a mortal."
 msgstr "Ja, maak ze normale gebruikers."
 
-msgid "Yes, send them an email."
-msgstr "Ja, stuur ze een e-mail."
+msgid "Yes, send them an email"
+msgstr "Ja, stuur ze een e-mail"
 
 msgid "You already have an account."
 msgstr "U heeft al een account."
@@ -954,21 +1020,36 @@ msgstr "U moet een contact e-mailadres opgeven."
 msgid "You will return to the home page in five seconds."
 msgstr "U keert binnen 5 seconden terug naar de hoofdpagina."
 
-msgid "Your account has been deactivated. You will need to contact a site administrator to have it reactivated."
-msgstr "Uw account is niet actief. Om het actief te maken moet u contact opnemen met de beheerder."
+msgid ""
+"Your account has been deactivated. You will need to contact a site "
+"administrator to have it reactivated."
+msgstr ""
+"Uw account is niet actief. Om het actief te maken moet u contact opnemen met "
+"de beheerder."
 
 msgid "Your account has been successfully activated. Please log in."
 msgstr "Uw account is actief gemaakt. U kunt inloggen."
 
-msgid "Your account is authorized external to this site. You will need to update it at the source."
-msgstr "Uw account is extern geautoriseerd voor deze website. Als u het wilt wijzigen zult u het daar moeten doen."
+msgid ""
+"Your account is authorized external to this site. You will need to update it "
+"at the source."
+msgstr ""
+"Uw account is extern geautoriseerd voor deze website. Als u het wilt "
+"wijzigen zult u het daar moeten doen."
 
-msgid "Your email address is missing from your account. Please contact the site administrators."
+msgid ""
+"Your email address is missing from your account. Please contact the site "
+"administrators."
 msgstr "Uw account heeft geen e-mailadres. Neem contact op met de beheerder."
 
 msgid "Your password request was not found or timed out. Please apply again."
-msgstr "Uw verzoek om een wachtwoord is niet gevonden of het is verlopen. Probeer het opnieuw."
+msgstr ""
+"Uw verzoek om een wachtwoord is niet gevonden of het is verlopen. Probeer "
+"het opnieuw."
 
-msgid "Your user account has not been approved yet. Make sure you have responded to your authentication email."
-msgstr "Uw gebruikersaccount is nog niet goedgekeurd. Controleer of u uw authenticatie e-mail heeft beantwoord."
-
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
+msgstr ""
+"Uw gebruikersaccount is nog niet goedgekeurd. Controleer of u uw "
+"authenticatie e-mail heeft beantwoord."

@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS_1_6_2,CHECKIN1_0_1\n"
+"Project-Id-Version: PHPWS_1_7_3,CHECKIN1_5_1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-16 10:31-0500\n"
-"PO-Revision-Date: 2010-02-01 14:32+0100\n"
+"POT-Creation-Date: 2012-12-23 13:50+0100\n"
+"PO-Revision-Date: 2013-01-29 19:13+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -23,8 +23,14 @@ msgstr "%s uur"
 msgid "%s min."
 msgstr "%s min"
 
+msgid "'-- Choose a reason --"
+msgstr "-- Kies een reden --"
+
 msgid "-- Move visitor --"
 msgstr "-- Verplaats bezoeker --"
+
+msgid "-- Please choose a reason from the list below --"
+msgstr "-- Kies een reden uit deze lijst --"
 
 msgid "< 1 min."
 msgstr "< 1 min."
@@ -47,10 +53,25 @@ msgstr "Toevoegen staf"
 msgid "Add staff member"
 msgstr "Toevoegen staflid"
 
+msgid "All visits between"
+msgstr "Alle bezoeken tussen"
+
+msgid "All visits by"
+msgstr "Alle bezoeken door"
+
+msgid "All visits by all visitors"
+msgstr "Alle bezoeken van alle bezoekers"
+
+msgid "All visits for"
+msgstr "Alle bezoeken voor"
+
+msgid "All visits on"
+msgstr "Alle bezoeken op"
+
 msgid "An error is preventing your account to save. Please alert the office."
 msgstr "Het opslaan van het account mislukt. Raadpleeg de beheerder."
 
-msgid "Are you sure you want to delete this reason?."
+msgid "Are you sure you want to delete this reason?"
 msgstr "Wilt u deze reden verwijderen?"
 
 msgid "Are you sure you want to remove %s from the waiting list?"
@@ -74,17 +95,35 @@ msgstr "Ververs toewijzingspagina na (seconden)"
 msgid "Assigns walk-in visitors to staff members and tracks their time."
 msgstr "Toewijzen binnenlopende bezoekers aan stafleden en de gesprekstijd volgen."
 
+msgid "Auto Assign"
+msgstr "Automatisch toewijzen"
+
 msgid "Available"
 msgstr "Beschikbaar"
 
 msgid "Available for meeting"
 msgstr "Beschikbaar voor bijeenkomst"
 
+msgid "Average wait time: %s"
+msgstr "Gemiddelde wachttijd: %s"
+
+msgid "Birthdate"
+msgstr "Geboortedatum"
+
 msgid "Check in"
 msgstr "Check in"
 
 msgid "Checkin Menu"
 msgstr "Bezoekers"
+
+msgid "Click to make available for meeting"
+msgstr "Klik om beschikbaar te maken voor bijeenkomst"
+
+msgid "Click to make unavailable for meeting"
+msgstr "Klik om niet beschikbaar te maken voor bijeenkomst"
+
+msgid "Click to send back %s for meeting"
+msgstr "Klik om %s terug te sturen voor bijeenkomst"
 
 msgid "Close"
 msgstr "Sluiten"
@@ -98,8 +137,14 @@ msgstr "Afsluit bericht"
 msgid "Could not locate anyone with this user name."
 msgstr "Gebruikersnaam niet gevonden."
 
+msgid "Daily visit summary"
+msgstr "Dagelijks overzicht bezoeken"
+
 msgid "Date"
 msgstr "Datum"
+
+msgid "Date of birth"
+msgstr "Geboortedatum"
 
 msgid "Delete"
 msgstr "Verwijderen"
@@ -125,6 +170,9 @@ msgstr "Beeindig bijeenkomst met %s %s"
 msgid "First name"
 msgstr "Voornaam"
 
+msgid "Gender"
+msgstr "Geslacht"
+
 msgid "Go"
 msgstr "Start"
 
@@ -140,14 +188,26 @@ msgstr "Verberg sidebar voor bezoekers"
 msgid "Id"
 msgstr "Id"
 
+msgid "Last Name"
+msgstr "Achternaam"
+
 msgid "Last name"
 msgstr "Achternaam"
 
 msgid "Last name: %s"
 msgstr "Achternaam: %s"
 
+msgid "Make available"
+msgstr "Maak beschikbaar"
+
+msgid "Make unavailable"
+msgstr "Maak niet beschikbaar"
+
 msgid "Meeting with visitor"
 msgstr "Bijeenkomst met bezoeker"
+
+msgid "Multiple visits made between %s and %s"
+msgstr "Er zijn meerdere bezoeken geweest tussen %s en %s"
 
 msgid "Name / Notes"
 msgstr "Naam / Notities"
@@ -161,8 +221,14 @@ msgstr "Naam, Reden, & Notitie"
 msgid "No meeting"
 msgstr "Er is geen bijeenkomst"
 
+msgid "No reason"
+msgstr "Er is geen reden"
+
 msgid "No reasons found."
 msgstr "Er is geen reden."
+
+msgid "No repeat visits within the last month."
+msgstr "Geen herhaalde bezoeken in de afgelopen maand."
 
 msgid "No staff found."
 msgstr "Er is geen staf."
@@ -173,6 +239,9 @@ msgstr "Er is nog geen staf toegevoegd."
 msgid "No visitors seen"
 msgstr "Geen bezoekers."
 
+msgid "No visits made in this date range."
+msgstr "In deze periode waren er geen bezoeken."
+
 msgid "No visitors waiting"
 msgstr "Geen wachtende bezoekers"
 
@@ -182,14 +251,32 @@ msgstr "Geen"
 msgid "Note"
 msgstr "Notitie"
 
+msgid "Note: Staff members with no filters will not have visitors automatically assigned to them."
+msgstr "NB.: Stafleden zonder filters krijgen niet automatisch bezoekers toegewezen."
+
 msgid "Order"
 msgstr "Volgorde"
 
 msgid "Please check in using the form below"
 msgstr "Vul a.u.b. het formulier in"
 
+msgid "Please choose a gender filter."
+msgstr "Kies een filter op geslacht."
+
 msgid "Please enter a completion message."
 msgstr "De afrondingsboodschap ontbreekt."
+
+msgid "Please enter a gender"
+msgstr "Kies een geslacht"
+
+msgid "Please enter a last name filter."
+msgstr "Kies een filter op achternaam."
+
+msgid "Please enter a start and end date."
+msgstr "Voer een geldige periode in."
+
+msgid "Please enter a valid birthdate"
+msgstr "Voer een geldige geboortedatum in"
 
 msgid "Please enter the summary."
 msgstr "De samenvatting ontbreekt."
@@ -199,6 +286,9 @@ msgstr "De voornaam ontbreekt."
 
 msgid "Please enter your last name."
 msgstr "De achternaam ontbreekt."
+
+msgid "Please note: if a visitor typed in a different or misspelled name, they may not appear on this list. Also, different people may have the same name."
+msgstr "NB.: als een bezoeker een verkeerde naam intikt, dan kunnen ze niet voorkomen op deze lijst. Ook kunnen mensen dezelfde naam hebben."
 
 msgid "Please pick one or more reasons."
 msgstr "Selecteer een of meerdere redenen."
@@ -221,6 +311,9 @@ msgstr "Reden voor bezoek"
 msgid "Reason unknown"
 msgstr "Reden onbekend"
 
+msgid "Reason/Note"
+msgstr "Reden/Notitie"
+
 msgid "Reasons"
 msgstr "Redenen"
 
@@ -239,17 +332,38 @@ msgstr "verwijder bezoekers"
 msgid "Report"
 msgstr "Rapport"
 
+msgid "Repeat visits"
+msgstr "Herhaal bezoeken"
+
 msgid "Report for %s"
 msgstr "Rapport voor %s"
+
+msgid "Request date of birth"
+msgstr "Verzoek geboortedatum"
+
+msgid "Request email address"
+msgstr "Verzoek e-mailadres"
+
+msgid "Request gender"
+msgstr "Verzoek geslacht"
 
 msgid "Save settings"
 msgstr "Opslaan instellingen"
 
+msgid "See monthly totals"
+msgstr "Bekijk maandtotalen"
+
 msgid "Send"
 msgstr "Stuur"
 
+msgid "Send back"
+msgstr "Terugsturen"
+
 msgid "Settings"
 msgstr "Instellingen"
+
+msgid "Show all"
+msgstr "Alles tonen"
 
 msgid "Show panel"
 msgstr "Toon paneel"
@@ -266,8 +380,17 @@ msgstr "Klein overzicht"
 msgid "Sorry"
 msgstr "Sorry"
 
+msgid "Sorry an error occurred."
+msgstr "Sorry, er ging iets fout."
+
 msgid "Staff"
 msgstr "Staf"
+
+msgid "Staff can see reports"
+msgstr "Staf kan rapporten inzien"
+
+msgid "Staff member not found."
+msgstr "Staflid niet gevonden."
 
 msgid "Staff name"
 msgstr "Staf naam"
@@ -290,11 +413,20 @@ msgstr "Ingezonden bericht"
 msgid "Summary"
 msgstr "Samenvatting"
 
+msgid "Summary report"
+msgstr "Samenvattingsrapport"
+
+msgid "System missing reason"
+msgstr "Er mist een reden"
+
 msgid "Thank you"
 msgstr "Dank u wel"
 
 msgid "There are %s unassigned visitors."
 msgstr "Er zijn %s bezoekers die nog niet toegewezen zijn."
+
+msgid "This staff member did not meet with any visitors this month."
+msgstr "Dit staflid heeft deze maand geen bezoekers ontvangen."
 
 msgid "Time arrived/waiting"
 msgstr "Tijd aankomst/wachtend"
@@ -316,6 +448,9 @@ msgstr "Totale tijd in bijeenkomst: %s"
 
 msgid "Total wait time: %s"
 msgstr "Totale wachttijd: %s"
+
+msgid "Unassign All"
+msgstr "Alle toewijzingen laten vervallen"
 
 msgid "Unassigned"
 msgstr "Niet toegewezen"
@@ -341,20 +476,38 @@ msgstr "Reden wijziging"
 msgid "Update staff"
 msgstr "Wijzigen staf"
 
+msgid "Use send back button"
+msgstr "Gebruik de knop terugsturen"
+
 msgid "User already is staff member."
 msgstr "Gebruiker is al staflid."
+
+msgid "View Report"
+msgstr "Bekijken rapport"
 
 msgid "Visited"
 msgstr "Bezocht"
 
+msgid "Visitor day"
+msgstr "Bezoekdag"
+
 msgid "Visitor filter"
 msgstr "Bezoekers filter"
+
+msgid "Visitor not found"
+msgstr "Bezoeker niet gevonden"
 
 msgid "Visitors"
 msgstr "Bezoekers"
 
+msgid "Visitor name"
+msgstr "Bezoeker"
+
 msgid "Visitors seen: %s"
 msgstr "Bezoekers gesproken: %s"
+
+msgid "Visits greater to or equal to"
+msgstr "Bezoeken minimaal"
 
 msgid "Waited"
 msgstr "Gewacht"
@@ -364,6 +517,9 @@ msgstr "Wachtend"
 
 msgid "Waiting list"
 msgstr "Wachtlijst"
+
+msgid "Waiting on %s to visit."
+msgstr "Wacht op bezoek van %s."
 
 msgid "Waiting page"
 msgstr "Wachtpagina"
