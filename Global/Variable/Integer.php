@@ -41,7 +41,7 @@ class Integer extends \Variable {
     protected function verifyValue($value)
     {
         if (!is_int($value) && !ctype_digit($value)) {
-            throw new \Exception(t('Value "%s" is not an integer', $value));
+            throw new \Exception(t('Variable %s received %s value, not an integer', $this->getVarname(), gettype($value)));
         }
 
         if ($value < $this->low_range || $value > $this->high_range) {
