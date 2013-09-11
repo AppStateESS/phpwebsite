@@ -120,8 +120,6 @@ class PHPWS_Multimedia extends File_Common {
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $clip = Icon::show('clip', dgettext('filecabinet', 'Clip media'));
-            $links[] = PHPWS_Text::secureLink($clip, 'filecabinet', array('mop' => 'clip_multimedia',
-                        'multimedia_id' => $this->id));
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
         }
