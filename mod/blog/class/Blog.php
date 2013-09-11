@@ -471,9 +471,7 @@ class Blog {
                         'edit_blog', $this->id, 'entry')) {
 
             $link['command'] = 'edit';
-            $icon = Icon::show('edit');
-            $icon = '<i class="icon-edit" title="' . dgettext('blog',
-                            'Edit blog entry') . '"></i>';
+            $icon = Icon::show('edit', dgettext('blog', 'Edit blog entry'));
             $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
         }
 
@@ -490,23 +488,15 @@ class Blog {
         }
 
         if (Current_User::isUnrestricted('blog')) {
-            /*
-              $link['command'] = 'restore';
-              $icon = Icon::show('redo', dgettext('blog', 'Restore'));
-              $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
-             */
-
-
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $icon = Icon::show('unsticky');
-                $icon = '<i class="icon-flag" title="' . dgettext('blog',
-                            'Remove from front page') . '"></i>';
+                $icon = Icon::show('flag',
+                                dgettext('blog', 'Remove from front page'));
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = '<i class="icon-flag-alt" title="' . dgettext('blog',
-                            'Force to front page') . '"></i>';
+                $icon = Icon::show('flag-alt',
+                                dgettext('blog', 'Force to front page'));
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }
