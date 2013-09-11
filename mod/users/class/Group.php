@@ -295,21 +295,22 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar,
-                        NULL, dgettext('users', 'Edit Group'));
+        $links[] = PHPWS_Text::secureLink('<i class="icon-edit"></i>', 'users',
+                        $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users',
-                        $linkVar);
+        $links[] = PHPWS_Text::secureLink('<i class="icon-key" title="' . dgettext('users',
+                                'Permissions') . '"></i>', 'users', $linkVar);
         $linkVar['command'] = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink(Icon::show('users',
-                                dgettext('users', 'Members')), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink('<i class="icon-user" title="' . dgettext('users',
+                                'Members') . '"></i>', 'users', $linkVar);
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
         $removelink['QUESTION'] = dgettext('users',
                 'Are you SURE you want to remove this group?');
-        $removelink['LINK'] = Icon::show('delete', dgettext('users', 'Remove'));
+        $removelink['LINK'] = '<i class="icon-trash" title="' . dgettext('users',
+                        'Remove') . '"></i>';
         $links[] = Layout::getJavascript('confirm', $removelink);
 
         $template['ACTIONS'] = implode('', $links);
