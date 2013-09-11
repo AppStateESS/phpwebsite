@@ -1,5 +1,5 @@
 {ADMIN_LINKS}
-<table cellpadding="6" cellspacing="2" width="100%">
+<table class="table table-striped table-hover">
     <tr>
         <th style="width : 30%">{TITLE_SORT}</th>
         <th style="width : 15%">{PUBLIC_FOLDER_SORT}</th>
@@ -17,7 +17,7 @@
         <!-- BEGIN mod -->
         <td>{MODULE_CREATED}</td>
         <!-- END mod -->
-        <td>
+        <td class="admin-icons">
         <ul id="fc-fldr-nav">
             {LINKS}
         </ul>

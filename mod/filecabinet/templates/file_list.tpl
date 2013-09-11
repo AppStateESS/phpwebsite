@@ -3,7 +3,7 @@
 <p><!-- BEGIN admin-links -->{ADMIN_LINKS}<br />
 <!-- END admin-links --></p>
 <hr />
-<table width="100%" cellpadding="2">
+<table class="table table-striped table-hover">
     <tr>
         <th style="width : 50%">{TITLE_SORT} - {FILE_NAME_SORT}</th>
         <th>{FILE_TYPE_SORT}</th>
@@ -21,7 +21,7 @@
         <!-- BEGIN download-col -->
         <td>{DOWNLOADED}</td>
         <!-- END download-col -->
-        <td>{ACTION}</td>
+        <td class="admin-icons">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>
