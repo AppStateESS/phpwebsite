@@ -19,76 +19,22 @@
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-class Icon extends \Tag\Image {
+class Icon extends \Tag {
 
-    public static function get($type)
+    protected $open = true;
+    private $type;
+
+    public function __construct($type = null)
     {
-        static $icon_objects = null;
-        if (!isset($icon_objects[$type])) {
-            Icon::loadIcon($type, $icon_objects);
+        parent::__construct('i');
+        if ($type) {
+            $this->type = $type;
         }
-        return $icon_objects[$type];
     }
 
-    public function __toString()
+    public function setType($type)
     {
-        return parent::__toString();
-    }
-
-    public static function show($type, $alt = null)
-    {
-        $icon = Icon::get($type);
-        if ($alt) {
-            $icon->setAlt($alt);
-        }
-        return $icon->__toString();
-    }
-
-    public static function getIconSets()
-    {
-        $sourceDir = PHPWS_SOURCE_DIR . 'plugins/icons/default/';
-        $sourceHttp = 'plugins/icons/default/';
-        if (is_file($sourceDir . 'icons.php')) {
-            $data[] = array('source' => $sourceHttp, 'icons' => Icon::getIconArray($sourceDir));
-        }
-        return $data;
-    }
-
-    public static function getIconArray($sourceDir)
-    {
-        include $sourceDir . 'icons.php';
-        if (empty($icons)) {
-            trigger_error(dgettext('core', 'An icons variable was not found.'));
-            exit();
-        }
-        return $icons;
-        ;
-    }
-
-    /**
-     * Loads the current icons setup.
-     * @return array Array of icon parameters, used by loadIcon
-     */
-    public static function getParams()
-    {
-        static $params = null;
-        if (empty($params)) {
-            $params = Icon::getIconSets();
-        }
-        return $params;
-    }
-
-    public static function includeStyle()
-    {
-        static $included = false;
-        if ($included) {
-            return;
-        }
-        // Check for theme-based style.css
-        $themeDir = Layout::getTheme();
-        $filename = 'plugins/icons/default/icon.css';
-        Layout::addToStyleList($filename);
-        $included = true;
+        $this->type = preg_replace('/[\s_]/', '-', $type);
     }
 
     public function setStyle($style)
@@ -96,78 +42,39 @@ class Icon extends \Tag\Image {
         $this->addStyle($style);
     }
 
-    private static function loadIcon($type, &$icon_objects)
+    public function setAlt($alt)
     {
-        self::includeStyle();
-        $params = Icon::getParams();
-        // Check both sources for the icon. First hit wins.
-        foreach ($params AS $key => $iconSet) {
-            if (!empty($iconSet['icons'][$type])) {
-                $icon = $iconSet['icons'][$type];
-                $src = $iconSet['source'] . $icon['src'];
-                break;
-            }
-        }
-        if (empty($icon)) {
-            trigger_error(sprintf(dgettext('core', 'Icon type not found: %s'),
-                            $type));
-            $src = PHPWS_SOURCE_HTTP . 'core/img/not_found.gif';
-        }
-        $o = new Icon(PHPWS_SOURCE_DIR . $src, PHPWS_SOURCE_HTTP . $src);
+        $this->setTitle($alt);
+    }
 
-        if (isset($icon['class'])) {
-            $o->addClass($icon['class']);
-        }
+    public static function get($type)
+    {
+        return new self($type);
+    }
 
-        if (isset($icon['x']) && isset($icon['y'])) {
-            $o->addStyle(sprintf('background-position : %spx %spx', $icon['x'],
-                            $icon['y']));
-        }
+    public function __toString()
+    {
+        $this->addIconClass();
+        return parent::__toString();
+    }
 
-        if (isset($icon['width'])) {
-            $o->setWidth($icon['width']);
-        }
+    private function addIconClass()
+    {
+        $this->addClass('icon-' . $this->type);
+    }
 
-        if (isset($icon['height'])) {
-            $o->setHeight($icon['height']);
+    public static function show($type, $title = null)
+    {
+        $icon = new self($type);
+        if ($title) {
+            $icon->setTitle($title);
         }
-
-        if (isset($icon['label'])) {
-            $o->setAlt($icon['label']);
-        }
-        $icon_objects[$type] = $o;
-
-        return true;
+        return $icon->__toString();
     }
 
     public static function demo()
     {
-        if (!class_exists('Layout')) {
-            trigger_error(dgettext('core', 'Layout class not enabled'),
-                    E_USER_ERROR);
-        }
-        $params = Icon::getParams();
 
-        foreach ($params AS $iconSet) {
-            $subcontent = array();
-            $icon_list = array_keys($iconSet['icons']);
-            foreach ($icon_list as $item) {
-                $subcontent[] = Icon::show($item) . ' ' . $item;
-            }
-            $content[] = '<strong>' . sprintf(dgettext('core',
-                                    '<strong>Icons stored at %s'),
-                            $iconSet['source'])
-                    . '</strong><br />' . implode('<br />', $subcontent);
-        }
-        if (empty($content)) {
-            trigger_error(dgettext('core',
-                            'Icon class failed demo. Check settings'),
-                    E_USER_ERROR);
-        }
-
-        $final = implode('<br />', $content);
-        echo Layout::wrap($final);
-        exit();
     }
 
 }
