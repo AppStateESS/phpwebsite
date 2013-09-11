@@ -44,14 +44,6 @@ class FC_Multimedia_Manager {
                 $this->edit();
                 break;
 
-            case 'clip_multimedia':
-                if ($this->multimedia->id) {
-                    Clipboard::copy($this->multimedia->title, $this->multimedia->getTag(), true,
-                    sprintf('[filecabinet:media:%s]', $this->multimedia->id));
-                }
-                PHPWS_Core::goBack();
-                break;
-
             case 'edit_embed':
                 if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
                     Current_User::disallow();
