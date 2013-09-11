@@ -60,7 +60,14 @@ class Icon extends \Tag {
 
     private function addIconClass()
     {
-        $this->addClass('icon-' . $this->type);
+        switch ($this->type) {
+            case 'delete':
+                $this->addClass('icon-trash');
+                break;
+
+            default:
+                $this->addClass('icon-' . $this->type);
+        }
     }
 
     public static function show($type, $title = null)
