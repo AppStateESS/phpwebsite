@@ -235,10 +235,8 @@ class Block_Item {
 
         if (Current_User::allow('block', 'edit_block', $this->id)) {
             $vars['action'] = 'edit';
-//            $links[] = PHPWS_Text::secureLink(Icon::show('edit',
-//                                    dgettext('block', 'Edit')), 'block', $vars);
-            $links[] = PHPWS_Text::secureLink('<i class="icon-edit" title="' .
-                            dgettext('block', 'Edit') . '"></i>', 'block', $vars);
+            $links[] = PHPWS_Text::secureLink(Icon::show('edit',
+                                    dgettext('block', 'Edit')), 'block', $vars);
             if ($this->allPinned()) {
                 $vars['action'] = 'remove';
                 $links[] = PHPWS_Text::secureLink("<i class='icon-flag' title='" . dgettext('block',
