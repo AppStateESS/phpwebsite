@@ -23,6 +23,10 @@ if (CONFIG_CREATED) {
 if (!defined('PHPWS_SOURCE_DIR')) {
     define('PHPWS_SOURCE_DIR', getcwd() . '/');
 }
+
+if (!defined('PHPWS_SOURCE_HTTP')) {
+    define('PHPWS_SOURCE_HTTP', './');
+}
 require_once 'core/conf/defines.dist.php';
 
 date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
