@@ -47,13 +47,6 @@ class FC_Document_Manager {
                 return $this->edit();
                 break;
 
-            case 'clip_document':
-                if ($this->document->id) {
-                    Clipboard::copy($this->document->title, $this->document->getViewLink(true, null, true), true, sprintf('[filecabinet:doc:%s]', $this->document->id));
-                }
-                PHPWS_Core::goBack();
-                break;
-
             case 'add_access':
                 if (!Current_User::authorized('filecabinet')) {
                     Current_User::disallow();
@@ -69,7 +62,7 @@ class FC_Document_Manager {
                     if (isset($_GET['keyword'])) {
                         $keyword = $_GET['keyword'];
                     }
-                    
+
                     if (empty($keyword)) {
                         $keyword = $this->document->title;
                     }
