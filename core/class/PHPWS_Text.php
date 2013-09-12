@@ -24,16 +24,8 @@ if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
 }
 
-if (!defined('ALLOW_TEXT_FILTERS')) {
-    define('ALLOW_TEXT_FILTERS', true);
-}
-
 if (!defined('ENCODE_PARSED_TEXT')) {
     define('ENCODE_PARSED_TEXT', true);
-}
-
-if (!defined('TEXT_FILTERS')) {
-    define('TEXT_FILTERS', 'pear');
 }
 
 if (!defined('USE_BREAKER')) {
@@ -57,7 +49,6 @@ class PHPWS_Text {
     public $use_profanity = ALLOW_PROFANITY;
     public $use_breaker = USE_BREAKER;
     public $use_strip_tags = USE_STRIP_TAGS;
-    public $use_filters = false;
     public $fix_anchors = FIX_ANCHORS;
     public $collapse_urls = COLLAPSE_URLS;
     public $allowed_tags = null;
@@ -72,11 +63,6 @@ class PHPWS_Text {
     public static function decodeText($text)
     {
         return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
-    }
-
-    public function useFilters($filter)
-    {
-        $this->use_filters = (bool) $filter;
     }
 
     public function setText($text, $decode = ENCODE_PARSED_TEXT)
@@ -160,9 +146,6 @@ class PHPWS_Text {
         }
 
         $text = $this->text;
-        if (ALLOW_TEXT_FILTERS && $this->use_filters) {
-            $text = PHPWS_Text::filterText($text);
-        }
 
         if (!$this->use_profanity) {
             $text = PHPWS_Text::profanityFilter($text);
@@ -184,40 +167,6 @@ class PHPWS_Text {
             $text = PHPWS_Text::collapseUrls($text);
         }
 
-        return $text;
-    }
-
-    public static function filterText($text)
-    {
-        static $filters = null;
-
-        if (empty($filters)) {
-            $fltr_list = explode(',', TEXT_FILTERS);
-            foreach ($fltr_list as $fltr) {
-                $dir = sprintf('%score/class/filters/%s.php', PHPWS_SOURCE_DIR,
-                        trim($fltr));
-
-                if (is_file($dir)) {
-                    require_once $dir;
-                    $function_name = $fltr . '_filter';
-                    if (function_exists($function_name)) {
-                        $filters[] = $function_name;
-                    }
-                }
-            }
-            if (empty($filters)) {
-                $filters = 1;
-            }
-        }
-
-        // None of the filters worked/found
-        if ($filters == 1) {
-            return $text;
-        }
-
-        foreach ($filters as $filter) {
-            $text = $filter($text);
-        }
         return $text;
     }
 
@@ -395,14 +344,13 @@ class PHPWS_Text {
      * @param   string  text         Text to parse
      * @param   boolean decode       Whether entity_decoding should take place.
      * @param   boolean use_filters  If true, any filters requested in the text_settings file will be
-     *                               run against the output text.
+     *                               run against the output text. (deprecated)
      * @return  string  text         Stripped text
      */
     public static function parseOutput($text, $decode = ENCODE_PARSED_TEXT, $use_filters = false, $use_breaker = USE_BREAKER)
     {
         $t = new PHPWS_Text;
         $t->setText($text, $decode);
-        $t->useFilters($use_filters);
         $t->useBreaker($use_breaker);
         $text = $t->getPrint();
         $text = filter_var($text, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
