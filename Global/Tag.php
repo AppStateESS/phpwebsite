@@ -377,8 +377,11 @@ class Tag extends Data {
      */
     public function setText($text)
     {
+        if (is_bool($text)) {
+            $text = $text ? 1 : 0;
+        }
         if (!is_string_like($text)) {
-            throw new \Exception(t('setText did not receive a string parameter'));
+            throw new \Exception(t('setText received a %s variable, not a string parameter', gettype($text)));
         }
         $this->text = (string) $text;
     }
