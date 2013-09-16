@@ -467,7 +467,7 @@ abstract class Variable extends Data {
         $dt = $table->addDataType($this->varname, $this->column_type);
 
         if (isset($this->value)) {
-            $dt->setDefault($this->value);
+            $dt->setDefault($this->toDatabase());
         } else {
             $dt->setDefault(null);
         }
