@@ -626,6 +626,23 @@ class Form extends Tag {
                 PHPWS_SOURCE_HTTP . "Global/Templates/Form/required.js'></script>");
     }
 
+    /**
+     * Adds a class to every input currently in the form class
+     *
+     * @param string $class_name
+     */
+    public function addInputClass($class_name)
+    {
+        if (empty($this->inputs)) {
+            throw new \Exception('Input list is empty');
+        }
+        foreach ($this->inputs as $ilist) {
+            foreach ($ilist as $i) {
+                $i->addClass($class_name);
+            }
+        }
+    }
+
 }
 
 ?>
