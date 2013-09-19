@@ -496,9 +496,15 @@ class Form extends Tag {
                         } else {
                             $value[$input_name] = $input->__toString();
                         }
+                        $group_name = $input_name . '_group';
+                        $groups[$group_name][] = $input->getLabel() . ' ' . $input->__toString();
                     }
                 }
             }
+        }
+        foreach ($groups as $gname => $g) {
+            $value[$gname] = '<div class="' . implode("\n", $this->group_class) . '">' . implode("\n",
+                            $g) . '</div>';
         }
         if (isset($value['hidden'])) {
             $value['form_start'] .= "\n" . implode("\n", $value['hidden']);
