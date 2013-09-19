@@ -1,7 +1,7 @@
 <p>
-  <a href="{ADD_URI}" title="{ADD_TEXT}" style="margin-bottom: 10px;" class="btn btn-success pull-right">{ADD_TEXT}</a>
+  <a href="{ADD_URI}" title="{ADD_TEXT}" style="margin-bottom: 10px;" class="btn btn-success"><i class="icon-file-text"></i> {ADD_TEXT}</a>
 </p>
-<table class="table table-striped" style="width:98%;">
+<table class="table table-striped table-hover" style="width:98%;">
     <tr style="vertical-align: top">
         <th style="width:25%;">{TITLE_SORT}</th>
         <th style="width:30%;">{SUMMARY}</th>
@@ -17,7 +17,7 @@
         <td><small>{CREATE_DATE}<br />
           {PUBLISH_DATE}<br />
           {EXPIRE_DATE}</small></td>
-        <td>{ACTION}</td>
+        <td class="admin-icons">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>
@@ -25,5 +25,5 @@
 <div style="text-align:center;margin:auto;">{TOTAL_ROWS}<br />
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
-<a href="{EXPORT_URI}" class="btn pull-right"><i class="icon-download-alt"></i> Export to Spreadsheet</a>
+<a href="{EXPORT_URI}" class="btn btn-default pull-right"><i class="icon-download-alt"></i> Export to Spreadsheet</a>
 <div class="align-right">{SEARCH}</div>

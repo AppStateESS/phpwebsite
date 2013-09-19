@@ -5,21 +5,22 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Blog1_8_2\n"
+"Project-Id-Version: PHPWS1_7_3,Blog1_10_0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:20-0500\n"
-"PO-Revision-Date: 2010-02-05 15:19+0100\n"
+"POT-Creation-Date: 2010-02-05 15:19+0100\n"
+"PO-Revision-Date: 2013-08-13 14:10+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Dutch\n"
-"X-Poedit-Country: NETHERLANDS\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: nl_NL\n"
+"X-Generator: Poedit 1.5.5\n"
 
 msgid "A problem occured with your submission. Please try again later."
-msgstr "Er is een probleem opgetreden met uw bijdrage. Probeer het later opnieuw."
+msgstr ""
+"Er is een probleem opgetreden met uw bijdrage. Probeer het later opnieuw."
 
 msgid "A problem occurred when trying to disapprove this entry."
 msgstr "Het afkeuren van deze bijdrage is mislukt."
@@ -29,6 +30,9 @@ msgstr "Een versie van deze bijdrage wacht op goedkeuring."
 
 msgid "Action"
 msgstr "Actie"
+
+msgid "Add a horizontal rule to separate content into summary and body"
+msgstr "Een horizontale regel toevoegen tussen samenvatting en body"
 
 msgid "Add entry"
 msgstr "Bijdrage toevoegen"
@@ -60,7 +64,8 @@ msgstr "Altijd"
 msgid "An error occurred when saving your version."
 msgstr "Het opslaan van uw versie is mislukt."
 
-msgid "An error occurred when trying to save your entry. Please check your logs."
+msgid ""
+"An error occurred when trying to save your entry. Please check your logs."
 msgstr "Het opslaan is mislukt. Controleer de log."
 
 msgid "Anonymous"
@@ -85,7 +90,7 @@ msgid "Blog Archive"
 msgstr "Blog archief"
 
 msgid "Blog Entries Awaiting Approval"
-msgstr "Blog bijdragen die wachten op goedkeuren"
+msgstr "Blog bijdragen die wachten op goedkeuring"
 
 msgid "Blog Restore"
 msgstr "Blog Terugzetten"
@@ -124,7 +129,7 @@ msgid "Blog view limit"
 msgstr "Blog toon limiet"
 
 msgid "CAPTCHA submissions"
-msgstr "CAPTCHA verstuurde"
+msgstr "CAPTCHA bijdragen"
 
 msgid "Cache anonymous view"
 msgstr "Cache anoniem tonen"
@@ -149,6 +154,9 @@ msgstr "Bijdragen vooraf goedkeuren"
 
 msgid "Confirm purge"
 msgstr "Bevestig schoning"
+
+msgid "Content"
+msgstr "Inhoud"
 
 msgid "Create first blog entry!"
 msgstr "Eerste Blog bijdrage invoeren!"
@@ -195,7 +203,7 @@ msgstr "Verlopen"
 msgid "Hide general image folders"
 msgstr "Verberg algemene mappen met afbeeldingen"
 
-msgid "I am sure that I want to delete all blog entries prior to %"
+msgid "I am sure that I want to delete all blog entries prior to %s"
 msgstr "Ik wil alle bijdragen voor %s in deze blog verwijderen"
 
 msgid "Image url"
@@ -268,7 +276,7 @@ msgid "Number of past entries"
 msgstr "Aantal eerdere bijdragen"
 
 msgid "Only on home page"
-msgstr "Alleen op beginpagina"
+msgstr "Alleen tonen op hoofdpagina"
 
 msgid "Only show one category icon"
 msgstr "Toon maar een categorie icoon"
@@ -417,11 +425,17 @@ msgstr "Toon versie"
 msgid "You do not have permission to view this entry."
 msgstr "U mag deze bijdrage niet bekijken."
 
-msgid "You have chosen to purge old blog entries from your web site. Be aware they will be deleted permanently."
-msgstr "Let op. Het schonen van oude bijdragen kan niet ongedaan gemaakt worden."
+msgid ""
+"You have chosen to purge old blog entries from your web site. Be aware they "
+"will be deleted permanently."
+msgstr ""
+"Let op. Het schonen van oude bijdragen kan niet ongedaan gemaakt worden."
 
 msgid "Your entry has been submitted for review."
 msgstr "Uw bijdrage is verstuurd voor goedkeuring."
+
+msgid "Your submission must have some content."
+msgstr "Uw bijdrage moet inhoud hebben."
 
 msgid "Your entry is being held for approval."
 msgstr "Uw bijdrage wacht op goedkeuring."
@@ -434,4 +448,3 @@ msgstr "Uw bijdrage moet een samenvatting hebben."
 
 msgid "Alert your community to important happenings."
 msgstr "Wijs uw relaties op belangrijke gebeurtenissen."
-

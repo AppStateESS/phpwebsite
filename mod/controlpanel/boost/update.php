@@ -144,6 +144,7 @@ function controlpanel_update(&$content, $currentVersion)
 </pre>';
 
         case version_compare($currentVersion, '2.3.3', '<'):
+        case version_compare($currentVersion, '2.3.4', '<'):
             $link = new PHPWS_Panel_Link;
             $db = Database::newDB();
             $tbl = $db->addTable('controlpanel_link');
@@ -152,7 +153,7 @@ function controlpanel_update(&$content, $currentVersion)
             $row = $db->fetchOneRow();
             PHPWS_Core::plugObject($link, $row);
             $link->kill();
-            $content[] = '<pre>2.3.3 changes
+            $content[] = '<pre>2.3.3 &amp; 2.3.4 changes
 -------------------
 + Removing Control Panel icon and removed admin options.
 </pre>';

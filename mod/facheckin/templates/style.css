@@ -1,0 +1,106 @@
+.checkin-form {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 4px;
+}
+
+.checkin-form input {
+    font-size: 10px;
+}
+
+.note-link {
+    cursor: pointer;
+}
+
+.action-button {
+    text-align: center;
+    display: block;
+    border: 1px solid black;
+    padding: 5px 10px;
+    color: black;
+    float: left;
+    margin-right: 10px;
+}
+
+div#assignment .action-button {
+    float: none;
+    margin: 0px;
+    margin-bottom: 3px;
+    font-size: .9em;
+    padding: 3px;
+    white-space: normal;
+}
+
+a.meet-button {
+    background-color: #F96567;
+    white-space: nowrap;
+}
+
+a.unavailable-button {
+    background-color: #f9f95b;
+}
+
+a.sendback-button {
+    background-color: #519FF9;
+}
+
+a.available-button {
+    background-color: #39f15a;
+}
+
+a.finish-button {
+    background-color: #39f15a;
+}
+
+#action-buttons {
+    overflow: auto;
+    margin-bottom: 10px;
+}
+
+#action-buttons a {
+    min-width: 100px;
+}
+
+div#current-meeting {
+    width: 100%;
+    text-align: center;
+    padding: 3px 0px;
+}
+
+div.available {
+    background-color: #39f15a;
+}
+
+div.sendback {
+    background-color: #519FF9;
+}
+
+div.meeting {
+    background-color: #f96567;
+}
+
+div.unavailable {
+    background-color: #f9f95b;
+}
+
+span.move-visitor select {
+    font-size: .9em;
+}
+
+span.reason,span.note,span.waiting {
+    font-size: .9em;
+}
+
+span.note {
+    font-style: italic;
+}
+
+#small-view {
+    font-size: .9em;
+}
+
+#transfer {
+    background-color : darkviolet;
+}

@@ -1,9 +1,0 @@
-ngCom 3.0.0 Mar 2012
-
-20120411	1st release
-
-ngCom 3.0.1 Apr 2012
-20120417	rewritten to serve mods unique
-			textarea is feed by js instead templated static
-			(prevents xhtml issues)
-

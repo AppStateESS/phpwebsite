@@ -1,6 +1,6 @@
 <div class="module-permission">
 <div class="mod-title">{MODULE_NAME}</div>
-<table>
+<table class="table">
     <tr>
         <td>{CHOICE}</td>
         <td>{SUBPERMISSIONS}</td>

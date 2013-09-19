@@ -9,7 +9,7 @@ if (!defined('CURRENT_JQUERY')) {
     /**
      *  The current JQuery file.
      */
-    define('CURRENT_JQUERY', 'Javascript/jquery/jquery-current.js');
+    define('CURRENT_JQUERY', PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js');
 }
 
 /**
@@ -61,7 +61,7 @@ class Head {
      */
     static $head;
 
-    public static function singleton()
+    public static function getInstance()
     {
         if (empty(self::$head)) {
             self::$head = new self;

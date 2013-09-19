@@ -60,11 +60,13 @@ class Menu {
         if (Menu::isAdminMode()) {
             $vars['command'] = 'disable_admin_mode';
             $vars['return'] = 1;
-            MiniAdmin::add('menu', PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars));
+            MiniAdmin::add('menu',
+                    PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars));
         } else {
             $vars['command'] = 'enable_admin_mode';
             $vars['return'] = 1;
-            MiniAdmin::add('menu', PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
+            MiniAdmin::add('menu',
+                    PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
         }
     }
 
@@ -133,7 +135,7 @@ class Menu {
         $js['link_title'] = dgettext('menu', 'Add other link');
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
-        if($parent_id) {
+        if ($parent_id) {
             $js['label'] = MENU_SUBLINK_ADD_SITE;
         }
         if ($popup) {
@@ -175,8 +177,9 @@ class Menu {
 
         $vars['parent'] = (int) $parent_id;
         if ($key->id || $key->module == 'home') {
-            $link = MENU_LINK_ADD;
-            if($parent_id) {
+            $link = '<i class="icon-fixed-width icon-plus"></i> ' . dgettext('menu',
+                            'Link current page');
+            if ($parent_id) {
                 $link = MENU_SUBLINK_ADD;
             }
             if ($popup) {
@@ -195,7 +198,8 @@ class Menu {
         if ($key->id) {
 
             if (!$popup) {
-                return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $link);
+                return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>',
+                        $menu_id, $parent_id, $link);
             } else {
                 $vars['key_id'] = $key->id;
                 return PHPWS_Text::secureLink($link, 'menu', $vars);
@@ -205,7 +209,8 @@ class Menu {
             if (empty($key->title)) {
                 $vars['url'] = urlencode($key->url);
                 $js['question'] = dgettext('menu', 'Enter link title');
-                $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
+                $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE,
+                                FALSE);
                 $js['link'] = $link;
                 $js['value_name'] = 'link_title';
                 return javascript('prompt', $js);
@@ -218,14 +223,19 @@ class Menu {
                 } else {
                     // If the template file exists, use it to form the link
                     if (file_exists($filename)) {
-                        $vars['MENU_ID']   = $menu_id;
+                        $vars['MENU_ID'] = $menu_id;
                         $vars['PARENT_ID'] = $parent_id;
-                        $vars['LINK']      = $link;
-                        $vars['ICON']      = Icon::show('add');
-                        return PHPWS_Template::processTemplate($vars, 'menu', $relativePath);
-                    }else{
+                        $vars['LINK'] = $link;
+                        $vars['ICON'] = Icon::show('add');
+                        $vars['LINK_NAME'] = dgettext('menu',
+                                'Link current page');
+                        return PHPWS_Template::processTemplate($vars, 'menu',
+                                        $relativePath);
+                    } else {
                         // Return old style link for template compatibility
-                        return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>', $menu_id, $parent_id, $vars['url'], $vars['link_title'], $link);
+                        return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
+                                $menu_id, $parent_id, $vars['url'],
+                                $vars['link_title'], $link);
                     }
                 }
             }
@@ -259,13 +269,15 @@ class Menu {
         }
         $vars['pin_all'] = $pin_all;
         if ($pin_all) {
-            $js['QUESTION'] = dgettext('menu', 'Are you sure you want to unpin this menu from all pages?');
+            $js['QUESTION'] = dgettext('menu',
+                    'Are you sure you want to unpin this menu from all pages?');
         } else {
-            $js['QUESTION'] = dgettext('menu', 'Are you sure you want to unpin this menu from this page?');
+            $js['QUESTION'] = dgettext('menu',
+                    'Are you sure you want to unpin this menu from this page?');
         }
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
         $js['LINK'] = MENU_UNPIN;
-        $js['ICON'] = '<img src="'.PHPWS_SOURCE_HTTP.'mod/menu/img/remove.png" />';
+        $js['ICON'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/menu/img/remove.png" />';
 
         $tplDir = PHPWS_Template::getTemplateDirectory('menu');
         $relativePath = 'menu_layout/' . $template . '/unpinMenuLink.tpl';
@@ -329,13 +341,16 @@ class Menu {
                     if (!empty($result)) {
                         Menu::walkLinks($result, $content);
                     }
-                    $site['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
+                    $site['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu',
+                                    'Site map');
                     $site['CONTENT'] = implode('', $content);
                     $tpl['site-map'][] = $site;
                 }
             } else {
-                $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
-                $tpl['CONTENT'] = dgettext('menu', 'Sorry, no menus have been created');
+                $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu',
+                                'Site map');
+                $tpl['CONTENT'] = dgettext('menu',
+                        'Sorry, no menus have been created');
             }
         } else {
             $menu = new Menu_Item((int) $_GET['site_map']);
@@ -352,7 +367,8 @@ class Menu {
             if (!empty($result)) {
                 Menu::walkLinks($result, $content);
             }
-            $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu', 'Site map');
+            $tpl['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu',
+                            'Site map');
             $tpl['CONTENT'] = implode('', $content);
         }
         Layout::add(PHPWS_Template::process($tpl, 'menu', 'site_map.tpl'));

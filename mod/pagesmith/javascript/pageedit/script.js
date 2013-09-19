@@ -5,10 +5,10 @@ var current_block;
 $(document).ready(function() {
     var editor = CKEDITOR.replace('block-edit-textarea');
     initializeDialog(editor);
+    initializePageTitleEdit();
     editBlock(editor);
-    $.fn.powerTip.defaults.followMouse = 'true';
-    $.fn.powerTip.defaults.offset = '10';
-    $('.block-edit').powerTip();
+    $('#page-title-edit').popover({html:true, placement:'auto',trigger:'hover', content:'<span style="margin:0px;padding:0px;font-size:16px;font-weight:bold">Click on title to edit</span>'});
+    $('.block-edit').popover({html:true, placement:'auto',trigger:'hover', content:'<span style="font-size:16px;font-weight:bold">Click on text to edit</span>'});
 });
 function editBlock(editor)
 {
@@ -27,9 +27,20 @@ function editBlock(editor)
         function(data) {
             editor.setData(data);
             $('#block-edit-popup').dialog('open');
-            $('.ui-dialog').before('<div id="overlay" style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay" />');
+            $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
         }
         );
+    });
+}
+
+function initializePageTitleEdit()
+{
+    $('#page-title-edit').click(function() {
+        if (!$('#page-title-edit').data('new')) {
+            $('#page-title-input').val($('#page-title-edit').html());
+        }
+        $('#title-edit-popup').dialog('open');
+        $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
     });
 }
 
@@ -45,13 +56,36 @@ function initializeDialog(editor)
                         click: function() {
                             updateBlock(editor);
                             $(this).dialog('close');
+                            $('.dialog-overlay').remove();
                         }
                     }],
                 close: function() {
-                    $('#overlay').remove();
+                    $('.dialog-overlay').remove();
                 }
             }
     );
+    $('#title-edit-popup').dialog(
+            {
+                position: {my: 'center', at: 'center', of: this},
+                autoOpen: false,
+                width: 650,
+                title: 'Edit page title',
+                buttons: [{text: "Save",
+                        click: function() {
+                            var title_input = $('#page-title-input').val();
+                            title_input = title_input.replace('/[<>]/gi', '');
+                            $('#page-title-hidden').val(title_input);
+                            $('#page-title-edit').html(title_input);
+                            $('#page-title-edit').css('color', 'inherit');
+                            $(this).dialog('close');
+                        }
+                    }],
+                close: function() {
+                    $('.dialog-overlay').remove();
+                }
+            }
+    );
+
 }
 
 function updateBlock(editor) {

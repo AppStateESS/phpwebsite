@@ -1,5 +1,5 @@
 {ADD_LINK}
-<table width="98%" cellpadding="3" cellspacing="3">
+<table class="table table-striped table-hover">
     <tr>
         <th>{TITLE_SORT} {TITLE_LABEL}</th>
         <th>{ADDRESS_LABEL}</th>
@@ -15,7 +15,7 @@
         <td>{ITEM_LIMIT}</td>
         <td>{REFRESH_TIME}</td>
         <td>{DISPLAY}</td>
-        <td>{ACTION}</td>
+        <td class="admin-icons">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>

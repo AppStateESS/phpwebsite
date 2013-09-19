@@ -1,7 +1,5 @@
 {START_FORM}
-<strong>{TITLE_LABEL}</strong>
-{TITLE}
-<hr />
+<input type="hidden" name="title" id="page-title-hidden" value="{PAGE_TITLE}" />
 {PAGE_TEMPLATE}
 <hr />
 <div class="align-center">{SUBMIT} {SAVE_SO_FAR}</div>
@@ -14,3 +12,4 @@
 {ORPHANS}
 <!-- END orphans -->
 <div id="block-edit-popup" style="display:none"><textarea id="block-edit-textarea"></textarea></div>
+<div id="title-edit-popup" style="display:none"><input type="text" id="page-title-input" name="page_title" class="form-control" value="{PAGE_TITLE}" /></div>

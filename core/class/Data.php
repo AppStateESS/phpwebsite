@@ -33,20 +33,5 @@ abstract class Data {
             echo '</pre>';
         }
     }
-
-    public function firebug()
-    {
-        if (PHPWS_Settings::get('core', 'firephp_enabled')) {
-
-            require_once('FirePHPCore/FirePHP.class.php');
-            $firephp = FirePHP::getInstance(true);
-            $options = array('maxObjectDepth' => 4,
-                             'maxArrayDepth' => 10,
-                             'useNativeJsonEncode' => true,
-                             'includeLineNumbers' => true);
-            $firephp->setOptions($options);
-            $firephp->log($this, get_class($this));
-        }
-    }
 }
 ?>

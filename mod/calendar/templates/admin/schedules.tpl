@@ -1,5 +1,5 @@
 <div class="align-right padded">{ADD_CALENDAR}</div>
-<table width="99%" cellpadding="4">
+<table class="table table-striped table-hover">
     <tr>
         <th>{TITLE_SORT}</th>
         <th>{PUBLIC_SORT}</th>

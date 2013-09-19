@@ -5,27 +5,36 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Core1_9_4\n"
+"Project-Id-Version: PHPWS1_7_2,Core2_0_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 12:08-0500\n"
-"PO-Revision-Date: 2010-02-05 15:58+0100\n"
+"POT-Creation-Date: 2010-03-24 11:498+0100\n"
+"PO-Revision-Date: 2013-09-01 21:32+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Dutch\n"
-"X-Poedit-Country: NETHERLANDS\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Language: nl_NL\n"
+"X-Generator: Poedit 1.5.5\n"
+
+msgid "%s - %s of %s"
+msgstr "%s - %s van %s"
 
 msgid "%s days ago"
 msgstr "%s dagen geleden"
+
+msgid "%s directory does not exist or is not writable."
+msgstr "Map %s bestaat niet of is niet schrijfbaar."
 
 msgid "%s hours ago"
 msgstr "%s uren geleden"
 
 msgid "%s mins ago"
 msgstr "%s minuten geleden"
+
+msgid "%s not found"
+msgstr "%s niet gevonden"
 
 msgid "%s weeks ago"
 msgstr "%s weken geleden"
@@ -45,8 +54,12 @@ msgstr "Actie"
 msgid "Add"
 msgstr "Toevoegen"
 
-msgid "After you finish installing your modules in Boost, you should make your config and template directories non-writable."
-msgstr "Na het installeren / bijwerken van de modules met Boost is het aan te raden de mappen uw config en template niet schrijfbaar te maken."
+msgid ""
+"After you finish installing your modules in Boost, you should make your "
+"config and template directories non-writable."
+msgstr ""
+"Na het installeren / bijwerken van de modules met Boost is het aan te raden "
+"de mappen uw config en template niet schrijfbaar te maken."
 
 msgid "Albums converted and keyed."
 msgstr "Albums bijgewerkt."
@@ -57,6 +70,21 @@ msgstr "Alles"
 msgid "All done!"
 msgstr "Klaar!"
 
+msgid "All phpwsbb Avatar Images have been converted"
+msgstr "Alle avatars van phpwbss zijn geconverteerd"
+
+msgid "All phpwsbb Banned Users have been converted"
+msgstr "Alle verbannen gebruikers van phpwbss zijn geconverteerd"
+
+msgid "All phpwsbb Extended User Information has been converted"
+msgstr "Alle uitgebreide gebruikersinformatie van phpwbss is geconverteerd"
+
+msgid "All phpwsbb Forums have been converted"
+msgstr "Alle forums van phpwbss zijn geconverteerd"
+
+msgid "All phpwsbb Topics have been converted"
+msgstr "Alle topics van phpwbss zijn geconverteerd"
+
 msgid "An error occurred when accessing the conversion database."
 msgstr "Het benaderen van de conversie database is mislukt."
 
@@ -66,29 +94,43 @@ msgstr "Het kopieren van de tabel mod_phatform_checkbox is mislukt."
 msgid "An error occurred when trying to copy your mod_phatform_dropbox table."
 msgstr "Het kopieren van de tabel mod_phatform_dropbox is mislukt."
 
-msgid "An error occurred when trying to copy your mod_phatform_multiselect table."
-msgstr "Er is een fout opgetreden bij het kopieren van de mod_phatform_multiselect tabel."
+msgid ""
+"An error occurred when trying to copy your mod_phatform_multiselect table."
+msgstr ""
+"Er is een fout opgetreden bij het kopieren van de mod_phatform_multiselect "
+"tabel."
 
 msgid "An error occurred when trying to copy your mod_phatform_options table."
-msgstr "Er is een fout opgetreden bij het kopieren van de mod_phatform_options tabel."
+msgstr ""
+"Er is een fout opgetreden bij het kopieren van de mod_phatform_options tabel."
 
-msgid "An error occurred when trying to copy your mod_phatform_radiobutton table."
-msgstr "Er is een fout opgetreden bij het kopieren van de mod_phatform_radiobutton tabel."
+msgid ""
+"An error occurred when trying to copy your mod_phatform_radiobutton table."
+msgstr ""
+"Er is een fout opgetreden bij het kopieren van de mod_phatform_radiobutton "
+"tabel."
 
 msgid "An error occurred when trying to copy your mod_phatform_textarea table."
-msgstr "Er is een fout opgetreden bij het kopieren van de mod_phatform_textarea tabel."
+msgstr ""
+"Er is een fout opgetreden bij het kopieren van de mod_phatform_textarea "
+"tabel."
 
-msgid "An error occurred when trying to copy your mod_phatform_textfield table."
-msgstr "Er is een fout opgetreden bij het kopieren van de mod_phatform_textfield tabel."
+msgid ""
+"An error occurred when trying to copy your mod_phatform_textfield table."
+msgstr ""
+"Er is een fout opgetreden bij het kopieren van de mod_phatform_textfield "
+"tabel."
 
 msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
-msgstr "Er is een fout opgetreden bij het kopieren van de mod_phatform_photos tabel."
+msgstr ""
+"Er is een fout opgetreden bij het kopieren van de mod_phatform_photos tabel."
 
 msgid "An error occurred while accessing your Document tables."
 msgstr "Er is een fout opgetreden bij het benaderen van de Document tabellen."
 
 msgid "An error occurred while accessing your mod_blockmaker_data table."
-msgstr "Er is een fout opgetreden bij het benaderen van de mod_blockmaker_tabel."
+msgstr ""
+"Er is een fout opgetreden bij het benaderen van de mod_blockmaker_tabel."
 
 msgid "An error occurred while converting your old blocks."
 msgstr "Er is een fout opgetreden bij het converteren van de oude blokken."
@@ -97,10 +139,12 @@ msgid "An error occurred while converting your old documents."
 msgstr "Er is een fout opgetreden bij het converteren van de oude documenten."
 
 msgid "An error occurred while converting your old phatfiles."
-msgstr "Er is een fout opgetreden bij het converteren van de oude phat bestanden."
+msgstr ""
+"Er is een fout opgetreden bij het converteren van de oude phat bestanden."
 
 msgid "An error occurred while trying to convert your old file modules."
-msgstr "Er is een fout opgetreden bij het converteren van de oude bestandsmodules."
+msgstr ""
+"Er is een fout opgetreden bij het converteren van de oude bestandsmodules."
 
 msgid "An error occurred while trying to install your modules."
 msgstr "Er is een fout opgetreden bij het installeren van de modules."
@@ -112,10 +156,16 @@ msgid "Announcements is not installed in this database."
 msgstr "Aankondigingen (Announcements) is niet geinstalleerd in de database."
 
 msgid "Any content modules using FatCat should be converted BEFORE continuing."
-msgstr "Alle modules die FatCat gebruiken dienen voordat u verder gaat geconverteerd te worden."
+msgstr ""
+"Alle modules die FatCat gebruiken dienen voordat u verder gaat geconverteerd "
+"te worden."
 
-msgid "Any content modules using Menu Manager should be converted BEFORE continuing.."
-msgstr "Alle modules die Menu Manager gebruiken dienen voordat u verder gaat geconverteerd te worden."
+msgid ""
+"Any content modules using Menu Manager should be converted BEFORE "
+"continuing.."
+msgstr ""
+"Alle modules die Menu Manager gebruiken dienen voordat u verder gaat "
+"geconverteerd te worden."
 
 msgid "Approved"
 msgstr "Goedgekeurd"
@@ -127,7 +177,9 @@ msgid "Attempted cross-site scripting attack."
 msgstr "Poging tot inbraak via script vanaf andere site."
 
 msgid "Automatic mode converts the data without your interaction."
-msgstr "In automatische mode worden de gegevens geconverteerd zonder interactie met u."
+msgstr ""
+"In automatische mode worden de gegevens geconverteerd zonder interactie met "
+"u."
 
 msgid "Back 10 pages"
 msgstr "10 pagina's terug"
@@ -166,7 +218,7 @@ msgid "Branch : %s"
 msgstr "Branch: %s"
 
 msgid "Break newlines"
-msgstr "Break newlines"
+msgstr "Nieuwe regels afbreken"
 
 msgid "Cache Lite is disabled."
 msgstr "Cache Lite is uitgeschakeld."
@@ -186,6 +238,9 @@ msgstr "Calendar is niet geinstalleerd."
 msgid "Can not change name. Already in use."
 msgstr "Deze naam kan niet gebruikt worden, de naam wordt al gebruikt."
 
+msgid "Cannot load database. DSN not defined."
+msgstr "Laden database mislukt. DSN niet gedefinieerd."
+
 msgid "Cannot read file."
 msgstr "Bestand niet leesbaar."
 
@@ -195,11 +250,15 @@ msgstr "Categories is al geconverteerd."
 msgid "Change to"
 msgstr "Veranderen in"
 
-msgid "Check Directory Permissions is enabled so be sure to secure your config and templates directories!"
-msgstr "Controleer of de mappen rechten ingeschakeld zijn en beveilig uw configuratie en templates mappen!"
+msgid ""
+"Check Directory Permissions is enabled so be sure to secure your config and "
+"templates directories!"
+msgstr ""
+"Controleer of de mappen rechten ingeschakeld zijn en beveilig uw "
+"configuratie en templates mappen!"
 
 msgid "Check all"
-msgstr "Alles controleren"
+msgstr "Alle keuzes selecteren"
 
 msgid "Check box table failed to copy successfully."
 msgstr "Kopieren Checkbox tabel is mislukt."
@@ -209,6 +268,9 @@ msgstr "Checkbox tabellen gekopieerd."
 
 msgid "Check your configuration settings."
 msgstr "Controleer uw configuratie instellingen."
+
+msgid "Checking your server's compatibility with phpWebSite..."
+msgstr "Controleren of uw server geschikt is voor phpWebSite..."
 
 msgid "Class Name"
 msgstr "Class Naam"
@@ -225,6 +287,9 @@ msgstr "Class niet gevonden."
 msgid "Class not set."
 msgstr "Class niet gezet."
 
+msgid "Clear"
+msgstr "Wis"
+
 msgid "Click on the method you wish to use."
 msgstr "Klik op de gewenster methode."
 
@@ -238,7 +303,10 @@ msgid "Close"
 msgstr "Sluiten"
 
 msgid "Coming from: %s"
-msgstr "Afkomstig van:  %s"
+msgstr "Afkomstig van: %s"
+
+msgid "Config directory ready"
+msgstr "Map config klaar"
 
 msgid "Connect"
 msgstr "Verbinden"
@@ -261,11 +329,15 @@ msgstr "Doorgaan met conversie categorie onderdelen."
 msgid "Continue to convert menu links."
 msgstr "Doorgaan met converteren menu links."
 
+msgid "Continue..."
+msgstr "Doorgaan..."
+
 msgid "Continue: Convert everyone."
 msgstr "Doorgaan: Allen converteren."
 
 msgid "Continue: Only those logged on within 6 months."
-msgstr "Doorgaan: Alleen degenen die het laatste half jaar actief zijn geweest."
+msgstr ""
+"Doorgaan: Alleen degenen die het laatste half jaar actief zijn geweest."
 
 msgid "Continue: Only those logged on within the last year."
 msgstr "Doorgaan: Allen degenen die het laatste jaar actief zijn geweest."
@@ -297,14 +369,47 @@ msgstr "Converteer!"
 msgid "Converted"
 msgstr "Geconverteerd"
 
+msgid "Converting phpwsbb Extended User Information..."
+msgstr "Bezig met converteren phpwsbb uitgebreide gebruikersinformatie..."
+
+msgid "Converting phpwsbb Topics"
+msgstr "Bezig met converteren phpwsbb topics"
+
 msgid "Copy all the files you need converted into your %s directory."
 msgstr "Kopieer alle te converteren bestanden in de map %s."
+
+msgid "Copying core directories."
+msgstr "Core mappen kopieëren."
+
+msgid "Core configuration directory successfully copied."
+msgstr "Map core configuratie gekopieerd."
+
+msgid "Core could not locate its error.php file."
+msgstr "Core kan het bestand error.php niet vinden."
+
+msgid "Core directories created."
+msgstr "Core mappen aangemaakt."
+
+msgid "Core image directory successfully copied."
+msgstr "Core mappen gekopieerd."
 
 msgid "Core installation successful."
 msgstr "Installatie core gelukt."
 
+msgid "Core templates directory successfully copied."
+msgstr "Map core templates gekopieerd."
+
 msgid "Could not copy file %s to %s."
 msgstr "Het kopieren van bestand %s naar %s is mislukt."
+
+msgid ""
+"Could not find Pear library files. You will need to download the pear "
+"package from our site at http://phpwebsite.appstate.edu/downloads/pear.zip "
+"and unzip it in your installation directory."
+msgstr ""
+"Map pear niet aanwezig. U kunt de pear package downloaden van onze website "
+"http://phpwebsite.appstate.edu/downloads/pear.zip en deze dan uitpakken in "
+"uw installatie-map."
 
 msgid "Could not find info file. File : %s"
 msgstr "Bestand met informatie over bestand ontbreekt. Bestand %s"
@@ -326,6 +431,12 @@ msgstr "Aanmaken Core"
 
 msgid "Create Database"
 msgstr "Aanmaken database"
+
+msgid "CSV Report"
+msgstr "CSV Rapport"
+
+msgid "CSV Report - %s | %s"
+msgstr "CSV Rapport - %s | %s"
 
 msgid "Current sessions:"
 msgstr "Huidige sessies:"
@@ -357,8 +468,12 @@ msgstr "Database importeren mislukt."
 msgid "Database name"
 msgstr "Database naam"
 
-msgid "Database password may contain alphanumeric characters or underscores only."
-msgstr "Database wachtwoord mag alleen alfanumerieke tekens en underscores bevatten."
+msgid ""
+"Database password may contain alphanumeric characters, punctuation, spaces "
+"and underscores only."
+msgstr ""
+"Database wachtwoord mag alleen alfanumerieke tekens, leestekens, spaties en "
+"underscores bevatten."
 
 msgid "Declared classes:"
 msgstr "Gedeclareerde klassen:"
@@ -379,7 +494,7 @@ msgid "Directory not set."
 msgstr "Map is niet gezet."
 
 msgid "Do you want phpWebSite to create the database?"
-msgstr "Wilt u dat PHPWebSite de database aanmaakt?"
+msgstr "Wilt u dat phpWebSite de database aanmaakt?"
 
 msgid "Document not found."
 msgstr "Document ontbreekt."
@@ -395,6 +510,12 @@ msgstr "Documenten module bevat geen bestanden."
 
 msgid "Documents module not installed or empty."
 msgstr "Documenten module ontbreekt of is leeg."
+
+msgid "Download a complete CSV file"
+msgstr "Download een compleet CSV bestand"
+
+msgid "Download a partial CSV file"
+msgstr "Download een gedeeltelijk CSV bestand"
 
 msgid "Drop box table failed to copy successfully."
 msgstr "kopieren dropbox tabel is mislukt."
@@ -426,8 +547,18 @@ msgstr "Executie tijd: %s secondes."
 msgid "Expecting an object variable."
 msgstr "Verwacht een object variabele."
 
+msgid "FFMPEG installed"
+msgstr "FFMPEG geinstalleerd"
+
 msgid "Failed to connect."
 msgstr "Connectie mislukt."
+
+msgid ""
+"Failed to create core directories. Please check your directory permissions "
+"in images, templates, and config."
+msgstr ""
+"Aanmaken mappen core mislukt. Controleer uw maprechten voor de mappen "
+"images, templates en config."
 
 msgid "Failed to make connection with the requested branch site."
 msgstr "Connectie met de gevraagde branch website is mislukt."
@@ -443,6 +574,9 @@ msgstr "File Cabinet geconverteerd."
 
 msgid "File Cabinet has already converted Documents files."
 msgstr "File Cabinet heeft al Document bestand geconverteerd."
+
+msgid "File directory ready"
+msgstr "Map files gereed"
 
 msgid "File not found in _FILES array."
 msgstr "Bestand niet gelukt in _FILES array."
@@ -470,6 +604,9 @@ msgstr "Categorie onderdelen geconverteerd."
 
 msgid "Finished converting links."
 msgstr "Links geconverteerd."
+
+msgid "First page"
+msgstr "Eerste pagina"
 
 msgid "Form"
 msgstr "Formulier"
@@ -507,6 +644,9 @@ msgstr "Functienaam is niet ingevuld."
 msgid "Function was expecting a \"where\" parameter."
 msgstr "Functie verwacht een \"where\" parameter."
 
+msgid "GD graphic libraries installed"
+msgstr "Mappen GD graphic geinstalleerd"
+
 msgid "GD image libraries do not support this image type."
 msgstr "GD ondersteunt dit type afbeelding niet."
 
@@ -516,11 +656,11 @@ msgstr "Start"
 msgid "Go back to main menu."
 msgstr "Terug naar hoofdmenu."
 
-msgid "Go to page %s"
-msgstr "Ga naar pagina %s"
-
 msgid "Go to my new website!"
 msgstr "Ga naar mijn nieuwe website!"
+
+msgid "Go to page %s"
+msgstr "Ga naar pagina %s"
 
 msgid "Help option not found in help configuration file."
 msgstr "Help optie niet gevonden in help configuratie bestand."
@@ -552,14 +692,33 @@ msgstr "Ik wil phpWebSite in deze database installeren."
 msgid "Id and table not set."
 msgstr "Id en table niet gezet."
 
-msgid "If not, you will need to create the database yourself and return to the setup."
-msgstr "Indien niet, dan moet u de database zelf aanmaken en terugkeren naar de setup."
+msgid ""
+"If not, you will need to create the database yourself and return to the "
+"setup."
+msgstr ""
+"Indien niet, dan moet u de database zelf aanmaken en terugkeren naar de "
+"setup."
 
-msgid "If the first user on your old site is not you, then you will need to recreate them."
-msgstr "Als u niet de eerste gebruiker bent op oude website, dan moet u die gebruiker opnieuw aanmaken."
+msgid ""
+"If the first user on your old site is not you, then you will need to "
+"recreate them."
+msgstr ""
+"Als u niet de eerste gebruiker bent op oude website, dan moet u die "
+"gebruiker opnieuw aanmaken."
 
-msgid "If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one."
-msgstr "Als u phpWebSite in een gedeelde omgeving installeert, dan kunt u een prefix aan de tabellen toevoegen.<br />Doe dit liever niet."
+msgid ""
+"If you are installing phpWebSite in a shared environment, you may assign a "
+"prefix to tables.<br />We recommend you run without one."
+msgstr ""
+"Als u phpWebSite in een gedeelde omgeving installeert, dan kunt u een prefix "
+"aan de tabellen toevoegen.<br />Doe dit liever niet."
+
+msgid ""
+"If you are returning here from a previous incomplete installation, you will "
+"need to clear the database of all tables and try again."
+msgstr ""
+"Een eerdere installatie is niet volledig uitgevoerd. Leeg eerst de database "
+"en probeer het dan opnieuw."
 
 msgid "If you do not change it now, your next page will be an error screen."
 msgstr "Als u het nu niet wijzigt dan krijgt u hierna het foutscherm."
@@ -570,11 +729,19 @@ msgstr "Als u problemen tegenkomt moet u de handmatige manier gebruiken."
 msgid "If you experienced any error messages, check your error.log file."
 msgstr "Controleer bij problemen het bestand error.log."
 
-msgid "If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;."
-msgstr "Als de database op dezelfde server staat als de website, laat dan dit dan staan als <b>localhost</b>."
+msgid ""
+"If your database is on the same server as your phpWebSite installation, "
+"leave this as &#x22;localhost&#x22;."
+msgstr ""
+"Als de database op dezelfde server staat als de website, laat dan dit dan "
+"staan als <b>localhost</b>."
 
-msgid "If your host specification requires access via a specific port, enter it here."
-msgstr "Als uw host specificatie een bepaalde poort wil gebruiken voor toegang, geef die poort dan hier op."
+msgid ""
+"If your host specification requires access via a specific port, enter it "
+"here."
+msgstr ""
+"Als uw host specificatie een bepaalde poort wil gebruiken voor toegang, geef "
+"die poort dan hier op."
 
 msgid "Image height was %spx, making it larger than %d pixel limit."
 msgstr "Afbeelding hoogte is %spx, te groot want de limiet is %s."
@@ -587,6 +754,9 @@ msgstr "Afbeelding is %sK, te groot want de limiet is %sK."
 
 msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr "Afbeelding wijdte is %spx, te groot want de limiet is %s"
+
+msgid "Image directory ready"
+msgstr "Map images gereed"
 
 msgid "Images copied during a 0.10.x conversion."
 msgstr "Afbeeldingen gekopieerd tijdens een 0.10.x conversie."
@@ -621,17 +791,23 @@ msgstr "Geinstalleerde modules"
 msgid "Invalid value."
 msgstr "Foute waarde."
 
-msgid "Join database does not exist."
-msgstr "Join database bestaat niet."
+msgid "Javascript directory ready"
+msgstr "Map javascript klaar"
 
 msgid "KEY"
 msgstr "KEY"
+
+msgid "Join database does not exist."
+msgstr "Join database bestaat niet."
 
 msgid "Key can not restrict items on phpws_key table alone."
 msgstr "Key kan niet items beperken alleen op phpws_key table."
 
 msgid "Key not found."
 msgstr "Key niet gevonden."
+
+msgid "Last page"
+msgstr "Laatste pagina"
 
 msgid "Limit"
 msgstr "Limiet"
@@ -641,6 +817,9 @@ msgstr "Maximaal aantal resultaten %s"
 
 msgid "List columns not set."
 msgstr "Lijst kolommen niet gezet."
+
+msgid "Log directory ready"
+msgstr "Map logs gereed"
 
 msgid "Log in"
 msgstr "Inloggen"
@@ -653,6 +832,16 @@ msgstr "Inlog pagina"
 
 msgid "Login to Site Manager"
 msgstr "Login bij Site Manager"
+
+msgid "MIME file type detection"
+msgstr "MIME bestandstype detectie"
+
+msgid "Magic quotes disabled"
+msgstr "Magic quotes uitgeschakeld"
+
+msgid "Magic quotes is enabled. Please disable it in your php.ini file."
+msgstr ""
+"Magic quotes is ingeschakeld. Schakel het a.u.b. uit in uw php.ini bestand."
 
 msgid "Main"
 msgstr "Hoofdpagina"
@@ -673,13 +862,17 @@ msgid "Manager configuration file not found for module: %s"
 msgstr "Configuratie-bestand ontbreekt voor module: %s"
 
 msgid "Manager was not fully initialized to get a list."
-msgstr "Er kan geen lijst gemaakt worden omdat de initialisatie onvolledig was."
+msgstr ""
+"Er kan geen lijst gemaakt worden omdat de initialisatie onvolledig was."
 
 msgid "Manual mode requires you to click through the conversion process."
 msgstr "Bij handmatige conversie moet u een proces doorlopen met muisklikken."
 
 msgid "Match for must be an array for a multiple input."
 msgstr "Match for moet een array zijn om meer invoer mogelijk te maken."
+
+msgid "Memory limit exceeded"
+msgstr "Geheugen limiet overschreden"
 
 msgid "Menu conversion finished."
 msgstr "Conversie menu klaar."
@@ -786,6 +979,9 @@ msgstr "Geen menu's gevonden."
 msgid "No modules to convert."
 msgstr "Geen te converteren modules."
 
+msgid "No options passed to function"
+msgstr "Functie zonder opties aangeroepen"
+
 msgid "No pages found."
 msgstr "Er zijn geen pagina's."
 
@@ -813,14 +1009,24 @@ msgstr "Geen conversie bestand."
 msgid "Not an acceptable operator."
 msgstr "Waarde operator niet toegestaan."
 
-msgid "Note: if you have not made this database yet, you should do so before continuing."
-msgstr "NB: Als u nog geen database hebt aangemaakt, dient u dat eerst te doen."
+msgid ""
+"Note: if you have not made this database yet, you should do so before "
+"continuing."
+msgstr ""
+"NB: Als u nog geen database hebt aangemaakt, dient u dat eerst te doen."
 
-msgid "Note: it is a good idea to give each phpWebSite installation its own user."
-msgstr "NB: Het is een goed idee om elke phpWebSite installatie een eigen gebruiker te geven."
+msgid ""
+"Note: it is a good idea to give each phpWebSite installation its own user."
+msgstr ""
+"NB: Het is een goed idee om elke phpWebSite installatie een eigen gebruiker "
+"te geven."
 
-msgid "One or more errors occurred while copying over Form Generator tables. Please check your logs, clear your database tables, and try again."
-msgstr "Kopieren Form Generator tabellen mislukt. Controleer de logs, wis uw databasetabellen en probeer het opnieuw."
+msgid ""
+"One or more errors occurred while copying over Form Generator tables. Please "
+"check your logs, clear your database tables, and try again."
+msgstr ""
+"Kopieren Form Generator tabellen mislukt. Controleer de logs, wis uw "
+"databasetabellen en probeer het opnieuw."
 
 msgid "Only those logged on within 6 months."
 msgstr "Alleen degene die het laatste half jaar actief zijn geweest."
@@ -843,6 +1049,9 @@ msgstr "Klik anders op de  \"Hoofdpagina\" link."
 msgid "Otherwise, enter the ip or dns to the database server."
 msgstr "Geef anders het IP of DNS van de database server."
 
+msgid "PHP 5 version check"
+msgstr "PHP5 versie controle"
+
 msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
 msgstr "PHPWS_Debug: testObject bevat een %s variabele, geen object."
 
@@ -858,8 +1067,12 @@ msgstr "PageSmith conversie"
 msgid "PageSmith has already been converted."
 msgstr "PageSmith is al eerder geconverteerd."
 
-msgid "PageSmith has been converted as well. Make sure to check the defines in the menu convert.php file before running."
-msgstr "Ook PageSmith is geconverteerd. Controleer de definities in het bestand menu convert.php voor uitvoeren."
+msgid ""
+"PageSmith has been converted as well. Make sure to check the defines in the "
+"menu convert.php file before running."
+msgstr ""
+"Ook PageSmith is geconverteerd. Controleer de definities in het bestand menu "
+"convert.php voor uitvoeren."
 
 msgid "PageSmith is not installed."
 msgstr "PageSmith is niet geinstalleerd."
@@ -867,11 +1080,17 @@ msgstr "PageSmith is niet geinstalleerd."
 msgid "Partial"
 msgstr "Gedeeltelijk"
 
+msgid "Passed!"
+msgstr "Oke!"
+
 msgid "Password"
 msgstr "Wachtwoord"
 
 msgid "Pear Configuration"
 msgstr "PEAR Configuratie"
+
+msgid "Pear library installed"
+msgstr "PEAR geinstalleerd"
 
 msgid "Permission Help"
 msgstr "Help Rechten"
@@ -886,7 +1105,7 @@ msgid "Photo Album has already been converted."
 msgstr "Foto Album is al geconverteerd."
 
 msgid "Photo Album is not installed locally."
-msgstr "Foto Album is niet locaal geinstalleerd."
+msgstr "Foto Album is niet lokaal geinstalleerd."
 
 msgid "Photos table failed to copy successfully."
 msgstr "Kopieren foto tabel is mislukt."
@@ -897,8 +1116,12 @@ msgstr "Foto tabel geimporteerd."
 msgid "PhpWebSite was able to connect but the database itself does not exist."
 msgstr "De database bestaat niet."
 
-msgid "PhpWebSite was able to connect, but the database already contained tables."
-msgstr "PhpWebsite kan de database benaderen, maar er zijn al tabellen."
+msgid ""
+"PhpWebSite was able to connect, but the database already contained tables."
+msgstr "PhpWebSite kan de database benaderen, maar er zijn al tabellen."
+
+msgid "Pick date"
+msgstr "Selecteer datum"
 
 msgid "Please check your directory permissions and try again."
 msgstr "Controleer de toegangsrechten op de mappen en probeer opnieuw."
@@ -909,16 +1132,29 @@ msgstr "Controleer de fouten in de log."
 msgid "Please check your error logs and try again."
 msgstr "Controleer de fouten in de log en probeer opnieuw."
 
-msgid "Please create a directory in %simages/ named \"pagemaster\". Copy all images from the old Web Pages image directory into it."
-msgstr "Maak een map aan in  %simages/ met de naam  \"pagemaster\". Kopieer alle plaatjes van de oude Web Pages map met plaatjes daar naar toe."
+msgid "Please copy the word in the above image."
+msgstr "Vul het woord in het bovenstaande plaatje in."
 
-msgid "Please enter the connect information for the database you wish to convert from."
+msgid ""
+"Please create a directory in %simages/ named \"pagemaster\". Copy all images "
+"from the old Web Pages image directory into it."
+msgstr ""
+"Maak een map aan in  %simages/ met de naam  \"pagemaster\". Kopieer alle "
+"plaatjes van de oude Web Pages map met plaatjes daar naar toe."
+
+msgid ""
+"Please enter the connect information for the database you wish to convert "
+"from."
 msgstr "Geef de informatie op om de te converteren database te benaderen."
+
+msgid "Please fill out the field:"
+msgstr "Vul dit veld in:"
 
 msgid "Please login"
 msgstr "Login a.u.b."
 
-msgid "Please note that the user with an index of 1 was ignored by the conversion."
+msgid ""
+"Please note that the user with an index of 1 was ignored by the conversion."
 msgstr "De gebruiker met index 1 is niet geconverteerd."
 
 msgid "Please wait..."
@@ -939,6 +1175,9 @@ msgstr "Recursive array"
 msgid "Recursive object:"
 msgstr "Recursive object:"
 
+msgid "Register globals disabled"
+msgstr "Register globals uitgeschakeld"
+
 msgid "Remove"
 msgstr "Verwijder"
 
@@ -948,8 +1187,15 @@ msgstr "Verwijder het volgende bestand en ververs om verder te gaan:"
 msgid "Request"
 msgstr "Verzoek"
 
-msgid "Return to main page if you change your mind. Click the above link to continue."
-msgstr "Ga terug naar hoofdpagina als u van mening veranderd. Klik op bovenstaande link om verder te gaan."
+msgid "Required field"
+msgstr "Verplicht veld"
+
+msgid ""
+"Return to main page if you change your mind. Click the above link to "
+"continue."
+msgstr ""
+"Ga terug naar hoofdpagina als u van mening veranderd. Klik op bovenstaande "
+"link om verder te gaan."
 
 msgid "Return to main page."
 msgstr "Terug naar hoofdpagina."
@@ -966,11 +1212,24 @@ msgstr "Zoek"
 msgid "Select returned an empty result."
 msgstr "Geen gegevens gevonden."
 
+msgid "Server failed crucial tests. You may not install phpWebSite."
+msgstr "U kunt op deze server niet phpWebSite installeren."
+
+msgid "Server passed enough tests to allow installation."
+msgstr "Op deze server is installatie mogelijk."
+
+msgid "Session auto start disabled"
+msgstr "Automatisch starten sessie uitgeschakeld."
+
 msgid "Sessions Help"
 msgstr "Session Help"
 
-msgid "Since you set a table prefix, you may force an installation into this database."
-msgstr "Na het zetten van een prefix bij de tabellen, mag u installatie in deze database forceren."
+msgid ""
+"Since you set a table prefix, you may force an installation into this "
+"database."
+msgstr ""
+"Na het zetten van een prefix bij de tabellen, mag u installatie in deze "
+"database forceren."
 
 msgid "Site Hash"
 msgstr "Site Hash"
@@ -993,11 +1252,11 @@ msgstr "Enige menu's zijn niet goed geconverteerd. Controleer de log."
 msgid "Some users caused conversion errors."
 msgstr "Conversie fouten bij enkele gebruikers."
 
-msgid "Sort in ascending order"
-msgstr "Sorteer oplopend"
+msgid "Sorted in ascending order"
+msgstr "Gesorteerd oplopend"
 
-msgid "Sort in descending order"
-msgstr "Sorteer aflopend"
+msgid "Sorted in descending order"
+msgstr "Gesorteerd aflopend"
 
 msgid "Source Directory"
 msgstr "Source Map"
@@ -1023,6 +1282,9 @@ msgstr "Prefix tabel"
 msgid "Table prefix must be alphanumeric characters or underscores only"
 msgstr "Prefix tabel moet bestaan uit alfanumerieke tekens en underscores."
 
+msgid "Template directory ready"
+msgstr "Map templates klaar"
+
 msgid "Template error."
 msgstr "Template fout."
 
@@ -1044,14 +1306,27 @@ msgstr "Tekstveld tabel is geimporteerd."
 msgid "The File Cabinet module is not installed."
 msgstr "De module Filecabinet is niet actief."
 
-msgid "The character string below differentiates your site from others on the same server."
-msgstr "De onderstaande tekst zorgt ervoor dat uw site verschilt van andere op dezelfde server."
+msgid ""
+"The character string below differentiates your site from others on the same "
+"server."
+msgstr ""
+"De onderstaande tekst zorgt ervoor dat uw site verschilt van andere op "
+"dezelfde server."
+
+msgid "The current language is %s."
+msgstr "De huidige taal is %s."
 
 msgid "The database creation succeeded!"
 msgstr "Database is aangemaakt!"
 
 msgid "The database's name into which you are installing phpWebSite."
-msgstr "De database waarin phpWebsite wordt aangemaakt."
+msgstr "De database waarin phpWebSite wordt aangemaakt."
+
+msgid "The default language is %s."
+msgstr "De default taal is %s."
+
+msgid "The default language is being forced."
+msgstr "De default taal wordt gebruikt."
 
 msgid "The example is randomly generated."
 msgstr "Het voorbeeld is willekeurig aangemaakt."
@@ -1077,14 +1352,20 @@ msgstr "Er is een probleem met uw sessies."
 msgid "There was a problem loading the image file."
 msgstr "Het laden van de afbeelding is mislukt."
 
-msgid "This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable."
-msgstr "Het object is niet compleet. Als het een sessie gebonden object is, declareer dan de class voor de variabele."
+msgid ""
+"This is an incomplete object. If this is a sessioned object, make sure to "
+"declare the class before the variable."
+msgstr ""
+"Het object is niet compleet. Als het een sessie gebonden object is, "
+"declareer dan de class voor de variabele."
 
 msgid "This is the directory where phpWebSite is installed."
-msgstr "De map waar phpWebsite is geinstalleerd."
+msgstr "De map waar phpWebSite is geinstalleerd."
 
 msgid "This is the user name that phpWebSite will use to access its database."
-msgstr "De naam van de gebruiker die door phpWebSite gebruikt wordt om de database te benaderen."
+msgstr ""
+"De naam van de gebruiker die door phpWebSite gebruikt wordt om de database "
+"te benaderen."
 
 msgid "Title"
 msgstr "Titel"
@@ -1101,14 +1382,14 @@ msgstr "Connectie mislukt."
 msgid "Unable to copy file."
 msgstr "Kopieren bestand mislukt."
 
+msgid "Unable to copy the %s directory to %s. Installation halted."
+msgstr "Kopieeren map %s naar %s mislukt. Installatie afgebroken."
+
 msgid "Unable to create file directory."
 msgstr "Map kan niet aangemaakt worden."
 
 msgid "Unable to create the database."
 msgstr "Database kan niet aangemaakt worden."
-
-msgid "Unable to display contents."
-msgstr "Inhoud kan niet getoond worden."
 
 msgid "Unable to delete directory."
 msgstr "Map kan niet verwijderd worden."
@@ -1119,11 +1400,20 @@ msgstr "Bestand kan niet verwijderd worden."
 msgid "Unable to derive class variables."
 msgstr "Class variabelen zijn niet te benaderen."
 
-msgid "Unable to find mod_pagemaster_pages table in source database."
-msgstr "Tabel mod_pagemaster_pages ontbreekt in database."
+msgid ""
+"Unable to detect MIME file type. You will need to compile finfo_open into "
+"PHP."
+msgstr ""
+"Detectie MIME bestandstype mislukt. U moet finfo_open in PHP meecompileren."
+
+msgid "Unable to display contents."
+msgstr "Inhoud kan niet getoond worden."
 
 msgid "Unable to find element \"%s\"."
 msgstr "Element \"%s\" niet gevonden."
+
+msgid "Unable to find mod_pagemaster_pages table in source database."
+msgstr "Tabel mod_pagemaster_pages ontbreekt in database."
 
 msgid "Unable to find the specified editor type."
 msgstr "Het editor type is niet gevonden."
@@ -1216,7 +1506,9 @@ msgid "User name"
 msgstr "Naam gebruiker"
 
 msgid "User tried to post a file beyond server limits."
-msgstr "Gebruiker probeert een bestand te uploaden groter dan de limiet van de server."
+msgstr ""
+"Gebruiker probeert een bestand te uploaden groter dan de limiet van de "
+"server."
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -1228,13 +1520,13 @@ msgid "Using configuration files directly from module's directory."
 msgstr "Gebruik configuratie bestanden rechtstreeks uit de map van de module."
 
 msgid "Using local configuration files."
-msgstr "Gebruik locale configuratie bestanden."
+msgstr "Gebruik lokale configuratie bestanden."
 
 msgid "Using local templates, not module's."
 msgstr "Gebruik locale templates, geen modules."
 
 msgid "Using module template, not local."
-msgstr "Gebruik module templates, niet locaal."
+msgstr "Gebruik module templates, niet lokaal."
 
 msgid "VALUE"
 msgstr "WAARDE"
@@ -1252,7 +1544,8 @@ msgid "Warning"
 msgstr "Waarschuwing"
 
 msgid "We suggest you use the library files included with phpWebSite."
-msgstr "Wij bevelen aan om de bij de phpWebSite toegevoegde bestanden te gebruiken."
+msgstr ""
+"Wij bevelen aan om de bij de phpWebSite toegevoegde bestanden te gebruiken."
 
 msgid "Web Page conversion"
 msgstr "Webpagina conversie"
@@ -1275,11 +1568,23 @@ msgstr "Verkeerd type variabele."
 msgid "You can now finish the creation of your config file."
 msgstr "U kunt het aanmaken het configuratie bestand nu beeindigen."
 
+msgid ""
+"You do not appear to have ffmpeg installed. File Cabinet will not be able to "
+"create thumbnail images from uploaded videos"
+msgstr ""
+"U heeft waarschijnlijk ffmpeg niet geinstalleerd. File Cabinet kan nu geen "
+"thumbnails aanmaken van een geüploade video"
+
+msgid "You have register_globals enabled. You should disable it."
+msgstr "U heeft register_globals ingeschakeld. U moet dit uitschakelen."
+
 msgid "You may change it if you wish."
 msgstr "U mag dit wijzigen."
 
 msgid "You may choose to ignore users who haven't logged in for a while."
-msgstr "U kunt ervoor kiezen om gebruikers over te slaan die langere tijd niet actief zijn geweest."
+msgstr ""
+"U kunt ervoor kiezen om gebruikers over te slaan die langere tijd niet "
+"actief zijn geweest."
 
 msgid "You may convert two different ways."
 msgstr "U kunt op twee manieren converteren."
@@ -1293,23 +1598,62 @@ msgstr "De waarde \"%s\" is niet toegestaan als scherm elementnaam."
 msgid "You must be a deity to run Site Manager."
 msgstr "U moet een elite gebruiker zijn om dit te mogen uitvoeren."
 
+#, php-format
+msgid "You need to compile the %sGD image library%s into PHP."
+msgstr "U moet de %sGD image library%s meecompileren met PHP."
+
 msgid "You will need to change the permissions."
 msgstr "U moet de bevoegdheden wijzigen."
 
 msgid "You will need to create it manually and rerun the setup."
 msgstr "U moet het handmatig aanmaken en daarna de setup opnieuw uitvoeren."
 
+msgid "Your GD graphic library is not loaded. Captcha will not function."
+msgstr "Uw GD graphic library is niet geladen. Captcha zal niet werken."
+
+msgid ""
+"Your PHP memory limit is less than 8MB. You may encounter problems with the "
+"script at this level. We suggest raising the limit in your php.ini file or "
+"uncommenting the \"ini_set('memory_limit', '10M');\" line in your core/conf/"
+"defines.dist.php file after installation."
+msgstr ""
+"Uw PHP geheugen is minder dan 8MB. U kunt problemen krijgen, pas dit in uw "
+"php.ini aan of maak de regel \"ini_set('memory_limit', '10M');\"  in uw core/"
+"conf/defines.dist.php actief na de installatie."
+
+msgid ""
+"Your PHP memory limit is less than 8MB. You may encounter problems with the "
+"script at this level. We suggest raising the limit in your php.ini file or "
+"uncommenting the \"ini_set('memory_limit', '10M');\" line in your config/"
+"core/config.php file after installation."
+msgstr ""
+"Uw PHP geheugen is minder dan 8MB. U kunt problemen krijgen, pas dit in uw "
+"php.ini aan of maak de regel \"ini_set('memory_limit', '10M');\"  in uw "
+"config/core/config.php actief na de installatie."
+
 msgid "Your configuration file already exists."
 msgstr "Het configuratiebestand bestaat al."
 
-msgid "Your configuration file could not be written into the following directory:"
+msgid ""
+"Your configuration file could not be written into the following directory:"
 msgstr "Het configuratiebestand kan niet worden aangemaakt in de map:"
 
 msgid "Your configuration file was written successfully!"
 msgstr "Het configuratiebestand is aangemaakt."
 
 msgid "Your core config.php file is missing. Please create one and return."
-msgstr "Het bestand config.php ontbreekt. Maak dit aan en probeer het opnieuw. "
+msgstr ""
+"Het bestand config.php ontbreekt. Maak dit aan en probeer het opnieuw. "
+
+msgid ""
+"Your pages are using the images/pagemaster/ directory so do not delete it."
+msgstr ""
+"Uw pagina's gebruiken de map images/pagemaster/. Verwijder deze dus niet."
+
+msgid ""
+"Your server must run PHP version 5.1.0 or higher. You are running version %s."
+msgstr ""
+"Uw server moet minimaal PHP versie 5.1.0 hebben. U gebruikt nu versie %s. "
 
 msgid "\\1 wrote"
 msgstr "\\1 schreef"
@@ -1323,93 +1667,202 @@ msgstr "loadObject verwacht dat het object een id of where deel heeft."
 msgid "of"
 msgstr "van"
 
-msgid "phpWebSite %s Setup"
-msgstr "phpWebSite %s Setup"
-
-msgid "phpWebSite 1.x.x Convert"
-msgstr "phpWebSite 1.x.x Conversie"
-
-msgid "phpWebSite depends on sessions to move data between pages."
-msgstr "phpWebSite gebruikt sessies om gegevens over te dragen naar een andere pagina."
-
-msgid "phpWebSite supports several databases. Choose the type your server currently is running."
-msgstr "phpWebSite ondersteunt meerdere databases. Kies het type dat u op de server gebruikt."
-
-msgid "phpWebSite uses the Pear library extensively."
-msgstr "phpWebSite maakt intensief gebruik van Pear."
-
-msgid "Download a complete CSV file"
-msgstr "Download een compleet CSV bestand"
-
-msgid "Download a partial CSV file"
-msgstr "Download een gedeeltelijk CSV bestand"
-
-msgid "All phpwsbb Avatar Images have been converted"
-msgstr "Alle avatars van phpwbss zijn geconverteerd"
-
-msgid "All phpwsbb Banned Users have been converted"
-msgstr "Alle verbannen gebruikers van phpwbss zijn geconverteerd"
-
-msgid "All phpwsbb Extended User Information has been converted"
-msgstr "Alle uitgebreide gebruikersinformatie van phpwbss is geconverteerd"
-
-msgid "All phpwsbb Forums have been converted"
-msgstr "Alle forums van phpwbss zijn geconverteerd"
-
-msgid "All phpwsbb Topics have been converted"
-msgstr "Alle topics van phpwbss zijn geconverteerd"
-
-msgid "%s - %s of %s"
-msgstr "%s - %s van %s"
-
-msgid "Clear"
-msgstr "Wis"
-
-msgid "CSV Report"
-msgstr "CSV Rapport"
-
-msgid "CSV Report - %s | %s"
-msgstr "CSV Rapport - %s | %s"
-
-msgid "Cannot load database. DSN not defined."
-msgstr "Laden database mislukt. DSN niet gedefinieerd."
-
-msgid "Converting phpwsbb Extended User Information..."
-msgstr "Bezig met converteren phpwsbb uitgebreide gebruikersinformatie..."
-
-msgid "Converting phpwsbb Topics"
-msgstr "Bezig met converteren phpwsbb topics"
-
-msgid "Core could not locate its error.php file."
-msgstr "Core kan het bestand error.php niet vinden."
-
-msgid "First page"
-msgstr "Eerste pagina"
-
-msgid "Last page"
-msgstr "Laatste pagina"
-
-msgid "Required field"
-msgstr "Verplicht veld"
-
-msgid "The current language is %s."
-msgstr "De huidige taal is %s."
-
-msgid "The default language is %s."
-msgstr "De default taal is %s."
-
-msgid "The default language is being forced."
-msgstr "De default taal wordt gebruikt."
-
-msgid "Your pages are using the images/pagemaster/ directory so do not delete it."
-msgstr "Uw pagina's gebruiken de map images/pagemaster/. Verwijder deze dus niet."
-
 msgid "phpWS Bulletin Board has already been converted."
 msgstr "phpWS Bulletin Board is al geconverteerd."
 
 msgid "phpWS Bulletin Board is not installed."
 msgstr "phpWS Bulletin Board is niet geinstalleerd."
 
+msgid "phpWebSite %s Setup"
+msgstr "phpWebSite %s Setup"
+
+msgid "phpWebSite 1.x.x Convert"
+msgstr "phpWebSite 1.x.x Conversie"
+
+msgid ""
+"phpWebSite supports several databases. Choose the type your server currently "
+"is running."
+msgstr ""
+"phpWebSite ondersteunt meerdere databases. Kies het type dat u op de server "
+"gebruikt."
+
+msgid ""
+"phpWebSite configuration file and database have been found. Assuming "
+"installation is complete. You should move or delete the setup directory."
+msgstr ""
+"Configuratie-bestand en database zijn aanwezig, vermoedelijk is de "
+"installatie afgerond. U moet de map setup verplaatsen of verwijderen."
+
+msgid ""
+"phpWebSite configuration file exists but could not connect to database. "
+"Check your dsn settings or delete the config file."
+msgstr ""
+"Er is een configuratie-bestand, maar er kan geen connectie met de database "
+"worden gemaakt. Controleer uw dsn instellingen of verwijder het configuratie-"
+"bestand."
+
+msgid ""
+"phpWebSite configuration file exists but database does not. Create the "
+"database set in the config file or delete the config file."
+msgstr ""
+"Het configuratie-bestand bestaat, maar de database bestaat niet. Verwijder "
+"het configuratie-bestand of vul zelf de database."
+
+msgid "phpWebSite depends on sessions to move data between pages."
+msgstr ""
+"phpWebSite gebruikt sessies om gegevens over te dragen naar een andere "
+"pagina."
+
+msgid ""
+"phpWebSite supports MySQL and PostgreSQL. Choose the type your server "
+"currently is running."
+msgstr ""
+"phpWebSite ondersteunt meerdere databases. Kies het type dat u op de server "
+"gebruikt."
+
+msgid "phpWebSite uses the Pear library extensively."
+msgstr "phpWebSite maakt intensief gebruik van Pear."
+
 msgid "phpwsbb conversion complete!"
 msgstr "phpWs is geconverteerd!"
 
+msgid ""
+"session.auto_start must be set to 0 for phpWebSite to work. Please review "
+"your php.ini file."
+msgstr "session.auto_start moet 0 zijn. Controleer uw php.ini bestand."
+
+msgid "<strong>Module %1$s icons stored at %2$s"
+msgstr "<strong>Module %1$s icons opgeslagen in %2$s"
+
+msgid "An icons variable was not found."
+msgstr "Een icons variabele ontbreekt."
+
+msgid "An indexed select column must only contain two fields"
+msgstr "Een indexed select column mag maar twee velden bevatten"
+
+msgid "Array must contain object variables only"
+msgstr "Array mag alleen objecten bevatten"
+
+msgid "Could not connect to the database using supplied DSN information."
+msgstr "Connectie met database met aangeleverde DSN is mislukt."
+
+msgid "Could not find javascript factory file."
+msgstr "Het JavaScript factory-bestand ontbreekt."
+
+msgid "Could not initialize core class "
+msgstr "Class core kan niet worden geinitialiseerd"
+
+msgid "Could not initialize module class "
+msgstr "Class module kan niet worden geinitialiseerd"
+
+msgid "DB2 Error"
+msgstr "DB2 Fout"
+
+msgid "DSN not set in database config file."
+msgstr ""
+"DSN heeft geen waarde gekregen in het bestand van de database configuratie."
+
+msgid "Duplicate table added"
+msgstr "Dubbele table toegevoegd"
+
+msgid "Exception trace"
+msgstr "Exception trace"
+
+msgid "Function"
+msgstr "Functie"
+
+msgid "Icon type not found: %1$s::%2$s"
+msgstr "Icon type niet gevonden: %1$s::%2$s"
+
+msgid "Improper class name"
+msgstr "Foute class naam"
+
+msgid "Improper database name"
+msgstr "Foute database naam"
+
+msgid "Improper id name"
+msgstr "Foute id naam"
+
+msgid "Improper new table name"
+msgstr "Foute nieuwe table naam"
+
+msgid "Improper table name"
+msgstr "Foute table naam"
+
+msgid "Improperly formated image src"
+msgstr "Fout formaat afbeelding src"
+
+msgid "Improperly formatted input name"
+msgstr "Fout formaat invoernaam"
+
+msgid "Improperly formatted style settings"
+msgstr "Fout formaat style"
+
+msgid "Invalid parameters."
+msgstr "Ongeldige parameters."
+
+msgid "Javascript demonstration:"
+msgstr "JavaScript demonstratie:"
+
+msgid "Layout class not enabled"
+msgstr "Class layout is niet ingeschakeld"
+
+msgid "Location"
+msgstr "Lokatie"
+
+msgid "Missing query resource."
+msgstr "De resource van de query ontbreekt."
+
+msgid "Missing template file:"
+msgstr "Template ontbreekt:"
+
+msgid "No demo code available"
+msgstr "Geen demo code beschikbaar"
+
+msgid "No error found."
+msgstr "Geen fouten gevonden."
+
+msgid "No resources created"
+msgstr "Er zijn geen resources aangemaakt"
+
+msgid "No table fields were found"
+msgstr "Er zijn geen tabelvelden "
+
+msgid "No tables found"
+msgstr "Geen tables gevonden"
+
+msgid "No values in object to save"
+msgstr "In object staan geen waarden om op te slaan"
+
+msgid "Select did not contain any fields to return"
+msgstr "Er zijn geen velden geselecteerd"
+
+msgid "Src variable is empty"
+msgstr "Variabele src is leeg"
+
+msgid "Table does not exist"
+msgstr "Tabel bestaat niet"
+
+msgid "Table prefix contains illegal characters"
+msgstr "Table prefix bevat ongeldige tekens"
+
+msgid "Tag type must be alphabetic characters only"
+msgstr "Tag type moet alleen uit letters bestaan"
+
+msgid "Tag type not set"
+msgstr "Tag type niet gevuld"
+
+msgid "The requested indexing column is missing from select row result"
+msgstr "De benodigde index ontbreekt in de geselecteerde velden"
+
+msgid "Unable to create new database"
+msgstr "Aanmaken database mislukt"
+
+msgid "Unknown select type"
+msgstr "Onbekend select type"
+
+msgid "Update query missing columns"
+msgstr "Er zijn geen te wijzigen velden"
+
+msgid "Variable is not an object"
+msgstr "Variabele is geen object"

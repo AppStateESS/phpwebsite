@@ -76,11 +76,6 @@ class PS_Forms {
         $form->addHidden('tpl', $page->template);
         $form->addHidden('pid', $page->parent_page);
 
-        $form->addText('title', $page->title);
-        $form->setSize('title', 30, 255);
-        $form->setExtra('title', 'onchange="update_title()"');
-        $form->setLabel('title', dgettext('pagesmith', 'Page title'));
-
         $template_list = $this->ps->getTemplateList();
 
         $form->addSelect('template_list', $template_list);
@@ -237,12 +232,6 @@ class PS_Forms {
                 PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
                 'pageedit');
 
-        Layout::addJSHeader('<link rel="stylesheet" type="text/css" href="' .
-                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/jquery.powertip.min.css" />',
-                'ptipcss');
-        Layout::addJSHeader('<script type="text/javascript" src="' .
-                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/jquery.powertip.min.js"></script>',
-                'ptipjs');
         $edit_button = false;
         $page = $this->ps->page;
 
@@ -273,7 +262,7 @@ class PS_Forms {
 
                 case 'text':
                     $edit_message = t('Click here to edit this content');
-                    $tpl[$name . '_admin'] = "title=\"$edit_message\" data-page-id=\"$page->id\" data-block-id=\"$section->id\"";
+                    $tpl[$name . '_admin'] = " data-page-id=\"$page->id\" data-block-id=\"$section->id\"";
                     break;
             }
         }
@@ -281,9 +270,9 @@ class PS_Forms {
         $template_file = $page->_tpl->page_path . 'page.tpl';
 
         if (empty($page->title)) {
-            $tpl['page_title'] = dgettext('pagesmith', 'Page Title (edit above)');
+            $tpl['page_title'] = '<span id="page-title-edit" data-new="true" style="cursor:pointer;color : #969696">' . dgettext('pagesmith', 'Page Title (click to edit)') . '</span>';
         } else {
-            $tpl['page_title'] = $page->title;
+            $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;">' . $page->title . '</span>';
         }
         $pg_tpl = PHPWS_Template::process($tpl, 'pagesmith', $template_file);
 
@@ -385,87 +374,18 @@ class PS_Forms {
 
 
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
-        
+
         $tpl['SHORTEN_MENU_LINKS']  = PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', array('aop'=>'shorten_links'));
         $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'shorten_links'), true);
-        
+
         $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', array('aop'=>'lengthen_links'));
         $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'lengthen_links'), true);
-        
+
         $form->mergeTemplate($tpl);
-        
+
         $this->ps->content = PHPWS_Template::process($form->getTemplate(),
                         'pagesmith', 'settings.tpl');
     }
-
-    public function uploadTemplates()
-    {
-        javascript('jquery');
-        javascriptMod('pagesmith', 'confirm_delete',
-                array('address' => PHPWS_Text::linkAddress('pagesmith',
-                    array('aop' => 'delete_template'), true, false, false)));
-
-        $this->ps->title = dgettext('pagesmith', 'Upload template');
-
-        $template_dir = 'templates/pagesmith/page_templates/';
-        $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/';
-
-        if (!is_writable($template_dir)) {
-            $this->ps->content = dgettext('pagesmith',
-                    'Page template directory must be writable to upload templates.');
-            return;
-        }
-
-        $dirs = PHPWS_File::listDirectories($template_dir);
-        $sdirs = PHPWS_File::listDirectories($source_dir);
-
-        $fdirs = array_diff($dirs, $sdirs);
-
-        if (!empty($fdirs)) {
-            $fdirs = array_flip($fdirs);
-            foreach ($fdirs as $key => $value) {
-                $fdirs[$key] = $key;
-            }
-        }
-
-        $form = new PHPWS_Form('upload-templates');
-        $form->addHidden('module', 'pagesmith');
-        $form->addHidden('aop', 'post_templates');
-        $form->addText('template_name', @$_POST['template_name']);
-        $form->setLabel('template_name', dgettext('pagesmith', 'Template name'));
-
-        $form->addFile('template_file');
-        $form->setLabel('template_file',
-                dgettext('pagesmith', 'Template file (e.g., filename.tpl)'));
-
-        $form->addFile('style_sheet');
-        $form->setLabel('style_sheet',
-                dgettext('pagesmith', 'Style sheet (e.g., filename.css)'));
-
-        $form->addFile('icon');
-        $form->setLabel('icon',
-                dgettext('pagesmith', 'Template icon (e.g., filename.png)'));
-
-        $form->addFile('structure_file');
-        $form->setLabel('structure_file',
-                dgettext('pagesmith', 'Structure file (e.g., structure.xml)'));
-
-        $form->addSubmit('upload', dgettext('pagesmith', 'Upload file'));
-
-        if (!empty($fdirs)) {
-            $form->addSelect('page_templates', $fdirs);
-            $form->setLabel('page_templates',
-                    dgettext('pagesmith', 'Extra templates'));
-            $form->addButton('delete', dgettext('pagesmith', 'Delete'));
-            $form->setExtra('delete', 'onclick="confirm_delete()"');
-        }
-
-        $template = $form->getTemplate();
-
-        $this->ps->content = PHPWS_Template::process($template, 'pagesmith',
-                        'upload_template.tpl');
-    }
-
 }
 
 ?>

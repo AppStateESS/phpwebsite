@@ -22,7 +22,7 @@ class Body extends \Data {
     const Footer = 4;
 
     private static $sections = null;
-    private static $theme = 'Themes/bootstrap/index.html';
+    private static $theme = 'bootstrap';
 
     public static function add($content, $key = 'default', $section_default = self::Body)
     {
@@ -36,7 +36,6 @@ class Body extends \Data {
     public static function show()
     {
         if (!empty(self::$sections)) {
-
             // @todo return null or error page? For now, returning a blank page
             foreach (self::$sections as $section_number => $content_array) {
                 foreach ($content_array as $content) {

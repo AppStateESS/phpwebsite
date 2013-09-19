@@ -70,7 +70,8 @@ class Folder {
                         true);
         $label = dgettext('filecabinet', 'Delete');
         if ($mode == 'image') {
-            $vars['LINK'] = Icon::show('delete');
+            $vars['LINK'] = Icon::show('delete', dgettext('filecabinet',
+                            'Delete'));
         } else {
             $vars['LINK'] = $label;
         }
@@ -96,7 +97,7 @@ class Folder {
         }
 
         if ($mode == 'image') {
-            $js['label'] = Icon::show('edit');
+            $js['label'] = '<i class="icon-edit" title="'.dgettext('filecabinet', 'Edit').'"></i>';
         } else {
             $js['label'] = & $label;
         }
@@ -199,7 +200,7 @@ class Folder {
                 break;
 
             case 'icon':
-                $vars['label'] = Icon::show('add');
+                $vars['label'] = '<i class="icon-upload" title="'.dgettext('filecabient', 'Upload').'"></i>';
                 break;
 
             default:

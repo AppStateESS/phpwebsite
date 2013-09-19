@@ -1,0 +1,758 @@
+# vlist - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: vlist.po 7013 2009-08-24 18:56:13Z verdon $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_7_2,vList1_0_5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-24 14:54-0400\n"
+"PO-Revision-Date: 2013-01-30 13:24+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#, php-format
+msgid " - %s"
+msgstr " - %s"
+
+#, php-format
+msgid "#%s %s"
+msgstr "#%s %s"
+
+#, php-format
+msgid "%s Advanced Search"
+msgstr "%s Geavanceerd zoeken"
+
+#, php-format
+msgid "%s Elements"
+msgstr "%s elementen"
+
+#, php-format
+msgid "%s Listings"
+msgstr "%s lijsten"
+
+msgid "----"
+msgstr "----"
+
+msgid "Activate"
+msgstr "Inschakelen"
+
+msgid "Activate listing"
+msgstr "Activeer lijst"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "Add Group"
+msgstr "Groep toevoegen"
+
+msgid "Add Listing"
+msgstr "Lijst toevoegen"
+
+msgid "Add new listing"
+msgstr "Nieuwe lijst toevoegen"
+
+msgid "Add/Edit listing"
+msgstr "Toevoegen/wijzigen lijst"
+
+#, php-format
+msgid "Add/edit %s custom element"
+msgstr "Toevoegen/wijzigen %s gebruikerselement"
+
+#, php-format
+msgid "Add/edit %s options"
+msgstr "Toevoegen/wijzigen %s opties"
+
+msgid "Admin email address"
+msgstr "E-mailadres beheerder"
+
+msgid "Advanced"
+msgstr "Geavanceerd"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All Listings"
+msgstr "Alle lijsten"
+
+msgid "Allow anonymous img/file access"
+msgstr "Anonieme toegang afbeeldingen/bestanden toestaan "
+
+msgid "Allow user img/file access"
+msgstr "Toegang gebruiker afbeeldingen/bestanden toestaan"
+
+msgid "Anonymous"
+msgstr "Anoniem"
+
+msgid "Approve"
+msgstr "Goedkeuren"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+#, php-format
+msgid "Are you sure you want to delete the element %s?"
+msgstr "Wilt u element %s verwijderen?"
+
+#, php-format
+msgid "Are you sure you want to delete the group %s?"
+msgstr "Wilt u groep %s verwijderen?"
+
+#, php-format
+msgid "Are you sure you want to delete the listing %s?"
+msgstr "Wilt u lijst %s verwijderen?"
+
+#, php-format
+msgid "Are you sure you want to delete the option %s?"
+msgstr "Wilt u optie %s verwijderen?"
+
+msgid "Browse all listings"
+msgstr "Toon alle lijsten"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Wijzigen instellingen (indien bevoegd)"
+
+#, php-format
+msgid "Check the email address for %s, for formatting errors."
+msgstr "Controleer het e-mailadres van %s."
+
+#, php-format
+msgid "Check the link address for %s, for formatting errors."
+msgstr "Controleer de link van %s."
+
+#, php-format
+msgid "Check your %s then create a %s to begin"
+msgstr "Controleer uw %s en maak om te beginnen een %s aan"
+
+msgid "Check your e-mail address for formatting errors."
+msgstr "Controleer uw e-mailadres."
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#, php-format
+msgid "Choice for elemet %s"
+msgstr "Kies voor element %s"
+
+msgid "Clears filters and searches all records."
+msgstr "Filters wissen en alle records doorzoeken."
+
+msgid "Columns"
+msgstr "Kolommen"
+
+#, php-format
+msgid "Contact %s"
+msgstr "Contact %s"
+
+msgid "Create"
+msgstr "Aanmaken"
+
+#, php-format
+msgid "Create %s group"
+msgstr "Aanmaken %s groep"
+
+#, php-format
+msgid "Create %s listing"
+msgstr "Aanmaken %s lijst"
+
+msgid "Created"
+msgstr "Aangemaakt"
+
+msgid "Created on, "
+msgstr "Aangemaakt op, "
+
+msgid "Criteria"
+msgstr "Criteria"
+
+msgid "Deactivate"
+msgstr "Uitschakelen"
+
+msgid "Deactivate listing"
+msgstr "Schakel lijst uit"
+
+msgid "Default"
+msgstr "Standaard"
+
+msgid "Default sort order for listings"
+msgstr "Standaard sorteervolgorde lijsten"
+
+msgid "Default value"
+msgstr "Standaardwaarde"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+#, php-format
+msgid "Delete %s options"
+msgstr "Verwijder %s opties"
+
+msgid "Delete element"
+msgstr "Verwijder element"
+
+msgid "Delete group"
+msgstr "Verwijder groep"
+
+msgid "Delete listing"
+msgstr "Verwijder lijst"
+
+msgid "Delete option"
+msgstr "Verwijder optie"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Display created date in list view"
+msgstr "Toon aanmaakdatum bij tonen lijst"
+
+msgid "Display created date on details view"
+msgstr "Toon aanmaakdatum bij tonen details lijst"
+
+msgid "Display updated date in list view"
+msgstr "Toon wijzigingsdatum bij tonen lijst"
+
+msgid "Display updated date on details view"
+msgstr "Toon wijzigingsdatum bij tonen details lijst"
+
+msgid "Display users in list view (to non-admins)"
+msgstr "Tonen lijst gebruikers (aan niet beheerders)"
+
+msgid "Divider"
+msgstr "Deler"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Dropbox"
+msgstr "Dropbox"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit element"
+msgstr "Wijzig element"
+
+msgid "Edit group"
+msgstr "Wijzig groep"
+
+msgid "Edit listing"
+msgstr "Wijzig lijst"
+
+#, php-format
+msgid "Element %s activated."
+msgstr "Element %s ingeschakeld."
+
+#, php-format
+msgid "Element %s deactivated."
+msgstr "Element %s uitgeschakeld."
+
+#, php-format
+msgid "Element %s disabled in list."
+msgstr "Element %s in lijst uitgeschakeld."
+
+#, php-format
+msgid "Element %s disabled in search."
+msgstr "Element %s voor zoeken uitgeschakeld."
+
+#, php-format
+msgid "Element %s enabled in list."
+msgstr "Element %s in lijst ingeschakeld."
+
+#, php-format
+msgid "Element %s enabled in search."
+msgstr "Element %s voor zoeken ingeschakeld."
+
+#, php-format
+msgid "Element %s is now public."
+msgstr "Element %s is nu openbaar."
+
+#, php-format
+msgid "Element %s is now restricted."
+msgstr "Element %s is nu beperkt."
+
+msgid "Element deleted."
+msgstr "Element verwijderd."
+
+msgid "Element saved successfully, please add your options."
+msgstr "Element is opgeslagen, voeg a.u.b. uw opties toe."
+
+msgid "Element saved successfully."
+msgstr "Element %s is opgeslagen."
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Enable anonymous submissions"
+msgstr "Inschakelen anonieme bijdragen"
+
+msgid "Enable extra fields"
+msgstr "Inschakelen extra velden"
+
+msgid "Enable files on listings"
+msgstr "Inschakelen bestanden op lijsten"
+
+msgid "Enable groups"
+msgstr "Inschakelen groepen"
+
+msgid "Enable images on listings"
+msgstr "Inschakelen afbeeldingen op lijsten"
+
+msgid "Enable user profiles (uses Rolodex data if available)"
+msgstr "Inschakelen gebruikersprofielen (gebruik indien aanwezig gegevens van Rolodex)"
+
+msgid "Enable user submissions"
+msgstr "Inschakelen bijdragen van gebruikers"
+
+msgid "Enable vlist sidebox"
+msgstr "Inschakelen vlist vak"
+
+msgid "Error occurred when saving element."
+msgstr "Opslaan element is mislukt."
+
+msgid "Error occurred when saving group."
+msgstr "Opslaan groep is mislukt."
+
+msgid "Error occurred when saving listing."
+msgstr "Opslaan lijst is mislukt."
+
+msgid "Error occurred when submitting listing."
+msgstr "Versturen lijst is mislukt."
+
+msgid "Extra"
+msgstr "Extra"
+
+msgid "Extra Fields"
+msgstr "Extra velden"
+
+msgid "GPS"
+msgstr "GPS"
+
+msgid "General Settings"
+msgstr "Algemene Instellingen"
+
+msgid "Go"
+msgstr "Start"
+
+msgid "Google Map"
+msgstr "Google Map"
+
+msgid "Group"
+msgstr "Groep"
+
+msgid "Group deleted."
+msgstr "Groep verwijderd."
+
+msgid "Group saved successfully."
+msgstr "Groep opgeslagen."
+
+msgid "Group(s)"
+msgstr "Groep(en)"
+
+msgid "INACTIVE"
+msgstr "INACTIEF"
+
+#, php-format
+msgid "If you would like to help out with the ongoing development of vlist, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
+msgstr "Als u wilt helpen met het ontwikkelen van vList, of ven een andere module van Verdon Vaillancourt, %s klik hier %s (opent in een nieuw scherm)."
+
+msgid "Important Information"
+msgstr "Belangrijke informatie"
+
+#, php-format
+msgid "Inactive (%s)"
+msgstr "Niet actief (%s)"
+
+msgid "Inactive listing"
+msgstr "Niet actieve lijst"
+
+msgid "Include groups in list view"
+msgstr "Voeg groepen toe bij tonen lijst"
+
+msgid "Label/name"
+msgstr "Label/naam"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "List"
+msgstr "Lijst"
+
+msgid "Listed by, "
+msgstr "Lijst op, "
+
+#, php-format
+msgid "Listing %s activated."
+msgstr "Lijst %s ingeschakeld."
+
+#, php-format
+msgid "Listing %s approved."
+msgstr "Lijst %s goedgekeurd."
+
+#, php-format
+msgid "Listing %s deactivated."
+msgstr "Lijst %s uitgeschakeld."
+
+#, php-format
+msgid "Listing %s unapproved."
+msgstr "Lijst %s afgekeurd."
+
+msgid "Listing Template"
+msgstr "Lijst templates"
+
+msgid "Listing deleted."
+msgstr "Lijst verwijderd."
+
+msgid "Listing owner"
+msgstr "Lijst eigenaar"
+
+msgid "Listing saved successfully."
+msgstr "Lijst opgeslagen."
+
+msgid "Listing settings saved."
+msgstr "Instellingen lijst opgeslagen."
+
+msgid "Listing submitted for review successfully."
+msgstr "Lijst verstuurd voor acceptatie."
+
+msgid "Lock"
+msgstr "Beveiligen"
+
+msgid "Maximum image height (50-600)"
+msgstr "Maximum breedte afbeelding (50-600)"
+
+msgid "Maximum image width (50-600)"
+msgstr "Maximum hoogte afbeelding (50-600)"
+
+msgid "Maxsize"
+msgstr "Maximum afmeting"
+
+#, php-format
+msgid "Modified %s Listing"
+msgstr "Gewijzigd %s lijst"
+
+msgid "Most Recent Listing"
+msgstr "Nieuwste lijst"
+
+msgid "Most recent"
+msgstr "Nieuwste"
+
+msgid "Multiple Select"
+msgstr "Meervoudige keuze"
+
+msgid "New Group"
+msgstr "Nieuwe groep"
+
+msgid "New Listing"
+msgstr "Nieuwe lijst"
+
+msgid "Next"
+msgstr "Volgende"
+
+msgid "No choices configured."
+msgstr "Geen keuze ingesteld."
+
+msgid "Number of options"
+msgstr "Aantal opties"
+
+msgid "Option"
+msgstr "Optie"
+
+msgid "Other"
+msgstr "Overige"
+
+#, php-format
+msgid "Pending %s Submission"
+msgstr "Wachtende %s bijdragen"
+
+msgid "Please provide a groups title."
+msgstr "Geef a.u.b. een groepsnaam op."
+
+msgid "Please provide a module title."
+msgstr "Geef a.u.b. een modulenaam op."
+
+msgid "Private"
+msgstr "Prive"
+
+msgid "Private (Internal use only)"
+msgstr "Prive (alleen intern gebruik)"
+
+msgid "Radio Button"
+msgstr "Radioknop"
+
+msgid "Random"
+msgstr "Willekeurig"
+
+msgid "Random Listing"
+msgstr "Willekeurige lijst"
+
+msgid "Read me"
+msgstr "Lees me"
+
+msgid "Required"
+msgstr "Verplicht"
+
+msgid "Rows"
+msgstr "Rijen"
+
+msgid "Save "
+msgstr "Opslaan"
+
+#, php-format
+msgid "Save %s custom element"
+msgstr "Sla %s gebruikerselement op"
+
+#, php-format
+msgid "Save %s field"
+msgstr "Sla %s veld op"
+
+#, php-format
+msgid "Save %s options"
+msgstr "Opties %s opslaan"
+
+msgid "Save Div Field"
+msgstr "Opslaan div-veld"
+
+msgid "Save Textarea"
+msgstr "Tekst opslaan"
+
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+msgid "Search"
+msgstr "Zoek"
+
+#, php-format
+msgid "Search within %s."
+msgstr "Zoek in %s."
+
+#, php-format
+msgid "See \"%s\" on Google Maps"
+msgstr "Bekijk \"%s\" op Google Maps"
+
+msgid "See listings on google maps."
+msgstr "Bekijk lijsten op Google Map."
+
+#, php-format
+msgid "See profile for %s"
+msgstr "Bekijk profiel van %s"
+
+msgid "Select one or more of the available options below to filter a list of members. It is possible to get too specific. If your search returns an empty list, try selecting fewer criteria."
+msgstr "Kies een of meerdere van de onderstaande opties om op de leden te selecteren. Als u een lege lijst krijgt, probeer dan ruimere criteria."
+
+#, php-format
+msgid "Selection %s"
+msgstr "Selectie %s"
+
+msgid "Send admin notice of edits"
+msgstr "E-mail naar beheerder bij een wijziging"
+
+msgid "Send admin notice of new submissions"
+msgstr "E-mail naar beheerder bij een nieuwe bijdrage"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings & Fields"
+msgstr "Instellingen & Velden"
+
+msgid "Show sidebox on home page only"
+msgstr "Alleen tonen op hoofdpagina"
+
+msgid "Show user details (to non-admins)"
+msgstr "Tonen details gebruikers (aan niet beheerders)"
+
+msgid "Sidebox text"
+msgstr "Tekst in het vak"
+
+msgid "Size"
+msgstr "Grootte"
+
+msgid "Sorry, no custom elements have been setup."
+msgstr "Er is nog geen gebruikerselement. "
+
+msgid "Sorry, no groups are available at this time."
+msgstr "Er is nu geen groep beschikbaar."
+
+msgid "Sorry, the readme file does not exist."
+msgstr "Het readme bestand ontbreekt."
+
+msgid "Sorry, this listing is not currently available."
+msgstr "Deze lijst is nu niet beschikbaar."
+
+msgid "Sort"
+msgstr "Sorteren"
+
+msgid "Sort order"
+msgstr "Sorteervolgorde"
+
+msgid "Submission Settings"
+msgstr "Instellingen versturen"
+
+msgid "Submit"
+msgstr "Versturen"
+
+#, php-format
+msgid "Submit %s listing"
+msgstr "Lijst %s versturen"
+
+msgid "Submit a listing"
+msgstr "Een lijst versturen"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Textarea"
+msgstr "Tekstvak"
+
+msgid "Textfield"
+msgstr "Tekstveld"
+
+#, php-format
+msgid "The %s listing %s has been modified at %s."
+msgstr "De %s lijst %s is gewijzigd op %s."
+
+msgid "The display title for groups, eg. Groups, Regions, Categories, etc."
+msgstr "De te tonen naam voor groepen, bijv. Groep, Regio of Categorie."
+
+msgid "The display title for this module, eg. vList, Properties, Listings, etc."
+msgstr "De te tonen naam van deze module, bijv. vList, Eigenschappen of Lijsten."
+
+msgid "The type of element was not specified."
+msgstr "Het type van het element is niet opgegeven."
+
+msgid "Title"
+msgstr "Naam"
+
+msgid "To select more than one itme from any given list, click on the first item then hold your control key and click on the next. Use shift-click to select a range of items. Mac users, use command-click and shift-click."
+msgstr "Als U meerdere opties wilt selecteren: klik op de eerste en hou de CTRL-toets ingedrukt en selecteer de anderen. Gebruik de SHIFT-toets om  een rij te selecteren. Voor bezitters van een Mac: gebruik command-klik en shift-klik."
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Unapprove"
+msgstr "Afkeuren"
+
+msgid "Unapprove listing"
+msgstr "Lijst afkeuren"
+
+#, php-format
+msgid "Unapproved %s Listings"
+msgstr "Afgekeurd %s lijsten"
+
+#, php-format
+msgid "Unapproved (%s)"
+msgstr "Afgekeurd (%s)"
+
+msgid "Unlock"
+msgstr "Vrijgeven"
+
+msgid "Update"
+msgstr "Wijzigen"
+
+#, php-format
+msgid "Update %s group"
+msgstr "Wijzig %s groep"
+
+#, php-format
+msgid "Update %s listing"
+msgstr "Wijzig %s lijst"
+
+msgid "Updated"
+msgstr "Gewijzigd"
+
+msgid "Updated on, "
+msgstr "Gewijzigd op,"
+
+msgid "Use in advanced search"
+msgstr "Gebruik bij uitgebreid zoeken"
+
+msgid "Use in list"
+msgstr "Gebruik in lijst"
+
+msgid "Visit this listings's link."
+msgstr "Gebruik de link in deze lijst."
+
+#, php-format
+msgid "You have a new %s submission entitled %s waiting for your review at %s."
+msgstr "Er wacht een nieuwe %s bijdrage genaamd %s op een beoordeling door u op %s."
+
+#, php-format
+msgid "You must enter a gps value for %s."
+msgstr "U moet een gps waarde opgeven voor %s."
+
+#, php-format
+msgid "You must enter a link for %s."
+msgstr "U moet een link opgeven voor %s."
+
+#, php-format
+msgid "You must enter a value for %s."
+msgstr "U  moet een waarde opgeven voor %s."
+
+#, php-format
+msgid "You must enter an email address for %s."
+msgstr "U moet een e-mailadres opgeven voor %s."
+
+#, php-format
+msgid "You must enter something for %s."
+msgstr "U moet iets invullen voor %s."
+
+msgid "You must give this element a label."
+msgstr "U moet het element een naam geven."
+
+msgid "You must give this group a title."
+msgstr "U moet de groep een naam geven."
+
+msgid "You must give this listing a description."
+msgstr "U moet de lijst beschrijven."
+
+msgid "You must give this listing a title."
+msgstr "U moet de groep een lijst geven."
+
+#, php-format
+msgid "You must make a selection for %s."
+msgstr "U moet een keuze maken voor %s."
+
+#, php-format
+msgid "You must make at least one selection for %s."
+msgstr "U moet minimaal een keuze maken voor %s."
+
+msgid "You must provide an e-mail address for the admin."
+msgstr "U moet een e-mailadres opgeven van de beheerder."
+
+msgid "You must select a valid element type to add."
+msgstr "U moet een geldig type opgeven voor het toe te voegen element."
+
+msgid "vList tables dropped."
+msgstr "vList tabellen verwijderd."
+
+msgid "Create and manage listings of pretty much anything."
+msgstr "Aanmaken en beheren van lijsten voor alles en nog wat."
+

@@ -1,0 +1,97 @@
+# vpath - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: vpath.po 7171 2009-12-07 17:55:32Z verdon $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS_1_7_2,vpath1_0_5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-12-03 14:14-0500\n"
+"PO-Revision-Date: 2012-12-30 20:59+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Change settings"
+msgstr "Wijzig instellingen"
+
+msgid "Display path on home"
+msgstr "Tonen pad op hoofdpagina"
+
+msgid "Display peer menu if current location has no subs"
+msgstr "Toon peer menu als huidige lokatie geen sublokaties heeft"
+
+msgid "Display sub menu for current location"
+msgstr "Toon submenu voor huidige lokatie"
+
+msgid "Divider"
+msgstr "Scheidingsteken"
+
+msgid "Enable vpath"
+msgstr "Vpath inschakelen"
+
+msgid "General Settings"
+msgstr "Algemene Instellingen"
+
+#, php-format
+msgid "If you would like to help out with the ongoing development of vpath, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
+msgstr "Wilt u helpen bij de ontwikkeling van vpath of een andere module van Verdon Vaillancourt, %s klik hier om te doneren %s (opent in een nieuw venster)."
+
+msgid "Important Information"
+msgstr "Belangrijke informatie"
+
+msgid "Make current location (end of path) clickable"
+msgstr "Maak huidige lokatie klikbaar"
+
+msgid "Menu to follow"
+msgstr "Te volgen menu "
+
+msgid "Read me"
+msgstr "Lees me"
+
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Sorry, the readme file does not exist."
+msgstr "Het readme bestand ontbreekt."
+
+msgid "Text after the path"
+msgstr "Tekst na het pad"
+
+msgid "Text before the path, eg. You are here:"
+msgstr "Tekst voor het pad (Bijv. U bent hier:)"
+
+msgid "Use space around divider"
+msgstr "Gebruik spaties voor en na scheidingsteken "
+
+msgid "vPath settings saved."
+msgstr "Instellingen opgeslagen."
+
+msgid "Provide a breadcrumb trail of a given menu.."
+msgstr "Broodkruimelspoor maken."
+

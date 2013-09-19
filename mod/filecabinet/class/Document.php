@@ -178,12 +178,6 @@ class PHPWS_Document extends File_Common {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id,
                         'folder')) {
             $links[] = $this->editLink(true);
-
-            $vars['document_id'] = $this->id;
-            $vars['dop'] = 'clip_document';
-            $clip = sprintf('<img src="%smod/filecabinet/img/clip.png" title="%s" />',
-                    PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Clip document'));
-            $links[] = PHPWS_Text::moduleLink($clip, 'filecabinet', $vars);
             $links[] = $this->deleteLink(true);
             $links[] = $this->accessLink();
         }
@@ -289,8 +283,8 @@ EOF;
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = Icon::show('delete',
-                            dgettext('filecabinet', 'Delete document'));
+            $js['LINK'] = '<i class="icon-trash" title="' . dgettext('filecabinet',
+                            'Delete document') . '"></i>';
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }

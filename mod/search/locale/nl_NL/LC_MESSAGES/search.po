@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Search0_4_0\n"
+"Project-Id-Version: PHPWS1_7_2,Search0_4_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2009-05-25 12:53+0100\n"
-"Last-Translator: HanV <hanv@users.sourceforge.net>\n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"PO-Revision-Date: 2013-01-31 15:42+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -25,7 +25,7 @@ msgid "Add"
 msgstr "Toevoegen"
 
 msgid "Administrate and see information on searches."
-msgstr "Administreer en zie informatie over zoeken."
+msgstr "Administreer en bekijk informatie over zoeken."
 
 msgid "Advanced Search"
 msgstr "Geavanceerd Zoeken"
@@ -49,7 +49,7 @@ msgid "Close"
 msgstr "Sluiten"
 
 msgid "Current keywords"
-msgstr "Huidige sleutelwoorden"
+msgstr "Huidige keywords"
 
 msgid "Delete"
 msgstr "Verwijderen"
@@ -76,13 +76,13 @@ msgid "Ignored"
 msgstr "Overgeslagen"
 
 msgid "Keyword"
-msgstr "Sleutelwoord"
+msgstr "Keyword"
 
 msgid "Keywords"
-msgstr "Sleutelwoorden"
+msgstr "Keywords"
 
 msgid "Keywords added to admin menu."
-msgstr "Sleutelwoorden toegevoegd aan menu."
+msgstr "Keywords toegevoegd aan menu."
 
 msgid "Last called"
 msgstr "Laatste vraag"

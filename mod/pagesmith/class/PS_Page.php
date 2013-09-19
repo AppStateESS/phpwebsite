@@ -246,7 +246,7 @@ class PS_Page {
         $js['QUESTION'] = dgettext('pagesmith',
                 'Are you sure you want to delete this page?');
         if ($icon) {
-            $js['LINK'] = Icon::show('delete');
+            $js['LINK'] = '<i class="icon-trash"></i>';
         } else {
             $js['LINK'] = dgettext('pagesmith', 'Delete');
         }
@@ -256,7 +256,7 @@ class PS_Page {
     public function editLink($label = null, $icon = false)
     {
         if ($icon) {
-            $label = Icon::show('edit', dgettext('pagesmith', 'Edit page'));
+            $label = '<i class="icon-edit"></i>';
         } elseif (empty($label)) {
             $label = dgettext('pagesmith', 'Edit');
         }
@@ -271,16 +271,16 @@ class PS_Page {
         if ($this->front_page) {
             $label = dgettext('pagesmith', 'Remove from front');
             if ($icon) {
-                $label = sprintf('<img src="%smod/pagesmith/img/back.png" title="%s" alt="%s" />',
-                        PHPWS_SOURCE_HTTP, $label, $label);
+                $label = sprintf('<i class="icon-flag" title="%s"></i>',
+                        PHPWS_SOURCE_HTTP, $label);
             }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
             $label = dgettext('pagesmith', 'Add to front');
             if ($icon) {
-                $label = sprintf('<img src="%smod/pagesmith/img/front.png" title="%s" alt="%s" />',
-                        PHPWS_SOURCE_HTTP, $label, $label);
+                $label = sprintf('<i class="icon-flag-alt" title="%s"></i>',
+                        PHPWS_SOURCE_HTTP, $label);
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;
@@ -458,7 +458,7 @@ class PS_Page {
     public function flag()
     {
         $this->loadKey();
-        if (!$this->front_page && $this->key_id) {
+        if (!PHPWS_Core::atHome() && $this->key_id) {
             $this->_key->flag();
         }
     }

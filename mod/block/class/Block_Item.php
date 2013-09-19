@@ -14,6 +14,7 @@ class Block_Item {
     public $content = null;
     public $file_id = 0;
     public $hide_title = 0;
+    public $hide_narrow = 0;
     public $_pin_key = null;
 
     public function __construct($id = null)
@@ -163,7 +164,8 @@ class Block_Item {
     {
         $edit = $opt = null;
         if (Current_User::allow('block', 'edit_block', $this->id)) {
-            $img = Icon::show('edit', dgettext('block', 'Edit block'));
+            $img = '<i class="icon-edit" title="' . dgettext('block',
+                            'Edit block') . '"></i>';
             $edit = PHPWS_Text::secureLink($img, 'block',
                             array('block_id' => $this->id,
                         'action' => 'edit'));
@@ -182,10 +184,8 @@ class Block_Item {
                                 TRUE);
                 $js_var['QUESTION'] = dgettext('block',
                         'Are you sure you want to remove this block from this page?');
-                $icon = Icon::get('close');
-                $icon->setAlt(dgettext('block', 'Delete block'));
-                $icon->setStyle('margin : 3px');
-                $js_var['LINK'] = $icon->__toString();
+                $js_var['LINK'] = "<i class='icon-remove-circle' title='" . dgettext('block',
+                                'Remove block from page') . "'></i>";
 
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
@@ -195,6 +195,9 @@ class Block_Item {
         $template = array('CONTENT' => $this->getContent(), 'OPT' => $opt, 'EDIT' => $edit, 'ID' => $this->getId());
         if (!$this->hide_title) {
             $template['TITLE'] = $this->getTitle();
+        }
+        if ($this->hide_narrow) {
+            $template['HIDDEN'] = ' hidden-xs';
         }
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
     }
@@ -236,14 +239,12 @@ class Block_Item {
                                     dgettext('block', 'Edit')), 'block', $vars);
             if ($this->allPinned()) {
                 $vars['action'] = 'remove';
-                $links[] = PHPWS_Text::secureLink(Icon::show('unsticky',
-                                        dgettext('block', 'Unpin all')),
-                                'block', $vars);
+                $links[] = PHPWS_Text::secureLink("<i class='icon-flag' title='" . dgettext('block',
+                                        'Remove block from all pages') . "'></i>", 'block', $vars);
             } else {
                 $vars['action'] = 'pin_all';
-                $links[] = PHPWS_Text::secureLink(Icon::show('sticky_all',
-                                        dgettext('block', 'Pin all')), 'block',
-                                $vars);
+                $links[] = PHPWS_Text::secureLink("<i class='icon-flag-alt' title='" . dgettext('block',
+                                        'Display block on all pages') . "'></i>", 'block', $vars);
             }
 
             if (Current_User::isUnrestricted('block')) {
@@ -258,7 +259,8 @@ class Block_Item {
                     'Are you sure you want to permanently delete this block?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars,
                             TRUE);
-            $confirm_vars['LINK'] = Icon::show('delete');
+            $confirm_vars['LINK'] = '<i class="icon-trash" title="' . dgettext('block',
+                            'Delete') . '"></i>';
             $links[] = javascript('confirm', $confirm_vars);
         }
 

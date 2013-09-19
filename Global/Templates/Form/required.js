@@ -2,7 +2,7 @@ var required = new Required;
 
 $(window).load(function() {
     var error_free;
-    $('input[required],textarea[required]').change(function() {
+    $('input[required],textarea[required]').blur(function() {
         var input = $(this);
         required.checkInput(input);
     });
@@ -66,7 +66,7 @@ function Required() {
             this.removeError(input);
             return true;
         } else {
-            input.after('<div class="required-error label label-important">Email address not formatted correctly.</div>');
+            input.after('<div class="required-error label label-danger">Email address not formatted correctly.</div>');
             return false;
         }
     };
@@ -83,11 +83,12 @@ function Required() {
     };
 
     this.addEmptyError = function(input) {
-        input.after('<div class="required-error label label-important">Must not be left empty.</div>');
+        input.parent().addClass('has-error');
+        input.attr('placeholder', 'Must not be left empty');
     };
 
     this.addSelectError = function(input) {
-        input.after('<div class="required-error label label-important">Please select an option.</div>');
+        input.after('<div class="required-error label label-danger">Please select an option.</div>');
     };
 
     this.removeError = function(input) {

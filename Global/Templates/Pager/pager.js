@@ -300,7 +300,7 @@ function Pager(page) {
         this.clearRows();
         this.loadData();
         if (this.rows === undefined) {
-            $('.pagination', this.page).html('No result found.');
+            $('#page-list', this.page).html('No result found.');
         }
     };
 
@@ -402,7 +402,7 @@ function Pager(page) {
             }
             $('.pager-body').append(new_row.outerHTML());
         });
-        $('.pagination', this.page).html(this.page_listing);
+        $('#page-list', this.page).html(this.page_listing);
         $('.pager-search', this.page).html(this.search_box);
         this.fillHeader();
     };

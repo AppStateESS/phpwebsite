@@ -49,6 +49,12 @@ class Request extends Data {
     const PATCH = 'PATCH';
 
     /**
+     * An array of commands derived from the url
+     * @var array
+     */
+    protected $commands;
+
+    /**
      * Holds the key/value data available from the various request methods
      * @var vars
      */
@@ -99,8 +105,7 @@ class Request extends Data {
      *                    Form data)
      * @param $accept Http\Accept
      */
-    public function __construct($url, $method, array $vars = null,
-        $data = null, Http\Accept $accept = null)
+    public function __construct($url, $method, array $vars = null, $data = null, Http\Accept $accept = null)
     {
         $this->setUrl($url);
         $this->setMethod($method);
@@ -114,8 +119,10 @@ class Request extends Data {
 
         // @todo I am a bit worried about the default here; in fact, it should
         // probably not be allowed to be null at all.
-        if(is_null($accept)) $accept = new Http\Accept('text/html');
+        if (is_null($accept))
+            $accept = new Http\Accept('text/html');
         $this->setAccept($accept);
+        $this->buildCommands();
     }
 
     /**
@@ -133,6 +140,28 @@ class Request extends Data {
 
         // Ensure consistency in URLs
         $this->url = $this->sanitizeUrl($url);
+    }
+
+    /**
+     * Builds the commands parameter based on the current url.
+     */
+    public function buildCommands()
+    {
+        $url = preg_replace('@^/@', '', $this->url);
+        $cmds = explode('/', $url);
+        if ($cmds[0] == $this->module) {
+            array_shift($cmds);
+        }
+        $this->commands = $cmds;
+    }
+
+    /**
+     * Shifts a command from the front of the stack
+     * @return type
+     */
+    public function shiftCommand()
+    {
+        return array_shift($this->commands);
     }
 
     /**
@@ -243,7 +272,6 @@ class Request extends Data {
         }
     }
 
-
     /**
      * Checks to see if the $variable_name exists in the $vars parameter. If so,
      * it is returned, else the $then parameter is returned.
@@ -251,7 +279,8 @@ class Request extends Data {
      * @param mixed $then
      * @return mixed
      */
-    public function ifNotVarThen($variable_name, $then) {
+    public function ifNotVarThen($variable_name, $then)
+    {
         return $this->isVar($variable_name) ? $this->getVar($variable_name) : $then;
     }
 
@@ -375,7 +404,8 @@ class Request extends Data {
     {
         preg_match('@^(/[^/]*)@', $this->getUrl(), $matches);
 
-        if($matches[0] == '/') return '/';
+        if ($matches[0] == '/')
+            return '/';
 
         return substr($matches[0], 1);
     }
@@ -400,46 +430,8 @@ class Request extends Data {
         $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
 
         return new Request(
-            $url,
-            $this->getMethod(),
-            $this->getRequestVars(),
-            $this->getRawData(),
-            $this->getAccept());
-    }
-
-    /**
-     * Passes the get or post state off to the class requested.
-     *
-     * Example:
-     * The address below is entered:
-     * site.com/Foo/Bar/Alpha
-     *
-     * In Foo/Module.php, the get() method could use:
-     * return \Request::pass('Foo');
-     *
-     * Request would then call the next value in the call - Bar.
-     * If Foo/Bar can be constructed and the state method, get(), exists, then
-     * it will be called.
-     *
-     * @param string $namespace Namespace containing the class to pass off the state to
-     * @return \Response
-     * @throws \Exception
-     */
-    public function pass($namespace)
-    {
-        $state = $this->getMethod();
-
-        $class_name = $namespace;
-
-        while ($command = $this->shiftCommand()) {
-            $class_name .= '\\' . $command;
-            if (class_exists($class_name) && method_exists($class_name, $state)) {
-                $obj = new $class_name;
-                return $obj->$state();
-            }
-        }
-        throw new \Exception(t('Pass command called by %s module cannot continue',
-                $class_name));
+                $url, $this->getMethod(), $this->getRequestVars(),
+                $this->getRawData(), $this->getAccept());
     }
 
     /**

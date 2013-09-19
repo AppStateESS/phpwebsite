@@ -79,26 +79,6 @@ class User_Action {
                 $content = User_Form::userForm($user);
                 break;
 
-            case 'notify_user':
-                if (!User_Action::notifyUser()) {
-                    $message = dgettext('users',
-                            'Failed to send notification email.');
-                } else {
-                    $message = dgettext('users', 'User created and notified.');
-                }
-                $user_id = $_SESSION['New_User']['user_id'];
-                unset($_SESSION['New_User']);
-                User_Action::sendMessage($message,
-                        'setUserPermissions&user_id=' . $user_id);
-                break;
-
-            case 'do_not_notify':
-                $user_id = $_SESSION['New_User']['user_id'];
-                unset($_SESSION['New_User']);
-                User_Action::sendMessage(dgettext('users', 'User created.'),
-                        'setUserPermissions&user_id=' . $user_id);
-                break;
-
             case 'deleteUser':
                 if (!Current_User::secured('users', 'delete_users')) {
                     Current_User::disallow();
@@ -339,12 +319,23 @@ class User_Action {
 
                     $panel->setCurrentTab('manage_users');
 
+                    if (isset($_POST['notify_user'])) {
+                        self::notifyUser($user, $_POST['password1']);
+                    }
+
                     if (isset($_POST['user_id'])) {
                         User_Action::sendMessage(dgettext('users',
                                         'User updated.'), 'manage_users');
                     } elseif (Current_User::allow('users', 'edit_permissions')) {
-                        $title = dgettext('users', 'Notify user');
-                        $content = User_Action::askNotify($user);
+                        if (isset($_POST['notify_user'])) {
+                            User_Action::sendMessage(dgettext('users',
+                                            'New user created and notified.'),
+                                    'setUserPermissions&user_id=' . $user->id);
+                        } else {
+                            User_Action::sendMessage(dgettext('users',
+                                            'New user created.'),
+                                    'setUserPermissions&user_id=' . $user->id);
+                        }
                     } else {
                         User_Action::sendMessage(dgettext('users',
                                         'User created.'), 'new_user');
@@ -640,7 +631,7 @@ class User_Action {
             }
         }
 
-        if (isset($_POST['display_name'])) {
+        if (!isset($error['USERNAME_ERROR']) && isset($_POST['display_name'])) {
             $result = $user->setDisplayName($_POST['display_name']);
             if (PHPWS_Error::isError($result)) {
                 $error['DISPLAY_ERROR'] = $result->getMessage();
@@ -674,7 +665,6 @@ class User_Action {
             setcookie('phpws_default_language', $locale,
                     time() + CORE_COOKIE_TIMEOUT);
         }
-
         if (isset($error)) {
             return $error;
         } else {
@@ -1634,34 +1624,9 @@ class User_Action {
         return true;
     }
 
-    public static function askNotify($user)
-    {
-        $content[] = dgettext('users', 'Do you wish to notify the new user?');
-        $_SESSION['New_User']['user_id'] = $user->id;
-        $_SESSION['New_User']['username'] = $user->username;
-        $_SESSION['New_User']['password'] = $_POST['password1'];
-        $_SESSION['New_User']['email'] = $user->email;
-
-        $vars['action'] = 'admin';
-        $vars['command'] = 'notify_user';
-        $content[] = PHPWS_Text::secureLink(dgettext('users',
-                                'Yes, send them an email'), 'users', $vars);
-
-        $vars['command'] = 'do_not_notify';
-        $content[] = PHPWS_Text::secureLink(dgettext('users',
-                                'No, do not notify'), 'users', $vars);
-
-        return implode('<br />', $content);
-    }
-
-    public function notifyUser()
+    public static function notifyUser($user, $password)
     {
         PHPWS_Core::initCoreClass('Mail.php');
-        setLanguage(DEFAULT_LANGUAGE);
-        if (!isset($_SESSION['New_User'])) {
-            return;
-        }
-        extract($_SESSION['New_User']);
         $page_title = Layout::getPageTitle(true);
 
 
@@ -1671,13 +1636,13 @@ class User_Action {
                 'You may log-in using the following information:');
         $body[] = sprintf(dgettext('users', 'Site address: %s'),
                 PHPWS_Core::getHomeHttp());
-        $body[] = sprintf(dgettext('users', 'Username: %s'), $username);
+        $body[] = sprintf(dgettext('users', 'Username: %s'), $user->username);
         $body[] = sprintf(dgettext('users', 'Password: %s'), $password);
         $body[] = dgettext('users',
                 'Please change your password immediately after logging in.');
 
         $mail = new PHPWS_Mail;
-        $mail->addSendTo($email);
+        $mail->addSendTo($user->email);
         $mail->setSubject(sprintf(dgettext('users', '%s account created'),
                         $page_title));
         $mail->setFrom(PHPWS_User::getUserSetting('site_contact'));

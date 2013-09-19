@@ -11,16 +11,12 @@ $core_modules = array('users',
                       'controlpanel',
                       'layout',
                       'boost',
-                      'categories',
                       'filecabinet',
                       'version',
                       'clipboard',
                       'demographics',
-                      'comments',
                       'search',
                       'miniadmin',
                       'access'
                       );
-
-
                       ?>

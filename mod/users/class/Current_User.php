@@ -359,7 +359,7 @@ final class Current_User {
 
         switch ($mode) {
             case 'icon':
-                $js_vars['label'] = Icon::show('permission', $label);
+                $js_vars['label'] = "<i class='icon-unlock' title='$label'></i>";
                 break;
 
             default:

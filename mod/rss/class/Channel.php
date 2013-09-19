@@ -7,7 +7,9 @@
  */
 
 PHPWS_Core::requireConfig('rss');
-
+if (!defined('CURRENT_LANGUAGE')) {
+    define('CURRENT_LANGUAGE', 'en_US');
+}
 class RSS_Channel {
     public $id              = 0;
     public $module          = NULL;
@@ -15,7 +17,6 @@ class RSS_Channel {
     //    public $link            = NULL;
     public $description     = NULL;
     public $pub_date        = 0;
-    //    public $category        = NULL;
     public $ttl             = 0;
     public $image_id        = 0;
     //    public $text_input      = NULL;

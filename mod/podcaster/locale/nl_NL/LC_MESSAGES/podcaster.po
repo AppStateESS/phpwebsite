@@ -1,0 +1,422 @@
+# podcaster - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: podcaster.po 6981 2009-08-13 17:39:37Z matt $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_7_2,Podcaster1_2_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"PO-Revision-Date: 2013-01-30 13:23+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "A note on iTunes categories:"
+msgstr "Een opmerking over de categorieen van iTunes:"
+
+msgid "Activate"
+msgstr "Inschakelen"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "Add an episode below."
+msgstr "Onderstaand een aflevering toevoegen."
+
+msgid "Add Episode"
+msgstr "Toevoegen aflevering"
+
+#, php-format
+msgid "Add episode to %s"
+msgstr "Een aflevering toevoegen aan %s"
+
+msgid "Add/Edit channel"
+msgstr "Toevoegen/Wijzigen zender"
+
+msgid "Add/Edit episode"
+msgstr "Toevoegen/Wijzigen aflevering"
+
+#, php-format
+msgid "All %s Episodes"
+msgstr "Alle %s afleveringen"
+
+msgid "All Podcaster Episodes"
+msgstr "Alle afleveringen"
+
+msgid "An error occurred when accessing this channel's episodes."
+msgstr "Het benaderen van de afleveringen van deze zender is mislukt."
+
+msgid "Anonymous"
+msgstr "Anoniem"
+
+#, php-format
+msgid "Approval (%s)"
+msgstr "Goedkeuren (%s)"
+
+msgid "Approve"
+msgstr "Goedkeuren"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+msgid "Archives"
+msgstr "Archieven"
+
+msgid "Are you certain you want to delete this episode?"
+msgstr "Wilt U deze aflevering verwijderen?"
+
+#, php-format
+msgid ""
+"Are you sure you want to delete the channel %s?\\n"
+"All related episodes and channel information will be permanently removed."
+msgstr ""
+"Wilt u de zender %s verwijderen?\\n"
+"Alle bijbehorende afleveringen en zender informatie gaan verloren."
+
+msgid "Audio/Video"
+msgstr "Audio/Video"
+
+msgid "Cache duration in seconds for rss feed (0-7200, set to 0 to disable cache)"
+msgstr "Tijd in cache in seconden voor RSS Feed (0-7200, 0 is geen cache)"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Wijzig instellingen  (Alleen onbeperkte)"
+
+msgid "Channel"
+msgstr "Zender"
+
+msgid "Channel saved successfully."
+msgstr "Zender opgeslagen."
+
+#, php-format
+msgid "Check your %s then create a %s to begin"
+msgstr "Controleer uw %s en maak een %s aan"
+
+msgid "Clean"
+msgstr "Wis"
+
+msgid "Click on \"New episode\" to start."
+msgstr "Klik op \"Nieuwe aflevering\" om te beginnen."
+
+msgid "Continue"
+msgstr "Ga verder"
+
+msgid "Copyright"
+msgstr "Copyright"
+
+msgid "Create"
+msgstr "Aanmaken"
+
+msgid "Create podcaster channel"
+msgstr "Nieuwe zender "
+
+msgid "Deactivate"
+msgstr "Uitschakelen"
+
+msgid "Delete"
+msgstr "Verwijder"
+
+msgid "Delete channel"
+msgstr "Verwijder zender"
+
+msgid "Delete episode"
+msgstr "Verwijder aflevering"
+
+msgid "Delete media from filecabinet when deleting episode"
+msgstr "Verwijder media van filecabinet bij verwijderen aflevering"
+
+msgid "Delete related media files from filecabinet?"
+msgstr "Moeten de bijbehorende mediabestanden uit het filecabinet verwijderd worden?"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Document"
+msgstr "Document"
+
+msgid "Edit"
+msgstr "Wijzig"
+
+msgid "Edit channel"
+msgstr "Wijzig zender"
+
+msgid "Edit episode"
+msgstr "Wijzig aflevering"
+
+msgid "Episode could not be deleted successfully."
+msgstr "Verwijderen aflevering is mislukt."
+
+msgid "Episode deleted successfully."
+msgstr "Aflevering verwijderd."
+
+msgid "Episode is missing channel id."
+msgstr "Bij de aflevering mist de zender."
+
+msgid "Episode saved successfully."
+msgstr "Aflevering is opgeslagen."
+
+msgid "Episode submitted for approval successfully."
+msgstr "Aflevering is aangemeld voor goedkeuring."
+
+msgid "Error occurred when saving channel."
+msgstr "Opslaan zender is mislukt."
+
+msgid "Error occurred when saving episode."
+msgstr "Opslaan aflevering is mislukt."
+
+msgid "Fatal error: Cannot create episode. Missing channel id."
+msgstr "Aflevering kan niet verwijderd worden, het id van de zender ontbreekt."
+
+msgid "From the  channel..."
+msgstr "Van de zender..."
+
+msgid "General Settings"
+msgstr "Algemene Instellingen"
+
+msgid "Hide general image folders"
+msgstr "Verberg algemene mappen met afbeeldingen"
+
+#, php-format
+msgid "If you would like to help out with the ongoing development of Podcaster, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
+msgstr "Als u wilt helpen met het ontwikkelen van Podcaster, of van een andere module van Verdon Vaillancourt, %s klik hier %s (opent in een nieuw scherm)."
+
+msgid "Image Settings"
+msgstr "Instellingen Afbeeldingen"
+
+msgid "Important Information"
+msgstr "Belangrijke informatie"
+
+#, php-format
+msgid "In channel: %s"
+msgstr "Zender: %s"
+
+msgid "Information"
+msgstr "Informatie"
+
+msgid "List Channels"
+msgstr "Lijst zenders"
+
+msgid "List Episodes"
+msgstr "Lijst afleveringen"
+
+msgid "List all channels"
+msgstr "Toon alle zenders"
+
+msgid "Managing Editor"
+msgstr "Managing Editor"
+
+msgid "Managing editor email address"
+msgstr "Beheer e-mailadres beheerder"
+
+msgid "Maximum image height (50-600)"
+msgstr "Maximum hoogte afbeelding (50-600)"
+
+msgid "Maximum image width (50-600)"
+msgstr "Maximum breedte afbeelding (50-600)"
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Media type for this channel"
+msgstr "Media type voor deze zender"
+
+msgid "Most Recent Episode"
+msgstr "Nieuwste Afleveringen"
+
+msgid "Most recent"
+msgstr "Meest recente"
+
+msgid "New Channel"
+msgstr "Nieuwe zender"
+
+msgid "New Episode"
+msgstr "Nieuwe Aflevering"
+
+msgid "New episode"
+msgstr "Nieuwe aflevering"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "No Media Attached"
+msgstr "Geen media bijgevoegd"
+
+msgid "Not Active"
+msgstr "Niet actief"
+
+msgid "Not Approved"
+msgstr "Niet goedgekeurd"
+
+msgid "Play"
+msgstr "Afspelen"
+
+msgid "Please check editor email format."
+msgstr "Controleer a.u.b. het e-mailadres."
+
+msgid "Please check webmaster email format."
+msgstr "Controleer het e-mailadres van de webmaster."
+
+msgid "Podcaster"
+msgstr "Podcaster"
+
+msgid "Podcaster Channels"
+msgstr "Podcaster Zenders"
+
+msgid "Podcaster channel activated."
+msgstr "Zender geactiveerd."
+
+msgid "Podcaster channel deactivated."
+msgstr "Zender uitgeschakeld."
+
+msgid "Podcaster channel deleted."
+msgstr "Zender verwijderd."
+
+msgid "Podcaster episode activated."
+msgstr "Aflevering geactiveerd."
+
+msgid "Podcaster episode approved."
+msgstr "Aflevering goedgekeurd."
+
+msgid "Podcaster episode deactivated."
+msgstr "Aflevering uitgeschakeld."
+
+msgid "Podcaster episode unapproved."
+msgstr "Aflevering niet goedgekeurd."
+
+msgid "Podcaster settings saved."
+msgstr "Podcaster instellingen opgeslagen."
+
+#, php-format
+msgid "Podcaster tables dropped, %s media file(s) deleted."
+msgstr "Podcaster tabellen verwijderd, %s media bestanden verwijderd."
+
+msgid "Podcaster tables dropped, no media to delete."
+msgstr "Podcaster tabellen verwijderd, geen media bestanden verwijderd."
+
+msgid "Podcaster tables dropped."
+msgstr "Podcaster tabellen verwijderd."
+
+#, php-format
+msgid "Published by: %s"
+msgstr "Gepubliceerd door: %s"
+
+msgid "Random"
+msgstr "Willekeurig"
+
+msgid "Random Episode"
+msgstr "Willekeurige aflevering"
+
+msgid "Read me"
+msgstr "Lees me"
+
+msgid "Require approval for new episodes"
+msgstr "Vraag goedkeuring voor nieuwe afleveringen"
+
+msgid "Return to channel page"
+msgstr "Terug naar pagina met zenders "
+
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Show current episodes per channel limit (1-50)"
+msgstr "Toon huidige afleveringen per zender (limiet 1-50)"
+
+msgid "Show on home only"
+msgstr "Alleen tonen op hoofdpagina"
+
+msgid "Show podcaster block"
+msgstr "Toon podcaster blok"
+
+msgid "Sorry, no channels are available at this time."
+msgstr "Sorry, er zijn nu geen zenders beschikbaar."
+
+msgid "Sorry, the readme file does not exist."
+msgstr "Sorry, het bestand readme ontbreekt."
+
+msgid "Subscribe RSS"
+msgstr "Aanmelden RSS"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Unapprove"
+msgstr "Afkeuren"
+
+msgid "Update"
+msgstr "Wijzig"
+
+#, php-format
+msgid "Update %s episode"
+msgstr "Wijzig %s aflevering"
+
+msgid "Update podcaster channel"
+msgstr "Wijzigen zender"
+
+msgid "Updated"
+msgstr "Gewijzigd"
+
+msgid "Webmaster"
+msgstr "Webmaster"
+
+msgid "Webmaster email address"
+msgstr "Webmaster e-mailadres"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You must give this podcaster channel a description."
+msgstr "U moet  de zender een beschrijving geven."
+
+msgid "You must give this podcaster channel a title."
+msgstr "U moet de zender een titel geven."
+
+msgid "You must give your episode a description."
+msgstr "U moet de aflevering een beschrijving geven."
+
+msgid "You must give your episode a title."
+msgstr "U moet de aflevering een titel geven."
+
+msgid "iTunes Category(s)"
+msgstr "iTunes categorieen"
+
+msgid "iTunes Explicit"
+msgstr "iTunes expliciet"
+
+msgid "iTunes categories are used to classify your podcasts in the iTunes podcast directory. They are limited and specific. Although it is OK to leave this field empty, choosing the correct categories is good for your feed and may be used by other podcast directories and readers too."
+msgstr "Een categorie in iTunes wordt gebruikt om de podcasts in te delen in de map met iTunes podcasts. Er zijn een beperkt aantal categorieen. Het is goed om de categorie in te vullen om de feed te gebruiken. Het kan ook voor andere podcast mappen en abonnees gebruikt worden."
+
+msgid "Publish multi-media blogs."
+msgstr "Multi-media blogs publiceren."
+

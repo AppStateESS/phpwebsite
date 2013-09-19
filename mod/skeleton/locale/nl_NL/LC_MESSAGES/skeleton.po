@@ -1,0 +1,275 @@
+# skeleton - phpwebsite module
+#
+# See docs/AUTHORS and docs/COPYRIGHT for relevant info.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# @version $Id: $
+# @author Verdon Vaillancourt <verdonv at gmail dot com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS_1_7_2,SKELETON1_0_1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-08-13 13:36-0400\n"
+"PO-Revision-Date: 2012-12-26 13:53+0100\n"
+"Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
+"Language-Team: HanV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+
+msgid "About this module:"
+msgstr "Over deze module:"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "Add Bone"
+msgstr "Toevoegen Bot"
+
+msgid "Add bone to %s"
+msgstr "Voeg bot toe aan %s"
+
+msgid "Add new skeleton"
+msgstr "Toevoegen skelet"
+
+msgid "Add/Edit bone"
+msgstr "Toevoegen/Wijzigen bot"
+
+msgid "Add/Edit skeleton"
+msgstr "Toevoegen/Wijzigen skelet"
+
+msgid "Although the skeleton mod demonstrates a lot of basic core functionality, and a reasonable way to construct a module, the phpwebsite core is really very sophisticated and flexible. If I were to attempt to show everything possible in this one module, it would just get confusing :) Please spend some time reading the stuff in /docs/ as well as look through the skeleton mod code. Also, skim through the code in some of the other mods, such as blog and calendar and so on."
+msgstr "De skeleton module biedt veel basis functionaliteit en een manier om modules te maken maar phpWebSite is zelf flexibel en mooi opgezet. In de documentatie (/docs) zijn de opties beschreven. Kijk ook naar de opzet van modules als skeleton, blog, calendar..."
+
+msgid "An error occurred when accessing this skeleton's bones."
+msgstr "Het benaderen van de botten van het skelet is mislukt."
+
+msgid "Are you sure you want to delete the bone %s?"
+msgstr "Wilt u het bot %s verwijderen?"
+
+msgid "Are you sure you want to delete the skeleton %s?"
+msgstr "Wilt u het skelet %s verwijderen?"
+
+msgid "Available skeletons"
+msgstr "beschikbare skeletten"
+
+msgid "Belongs to: %s"
+msgstr "Behoort bij: %s"
+
+msgid "Bone deleted."
+msgstr "Bot verwijderd."
+
+msgid "Bone details"
+msgstr "Bot details"
+
+msgid "Bone saved successfully."
+msgstr "Bot opgeslagen."
+
+msgid "Bones"
+msgstr "Botten"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Wijzig instellingen (Alleen onbeperkte)"
+
+msgid "Check your %s then create a %s to begin"
+msgstr "Controleer uw %s en maak daarna een %s om te beginnen"
+
+msgid "Click on \"New bone\" to start."
+msgstr "Klik op \"Nieuw bot\" om te beginnen."
+
+msgid "Continue"
+msgstr "Doorgaan"
+
+msgid "Create"
+msgstr "Aanmaken"
+
+msgid "Create skeleton skeleton"
+msgstr "Aanmaken skelet skelet"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete bone"
+msgstr "Verwijder bot"
+
+msgid "Delete skeleton"
+msgstr "verwijder skelet"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Died"
+msgstr "Aangemaakt"
+
+msgid "Died, date/time"
+msgstr "Aangemaakt op datum/tijd"
+
+msgid "Edit"
+msgstr "Wijzigen"
+
+msgid "Edit bone"
+msgstr "Wijzig bot"
+
+msgid "Edit skeleton"
+msgstr "Wijzig skelet"
+
+msgid "Enable images and files on skeleton and bone profiles"
+msgstr "Inschakelen afbeeldingen en bestanden op skelet en profielen botten"
+
+msgid "Enable skeleton sidebox"
+msgstr "Inschakelen skelet boxen"
+
+msgid "Error occurred when saving bone."
+msgstr "Opslaan bot mislukt."
+
+msgid "Error occurred when saving skeleton."
+msgstr "Opslaan skelet mislukt."
+
+msgid "Fatal error: Cannot create bone. Missing skeleton id."
+msgstr "Aanmaken bot mislukt (Geen skeleton id)."
+
+msgid "Features"
+msgstr "Eigenschappen"
+
+msgid "Final Words"
+msgstr "Slotwoord"
+
+msgid "General Settings"
+msgstr "Algemene Instellingen"
+
+msgid "I have tried to demonstrate simple and basic uses of many of the methods for developing a phpwebsite module. Skeletons and bones are pretty straight forward item classes. Bones relate to skeletons. Skeletons use the core Key class. This enables lots of things like being able to use the Search class as well as Categories and easy Menu tools. The list views show the basics of using the DBPager class. Skeletons and bones demonstrate how to integrate a File Cabinet file manager. Skeletons are restricted to images and Bones are wide open. Be sure to check out the ease of use of the Link, Text, Form, Settings, Permissions and Layout classes for building intelligent and rich user experiences."
+msgstr "Ik heb geprobeerd het basis gebruik van de vele manieren om een phpwebsite module te maken te demonstreren. Skeletten en botten zijn recht-toe-recht-aan classes. Een bot hoort bij een skelet. Een skelet gebruikt de class Key. Hierdoor zijn er mogelijkheden als het benutten van de Zoek class en de categorieen en de eenvoudige menu functies. De lijst toont alleen het basisgebruik van de class DBPager. Met skeletten en botten kan ook de bestandsbeheerder File Cabinet gebruikt worden. Een skelet gebruikt alleen afbeeldingen, botten zijn breder toepasbaar. Kijk naar het eenvoudige gebruik van Link, Text, Form, Settings, Permissions en Layout classes voor het maken van een goede toepassing."
+
+msgid "If you would like to help out with the ongoing development of skeleton, or other modules by Verdon Vaillancourt, %s click here to donate %s (opens in new browser window)."
+msgstr "Wilt u helpen bij de ontwikkeling van skeleton of een andere module van de Verdon Vaillancourt, %s klik hier om te doneren %s (opent in een nieuw venster)."
+
+msgid "Important Information"
+msgstr "Belangrijke informatie"
+
+msgid "List Bones"
+msgstr "Lijst botten"
+
+msgid "List Skeletons"
+msgstr "Lijst skeletten"
+
+msgid "List all skeletons"
+msgstr "Toon alle skeletten"
+
+msgid "Maximum image height (50-600)"
+msgstr "Maximum hoogte afbeelding (50-600)"
+
+msgid "Maximum image width (50-600)"
+msgstr "Maximum breedte afbeelding (50-600)"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "New Bone"
+msgstr "Nieuw bot"
+
+msgid "New Skeleton"
+msgstr "Nieuw skelet"
+
+msgid "New bone step one"
+msgstr "Nieuw bot stap 1"
+
+msgid "Random Skeleton"
+msgstr "willekeurig skelet"
+
+msgid "Read me"
+msgstr "Lees me"
+
+msgid "Save settings"
+msgstr "Opslaan instellingen"
+
+msgid "Select skeleton"
+msgstr "Kies skelet"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Show sidebox on home page only"
+msgstr "Alleen tonen op hoofdpagina"
+
+msgid "Sidebox text"
+msgstr "Tekst box"
+
+msgid "Skeleton"
+msgstr "Skeleton"
+
+msgid "Skeleton Bones"
+msgstr "Skelet Botten"
+
+msgid "Skeleton Skeletons"
+msgstr "Skelet skeletten"
+
+msgid "Skeleton deleted."
+msgstr "Skelet verwijderd."
+
+msgid "Skeleton is missing the id."
+msgstr "Skelet heeft geen id."
+
+msgid "Skeleton saved successfully."
+msgstr "Skelet opgeslagen."
+
+msgid "Skeleton settings saved."
+msgstr "Skelet instellingen opgeslagen."
+
+msgid "Skeleton tables dropped."
+msgstr "Skelet tabellen verwijderd."
+
+msgid "Skeletons"
+msgstr "Skeletten"
+
+msgid "Sorry, there are no skeletons available. You will have to create a skeleton first."
+msgstr "Er is geen skelet beschikbaar. U moet er eerst een aanmaken."
+
+msgid "This is the first release of skeleton for the new 1.x series phpwebsite. This module is a simple demonstration module for people wishing to develop their own phpwebsite modules."
+msgstr "Dit is de eerste versie van skeleton voor de 1.x phpwebsite. Deze module is een voorbeeld voor mensen die zelf een module in phpwebsite willen gaan maken."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Update"
+msgstr "Wijzigen"
+
+msgid "Update %s bone"
+msgstr "Wijzig %s bot"
+
+msgid "Update skeleton skeleton"
+msgstr "Wijzig skelet skelet"
+
+msgid "You must give this bone a description."
+msgstr "De beschrijving van dit bot ontbreekt."
+
+msgid "You must give this bone a title."
+msgstr "De titel van dit bot ontbreekt."
+
+msgid "You must give this skeleton a description."
+msgstr "De beschrijving van dit skelet ontbreekt."
+
+msgid "You must give this skeleton a title."
+msgstr "De titel van dit skelet ontbreekt."
+
+msgid "Create your own skeletons."
+msgstr "Aanmaken skelet."
+

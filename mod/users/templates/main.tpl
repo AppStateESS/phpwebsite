@@ -1,6 +1,9 @@
-<div class="panel-title">
+
 <h2>{TITLE}</h2>
+
+<!-- BEGIN message -->
+<div class="alert alert-warning">
+{MESSAGE}
 </div>
-<div class="panel-content"><!-- BEGIN message -->
-<h3>{MESSAGE}</h3>
-<!-- END message --> {CONTENT}</div>
+<!-- END message -->
+{CONTENT}

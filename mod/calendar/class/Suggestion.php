@@ -137,7 +137,7 @@ class Calendar_Suggestion extends Calendar_Event {
         return $db->loadObject($this);
     }
 
-    public function post()
+    public function post($suggested=false)
     {
         return parent::post(true);
     }

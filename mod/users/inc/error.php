@@ -7,7 +7,7 @@
 
 $errors = array(
 USER_ERROR                => dgettext('users', 'Unknown error.'),
-USER_ERR_DUP_USERNAME     => dgettext('users', 'User or display name off limits. Please try another.'),
+USER_ERR_DUP_USERNAME     => dgettext('users', 'User or display name already in use. Please try another.'),
 USER_ERR_DUP_EMAIL        => dgettext('users', 'Email address already in use.'),
 USER_ERR_DUP_GROUPNAME    => dgettext('users', 'A group with this name already exists.'),
 USER_ERR_PERM_TABLE       => dgettext('users', 'Permission table name already exists.'),

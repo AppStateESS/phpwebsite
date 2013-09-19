@@ -2,9 +2,9 @@
 
   <!-- BEGIN admin_links -->
         <div class="btn-group pull-right">
-            <a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#"> <i class="icon-cog">
+            <button class="btn dropdown-toggle btn-default btn-xs" data-toggle="dropdown"> <i class="icon-cog">
               </i><span class="caret"></span>
-            </a>
+            </button>
             <ul class="dropdown-menu">
                 <li>{EDIT_LINK}</li>
                 <li>{DELETE_LINK}</li>
@@ -21,8 +21,8 @@
 
   <a href="{LINK_URL}" class="{ACTIVE}">{LINK_TEXT}</a>
       <!-- BEGIN sublink -->
-      <div class="well menu-sub-{LEVEL}">
-      <ul>
+      <div class="menu-sub-{LEVEL}">
+      <ul class="nav nav-pills nav-stacked">
         {SUBLINK}
       </ul>
       </div>

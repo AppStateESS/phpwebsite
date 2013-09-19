@@ -213,6 +213,81 @@ UPDATES;
             }
             $changes = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/2_3_0.txt');
             $content[] = "<pre>$changes</pre>";
+
+        case version_compare($version, '2.3.1', '<'):
+            $db = \Database::newDB();
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'comments'));
+            $db->delete();
+
+            $db = \Database::newDB();
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'comments'));
+            $db->delete();
+
+            $db = \Database::newDB();
+            if ($db->tableExists('comments_items')) {
+                $db->buildTable('comments_items')->drop();
+            }
+            if ($db->tableExists('comments_items_seq')) {
+                $db->buildTable('comments_items_seq')->drop();
+            }
+            if ($db->tableExists('comments_monitors')) {
+                $db->buildTable('comments_monitors')->drop();
+            }
+            if ($db->tableExists('comments_permissions')) {
+                $db->buildTable('comments_permissions')->drop();
+            }
+            if ($db->tableExists('comments_ranks')) {
+                $db->buildTable('comments_ranks')->drop();
+            }
+            if ($db->tableExists('comments_ranks_seq')) {
+                $db->buildTable('comments_ranks_seq')->drop();
+            }
+            if ($db->tableExists('comments_threads')) {
+                $db->buildTable('comments_threads')->drop();
+            }
+            if ($db->tableExists('comments_threads_seq')) {
+                $db->buildTable('comments_threads_seq')->drop();
+            }
+            if ($db->tableExists('comments_users')) {
+                $db->buildTable('comments_users')->drop();
+            }
+            if ($db->tableExists('comments_user_ranks')) {
+                $db->buildTable('comments_user_ranks')->drop();
+            }
+            if ($db->tableExists('comments_user_ranks_seq')) {
+                $db->buildTable('comments_user_ranks_seq')->drop();
+            }
+
+            $db = \Database::newDB();
+            if ($db->tableExists('categories')) {
+                $db->buildTable('categories')->drop();
+            }
+            if ($db->tableExists('categories_seq')) {
+                $db->buildTable('categories_seq')->drop();
+            }
+            if ($db->tableExists('categories_permissions')) {
+                $db->buildTable('categories_permissions')->drop();
+            }
+            if ($db->tableExists('category_items')) {
+                $db->buildTable('category_items')->drop();
+            }
+            if ($db->tableExists('category_items_seq')) {
+                $db->buildTable('category_items_seq')->drop();
+            }
+
+            $db = \Database::newDB();
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'categories'));
+            $db->delete();
+
+            $db = \Database::newDB();
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'categories'));
+            $db->delete();
+
+            $content[] = '<pre>Core 2.3.1 Changes
+-------------------
++ Removed Comments module
++ Removed Categories module
+</pre>';
     }
     return true;
 }

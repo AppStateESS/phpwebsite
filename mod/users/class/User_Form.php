@@ -281,6 +281,7 @@ class User_Form {
         }
 
         $form->addSelect('search_group', $groups);
+        $form->addCssClass('search_group', 'form-control');
         if (isset($_GET['search_group'])) {
             $form->setMatch('search_group', $_GET['search_group']);
         }
@@ -293,7 +294,9 @@ class User_Form {
             $pageTags['NEW_USER'] = PHPWS_Text::secureLink(dgettext('users',
                                     'Create new user'), 'users',
                             array('action' => 'admin', 'command' => 'new_user'),
-                            null, dgettext('users', 'Create new user'), 'button');
+                            null, dgettext('users', 'Create new user'), 'btn btn-success');
+            $pageTags['NEW_USER_URI'] = PHPWS_Text::linkAddress('users',
+                            array('action' => 'admin', 'command' => 'new_user'));
         }
 
         $pager = new DBPager('users', 'PHPWS_User');
@@ -347,7 +350,9 @@ class User_Form {
         $pageTags['NEW_GROUP'] = PHPWS_Text::secureLink(dgettext('users',
                                 'Create new group'), 'users',
                         array('action' => 'admin', 'command' => 'new_group'),
-                        null, dgettext('users', 'Create new group'), 'button');
+                        null, dgettext('users', 'Create new group'), 'btn btn-success');
+        $pageTags['ADD_GROUP_URI'] = PHPWS_Text::linkAddress('users',
+                        array('action' => 'admin', 'command' => 'new_group'));
 
         $pager = new DBPager('users_groups', 'PHPWS_Group');
         $pager->setModule('users');
@@ -514,6 +519,10 @@ class User_Form {
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postUser');
         $form->addHidden('module', 'users');
+
+        $form->addCheckbox('notify_user', 1);
+        $form->setLabel('notify_user',
+                dgettext('user', 'Notify user of account creation'));
 
         if (Current_User::allow('users', 'settings')) {
             $db = new PHPWS_DB('users_auth_scripts');

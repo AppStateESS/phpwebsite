@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Calendar1_7_2\n"
+"Project-Id-Version: PHPWS1_7_2,Calendar1_7_4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-20 14:29-0500\n"
-"PO-Revision-Date: 2010-01-30 17:39+0100\n"
+"POT-Creation-Date: 2009-08-13 13:35-0400\n"
+"PO-Revision-Date: 2013-02-01 11:22+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -101,6 +101,9 @@ msgstr "Terug"
 
 msgid "Beginning of each month"
 msgstr "Begin van de maand"
+
+msgid "Blog this"
+msgstr "Blog dit"
 
 msgid "Busy"
 msgstr "Bezig"
@@ -328,7 +331,7 @@ msgid "Next week"
 msgstr "Volgende week"
 
 msgid "No events on this day"
-msgstr "Vandaag geen evenementen"
+msgstr "Deze dag geen evenementen"
 
 msgid "No events this month."
 msgstr "Deze maand geen evenementen."
@@ -351,6 +354,9 @@ msgstr "Geen"
 msgid "On all pages"
 msgstr "Op elke pagina"
 
+msgid "One month prior"
+msgstr "Een maand eerder"
+
 msgid "Only link days with events in mini calendar"
 msgstr "Alleen dagen linken met evenementen in de kleine agenda"
 
@@ -368,6 +374,12 @@ msgstr "Kies een maandelijks manier van herhalen."
 
 msgid "Please pick a proper monthly repeat method."
 msgstr "Kies een goede manier van maandelijks herhalen."
+
+msgid "Post Event to Blog"
+msgstr "Toon het op de blog"
+
+msgid "Post to Blog"
+msgstr "Toon het op de blog"
 
 msgid "Previous day"
 msgstr "Vorige dag"
@@ -401,6 +413,9 @@ msgstr "Herhaal evenement tot:"
 
 msgid "Reset cache"
 msgstr "Wis cache"
+
+msgid "Return to upload form..."
+msgstr "Terug naar uploadformulier..."
 
 msgid "Save"
 msgstr "Opslaan"
@@ -495,6 +510,9 @@ msgstr "De herhalingsdatum moet na de startdatum zijn."
 msgid "The end time must be after the start time."
 msgstr "De eindtijd moet na de starttijd zijn."
 
+msgid "The following errors occurred when trying to import your events:"
+msgstr "Tijdens het importeren van uw evenementen treden de volgende fouten op:"
+
 msgid "This event does not exist."
 msgstr "Dit evenement bestaat niet."
 
@@ -563,6 +581,9 @@ msgstr "Wekelijks"
 
 msgid "Weekly repeats require you pick one or more days."
 msgstr "Om wekelijks te herhalen moet u een of meer dagen kiezen."
+
+msgid "When should it post?"
+msgstr "Wanneer plaatsen?"
 
 msgid "Yearly"
 msgstr "Jaarlijks"

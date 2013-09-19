@@ -119,7 +119,6 @@ class PHPWS_Boost {
     public function install($inBoost = true, $inBranch = false, $home_dir = NULL)
     {
         $content = array();
-        $mod_content = array();
         $dir_content = array();
 
         if ($inBranch && !empty($home_dir)) {
@@ -135,7 +134,6 @@ class PHPWS_Boost {
         }
 
         $last_mod = end($this->modules);
-
         foreach ($this->modules as $title => $mod) {
             $title = trim($title);
             if ($this->getStatus($title) == BOOST_DONE) {
@@ -147,12 +145,10 @@ class PHPWS_Boost {
                 $this->setStatus($title, BOOST_START);
             }
 
-            // H0120
-            $mod_content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
-            //	$content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
+            $content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
-                $mod_content[] = dgettext('boost', 'Importing SQL install file.');
+                $content[] = dgettext('boost', 'Importing SQL install file.');
                 $db = new PHPWS_DB;
                 $result = $db->importFile($mod->getDirectory() . 'boost/install.sql');
 
@@ -160,41 +156,40 @@ class PHPWS_Boost {
                     PHPWS_Error::log($result);
                     $this->addLog($title,
                             dgettext('boost', 'Database import failed.'));
-                    $mod_content[] = dgettext('boost',
+                    $content[] = dgettext('boost',
                             'An import error occurred.');
-                    $mod_content[] = dgettext('boost',
+                    $content[] = dgettext('boost',
                             'Check your logs for more information.');
                     return implode('<br />', $content) . '<br />' . implode('<br />',
-                                    $mod_content);
+                                    $content);
                 } else {
-                    $mod_content[] = dgettext('boost', 'Import successful.');
+                    $content[] = dgettext('boost', 'Import successful.');
                 }
             }
 
             try {
-                $result = $this->onInstall($mod, $mod_content);
+                $result = $this->onInstall($mod, $content);
                 if ($result === true) {
                     $this->setStatus($title, BOOST_DONE);
-                    $this->createDirectories($mod, $mod_content, $home_dir);
-                    $this->registerModule($mod, $mod_content);
+                    $this->createDirectories($mod, $content, $home_dir);
+                    $this->registerModule($mod, $content);
                     $continue = true;
                 } elseif ($result === -1) {
                     // No installation file (install.php) was found.
                     $this->setStatus($title, BOOST_DONE);
-                    $this->createDirectories($mod, $mod_content, $home_dir);
-                    $this->registerModule($mod, $mod_content);
+                    $this->createDirectories($mod, $content, $home_dir);
+                    $this->registerModule($mod, $content);
                     $continue = true;
                 } elseif (PHPWS_Error::isError($result)) {
                     $content[] = dgettext('boost',
                             'There was a problem in the installation file:');
                     $content[] = '<b>' . $result->getMessage() . '</b>';
                     $content[] = '<br />';
-                    $content[] = implode('<br />', $mod_content);
                     PHPWS_Error::log($result);
                     $continue = false;
                 }
             } catch (\Exception $e) {
-                $content[] = implode('<br />', $mod_content);
+                $content[] = implode('<br />', $content);
                 $content[] = dgettext('boost',
                         'There was a problem in the installation file:');
                 $content[] = '<b>' . $e->getMessage() . '</b>';
@@ -211,15 +206,7 @@ class PHPWS_Boost {
             $this->addLog($title,
                     str_replace("\n\n\n", "\n",
                             implode("\n",
-                                    str_replace('<br />', "\n", $mod_content))));
-            // $this->addLog($title, implode("\n", str_replace('<br />', "\n", $mod_content)));
-            // H 0120 display also the msgs for log
-            /*
-              $content[] = str_replace('<br /><br /><br />', '<br />',
-              implode('<br />', $mod_content));
-             *
-             */
-            // $content[] = dgettext('boost', 'Installation complete!');
+                                    str_replace('<br />', "\n", $content))));
         }
         return implode('<br />', $content);
     }

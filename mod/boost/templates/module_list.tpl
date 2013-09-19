@@ -9,7 +9,7 @@
 <br />
 <br />
 <!-- END warning -->
-<table width="99%" cellpadding="4">
+<table class="table table-striped table-hover">
     <tr>
         <th>{TITLE_LABEL}</th>
         <th>{VERSION_LABEL}</th>

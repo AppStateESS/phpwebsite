@@ -43,7 +43,7 @@ class Block_Admin {
         $tabs['list'] = array('title' => dgettext('block', 'List'), 'link' => $linkBase);
         $tabs['settings'] = array('title' => dgettext('block', 'Settings'), 'link' => $linkBase);
 
-        $panel = new PHPWS_Panel('categories');
+        $panel = new PHPWS_Panel('block');
         $panel->enableSecure();
         $panel->quickSetTabs($tabs);
 
@@ -235,6 +235,10 @@ class Block_Admin {
         $form->setMatch('hide_title', $block->hide_title);
         $form->setLabel('hide_title', dgettext('block', 'Hide title'));
 
+        $form->addCheck('hide_narrow', 1);
+        $form->setMatch('hide_narrow', $block->hide_narrow);
+        $form->setLabel('hide_narrow', dgettext('block', 'Hide when width &lt; 768px'));
+
         $form->addTextArea('block_content', $block->getContent(false));
         $form->setRows('block_content', '10');
         $form->setWidth('block_content', '80%');
@@ -305,7 +309,9 @@ class Block_Admin {
 
         $template = $form->getTemplate();
         if ($js) {
-            $template['ALTERNATIVE'] = t('or create new block below');
+            if (!empty($block_options)) {
+                $template['ALTERNATIVE'] = t('or create new block below');
+            }
             $content = PHPWS_Template::process($template, 'block', 'js_edit.tpl');
         } else {
             $content = PHPWS_Template::process($template, 'block', 'edit.tpl');
@@ -328,6 +334,11 @@ class Block_Admin {
         } else {
             $block->hide_title = 0;
         }
+        if (isset($_POST['hide_narrow'])) {
+            $block->hide_narrow = 1;
+        } else {
+            $block->hide_narrow = 0;
+        }
 
         $block->setTitle($_POST['title']);
         $block->setContent($_POST['block_content']);
@@ -335,7 +346,8 @@ class Block_Admin {
         if (empty($block->title)) {
             $content = trim(strip_tags($_POST['block_content']));
             if (!empty($content)) {
-                $title_sub = ucfirst(substr($content, 0, strpos($content, ' ', 10)));
+                $title_sub = ucfirst(substr($content, 0,
+                                strpos($content, ' ', 10)));
                 $block->setTitle($title_sub);
                 $block->hide_title = 1;
             }
@@ -356,7 +368,8 @@ class Block_Admin {
                                 'Create new block'), 'block',
                         array('action' => 'new'), null,
                         dgettext('block', 'Create new block'), 'button');
-        $pageTags['NEW_BLOCK_URI'] = PHPWS_Text::linkAddress('block', array('action' => 'new'), true);
+        $pageTags['NEW_BLOCK_URI'] = PHPWS_Text::linkAddress('block',
+                        array('action' => 'new'), true);
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION'] = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');

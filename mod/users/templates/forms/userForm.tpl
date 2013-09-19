@@ -5,6 +5,7 @@
 <div class="align-right">{LINKS}</div>
 <div style="float : left;margin-right : 2em">
     {START_FORM}
+    {NOTIFY_USER} {NOTIFY_USER_LABEL}
     <table class="form-table" cellspacing="0" cellpadding="4">
         <tr>
             <td>{AUTHORIZE_LABEL}</td>

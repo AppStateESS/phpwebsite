@@ -17,11 +17,13 @@ abstract class Input extends Base {
      * @var string
      */
     protected $value = "";
+
     /**
      *
      * @var boolean
      */
     protected $open = false;
+
     /**
      * Title shown for element on mouse-over
      * @var string
@@ -29,11 +31,17 @@ abstract class Input extends Base {
     protected $title;
 
     /**
+     * Placeholder text noted inside an input
+     * @var string
+     */
+    protected $placeholder;
+
+    /**
      * @param string $name
      * @param string $value
      * @param string $label
      */
-    public function __construct($name, $value=null, $label=null)
+    public function __construct($name, $value = null, $label = null)
     {
         // Base uses $value as $text on open Tags
         parent::__construct($name, $value, $label);
@@ -79,6 +87,10 @@ abstract class Input extends Base {
         return $this->title;
     }
 
+    public function setPlaceholder($placeholder)
+    {
+        $this->placeholder = strip_tags($placeholder);
     }
+}
 
 ?>

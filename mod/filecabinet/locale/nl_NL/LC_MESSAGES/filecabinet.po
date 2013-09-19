@@ -1,14 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR HanV <hanv@users.sourceforge.net>, 2009.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Filecabinet2_2_5\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
-"PO-Revision-Date: 2010-02-01 13:18+0100\n"
+"Project-Id-Version: PHPWS1_7_2,File Cabinet2_3_2\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -17,13 +11,12 @@ msgstr ""
 "X-Poedit-Language: Dutch\n"
 "X-Poedit-Country: NETHERLANDS\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
 msgid "%d bytes"
-msgstr "%d Bytes"
+msgstr "%d bytes"
 
 msgid "%d bytes (system wide)"
-msgstr "%d Bytes (systeem)"
+msgstr "%d bytes (systeem)"
 
 msgid "%dKB (%d bytes)"
 msgstr "%dKB (%d Bytes)"
@@ -31,11 +24,14 @@ msgstr "%dKB (%d Bytes)"
 msgid "%dMB (%d bytes)"
 msgstr "%dMB (%d Bytes)"
 
-msgid "%s bytes"
-msgstr "%s Bytes"
+msgid "%s Slide Show"
+msgstr "%s Diavoorstelling"
 
-msgid " -- General --"
-msgstr " -- Algemeen -- "
+msgid "%s bytes"
+msgstr "%s bytes"
+
+msgid "-- General --"
+msgstr "-- Algemeen --"
 
 msgid "-- Pick option --"
 msgstr "-- Kies optie --"
@@ -49,11 +45,20 @@ msgstr "90 graden rechts"
 msgid "90 degrees counter clockwise"
 msgstr "90 graden links"
 
-msgid "'<p>Could not upload file to folder. Please check your directory permissions.</p>"
-msgstr "'<p>Kan geuploade bestand niet in map zetten. Controleer uw rechten.</p>"
+msgid "<p>Could not upload file to folder. Please check your directory permissions.</p>"
+msgstr "<p>Kan geuploade bestand niet in map zetten. Controleer uw rechten.</p>"
 
 msgid "Absolute upload limit"
 msgstr "Absolute upload limiet"
+
+msgid "Access"
+msgstr "Toegang"
+
+msgid "Access shortcut name already in use. Please enter another."
+msgstr "Naam snelkoppeling komt al voor. Kies a.u.b. een andere naam."
+
+msgid "Access shortcut successful!"
+msgstr "Snelkoppeling aangemaakt"
 
 msgid "Action"
 msgstr "Actie"
@@ -70,11 +75,11 @@ msgstr "Een document of documentenmap toevoegen"
 msgid "Add a image, an image folder, or a randomly changing image"
 msgstr "Een afbeelding, afbeeldingenmap of een GIF-bestand toevoegen"
 
-msgid "Add an image, media, or document file."
-msgstr "Een afbeelding, media-bestand of document toevoegen"
-
 msgid "Add a video or sound file"
 msgstr "Een video of muziekbestand toevoegen"
+
+msgid "Add an image, media, or document file."
+msgstr "Een afbeelding, media-bestand of document toevoegen."
 
 msgid "Add document"
 msgstr "Document toevoegen"
@@ -100,6 +105,9 @@ msgstr "Media-bestand toevoegen"
 msgid "All files icon"
 msgstr "Icoon alle bestanden"
 
+msgid "Allow direct links to documents"
+msgstr "Toestaan directe links naar documenten"
+
 msgid "Allow document selection"
 msgstr "Toestaan kiezen document"
 
@@ -110,7 +118,7 @@ msgid "Allow media selection"
 msgstr "Toestaan kiezen media"
 
 msgid "Allowed file types"
-msgstr "Mogelijke bestandstypes"
+msgstr "Toegestane bestandstypes"
 
 msgid "Alternate size %sx%s"
 msgstr "Alternatief formaat %sx%s"
@@ -188,7 +196,7 @@ msgid "Classify checked"
 msgstr "Classificeer aangevinkte"
 
 msgid "Classify directory could not be found."
-msgstr "Map classificeer ontbreekt."
+msgstr "De map met nog te classificeren bestanden ontbreekt."
 
 msgid "Classify files"
 msgstr "Classificeer bestanden"
@@ -277,9 +285,6 @@ msgstr "Huidige media"
 msgid "DL"
 msgstr "DL"
 
-msgid "Decription"
-msgstr "Beschrijving"
-
 msgid "Default (%spx)"
 msgstr "Standaard (%spx)"
 
@@ -300,6 +305,9 @@ msgstr "Verwijder mappen (alleen onbeperkte)"
 
 msgid "Description"
 msgstr "Beschrijving"
+
+msgid "Directory {%s} does not exist."
+msgstr "Map (%s} ontbreekt."
 
 msgid "Directory not set."
 msgstr "Map niet ingevuld."
@@ -403,6 +411,9 @@ msgstr "File is onleesbaar"
 msgid "File name"
 msgstr "Bestandsnaam"
 
+msgid "File not found"
+msgstr "Bestand niet gevonden"
+
 msgid "File not uploaded."
 msgstr "Bestand niet geupload."
 
@@ -412,11 +423,17 @@ msgstr "Bestandstype"
 msgid "File type not allowed"
 msgstr "Bestandstype niet toegestaan."
 
-msgid "File type saved."
+msgid "File types"
+msgstr "Bestandstype niet toegestaan."
+
+msgid "File types saved."
 msgstr "Bestandstypes opgeslagen."
 
 msgid "File uploaded exceeded %sK size limit."
 msgstr "Bestand is te groot, limiet %sK."
+
+msgid "File uploaded exceeded %s size limit."
+msgstr "Bestand is te groot, limiet %s."
 
 msgid "Filename not set."
 msgstr "Bestandsnaam ontbreekt."
@@ -498,6 +515,9 @@ msgstr "Map met nog te classificeren bestanden"
 
 msgid "Items"
 msgstr "Items"
+
+msgid "Lightbox icon"
+msgstr "Lightbox icoon"
 
 msgid "Link image"
 msgstr "Link afbeelding"
@@ -613,6 +633,9 @@ msgstr "Aantal zichtbare thumbs"
 msgid "Number shown"
 msgstr "Aantal getoond"
 
+msgid "Permission not granted"
+msgstr "Recht niet toegekend"
+
 msgid "Pick a media type above."
 msgstr "Kies een van de bovenstaande types."
 
@@ -623,7 +646,7 @@ msgid "Pin folder to \"%s\""
 msgstr "Koppel map aan \"%s\""
 
 msgid "Popup images allow folder navigation"
-msgstr "Popup afbeeldingen sta mapnavigatie toe"
+msgstr "Popup afbeeldingen toestaan mapnavigatie"
 
 msgid "Previous image"
 msgstr "Vorige afbeelding"
@@ -694,6 +717,9 @@ msgstr "Toon alle bestanden in de map"
 msgid "Show block of thumbnails"
 msgstr "Toon een groep thumbs"
 
+msgid "Show lightbox slideshow"
+msgstr "Toon lightbox diavoorstelling"
+
 msgid "Show source images only"
 msgstr "Alleen bron afbeeldingen tonen"
 
@@ -711,6 +737,9 @@ msgstr "Het gevraagde bestand is te groot."
 
 msgid "Sorry, you are not allowed access to this file."
 msgstr "Sorry, u heeft geen toegang tot dit bestand."
+
+msgid "Sorry, you do not have File Cabinet rights."
+msgstr "Sorry, u heeft geen File Cabinet rechten."
 
 msgid "Sorry.."
 msgstr "Sorry"
@@ -731,16 +760,17 @@ msgid "The web server does not have permission to access files in the classify d
 msgstr "De webserver heeft geen toegang tot de te classificeren bestanden."
 
 msgid "The web server does not have permission to delete files from the classify directory."
-msgstr "De webserver mag geen te classificeren bestanden verwijderen."
+msgstr "De webserver mag geen nog te classificeren bestanden verwijderen."
 
 msgid "The web server does not have permissions for the classify directory."
-msgstr "De webserver heeft geen rechten op de map te classificeren bestanden."
+msgstr "De webserver heeft geen rechten op de map nog te classificeren bestanden."
 
 msgid "There was a problem loading the image file."
 msgstr "Er is een fout opgetreden bij het laden van de afbeelding."
 
-msgid "This is a private folder."
-msgstr "Dit is een persoonlijke map."
+#, php-format
+msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?"
+msgstr "Deze afbeelding is groter dan de %s x %s limiet. Afbeelding verkleinen?"
 
 msgid "This image is larger than the %sx%s limit. What do you wish to do?"
 msgstr "De afbeelding is groter dan de limiet %sx%s. Wat wilt u doen?"
@@ -748,11 +778,19 @@ msgstr "De afbeelding is groter dan de limiet %sx%s. Wat wilt u doen?"
 msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?'),"
 msgstr "De afbeelding is groter dan de %s x %s limiet. Afbeelding verkleinen?"
 
-msgid "This media is larger than the %s x %s limit. Do you want to resize the media to fit?'),"
+msgid "This is a private folder."
+msgstr "Dit is een persoonlijke map."
+
+msgid "This media is larger than the %s x %s limit. Do you want to resize the media to fit?"
 msgstr "De media is groter dan de %s x %s limiet. Media verkleinen?"
 
-msgid "This process will update all of your document files with the current base directory."
-msgstr "Dit proces zal al uw documenten wijzigen met de huidige basismap."
+msgid ""
+"This process will update all of your document files with the current base directory.\n"
+"Do not run this process unless you are sure it will fix download problems.\n"
+"If you are sure, type Y-E-S below."
+msgstr ""
+"Dit proces zal al uw documenten wijzigen met de huidige basismap.\n"
+"Bevestig door Y-E-S in te tikken."
 
 msgid "Thumbnail directory not writable."
 msgstr "Map met thumbs niet schrijfbaar."
@@ -773,7 +811,7 @@ msgid "Unable to classify files."
 msgstr "Kan geen bestanden classificeren."
 
 msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
-msgstr "De map met te classificeren bestanden ontbreekt. Controleer de File Cabinet instellingen, het configuratie-bestand en de maprechten."
+msgstr "De map nog te classificeren bestanden is niet gevonden. Controleer uw File Cabinet instellingen, het configuratie bestand en de maprechten."
 
 msgid "Unable to move the file to its new directory."
 msgstr "Kan bestand niet naar nieuwe map verplaatsen."
@@ -904,11 +942,11 @@ msgstr "De map voor de documenten is niet schrijfbaar."
 msgid "Your images directory is not writable."
 msgstr "De map voor de afbeeldingen is niet schrijfbaar."
 
-msgid "Your maximum image size exceeds the server limit of %sMB."
-msgstr "Uw maximum voor een afbeelding is te groot, server limiet %sMB."
-
 msgid "Your maximum document size exceeds the server limit of %sMB."
 msgstr "Uw maximum voor een document is te groot, server limiet %sMB."
+
+msgid "Your maximum image size exceeds the server limit of %sMB."
+msgstr "Uw maximum voor een afbeelding is te groot, server limiet %sMB."
 
 msgid "Your maximum multimedia size exceeds the server limit of %sMB."
 msgstr "Uw maximum voor media is te groot, server limiet %sMB."

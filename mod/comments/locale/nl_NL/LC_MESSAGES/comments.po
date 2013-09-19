@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PHPWS1_6_2,Comments1_2_4\n"
+"Project-Id-Version: PHPWS1_7_2,Comments1_3_2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 15:18-0500\n"
-"PO-Revision-Date: 2010-02-03 22:12+0100\n"
+"POT-Creation-Date: 2010-02-03 22:12+0100\n"
+"PO-Revision-Date: 2013-02-06 14:36+0100\n"
 "Last-Translator: H. Velthuis <hanv@sourceforge.net>\n"
 "Language-Team: HanV\n"
 "MIME-Version: 1.0\n"
@@ -22,13 +22,13 @@ msgstr ""
 msgid "%1$s - by %2$s from %3$s"
 msgstr "%1$s - van %2$s van %3$s"
 
-msgid "%s's Website"
-msgstr "%ss Website"
-
 msgid "%d comment"
 msgid_plural "%d comments"
 msgstr[0] "%d commentaar"
 msgstr[1] "%d commentaren"
+
+msgid "%s's Website"
+msgstr "%ss Website"
 
 msgid "(Anon)"
 msgstr "(Anoniem)"
@@ -114,17 +114,20 @@ msgstr "Wilt u de geselecteerde items verwijderen?"
 msgid "Are you sure you want to delete this comment?"
 msgstr "Wilt u dit commentaar verwijderen?"
 
-msgid "Are you sure you want to remove this user rank?"
+msgid "Are you sure you want to delete this user rank?"
 msgstr "Wilt u deze gebruikersrang verwijderen?"
 
 msgid "Are you sure you want to remove this rank?"
 msgstr "Wilt u deze rang verwijderen?"
 
+msgid "Are you sure you want to split the topic from this position?"
+msgstr "Wilt u dit onderwerp hier delen?"
+
 msgid "Author"
 msgstr "Auteur"
 
 msgid "Automatically monitor topics that I post in"
-msgstr "Automatisch topics volgen waar in ik heb gepost"
+msgstr "Automatisch topics volgen waarin ik heb gepost"
 
 msgid "Avatar"
 msgstr "Avatar"
@@ -198,8 +201,8 @@ msgstr "Commentaren"
 msgid "Comments (if any) removed successfully"
 msgstr "Commentaren (indien aanwezig) zijn verwijderd"
 
-msgid "Comments Made by: %s"
-msgstr "Commentaren van: %s"
+msgid "Comments Made by %s"
+msgstr "Commentaren van %s"
 
 msgid "Contact Email"
 msgstr "Contact e-mailadres"
@@ -671,6 +674,9 @@ msgstr "Deze maand"
 
 msgid "This signature appears at the bottom of your comments.  It must be less than 255 characters, not annoying and compliant with site rules."
 msgstr "Deze handtekening komt onder uw bijdragen te staan. Het zijn max. 255 tekens, het mag niet beledigend zijn of strijdig met de onze regels van de website."
+
+msgid "This topic is locked"
+msgstr "Dit topic is geblokkeerd"
 
 msgid "This topic is locked.  No more comments"
 msgstr "Dit topic is geblokkeerd, er kan niet meer in gepost worden."

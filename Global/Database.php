@@ -44,7 +44,12 @@ class Database {
         if (is_null($dsn)) {
             if (empty(self::$default_dsn)) {
                 if (defined('PHPWS_DSN')) {
-                    Database::phpwsDSNLoader(PHPWS_DSN);
+                    if (defined('PHPWS_TABLE_PREFIX')) {
+                        $tbl_prefix = PHPWS_TABLE_PREFIX;
+                    } else {
+                        $tbl_prefix = null;
+                    }
+                    Database::phpwsDSNLoader(PHPWS_DSN, $tbl_prefix);
                     $dsn = self::$default_dsn;
                 } else {
                     throw new \Exception(t('Default DSN not set.'));
@@ -97,7 +102,7 @@ class Database {
         self::setDefaultDSN(self::createDSNFromFile($filename));
     }
 
-    public static function phpwsDSNLoader($dsn)
+    public static function phpwsDSNLoader($dsn, $table_prefix = null)
     {
         $first_colon = strpos($dsn, ':');
         $second_colon = strpos($dsn, ':', $first_colon + 1);
@@ -128,8 +133,8 @@ class Database {
 
         self::setDefaultDSN(self::newDSN($dbtype, $dbuser, $dbpass, $dbname,
                         $dbhost, $dbport));
-        if (defined('PHPWS_TABLE_PREFIX')) {
-            self::$default_dsn->setTablePrefix(PHPWS_TABLE_PREFIX);
+        if ($table_prefix) {
+            self::$default_dsn->setTablePrefix($table_prefix);
         }
     }
 

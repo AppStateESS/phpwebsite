@@ -173,9 +173,6 @@ class Branch {
 
         $links[] = javascript('prompt', $js);
 
-        $links[] = PHPWS_Text::secureLink(Icon::show('install',
-                                dgettext('branch', 'Modules')), 'branch',
-                        array('command' => 'branch_modules', 'branch_id' => $this->id));
         $tpl['DIRECTORY'] = sprintf('<abbr title="%s">%s</abbr>',
                 $this->directory, PHPWS_Text::shortenUrl($this->directory));
         $tpl['ACTION'] = implode(' ', $links);
@@ -237,6 +234,7 @@ class Branch {
 
         $prefix = Branch::getHubPrefix();
         PHPWS_DB::loadDB($dsn, $prefix);
+        \Database::phpwsDSNLoader($dsn, $prefix);
         $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
         $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
     }
@@ -250,7 +248,7 @@ class Branch {
         if (empty($this->dsn)) {
             return false;
         }
-
+        \Database::phpwsDSNLoader($this->dsn, $this->prefix);
         return PHPWS_DB::loadDB($this->dsn, $this->prefix, false, false);
     }
 
@@ -259,9 +257,13 @@ class Branch {
      */
     public static function restoreBranchDB()
     {
-        $prefix = $dsn = null;
-        extract($GLOBALS['Branch_Temp']);
-        PHPWS_DB::loadDB($dsn, $prefix);
+        if (defined('PHPWS_TABLE_PREFIX')) {
+            $prefix = PHPWS_TABLE_PREFIX;
+        } else {
+            $prefix = null;
+        }
+        PHPWS_DB::loadDB(PHPWS_DSN, $prefix);
+        \Database::phpwsDSNLoader(PHPWS_DSN, $prefix);
     }
 
     /**
@@ -291,7 +293,7 @@ class Branch {
         if (isset($_SESSION['Approved_Branch'])) {
             return (bool) $_SESSION['Approved_Branch'];
         }
-        Branch::loadHubDB();
+        self::loadHubDB();
 
         if (!PHPWS_DB::isConnected()) {
             $_SESSION['Approved_Branch'] = FALSE;
@@ -301,8 +303,7 @@ class Branch {
         $db = new PHPWS_DB('branch_sites');
         $db->addWhere('site_hash', SITE_HASH);
         $result = $db->select('row');
-
-        PHPWS_DB::loadDB();
+        self::restoreBranchDB();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $_SESSION['Approved_Branch'] = FALSE;
@@ -372,31 +373,6 @@ class Branch {
         }
     }
 
-    public static function getBranchMods()
-    {
-        $branch_id = Branch::getCurrent();
-        if (!$branch_id) {
-            return null;
-        }
-
-        $branch_id = $branch_id['id'];
-
-        Branch::loadHubDB();
-
-        $db = new PHPWS_DB('branch_mod_limit');
-        $db->addColumn('module_name');
-        $db->addWhere('branch_id', $branch_id);
-        $result = $db->select('col');
-        PHPWS_DB::loadDB();
-
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-            return null;
-        } else {
-            return $result;
-        }
-    }
-
     /**
      * Deletes a branch from the hub's database
      */
@@ -409,14 +385,6 @@ class Branch {
             PHPWS_Error::log($result);
             return false;
         }
-        $db->reset();
-        $db->setTable('branch_mod_limit');
-        $db->addWhere('branch_id', $this->id);
-        $result = $db->delete();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-        }
-
         return true;
     }
 

@@ -201,13 +201,11 @@ class PHPWS_User {
                 $this->isDuplicateDisplayName($username, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
                             'setUsername', $username);
-            ;
         }
 
         if ($this->isDuplicateGroup($username, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users',
                             'setUsername', $username);
-            ;
         }
 
         $this->username = $username;
@@ -349,13 +347,11 @@ class PHPWS_User {
         if (!PHPWS_Text::isValidInput($email, 'email')) {
             return PHPWS_Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
         }
+        $this->email = $email;
 
         if ($this->isDuplicateEmail()) {
             return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'setEmail');
         }
-
-        // Only if all these tests pass, modify the member variable
-        $this->email = $email;
 
         return true;
     }
@@ -403,7 +399,6 @@ class PHPWS_User {
                 $this->isDuplicateDisplayName($name, $this->id)) {
             return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
                             'setDisplayName', $name);
-            ;
         }
 
         $this->display_name = $name;
@@ -847,8 +842,7 @@ class PHPWS_User {
                 $dvars['ADDRESS'] = PHPWS_Text::linkAddress('users',
                                 array('action' => 'admin', 'command' => 'mortalize_user', 'user_id' => $this->id),
                                 1);
-                $dvars['LINK'] = sprintf('<img src="%smod/users/img/deity.gif" title="%s" />',
-                        PHPWS_SOURCE_HTTP, dgettext('users', 'Deity'));
+                $dvars['LINK'] = sprintf('<i class="icon-cloud" title="%s"></i>', dgettext('users', 'Deity'));
                 $links[] = javascript('confirm', $dvars);
             } else {
                 $dvars['QUESTION'] = dgettext('users',
@@ -856,8 +850,7 @@ class PHPWS_User {
                 $dvars['ADDRESS'] = PHPWS_Text::linkAddress('users',
                                 array('action' => 'admin', 'command' => 'deify_user', 'user_id' => $this->id),
                                 1);
-                $dvars['LINK'] = sprintf('<img src="%smod/users/img/man.gif" title="%s" />',
-                        PHPWS_SOURCE_HTTP, dgettext('users', 'Mortal'));
+                $dvars['LINK'] = sprintf('<i class="icon-male" title="%s"></i>', dgettext('users', 'Mortal'));
                 $links[] = javascript('confirm', $dvars);
             }
         }
@@ -906,14 +899,16 @@ class PHPWS_User {
             'user_id' => $this->id), true);
         $link->setSalted();
         $jsvar['ADDRESS'] = $link->getAddress();
-        $jsvar['LINK'] = Icon::show('delete');
+        $jsvar['LINK'] = '<i class="icon-trash" title="' . dgettext('users',
+                        'Delete user') . '"></i>';
 
         $linkVar['command'] = 'editUser';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink('<i class="icon-edit"></i>', 'users',
+                        $linkVar);
 
         $linkVar['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users',
-                        $linkVar);
+        $links[] = PHPWS_Text::secureLink('<i class="icon-key" title="' . dgettext('users',
+                                'Permissions') . '"></i>', 'users', $linkVar);
 
         if (!$this->isDeity() && ($this->id != Current_User::getId())) {
             $links[] = Layout::getJavascript('confirm', $jsvar);
