@@ -46,10 +46,17 @@ class Form extends Tag {
     private $print_labels = true;
 
     /**
+     * Names of classes used for the div blocks
+     * @var string
+     */
+    private $group_class = array();
+
+    /**
      * Controls how the form-data should be encoded when submitted.
      * @var string
      */
     protected $enctype = null;
+    protected static $css_addition;
 
     const enctype_application = 1;
     const enctype_multipart = 2;
@@ -67,6 +74,34 @@ class Form extends Tag {
         $this->setId('form-' . $default_id);
         $default_id++;
         $this->addClass('phpws-form');
+    }
+
+    private function loadCSSAddition()
+    {
+        $filename = PHPWS_SOURCE_DIR . 'themes/' . self::$css_addition . '/form_css.php';
+        if (is_file($filename)) {
+            include $filename;
+            if (!empty($input_classes) && is_array($input_classes)) {
+                foreach ($input_classes as $i) {
+                    $this->addInputClass($i);
+                }
+            }
+            if (!empty($label_classes) && is_array($label_classes)) {
+                foreach ($label_classes as $l) {
+                    $this->addLabelClass($l);
+                }
+            }
+            if (!empty($group_classes) && is_array($group_classes)) {
+                foreach ($group_classes as $g) {
+                    $this->addGroupClass($g);
+                }
+            }
+        }
+    }
+
+    public static function appendCSS($addition)
+    {
+        self::$css_addition = $addition;
     }
 
     /**
@@ -345,6 +380,9 @@ class Form extends Tag {
     public function __toString()
     {
         $text = null;
+        if (!empty(self::$css_addition)) {
+            $this->loadCSSAddition();
+        }
 
         if (empty($this->id)) {
             $this->loadId();
@@ -363,7 +401,8 @@ class Form extends Tag {
             if (!empty($hiddens)) {
                 $text .= implode("\n", $hiddens);
             }
-            $text .= "\n<div class=\"form-input\">" . implode("</div>\n<div class=\"form-input\">",
+            $group_classes = implode(' ', $this->group_class);
+            $text .= "\n<div class=\"$group_classes\">" . implode("</div>\n<div class=\"$group_classes\">",
                             $value) . "</div>\n";
             $this->setText($text);
         }
@@ -431,6 +470,10 @@ class Form extends Tag {
      */
     public function getInputStringArray()
     {
+        if (!empty(self::$css_addition)) {
+            $this->loadCSSAddition();
+        }
+
         $value['form_start'] = str_replace('</form>', '', parent::__toString());
         $value['form_end'] = '</form>';
         if (!empty($this->inputs)) {
@@ -633,14 +676,34 @@ class Form extends Tag {
      */
     public function addInputClass($class_name)
     {
+        static $allowed = array('text', 'textarea');
         if (empty($this->inputs)) {
             throw new \Exception('Input list is empty');
         }
         foreach ($this->inputs as $ilist) {
             foreach ($ilist as $i) {
-                $i->addClass($class_name);
+                if (in_array($i->getType(), $allowed)) {
+                    $i->addClass($class_name);
+                }
             }
         }
+    }
+
+    public function addLabelClass($class_name)
+    {
+        if (empty($this->inputs)) {
+            throw new \Exception('Input list is empty');
+        }
+        foreach ($this->inputs as $ilist) {
+            foreach ($ilist as $i) {
+                $i->addLabelClass($class_name);
+            }
+        }
+    }
+
+    public function addGroupClass($class_name)
+    {
+        $this->group_class[] = $class_name;
     }
 
 }
