@@ -2,14 +2,18 @@ var required = new Required;
 
 $(window).load(function() {
     var error_free;
+    required.testRequired();
+
     $('input[required],textarea[required]').blur(function() {
         var input = $(this);
         required.checkInput(input);
+        required.testRequired();
     });
 
     $('select[required]').change(function() {
         var select = $(this);
         required.checkSelect(select);
+        required.testRequired();
     });
 
     $('.phpws-form').submit(function() {
@@ -44,6 +48,24 @@ function Required() {
             case 'email':
                 return this.checkEmail(input);
         }
+    };
+
+    this.testRequired = function()
+    {
+        var parent_form = $('input[type="submit"][required]').parents('form')[0];
+
+        $('input[required],textarea[required]', parent_form).each(function() {
+            switch ($(this).attr('type')) {
+                case 'text':
+                case 'textarea':
+                    if ($(this).val().length < 1) {
+                        $('input[type="submit"][required]').prop('disabled', 'true');
+                    } else {
+                        $('input[type="submit"][required]').removeAttr('disabled');
+                    }
+                    break;
+            }
+        });
     };
 
     this.checkText = function(input) {
