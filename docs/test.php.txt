@@ -1,5 +1,4 @@
 <?php
-
 // copy this file in your phpwebsite root directory as
 // test.php. Use only for development.
 
@@ -7,16 +6,21 @@ mb_internal_encoding('UTF-8');
 /**
  * Include the defines used in Global library
  */
-
 /**
  * DISPLAY_ERRORS set in Config/Defines.php
  */
 ini_set('display_errors', 'On');
 error_reporting(E_ALL | E_STRICT);
 require_once 'config/core/config.php';
-require_once 'core/conf/defines.dist.php';
-
+require_once 'config/core/source.php';
+if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
+    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
+} else {
+    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
+}
+date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
 require_once 'Global/Functions.php';
+
 
 set_exception_handler(array('Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
