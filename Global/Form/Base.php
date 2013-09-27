@@ -88,7 +88,7 @@ abstract class Base extends \Tag {
 
     /**
      * Adds a class name to all the labels in the current form.
-     * 
+     *
      * @param string $class_name
      */
     public function addLabelClass($class_name)
@@ -163,20 +163,6 @@ abstract class Base extends \Tag {
     public function getLabel()
     {
         return (string) $this->label;
-        /*
-          if (empty($this->label)) {
-          $label = $this->name;
-          $label = str_replace('[', '', $label);
-          $label = str_replace(']', '', $label);
-          $label = str_replace('_', ' ', $label);
-          $label = ucfirst($label);
-          } else {
-          $label = & $this->label;
-          }
-          $class_name = $this->getType() . '-label';
-          return "<label for=\"$this->id\" class=\"$class_name\">$label</label>";
-         *
-         */
     }
 
     /**
