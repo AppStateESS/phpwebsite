@@ -490,6 +490,9 @@ class Form extends Tag {
                             } else {
                                 $value[$label] = $input->getLabel();
                             }
+                            $group_label = $input->getLabel();
+                        } else {
+                            $group_label = null;
                         }
                         if ($multiple) {
                             $value[$input_name][] = $input->__toString();
@@ -497,7 +500,7 @@ class Form extends Tag {
                             $value[$input_name] = $input->__toString();
                         }
                         $group_name = $input_name . '_group';
-                        $groups[$group_name][] = $input->getLabel() . ' ' . $input->__toString();
+                        $groups[$group_name][] = $group_label . ' ' . $input->__toString();
                     }
                 }
             }
@@ -682,7 +685,8 @@ class Form extends Tag {
      */
     public function addInputClass($class_name)
     {
-        static $allowed = array('text', 'textarea');
+        static $allowed = array('text', 'textarea', 'email', 'color', 'date',
+            'datetime', 'file', 'password', 'search', 'telephone', 'url');
         if (empty($this->inputs)) {
             throw new \Exception('Input list is empty');
         }
