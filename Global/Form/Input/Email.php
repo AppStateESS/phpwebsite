@@ -9,8 +9,6 @@ namespace Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Email extends Text {
-
-}
+class Email extends Text {}
 
 ?>

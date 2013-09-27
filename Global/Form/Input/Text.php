@@ -109,7 +109,7 @@ class Text extends \Form\Input {
      */
     public function setPlaceholder($placeholder)
     {
-        $placeholder = preg_replace('/[^\w\s.,:&!?#]/', '', $placeholder);
+        $placeholder = preg_replace('/[^\'\w\s.,:&!?#]/', '', $placeholder);
 
         $this->placeholder = $placeholder;
     }
