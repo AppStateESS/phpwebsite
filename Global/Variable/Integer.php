@@ -76,6 +76,7 @@ class Integer extends \Variable {
         $this->low_range = (int) $low_range;
         $this->high_range = (int) $high_range;
         $this->setIncrement($increment);
+        return $this;
     }
 
     /**
@@ -90,6 +91,7 @@ class Integer extends \Variable {
             throw new \Exception(t('Increment cannot be zero'));
         }
         $this->increment = $increment;
+        return $this;
     }
 
     /**
