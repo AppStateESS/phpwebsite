@@ -18,6 +18,7 @@ class Select extends \Form\Choice {
      * @var boolean
      */
     protected $multiple = null;
+    protected $first_blank = false;
 
     /**
      * Returns a select tag wrapped around its option tags.
@@ -29,6 +30,9 @@ class Select extends \Form\Choice {
         $groups = array();
         $suboptions = array();
 
+        if ($this->first_blank) {
+            $options[] = new Option('', '');
+        }
         foreach ($this->options as $opt) {
             if ($opt->hasOptgroup()) {
                 $groups[$opt->getOptgroup()][] = $opt;
@@ -52,14 +56,11 @@ class Select extends \Form\Choice {
         $option_string = implode("\n", $options);
         $this->setText($option_string);
         return parent::__toString();
-        /**
-        $select = new \Form\Input\Select($this->name, $option_string, $this->label);
-        $select->print_label = true;
-        $select->setMultiple($this->multiple);
+    }
 
-        return (string) $select;
-         *
-         */
+    public function setFirstBlank($blank = true)
+    {
+        $this->first_blank = (bool) $blank;
     }
 
     /**
@@ -68,7 +69,7 @@ class Select extends \Form\Choice {
      * @param array $options Associate array of value=>description data pairs
      * @param string $optgroup Designates the options as part of an optgroup
      */
-    public function addOptions(array $options, $optgroup=null)
+    public function addOptions(array $options, $optgroup = null)
     {
         if (is_array(current($options))) {
             foreach ($options as $optgroup => $opt) {
@@ -79,7 +80,8 @@ class Select extends \Form\Choice {
                 $options = array_combine($options, $options);
             }
             foreach ($options as $value => $text) {
-                $this->options[$value] = new \Form\Choice\Option($text, $value, $optgroup);
+                $this->options[$value] = new \Form\Choice\Option($text, $value,
+                        $optgroup);
             }
         }
     }
@@ -92,6 +94,7 @@ class Select extends \Form\Choice {
     {
         $this->multiple = (bool) $multiple;
     }
+
 }
 
 ?>
