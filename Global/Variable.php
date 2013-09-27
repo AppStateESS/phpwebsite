@@ -68,6 +68,9 @@ abstract class Variable extends Data {
      * @var array
      */
     protected $types_allowed = null;
+
+    protected $allowed_inputs = array();
+
     protected $datatype;
 
     /**
@@ -410,7 +413,7 @@ abstract class Variable extends Data {
     public function setInputType($type)
     {
         $type = strtolower($type);
-        if (!in_array($type, $this->allowed_inputs)) {
+        if (!empty($this->allowed_inputs) && !in_array($type, $this->allowed_inputs)) {
             throw new \Exception(t('Input type "%s" is not allowed for this variable', $type));
         }
         $this->input_type = $type;
