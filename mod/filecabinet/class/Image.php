@@ -410,9 +410,6 @@ class PHPWS_Image extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = Icon::show('clip', dgettext('filecabinet', 'Clip image'));
-            $links[] = PHPWS_Text::secureLink($clip, 'filecabinet', array('iop' => 'clip_image',
-                        'image_id' => $this->id));
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
         }

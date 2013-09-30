@@ -20,9 +20,9 @@ abstract class Base extends \Tag {
     /**
      * The label tag associated with this input. Should contain information
      * as to the function of the input or its title.
-     * @var string
+     * @var \Form\Label
      */
-    protected $label = null;
+    private $label = null;
 
     /**
      * Indicates if input uses a label and where to print it. Submit and button
@@ -63,6 +63,8 @@ abstract class Base extends \Tag {
     {
         static $default_ids = array();
 
+        $this->label = new Label;
+
         $this->setName($name);
         if (!isset($default_ids[$this->tag_type])) {
             $default_ids[$this->tag_type] = 1;
@@ -77,13 +79,23 @@ abstract class Base extends \Tag {
         }
         $this->setId($id_name);
 
-        $this->setLabel($label);
-
         $this->type = strtolower($this->popClass());
         parent::__construct($this->tag_type, $value);
         // this MUST come after the above construct
         $this->addIgnoreVariables('has_label', 'label_location');
+        $this->label->addClass($this->getType() . '-label');
     }
+
+    /**
+     * Adds a class name to all the labels in the current form.
+     *
+     * @param string $class_name
+     */
+    public function addLabelClass($class_name)
+    {
+        $this->label->addClass($class_name);
+    }
+
 
     /**
      * Name parameter of the input element
@@ -95,7 +107,19 @@ abstract class Base extends \Tag {
             throw new \Exception(t('Improper name "%s"', $name));
         }
         $this->name = trim($name);
+
+        $this->setLabelText($name);
+
         return $this;
+    }
+
+    public function setLabelText($text)
+    {
+        $label = str_replace('[', '', $text);
+        $label = str_replace(']', '', $label);
+        $label = str_replace('_', ' ', $label);
+        $label = ucfirst($label);
+        $this->label->setText($label);
     }
 
     /**
@@ -123,8 +147,14 @@ abstract class Base extends \Tag {
      */
     public function setLabel($label)
     {
-        $this->label = $label;
+        $this->label->setText($label);
         return $this;
+    }
+
+    public function setId($id)
+    {
+        $this->label->setFor($id);
+        parent::setId($id);
     }
 
     /**
@@ -132,17 +162,7 @@ abstract class Base extends \Tag {
      */
     public function getLabel()
     {
-        if (empty($this->label)) {
-            $label = $this->name;
-            $label = str_replace('[', '', $label);
-            $label = str_replace(']', '', $label);
-            $label = str_replace('_', ' ', $label);
-            $label = ucfirst($label);
-        } else {
-            $label = & $this->label;
-        }
-        $class_name = $this->getType() . '-label';
-        return "<label for=\"$this->id\" class=\"$class_name\">$label</label>";
+        return (string) $this->label;
     }
 
     /**

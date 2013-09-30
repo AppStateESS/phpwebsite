@@ -1194,7 +1194,7 @@ class DBPager {
         $values['dbprt'] = 'csva';
         return PHPWS_Text::moduleLink(_('Export to Spreadsheet'), $module, $values, null, _('Export to Spreadsheet'));
     }
-    
+
     /**
      * Provides just the URI to download a CSV export of this pageer's search results.
      * @author Jeremy Booker
@@ -1205,7 +1205,7 @@ class DBPager {
         $values = $this->getLinkValues();
         $module = $values['module'];
         unset($values['module']);
-        
+
         $values['dbprt'] = 'csva';
         return PHPWS_Text::linkAddress($module, $values);
     }
@@ -1496,8 +1496,6 @@ class DBPager {
                 $index_set = true;
             }
             fputcsv($fp, $result);
-            //$row = self::formatCSVRow($result);
-            //fwrite($fp, $row);
         }
 
         fclose($fp);

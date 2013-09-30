@@ -6,7 +6,7 @@
 <div class="fc-icon">
 <div>{THUMBNAIL}</div>
 <p class="smaller">{TITLE} {DIMENSIONS}<br />
-{ACTION}</p>
+<span class="admin-icons">{ACTION}</span></p>
 </div>
 <!-- END listrows --></div>
 {EMPTY_MESSAGE}

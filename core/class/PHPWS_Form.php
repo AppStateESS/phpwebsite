@@ -1761,7 +1761,12 @@ class PHPWS_Form {
         }
 
         foreach ($aVal as $name => $element) {
-            $element_type = @$this->types[$name];
+            
+            if (!isset($this->types[$name])) {
+                continue;
+            }
+            
+            $element_type = $this->types[$name];
             if (!empty($element_type)) {
                 switch ($element_type) {
                     case 'hidden':

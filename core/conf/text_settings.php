@@ -53,14 +53,6 @@ define('USE_BREAKER', false);
  * is important!
  */
 
-// If FALSE, phpWebSite will not use any text filters to display text
-// and will overwrite setting made by the module.
-define('ALLOW_TEXT_FILTERS', true);
-
-//define('TEXT_FILTERS', 'pear');
-define('TEXT_FILTERS', 'bb');
-
-
 /******************* RELATIVE ADDRESSING ***********************
  * The parseInput function the Text class will remove urls
  * and replace them with relative addresses if this option is TRUE
@@ -127,21 +119,4 @@ $words = array(
 
            define('ALLOW_PROFANITY', FALSE);
            define('PROFANE_WORDS', serialize($words));
-
-
-           /**
-            * These defines were originally in the bb filter itself. That would prevent
-            * branches from setting their site as they wished.
-            */
-
-           // If TRUE, then 'smilies' will be parsed.
-           define('ALLOW_BB_SMILIES', true);
-
-           // If TRUE, users can post with the [img] tag
-           define('ALLOW_BB_IMAGES', true);
-
-           // Either "fieldset" or "blockquote"
-           define('BBCODE_QUOTE_TYPE', 'fieldset');
-
-
            ?>

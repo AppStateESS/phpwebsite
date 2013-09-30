@@ -21,6 +21,19 @@ class Textarea extends \Form\Base {
      */
     protected $open = true;
 
+
+    /**
+     * Sets a text fields placeholder text.
+     * @see Form\Input\Text::$placeholder
+     * @param string $placeholder
+     */
+    public function setPlaceholder($placeholder)
+    {
+        $placeholder = preg_replace('/[^\w\s.,:&!?#]/', '', $placeholder);
+
+        $this->placeholder = $placeholder;
+    }
+
 }
 
 ?>

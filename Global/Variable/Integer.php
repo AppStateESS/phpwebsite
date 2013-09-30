@@ -76,6 +76,20 @@ class Integer extends \Variable {
         $this->low_range = (int) $low_range;
         $this->high_range = (int) $high_range;
         $this->setIncrement($increment);
+        return $this;
+    }
+
+    public function setInputType($type)
+    {
+        switch ($type) {
+            case 'select':
+                if ($this->high_range - $this->low_range > 100000) {
+                    throw new \Exceptions(t('Range is too high for a select input'));
+                }
+                $this->setChoices(range($this->low_range, $this->high_range, $this->increment));
+                break;
+        }
+        parent::setInputType($type);
     }
 
     /**
@@ -90,6 +104,7 @@ class Integer extends \Variable {
             throw new \Exception(t('Increment cannot be zero'));
         }
         $this->increment = $increment;
+        return $this;
     }
 
     /**

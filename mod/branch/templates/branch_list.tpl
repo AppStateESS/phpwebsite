@@ -15,7 +15,7 @@
         <td>{BRANCH_NAME}</td>
         <td>{DIRECTORY}</td>
         <td>{URL}</td>
-        <td>{ACTION}</td>
+        <td class="admin-icons">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>
