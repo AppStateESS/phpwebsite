@@ -46,7 +46,7 @@ abstract class Variable extends Data {
      * Type of column in a database
      * @var string
      */
-    protected $column_type = 'text';
+    protected $column_type;
 
     /**
      * Array of choices used by form and post verification. If choices is not empty, it
@@ -398,6 +398,16 @@ abstract class Variable extends Data {
     }
 
     /**
+     * Sets the database column type
+     * @param string $col_type
+     */
+    public function setColumnType($col_type)
+    {
+        $col = new \Variable\Attribute($col_type, 'column_type');
+        $this->column_type = $col->__toString();
+    }
+
+    /**
      * Returns current choices array
      * @return array
      */
@@ -464,6 +474,8 @@ abstract class Variable extends Data {
      */
     public function loadDataType(\Database\Table $table)
     {
+        $column_type = empty($this->column_type) ? 'Varchar' : $this->column_type;
+
         if (empty($this->varname)) {
             throw \Exception('Variable name is not set');
         }
