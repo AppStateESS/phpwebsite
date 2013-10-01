@@ -127,8 +127,10 @@ abstract class Resource extends Data {
     }
 
     /**
-     * Creates a new table based on the resource object
+     * Creates a new table based on the resource object. Returns table object
+     * if successful
      * @param \Database\DB $db
+     * @return \Database\Table
      */
     public function createTable(\Database\DB $db)
     {
@@ -139,6 +141,7 @@ abstract class Resource extends Data {
         }
         $resource_table->addPrimaryIndexId();
         $resource_table->create();
+        return $resource_table;
     }
 
 }
