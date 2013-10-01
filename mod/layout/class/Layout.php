@@ -215,8 +215,10 @@ class Layout {
     }
 
     /**
+     * Receives a file string or a value array of style information and adds it
+     * to the GLOBAL Style variable.
      *
-     * @param type $value
+     * @param mixed $value
      * @return void
      */
     public static function addToStyleList($value)
