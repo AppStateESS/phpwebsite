@@ -13,7 +13,7 @@ serialize(array('pass',
 		       'phpwebsite',
 		       'admin',
 		       'phpws',
-		       'asdlkj'	       
+		       'asdlkj'
 		       )
 		       )
 		       );
@@ -35,7 +35,7 @@ serialize(array('pass',
 		        * or only alphanumeric characters or an underline
 		        * read up about regular expressions before editing
 		        */
-		       define('ALLOWED_USERNAME_CHARACTERS', '\w');
+		       define('ALLOWED_USERNAME_CHARACTERS', '\w@\.\-\+');
 
 
 		       /**
