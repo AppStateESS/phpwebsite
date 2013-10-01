@@ -55,7 +55,7 @@ abstract class Datatype extends \Data {
     }
 
     /**
-     * Creates a data type for insertion into the passed table. The table's
+     * Creates a Datatype object for insertion into the passed table. The table's
      * database engine type is checked first. This allows database specific data
      * type instructions to be used.
      *

@@ -30,6 +30,11 @@ abstract class Resource extends Data {
         $this->addHiddenVariable('table');
     }
 
+    /**
+     * Returns name of table set to Resource
+     * @return string
+     * @throws \Exception Table variable was null
+     */
     public function getTable()
     {
         if (empty($this->table)) {
@@ -86,7 +91,7 @@ abstract class Resource extends Data {
       return \User\Permission::permit($permission_name, $this, $user);
       }
      */
-    
+
     /*
      * @todo reapply when user permissions rewritten
       public function permitRole($permission_name, \User\Role $role)
@@ -122,8 +127,10 @@ abstract class Resource extends Data {
     }
 
     /**
-     * Creates a new table based on the resource object
+     * Creates a new table based on the resource object. Returns table object
+     * if successful
      * @param \Database\DB $db
+     * @return \Database\Table
      */
     public function createTable(\Database\DB $db)
     {
@@ -134,6 +141,7 @@ abstract class Resource extends Data {
         }
         $resource_table->addPrimaryIndexId();
         $resource_table->create();
+        return $resource_table;
     }
 
 }

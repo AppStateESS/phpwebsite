@@ -84,6 +84,9 @@ abstract class Base extends \Tag {
         // this MUST come after the above construct
         $this->addIgnoreVariables('has_label', 'label_location');
         $this->label->addClass($this->getType() . '-label');
+        if ($label) {
+            $this->label->setText($label);
+        }
     }
 
     /**
@@ -230,6 +233,7 @@ abstract class Base extends \Tag {
         } else {
             $this->required = null;
         }
+        $this->label->setRequired($required);
         return $this;
     }
 

@@ -46,7 +46,6 @@ class String extends \Variable {
      * @var integer
      */
     protected $limit = 255;
-    protected $column_type = 'Mediumtext';
     protected $allow_empty = true;
 
     /**
@@ -247,10 +246,12 @@ class String extends \Variable {
      */
     public function loadDataType(\Database\Table $table)
     {
-        if ($this->limit <= 256) {
-            $this->column_type = 'Varchar';
-        } else {
-            $this->column_type = 'Text';
+        if (empty($this->column_type)) {
+            if ($this->limit <= 256 && $this->limit > 0) {
+                $this->column_type = 'Varchar';
+            } else {
+                $this->column_type = 'Text';
+            }
         }
         $dt = parent::loadDataType($table);
         return $dt;

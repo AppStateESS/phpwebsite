@@ -371,6 +371,11 @@ class Form extends Tag {
         return $this->addInput('password', $name, $value, $label);
     }
 
+    public function includeCSS()
+    {
+        \Layout::addToStyleList('Global/Templates/Form/style.css');
+    }
+
     /**
      * Prints out a rudimentary form based on the inputs in the queue.
      * A form toString will ALWAYS print the label if the input has one.
@@ -379,6 +384,7 @@ class Form extends Tag {
      */
     public function __toString()
     {
+        $this->includeCSS();
         $text = null;
         if (!empty(self::$css_addition)) {
             $this->loadCSSAddition();
@@ -470,6 +476,7 @@ class Form extends Tag {
      */
     public function getInputStringArray()
     {
+        $this->includeCSS();
         if (!empty(self::$css_addition)) {
             $this->loadCSSAddition();
         }
@@ -524,14 +531,6 @@ class Form extends Tag {
      */
     public function printTemplate($template)
     {
-        // @todo implement Head again or clone
-        //$head = new \Head;
-        //$head->includeCSS('Global/Templates/Form/style.css');
-        # @todo not doing anything with the problems pulled from the response,
-        # expecting results within the included template perhaps
-        //$response = \Response::singleton();
-        //$problems = $response->getProblems();
-
         if (empty($this->id)) {
             $this->loadId();
         }
@@ -686,7 +685,7 @@ class Form extends Tag {
     public function addInputClass($class_name)
     {
         static $allowed = array('text', 'textarea', 'email', 'color', 'date',
-            'datetime', 'file', 'password', 'search', 'telephone', 'url');
+    'datetime', 'file', 'password', 'search', 'telephone', 'url');
         if (empty($this->inputs)) {
             throw new \Exception('Input list is empty');
         }

@@ -11,6 +11,8 @@ class Label extends \Tag {
 
     protected $for;
 
+    protected $required = false;
+
     public function __construct($text=null, $for = null)
     {
         if (isset($for)) {
@@ -22,6 +24,21 @@ class Label extends \Tag {
     public function setFor($for)
     {
         $this->for = strip_tags($for);
+    }
+
+    public function __toString()
+    {
+        $label = parent::__toString();
+
+        if ($this->required) {
+            $label .= ' <i class="required icon-asterisk"></i>';
+        }
+        return $label;
+    }
+
+    public function setRequired($required)
+    {
+        $this->required = (bool) $required;
     }
 
 }

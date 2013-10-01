@@ -1,20 +1,3 @@
-div.form-problem {
-    height : 24px;
-    padding-left : 25px;
-    font-weight : bold;
-    background-image : url('warning.png');
-    background-repeat : no-repeat;
-    background-position : 2px 50%;
-}
-
-div.form-problem span {
-    height : 100%
-}
-
-p.form-input {
-    position : relative;
-}
-
-.input-error {
-    background-color : #fe9193;
+.required {
+    color : #DC1026;
 }
