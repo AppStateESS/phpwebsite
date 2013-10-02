@@ -62,7 +62,7 @@ abstract class Constraint {
         }
     }
 
-    protected function checkDatatype($datatype)
+    protected function checkDatatype(\Database\Datatype $datatype)
     {
         $type = $datatype->getDatatype();
         if ($type == 'BLOB' || $type == 'TEXT') {
