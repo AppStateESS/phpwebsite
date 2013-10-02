@@ -22,16 +22,8 @@ class ResourceFactory {
             $table_name = $resource->getTable();
         }
 
-        if (empty($table_name)) {
-            throw new Exception(t('Table name not submitted nor found in the Resource object'));
-        }
-
         if (empty($id)) {
             $id = self::pullId($resource);
-        }
-
-        if (empty($id)) {
-            throw new Exception(t('Id not submitted nor found in the Resource object'));
         }
 
         $db = \Database::newDB();
