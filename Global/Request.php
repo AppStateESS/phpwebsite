@@ -97,6 +97,12 @@ class Request extends Data {
     private $accept;
 
     /**
+     * The last command shifted off the command stack.
+     * @var string
+     */
+    private $last_command;
+
+    /**
      * Builds the current page request object.
      *
      * @param $url string The URL
@@ -161,7 +167,8 @@ class Request extends Data {
      */
     public function shiftCommand()
     {
-        return array_shift($this->commands);
+        $this->last_command = array_shift($this->commands);
+        return $this->last_command;
     }
 
     /**
@@ -491,6 +498,11 @@ class Request extends Data {
         }
 
         return $_FILES[$file_name];
+    }
+
+    public function lastCommand()
+    {
+        return $this->last_command;
     }
 
 }
