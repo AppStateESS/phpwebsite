@@ -10,6 +10,7 @@ class ResourceFactory {
     /**
      * Loads a Resource from the database according to table_name.
      * If table_name is not entered, Resource is checked for a table name
+     * If resource is not found in table, the resource will just be as it was passed.
      * @param \Resource $resource
      * @param string $table_name
      * @throws \Exception
@@ -35,13 +36,8 @@ class ResourceFactory {
 
         $db = \Database::newDB();
         $table = $db->addTable($table_name);
-        $table->addWhere('id', $id);
-        $db->loadSelectStatement();
-        $row = $db->fetchOneRow();
-        if (empty($row)) {
-            throw new \Exception(t('Row not found'));
-        }
-        $resource->setVars($row);
+        $table->addFieldConditional('id', (int)$id);
+        $db->selectInto($resource);
     }
 
     /**
