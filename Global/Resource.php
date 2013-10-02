@@ -45,25 +45,10 @@ abstract class Resource extends Data {
         return $this->table;
     }
 
-    /**
-     * Receives the result of a form post.
-     * @return object Response object
-     */
-    public function post()
+    public function post(\Request $request)
     {
-        $response = Response::singleton();
-        $vars = $this->getVars();
-        foreach ($vars as $var) {
-            if ($var instanceof Variable) {
-                try {
-                    $var->post();
-                } catch (Error $e) {
-                    $response->addProblem($var->getVarName(), $e->getMessage());
-                    $response->setStatus('failure');
-                }
-            }
-        }
-        return $response;
+        $post_vars = $request->getRequestVars();
+        $this->setVars($post_vars);
     }
 
     public function setId($id)
