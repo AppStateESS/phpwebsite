@@ -815,6 +815,21 @@ abstract class Table extends Resource {
     }
 
     /**
+     * Calls getFieldCondtional and uses it within a DB::addConditional call. Note
+     * that addConditional ONLY USES "AND" COMPARISONS. This is just a shortcut.
+     * More intricate conditionals should not use this method.
+     *
+     * @see \Database\Table::getFieldConditional
+     * @param string $field_name
+     * @param string $value
+     * @param string $operator
+     */
+    public function addFieldConditional($field_name, $value, $operator=null)
+    {
+        $this->db->addConditional($this->getFieldConditional($field_name, $value, $operator));
+    }
+
+    /**
      * @return null|string Contents of the fields in this resource; null if no
      *         fields are present
      */
