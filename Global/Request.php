@@ -500,6 +500,10 @@ class Request extends Data {
         return $_FILES[$file_name];
     }
 
+    /**
+     * Returns the last_command variable
+     * @return string
+     */
     public function lastCommand()
     {
         return $this->last_command;
