@@ -71,7 +71,7 @@ class String extends \Variable {
                     $this->getLabel(), $this->getLimit()));
         }
 
-        if (isset($this->regexp_match) && !preg_match($this->regexp_match,
+        if (strlen($value) && isset($this->regexp_match) && !preg_match($this->regexp_match,
                         $value)) {
             throw new \Exception(t('String variable "%s" is not formatted correctly',
                     $this->getVarName()));
