@@ -468,6 +468,31 @@ class Request extends Data {
         echo implode('', $content);
     }
 
+    /**
+     * Returns true is the file_name is in the _FILES array
+     * @param string $file_name
+     * @return boolean
+     */
+    public function isUploadedFile($file_name)
+    {
+        return isset($_FILES[$file_name]) && $_FILES[$file_name]['size'];
+    }
+
+    /**
+     * Returns the _FILES array for the request file name.
+     * @param string $file_name
+     * @return array
+     * @throws \Exception
+     */
+    public function getUploadedFileArray($file_name)
+    {
+        if (!$this->isUploadedFile($file_name)) {
+            throw new \Exception(t('File "%s" was not uploaded', $file_name));
+        }
+
+        return $_FILES[$file_name];
+    }
+
 }
 
 ?>
