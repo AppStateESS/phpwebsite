@@ -29,7 +29,10 @@ class ResourceFactory {
         $db = \Database::newDB();
         $table = $db->addTable($table_name);
         $table->addFieldConditional('id', (int)$id);
-        $db->selectInto($resource);
+        $result = $db->selectOneRow();
+        if (!empty($result)) {
+            $resource->setVars($result);
+        }
     }
 
     /**
