@@ -19,6 +19,12 @@ class DatabasePager extends Pager {
      */
     protected $table_headers;
 
+    /**
+     *
+     * @var boolean
+     */
+    protected $show_query = false;
+
     public function __construct(\Database\DB $db)
     {
         $this->db = $db;
@@ -47,8 +53,21 @@ class DatabasePager extends Pager {
         }
 
         $this->processLimit();
+
+        if ($this->show_query) {
+            $this->addJsonData('select_query',$this->db->selectQuery());
+        }
         $this->setRows($this->db->select());
         $this->executeCallback();
+    }
+
+    /**
+     * If true, record the select query and insert in JSON
+     * @param boolean $show
+     */
+    public function showQuery($show = true)
+    {
+        $this->show_query = (bool) $show;
     }
 
     private function loadSearchConditionals()

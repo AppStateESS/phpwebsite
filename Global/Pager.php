@@ -87,6 +87,12 @@ class Pager {
      */
     protected $row_id_column;
 
+    /**
+     * Data added from addJsonData. Inserted during assignData.
+     * @var array
+     */
+    protected $json_data;
+
     public function __construct()
     {
         javascript('jquery');
@@ -409,9 +415,18 @@ class Pager {
         return $this->assignData();
     }
 
+    public function addJsonData($key, $value)
+    {
+        $this->json_data[$key] = $value;
+    }
+
     protected function assignData()
     {
-        $data = array();
+        if (!empty($this->json_data)) {
+            $data = $this->json_data;
+        } else {
+            $data = array();
+        }
         $data['headers'] = $this->getHeaders();
         $data['total_rows'] = $this->total_rows;
         $data['current_page'] = $this->current_page;
