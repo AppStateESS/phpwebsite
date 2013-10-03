@@ -518,9 +518,7 @@ class Pager {
         }
 
         $content = <<<EOF
-    <div style="position : relative" class="pull-right">
-    $icon<input type="text" name="search_box" style="margin-left : 4px; padding-left : 17px;width : 200px" class="input-sm form-control search-query" value="$this->search_phrase" />
-    </div>
+    <div class="pull-right">
     <div class="btn-group">
         <button class="btn btn-default btn-sm pager-search-submit">$search
         <button class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown">
@@ -529,6 +527,8 @@ class Pager {
         <ul class="dropdown-menu">
         $columns
         </ul>
+        $icon<input type="text" name="search_box" style="margin-left : 4px; padding-left : 17px;width : 200px" class="input-sm form-control search-query" value="$this->search_phrase" />
+    </div>
     </div>
 EOF;
         return $content;
