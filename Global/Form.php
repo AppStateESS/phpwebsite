@@ -513,7 +513,8 @@ class Form extends Tag {
             }
         }
         foreach ($groups as $gname => $g) {
-            $value[$gname] = '<div class="' . implode("\n", $this->group_class) . '">' . implode("\n",
+            $gclass = str_replace('_', '-', $gname);
+            $value[$gname] = '<div class="' . $gclass . ' ' . implode("\n", $this->group_class) . '">' . implode("\n",
                             $g) . '</div>';
         }
         if (isset($value['hidden'])) {
