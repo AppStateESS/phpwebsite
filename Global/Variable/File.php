@@ -15,6 +15,7 @@ class File extends \Variable\String {
     {
         $this->setRegexpMatch('/^[^|;,!@#$()<>\\"\'`~{}\[\]=+&\^\s\t]+(\w+(\.\w+))$/i');
         parent::__construct($value, $varname);
+        $this->setLimit(255);
     }
 
     public function exists()

@@ -45,7 +45,7 @@ class String extends \Variable {
      * (i.e. "unlimited" characters)
      * @var integer
      */
-    protected $limit = 65535;
+    protected $limit = 0;
     protected $allow_empty = true;
 
     /**
@@ -247,13 +247,16 @@ class String extends \Variable {
     public function loadDataType(\Database\Table $table)
     {
         if (empty($this->column_type)) {
-            if ($this->limit <= 65535 && $this->limit > 0) {
+            if ($this->limit <= 500 && $this->limit > 0) {
                 $this->column_type = 'Varchar';
             } else {
                 $this->column_type = 'Text';
             }
         }
         $dt = parent::loadDataType($table);
+        if (strtolower($this->column_type) == 'varchar') {
+            $dt->setSize($this->limit);
+        }
         return $dt;
     }
 
