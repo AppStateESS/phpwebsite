@@ -1246,7 +1246,7 @@ class User_Form {
         }
     }
 
-    public function forgotForm()
+    public static function forgotForm()
     {
         PHPWS_Core::initCoreClass('Captcha.php');
         $form = new PHPWS_Form('forgot-password');
