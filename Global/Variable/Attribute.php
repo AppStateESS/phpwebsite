@@ -15,6 +15,11 @@ class Attribute extends \Variable\String {
 
     protected $regexp_match = '/^([a-z_:])([\w\.\-:])*$/i';
 
+    public function __construct($value = null, $varname = null)
+    {
+        parent::__construct($value, $varname);
+        $this->setLimit(255);
+    }
 }
 
 ?>
