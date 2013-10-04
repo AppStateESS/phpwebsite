@@ -436,6 +436,7 @@ class Pager {
         $data['pager_search'] = $this->getPageSearch();
         $data['row_id_column'] = $this->row_id_column;
         $data['rows'] = $this->rows;
+        $data['page_count'] = $this->getNumberOfPages();
         return $data;
     }
 
@@ -450,7 +451,6 @@ class Pager {
         if (!empty($this->sort_column) && $this->sort_direction != 0) {
             $this->sortCurrentRows();
         }
-
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
         $this->rows = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
