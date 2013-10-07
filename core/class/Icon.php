@@ -61,8 +61,63 @@ class Icon extends \Tag {
     private function addIconClass()
     {
         switch ($this->type) {
+            case 'add':
+                $this->addClass('icon-plus');
+                break;
+            case 'approved':
+                $this->addClass('icon-thumbs-up');
+                break;
+
+            case 'cancel':
+                $this->addClass('icon-ban-circle');
+                break;
+            case 'clear':
+                $this->addClass('icon-eraser');
+                break;
+            case 'clip':
+                $this->addClass('icon-paper-clip');
+                break;
+            case 'close':
+                $this->addClass('icon-remove');
+                break;
+
             case 'delete':
                 $this->addClass('icon-trash');
+                break;
+
+            case 'email':
+                $this->addClass('icon-envelope-alt');
+                break;
+            case 'error':
+                $this->addClass('icon-exclamation-sign');
+                break;
+
+            case 'up':
+            case 'down':
+                $this->addClass('icon-arrow-' . $this->type);
+                break;
+
+            case 'active':
+                $this->addClass('icon-off');
+                $this->addStyle('color : green');
+                break;
+
+            case 'deactive':
+            case 'inactive':
+                $this->addClass('icon-off');
+                $this->addStyle('color : red');
+                break;
+
+            case 'next':
+                $this->addClass('icon-chevron-right');
+                break;
+
+            case 'previous':
+                $this->addClass('icon-chevron-left');
+                break;
+
+            case 'forbidden':
+                $this->addClass('icon-warning-sign');
                 break;
 
             default:
