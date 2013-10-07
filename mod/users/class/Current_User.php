@@ -59,7 +59,8 @@ final class Current_User {
             return false;
         }
 
-        return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, false);
+        return $_SESSION['User']->allow($module, $subpermission, $item_id,
+                        $itemname, false);
     }
 
     /**
@@ -76,7 +77,8 @@ final class Current_User {
             return false;
         }
 
-        return Current_User::verifySaltedUrl() && $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname);
+        return Current_User::verifySaltedUrl() && $_SESSION['User']->allow($module,
+                        $subpermission, $item_id, $itemname);
     }
 
     /**
@@ -100,7 +102,8 @@ final class Current_User {
             return false;
         }
 
-        return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, true);
+        return $_SESSION['User']->allow($module, $subpermission, $item_id,
+                        $itemname, true);
     }
 
     public static function allowedItem($module, $item_id, $itemname = null)
@@ -137,7 +140,8 @@ final class Current_User {
         $auth = Current_User::getAuthorization();
 
         if (empty($auth)) {
-            throw new Exception(t('Failed to retrive the current authorization: %s', $_SESSION['User']->auth_script));
+            throw new Exception(t('Failed to retrive the current authorization: %s',
+                    $_SESSION['User']->auth_script));
         }
 
         // If the current user is not verified then
@@ -304,7 +308,8 @@ final class Current_User {
 
     public static function giveItemPermission($key)
     {
-        $result = Users_Permission::giveItemPermission(Current_User::getId(), $key);
+        $result = Users_Permission::giveItemPermission(Current_User::getId(),
+                        $key);
         $_SESSION['User']->loadUserGroups();
         $_SESSION['User']->loadPermissions();
     }
@@ -340,10 +345,13 @@ final class Current_User {
 
             if (!javascriptEnabled()) {
                 $tpl = User_Form::permissionMenu($key);
-                $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
+                $content = PHPWS_Template::process($tpl, 'users',
+                                'forms/permission_menu.tpl');
                 Layout::add($content, 'users', 'permissions');
             } else {
-                $links[] = Current_User::popupPermission($key->id, sprintf(dgettext('users', 'Set permissions'), $key->title));
+                $links[] = Current_User::popupPermission($key->id,
+                                sprintf(dgettext('users', 'Set permissions'),
+                                        $key->title));
                 MiniAdmin::add('users', $links);
             }
         }
@@ -369,7 +377,8 @@ final class Current_User {
         $js_vars['width'] = 350;
         $js_vars['height'] = 350;
 
-        $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s', $key_id, Current_User::getAuthKey());
+        $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s',
+                $key_id, Current_User::getAuthKey());
 
         return javascript('open_window', $js_vars);
     }
@@ -380,7 +389,8 @@ final class Current_User {
      */
     public static function allowUsername($username)
     {
-        return !preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i', $username);
+        return !preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i',
+                        $username);
     }
 
     /**
@@ -389,7 +399,8 @@ final class Current_User {
     public static function loginUser($username, $password = null)
     {
         if (!Current_User::allowUsername($username)) {
-            return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
+            return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users',
+                            'Current_User::loginUser');
         }
 
         // First check if they are currently a user
@@ -408,16 +419,19 @@ final class Current_User {
         } else {
             // This user is in the local database
             if (!$user->approved) {
-                return PHPWS_Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
+                return PHPWS_Error::get(USER_NOT_APPROVED, 'users',
+                                'Current_User::loginUser');
             }
             if (!$user->loadScript()) {
-                Layout::add(dgettext('users', 'Could not load authentication script. Please contact site administrator.'));
+                Layout::add(dgettext('users',
+                                'Could not load authentication script. Please contact site administrator.'));
                 return false;
             }
         }
 
         if (!Current_User::loadAuthorization($user)) {
-            Layout::add(dgettext('users', 'Could not load authentication script. Please contact site administrator.'));
+            Layout::add(dgettext('users',
+                            'Could not load authentication script. Please contact site administrator.'));
             return false;
         }
 
@@ -443,7 +457,8 @@ final class Current_User {
 
 
             if (!$user->active) {
-                return PHPWS_Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
+                return PHPWS_Error::get(USER_DEACTIVATED, 'users',
+                                'Current_User:loginUser', $user->username);
             }
 
             if ($auth->localUser()) {
@@ -499,7 +514,8 @@ final class Current_User {
 
         $username = strtolower($rArray['username']);
         if (preg_match('/\'|"/', html_entity_decode($username, ENT_QUOTES))) {
-            Security::log(dgettext('users', 'User tried to login using Remember Me with a malformed cookie.'));
+            Security::log(dgettext('users',
+                            'User tried to login using Remember Me with a malformed cookie.'));
             return false;
         }
 
@@ -547,13 +563,16 @@ final class Current_User {
 
     public static function loadAuthorization(PHPWS_User $user)
     {
-        if (!is_file(USERS_AUTH_PATH . $user->auth_script)) {
-            return false;
+        $auth_file = USERS_AUTH_PATH . $user->auth_script;
+        if (!is_file($auth_file)) {
+            throw new \Exception(t('User authorization file not found: ' . $auth_file));
         }
         require_once USERS_AUTH_PATH . $user->auth_script;
         $class_name = $user->auth_name . '_authorization';
         if (!class_exists($class_name)) {
-            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'Current_User::loadAuthorization', USERS_AUTH_PATH . $user->auth_script);
+            PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users',
+                    'Current_User::loadAuthorization',
+                    USERS_AUTH_PATH . $user->auth_script);
             return false;
         }
         $GLOBALS['User_Authorization'] = new $class_name($user);
