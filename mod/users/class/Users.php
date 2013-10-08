@@ -914,7 +914,7 @@ class PHPWS_User {
             $links[] = Layout::getJavascript('confirm', $jsvar);
         }
 
-        $template['ACTIONS'] = implode('', $links);
+        $template['ACTIONS'] = implode('&nbsp;', $links);
 
         if ($this->deity && !Current_User::isDeity()) {
             unset($template['ACTIONS']);

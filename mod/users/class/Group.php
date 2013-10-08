@@ -313,7 +313,7 @@ class PHPWS_Group {
                         'Remove') . '"></i>';
         $links[] = Layout::getJavascript('confirm', $removelink);
 
-        $template['ACTIONS'] = implode('', $links);
+        $template['ACTIONS'] = implode('&nbsp;', $links);
 
         $members = $this->getMembers();
 
