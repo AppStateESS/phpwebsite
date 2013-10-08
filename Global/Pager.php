@@ -436,6 +436,7 @@ class Pager {
         $data['pager_search'] = $this->getPageSearch();
         $data['row_id_column'] = $this->row_id_column;
         $data['rows'] = $this->rows;
+        $data['page_count'] = $this->getNumberOfPages();
         return $data;
     }
 
@@ -450,7 +451,6 @@ class Pager {
         if (!empty($this->sort_column) && $this->sort_direction != 0) {
             $this->sortCurrentRows();
         }
-
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
         $this->rows = array_slice($this->rows, $start_count,
                 $this->rows_per_page);
@@ -508,7 +508,7 @@ class Pager {
         }
 
         if (!empty($this->search_phrase)) {
-            $icon = '<div style="position:absolute; top:6px;left:6px;"><a href="javascript:void(0)" class="search-clear" style="color:#d9534f"><span class="glyphicon glyphicon-remove"></span></a></div>';
+            $icon = '<span class="input-group-addon"><a href=""><a href="javascript:void(0)" class="search-clear"><i class="glyphicon glyphicon-remove"></i></a></span>';
         } else {
             $icon = null;
         }
@@ -516,20 +516,17 @@ class Pager {
         foreach ($this->headers as $key => $value) {
             $columns .= "<li><a data-search-column='$key' class='pager-search-column' href='javascript:void(0)'>$value</a></li>";
         }
-
         $content = <<<EOF
-    <div class="pull-right">
-    <div class="btn-group">
-        <button class="btn btn-default btn-sm pager-search-submit">$search
-        <button class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown">
-            <span class="caret"></span>
-        </button>
+<div class="pull-right input-group" style="max-width:400px">
+    <div class="input-group-btn">
+        <button class="btn-sm btn btn-default pager-search-submit">$search</button>
+        <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
         <ul class="dropdown-menu">
-        $columns
+            $columns
         </ul>
-        $icon<input type="text" name="search_box" style="margin-left : 4px; padding-left : 17px;width : 200px" class="input-sm form-control search-query" value="$this->search_phrase" />
     </div>
-    </div>
+    <input type="text" name="search_box" class="input-sm form-control search-query" value="$this->search_phrase" />$icon
+</div>
 EOF;
         return $content;
     }

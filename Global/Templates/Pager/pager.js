@@ -306,8 +306,8 @@ function Pager(page) {
 
     this.clearSearch = function()
     {
-        this.search_phrase = '';
-        this.search_column = '';
+        this.search_phrase = undefined;
+        this.search_column = undefined;
         this.processData();
     };
 

@@ -38,6 +38,9 @@ class DatabasePager extends Pager {
 
     public function processRows()
     {
+        if (empty($this->total_rows)) {
+            $this->loadTotalRows();
+        }
         if (!empty($this->search_phrase)) {
             $this->loadSearchConditionals();
             if ($this->current_page > $this->getNumberofPages()) {
@@ -48,9 +51,6 @@ class DatabasePager extends Pager {
             $this->setRowOrder();
         }
 
-        if (empty($this->total_rows)) {
-            $this->loadTotalRows();
-        }
 
         $this->processLimit();
 
