@@ -151,6 +151,12 @@ PowerTip
 Steven Benner
 http://stevenbenner.github.io/jquery-powertip/
 
+Bootstrap
+http://getbootstrap.com
+
+Fort Awesome Icons
+http://fortawesome.github.io/Font-Awesome/
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
