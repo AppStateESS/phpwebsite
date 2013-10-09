@@ -6,7 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id: my_page.php 7776 2010-06-11 13:52:58Z jtickle $
  */
-
 // Number of days a remember me cookie will last
 if (!defined('REMEMBER_ME_LIFE')) {
     define('REMEMBER_ME_LIFE', 365);
@@ -16,18 +15,18 @@ function my_page()
 {
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
-    }
-    else {
+    } else {
         $subcommand = 'updateSettings';
     }
 
     $user = $_SESSION['User'];
 
     $template['TITLE'] = dgettext('users', 'Change my Settings');
-    switch ($subcommand){
+    switch ($subcommand) {
         case 'updateSettings':
             if (isset($_GET['save'])) {
-                $template['MESSAGE'] = dgettext('users', 'User settings updated.');
+                $template['MESSAGE'] = dgettext('users',
+                        'User settings updated.');
             }
 
             $content = User_Settings::userForm($user);
@@ -44,7 +43,8 @@ function my_page()
                 $content = User_Settings::userForm($user, $result);
             } else {
                 if (PHPWS_Error::logIfError($user->save())) {
-                    $content = dgettext('users', 'An error occurred while updating your user account.');
+                    $content = dgettext('users',
+                            'An error occurred while updating your user account.');
                 } else {
                     $_SESSION['User'] = $user;
                     PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
@@ -60,7 +60,7 @@ function my_page()
 
 class User_Settings {
 
-    public static function userForm(PHPWS_User $user, $message=NULL)
+    public static function userForm(PHPWS_User $user, $message = NULL)
     {
         require_once PHPWS_SOURCE_DIR . 'core/class/Time.php';
         javascript('jquery');
@@ -73,32 +73,41 @@ class User_Settings {
 
         if (Current_User::allow('users') || $user->display_name == $user->username) {
             $form->addText('display_name', $user->display_name);
+            $form->setClass('display_name', 'form-control');
             $form->setLabel('display_name', dgettext('users', 'Display Name'));
         } else {
-            $form->addTplTag('DISPLAY_NAME_LABEL', dgettext('users', 'Display Name'));
-            $tpl['DISPLAY_NAME'] = javascript('slider', array('link' => $user->display_name,
-                                                              'id'   => 'name-info',
-                                                              'message' => dgettext('users', 'Once you change your display name, you may not change it again until reset by the site administrator.')));
-
+            $form->addTplTag('DISPLAY_NAME_LABEL',
+                    dgettext('users', 'Display Name'));
+            $tpl['DISPLAY_NAME'] = javascript('slider',
+                    array('link' => $user->display_name,
+                'id' => 'name-info',
+                'message' => dgettext('users',
+                        'Once you change your display name, you may not change it again until reset by the site administrator.')));
         }
 
-        if ($user->canChangePassword()){
+        if ($user->canChangePassword()) {
             $form->addPassword('password1');
             $form->setAutoComplete('password1');
+            $form->setClass('password1', 'form-control');
             $form->addPassword('password2');
             $form->setAutoComplete('password2');
+            $form->setClass('password2', 'form-control');
             $form->setTitle('password2', dgettext('users', 'Password confirm'));
             $form->setLabel('password1', dgettext('users', 'Password'));
         } else {
-            $tpl['PASSWORD1_LABEL'] =  dgettext('users', 'Password');
-            $tpl['PASSWORD1'] = javascript('slider', array('link' => dgettext('users', 'Why can\'t I change my password?'),
-                                                           'id'   => 'pw-info',
-                                                           'message' => dgettext('users', 'Your account is authorized external to this site. You will need to update it at the source.')));
+            $tpl['PASSWORD1_LABEL'] = dgettext('users', 'Password');
+            $tpl['PASSWORD1'] = javascript('slider',
+                    array('link' => dgettext('users',
+                        'Why can\'t I change my password?'),
+                'id' => 'pw-info',
+                'message' => dgettext('users',
+                        'Your account is authorized external to this site. You will need to update it at the source.')));
         }
 
         $form->addText('email', $user->getEmail());
         $form->setSize('email', 40);
         $form->setLabel('email', dgettext('users', 'Email Address'));
+        $form->setClass('email', 'form-control');
 
         if (isset($tpl)) {
             $form->mergeTemplate($tpl);
@@ -109,13 +118,14 @@ class User_Settings {
         $timezones['server'] = dgettext('users', '-- Use server\'s time zone --');
         foreach ($tz_list as $tz) {
             if (!empty($tz['codes'])) {
-                $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'], $tz['codes'][0]);
+                $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'],
+                        $tz['codes'][0]);
             } elseif (!empty($tz['city'])) {
-                $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'], $tz['city'][0]);
+                $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'],
+                        $tz['city'][0]);
             } else {
                 $timezones[$tz['id']] = $tz['id'];
             }
-
         }
 
         if (isset($_REQUEST['timezone'])) {
@@ -127,6 +137,7 @@ class User_Settings {
         $form->addSelect('timezone', $timezones);
         $form->setLabel('timezone', dgettext('users', 'Time Zone'));
         $form->setMatch('timezone', $user_tz);
+        $form->setClass('timezone', 'form-control');
 
         if (isset($_REQUEST['dst']) && $_REQUEST['timezone'] != 'server') {
             $dst = $_REQUEST['dst'];
@@ -139,9 +150,9 @@ class User_Settings {
         $form->setLabel('dst', dgettext('users', 'Use Daylight Savings Time'));
 
         if (isset($_POST['cp'])) {
-            $cp = (int)$_POST['cp'];
+            $cp = (int) $_POST['cp'];
         } else {
-            $cp = (int)PHPWS_Cookie::read('user_cp');
+            $cp = (int) PHPWS_Cookie::read('user_cp');
         }
 
         $form->addCheckbox('cp', 1);
@@ -169,9 +180,12 @@ class User_Settings {
             if ($language_file) {
                 include $language_file;
                 $form->addSelect('language', $languages);
-                $form->setLabel('language', dgettext('users', 'Language preference'));
+                $form->setClass('language', 'form-control');
+                $form->setLabel('language',
+                        dgettext('users', 'Language preference'));
                 if (isset($_COOKIE['phpws_default_language'])) {
-                    $language = preg_replace('/\W/', '', $_COOKIE['phpws_default_language']);
+                    $language = preg_replace('/\W/', '',
+                            $_COOKIE['phpws_default_language']);
                     $form->setMatch('language', $language);
                 }
             }
@@ -193,11 +207,12 @@ class User_Settings {
         $form->addSelect('editor', $all_editors);
         $form->setLabel('editor', dgettext('users', 'Preferred editor'));
         $form->setMatch('editor', $user_type);
+        $form->setClass('editor', 'form-control');
 
         $template = $form->getTemplate();
 
-        if (isset($message)){
-            foreach ($message as $tag=>$error) {
+        if (isset($message)) {
+            foreach ($message as $tag => $error) {
                 $template[$tag] = $error;
             }
         }
@@ -206,12 +221,14 @@ class User_Settings {
         $template['LOCAL_INFO'] = dgettext('users', 'Localization');
         $template['PREF'] = dgettext('users', 'Preferences');
 
-        return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
+        return PHPWS_Template::process($template, 'users',
+                        'my_page/user_setting.tpl');
     }
 
     public static function setTZ()
     {
-        if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/', $_POST['timezone'])) {
+        if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/',
+                        $_POST['timezone'])) {
             return;
         }
 
@@ -224,7 +241,7 @@ class User_Settings {
         }
 
 
-        if (isset($_POST['dst'])){
+        if (isset($_POST['dst'])) {
             PHPWS_Cookie::write('user_dst', 1);
         } else {
             PHPWS_Cookie::delete('user_dst');
@@ -250,7 +267,7 @@ class User_Settings {
     public static function rememberMe()
     {
         // User must authorize locally
-        if ( PHPWS_Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
+        if (PHPWS_Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
             if (isset($_POST['remember_me'])) {
                 $db = new PHPWS_DB('user_authorization');
                 $db->addColumn('password');
@@ -266,12 +283,14 @@ class User_Settings {
                 $remember['username'] = $_SESSION['User']->username;
                 $remember['password'] = $password;
                 $time_to_live = time() + (86400 * REMEMBER_ME_LIFE);
-                PHPWS_Cookie::write('remember_me', serialize($remember), $time_to_live);
+                PHPWS_Cookie::write('remember_me', serialize($remember),
+                        $time_to_live);
             } else {
                 PHPWS_Cookie::delete('remember_me');
             }
         }
     }
+
 }
 
 ?>
