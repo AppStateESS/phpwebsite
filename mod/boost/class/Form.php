@@ -120,7 +120,7 @@ class Boost_Form {
             $tpl['mod-row'][] = $template;
         } else {
             $allowUninstall = true;
-            $modList = $dir_mods;
+            $modList = array_diff($dir_mods, $core_mods);
         }
 
         $tpl['TITLE_LABEL'] = dgettext('boost', 'Module Title');
