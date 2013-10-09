@@ -1,11 +1,13 @@
-<h2>{TITLE}</h2>
+<div class="user-content-area">
+    <h2>{TITLE}</h2>
 
-<!-- BEGIN message -->
-<div class="row">
-    <div class="alert">
-        {MESSAGE}
+    <!-- BEGIN message -->
+    <div class="row">
+        <div class="alert">
+            {MESSAGE}
+        </div>
     </div>
-</div>
-<!-- END message -->
+    <!-- END message -->
 
-{CONTENT}
+    {CONTENT}
+</div>
