@@ -773,7 +773,7 @@ abstract class Table extends Resource {
         $datatype['timestamp'] = 'timestamp';
         $datatype['time'] = 'time';
         $datatype['varchar'] = 'varchar';
-        $datatype['text'] = 'blob';
+        $datatype['text'] = 'text';
 
         return $datatype;
     }

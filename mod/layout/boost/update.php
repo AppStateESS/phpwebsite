@@ -198,6 +198,13 @@ function layout_update(&$content, $currentVersion)
 + Static notice corrected.
 + Page title can be changed from miniadmin
 </pre>';
+        case version_compare($currentVersion, '2.5.5', '<'):
+            require_once PHPWS_SOURCE_DIR . 'mod/users/class/My_Page.php';
+            My_Page::unregisterMyPage('layout');
+            $content[] = '<pre>2.5.5 changes
+---------------------
++ Unregister My Page
+</pre>';
     }
     return true;
 }
