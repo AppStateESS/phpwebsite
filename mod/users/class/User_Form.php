@@ -432,10 +432,10 @@ class User_Form {
         $vars['action'] = 'admin';
         $vars['group_id'] = $group->id;
         $vars['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit'), 'users', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit') . ' Edit Group Name', 'users', $vars);
 
         $vars['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(Icon::show('permission'), 'users',
+        $links[] = PHPWS_Text::secureLink(Icon::show('permission') . ' Edit Group Permissions', 'users',
                         $vars);
 
         $template['LINKS'] = implode(' ', $links);
