@@ -67,6 +67,7 @@ class Text extends \Form\Input {
      * Sets the size and maxsize parameter the text input
      * @param integer $size
      * @param integer $maxlength
+     * @return \Form\Input\Text Returns current object
      */
     public function setSize($size, $maxlength = null)
     {
@@ -74,22 +75,34 @@ class Text extends \Form\Input {
         if ($maxlength) {
             $this->setMaxLength($maxlength);
         }
+        return $this;
     }
 
+    /**
+     * @param integer $maxlength
+     * @return \Form\Input\Text Returns current object
+     */
     public function setMaxLength($maxlength)
     {
         $this->maxlength = (int) $maxlength;
+        return $this;
     }
 
+    /**
+     * @param integer $minlength
+     * @return \Form\Input\Text Returns current object
+     */
     public function setMinLength($minlength)
     {
         $this->minlength = (int) $minlength;
+        return $this;
     }
 
     /**
      * Sets the autocomplete parameter to on or off depending on the parameter
      * sent. NULL will prevent the parameter from appearing on the input.
      * @param boolean $ac
+     * @return \Form\Input\Text Returns current object
      */
     public function setAutocomplete($ac = null)
     {
@@ -100,18 +113,21 @@ class Text extends \Form\Input {
         } else {
             $this->autocomplete = 'off';
         }
+        return $this;
     }
 
     /**
      * Sets a text fields placeholder text.
      * @see Form\Input\Text::$placeholder
      * @param string $placeholder
+     * @return \Form\Input\Text Returns current object
      */
     public function setPlaceholder($placeholder)
     {
         $placeholder = preg_replace('/[^\'\w\s.,:&!?#]/', '', $placeholder);
 
         $this->placeholder = $placeholder;
+        return $this;
     }
 
 }
