@@ -86,6 +86,11 @@ class Form extends Tag {
                     $this->addInputClass($i);
                 }
             }
+            if (!empty($button_classes) && is_array($button_classes)) {
+                foreach ($button_classes as $i) {
+                    $this->addButtonClass($i);
+                }
+            }
             if (!empty($label_classes) && is_array($label_classes)) {
                 foreach ($label_classes as $l) {
                     $this->addLabelClass($l);
@@ -514,8 +519,8 @@ class Form extends Tag {
         }
         foreach ($groups as $gname => $g) {
             $gclass = str_replace('_', '-', $gname);
-            $value[$gname] = '<div class="' . $gclass . ' ' . implode("\n", $this->group_class) . '">' . implode("\n",
-                            $g) . '</div>';
+            $value[$gname] = '<div class="' . $gclass . ' ' . implode("\n",
+                            $this->group_class) . '">' . implode("\n", $g) . '</div>';
         }
         if (isset($value['hidden'])) {
             $value['form_start'] .= "\n" . implode("\n", $value['hidden']);
@@ -678,15 +683,9 @@ class Form extends Tag {
                 PHPWS_SOURCE_HTTP . "Global/Templates/Form/required.js'></script>");
     }
 
-    /**
-     * Adds a class to every input currently in the form class
-     *
-     * @param string $class_name
-     */
-    public function addInputClass($class_name)
+
+    private function pushAllowedClass($allowed, $class_name)
     {
-        static $allowed = array('text', 'textarea', 'email', 'color', 'date',
-    'datetime', 'file', 'password', 'search', 'telephone', 'url');
         if (empty($this->inputs)) {
             throw new \Exception('Input list is empty');
         }
@@ -697,6 +696,29 @@ class Form extends Tag {
                 }
             }
         }
+    }
+
+    /**
+     * Adds a class to every button input currently in the form class
+     *
+     * @param string $class_name
+     */
+    public function addButtonClass($class_name)
+    {
+        static $allowed = array('button', 'submit');
+        $this->pushAllowedClass($allowed, $class_name);
+    }
+
+    /**
+     * Adds a class to every non-button input currently in the form class
+     *
+     * @param string $class_name
+     */
+    public function addInputClass($class_name)
+    {
+        static $allowed = array('text', 'textarea', 'email', 'color', 'date',
+    'datetime', 'file', 'password', 'search', 'telephone', 'url');
+        $this->pushAllowedClass($allowed, $class_name);
     }
 
     public function addLabelClass($class_name)
