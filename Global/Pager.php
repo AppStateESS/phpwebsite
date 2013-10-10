@@ -130,7 +130,8 @@ class Pager {
     {
         javascript('jquery');
         $source_http = PHPWS_SOURCE_HTTP;
-        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>");
+        $header = "<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>";
+        \Layout::addJSHeader($header);
     }
 
     public function setSearchPhrase($phrase)

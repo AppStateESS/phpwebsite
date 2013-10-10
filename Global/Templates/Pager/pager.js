@@ -240,7 +240,7 @@ function Pager(page) {
     this.search_phrase = '';
     this.search_column = '';
     this.column_name = '';
-    this.current_url = '';
+    this.data_url = '';
     this.row_template = '';
     this.row_id_column = '';
     this.headers = '';
@@ -253,8 +253,12 @@ function Pager(page) {
         this.current_page = hasher.getValue(this.id, 'cp');
         this.search_phrase = hasher.getValue(this.id, 'sp');
         this.search_column = hasher.getValue(this.id, 'sc');
-
-        this.current_url = this.currentURL();
+        if (this.page.data('pagerUrl')) {
+            this.data_url = this.page.data('pagerUrl');
+        } else {
+            this.data_url = this.currentURL();
+        }
+        console.log(this.data_url);
         this.loadRowsPerPage();
         this.loadRowTemplate();
         this.loadHeaderTemplate();
@@ -328,7 +332,7 @@ function Pager(page) {
         }
 
         $.ajax({
-            'url': this.current_url,
+            'url': this.data_url,
             'dataType': 'json',
             'async': false,
             'data': {
