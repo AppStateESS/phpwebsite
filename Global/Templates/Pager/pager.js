@@ -258,7 +258,6 @@ function Pager(page) {
         } else {
             this.data_url = this.currentURL();
         }
-        console.log(this.data_url);
         this.loadRowsPerPage();
         this.loadRowTemplate();
         this.loadHeaderTemplate();
