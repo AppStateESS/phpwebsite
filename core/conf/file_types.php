@@ -240,6 +240,7 @@ $all_file_types['wav']['vb']    = 'WAV Audio';
 $all_file_types['wmv']['mct'][] = 'video/x-ms-wmv';
 $all_file_types['wmv']['mct'][] = 'text/plain';
 $all_file_types['wmv']['fi'][]  = 'Microsoft ASF';
+$all_file_types['wmv']['fi'][]  = 'video/x-ms-asf';
 $all_file_types['wmv']['vb']    = 'WMV Video';
 
 $all_file_types['xls']['mct'][] = 'application/vnd.ms-excel';
