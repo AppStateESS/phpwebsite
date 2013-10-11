@@ -17,9 +17,14 @@ class SubSelect extends Resource {
      * @param $alias
      * @return unknown_type
      */
-    public function __construct(DB $DB, $alias=null)
+    public function __construct(DB $DB, $alias = null)
     {
         parent::__construct($DB, $alias);
+    }
+
+    public function getAliasOrName()
+    {
+        return $this->alias;
     }
 
     /**

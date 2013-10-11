@@ -66,7 +66,7 @@ abstract class Column extends Alias {
      */
     public function getFullName()
     {
-        return $this->resource->__toString() . '.' . $this->getName(true);
+        return $this->resource->getAliasOrName() . '.' . $this->getName(true);
     }
 
     /**

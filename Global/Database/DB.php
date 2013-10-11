@@ -55,6 +55,7 @@ abstract class DB extends \Data {
      * @access private
      */
     private $join_tables = null;
+    private $join_tables2 = null;
 
     /**
      * Array of last inserted ids. Keyed by table name.
@@ -158,6 +159,12 @@ abstract class DB extends \Data {
     protected $dsn;
 
     /**
+     * a subselect (not) exists check
+     * @var \Database\Exists
+     */
+    private $exists;
+
+    /**
      * The current PDO object. Kept static to prevent constant construction.
      * @var \PDO
      */
@@ -212,7 +219,6 @@ abstract class DB extends \Data {
      * Should return an array of database names in alphabetical order.
      */
     abstract public function listDatabases();
-
 
     /**
      * Clones object and every variable. Simple clone will cause problems with
@@ -717,6 +723,19 @@ abstract class DB extends \Data {
         return $table;
     }
 
+    public function addExistConditional($subselect, $exists = true)
+    {
+        if ($subselect instanceof DB) {
+            $ss = new SubSelect($subselect);
+            $exists = new Exists($ss, $exists);
+        } elseif ($subselect instanceof SubSelect) {
+            $exists = new Exists($subselect, $exists);
+        } else {
+            throw new \Exception(t('Existence addition requires a Subselect'));
+        }
+        $this->addConditional($exists);
+    }
+
     /**
      * Creates a table object without requiring its existence in the database.
      * @param string $table_name
@@ -875,6 +894,7 @@ abstract class DB extends \Data {
 
     /**
      * Joins two modules together.
+     * @deprecated
      * @param mixed $left Will be a table, subselect, or field object
      * @param mixed $right Same as left
      * @param string $type The type of join to be performed.
@@ -883,9 +903,23 @@ abstract class DB extends \Data {
      */
     public function join($left, $right, $type = null, $operator = null)
     {
-        $type = $type ? $type : 'inner';
         $operator = $operator ? $operator : '=';
-        $jt = new Join($left, $right, $type, $operator);
+        $conditional = $this->createConditional($left, $right, $operator);
+        return $this->joinTables($left->getResource(), $right->getResource(),
+                        $type, $conditional);
+    }
+
+    /**
+     *
+     * @param \Database\Table $left_table
+     * @param \Database\Table $right_table
+     * @param string $type
+     * @param \Database\Conditional $conditional
+     * @return \Database\JoinTable
+     */
+    public function joinTables(\Database\Table $left_table, \Database\Table $right_table, $type = null, \Database\Conditional $conditional)
+    {
+        $jt = new Join($left_table, $right_table, $type, $conditional);
         $this->join_tables[] = $jt;
         return $jt;
     }
@@ -924,10 +958,10 @@ abstract class DB extends \Data {
      * @param Field $field
      */
     /*
-    public function setIndexBy(Field $field)
-    {
-        $this->index_by = $field;
-    }
+      public function setIndexBy(Field $field)
+      {
+      $this->index_by = $field;
+      }
      *
      */
 
@@ -1081,7 +1115,7 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Allows insertion of a DB object as the source of another query.
+     * Allows insertion of a DB or Subselect object as the source of another query.
      *
      * Example:
      * <code>
@@ -1096,14 +1130,19 @@ abstract class DB extends \Data {
      * // Echoes
      * // SELECT (foo_result.*) FROM (SELECT foo.* FROM foo) as foo_result;
      * </code>
-     * @param \DB $DB A DB object queried to produce the subscript
+     * @param mixed $subselect A DB object queried to produce the subscript
      * @param string $alias Alias for the subselect query.
      */
-    public function addSubSelect(DB $DB, $alias)
+    public function addSubSelect($subselect, $alias = null)
     {
-        $sub = $this->getSubSelect($DB, $alias);
-        $this->sub_selects[] = $sub;
-        return $sub;
+        if ($subselect instanceof DB) {
+            $sub = $this->getSubSelect($subselect, $alias);
+            $this->sub_selects[] = $sub;
+            return $sub;
+        } else {
+            $this->sub_selects[] = $subselect;
+            return $subselect;
+        }
     }
 
     /**
@@ -1323,6 +1362,15 @@ abstract class DB extends \Data {
         // if where_groups is NOT empty then allow where to start with its conjunction
         $allow_first_conjunction = false;
 
+
+        if (!empty($this->tables) && !empty($this->sub_selects)) {
+            $modules = array_merge($this->tables, $this->sub_selects);
+        } elseif ($this->tables) {
+            $modules = $this->tables;
+        } elseif ($this->sub_selects) {
+            $modules = $this->sub_selects;
+        }
+
         if (!empty($this->join_tables)) {
             $show_left = true;
             $joined = array();
@@ -1331,14 +1379,6 @@ abstract class DB extends \Data {
                 $show_left = false;
             }
             $sources[] = implode(' ', $joined);
-        }
-
-        if (!empty($this->tables) && !empty($this->sub_selects)) {
-            $modules = array_merge($this->tables, $this->sub_selects);
-        } elseif ($this->tables) {
-            $modules = $this->tables;
-        } elseif ($this->sub_selects) {
-            $modules = $this->sub_selects;
         }
 
         if (empty($sources) && empty($modules)) {
@@ -1375,7 +1415,6 @@ abstract class DB extends \Data {
                 }
             }
         }
-
         $data['modules'] = implode(', ', $sources);
         if (!empty($this->conditional)) {
             $data['where'] = 'WHERE ' . $this->conditional->__toString();
