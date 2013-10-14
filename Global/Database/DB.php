@@ -906,18 +906,18 @@ abstract class DB extends \Data {
         $operator = $operator ? $operator : '=';
         $conditional = $this->createConditional($left, $right, $operator);
         return $this->joinResources($left->getResource(), $right->getResource(),
-                        $type, $conditional);
+                        $conditional, $type);
     }
 
     /**
      *
      * @param \Database\Resource $left_resource
      * @param \Database\Resource $right_resource
-     * @param string $type
      * @param \Database\Conditional $conditional
+     * @param string $type
      * @return \Database\JoinTable
      */
-    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, $type = null, \Database\Conditional $conditional = null)
+    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
     {
         $jt = new Join($left_resource, $right_resource, $type, $conditional);
         $this->join_tables[] = $jt;
