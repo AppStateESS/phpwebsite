@@ -558,6 +558,7 @@ abstract class Table extends Resource {
      */
     public function __toString()
     {
+        return $this->getResourceQuery();
     }
 
     /**
