@@ -14,10 +14,10 @@ class Join {
     private $conditional;
     private $join_type = 'INNER';
 
-    public function __construct(\Database\Table $left_table, \Database\Table $right_table, $join_type = null, $conditional = null)
+    public function __construct(\Database\Resource $left_resource, \Database\Resource $right_resource, $join_type = null, $conditional = null)
     {
-        $this->setLeft($left_table);
-        $this->setRight($right_table);
+        $this->setLeft($left_resource);
+        $this->setRight($right_resource);
         if (!empty($join_type)) {
             $this->setJoinType($join_type);
         }
