@@ -558,7 +558,11 @@ abstract class Table extends Resource {
      */
     public function __toString()
     {
-        return $this->getResourceQuery();
+        if ($this->alias) {
+            return wrap($this->alias, $this->db->getDelimiter());
+        } else {
+            return wrap($this->full_name, $this->db->getDelimiter());
+        }
     }
 
     /**
