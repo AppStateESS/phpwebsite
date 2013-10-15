@@ -182,7 +182,7 @@ abstract class Datatype extends \Data {
         if ($this->default->isNull() && $this->is_null) {
             return 'default';
         }
-        return "default " . $this->table->db->quote($this->default);
+        return "default " . \Database\DB::quote($this->default);
     }
 
     /**
