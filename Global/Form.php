@@ -189,7 +189,9 @@ class Form extends Tag {
             throw new \Exception(t('Improperly formatted input name'));
         }
         $select = new \Form\Choice\Select($name, $value);
-        $select->setLabel($label);
+        if (!empty($label)) {
+            $select->setLabel($label);
+        }
         $this->inputs[$name][] = $select;
         return $select;
     }
@@ -208,7 +210,9 @@ class Form extends Tag {
             throw new \Exception(t('Improperly formatted input name'));
         }
         $multiple = new \Form\Choice\Multiple($name, $value);
-        $multiple->setLabel($label);
+        if (!empty($label)) {
+            $multiple->setLabel($label);
+        }
         $this->inputs[$name][] = $multiple;
         return $multiple;
     }
@@ -683,7 +687,6 @@ class Form extends Tag {
                 PHPWS_SOURCE_HTTP . "Global/Templates/Form/required.js'></script>");
     }
 
-
     private function pushAllowedClass($allowed, $class_name)
     {
         if (empty($this->inputs)) {
@@ -717,7 +720,7 @@ class Form extends Tag {
     public function addInputClass($class_name)
     {
         static $allowed = array('text', 'textarea', 'email', 'color', 'date',
-    'datetime', 'file', 'password', 'search', 'telephone', 'url');
+    'datetime', 'file', 'password', 'search', 'telephone', 'url', 'select');
         $this->pushAllowedClass($allowed, $class_name);
     }
 
