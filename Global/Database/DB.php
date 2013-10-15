@@ -1643,11 +1643,10 @@ abstract class DB extends \Data {
 
     /**
      * Safely quotes a value for entry in the database.
-     * Uses the mysql quote function but makes assumptions based on the value type
      * @param mixed $value
      * @return mixed
      */
-    public function quote($value)
+    public static function quote($value)
     {
         if (is_object($value)) {
             if (method_exists($value, '__toString')) {
@@ -1661,13 +1660,12 @@ abstract class DB extends \Data {
         if (is_string($value)) {
             $result = self::$PDO->quote($value);
             if ($result === false) {
-                throw new \Exception(t('Database connection failed when calling "%s"',
-                        'mysql_real_escape_string'));
+                throw new \Exception(t('Database connection failed'));
             } else {
                 return $result;
             }
         } elseif (is_array($value)) {
-            return array_map(array($this, 'quote'), $value);
+            return array_map(array('\Database\DB', 'quote'), $value);
         } else {
             return $value;
         }
