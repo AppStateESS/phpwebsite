@@ -736,20 +736,6 @@ abstract class Table extends Resource {
         }
     }
 
-    /*
-      public function getStatus()
-      {
-      static $status = null;
-
-      if (empty($status)) {
-      $query = 'SHOW TABLE STATUS LIKE :name';
-      $sth = DB::$PDO->prepare($query);
-      $sth->execute(array('name' => $this->getFullName(false)));
-      $status = $sth->fetch();
-      }
-      return $status;
-      }
-     */
 
     /**
      * Returns an array of standard SQL data types. Different engine table
