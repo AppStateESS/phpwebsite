@@ -40,3 +40,14 @@ directory is language.php.
 
 phpWebSite uses UTF-8 character encoding. Some older database versions
 of MySQL (pre 4.1) do not support it.
+
+Vagrant
+=======
+phpWebSite can now be run in a Vagrant Box!
+
+1. Install VirtualBox and Vagrant as per instructions for your platform
+2. Create a new Vagrant Box called 'centos64' from the URL
+   http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box
+   on Linux or Mac, this is done like so:
+   ```vagrant box add centos64 http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box```
+3. ```vagrant up```!
