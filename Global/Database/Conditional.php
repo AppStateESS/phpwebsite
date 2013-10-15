@@ -92,18 +92,17 @@ class Conditional extends \Data {
                 return $value;
 
             case 'object':
-                // Not using __toString which returns the alias or query which
-                // does have the select but also has the alias
                 return $value->__toString();
 
             case 'NULL':
                 return 'NULL';
 
             case 'array':
-                return "('" . implode("','", $value) . "')";
+                $value = \Database\DB::quote($value);
+                return '(' . implode(',', $value) . ')';
 
             default:
-                return "'$value'";
+                return \Database\DB::quote($value);
         }
     }
 
