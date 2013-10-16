@@ -95,6 +95,11 @@ class Field extends Column {
         $this->resource->addField($this);
     }
 
+    public function stringAsConditional()
+    {
+        return $this->__toString();
+    }
+
     /**
      * String representation of this field.
      * @return string
@@ -112,7 +117,7 @@ class Field extends Column {
 
         return $this->alias ? $full_name . ' AS ' . $this->alias : $full_name;
     }
-    
+
     public function rename($new_name)
     {
         $this->resource->renameField($this, $new_name);

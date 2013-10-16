@@ -331,7 +331,7 @@ abstract class DB extends \Data {
         if (empty($this->conditional)) {
             $this->setConditional($conditional);
         } else {
-            $new_conditional = new \Database\Conditional($this->conditional,
+            $new_conditional = new \Database\Conditional($this, $this->conditional,
                     $conditional, 'AND');
             $this->setConditional($new_conditional);
         }
@@ -369,7 +369,7 @@ abstract class DB extends \Data {
             if (empty($current_conditional)) {
                 $current_conditional = $conditional;
             } else {
-                $current_conditional = new \Database\Conditional($current_conditional,
+                $current_conditional = new \Database\Conditional($this, $current_conditional,
                         $conditional, 'AND');
             }
         }
@@ -400,7 +400,7 @@ abstract class DB extends \Data {
                 $operator = '=';
             }
         }
-        return new Conditional($left, $right, $operator);
+        return new Conditional($this, $left, $right, $operator);
     }
 
     /**
@@ -1646,7 +1646,7 @@ abstract class DB extends \Data {
      * @param mixed $value
      * @return mixed
      */
-    public static function quote($value)
+    public function quote($value)
     {
         if (is_object($value)) {
             if (method_exists($value, '__toString')) {

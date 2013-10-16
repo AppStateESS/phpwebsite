@@ -27,13 +27,18 @@ class SubSelect extends Resource {
         return $this->alias;
     }
 
+    public function stringAsConditional()
+    {
+        return '(' . $this->__toString() . ')';
+    }
+
     /**
      * Returns the alias.
      * @return string
      */
     public function __toString()
     {
-        return '(' . $this->db->selectQuery() . ')';
+        return $this->db->selectQuery();
     }
 
     /**

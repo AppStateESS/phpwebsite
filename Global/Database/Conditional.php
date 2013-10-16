@@ -32,6 +32,8 @@ class Conditional extends \Data {
      */
     protected $operator = '=';
 
+    private $db;
+
     /**
      * Array of allowed operators for testing in setOperator.
      * @var array
@@ -40,8 +42,9 @@ class Conditional extends \Data {
         'NOT LIKE', 'NOT ILIKE', 'REGEXP', 'RLIKE', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN',
         'IS', 'IS NOT', '~', 'AND', 'OR');
 
-    public function __construct($left, $right, $operator)
+    public function __construct(\Database\DB $db, $left, $right, $operator)
     {
+        $this->db = $db;
         $this->setLeft($left);
         $this->setRight($right);
         $this->setOperator($operator);
@@ -92,7 +95,13 @@ class Conditional extends \Data {
                 return $value;
 
             case 'object':
-                return $value->__toString();
+                if (method_exists($value, 'stringAsConditional')) {
+                    return $value->stringAsConditional();
+                } elseif (is_string_like($value)) {
+                    return $this->db->quote($value->__toString());
+                } else {
+                    throw new \Exception(t('Could not use object variable in a query comparison'));
+                }
 
             case 'NULL':
                 return 'NULL';

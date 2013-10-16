@@ -42,6 +42,11 @@ class Expression extends Alias {
         $this->setAlias($alias);
     }
 
+    public function stringAsConditional()
+    {
+        return $this->__toString();
+    }
+
     /**
      *
      * @return string

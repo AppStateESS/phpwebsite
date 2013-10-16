@@ -288,7 +288,7 @@ abstract class Resource extends Alias {
         if ($operator == null) {
             $operator = '=';
         }
-        $cond = new Conditional($this->getField($field_name), $value, $operator);
+        $cond = new Conditional($this->db, $this->getField($field_name), $value, $operator);
         return $cond;
     }
 
