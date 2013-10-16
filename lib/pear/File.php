@@ -97,7 +97,7 @@ class File extends PEAR
      *
      * @access private
      */
-    function _File()
+    public static function _File()
     {
         File::closeAll();
     }

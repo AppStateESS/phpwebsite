@@ -179,7 +179,7 @@ class Server {
      * @param boolean $with_directory
      * @return string
      */
-    public static function getSiteUrl($with_http = true, $with_directory = true)
+    public static function getSiteUrl($with_http = true, $with_directory = true, $end_slash = true)
     {
         if (!isset($_SERVER['HTTP_HOST'])) {
             throw new Exception('$_SERVER[HTTP_HOST] superglobal does not exist');
@@ -193,7 +193,9 @@ class Server {
         }
 
         $url = preg_replace('@\\\@', '/', implode('', $address));
-        //$url .= '/';  // Appending this extra slash breaks URL generation for Shortcuts. See Issue #106
+        if ($end_slash) {
+            $url .= '/';
+        }
         return $url;
     }
 
