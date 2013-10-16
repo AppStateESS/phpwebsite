@@ -107,11 +107,11 @@ class Conditional extends \Data {
                 return 'NULL';
 
             case 'array':
-                $value = \Database\DB::quote($value);
+                $value = $this->db->quote($value);
                 return '(' . implode(',', $value) . ')';
 
             default:
-                return \Database\DB::quote($value);
+                return $this->db->quote($value);
         }
     }
 
