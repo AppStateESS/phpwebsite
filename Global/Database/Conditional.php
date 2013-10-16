@@ -129,6 +129,11 @@ class Conditional extends \Data {
         return $this->operator;
     }
 
+    public function stringAsConditional()
+    {
+        return $this->__toString();
+    }
+
     /**
      * Returns the where portion of the sql query. If $this->show_conj is
      * false, the conjunction is not prefixed to the output.
