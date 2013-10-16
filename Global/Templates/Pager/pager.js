@@ -344,9 +344,11 @@ function Pager(page) {
                 'search_column': search_column
             },
             'success': function(data) {
+                /*
                 if (data.error !== undefined) {
                     $('body').append('<table>' + data.error.exception.xdebug_message + '</table>');
                 }
+                */
                 $this.importContent(data);
                 $this.insertContent();
                 Pagers.sortHeaderClick();
