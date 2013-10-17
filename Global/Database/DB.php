@@ -1658,6 +1658,9 @@ abstract class DB extends \Data {
         }
 
         if (is_string($value)) {
+            if (empty(self::$PDO)) {
+                $this->loadPDO();
+            }
             $result = self::$PDO->quote($value);
             if ($result === false) {
                 throw new \Exception(t('Database connection failed'));
