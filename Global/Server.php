@@ -193,7 +193,7 @@ class Server {
         }
 
         $url = preg_replace('@\\\@', '/', implode('', $address));
-        if ($end_slash) {
+        if ($end_slash && preg_match('@/$@', $url)) {
             $url .= '/';
         }
         return $url;
