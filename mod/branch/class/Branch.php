@@ -227,15 +227,18 @@ class Branch {
      */
     public static function loadHubDB()
     {
+        PHPWS_DB::loadDB();
         $dsn = Branch::getHubDSN();
         if (empty($dsn)) {
-            return FALSE;
+            throw new \Exception('Could not get hub DSN');
         }
 
         $prefix = Branch::getHubPrefix();
 
-        $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
-        $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
+        if ($dsn != PHPWS_DSN) {
+            $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
+            $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
+        }
         PHPWS_DB::loadDB($dsn, $prefix);
         \Database::phpwsDSNLoader($dsn, $prefix);
     }
@@ -258,7 +261,12 @@ class Branch {
      */
     public static function restoreBranchDB()
     {
-        if (\PHPWS_Core::isBranch()) {
+        if (isset($GLOBALS['Branch_Temp'])) {
+            $prefix = $dsn = null;
+            extract($GLOBALS['Branch_Temp']);
+            PHPWS_DB::loadDB($dsn, $prefix);
+            \Database::phpwsDSNLoader($dsn, $prefix);
+        } else {
             if (defined('PHPWS_TABLE_PREFIX')) {
                 $prefix = PHPWS_TABLE_PREFIX;
             } else {
@@ -266,11 +274,6 @@ class Branch {
             }
             PHPWS_DB::loadDB(PHPWS_DSN, $prefix);
             \Database::phpwsDSNLoader(PHPWS_DSN, $prefix);
-        } else {
-            $prefix = $dsn = null;
-            extract($GLOBALS['Branch_Temp']);
-            PHPWS_DB::loadDB($dsn, $prefix);
-            \Database::phpwsDSNLoader($dsn, $prefix);
         }
     }
 
@@ -315,12 +318,15 @@ class Branch {
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $_SESSION['Approved_Branch'] = FALSE;
+            self::restoreBranchDB();
             return false;
         } elseif (empty($result)) {
             $_SESSION['Approved_Branch'] = FALSE;
+            self::restoreBranchDB();
             return false;
         } else {
             $_SESSION['Approved_Branch'] = $result;
+            self::restoreBranchDB();
             return true;
         }
     }
