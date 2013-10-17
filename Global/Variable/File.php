@@ -37,6 +37,25 @@ class File extends \Variable\String {
         require_once $this->value;
     }
 
+    public function delete()
+    {
+        return $this->unlink();
+    }
+
+    public function unlink()
+    {
+        if (!$this->exists()) {
+            throw new \Exception(t('File not found: %s', $this->__toString()));
+        }
+
+        if (!$this->writable()) {
+            throw new \Exception(t('Permissions insufficient to delete file: %s',
+                    $this->__toString()));
+        }
+
+        unlink($this->value);
+    }
+
 }
 
 ?>
