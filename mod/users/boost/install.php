@@ -33,10 +33,12 @@ function users_install(&$content)
         if (PHPWS_Error::isError($deities)) {
             PHPWS_Error::log($deities);
             $content[] = dgettext('users', 'Could not access hub database.');
+            Branch::restoreBranchDB();
             return FALSE;
         }
         elseif (empty($deities)) {
             $content[] = dgettext('users', 'Could not find any hub deities.');
+            Branch::restoreBranchDB();
             return FALSE;
         } else {
             Branch::restoreBranchDB();

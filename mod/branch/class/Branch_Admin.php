@@ -392,7 +392,7 @@ class Branch_Admin {
         }
 
         // Load branch database
-        PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
+        PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix, false, false);
 
         $this->title = dgettext('branch', 'Installing core modules');
 
@@ -402,6 +402,7 @@ class Branch_Admin {
             PHPWS_Error::log($result);
             $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.')
             . ' ' . dgettext('branch', 'Please check your error logs and try again.');
+            PHPWS_DB::loadDB();
             return true;
         } else {
             $this->content[] = $result;
