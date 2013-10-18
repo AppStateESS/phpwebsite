@@ -112,6 +112,8 @@ class PS_Forms {
         $this->pageTemplateForm($form);
 
         $tpl = $form->getTemplate();
+
+        $tpl['PAGE_TITLE'] = $page->title;
         $jsvars['page_title_input'] = 'pagesmith_title';
         $jsvars['page_title_id'] = sprintf('%s-page-title', $pg_tpl_name);
         javascriptMod('pagesmith', 'pagetitle', $jsvars);
