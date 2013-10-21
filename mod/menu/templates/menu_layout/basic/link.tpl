@@ -19,7 +19,7 @@
         </div>
     <!-- END admin_links -->
 
-  <a href="{LINK_URL}" class="{ACTIVE}">{LINK_TEXT}</a>
+  <a href="{LINK_URL}" class="{ACTIVE} menu-link-href">{LINK_TEXT}</a>
       <!-- BEGIN sublink -->
       <div class="menu-sub-{LEVEL}">
       <ul class="nav nav-pills nav-stacked">
