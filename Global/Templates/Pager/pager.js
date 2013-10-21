@@ -345,12 +345,14 @@ function Pager(page) {
             },
             'success': function(data) {
                 /*
-                if (data.error !== undefined) {
-                    $('body').append('<table>' + data.error.exception.xdebug_message + '</table>');
-                }
+                 if (data.error !== undefined) {
+                 $('body').append('<table>' + data.error.exception.xdebug_message + '</table>');
+                 }
                 */
                 $this.importContent(data);
-                $this.insertContent();
+                if ($this.rows !== undefined) {
+                    $this.insertContent();
+                }
                 Pagers.sortHeaderClick();
                 Pagers.pageChangeClick();
                 Pagers.searchClick();
