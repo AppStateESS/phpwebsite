@@ -76,9 +76,6 @@ class Select extends \Form\Choice {
                 $this->addOptions($opt, $optgroup);
             }
         } else {
-            if (!is_assoc($options)) {
-                $options = array_combine($options, $options);
-            }
             foreach ($options as $value => $text) {
                 $this->options[$value] = new \Form\Choice\Option($text, $value,
                         $optgroup);
@@ -93,6 +90,17 @@ class Select extends \Form\Choice {
     public function setMultiple($multiple)
     {
         $this->multiple = (bool) $multiple;
+    }
+
+    /**
+     * Copies the option text to the value.
+     */
+    public function copyOptionToValue()
+    {
+        foreach ($this->options as $value) {
+            $new_options[(string)$value] = $value;
+        }
+        $this->options = $new_options;
     }
 
 }
