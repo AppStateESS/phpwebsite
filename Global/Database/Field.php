@@ -97,7 +97,7 @@ class Field extends Column {
 
     public function stringAsConditional()
     {
-        return $this->__toString();
+        return $this->getFullName();
     }
 
     /**
