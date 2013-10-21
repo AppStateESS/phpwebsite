@@ -254,6 +254,14 @@ class Pager {
         }
     }
 
+    /**
+     * Sets the headers for the pager. If an associative array is received, the
+     * keys will be what is sorted on and the value will be what is displayed.
+     *
+     * If the array is not associative, the column names will be edited (case changed
+     * and spaces added) and displayed.
+     * @param array $headers
+     */
     public function setHeaders(array $headers)
     {
         if (is_assoc($headers)) {
