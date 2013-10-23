@@ -1346,7 +1346,7 @@ class Calendar_Admin {
         $page_tags['AVAILABILITY_LABEL'] = dgettext('calendar', 'Availability');
 
         $vars = array('aop'=>'create_schedule');
-        $label = '<i class="icon-file-text"></i> ' . dgettext('calendar', 'Create schedule');
+        $label = '<i class="fa fa-file-text"></i> ' . dgettext('calendar', 'Create schedule');
 
         if (javascriptEnabled()) {
             $vars['js'] = 1;

@@ -295,21 +295,21 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink('<i class="icon-edit"></i>', 'users',
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i>', 'users',
                         $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink('<i class="icon-key" title="' . dgettext('users',
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-key" title="' . dgettext('users',
                                 'Permissions') . '"></i>', 'users', $linkVar);
         $linkVar['command'] = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink('<i class="icon-user" title="' . dgettext('users',
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-user" title="' . dgettext('users',
                                 'Members') . '"></i>', 'users', $linkVar);
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
         $removelink['QUESTION'] = dgettext('users',
                 'Are you SURE you want to remove this group?');
-        $removelink['LINK'] = '<i class="icon-trash" title="' . dgettext('users',
+        $removelink['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('users',
                         'Remove') . '"></i>';
         $links[] = Layout::getJavascript('confirm', $removelink);
 

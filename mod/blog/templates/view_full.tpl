@@ -4,7 +4,7 @@
 
         <!-- BEGIN edit-link -->
         <div class="pull-right">
-            <a href="{EDIT_URI}" class="btn"><i class="icon-pencil"></i> Edit</a>
+            <a href="{EDIT_URI}" class="btn"><i class="fa fa-pencil"></i> Edit</a>
         </div>
         <!-- END edit-link -->
 

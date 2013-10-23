@@ -482,7 +482,7 @@ class Blog {
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link,
                             true);
 
-            $confirm_vars['LINK'] = '<i class="icon-trash" title="' . dgettext('blog',
+            $confirm_vars['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('blog',
                             'Delete blog entry') . '"></i>';
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }

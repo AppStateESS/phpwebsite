@@ -97,7 +97,7 @@ class Folder {
         }
 
         if ($mode == 'image') {
-            $js['label'] = '<i class="icon-edit" title="'.dgettext('filecabinet', 'Edit').'"></i>';
+            $js['label'] = '<i class="fa fa-edit" title="'.dgettext('filecabinet', 'Edit').'"></i>';
         } else {
             $js['label'] = & $label;
         }
@@ -200,7 +200,7 @@ class Folder {
                 break;
 
             case 'icon':
-                $vars['label'] = '<i class="icon-upload" title="'.dgettext('filecabient', 'Upload').'"></i>';
+                $vars['label'] = '<i class="fa fa-upload" title="'.dgettext('filecabient', 'Upload').'"></i>';
                 break;
 
             default:

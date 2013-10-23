@@ -164,7 +164,7 @@ class Block_Item {
     {
         $edit = $opt = null;
         if (Current_User::allow('block', 'edit_block', $this->id)) {
-            $img = '<i class="icon-edit" title="' . dgettext('block',
+            $img = '<i class="fa fa-edit" title="' . dgettext('block',
                             'Edit block') . '"></i>';
             $edit = PHPWS_Text::secureLink($img, 'block',
                             array('block_id' => $this->id,
@@ -184,7 +184,7 @@ class Block_Item {
                                 TRUE);
                 $js_var['QUESTION'] = dgettext('block',
                         'Are you sure you want to remove this block from this page?');
-                $js_var['LINK'] = "<i class='icon-remove-circle' title='" . dgettext('block',
+                $js_var['LINK'] = "<i class='fa fa-remove-circle' title='" . dgettext('block',
                                 'Remove block from page') . "'></i>";
 
                 $opt = Layout::getJavascript('confirm', $js_var);
@@ -239,11 +239,11 @@ class Block_Item {
                                     dgettext('block', 'Edit')), 'block', $vars);
             if ($this->allPinned()) {
                 $vars['action'] = 'remove';
-                $links[] = PHPWS_Text::secureLink("<i class='icon-flag' title='" . dgettext('block',
+                $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag' title='" . dgettext('block',
                                         'Remove block from all pages') . "'></i>", 'block', $vars);
             } else {
                 $vars['action'] = 'pin_all';
-                $links[] = PHPWS_Text::secureLink("<i class='icon-flag-alt' title='" . dgettext('block',
+                $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag-alt' title='" . dgettext('block',
                                         'Display block on all pages') . "'></i>", 'block', $vars);
             }
 
@@ -259,7 +259,7 @@ class Block_Item {
                     'Are you sure you want to permanently delete this block?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars,
                             TRUE);
-            $confirm_vars['LINK'] = '<i class="icon-trash" title="' . dgettext('block',
+            $confirm_vars['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('block',
                             'Delete') . '"></i>';
             $links[] = javascript('confirm', $confirm_vars);
         }

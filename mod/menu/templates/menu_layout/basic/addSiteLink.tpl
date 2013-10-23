@@ -1,1 +1,1 @@
-<a href="#" class="js-open-window" title="Add link" alt="Add link" onclick="javascript:open_window('{address}', {width}, {height}, 'default390078148', 1); return false"><i class="icon-fixed-width icon-share"></i> Add a link</a>
+<a href="#" class="js-open-window" title="Add link" alt="Add link" onclick="javascript:open_window('{address}', {width}, {height}, 'default390078148', 1); return false"><i class="fasfa-share"></i> Add a link</a>

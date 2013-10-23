@@ -1,6 +1,6 @@
 <div class="pull-right">{SEARCH}</div>
 <div style="margin-bottom: 10px">
-  <a href="{NEW_USER_URI}" class="btn btn-success"><i class="icon-user"></i> Add user</a>
+  <a href="{NEW_USER_URI}" class="btn btn-success"><i class="fa fa-user"></i> Add user</a>
 </div>
 <table class="table table-striped table-hover" id="user-manager">
   <tr>

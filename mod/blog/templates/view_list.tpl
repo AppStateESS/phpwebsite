@@ -9,7 +9,7 @@
 		<small>{AUTHOR}</small> <small class="muted">{PUBLISHED}
 			{PUBLISHED_DATE}</small>
       <!-- BEGIN edit-link -->
-      <a href="{EDIT_URI}" class="btn btn-default btn-xs pull-right"><i class="icon-pencil"></i> Edit entry</a>
+      <a href="{EDIT_URI}" class="btn btn-default btn-xs pull-right"><i class="fa fa-pencil"></i> Edit entry</a>
       <!-- END edit-link -->
 	</header>
     <div>

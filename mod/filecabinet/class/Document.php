@@ -283,7 +283,7 @@ EOF;
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = '<i class="icon-trash" title="' . dgettext('filecabinet',
+            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('filecabinet',
                             'Delete document') . '"></i>';
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');

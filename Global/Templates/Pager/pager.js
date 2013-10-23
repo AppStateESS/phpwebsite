@@ -130,20 +130,20 @@ function PagerList() {
             var direction = $(this).attr('data-direction');
             var pager_id = $(this).parents('.pager-listing', this).attr('id');
             var current_icon = $('i', this);
-            $('.sort-header i').attr('class', 'icon-stop');
+            $('.sort-header i').attr('class', 'fa fa-stop');
             $('.sort-header').attr('data-direction', 4);
             switch (direction) {
                 case '4':
                     $(this).attr('data-direction', 3);
-                    current_icon.attr('class', 'icon-arrow-up');
+                    current_icon.attr('class', 'fa fa-arrow-up');
                     break;
                 case '3':
                     $(this).attr('data-direction', 0);
-                    current_icon.attr('class', 'icon-arrow-down');
+                    current_icon.attr('class', 'fa fa-arrow-down');
                     break;
                 case '0':
                     $(this).attr('data-direction', 4);
-                    current_icon.attr('class', 'icon-stop');
+                    current_icon.attr('class', 'fa fa-stop');
                     break;
             }
             $this.setSort(pager_id, column_name, direction);

@@ -59,12 +59,12 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink('<i class="icon-refresh" title="' . dgettext('rss',
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . dgettext('rss',
                                 'Reset') . '"></i>', 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
                 $this->id, Current_User::getAuthKey());
-        $jsvars['label'] = '<i class="icon-edit" title="' . dgettext('rss',
+        $jsvars['label'] = '<i class="fa fa-edit" title="' . dgettext('rss',
                                 'Edit the feed') . '"></i>';
         $jsvars['height'] = '280';
         $links[] = javascript('open_window', $jsvars);
@@ -73,7 +73,7 @@ class RSS_Feed {
                 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
                 $this->id, Current_User::getAuthKey());
-        $js['LINK'] = '<i class="icon-trash" title="' . dgettext('rss', 'Delete feed') . '"></i>';
+        $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('rss', 'Delete feed') . '"></i>';
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' ', $links);

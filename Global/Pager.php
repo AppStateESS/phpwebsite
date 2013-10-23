@@ -122,8 +122,8 @@ class Pager {
             $this->setSearchColumn($request->getVar('search_column'));
         }
 
-        $this->next_page_marker = "<i class='icon-forward'></i>";
-        $this->prev_page_marker = "<i class='icon-backward'></i>";
+        $this->next_page_marker = "<i class='fa fa-forward'></i>";
+        $this->prev_page_marker = "<i class='fa fa-backward'></i>";
     }
 
     public static function prepare()
@@ -362,9 +362,9 @@ class Pager {
 
     public function getHeaders()
     {
-        $icon_down = '<i class="icon-chevron-down"></i>';
-        $icon_up = '<i class="icon-chevron-up"></i>';
-        $icon_stay = '<i class="icon-stop"></i>';
+        $icon_down = '<i class="fa fa-chevron-down"></i>';
+        $icon_up = '<i class="fa fa-chevron-up"></i>';
+        $icon_stay = '<i class="fa fa-stop"></i>';
         foreach ($this->headers as $column_name => $print_name) {
             if ($this->sort_column == $column_name) {
                 switch ($this->sort_direction) {
@@ -517,7 +517,7 @@ class Pager {
         }
 
         if (!empty($this->search_phrase)) {
-            $icon = '<span class="input-group-addon"><a href=""><a href="javascript:void(0)" class="search-clear"><i class="glyphicon glyphicon-remove"></i></a></span>';
+            $icon = '<span class="input-group-addon"><a href=""><a href="javascript:void(0)" class="search-clear"><i class="glyphicon glyphfa fa-remove"></i></a></span>';
         } else {
             $icon = null;
         }

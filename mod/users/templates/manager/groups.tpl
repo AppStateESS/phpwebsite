@@ -1,6 +1,6 @@
 <div class="pull-right">{SEARCH}</div>
 <div style="margin : 10px 0px">
-  <a href="{ADD_GROUP_URI}" class="btn btn-success"><i class="icon-group"></i> Create group</a>
+  <a href="{ADD_GROUP_URI}" class="btn btn-success"><i class="fa fa-group"></i> Create group</a>
 </div>
 <table class="table table-striped table-hover">
     <tr>

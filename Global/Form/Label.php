@@ -31,7 +31,7 @@ class Label extends \Tag {
         $label = parent::__toString();
 
         if ($this->required) {
-            $label .= ' <i class="required icon-asterisk"></i>';
+            $label .= ' <i class="required fa fa-asterisk"></i>';
         }
         return $label;
     }

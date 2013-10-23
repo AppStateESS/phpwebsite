@@ -788,6 +788,8 @@ class Layout {
 
         $template['THEME_DIRECTORY'] = Layout::getThemeDirRoot() . $theme . '/';
         $template['THEME_HTTP'] = Layout::getThemeHttpRoot() . $theme . '/';
+        $template['SOURCE_THEME_HTTP'] = PHPWS_SOURCE_HTTP . 'themes/';
+        $template['SOURCE_THEME_DIR'] = PHPWS_SOURCE_DIR . 'themes/';
         $tpl->setData($template);
         return $tpl;
     }

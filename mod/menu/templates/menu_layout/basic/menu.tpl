@@ -2,7 +2,7 @@
     <div>
         <!-- BEGIN menu_admin -->
         <div class="btn-group">
-            <button class="btn dropdown-toggle btn-default btn-sm pull-right" data-toggle="dropdown"> <i class="icon-fixed-width icon-list">
+            <button class="btn dropdown-toggle btn-default btn-sm pull-right" data-toggle="dropdown"> <i class="fasfa-list">
                 </i> Menu Options <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">

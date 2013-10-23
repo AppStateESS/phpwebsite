@@ -62,62 +62,62 @@ class Icon extends \Tag {
     {
         switch ($this->type) {
             case 'add':
-                $this->addClass('icon-plus');
+                $this->addClass('fa fa-plus');
                 break;
             case 'approved':
-                $this->addClass('icon-thumbs-up');
+                $this->addClass('fa fa-thumbs-up');
                 break;
 
             case 'cancel':
-                $this->addClass('icon-ban-circle');
+                $this->addClass('fa fa-ban-circle');
                 break;
             case 'clear':
-                $this->addClass('icon-eraser');
+                $this->addClass('fa fa-eraser');
                 break;
             case 'clip':
-                $this->addClass('icon-paper-clip');
+                $this->addClass('fa fa-paper-clip');
                 break;
             case 'close':
-                $this->addClass('icon-remove');
+                $this->addClass('fa fa-remove');
                 break;
 
             case 'delete':
-                $this->addClass('icon-trash');
+                $this->addClass('fa fa-trash-o');
                 break;
 
             case 'email':
-                $this->addClass('icon-envelope-alt');
+                $this->addClass('fa fa-envelope-alt');
                 break;
             case 'error':
-                $this->addClass('icon-exclamation-sign');
+                $this->addClass('fa fa-exclamation-sign');
                 break;
 
             case 'up':
             case 'down':
-                $this->addClass('icon-arrow-' . $this->type);
+                $this->addClass('fa fa-arrow-' . $this->type);
                 break;
 
             case 'active':
-                $this->addClass('icon-off');
+                $this->addClass('fa fa-off');
                 $this->addStyle('color : green');
                 break;
 
             case 'deactive':
             case 'inactive':
-                $this->addClass('icon-off');
+                $this->addClass('fa fa-off');
                 $this->addStyle('color : red');
                 break;
 
             case 'next':
-                $this->addClass('icon-chevron-right');
+                $this->addClass('fa fa-chevron-right');
                 break;
 
             case 'previous':
-                $this->addClass('icon-chevron-left');
+                $this->addClass('fa fa-chevron-left');
                 break;
 
             case 'forbidden':
-                $this->addClass('icon-warning-sign');
+                $this->addClass('fa fa-warning-sign');
                 break;
 
             default:

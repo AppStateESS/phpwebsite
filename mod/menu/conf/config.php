@@ -34,8 +34,8 @@ define('MENU_LINK_ADMIN', sprintf('<img src="%smod/menu/img/foo.png" title="%s" 
 
 define('MENU_PIN_LINK',  sprintf('<img src="%smod/menu/img/attach.png" title="%s" alt="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Pin links'), dgettext('menu', 'Pin links')));
 
-define('MENU_ADMIN_ON', '<i class="icon-fixed-width icon-off"></i>' . dgettext('menu', 'Enable Menu Editing'));
-define('MENU_ADMIN_OFF', '<i class="icon-fixed-width icon-off"></i>' . dgettext('menu', 'Disable Menu Editing'));
+define('MENU_ADMIN_ON', '<i class="fasfa-off"></i>' . dgettext('menu', 'Enable Menu Editing'));
+define('MENU_ADMIN_OFF', '<i class="fasfa-off"></i>' . dgettext('menu', 'Disable Menu Editing'));
 
 define('MENU_PIN', sprintf('<img style="float:right" src="%smod/menu/img/pin.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Pin to item'), dgettext('menu', 'Pin to item')));
 define('MENU_UNPIN', sprintf('<img style="float:right" src="%smod/menu/img/remove.png" alt="%s" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('menu', 'Unpin menu'), dgettext('menu', 'Unpin menu')));
