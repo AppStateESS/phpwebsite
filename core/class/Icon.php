@@ -121,7 +121,7 @@ class Icon extends \Tag {
                 break;
 
             default:
-                $this->addClass('icon-' . $this->type);
+                $this->addClass('fa fa-' . $this->type);
         }
     }
 
