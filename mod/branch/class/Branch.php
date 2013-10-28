@@ -227,7 +227,11 @@ class Branch {
      */
     public static function loadHubDB()
     {
-        PHPWS_DB::loadDB();
+        if (!isset($GLOBALS['PHPWS_DB'])) {
+            PHPWS_DB::loadDB();
+        }
+        $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
+        $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
         $dsn = Branch::getHubDSN();
         if (empty($dsn)) {
             throw new \Exception('Could not get hub DSN');
@@ -235,10 +239,6 @@ class Branch {
 
         $prefix = Branch::getHubPrefix();
 
-        if ($dsn != PHPWS_DSN) {
-            $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
-            $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
-        }
         PHPWS_DB::loadDB($dsn, $prefix);
         \Database::phpwsDSNLoader($dsn, $prefix);
     }
