@@ -45,7 +45,7 @@ abstract class Alias extends \Data {
      */
     public function hasAlias()
     {
-        return!empty($this->alias);
+        return !empty($this->alias);
     }
 
 }
