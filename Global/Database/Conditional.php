@@ -31,7 +31,6 @@ class Conditional extends \Data {
      * @access protected
      */
     protected $operator = '=';
-
     private $db;
 
     /**
@@ -80,7 +79,11 @@ class Conditional extends \Data {
 
     public function getLeft()
     {
-        return $this->left;
+        if ($this->left instanceof \Database\Alias && $this->left->hasAlias()) {
+            return $this->left->getAlias();
+        } else {
+            return $this->left;
+        }
     }
 
     public function getRight()
