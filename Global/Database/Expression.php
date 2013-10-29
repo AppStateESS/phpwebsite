@@ -36,7 +36,7 @@ class Expression extends Alias {
      * @param string $expression
      * @param string $alias
      */
-    public function __construct($expression, $alias=null)
+    public function __construct($expression, $alias = null)
     {
         $this->expression = $expression;
         $this->setAlias($alias);
@@ -45,6 +45,11 @@ class Expression extends Alias {
     public function stringAsConditional()
     {
         return $this->__toString();
+    }
+
+    public function stringAsField()
+    {
+        return "{$this->expression} AS " . $this->getAlias();
     }
 
     /**
