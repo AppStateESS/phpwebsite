@@ -50,12 +50,11 @@ abstract class DB extends \Data {
     private $conditional;
 
     /**
-     * An array of joined tables
+     * An array of joined resources
      * @var array
      * @access private
      */
-    private $join_tables = null;
-    private $join_tables2 = null;
+    private $joined_resources = null;
 
     /**
      * Array of last inserted ids. Keyed by table name.
@@ -798,7 +797,7 @@ abstract class DB extends \Data {
     /**
      * Sets the group by query for a select query
      *
-     * @param mixed $fields : A single or array of Field or Function objects
+     * @param mixed $fields : A single, or array, of Field or Function objects
      * @param integer $group_type : A defined group by type
      * @return unknown_type
      */
@@ -920,7 +919,7 @@ abstract class DB extends \Data {
     public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
     {
         $jt = new Join($left_resource, $right_resource, $type, $conditional);
-        $this->join_tables[] = $jt;
+        $this->joined_resources[] = $jt;
         return $jt;
     }
 
@@ -1371,10 +1370,10 @@ abstract class DB extends \Data {
             $modules = $this->sub_selects;
         }
 
-        if (!empty($this->join_tables)) {
+        if (!empty($this->joined_resources)) {
             $show_left = true;
             $joined = array();
-            foreach ($this->join_tables as $join) {
+            foreach ($this->joined_resources as $join) {
                 $joined[] = $join->getResourceQuery($show_left);
                 $show_left = false;
             }
@@ -1387,7 +1386,7 @@ abstract class DB extends \Data {
 
         if ($modules) {
             foreach ($modules as $module) {
-                if (($mode == DB::SELECT) && $field_list = $module->getFields()) {
+                if (($mode == DB::SELECT) && $field_list = $module->fieldsAsString()) {
                     $data['columns'][] = $field_list;
                 } elseif ($mode == DB::UPDATE && $value_list = $module->getValues()) {
                     $data['columns'][] = $value_list;
