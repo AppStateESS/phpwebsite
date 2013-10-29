@@ -228,7 +228,7 @@ abstract class Resource extends Alias {
 
     /**
      * Adds a field object to the table object's field stack.
-     * @param mixed $column_name    If not a Field object, then the name of the column in the table or Expresssion
+     * @param mixed $column_name    If not a Field object, then the name of the column in the table or Expression
      * @param string           $alias          An alias to be used within the query for this field.
      * @param boolean          $show_in_select If true, show in a select query. False, otherwise.
      * @return Field
@@ -288,7 +288,8 @@ abstract class Resource extends Alias {
         if ($operator == null) {
             $operator = '=';
         }
-        $cond = new Conditional($this->db, $this->getField($field_name), $value, $operator);
+        $cond = new Conditional($this->db, $this->getField($field_name), $value,
+                $operator);
         return $cond;
     }
 
@@ -309,10 +310,11 @@ abstract class Resource extends Alias {
     }
 
     /**
+     * If no fields are set, splat is returned
      * @return null|string Contents of the fields in this resource; null if no
      *         fields are present
      */
-    public function getFields()
+    public function fieldsAsString()
     {
         if (empty($this->fields)) {
             if ($this->use_in_query) {
@@ -323,12 +325,8 @@ abstract class Resource extends Alias {
                 }
             }
         } else {
-            // previously, I was checking the validity of the field object here.
-            // I am assuming at this point that it is allowed in the fields array
-            // it is ok to use __toString on it. Forcing a field or subselect check
-            // made expressions fail.
             foreach ($this->fields as $field) {
-                $cols[] = $field;
+                $cols[] = $field->stringAsField();
             }
             if (isset($cols)) {
                 return implode(', ', $cols);
