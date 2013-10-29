@@ -100,6 +100,11 @@ class Field extends Column {
         return $this->getFullName();
     }
 
+    public function stringAsField()
+    {
+        return $this->__toString();
+    }
+
     /**
      * String representation of this field.
      * @return string
