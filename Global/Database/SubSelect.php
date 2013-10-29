@@ -50,7 +50,7 @@ class SubSelect extends Resource {
         if (!$this->hasAlias()) {
             throw new \Exception('Subselect may not be used as a resource without an alias');
         }
-        return sprintf('%s AS %s', $this->__toString(), $this->getAlias());
+        return sprintf('(%s) AS %s', $this->__toString(), $this->getAlias());
     }
 
 }
