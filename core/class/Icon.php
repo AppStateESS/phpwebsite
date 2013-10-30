@@ -88,8 +88,13 @@ class Icon extends \Tag {
             case 'email':
                 $this->addClass('fa fa-envelope-alt');
                 break;
+
             case 'error':
                 $this->addClass('fa fa-exclamation-sign');
+                break;
+
+            case 'image':
+                $this->addClass('fa fa-picture-o');
                 break;
 
             case 'up':
@@ -98,15 +103,17 @@ class Icon extends \Tag {
                 break;
 
             case 'active':
-                $this->addClass('fa fa-off');
+                $this->addClass('fa fa-power-off');
                 $this->addStyle('color : green');
                 break;
 
             case 'deactive':
             case 'inactive':
-                $this->addClass('fa fa-off');
+                $this->addClass('fa fa-power-off');
                 $this->addStyle('color : red');
                 break;
+
+
 
             case 'next':
                 $this->addClass('fa fa-chevron-right');
