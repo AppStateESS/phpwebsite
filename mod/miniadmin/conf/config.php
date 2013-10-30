@@ -5,6 +5,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-define('MINIADMIN_TEMPLATE', 'mini_admin.tpl');
+define('MINIADMIN_TEMPLATE', 'mini_admin.html');
 
 ?>

@@ -16,7 +16,6 @@
     <!-- BEGIN forgot -->
     <li class="pull-right">{FORGOT}</li>
     <!-- END forgot -->
-
     <!-- BEGIN logged-in -->
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{DISPLAY_NAME} <b class="caret"></b></a>

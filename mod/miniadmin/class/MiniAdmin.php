@@ -9,7 +9,7 @@
 PHPWS_Core::requireConfig('miniadmin');
 
 if (!defined('MINIADMIN_TEMPLATE')) {
-    define('MINIADMIN_TEMPLATE', 'mini_admin.tpl');
+    define('MINIADMIN_TEMPLATE', 'mini_admin.html');
 }
 
 class MiniAdmin {
@@ -29,45 +29,27 @@ class MiniAdmin {
 
     public static function get()
     {
+        \Layout::addStyle('miniadmin');
         $modlist = PHPWS_Core::getModuleNames();
 
         if (!isset($GLOBALS['MiniAdmin'])) {
             return NULL;
         }
 
-        $oTpl = new PHPWS_Template('miniadmin');
-        $oTpl->setFile(MINIADMIN_TEMPLATE);
-
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
 
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
-
-            if (!isset($modlist[$module])) {
-                continue;
-            }
-            if (isset($links['links'])) {
-                foreach ($links['links'] as $link) {
-                    $oTpl->setCurrentBlock('links');
-                    $oTpl->setData(array('LINE_MODULE' => $modlist[$module],
-                        'ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
-                    $oTpl->parseCurrentBlock();
-                }
-
-            }
-            $oTpl->setCurrentBlock('module');
             $mod_title = $modlist[$module];
-
-            if (isset($GLOBALS['MiniAdmin'][$module]['title_link'])) {
+            if (isset($links['title_link'])) {
                 $mod_title = sprintf('<a href="%s">%s</a>',
-                        $GLOBALS['MiniAdmin'][$module]['title_link'], $mod_title);
+                        $links['title_link'], $mod_title);
             }
-
-            $oTpl->setData(array('MODULE' => (string)$mod_title));
-            $oTpl->parseCurrentBlock();
+            $module_links[$mod_title] = $links;
         }
-        $oTpl->setData($tpl);
-        $content = $oTpl->get();
-
+        $tpl['module_links'] = $module_links;
+        $template = new \Template($tpl);
+        $template->setModuleTemplate('miniadmin', MINIADMIN_TEMPLATE);
+        $content = $template->get();
         Layout::set($content, 'miniadmin', 'mini_admin');
     }
 
