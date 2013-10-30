@@ -243,7 +243,7 @@ class Block_Item {
                                         'Remove block from all pages') . "'></i>", 'block', $vars);
             } else {
                 $vars['action'] = 'pin_all';
-                $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag-alt' title='" . dgettext('block',
+                $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag-o' title='" . dgettext('block',
                                         'Display block on all pages') . "'></i>", 'block', $vars);
             }
 
