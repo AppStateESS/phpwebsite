@@ -2,7 +2,7 @@
 
     <div id="config-form">
       <div class="config-item">
-        <div class="label">
+        <div>
           {SOURCE_DIR_LBL}
         </div>
 
@@ -16,7 +16,7 @@
       </div>
 
       <div class="config-item">
-        <div class="label">
+        <div>
           {DBTYPE_LBL}
         </div>
 
@@ -30,7 +30,7 @@
       </div>
 
       <div class="config-item">
-        <div class="label">
+        <div>
           {DBUSER_LBL}
         </div>
 
@@ -44,7 +44,7 @@
       </div>
 
       <div class="config-item">
-        <div class="label">
+        <div>
           {DBPASS_LBL}
         </div>
 
@@ -58,7 +58,7 @@
       </div>
 
       <div class="config-item">
-        <div class="label">
+        <div>
           {DBHOST_LBL}
         </div>
 
@@ -72,7 +72,7 @@
       </div>
 
       <div class="config-item">
-        <div class="label">
+        <div>
           {DBPORT_LBL}
         </div>
 
@@ -86,7 +86,7 @@
       </div>
 
       <div class="config-item">
-        <div class="label">
+        <div>
           {DBNAME_LBL}
         </div>
 

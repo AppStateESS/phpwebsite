@@ -4,11 +4,11 @@
 {START_FORM}
 <table class="form-table">
     <tr>
-        <td class="label">{SEARCH_LABEL}</td>
+        <td>{SEARCH_LABEL}</td>
         <td>{SEARCH}</td>
     </tr>
     <tr>
-        <td class="label">{SEARCH_LOCATION}</td>
+        <td>{SEARCH_LOCATION}</td>
         <td>
         <ul style="list-style: none; margin: 0">
             <li>{ALTERNATE_1} {ALTERNATE_1_LABEL}</li>
@@ -18,11 +18,11 @@
         </td>
     </tr>
     <tr>
-        <td class="label">{MOD_TITLE_LABEL}</td>
+        <td>{MOD_TITLE_LABEL}</td>
         <td>{MOD_TITLE}</td>
     </tr>
     <tr>
-        <td colspan="2" class="label">{EXACT_ONLY}
+        <td colspan="2">{EXACT_ONLY}
         {EXACT_ONLY_LABEL}</td>
     </tr>
 </table>

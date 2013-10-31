@@ -1,11 +1,11 @@
 {START_FORM}
 <table>
     <tr>
-        <td class="label">{PHPWS_USERNAME_LABEL}</td>
+        <td>{PHPWS_USERNAME_LABEL}</td>
         <td>{PHPWS_USERNAME}</td>
     </tr>
     <tr>
-        <td class="label">{PHPWS_PASSWORD_LABEL}</td>
+        <td>{PHPWS_PASSWORD_LABEL}</td>
         <td>{PHPWS_PASSWORD}</td>
     </tr>
     <!-- BEGIN graphic-confirm -->
