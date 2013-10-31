@@ -242,7 +242,7 @@ class Menu {
         }
     }
 
-    public function pinLink($title, $url, $key_id = 0)
+    public static function pinLink($title, $url, $key_id = 0)
     {
         $key = substr(md5($title . $url), 0, 8);
         $_SESSION['Menu_Pin_Links'][$key]['title'] = strip_tags($title);

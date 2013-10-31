@@ -392,7 +392,7 @@ class Menu_Item {
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
         if ($popup) {
             $js['label'] = sprintf('%s %s', MENU_PIN_LINK,
-                    dgettext('menu', 'Add stored page'));
+                    dgettext('menu', 'Paste page link'));
         } else {
             $js['label'] = MENU_PIN_LINK;
         }
@@ -468,7 +468,7 @@ class Menu_Item {
                     }
 
                     $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);
-                    $js['label'] = dgettext('menu', 'Pin page');
+                    $js['label'] = '<i class="fa fa-copy"></i> '  . dgettext('menu', 'Copy page location');
                     $js['width'] = 300;
                     $js['height'] = 180;
                     if (!PHPWS_Settings::get('menu', 'miniadmin')) {
@@ -498,7 +498,7 @@ class Menu_Item {
                                 'menu', $vars);
 
                 if (isset($_SESSION['Menu_Pin_Links'])) {
-                    $tpl['PIN_LINK'] = $this->getPinLink($this->id);
+                    $tpl['PIN_LINK'] = $this->getPinLink($this->id,0,true);
                 }
             } elseif ($admin_link) {
                 $vars['command'] = 'enable_admin_mode';

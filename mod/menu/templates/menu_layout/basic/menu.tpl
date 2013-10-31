@@ -7,12 +7,11 @@
             </button>
             <ul class="dropdown-menu">
                 <!-- BEGIN hide -->
-                <li>{PIN_LINK}</li>
-                <li>{ADD_LINK}</li>
-                <li>{ADD_SITE_LINK}</li>
-                <li class="divider"></li>
-                <li>{CLIP}</li>
-                <li class="divider"></li>
+                <!-- BEGIN pin-page --><li>{PIN_PAGE}</li><!-- END pin-page -->
+                <!-- BEGIN pin-link --><li>{PIN_LINK}</li><!-- END pin-link -->
+                <!-- BEGIN add-link --><li>{ADD_LINK}</li><!-- END add-link -->
+                <!-- BEGIN add-site-link --><li>{ADD_SITE_LINK}</li><!-- END add-site-link -->
+                <!-- BEGIN clip --><li>{CLIP}</li>
                 <!-- END hide -->
                 <li>{ADMIN_LINK}</li>
             </ul>
@@ -24,9 +23,4 @@
     <ul id="sort-{MENU_ID}" class="nav nav-pills nav-stacked menu-links">
         {LINKS}
     </ul>
-    <div>
-        <!-- BEGIN pin -->
-        {PIN_PAGE}<br />
-        <!-- END pin -->
-    </div>
 </div>

@@ -2,8 +2,7 @@
 
   <!-- BEGIN admin_links -->
         <div class="btn-group pull-right">
-            <button class="btn dropdown-toggle btn-default btn-xs" data-toggle="dropdown"> <i class="fa fa-cog">
-              </i><span class="caret"></span>
+            <button class="btn dropdown-toggle btn-default btn-xs" data-toggle="dropdown"> <i class="fa fa-cog"></i>
             </button>
             <ul class="dropdown-menu">
                 <li>{EDIT_LINK}</li>
