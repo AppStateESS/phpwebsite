@@ -486,7 +486,7 @@ class Version {
         return Users_Permission::giveItemPermission($this->getCreator(), $key);
     }
 
-    public function flush($table, $item_id)
+    public static function flush($table, $item_id)
     {
         $version = new Version($table);
         $db = new PHPWS_DB($version->version_table);
