@@ -299,7 +299,7 @@ class Blog_User {
                 MiniAdmin::add('blog',
                         PHPWS_Text::secureLink(dgettext('blog',
                                         'Create first blog entry!'), 'blog',
-                                array('action' => 'admin', 'tab' => 'new')));
+                                array('action' => 'admin', 'command' => 'new')));
             }
 
             return NULL;
@@ -368,7 +368,7 @@ class Blog_User {
         if (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
-            $vars['tab'] = 'new';
+            $vars['command'] = 'new';
             $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'),
                             'blog', $vars);
             MiniAdmin::add('blog', $link);

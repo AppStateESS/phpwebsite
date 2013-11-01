@@ -438,7 +438,7 @@ class Blog_Admin {
         return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
     }
 
-    public function setForward($message, $command)
+    public static function setForward($message, $command)
     {
         $_SESSION['Blog_Forward'] = $message;
         $link = PHPWS_Text::linkAddress('blog',
