@@ -157,6 +157,10 @@ http://getbootstrap.com
 Fort Awesome Icons
 http://fortawesome.github.io/Font-Awesome/
 
+Swiftmail
+Chris Corbyn
+http://swiftmailer.org/
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
