@@ -29,7 +29,6 @@ class MiniAdmin {
 
     public static function get()
     {
-        \Layout::addStyle('miniadmin');
         $modlist = PHPWS_Core::getModuleNames();
 
         if (!isset($GLOBALS['MiniAdmin'])) {
