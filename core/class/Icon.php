@@ -75,7 +75,7 @@ class Icon extends \Tag {
                 $this->addClass('fa fa-eraser');
                 break;
             case 'clip':
-                $this->addClass('fa fa-paper-clip');
+                $this->addClass('fa fa-paperclip');
                 break;
             case 'close':
                 $this->addClass('fa fa-remove');
