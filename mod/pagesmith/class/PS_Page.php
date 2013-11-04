@@ -279,7 +279,7 @@ class PS_Page {
         } else {
             $label = dgettext('pagesmith', 'Add to front');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag-alt" title="%s"></i>',
+                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
                         PHPWS_SOURCE_HTTP, $label);
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
