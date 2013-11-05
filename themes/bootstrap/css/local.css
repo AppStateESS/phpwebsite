@@ -1,8 +1,4 @@
 @media (min-width: @screen-sm) {
-    /* Leave this here if you're using navbar-fixed-top */
-    body {
-        padding-top: 60px;
-    }
 
     /* Leave this here if you're also using sidebar-nav */
     .sidebar-nav {
@@ -72,6 +68,10 @@
     #submenu-label {
         background-color :  #e3e3e3;text-align : right;padding : 3px; font-weight:bold;
     }
+}
+/* Leave this here if you're using navbar-fixed-top */
+body {
+    padding-top: 60px;
 }
 ul.dropdown-menu {
     min-width : 50px;
@@ -163,4 +163,13 @@ button.ui-dialog-titlebar-close:before {
 .admin-icons [class^="icon-"]:hover,table [class*="icon-"]:hover, .admin-icons  .glyphicon:hover {
     text-decoration : none;
     color : black;
+}
+
+/* Hides a elevator bar that appears when modal is used */
+#myModal {
+    overflow : hidden;
+}
+
+#menu-buttons {
+width : 300px;
 }

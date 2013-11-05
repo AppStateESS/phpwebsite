@@ -11,28 +11,28 @@
         {STYLE}
     </head>
     <body id="bootstrap-theme">
-        <div class="navbar navbar-inverse">
+        <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="fa fa-bar"></span>
-                        <span class="fa fa-bar"></span>
-                        <span class="fa fa-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">{SITE_TITLE}</a>
+                    <a class="navbar-brand" href="#">Bootstrap theme</a>
                 </div>
-                <div class="navbar-collapse collapse">
-                    {SEARCH_SEARCH_BOX}
-                    <!-- BEGIN dropdown -->
-                    <ul class="nav navbar-nav navbar-right">
+                <div class="navbar-collapse collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        <!-- BEGIN miniadmin -->
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page Settings <b class="caret"></b></a>
-                                {MINIADMIN_MINI_ADMIN}
+                            {MINIADMIN_MINI_ADMIN}
                         </li>
-                        {USERS_LOGIN_BOX}
+                        <!-- END miniadmin -->
+                        <li class="dropdown">
+                            {USERS_LOGIN_BOX}
+                        </li>
                     </ul>
-                    <!-- END dropdown -->
-                </div>
+                </div><!--/.nav-collapse -->
             </div>
         </div>
         <div id="hero">
@@ -48,6 +48,7 @@
             </div>
         </div>
         <hr>
+        <div id="modal-storage"></div>
         <footer>
             {LAYOUT_FOOTER}
         </footer>

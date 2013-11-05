@@ -49,6 +49,7 @@ class User_Form {
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
         $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink((bool) PHPWS_Cookie::read('user_cp'));
         $logout_link = $auth->getLogoutLink();
+        $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page">' .  dgettext('users', 'Account') . '</a>';
 
         if ($logout_link) {
             $template['LOGOUT'] = & $logout_link;
@@ -72,7 +73,6 @@ class User_Form {
         } else {
             $username = NULL;
         }
-
         $form = new PHPWS_Form('User_Login_Box');
         $form->setProtected(false);
         $form->addHidden('module', 'users');
@@ -80,8 +80,10 @@ class User_Form {
         $form->addHidden('command', 'login');
         $form->addText('phpws_username', $username);
         $form->setSize('phpws_username', 10);
+        $form->setClass('phpws_username', 'form-control');
         $form->addPassword('phpws_password');
         $form->setSize('phpws_password', 10);
+        $form->setClass('phpws_password', 'form-control');
         $form->addSubmit('submit', LOGIN_BUTTON);
 
         $form->setLabel('phpws_username', dgettext('users', 'Username'));
@@ -91,7 +93,7 @@ class User_Form {
         $form->setPlaceholder('phpws_password', dgettext('users', 'Password'));
 
         $template = $form->getTemplate();
-
+        $template = array();
         $signup_vars = array('action' => 'user',
             'command' => 'signup_user');
 
@@ -103,12 +105,17 @@ class User_Form {
                             'users', $signup_vars);
         }
 
-        $fg_vars = array('action' => 'user',
-            'command' => 'forgot_password');
+        $fg_vars = array('action' => 'user', 'command' => 'forgot_password');
         $template['FORGOT'] = PHPWS_Text::moduleLink(dgettext('users',
                                 'Forgot password?'), 'users', $fg_vars);
 
         $usermenu = PHPWS_User::getUserSetting('user_menu');
+
+        $user = Current_User::getUserObj();
+        $authorization = $user->getAuthorization();
+
+        $template['LOGIN_VIEW'] = $authorization->getView();
+
         return PHPWS_Template::process($template, 'users',
                         'usermenus/' . $usermenu);
     }
@@ -294,7 +301,8 @@ class User_Form {
             $pageTags['NEW_USER'] = PHPWS_Text::secureLink(dgettext('users',
                                     'Create new user'), 'users',
                             array('action' => 'admin', 'command' => 'new_user'),
-                            null, dgettext('users', 'Create new user'), 'btn btn-success');
+                            null, dgettext('users', 'Create new user'),
+                            'btn btn-success');
             $pageTags['NEW_USER_URI'] = PHPWS_Text::linkAddress('users',
                             array('action' => 'admin', 'command' => 'new_user'));
         }
@@ -350,7 +358,8 @@ class User_Form {
         $pageTags['NEW_GROUP'] = PHPWS_Text::secureLink(dgettext('users',
                                 'Create new group'), 'users',
                         array('action' => 'admin', 'command' => 'new_group'),
-                        null, dgettext('users', 'Create new group'), 'btn btn-success');
+                        null, dgettext('users', 'Create new group'),
+                        'btn btn-success');
         $pageTags['ADD_GROUP_URI'] = PHPWS_Text::linkAddress('users',
                         array('action' => 'admin', 'command' => 'new_group'));
 
@@ -432,11 +441,12 @@ class User_Form {
         $vars['action'] = 'admin';
         $vars['group_id'] = $group->id;
         $vars['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit') . ' Edit Group Name', 'users', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit') . ' Edit Group Name',
+                        'users', $vars);
 
         $vars['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(Icon::show('permission') . ' Edit Group Permissions', 'users',
-                        $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('permission') . ' Edit Group Permissions',
+                        'users', $vars);
 
         $template['LINKS'] = implode(' ', $links);
 

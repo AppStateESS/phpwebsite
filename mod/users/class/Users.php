@@ -46,6 +46,7 @@ class PHPWS_User {
     public $_prev_username = null;
     public $auth_script = null;
     public $auth_name = null;
+    public $default_authorization;
 
     public function __construct($id = 0, $username = null)
     {
@@ -925,6 +926,15 @@ class PHPWS_User {
     public function registerPermissions($module, &$content)
     {
         return Users_Permission::registerPermissions($module, $content);
+    }
+
+    public function getAuthorization()
+    {
+        require_once PHPWS_SOURCE_DIR . 'mod/users/scripts/' . $this->auth_script;
+        $auth_class_name = $this->auth_name . '_authorization';
+
+        $authorization = new $auth_class_name($this);
+        return $authorization;
     }
 
     /**

@@ -36,6 +36,7 @@ class MiniAdmin {
         }
 
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
+        $tpl['MINIADMIN_TITLE_ALT'] = dgettext('miniadmin', 'Administrate');
 
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
             $mod_title = $modlist[$module];
