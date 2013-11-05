@@ -11,7 +11,7 @@
         {STYLE}
     </head>
     <body id="bootstrap-theme">
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -21,7 +21,7 @@
                     </button>
                     <a class="navbar-brand" href="#">Bootstrap theme</a>
                 </div>
-                <div class="navbar-collapse collapse pull-right">
+                <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
                         <!-- BEGIN miniadmin -->
                         <li class="dropdown">
