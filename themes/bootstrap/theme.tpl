@@ -37,11 +37,11 @@
         </div>
         <div id="hero">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 col-sm-3">
                     {DEFAULT}
                     {LIKEBOX_DEFAULT}
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9 col-sm-9">
                     {LAYOUT_HEADER}
                     {BODY}
                 </div>
