@@ -6,8 +6,8 @@
             </a>
             <ul class="dropdown-menu">
                 <li class="nav-header"><a href="index.php?module=controlpanel&command=panel_view">Control panel</a></li>
-                <li class="divider"></li>
                 <?php foreach($module_links as $module_name=>$mod_links):?>
+                <li class="divider"></li>
                 <li class="nav-header"><?=$module_name?></li>
                 <?php foreach($mod_links['links'] as $link): ?>
                 <li><?=$link?></li>
