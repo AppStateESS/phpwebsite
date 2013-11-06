@@ -19,7 +19,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Bootstrap theme</a>
+                    <a href="./">Bootstrap theme</a>
                 </div>
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
@@ -48,7 +48,6 @@
             </div>
         </div>
         <hr>
-        <div id="modal-storage"></div>
         <footer>
             {LAYOUT_FOOTER}
         </footer>

@@ -2,11 +2,10 @@
     .admin-menus {
         float : right;
     }
-}
-@media (max-width: 768px) {
     .nav-header {
         color : white;
     }
+
 }
 /* Leave this here if you're also using sidebar-nav */
 .sidebar-nav {
@@ -182,4 +181,9 @@ button.ui-dialog-titlebar-close:before {
 .nav {
     margin-left: 0px;
     margin-right: 0px;
+}
+
+.nav-header {
+    padding-top : 4px;
+    font-weight : bold;
 }
