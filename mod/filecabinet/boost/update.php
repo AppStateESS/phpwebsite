@@ -607,6 +607,12 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 -----------------------
 + Added checkbox in Settings to turn off autofloating of images in the ckeditor.
 </pre>';
+        case version_compare($version, '2.4.4', '<'):
+            $content[] = '<pre>2.4.4 changes
+-----------------------
++ Removed clipboard functionality. Confused users and was not
++ Bootstrap icons and styles added.
+</pre>';
             return true;
     }
 }

@@ -289,6 +289,15 @@ Please download 1.2.1.</pre>';
 + Re-ordered administrative options in "mouse hover" menu for menu link
 + Added additional conditional to prevent menu expansion on a blank url
 </pre>';
+
+        case version_compare($currentVersion, '1.6.8', '<'):
+            $content[] = '<pre>1.6.8 changes
+----------------
++ menu-link-href class added to the "a" menu tag.
++ Font Awesome links used in admin functionality.
++ Old graphic files removed.
++ Changed some working to make admin options more clear.
+</pre>';
     }
     return true;
 }

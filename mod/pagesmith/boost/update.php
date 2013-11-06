@@ -362,6 +362,17 @@ Fixed bug causing blank editors on edit.</pre>';
 - Empty orphans are removed automatically.
 - Dialog editor made modal.
 </pre>';
+
+                case version_compare($currentVersion, '1.5.3', '<'):
+            $content[] = '<pre>1.5.3 changes
+---------------
++ Edit hinting changed to Boostrap standard
++ Removed upload template tab and code
++ Font Awesome used in icons
++ Tweaked page listing.
++ Removed default background color from page template.
++ Fixed bug with pages saving untitled.
+</pre>';
     } // end switch
 
     return true;

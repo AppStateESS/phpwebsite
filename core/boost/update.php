@@ -288,6 +288,90 @@ UPDATES;
 + Removed Comments module
 + Removed Categories module
 </pre>';
+
+            $content[] = '<pre>Core 2.3.2 Changes
+-------------------
++ Bootstrap
+    - Updated Bootstrap theme to Bootstrap 3.0.1
+    - Added Bootstrap table styles to several modules.
+    - Removed class name "label" from several templates as it is a reserved class name
+        in Bootstrap. Leaving it caused white text.
++ Font Awesome
+    - Font Awesome replaced several module icons.
+    - Updated Icon class to use Font Awesome 4
++ Changed phpDSNLoader to accept the table prefix as a parameter instead of relying on a define.
++ added loadPDO to exec method should it get unset.
++ Removed remnants of category calls.
++ xml2php changed to catch an exception.
++ Added Dutch translation from Han Velthuis.
++ Rewrote some Global error messages to be more descriptive.
++ Removed "simple" theme.
++ Fixed define bug casuing setup errors.
++ Pear deprecated when possible.
++ Filter code (BB and pear) removed from Text parsing.
++ Removed firebug code, ngboost and ngcom.
++ A theme can now define default classes for inputs, labels, and element groups.
++ date_default_timezone_set added to index.php to conform with new PHP standards.
++ Error check on PHPWS_Form class added.
++ Removed setup/manager.php
++ Fixed GD version detection. Was causing resampled images to be downgraded.
++ Swiftmail library added. Not in use yet but will replace other mail functions.
++ Added abbr tag to allowed_tags.
++ Global\Server
+    - fixed getCurrentUrl adding extra slashes
++ Global\Variable
+    - setRange and setIncrement return $this to allow method chaining.
+    - setText will change a bool to a 0 or 1 for display.
+    - Integer creates a ranged select if setInputType is set to select.
+    - Unlimited String will create a text column in the database and no longer a varchar.
+    - Text input is no longer the default type for a Variable object
+    - Fixed: String validity check would fail on empty or null values.
+    - String-type variable limits raised to reflect higher varchar limits
+    - Added unlink method to File class.
+    - Boolean now shows up in a Debug call
++ Global\Form
+    - Form can now define groupings for use with Bootstrap
+    - Form Labels are now a class instead of a string.
+    - addInputClass will plug a css class to every input in the Global\Form.
+    - Placeholders can now be added to input objects.
+    - Required check works with onblur instead of change allowing blanks to be detected.
+    - Submit button will be disabled if form set to use required inputs.
+    - Choice\Select now allows first choice to be blank
+    - Input\Text now allow apostrophes.
+    - Added to ability to theme buttons
+    - Added return to Text to allow method chaining.
+    - Removed code that automatically copied the options of integer keyed arrays
+        over the key. Instead added a copyOptionToValue method.
++ Global\Database
+    - Added addFieldConditional method to Table class.
+    - Text added as datatype.
+    - Added joinResources method to replace join method
+    - Large update to allow multiple conditionals to join statements
+    - Update to subselects and tables to work properly with fields.
+    - Added Exists class which is an extension of Conditional. Works with subselects.
+    - DB quote changed to static method.
+    - Conditionals were missing proper quoting methods.
+    - Added stringAsField method to Expression.
+    - Conditional checks for alias on getLeft
++ Global\Resource returns the id of the resource as a hidden input.
+    - createTable returns a table object
++ Global\Request added methods for returning FILES information
+    - Added new functions to Request to assist with command branching.
+    - Added lastCommand method
++ Global\ResourceFactory selectInto fixed as private and protected variables would not work
++ Global\Pager
+    - Added addJsonData and json_data variable. Allows entering a key=>value pair
+        that will be included in the JSON return.
+    - Fixed search box display
+    - Fixed search clear
+    - Added page count to JSON result. Not in UI yet.
+    - Added method to set the data url to the pager template.
+    - Added undefined check to prevent javascript error.
++ Global\DatabasePager
+    - added showQuery function and show_query variable. If variable is true, the
+        select query will be inserted into the JSON return for evaluation
+    - Total row calculation moved up in process so current page count is correct.
+</pre>';
     }
     return true;
 }

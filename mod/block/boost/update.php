@@ -138,6 +138,13 @@ Please download version 1.1.2.</pre>';
 + Moved File Cabinet material to block content (did not work on branches from 1.3.6).
 + Added option to hide a block when width is minimized.
 </pre>';
+
+        case version_compare($currentVersion, '1.3.8', '<'):
+            $content[] = '<pre>1.3.8 changes
+---------------
++ Updated icons to Font Awesome
++ Fixed bug with Branch update.
+</pre>';
     }
     return TRUE;
 }

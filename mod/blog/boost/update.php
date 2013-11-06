@@ -324,6 +324,14 @@ function blog_update(&$content, $currentVersion)
 ---------------------
 + Blog guesses an entry point for an hr tag.
 </pre>';
+        case version_compare($currentVersion, '1.10.2', '<'):
+            $content[] = '<pre>1.10.2 changes
+---------------------
++ Updated icons to Font Awesome
++ Removed Categories from Blog
++ Create Blog link in miniadmin now works as intended.
++ Static methods set to avoid error notices.
+</pre>';
     } // end of switch
     return true;
 }

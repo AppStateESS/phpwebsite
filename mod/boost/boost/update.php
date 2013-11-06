@@ -115,6 +115,14 @@ Please download update 2.1.1.</pre>';
 + Fixed a bug in displaying which branches have unwritable directories
 + Added an exception check on module installation. Reports error and sets as unsuccessful.
 </pre>';
+
+            case version_compare($currentVersion, '2.3.7', '<'):
+            $content[] = '<pre>
+2.3.7 changes
+----------------
++ Changed Boost to display update messages again.
+
+</pre>';
     }
 
     return TRUE;

@@ -66,6 +66,14 @@ function miniadmin_update(&$content, $version)
 ------------------
 + PHP 5 strict formatted.</pre>';
 
+            case version_compare($version, '1.2.3', '<'):
+            $content[] = '<pre>
+1.2.3 changes
+------------------
++ Miniadmin rewritten to work with Bootstrap theme.
++ Control panel link added as default to top of miniadmin.
+</pre>';
+
     }
     return true;
 }

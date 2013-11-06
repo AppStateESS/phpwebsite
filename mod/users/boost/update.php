@@ -401,6 +401,19 @@ timeout INT NOT NULL default 0,
 + User edit page shows group membership
 </pre>';
 
+                    case version_compare($currentVersion, '2.7.6', '<'):
+            $content[] = '<pre>2.7.6 changes
+------------------------
++ Updated icons to Font Awesome
++ Email addresses may now be used as user names.
++ Static method call fixed.
++ Added exception error for missing authorization file.
++ My Page no longer is using tabs as other modules use of My Page have been removed.
++ css.tpl template rewritten. Login now works closer with authentication script.
+    - drop down no longer contains Home or Control Panel. Account link added - takes
+        user to their account page to change their password.
+</pre>';
+
 
     } // End of switch statement
 

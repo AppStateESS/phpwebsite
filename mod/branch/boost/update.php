@@ -139,6 +139,14 @@ function branch_update(&$content, $version)
 -------------
 + Remove module limitations on branches.
 </pre>';
+        case version_compare($version, '1.3.5', '<'):
+            $db = \Database::newDB();
+            $db->addTable('branch_mod_limit')->drop();
+            $content[] = '<pre>1.3.5 Changes
+-------------
++ loadBranchDB and loadHubDB now include Global Database.
++ Fixed problems switching between hub and branch during installs and updates.
+</pre>';
     }
     return true;
 }

@@ -148,6 +148,16 @@ function rss_update(&$content, $version)
 0.3.5 changes
 --------------
 + RSS feed date fix from Tommy de Jesus</pre>';
+        case version_compare($version, '0.3.6', '<'):
+            $content[] = '<pre>
+0.3.6 changes
+--------------
++ Fixed install registration.
++ Fixed labels under Bootstrap.
++ Missing CURRENT_LANGUAGE define added.
++ Bootstrap icons and tables added.
++ Put correct rss.php directory in file check.
+</pre>';
     }
 
     return true;
