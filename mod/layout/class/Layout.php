@@ -1125,7 +1125,8 @@ class Layout {
         $js['address'] = PHPWS_Text::linkAddress('layout', $vars, true);
         $js['label'] = '-' . dgettext('layout', 'Click to move') . '-';
         $js['class'] = 'move-popup';
-        return '<div align="center">' . javascript('open_window', $js) . '</div>';
+        // Relative because bootstrap breaks z-index without it. z-index to keep to top
+        return '<div style="position:relative; z-index: 1000 !important; text-align : center">' . javascript('open_window', $js) . '</div>';
     }
 
     /**
