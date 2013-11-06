@@ -21,7 +21,7 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 <p><br><div><span><blockquote><map><area>
 <th><tt><img><pre><hr><h1><h2><h3><h4><h5><h6>
 <fieldset><legend><code><em><iframe><embed>
-<object><sup><sub><param><strike><del>');
+<object><sup><sub><param><strike><del><abbr>');
 
 /***************** HTML ENCODING ********************************
  * Before any user text passed into parseInput and out of
