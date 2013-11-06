@@ -2,7 +2,7 @@
 <!-- BEGIN directories -->
 <div
     style="height: 80px; overflow: auto; border: 1px solid black; padding: 3px"
-><pre>{DIRECTORIES}</pre></div>
+    ><pre>{DIRECTORIES}</pre></div>
 <!-- END directories -->
 <!-- BEGIN warning -->
 <span class="error"><strong>{WARNING}</strong></span>

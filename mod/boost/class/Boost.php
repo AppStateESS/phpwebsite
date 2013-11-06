@@ -156,8 +156,7 @@ class PHPWS_Boost {
                     PHPWS_Error::log($result);
                     $this->addLog($title,
                             dgettext('boost', 'Database import failed.'));
-                    $content[] = dgettext('boost',
-                            'An import error occurred.');
+                    $content[] = dgettext('boost', 'An import error occurred.');
                     $content[] = dgettext('boost',
                             'Check your logs for more information.');
                     return implode('<br />', $content) . '<br />' . implode('<br />',
@@ -205,8 +204,7 @@ class PHPWS_Boost {
             $content[] = dgettext('boost', 'Installation complete!');
             $this->addLog($title,
                     str_replace("\n\n\n", "\n",
-                            implode("\n",
-                                    str_replace('<br />', "\n", $content))));
+                            implode("\n", str_replace('<br />', "\n", $content))));
         }
         return implode('<br />', $content);
     }
@@ -235,7 +233,7 @@ class PHPWS_Boost {
         }
     }
 
-    public function onUpdate($mod, &$updateCnt)
+    public function onUpdate($mod, &$content)
     {
         $onUpdateFile = $mod->getDirectory() . 'boost/update.php';
         $updateFunction = $mod->title . '_update';
@@ -253,8 +251,8 @@ class PHPWS_Boost {
         include_once($onUpdateFile);
 
         if (function_exists($updateFunction)) {
-            $updateCnt[] = dgettext('boost', 'Processing update file.');
-            return $updateFunction($updateCnt, $currentVersion);
+            $content[] = dgettext('boost', 'Processing update file.');
+            return $updateFunction($content, $currentVersion);
         } else {
             return true;
         }
@@ -436,9 +434,6 @@ class PHPWS_Boost {
 
             $content[] = dgettext('boost', 'Updating') . ' - ' . $mod->getProperName();
             $result = $this->onUpdate($mod, $content);
-
-            // assure boost translation path
-
 
             if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
@@ -1071,7 +1066,7 @@ class PHPWS_Boost {
                 PHPWS_Error::log($result);
                 $content[] = dgettext('boost', 'Unable to update branch.');
             }
-                PHPWS_DB::loadDB();
+            PHPWS_DB::loadDB();
             //PHPWS_DB::disconnect();
         }
         $GLOBALS['Boost_In_Branch'] = false;

@@ -116,7 +116,7 @@ Please download update 2.1.1.</pre>';
 + Added an exception check on module installation. Reports error and sets as unsuccessful.
 </pre>';
 
-            case version_compare($currentVersion, '2.3.7', '<'):
+        case version_compare($currentVersion, '2.3.7', '<'):
             $content[] = '<pre>
 2.3.7 changes
 ----------------

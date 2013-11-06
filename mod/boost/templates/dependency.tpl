@@ -13,10 +13,10 @@
         <td>{VERSION_NEEDED}</td>
         <td>{CURRENT_VERSION}</td>
         <td><!-- BEGIN pass --><span
-            style="font-weight: bold; color: #10BD0A"
-        >{STATUS_GOOD}</span><!-- END pass --> <!-- BEGIN fail --><span
-            style="font-weight: bold; color: #F9060A"
-        >{STATUS_BAD}</span><!-- END fail --></td>
+                style="font-weight: bold; color: #10BD0A"
+                >{STATUS_GOOD}</span><!-- END pass --> <!-- BEGIN fail --><span
+                style="font-weight: bold; color: #F9060A"
+                >{STATUS_BAD}</span><!-- END fail --></td>
         <td>{URL}</td>
     </tr>
     <!-- END module-row -->

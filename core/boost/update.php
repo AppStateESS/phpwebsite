@@ -216,11 +216,13 @@ UPDATES;
 
         case version_compare($version, '2.3.1', '<'):
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'comments'));
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title',
+                            'comments'));
             $db->delete();
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'comments'));
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
+                            'comments'));
             $db->delete();
 
             $db = \Database::newDB();
@@ -276,11 +278,13 @@ UPDATES;
             }
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'categories'));
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title',
+                            'categories'));
             $db->delete();
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'categories'));
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
+                            'categories'));
             $db->delete();
 
             $content[] = '<pre>Core 2.3.1 Changes
@@ -289,6 +293,7 @@ UPDATES;
 + Removed Categories module
 </pre>';
 
+        case version_compare($version, '2.3.2', '<'):
             $content[] = '<pre>Core 2.3.2 Changes
 -------------------
 + Bootstrap
