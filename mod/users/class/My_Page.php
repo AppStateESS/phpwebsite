@@ -1,28 +1,31 @@
 <?php
+
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class My_Page {
+
     public $modules = NULL;
 
     public function main()
     {
         $auth = Current_User::getAuthorization();
 
-        if (!Current_User::isLogged() || !$auth->local_user ) {
+        if (!Current_User::isLogged() || !$auth->local_user) {
             PHPWS_Core::errorPage('403');
         }
 
         $result = $this->init();
 
-        if (PHPWS_Error::isError($result)){
+        if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'The is a problem with My Page.')));
+            Layout::add(PHPWS_ControlPanel::display(dgettext('users',
+                                    'The is a problem with My Page.')));
             return;
         } elseif (!$result) {
-            Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'No modules are registered to My Page.')));
+            Layout::add(PHPWS_ControlPanel::display(dgettext('users',
+                                    'No modules are registered to My Page.')));
             return;
         }
 
@@ -30,19 +33,17 @@ class My_Page {
 
         $module = $panel->getCurrentTab();
 
-        if (!$this->moduleIsRegistered($module)){
-            Layout::add(dgettext('users', 'This module is not registered with My Page'));
+        if (!$this->moduleIsRegistered($module)) {
+            Layout::add(dgettext('users',
+                            'This module is not registered with My Page'));
             return;
         }
 
         $content = My_Page::userOption($module);
-
         if (PHPWS_Error::isError($content)) {
-            $panel->setContent($content->getMessage());
-        } else {
-            $panel->setContent($content);
+            $content = $content->getMessage();
         }
-        Layout::add(PHPWS_ControlPanel::display($panel->display(), 'my_page'));
+        Layout::add(PHPWS_ControlPanel::display($content));
     }
 
     public function init()
@@ -76,9 +77,9 @@ class My_Page {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=user';
 
-        foreach ($this->modules as $module){
+        foreach ($this->modules as $module) {
             $link = 'index.php?module=users&amp;action=user';
-            $tabs[$module->title] = array('title'=>$module->getProperName(), 'link'=>$link);
+            $tabs[$module->title] = array('title' => $module->getProperName(), 'link' => $link);
         }
 
         $panel = new PHPWS_Panel('users');
@@ -95,14 +96,17 @@ class My_Page {
 
         $final_file = $directory . 'inc/my_page.php';
 
-        if (!is_file($final_file)){
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'users', 'userOption', $final_file);
-            return dgettext('users', 'There was a problem with this module\'s My Page file.');
+        if (!is_file($final_file)) {
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'users', 'userOption',
+                    $final_file);
+            return dgettext('users',
+                    'There was a problem with this module\'s My Page file.');
         }
 
         include $final_file;
         if (!function_exists('my_page')) {
-            return PHPWS_Error::get(USER_MISSING_MY_PAGE, 'users', 'My_Page::userOption', $module_title);
+            return PHPWS_Error::get(USER_MISSING_MY_PAGE, 'users',
+                            'My_Page::userOption', $module_title);
         }
 
         $content = my_page();
@@ -111,7 +115,8 @@ class My_Page {
 
     public static function registerMyPage($mod_title)
     {
-        $filename = sprintf('%smod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
+        $filename = sprintf('%smod/%s/inc/my_page.php', PHPWS_SOURCE_DIR,
+                $mod_title);
         if (!is_file($filename)) {
             return FALSE;
         }
@@ -128,13 +133,13 @@ class My_Page {
         return $db->delete();
     }
 
-
     public static function addHidden(PHPWS_Form $form, $module)
     {
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('tab', $module);
     }
+
 }
 
 ?>
