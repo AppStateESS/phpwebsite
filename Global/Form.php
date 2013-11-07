@@ -520,6 +520,8 @@ class Form extends Tag {
                     }
                 }
             }
+        } else {
+            throw new \Exception(t('No inputs in current Form object'));
         }
         foreach ($groups as $gname => $g) {
             $gclass = str_replace('_', '-', $gname);
