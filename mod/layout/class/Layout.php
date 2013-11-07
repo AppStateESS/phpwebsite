@@ -1126,7 +1126,8 @@ class Layout {
         $js['label'] = '-' . dgettext('layout', 'Click to move') . '-';
         $js['class'] = 'move-popup';
         // Relative because bootstrap breaks z-index without it. z-index to keep to top
-        return '<div style="position:relative; z-index: 1000 !important; text-align : center">' . javascript('open_window', $js) . '</div>';
+        return '<div style="position:relative; z-index: 1000 !important; text-align : center">' . javascript('open_window',
+                        $js) . '</div>';
     }
 
     /**
@@ -1285,7 +1286,11 @@ class Layout {
 
 function javascriptEnabled()
 {
-    return @$_SESSION['javascript_enabled'];
+    if (isset($_SESSION['javascript_enabled'])) {
+        return $_SESSION['javascript_enabled'];
+    } else {
+        return false;
+    }
 }
 
 function javascript($directory, $data = NULL, $base = null)
