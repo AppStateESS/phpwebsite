@@ -60,9 +60,9 @@ define('MENU_PIN_LINK',
         '<i class="fa fa-paste" title="' . dgettext('menu', 'Paste page link') . '"></i>');
 
 define('MENU_ADMIN_ON',
-        '<i class="fa fa-power-off" style="color : green"></i> ' . dgettext('menu', 'Enable Menu Editing'));
+        '<i class="fa fa-power-off" style="color : green"></i> ' . dgettext('menu', 'Edit menu'));
 define('MENU_ADMIN_OFF',
-        '<i class="fa fa-power-off" style="color : red"></i> ' . dgettext('menu', 'Disable Menu Editing'));
+        '<i class="fa fa-power-off" style="color : red"></i> ' . dgettext('menu', 'Stop editing menu'));
 
 define('MENU_PIN',
         '<i class="fa fa-flag"></i> ' . dgettext('menu', 'Pin to page'));
