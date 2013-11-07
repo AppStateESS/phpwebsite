@@ -127,6 +127,10 @@ class Icon extends \Tag {
                 $this->addClass('fa fa-warning-sign');
                 break;
 
+            case 'permission':
+                $this->addClass('fa fa-key');
+                break;
+
             default:
                 $this->addClass('fa fa-' . $this->type);
         }
