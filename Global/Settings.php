@@ -84,7 +84,7 @@ class Settings extends Data {
         $index->create();
     }
 
-    final public static function singleton($reload = false)
+    private static function singleton($reload = false)
     {
         if ($reload || empty(self::$settings)) {
             self::$settings = new Settings;
