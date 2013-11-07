@@ -1,5 +1,5 @@
 {START_FORM}
-<table class="form-table">
+<table class="table table-striped">
     <tr>
         <td>{FORBIDDEN_USERNAMES_LABEL}</td>
         <td>{FORBIDDEN_USERNAMES}</td>

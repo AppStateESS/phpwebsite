@@ -3,10 +3,10 @@
 <hr />
 <!-- END message -->
 <div class="align-right">{LINKS}</div>
-<div style="float : left;margin-right : 2em">
+<div>
     {START_FORM}
     {NOTIFY_USER} {NOTIFY_USER_LABEL}
-    <table class="form-table" cellspacing="0" cellpadding="4">
+    <table class="table table-striped" cellspacing="0" cellpadding="4">
         <tr>
             <td>{AUTHORIZE_LABEL}</td>
             <td>{AUTHORIZE}</td>
@@ -58,13 +58,15 @@
         </tr>
         <!-- END email-error -->
     </table>
-    {GO} {END_FORM}
+    <div class="text-center">{GO}</div>
+    {END_FORM}
 </div>
-<div>
-    <h3>Group member</h3>
+<fieldset>
+    <legend>Group member</legend>
+    {EMPTY_GROUP}
     <ul>
         <!-- BEGIN members -->
         <li>{NAME}</li>
         <!-- END members -->
     </ul>
-</div>
+</fieldset>

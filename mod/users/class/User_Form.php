@@ -49,7 +49,8 @@ class User_Form {
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
         $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink((bool) PHPWS_Cookie::read('user_cp'));
         $logout_link = $auth->getLogoutLink();
-        $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page">' .  dgettext('users', 'Account') . '</a>';
+        $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page">' . dgettext('users',
+                        'Account') . '</a>';
 
         if ($logout_link) {
             $template['LOGOUT'] = & $logout_link;
@@ -429,11 +430,11 @@ class User_Form {
                 $template['LIKE_INSTRUCTION'] = dgettext('users',
                                 'Member not found.') . ' ' . dgettext('users',
                                 'Closest matches below.');
-            }
-            else
+            } else {
                 $template['LIKE_INSTRUCTION'] = dgettext('users',
                                 'Member not found.') . ' ' . dgettext('users',
                                 'No matches found.');
+            }
         }
 
         $template = $form->getTemplate(TRUE, TRUE, $template);
@@ -441,12 +442,14 @@ class User_Form {
         $vars['action'] = 'admin';
         $vars['group_id'] = $group->id;
         $vars['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(Icon::show('edit') . ' Edit Group Name',
-                        'users', $vars);
+        $title = dgettext('users', 'Edit group name');
+        $links[] = PHPWS_Text::secureLink(Icon::show('edit') . " $title",
+                        'users', $vars, null, $title, 'btn btn-default');
 
+        $title = dgettext('users', 'Edit Group Permissions');
         $vars['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(Icon::show('permission') . ' Edit Group Permissions',
-                        'users', $vars);
+        $links[] = PHPWS_Text::secureLink(Icon::show('permission') . " $title",
+                        'users', $vars, null, $title, 'btn btn-default');
 
         $template['LINKS'] = implode(' ', $links);
 
@@ -486,7 +489,8 @@ class User_Form {
                 $action = PHPWS_Text::secureLink(dgettext('users', 'Drop'),
                                 'users', $vars, NULL,
                                 dgettext('users',
-                                        'Drop this member from the group.'));
+                                        'Drop this member from the group.'),
+                                'btn btn-xs btn-danger');
                 $names[] = sprintf('%s&#160;%s<br />', $action, $item['name']);
 
                 if ($count >= $col_limit) {
@@ -586,8 +590,9 @@ class User_Form {
 
         if ($user->id) {
             $vars['command'] = 'setUserPermissions';
-            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'),
-                            'users', $vars);
+            $links[] = PHPWS_Text::secureLink(\Icon::show('permission') . ' ' . dgettext('users',
+                                    'Permissions'), 'users', $vars, null,
+                            dgettext('users', 'Permissions'), 'btn btn-default');
         }
 
         if (isset($links)) {
@@ -611,6 +616,9 @@ class User_Form {
             while ($group = $db->selectColumn()) {
                 $template['members'][] = array('NAME' => $group);
             }
+        }
+        if (!isset($template['members'])) {
+            $template['EMPTY_GROUP'] = dgettext('user', 'User not a member of any group');
         }
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
