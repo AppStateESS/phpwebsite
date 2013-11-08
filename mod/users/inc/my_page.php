@@ -155,10 +155,6 @@ class User_Settings {
             $cp = (int) PHPWS_Cookie::read('user_cp');
         }
 
-        $form->addCheckbox('cp', 1);
-        $form->setMatch('cp', $cp);
-        $form->setLabel('cp', dgettext('users', 'Control Panel flyout menu'));
-
         if (Current_User::allowRememberMe()) {
             // User must authorize locally
             if ($_SESSION['User']->authorize == 1) {

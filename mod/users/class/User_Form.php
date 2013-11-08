@@ -47,7 +47,7 @@ class User_Form {
         $template['GREETING'] = dgettext('users', 'Hello');
         $template['USERNAME'] = Current_User::getUsername();
         $template['DISPLAY_NAME'] = Current_User::getDisplayName();
-        $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink((bool) PHPWS_Cookie::read('user_cp'));
+        $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink();
         $logout_link = $auth->getLogoutLink();
         $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page">' . dgettext('users',
                         'Account') . '</a>';

@@ -44,16 +44,6 @@
         <!-- END editor-error -->
       </div>
     </div>
-    <div class="control-group {CP_ERROR_CLASS}">
-      <div class="controls">
-        <label class="checkbox">
-          {CP} {CP_LABEL_TEXT}
-        </label>
-        <!-- BEGIN cp-error -->
-        <span class="help-inline">{CP_ERROR}</span>
-        <!-- END cp-error -->
-      </div>
-    </div>
     <div class="control-group">
       <div class="controls">
         {SUBMIT}
