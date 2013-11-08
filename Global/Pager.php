@@ -362,9 +362,9 @@ class Pager {
 
     public function getHeaders()
     {
-        $icon_down = '<i class="fa fa-chevron-down"></i>';
-        $icon_up = '<i class="fa fa-chevron-up"></i>';
-        $icon_stay = '<i class="fa fa-stop"></i>';
+        $icon_down = '<i class="fa fa-sort-asc"></i>';
+        $icon_up = '<i class="fa fa-sort-desc"></i>';
+        $icon_stay = '<i class="fa fa-sort"></i>';
         foreach ($this->headers as $column_name => $print_name) {
             if ($this->sort_column == $column_name) {
                 switch ($this->sort_direction) {
