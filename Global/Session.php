@@ -34,7 +34,6 @@
  */
 require_once PHPWS_SOURCE_DIR . 'Global/Data.php';
 
-
 class Session extends Data {
 
     /**
@@ -49,6 +48,7 @@ class Session extends Data {
      *
      * @var unknown
      */
+
     const SESSION_KEY = 'PHPWS';
 
     /**
@@ -146,13 +146,14 @@ class Session extends Data {
      */
     public function isActive()
     {
-        $status = session_status();
-
-        if ($status == PHP_SESSION_ACTIVE) {
-            return true;
+        if (php_sapi_name() !== 'cli') {
+            if (version_compare(phpversion(), '5.4.0', '>=')) {
+                return session_status() === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+            } else {
+                return session_id() === '' ? FALSE : TRUE;
+            }
         }
-
-        return false;
+        return FALSE;
     }
 
     /**
@@ -163,7 +164,7 @@ class Session extends Data {
      */
     public function __set($name, $value)
     {
-        if(!$this->isActive()){
+        if (!$this->isActive()) {
             throw new Exception('Session is not active.');
         }
 
@@ -179,7 +180,7 @@ class Session extends Data {
      */
     public function __get($name)
     {
-        if(!$this->isActive()){
+        if (!$this->isActive()) {
             throw new Exception('Session is not active.');
         }
 
@@ -198,7 +199,7 @@ class Session extends Data {
      */
     public function __isset($name)
     {
-        if(!$this->isActive()){
+        if (!$this->isActive()) {
             throw new Exception('Session is not active.');
         }
 
@@ -212,7 +213,7 @@ class Session extends Data {
      */
     public function __unset($name)
     {
-        if(!$this->isActive()){
+        if (!$this->isActive()) {
             throw new Exception('Session is not active.');
         }
 
@@ -224,13 +225,14 @@ class Session extends Data {
      */
     public function reset()
     {
-        if(!$this->isActive()){
+        if (!$this->isActive()) {
             throw new Exception('Session is not active.');
         }
 
         unset($_SESSION[self::SESSION_KEY]);
         $_SESSION[self::SESSION_KEY] = array();
     }
+
 }
 
 ?>
