@@ -130,10 +130,9 @@ class Image extends \Tag {
      */
     public function __toString()
     {
-        if (!$this->width || !$this->height) {
+        if (!$this->width && !$this->height) {
             $this->loadDimensions();
         }
-
         return parent::__toString();
     }
 
