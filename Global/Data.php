@@ -460,7 +460,13 @@ abstract class Data {
         $form = new \Form;
         foreach ($vars as $parameter) {
             if ($parameter instanceof \Variable) {
-                $form->addVariable($parameter);
+                if ($parameter->getVarname() == 'id') {
+                    $input = $parameter->getInput();
+                    $input->setId('resource-id');
+                    $form->plugInput($input);
+                } else {
+                    $form->addVariable($parameter);
+                }
             }
         }
         return $form;
