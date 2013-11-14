@@ -120,10 +120,16 @@ class Template implements View {
         }
         $template_content_array = $this->encode ? $this->encode($this->variables) : $this->variables;
         extract($template_content_array);
-        ob_start();
-        include $this->file;
-        $result = ob_get_contents();
-        ob_end_clean();
+        try {
+            ob_start();
+            include $this->file;
+            $result = ob_get_contents();
+            ob_end_clean();
+        } catch (\Exception $e) {
+            echo ob_get_contents();
+            ob_end_clean();
+            throw $e;
+        }
         return $result;
     }
 
@@ -140,6 +146,7 @@ class Template implements View {
     {
         return $this->variables;
     }
+
 }
 
 ?>
