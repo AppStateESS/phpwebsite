@@ -70,6 +70,11 @@ class Field extends Column {
         $this->show_distinct = (bool) $show;
     }
 
+    /**
+     * Sets the show_count variable for the Field object. If true,
+     * count() is going to surround the field in the query.
+     * @param boolean $show
+     */
     public function showCount($show=true) {
         $this->show_count = (bool) $show;
     }
