@@ -380,6 +380,10 @@ class Form extends Tag {
         return $this->addInput('password', $name, $value, $label);
     }
 
+    /**
+     * Adds a style sheet from Global templates
+     * @deprecated
+     */
     public function includeCSS()
     {
         \Layout::addToStyleList('Global/Templates/Form/style.css');
