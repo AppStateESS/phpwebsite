@@ -13,7 +13,7 @@ abstract class Column extends Alias {
 
     /**
      * Reference to the parent table object
-     * @var object
+     * @var \Database\Resource
      */
     public $resource = null;
 
