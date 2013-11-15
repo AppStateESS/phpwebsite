@@ -231,7 +231,7 @@ abstract class Resource extends Alias {
      * @param mixed $column_name    If not a Field object, then the name of the column in the table or Expression
      * @param string           $alias          An alias to be used within the query for this field.
      * @param boolean          $show_in_select If true, show in a select query. False, otherwise.
-     * @return Field
+     * @return \Database\Field
      */
     public function addField($column_name, $alias = null, $show_in_select = true)
     {
