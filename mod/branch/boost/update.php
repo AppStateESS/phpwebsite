@@ -134,14 +134,18 @@ function branch_update(&$content, $version)
 </pre>';
         case version_compare($version, '1.3.4', '<'):
             $db = \Database::newDB();
-            $db->addTable('branch_mod_limit')->drop();
+            if ($db->tableExists('branch_mod_limit')) {
+                $db->addTable('branch_mod_limit')->drop();
+            }
             $content[] = '<pre>1.3.4 Changes
 -------------
 + Remove module limitations on branches.
 </pre>';
         case version_compare($version, '1.3.5', '<'):
             $db = \Database::newDB();
-            $db->addTable('branch_mod_limit')->drop();
+            if ($db->tableExists('branch_mod_limit')) {
+                $db->addTable('branch_mod_limit')->drop();
+            }
             $content[] = '<pre>1.3.5 Changes
 -------------
 + loadBranchDB and loadHubDB now include Global Database.
