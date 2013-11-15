@@ -86,8 +86,10 @@ class Value extends Column {
      */
     public function __toString()
     {
-        if (is_a($this->value, 'Field')) {
+        if (is_a($this->value, 'Database\Field')) {
             return $this->getFullName() . '=' . $this->value->getFullName();
+        } elseif (is_a($this->value, 'Database\Expression')) {
+            return $this->getFullName() . '=' . $this->getValue();
         } else {
             return $this->getFullName() . "='" . $this->getValue() . "'";
         }
