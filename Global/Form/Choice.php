@@ -57,7 +57,7 @@ abstract class Choice extends Base {
      * @param array $options
      * @param unknown_type $value
      */
-    public function __construct($name, $options = null, $value = null)
+    public function __construct($name, $options = null, $selection = null)
     {
         parent::__construct($name);
         $this->setName($name);
@@ -66,7 +66,7 @@ abstract class Choice extends Base {
         }
         $this->addIgnoreVariables('breaks', 'type', 'label', 'selection',
                 'options');
-        $this->setSelection($value);
+        $this->setSelection($selection);
     }
 
     /**

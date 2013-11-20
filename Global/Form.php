@@ -167,6 +167,18 @@ class Form extends Tag {
         return $input;
     }
 
+    public function addChoice($type, $name, $value = null)
+    {
+        if (!is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
+            throw new \Exception(t('Improperly formatted choice name: %s', $name));
+        }
+
+        $class_name = 'Form\Choice\\' . ucfirst(strtolower($type));
+        $input = new $class_name($name, $value);
+        $this->inputs[$name][] = $input;
+        return $input;
+    }
+
     /**
      * @param boolean $post
      */
@@ -381,15 +393,6 @@ class Form extends Tag {
     }
 
     /**
-     * Adds a style sheet from Global templates
-     * @deprecated
-     */
-    public function includeCSS()
-    {
-        \Layout::addToStyleList('Global/Templates/Form/style.css');
-    }
-
-    /**
      * Prints out a rudimentary form based on the inputs in the queue.
      * A form toString will ALWAYS print the label if the input has one.
      * Button and submit has_label variables are false.
@@ -397,7 +400,6 @@ class Form extends Tag {
      */
     public function __toString()
     {
-        $this->includeCSS();
         $text = null;
         if (!empty(self::$css_addition)) {
             $this->loadCSSAddition();
@@ -489,7 +491,6 @@ class Form extends Tag {
      */
     public function getInputStringArray()
     {
-        $this->includeCSS();
         if (!empty(self::$css_addition)) {
             $this->loadCSSAddition();
         }
@@ -500,7 +501,10 @@ class Form extends Tag {
             foreach ($this->inputs as $input_name => $input_list) {
                 $multiple = count($input_list) > 1;
                 foreach ($input_list as $input) {
-                    if ($input->getType() == 'hidden') {
+                    $group_name = $input_name . '_group';
+                    if ($input instanceof \Form\Choice\Radio || $input instanceof \Form\Choice\Checkbox) {
+                        $value[$input_name] = $input->getStringArray();
+                    } elseif ($input->getType() == 'hidden') {
                         $value['hidden'][] = $input->__toString();
                     } else {
                         if ($input->getLabelLocation()) {
@@ -519,18 +523,23 @@ class Form extends Tag {
                         } else {
                             $value[$input_name] = $input->__toString();
                         }
-                        $group_name = $input_name . '_group';
-                        $groups[$group_name][] = $group_label . ' ' . $input->__toString();
+                        if ($input->getLabelLocation() == -1) {
+                            $groups[$group_name][] = $group_label . ' ' . $input->__toString();
+                        } else {
+                            $groups[$group_name][] = $input->__toString() . ' ' . $group_label;
+                        }
                     }
                 }
             }
         } else {
             throw new \Exception(t('No inputs in current Form object'));
         }
-        foreach ($groups as $gname => $g) {
-            $gclass = str_replace('_', '-', $gname);
-            $value[$gname] = '<div class="' . $gclass . ' ' . implode("\n",
-                            $this->group_class) . '">' . implode("\n", $g) . '</div>';
+        if (!empty($groups)) {
+            foreach ($groups as $gname => $g) {
+                $gclass = str_replace('_', '-', $gname);
+                $value[$gname] = '<div class="' . $gclass . ' ' . implode("\n",
+                                $this->group_class) . '">' . implode("\n", $g) . '</div>';
+            }
         }
         if (isset($value['hidden'])) {
             $value['form_start'] .= "\n" . implode("\n", $value['hidden']);

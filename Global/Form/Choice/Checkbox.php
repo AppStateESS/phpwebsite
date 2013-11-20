@@ -10,12 +10,6 @@ namespace Form\Choice;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Checkbox extends \Form\Choice {
-
-    /**
-     * The class constructed to for the options for this class
-     * @var string
-     */
-    protected $option_class = '\Form\Input\Checkbox';
     /**
      * @see Form\Choice::$breaks
      * @var boolean
@@ -28,10 +22,6 @@ class Checkbox extends \Form\Choice {
      */
     public function addOptions(array $options)
     {
-        if (empty($this->option_class)) {
-            throw new \Exception(t('Option class name is not set'));
-        }
-
         if (is_array(current($options))) {
             throw new \Exception(t('Checkbox choice does not allow multi-dimensional arrays'));
         }
@@ -39,15 +29,28 @@ class Checkbox extends \Form\Choice {
             $options = array_combine($options, $options);
         }
 
-        foreach ($options as $key => $value) {
-            $this->options[$key] = new \Form\Input\Checkbox($this->getName(), $key, $value);
+        foreach ($options as $value => $label) {
+            $option = new \Form\Input\Radio($this->getName(), $value, $label);
+            if ($this->selection == $value) {
+                $options->setSelection(true);
+            }
+            $this->options[$value] = $option;
         }
+    }
+
+    public function getStringArray()
+    {
+        $text = array();
+        foreach ($this->options as $opt) {
+            $text[] = $opt->getLabel() . ' ' . $opt->__toString();
+        }
+        return $text;
     }
 
     /**
      * Before using the parent setName function, this method adds missing
      * square brackets
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -57,6 +60,7 @@ class Checkbox extends \Form\Choice {
         }
         parent::setName($name);
     }
+
     /**
      * Returns a string of all options. For checkboxes and radio buttons, this
      * is the end. For select and multiple inputs, the result will be wrapped
@@ -67,16 +71,19 @@ class Checkbox extends \Form\Choice {
      */
     public function __toString()
     {
-        $text = array();
-        foreach ($this->options as $opt) {
-            $text[] = (string) $opt;
-        }
+        $text = $this->getStringArray();
         if (!$this->breaks) {
             return implode("\n", $text);
         } else {
             return implode("<br>", $text);
         }
     }
+
+    public function printWithLabel()
+    {
+        return $this->__toString();
+    }
+
 }
 
 ?>

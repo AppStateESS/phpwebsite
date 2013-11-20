@@ -10,17 +10,13 @@ namespace Form\Choice;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Radio extends \Form\Choice {
-    /**
-     * @todo may not be needed.
-     * @var string
-     */
-    //protected $option_class = '\Form\Input\Radio';
 
     /**
      * Radio options have breaks between them.
      * @var boolean
      */
     protected $breaks = true;
+    protected $label_location = 0;
 
     /**
      * @see Form\Choice::addOptions()
@@ -28,10 +24,6 @@ class Radio extends \Form\Choice {
      */
     public function addOptions(array $options)
     {
-        if (empty($this->option_class)) {
-            throw new \Exception(t('Option class name is not set'));
-        }
-
         if (!is_assoc($options)) {
             $options = array_combine($options, $options);
         }
@@ -45,25 +37,33 @@ class Radio extends \Form\Choice {
         }
     }
 
+    public function getStringArray()
+    {
+        $text = array();
+        foreach ($this->options as $opt) {
+            $text[] = $opt->getLabel() . ' ' . $opt->__toString();
+        }
+        return $text;
+    }
+
     /**
-     * Returns a string of all options. For checkboxes and radio buttons, this
-     * is the end. For select and multiple inputs, the result will be wrapped
-     * with the select tag.
-     *
+     * Returns a string with all radio buttons including labels.
      * @see Choice::$breaks
      * @return string
      */
     public function __toString()
     {
-        $text = array();
-        foreach ($this->options as $opt) {
-            $text[] = (string) $opt;
-        }
+        $text = $this->getStringArray();
         if (!$this->breaks) {
             return implode("\n", $text);
         } else {
             return implode("<br>", $text);
         }
+    }
+
+    public function printWithLabel()
+    {
+        return $this->__toString();
     }
 
 }

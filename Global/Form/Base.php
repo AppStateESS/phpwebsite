@@ -70,7 +70,8 @@ abstract class Base extends \Tag {
             $default_ids[$this->tag_type] = 1;
         }
 
-        $id_name = preg_replace('|[\W_]+|', '-', $this->name);
+
+        $id_name = preg_replace('|[\W_]+|', '-', preg_replace('/\[|\]/', '', $this->name));
         if (isset($default_ids[$id_name])) {
             $default_ids[$id_name]++;
             $id_name = $id_name . '-' . $default_ids[$id_name];
