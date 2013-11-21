@@ -167,6 +167,13 @@ class Form extends Tag {
         return $input;
     }
 
+    /**
+     * @param string $type
+     * @param string $name
+     * @param array $value
+     * @return \Form\Choice
+     * @throws \Exception
+     */
     public function addChoice($type, $name, $value = null)
     {
         if (!is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
