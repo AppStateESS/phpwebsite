@@ -387,6 +387,15 @@ class Tag extends Data {
     }
 
     /**
+     * Returns text variable
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
      * Returns true if the passed string is a properly formatted SGML element type.
      * Name or Id
      * @param string $proper
