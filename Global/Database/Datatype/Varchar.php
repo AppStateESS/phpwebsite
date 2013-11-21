@@ -22,10 +22,10 @@ class Varchar extends Character {
 
     protected $varchar = true;
 
-    public function __construct(\Database\Table $table, $name, $length = 15000)
+    public function __construct(\Database\Table $table, $name, $length = 255)
     {
         parent::__construct($table, $name);
-        $this->size->setRange(0, 15000);
+        $this->size->setRange(0, 255);
         $this->setSize($length);
         $this->default->setLimit($length);
     }
