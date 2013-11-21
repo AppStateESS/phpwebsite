@@ -24,14 +24,10 @@ class Radio extends \Form\Choice {
      */
     public function addOptions(array $options)
     {
-        if (!is_assoc($options)) {
-            $options = array_combine($options, $options);
-        }
-
         foreach ($options as $value => $label) {
             $option = new \Form\Input\Radio($this->getName(), $value, $label);
             if ($this->selection == $value) {
-                $options->setSelection(true);
+                $option->setSelection(true);
             }
             $this->options[$value] = $option;
         }
@@ -65,7 +61,6 @@ class Radio extends \Form\Choice {
     {
         return $this->__toString();
     }
-
 }
 
 ?>
