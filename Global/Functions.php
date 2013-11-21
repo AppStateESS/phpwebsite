@@ -94,6 +94,7 @@ function t()
  * that array(0 => 'foo', 1 => 'bar') will EVER be passed to this function,
  * do not rely on it.
  *
+ * @deprecated
  * @param array $value
  * @return boolean
  * @author Anonymous
