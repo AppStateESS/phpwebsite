@@ -7,7 +7,6 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-
 /**
  * Autoloads undeclared classes. Only checks two places:
  * the Global directory or the mod/class directory.
@@ -15,6 +14,7 @@
  * @param string $class_name
  */
 spl_autoload_register('phpwsAutoload');
+
 function phpwsAutoload($class_name)
 {
     // stores previously found requires
@@ -89,8 +89,9 @@ function t()
  * Returns true is value parameter is an associative array.
  * Copied from the php.net website.
  *
- * Note: this function is flawed. If an array is numerically keyed from zero,
- * even with number strings, this function will return false. If there is a chance
+ * Note: this function is flawed. If an array is numerically keyed from zero to
+ * count($array) - 1 this function will return false. It doesn't matter if the
+ * numbers are cast as strings as PHP changes them to integers. If there is a chance
  * that array(0 => 'foo', 1 => 'bar') will EVER be passed to this function,
  * do not rely on it.
  *
@@ -125,7 +126,6 @@ function get_file_permission($file)
     $stat = stat($file);
     return sprintf("%o", ($stat['mode'] & 000777));
 }
-
 
 /**
  * Logs a message to the specified $filename in side the defined LOG_DIRECTORY
