@@ -88,6 +88,12 @@ function t()
 /**
  * Returns true is value parameter is an associative array.
  * Copied from the php.net website.
+ *
+ * Note: this function is flawed. If an array is numerically keyed from zero,
+ * even with number strings, this function will return false. If there is a chance
+ * that array(0 => 'foo', 1 => 'bar') will EVER be passed to this function,
+ * do not rely on it.
+ *
  * @param array $value
  * @return boolean
  * @author Anonymous
