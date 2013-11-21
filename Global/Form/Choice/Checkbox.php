@@ -25,9 +25,6 @@ class Checkbox extends \Form\Choice {
         if (is_array(current($options))) {
             throw new \Exception(t('Checkbox choice does not allow multi-dimensional arrays'));
         }
-        if (!is_assoc($options)) {
-            $options = array_combine($options, $options);
-        }
 
         foreach ($options as $value => $label) {
             $option = new \Form\Input\Radio($this->getName(), $value, $label);
