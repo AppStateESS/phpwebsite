@@ -17,6 +17,8 @@ abstract class Base extends \Tag {
      */
     protected $name = null;
 
+    protected $disabled = null;
+
     /**
      * The label tag associated with this input. Should contain information
      * as to the function of the input or its title.
@@ -236,6 +238,29 @@ abstract class Base extends \Tag {
         }
         $this->label->setRequired($required);
         return $this;
+    }
+
+    /**
+     * Let's you set the disabled status of the input.
+     * @param boolean $disabled
+     */
+    public function setDisabled($disabled=true)
+    {
+        if ($disabled) {
+            $this->disabled = 'disabled';
+        } else {
+            $this->disabled = null;
+        }
+        return $this;
+    }
+
+    /**
+     * Returns true if the input is disabled.
+     * @return boolean
+     */
+    public function isDisabled()
+    {
+        return (bool)$this->disabled;
     }
 
 }
