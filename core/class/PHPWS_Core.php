@@ -153,7 +153,7 @@ class PHPWS_Core {
             foreach ($_FILES as $file) {
                 extract($file);
                 if (is_array($name)) {
-                    $key .= $name[0] . $type[0] . $size[0];
+                    $key .= current($name) . current($type) . current($size);
                 } else {
                     $key .= $name . $type . $size;
                 }
