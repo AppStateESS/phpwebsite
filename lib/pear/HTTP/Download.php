@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
@@ -14,7 +15,6 @@
  * @version    CVS: $Id: Download.php,v 1.79 2007/10/05 07:02:03 mike Exp $
  * @link       http://pear.php.net/package/HTTP_Download
  */
-
 // {{{ includes
 /**
  * Requires PEAR
@@ -26,9 +26,8 @@ require_once 'PEAR.php';
  */
 require_once 'HTTP/Header.php';
 // }}}
-
 // {{{ constants
-/**#@+ Use with HTTP_Download::setContentDisposition() **/
+/* * #@+ Use with HTTP_Download::setContentDisposition() * */
 /**
  * Send data as attachment
  */
@@ -37,9 +36,9 @@ define('HTTP_DOWNLOAD_ATTACHMENT', 'attachment');
  * Send data inline
  */
 define('HTTP_DOWNLOAD_INLINE', 'inline');
-/**#@-**/
+/* * #@-* */
 
-/**#@+ Use with HTTP_Download::sendArchive() **/
+/* * #@+ Use with HTTP_Download::sendArchive() * */
 /**
  * Send as uncompressed tar archive
  */
@@ -56,21 +55,21 @@ define('HTTP_DOWNLOAD_BZ2', 'BZ2');
  * Send as zip archive
  */
 define('HTTP_DOWNLOAD_ZIP', 'ZIP');
-/**#@-**/
+/* * #@-* */
 
-/**#@+
+/* * #@+
  * Error constants
  */
-define('HTTP_DOWNLOAD_E_HEADERS_SENT',          -1);
-define('HTTP_DOWNLOAD_E_NO_EXT_ZLIB',           -2);
-define('HTTP_DOWNLOAD_E_NO_EXT_MMAGIC',         -3);
-define('HTTP_DOWNLOAD_E_INVALID_FILE',          -4);
-define('HTTP_DOWNLOAD_E_INVALID_PARAM',         -5);
-define('HTTP_DOWNLOAD_E_INVALID_RESOURCE',      -6);
-define('HTTP_DOWNLOAD_E_INVALID_REQUEST',       -7);
-define('HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE',  -8);
-define('HTTP_DOWNLOAD_E_INVALID_ARCHIVE_TYPE',  -9);
-/**#@-**/
+define('HTTP_DOWNLOAD_E_HEADERS_SENT', -1);
+define('HTTP_DOWNLOAD_E_NO_EXT_ZLIB', -2);
+define('HTTP_DOWNLOAD_E_NO_EXT_MMAGIC', -3);
+define('HTTP_DOWNLOAD_E_INVALID_FILE', -4);
+define('HTTP_DOWNLOAD_E_INVALID_PARAM', -5);
+define('HTTP_DOWNLOAD_E_INVALID_RESOURCE', -6);
+define('HTTP_DOWNLOAD_E_INVALID_REQUEST', -7);
+define('HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE', -8);
+define('HTTP_DOWNLOAD_E_INVALID_ARCHIVE_TYPE', -9);
+/* * #@-* */
 // }}}
 
 /**
@@ -88,8 +87,8 @@ define('HTTP_DOWNLOAD_E_INVALID_ARCHIVE_TYPE',  -9);
  * @access   public
  * @version  $Revision: 1.79 $
  */
-class HTTP_Download
-{
+class HTTP_Download {
+
     // {{{ protected member variables
     /**
      * Path to file for download
@@ -156,12 +155,12 @@ class HTTP_Download
      * @access  protected
      * @var     array
      */
-    var $headers   = array(
-        'Content-Type'  => 'application/x-octetstream',
-        'Pragma'        => 'cache',
+    var $headers = array(
+        'Content-Type' => 'application/x-octetstream',
+        'Pragma' => 'cache',
         'Cache-Control' => 'public, must-revalidate, max-age=0',
         'Accept-Ranges' => 'bytes',
-        'X-Sent-By'     => 'PEAR::HTTP::Download'
+        'X-Sent-By' => 'PEAR::HTTP::Download'
     );
 
     /**
@@ -203,8 +202,8 @@ class HTTP_Download
      * @var     int
      */
     var $sentBytes = 0;
-    // }}}
 
+    // }}}
     // {{{ constructor
     /**
      * Constructor
@@ -243,8 +242,8 @@ class HTTP_Download
         $this->HTTP = new HTTP_Header;
         $this->setParams($params);
     }
-    // }}}
 
+    // }}}
     // {{{ public methods
     /**
      * Set parameters
@@ -259,13 +258,13 @@ class HTTP_Download
      */
     function setParams($params)
     {
-        foreach((array) $params as $param => $value){
-            $method = 'set'. $param;
+        foreach ((array) $params as $param => $value) {
+            $method = 'set' . $param;
 
             if (!method_exists($this, $method)) {
                 return PEAR::raiseError(
-                    "Method '$method' doesn't exist.",
-                    HTTP_DOWNLOAD_E_INVALID_PARAM
+                                "Method '$method' doesn't exist.",
+                                HTTP_DOWNLOAD_E_INVALID_PARAM
                 );
             }
 
@@ -299,8 +298,8 @@ class HTTP_Download
                 $this->HTTP->sendStatusCode(404);
             }
             return PEAR::raiseError(
-                "File '$file' not found.",
-                HTTP_DOWNLOAD_E_INVALID_FILE
+                            "File '$file' not found.",
+                            HTTP_DOWNLOAD_E_INVALID_FILE
             );
         }
         $this->setLastModified(filemtime($file));
@@ -345,14 +344,14 @@ class HTTP_Download
 
         if (is_resource($handle)) {
             $this->handle = $handle;
-            $filestats    = fstat($handle);
-            $this->size   = $filestats['size'];
+            $filestats = fstat($handle);
+            $this->size = $filestats['size'];
             return true;
         }
 
         return PEAR::raiseError(
-            "Handle '$handle' is no valid resource.",
-            HTTP_DOWNLOAD_E_INVALID_RESOURCE
+                        "Handle '$handle' is no valid resource.",
+                        HTTP_DOWNLOAD_E_INVALID_RESOURCE
         );
     }
 
@@ -368,10 +367,10 @@ class HTTP_Download
      */
     function setGzip($gzip = false)
     {
-        if ($gzip && !PEAR::loadExtension('zlib')){
+        if ($gzip && !PEAR::loadExtension('zlib')) {
             return PEAR::raiseError(
-                'GZIP compression (ext/zlib) not available.',
-                HTTP_DOWNLOAD_E_NO_EXT_ZLIB
+                            'GZIP compression (ext/zlib) not available.',
+                            HTTP_DOWNLOAD_E_NO_EXT_ZLIB
             );
         }
         $this->gzip = (bool) $gzip;
@@ -409,14 +408,13 @@ class HTTP_Download
      */
     function setCacheControl($cache = 'public', $maxage = 0)
     {
-        switch ($cache = strToLower($cache))
-        {
+        switch ($cache = strToLower($cache)) {
             case 'private':
             case 'public':
                 $this->headers['Cache-Control'] =
-                    $cache .', must-revalidate, max-age='. abs($maxage);
+                        $cache . ', must-revalidate, max-age=' . abs($maxage);
                 return true;
-            break;
+                break;
         }
         return false;
     }
@@ -456,8 +454,8 @@ class HTTP_Download
     {
         if (0 >= $bytes) {
             return PEAR::raiseError(
-                'Buffer size must be greater than 0 bytes ('. $bytes .' given)',
-                HTTP_DOWNLOAD_E_INVALID_PARAM);
+                            'Buffer size must be greater than 0 bytes (' . $bytes . ' given)',
+                            HTTP_DOWNLOAD_E_INVALID_PARAM);
         }
         $this->bufferSize = abs($bytes);
         return true;
@@ -529,8 +527,7 @@ class HTTP_Download
      * );
      * </code>
      */
-    function setContentDisposition( $disposition    = HTTP_DOWNLOAD_ATTACHMENT,
-                                    $file_name      = null)
+    function setContentDisposition($disposition = HTTP_DOWNLOAD_ATTACHMENT, $file_name = null)
     {
         $cd = $disposition;
         if (isset($file_name)) {
@@ -556,8 +553,8 @@ class HTTP_Download
     {
         if (!preg_match('/^[a-z]+\w*\/[a-z]+[\w.;= -]*$/', $content_type)) {
             return PEAR::raiseError(
-                "Invalid content type '$content_type' supplied.",
-                HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE
+                            "Invalid content type '$content_type' supplied.",
+                            HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE
             );
         }
         $this->headers['Content-Type'] = $content_type;
@@ -587,26 +584,26 @@ class HTTP_Download
         if (class_exists('MIME_Type') || @include_once 'MIME/Type.php') {
             if (PEAR::isError($mime_type = MIME_Type::autoDetect($this->file))) {
                 return PEAR::raiseError($mime_type->getMessage(),
-                    HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE);
+                                HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE);
             }
             return $this->setContentType($mime_type);
         }
         if (!function_exists('mime_content_type')) {
             return PEAR::raiseError(
-                'This feature requires ext/mime_magic!',
-                HTTP_DOWNLOAD_E_NO_EXT_MMAGIC
+                            'This feature requires ext/mime_magic!',
+                            HTTP_DOWNLOAD_E_NO_EXT_MMAGIC
             );
         }
         if (!is_file(ini_get('mime_magic.magicfile'))) {
             return PEAR::raiseError(
-                'ext/mime_magic is loaded but not properly configured!',
-                HTTP_DOWNLOAD_E_NO_EXT_MMAGIC
+                            'ext/mime_magic is loaded but not properly configured!',
+                            HTTP_DOWNLOAD_E_NO_EXT_MMAGIC
             );
         }
         if (!$content_type = @mime_content_type($this->file)) {
             return PEAR::raiseError(
-                'Couldn\'t guess content type with mime_content_type().',
-                HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE
+                            'Couldn\'t guess content type with mime_content_type().',
+                            HTTP_DOWNLOAD_E_INVALID_CONTENT_TYPE
             );
         }
         return $this->setContentType($content_type);
@@ -628,8 +625,8 @@ class HTTP_Download
     {
         if (headers_sent()) {
             return PEAR::raiseError(
-                'Headers already sent.',
-                HTTP_DOWNLOAD_E_HEADERS_SENT
+                            'Headers already sent.',
+                            HTTP_DOWNLOAD_E_HEADERS_SENT
             );
         }
 
@@ -638,7 +635,7 @@ class HTTP_Download
         }
 
         if ($autoSetContentDisposition &&
-            !isset($this->headers['Content-Disposition'])) {
+                !isset($this->headers['Content-Disposition'])) {
             $this->setContentDisposition();
         }
 
@@ -652,13 +649,15 @@ class HTTP_Download
         } else {
             unset($this->headers['Last-Modified']);
         }
-
-        if (ob_get_level()) {
-        	while (ob_end_clean());
+        $ob_level = ob_get_level();
+        if ($ob_level) {
+            for ($i = 0; $i < $ob_level; $i++) {
+                ob_end_clean();
+            }
         }
 
         if ($this->gzip) {
-            @ob_start('ob_gzhandler');
+            ob_start('ob_gzhandler');
         } else {
             ob_start();
         }
@@ -742,18 +741,14 @@ class HTTP_Download
      * @param   string  $add_path   path that should be prepended to the files
      * @param   string  $strip_path path that should be stripped from the files
      */
-    function sendArchive(   $name,
-                            $files,
-                            $type       = HTTP_DOWNLOAD_TGZ,
-                            $add_path   = '',
-                            $strip_path = '')
+    function sendArchive($name, $files, $type = HTTP_DOWNLOAD_TGZ, $add_path = '', $strip_path = '')
     {
         require_once 'HTTP/Download/Archive.php';
-        return HTTP_Download_Archive::send($name, $files, $type,
-            $add_path, $strip_path);
+        return HTTP_Download_Archive::send($name, $files, $type, $add_path,
+                        $strip_path);
     }
-    // }}}
 
+    // }}}
     // {{{ protected methods
     /**
      * Generate ETag
@@ -768,8 +763,8 @@ class HTTP_Download
                 $md5 = md5($this->data);
             } else {
                 $fst = is_resource($this->handle) ?
-                    fstat($this->handle) : stat($this->file);
-                $md5 = md5($fst['mtime'] .'='. $fst['ino'] .'='. $fst['size']);
+                        fstat($this->handle) : stat($this->file);
+                $md5 = md5($fst['mtime'] . '=' . $fst['ino'] . '=' . $fst['size']);
             }
             $this->etag = '"' . $md5 . '-' . crc32($md5) . '"';
         }
@@ -792,9 +787,9 @@ class HTTP_Download
         $bound = uniqid('HTTP_DOWNLOAD-', true);
         $cType = $this->headers['Content-Type'];
         $this->headers['Content-Type'] =
-            'multipart/byteranges; boundary=' . $bound;
+                'multipart/byteranges; boundary=' . $bound;
         $this->sendHeaders();
-        foreach ($chunks as $chunk){
+        foreach ($chunks as $chunk) {
             if (PEAR::isError($e = $this->sendChunk($chunk, $cType, $bound))) {
                 return $e;
             }
@@ -819,21 +814,21 @@ class HTTP_Download
 
         if ($length < 1) {
             return PEAR::raiseError(
-                "Error processing range request: $offset-$lastbyte/$length",
-                HTTP_DOWNLOAD_E_INVALID_REQUEST
+                            "Error processing range request: $offset-$lastbyte/$length",
+                            HTTP_DOWNLOAD_E_INVALID_REQUEST
             );
         }
 
         $range = $offset . '-' . $lastbyte . '/' . $this->size;
 
         if (isset($cType, $bound)) {
-            echo    "\r\n--$bound\r\n",
-                    "Content-Type: $cType\r\n",
-                    "Content-Range: bytes $range\r\n\r\n";
+            echo "\r\n--$bound\r\n",
+            "Content-Type: $cType\r\n",
+            "Content-Range: bytes $range\r\n\r\n";
         } else {
             if ($this->isRangeRequest()) {
                 $this->headers['Content-Length'] = $length;
-                $this->headers['Content-Range'] = 'bytes '. $range;
+                $this->headers['Content-Range'] = 'bytes ' . $range;
             }
             $this->sendHeaders();
         }
@@ -845,7 +840,8 @@ class HTTP_Download
                 $offset += $this->bufferSize;
             }
             if ($length) {
-                $this->flush(substr($this->data, $offset, $this->bufferSize + $length));
+                $this->flush(substr($this->data, $offset,
+                                $this->bufferSize + $length));
             }
         } else {
             if (!is_resource($this->handle)) {
@@ -872,7 +868,7 @@ class HTTP_Download
     function getChunks()
     {
         $parts = array();
-        foreach (explode(',', $this->getRanges()) as $chunk){
+        foreach (explode(',', $this->getRanges()) as $chunk) {
             list($o, $e) = explode('-', $chunk);
             if ($e >= $this->size || (empty($e) && $e !== 0 && $e !== '0')) {
                 $e = $this->size - 1;
@@ -908,8 +904,8 @@ class HTTP_Download
      */
     function getRanges()
     {
-        return preg_match('/^bytes=((\d*-\d*,? ?)+)$/',
-            @$_SERVER['HTTP_RANGE'], $matches) ? $matches[1] : array();
+        return preg_match('/^bytes=((\d*-\d*,? ?)+)$/', @$_SERVER['HTTP_RANGE'],
+                        $matches) ? $matches[1] : array();
     }
 
     /**
@@ -921,12 +917,12 @@ class HTTP_Download
     function isCached()
     {
         return (
-            (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
-            $this->lastModified == strtotime(current($a = explode(
-                ';', $_SERVER['HTTP_IF_MODIFIED_SINCE'])))) ||
-            (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-            $this->compareAsterisk('HTTP_IF_NONE_MATCH', $this->etag))
-        );
+                (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
+                $this->lastModified == strtotime(current($a = explode(
+                                ';', $_SERVER['HTTP_IF_MODIFIED_SINCE'])))) ||
+                (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
+                $this->compareAsterisk('HTTP_IF_NONE_MATCH', $this->etag))
+                );
     }
 
     /**
@@ -938,12 +934,12 @@ class HTTP_Download
     function isValidRange()
     {
         if (isset($_SERVER['HTTP_IF_MATCH']) &&
-            !$this->compareAsterisk('HTTP_IF_MATCH', $this->etag)) {
+                !$this->compareAsterisk('HTTP_IF_MATCH', $this->etag)) {
             return false;
         }
         if (isset($_SERVER['HTTP_IF_RANGE']) &&
-                  $_SERVER['HTTP_IF_RANGE'] !== $this->etag &&
-                  strtotime($_SERVER['HTTP_IF_RANGE']) !== $this->lastModified) {
+                $_SERVER['HTTP_IF_RANGE'] !== $this->etag &&
+                strtotime($_SERVER['HTTP_IF_RANGE']) !== $this->lastModified) {
             return false;
         }
         if (isset($_SERVER['HTTP_IF_UNMODIFIED_SINCE'])) {
@@ -953,7 +949,8 @@ class HTTP_Download
             }
         }
         if (isset($_SERVER['HTTP_UNLESS_MODIFIED_SINCE'])) {
-            $lm = current($a = explode(';', $_SERVER['HTTP_UNLESS_MODIFIED_SINCE']));
+            $lm = current($a = explode(';',
+                    $_SERVER['HTTP_UNLESS_MODIFIED_SINCE']));
             if (strtotime($lm) !== $this->lastModified) {
                 return false;
             }
@@ -1031,6 +1028,8 @@ class HTTP_Download
             usleep($this->throttleDelay * 1000);
         }
     }
+
     // }}}
 }
+
 ?>
