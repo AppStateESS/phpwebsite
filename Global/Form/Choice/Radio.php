@@ -61,6 +61,14 @@ class Radio extends \Form\Choice {
     {
         return $this->__toString();
     }
+
+    public function addClass($class)
+    {
+        foreach ($this->options as $opt) {
+            $opt->addClass($class);
+        }
+        return $this;
+    }
 }
 
 ?>
