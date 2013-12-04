@@ -76,13 +76,13 @@ abstract class Choice extends Base {
     public function setSelection($selection)
     {
         if (empty($selection)) {
-            return;
+            return $this;
         }
         if (is_array($selection)) {
             foreach ($selection as $s) {
                 $this->setSelection($s);
             }
-            return;
+            return $this;
         }
 
         if (!empty($selection) && (!isset($this->options[$selection]))) {
