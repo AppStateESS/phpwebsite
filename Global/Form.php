@@ -348,9 +348,9 @@ class Form extends Tag {
      * @param string $value
      * @return \Form\Input\Email
      */
-    public function addDate($name, $value = null)
+    public function addDate($name, $value = null, $label = null)
     {
-        return $this->addInput('date', $name, $value);
+        return $this->addInput('date', $name, $value, $label);
     }
 
     /**
@@ -359,9 +359,9 @@ class Form extends Tag {
      * @param string $value
      * @return \Form\Input\Email
      */
-    public function addDatetime($name, $value = null)
+    public function addDatetime($name, $value = null, $label = null)
     {
-        return $this->addInput('datetime', $name, $value);
+        return $this->addInput('datetime', $name, $value, $label);
     }
 
     /**
@@ -370,9 +370,9 @@ class Form extends Tag {
      * @param string $value
      * @return \Form\Input\Email
      */
-    public function addColor($name, $value = null)
+    public function addColor($name, $value = null, $label = null)
     {
-        return $this->addInput('color', $name, $value);
+        return $this->addInput('color', $name, $value, $label);
     }
 
     /**
@@ -496,7 +496,7 @@ class Form extends Tag {
      * Returns an associative array containing all the elements of the form.
      * @return array
      */
-    public function getInputStringArray()
+    public function getInputStringArray($choice_as_array = true)
     {
         if (!empty(self::$css_addition)) {
             $this->loadCSSAddition();
@@ -510,7 +510,15 @@ class Form extends Tag {
                 foreach ($input_list as $input) {
                     $group_name = $input_name . '_group';
                     if ($input instanceof \Form\Choice\Radio || $input instanceof \Form\Choice\Checkbox) {
-                        $value[$input_name] = $input->getStringArray();
+                        $choice_array = $input->getStringArray();
+                        if ($choice_as_array) {
+                            $value[$input_name] = $choice_array;
+                        } else {
+                            foreach ($choice_array as $k=>$cval) {
+                                $iname = $input_name . '_' . $k;
+                                $value[$iname] = $cval;
+                            }
+                        }
                     } elseif ($input->getType() == 'hidden') {
                         $value['hidden'][] = $input->__toString();
                     } else {
