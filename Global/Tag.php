@@ -210,6 +210,7 @@ class Tag extends Data {
         }
         $data[] = '<' . $this->tag_type;
         if (empty($this->ignore_variables)) {
+            // not an exception to allow debugging from the __toString
             trigger_error(t('The Tag parent class "%s" failed to call __construct',
                             get_parent_class($this)), E_USER_ERROR);
             exit();
@@ -279,6 +280,7 @@ class Tag extends Data {
             throw new \Exception(t('Improper class name'));
         }
         $this->class[] = $class;
+        return $this;
     }
 
     /**
