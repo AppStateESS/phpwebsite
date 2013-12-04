@@ -15,14 +15,14 @@ class CompatibilityModule extends \Module implements \SettingDefaults {
     public function runTime(\Request $request)
     {
         if (is_file($this->directory . 'inc/runtime.php')) {
-            include $this->directory . 'inc/runtime.php';
+            require_once $this->directory . 'inc/runtime.php';
         }
     }
 
     public function init()
     {
         if (is_file($this->directory . 'inc/init.php')) {
-            include $this->directory . 'inc/init.php';
+            require_once $this->directory . 'inc/init.php';
         }
     }
 
@@ -58,7 +58,7 @@ class CompatibilityModule extends \Module implements \SettingDefaults {
     public function destruct()
     {
         if (is_file($this->directory . 'inc/close.php')) {
-            include $this->directory . 'inc/close.php';
+            require_once $this->directory . 'inc/close.php';
         }
     }
 
