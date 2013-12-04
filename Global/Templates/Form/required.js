@@ -2,43 +2,58 @@ var required = new Required;
 
 $(window).load(function() {
     var error_free;
+    required.init();
     required.testRequired();
-
-    $('input[required],textarea[required]').blur(function() {
-        var input = $(this);
-        required.checkInput(input);
-        required.testRequired();
-    });
-
-    $('select[required]').change(function() {
-        var select = $(this);
-        required.checkSelect(select);
-        required.testRequired();
-    });
-
-    $('.phpws-form').submit(function() {
-        var all_is_well = true;
-        $('[required]', this).each(function() {
-            input = $(this);
-            if (input.is('input')) {
-                if (!required.checkInput(input)) {
-                    all_is_well = false;
-                }
-            } else if (input.is('select')) {
-                if (!required.checkSelect(input)) {
-                    all_is_well = false;
-                }
-            } else if (input.is('textarea')) {
-                if (!required.checkText(input)) {
-                    all_is_well = false;
-                }
-            }
-        });
-        return all_is_well;
-    });
 });
 
 function Required() {
+
+    var onSubmitFunction;
+    var _ = this;
+
+    this.init = function() {
+        $('i.required').css('color', '#DC1026');
+        $('input[required],textarea[required]').blur(function() {
+            var input = $(this);
+            required.checkInput(input);
+            required.testRequired();
+        });
+
+        $('select[required]').change(function() {
+            var select = $(this);
+            required.checkSelect(select);
+            required.testRequired();
+        });
+
+        $('.phpws-form').submit(function() {
+            if (_.onSubmitFunction !== undefined) {
+                fn = window[_.onSubmitFunction];
+                fn();
+            }
+            var all_is_well = true;
+            $('[required]', this).each(function() {
+                input = $(this);
+                if (input.is('input')) {
+                    if (!required.checkInput(input)) {
+                        all_is_well = false;
+                    }
+                } else if (input.is('select')) {
+                    if (!required.checkSelect(input)) {
+                        all_is_well = false;
+                    }
+                } else if (input.is('textarea')) {
+                    if (!required.checkText(input)) {
+                        all_is_well = false;
+                    }
+                }
+            });
+            return all_is_well;
+        });
+    };
+
+    this.onSubmit = function(functionName) {
+        this.onSubmitFunction = functionName;
+    };
 
     this.checkInput = function(input) {
         switch (input.attr('type')) {
