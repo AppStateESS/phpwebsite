@@ -15,7 +15,7 @@ class Text extends \Form\Input {
      * The character size of the text field
      * @var integer
      */
-    protected $size = 20;
+    protected $size = null;
 
     /**
      * The maximum number of characters allowed in the text field
