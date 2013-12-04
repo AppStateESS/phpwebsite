@@ -1091,7 +1091,12 @@ class Layout {
         return $result;
     }
 
-    public function purgeBox($content_var)
+    /**
+     * Removes a content variable from the layout_box table.
+     * @param string $content_var
+     * @return boolean
+     */
+    public static function purgeBox($content_var)
     {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('content_var', $content_var);
@@ -1100,6 +1105,9 @@ class Layout {
             return $result;
         }
 
+        if (empty($result)) {
+            return true;
+        }
         foreach ($result as $box) {
             $check = $box->kill();
             if (PHPWS_Error::isError($check)) {
