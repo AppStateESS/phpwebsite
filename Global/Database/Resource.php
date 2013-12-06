@@ -73,11 +73,18 @@ abstract class Resource extends Alias {
 
     /**
      * Set a column to order by and the direction to do so.
-     * @param \Database\Field $column
+     * Update 2013-12-06 : originally Field only, didn't make sense not to
+     * use a string as well because the order is supposed to specific to this
+     * table.
+     * @param mixed $column
      * @param string $direction Either ASC or DESC
      */
-    public function addOrderBy(\Database\Field $column, $direction = 'ASC')
+    public function addOrderBy($column, $direction = 'ASC')
     {
+        if (!($column instanceof \Database\Field) && is_string($column)) {
+            $column = $this->getField($column);
+        }
+
         static $allowed_directions = array('ASC', 'DESC', 'RAND', 'RANDOM');
         $direction = trim(strtoupper($direction));
 
@@ -99,6 +106,7 @@ abstract class Resource extends Alias {
                 $this->orders[] = $column->getFullName() . " $direction";
             }
         }
+        return $this;
     }
 
     public function resetOrderBy()
