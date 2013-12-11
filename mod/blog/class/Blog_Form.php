@@ -149,9 +149,16 @@ class Blog_Form {
         $form->setSize('past_entries', 2, 2);
         $form->addCssClass('past_entries', 'form-control');
 
+        /**
+         * Deprecated form fields for allowing anonymous blog posting. No one actually does this.
+        $form->addCheck('allow_anonymous_submits', 1);
+        $form->setLabel('allow_anonymous_submits', dgettext('blog', 'Allow anonymous submissions'));
+        $form->setMatch('allow_anonymous_submits', PHPWS_Settings::get('blog', 'allow_anonymous_submits'));
+
         $form->addCheck('captcha_submissions', 1);
         $form->setLabel('captcha_submissions', dgettext('blog', 'CAPTCHA submissions'));
         $form->setMatch('captcha_submissions', PHPWS_Settings::get('blog', 'captcha_submissions'));
+        */
 
         $form->addCheck('simple_image', 1);
         $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));
@@ -194,10 +201,6 @@ class Blog_Form {
         $form->setLabel('show_recent', dgettext('blog', 'Show recent entries'));
         $form->setMatch('show_recent', PHPWS_Settings::get('blog', 'show_recent'));
         $form->addCssClass('show_recent', 'form-control');
-
-        $form->addCheck('allow_anonymous_submits', 1);
-        $form->setLabel('allow_anonymous_submits', dgettext('blog', 'Allow anonymous submissions'));
-        $form->setMatch('allow_anonymous_submits', PHPWS_Settings::get('blog', 'allow_anonymous_submits'));
 
         $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
         $form->setLabel('max_width', dgettext('blog', 'Maximum image width (50-2048)'));

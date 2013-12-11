@@ -41,20 +41,6 @@
             </fieldset>
 
             <fieldset>
-                <legend>{SUBMISSION_LABEL}</legend>
-                <div class="checkbox">
-                    <label>{ALLOW_ANONYMOUS_SUBMITS} {ALLOW_ANONYMOUS_SUBMITS_LABEL_TEXT}</label>
-                </div>
-                <!-- BEGIN menu-link -->
-                <small>{MENU_LINK}</small>
-                <!-- END menu-link -->
-                <div class="checkbox">
-                    <label>{CAPTCHA_SUBMISSIONS} {CAPTCHA_SUBMISSIONS_LABEL_TEXT}</label>
-                </div>
-
-            </fieldset>
-
-            <fieldset>
                 <legend>Image Manager</legend>
                 <div class="checkbox">
                     <label>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</label>
