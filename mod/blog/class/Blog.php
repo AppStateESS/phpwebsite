@@ -391,7 +391,6 @@ class Blog {
         }
 
         $template['LOCAL_DATE'] = $this->getPublishDate();
-        $template['PUBLISHED_DATE'] = $this->getPublishDateShort();
 
         $summary = $this->getSummary(true);
         $entry = $this->getEntry(true);
@@ -434,10 +433,21 @@ class Blog {
             }
         }
 
-        $template['POSTED_BY'] = dgettext('blog', 'Posted by');
-        $template['POSTED_ON'] = dgettext('blog', 'Posted on');
-        $template['PUBLISHED'] = dgettext('blog', 'Published');
-        $template['AUTHOR'] = $this->author;
+      
+        // Check setting for showing when the entry was posted
+
+        if (PHPWS_Settings::get('blog', 'show_posted_by')){
+            $template['POSTED_BY'] = dgettext('blog', 'By');
+            $template['AUTHOR'] = $this->author;
+        }
+        
+        // Check settings for showing the author of the entry
+        if (PHPWS_Settings::get('blog', 'show_posted_date')) {
+            $template['PUBLISHED'] = dgettext('blog', 'Published');
+            $template['POSTED_ON'] = dgettext('blog', 'Posted on');
+            $template['PUBLISHED_DATE'] = $this->getPublishDateShort();
+        }
+
 
         if ($summarized) {
             $view_tpl = 'view_list.tpl';

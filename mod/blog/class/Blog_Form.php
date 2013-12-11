@@ -160,6 +160,16 @@ class Blog_Form {
         $form->setMatch('captcha_submissions', PHPWS_Settings::get('blog', 'captcha_submissions'));
         */
 
+        // Show/hide posted on date
+        $form->addCheck('show_posted_date',1 );
+        $form->setLabel('show_posted_date', dgettext('blog', 'Show the date the post was made'));
+        $form->setMatch('show_posted_date', PHPWS_Settings::get('blog', 'show_posted_date'));
+
+        // Show/hide posted by user full name
+        $form->addCheck('show_posted_by',1 );
+        $form->setLabel('show_posted_by', dgettext('blog', 'Show the author\'s name'));
+        $form->setMatch('show_posted_by', PHPWS_Settings::get('blog', 'show_posted_by'));
+
         $form->addCheck('simple_image', 1);
         $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));
         $form->setMatch('simple_image', PHPWS_Settings::get('blog', 'simple_image'));

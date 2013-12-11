@@ -38,6 +38,14 @@
                     <label for="{VIEW_ONLY_ID}">{VIEW_ONLY_LABEL_TEXT}</label> {VIEW_ONLY}
                 </div>
 
+                <div class="form-group checkbox">
+                    <label for="{SHOW_POSTED_DATE_ID}">{SHOW_POSTED_DATE} {SHOW_POSTED_DATE_LABEL_TEXT}</label>
+                </div>
+
+                <div class="form-group checkbox">
+                    <label for="{SHOW_POSTED_BY_ID}">{SHOW_POSTED_BY} {SHOW_POSTED_BY_LABEL_TEXT}</label>
+                </div>
+
             </fieldset>
 
             <fieldset>
