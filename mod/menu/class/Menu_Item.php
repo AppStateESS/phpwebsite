@@ -194,10 +194,6 @@ class Menu_Item {
      */
     public function displayLinks($edit = FALSE)
     {
-        if (Menu::isAdminMode()) {
-            $this->loadJS();
-        }
-
         $all_links = $this->getLinks();
         if (empty($all_links)) {
             return NULL;
@@ -423,11 +419,10 @@ class Menu_Item {
      */
     public function view($pin_mode = FALSE, $return_content = false)
     {
-        static $pin_page = true;
-
+        // pin mode not used
+        $pin_mode = null;
         $key = Key::getCurrent();
-
-        if ($pin_mode && $key->isDummy(true)) {
+        if ($key && $key->isDummy(true)) {
             return;
         }
 
@@ -445,92 +440,16 @@ class Menu_Item {
 
         if ($this->_style) {
             $style = sprintf('menu_layout/%s/%s', $this->template, $this->_style);
-            Layout::addStyle('menu', $style);
+            //Layout::addStyle('menu', $style);
         }
 
         $admin_link = !PHPWS_Settings::get('menu', 'miniadmin');
 
         $content_var = 'menu_' . $this->id;
 
-        if (!$pin_mode && Current_User::allow('menu')) {
-            if (Menu::isAdminMode()) {
-                if (!isset($_REQUEST['authkey'])) {
-                    $pinvars['command'] = 'pin_page';
-                    if ($key) {
-                        if ($key->isDummy()) {
-                            $pinvars['ltitle'] = urlencode($key->title);
-                            $pinvars['lurl'] = urlencode($key->url);
-                        } else {
-                            $pinvars['key_id'] = $key->id;
-                        }
-                    } else {
-                        $pinvars['lurl'] = urlencode(PHPWS_Core::getCurrentUrl());
-                    }
-
-                    $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);
-                    $js['label'] = '<i class="fa fa-copy"></i> '  . dgettext('menu', 'Copy page location');
-                    $js['width'] = 300;
-                    $js['height'] = 180;
-                    if (!PHPWS_Settings::get('menu', 'miniadmin')) {
-                        $tpl['PIN_PAGE'] = javascript('open_window', $js);
-                    } elseif ($pin_page) {
-                        MiniAdmin::add('menu', javascript('open_window', $js));
-                        $pin_page = false;
-                    }
-                }
-
-                $tpl['ADD_LINK'] = Menu::getAddLink($this->id, null, null,
-                                $this->template);
-                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0,
-                                isset($key), null, $this->template);
-
-                if (!empty($key)) {
-                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id,
-                                    $this->pin_all, $this->template);
-                } else {
-                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1,
-                                    $this->pin_all, $this->template);
-                }
-
-                $vars['command'] = 'disable_admin_mode';
-                $vars['return'] = 1;
-                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF,
-                                'menu', $vars);
-
-                if (isset($_SESSION['Menu_Pin_Links'])) {
-                    $tpl['PIN_LINK'] = $this->getPinLink($this->id,0,true);
-                }
-            } elseif ($admin_link) {
-                $vars['command'] = 'enable_admin_mode';
-                $vars['return'] = 1;
-                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_ON,
-                                'menu', $vars);
-            }
-
-            if (empty($tpl['ADD_LINK']) && PHPWS_Settings::get('menu',
-                            'always_add') && Key::checkKey($key)) {
-                $this->loadJS();
-                $tpl['ADD_LINK'] = Menu::getAddLink($this->id, null, null,
-                                $this->template);
-                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0,
-                                isset($key), null, $this->template);
-            }
-        }
-
         $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($edit);
         $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
-
-        if ($pin_mode &&
-                Current_User::allow('menu') &&
-                isset($_SESSION['Menu_Clip']) &&
-                isset($_SESSION['Menu_Clip'][$this->id])) {
-
-            $pinvars['command'] = 'pin_menu';
-            $pinvars['key_id'] = $key->id;
-            $pinvars['menu_id'] = $this->id;
-            $tpl['CLIP'] = PHPWS_Text::secureLink(MENU_PIN, 'menu', $pinvars);
-        }
 
         $content = PHPWS_Template::process($tpl, 'menu', $file);
 

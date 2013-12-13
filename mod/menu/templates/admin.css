@@ -1,0 +1,51 @@
+#menu-list {
+    margin-right : 10px;
+    float: left;
+    width : 25%;
+    border : 1px solid black;
+    border-radius: 6px;
+}
+
+#menu-select {
+    padding : 5px;
+}
+
+#menu-admin {
+    border : 1px solid black;
+    border-radius: 6px;
+    width : 70%;
+    float : left;
+    padding : 6px;
+}
+
+#menu-admin-area ul {
+    padding : 0px;
+}
+#menu-admin-area ul li.menu-link {
+    list-style-type: none;
+}
+#menu-admin-area ul li.menu-link ul.menu-links {
+    padding-left : 1em;
+}
+
+.menu-state-highlight,
+#menu-admin-area ul li.menu-link a.menu-link-href {
+    margin-bottom : 4px;
+    display : block;
+    padding : 6px;
+    border:1px solid black;
+    height : 38px;
+}
+#menu-admin-area ul li.menu-link a.menu-link-href:hover {
+    text-decoration : none;
+}
+
+.menu-state-highlight {
+    background-color : #e3e3e3;
+    border : 2px dotted gray;
+}
+
+#menu-admin-area div.btn-group {
+    float : right;
+    margin : 4px;
+}

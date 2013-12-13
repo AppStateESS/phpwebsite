@@ -1,0 +1,47 @@
+<button class="btn btn-success" id="create-submenu" style="margin-bottom:1em"><?=t('Create submenu');?></button>
+<div class="clearfix"></div>
+<div id="menu-list">
+    <div id="menu-select">
+        <div class="">
+            <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
+            <button class="btn btn-default menu-edit" data-menu-id="<?=$id?>"><?=$title?></button>
+            <?php endforeach; endif;?></div>
+    </div>
+</div>
+<div id="menu-admin">
+    <button class="btn btn-success" id="add-link"><?=t('Add link');?></button><hr />
+    <div id="menu-admin-area">
+        <?=$first_menu?>
+    </div>
+</div>
+
+<div class="modal fade" id="link-edit-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="warning" class="alert alert-danger"></div>
+                <form id="link-edit-form">
+                    <div class="form-group">
+                        <label for="form-title"><?=t('Title');?></label>
+                        <input type="text" name="title" value="" id="form-title" class="form-control" />
+                    </div>
+                    <div class="form-group form-url-group">
+                        <label for="form-url"><?=t('Url');?></label>
+                        <input type="text" name="url" value="" id="form-url" class="form-control" />
+                    </div>
+                    <div class="form-group form-key-group">
+                        <div class="text-center"><strong>- <?=t('or')?> -</strong></div>
+                        <label for="form-url"><?=t('PageSmith page');?></label>
+                        <select name="key_select" class="form-control" id="form-key-select">
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=t('Close')?></button>
+                <button type="button" id="form-link-save" class="btn btn-primary"><?=t('Save')?></button>
+                <button type="button" id="form-link-delete" class="btn btn-danger"><?=t('Delete')?></button>
+            </div>
+        </div>
+    </div>
+</div>

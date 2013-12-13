@@ -8,10 +8,6 @@
  */
 define('MENU_MISSING_INFO', 1);
 
-if (!defined('NO_POST')) {
-    define('NO_POST', '');
-}
-
 class Menu_Link {
 
     public $id = 0;
@@ -140,11 +136,17 @@ class Menu_Link {
      *
      * @return String Html anchor tag for this link.
      */
-    public function getAnchorTag($currentLink = false)
+    public function getAnchorTag($admin=false)
     {
-        return sprintf('<a href="%s" class="menu-link-href" id="menu-link-href-%s" title="%s">%s</a>',
-                str_replace('&', '&amp;', $this->url), $this->id, $this->title,
-                $this->title);
+        if ($admin) {
+            $data = ' data-link-id="' . $this->id . '" data-key-id="' . $this->key_id . '"';
+        } else {
+            $data = null;
+        }
+
+        return sprintf('<a href="%s" class="menu-link-href"%s id="menu-link-href-%s" title="%s">%s</a>',
+                str_replace('&', '&amp;', $this->url), $data, $this->id,
+                $this->title, $this->title);
     }
 
     /**
@@ -241,7 +243,13 @@ class Menu_Link {
 
     public function view($level = '1')
     {
+        \PHPWS_Core::requireConfig('menu');
         static $current_parent = array();
+        static $admin = null;
+
+        if (is_null($admin)) {
+            $admin = \Current_User::allow('menu');
+        }
 
         $current_link = false;
         $current_key = Key::getCurrent();
@@ -267,12 +275,9 @@ class Menu_Link {
             $current_parent[] = $this->id;
         }
 
-        if ((Menu::isAdminMode() && PHPWS_Settings::get('menu', 'show_all_admin')) ||
-                $this->_menu->_show_all || $current_link || $this->parent == 0 ||
+        if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
                 in_array($this->parent, $current_parent)) {
-            $link = $this->getAnchorTag();
-
-            $this->_loadAdminLinks($template);
+            $link = $this->getAnchorTag($admin);
 
             $template['LINK'] = $link;
             $template['LINK_URL'] = $this->url;
@@ -293,7 +298,7 @@ class Menu_Link {
             }
 
             $template['LEVEL'] = $level;
-            $template['ID'] = sprintf('menu-link-%s', $this->id);
+            $template['ID'] = $this->id;
             $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
             return PHPWS_Template::process($template, 'menu', $tpl_file);
         } else {
@@ -343,117 +348,6 @@ class Menu_Link {
             }
         }
         return false;
-    }
-
-    public function _loadAdminLinks(&$template, $popup = false)
-    {
-        if (Menu::isAdminMode() && Current_User::allow('menu')) {
-            if (empty($_POST)) {
-                $key = Key::getCurrent();
-
-                if (Key::checkKey($key)) {
-                    $keyed = true;
-                } else {
-                    $key = new Key;
-                    $keyed = false;
-                }
-
-                $vars['link_id'] = $this->id;
-
-                if ($popup || PHPWS_Settings::get('menu', 'float_mode')) {
-                    $template['PIN_LINK'] = Menu_Item::getPinLink($this->menu_id,
-                                    $this->id, $popup);
-                    if ($this->key_id) {
-                        $template['ADD_LINK'] = Menu::getAddLink($this->menu_id,
-                                        $this->id, $popup);
-                        $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id,
-                                        $this->id, $keyed, $popup);
-                    }
-                    $template['DELETE_LINK'] = $this->deleteLink($popup);
-                    $template['EDIT_LINK'] = $this->editLink($popup);
-
-                    if (!PHPWS_Settings::get('menu', 'drag_sort')) {
-                        // Create 'Move link up' button
-                        $vars['command'] = 'move_link_up';
-                        $up_link = MENU_LINK_UP;
-                        if ($popup) {
-                            $up_link .= ' ' . dgettext('menu', 'Move link up');
-                            $vars['pu'] = 1;
-                            $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link,
-                                            'menu', $vars);
-                        } else {
-                            $template['MOVE_LINK_UP'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                                    $this->menu_id, $this->id, 'up', $up_link);
-                        }
-
-                        // Create 'Move link down' button
-                        $down_link = MENU_LINK_DOWN;
-                        $vars['command'] = 'move_link_down';
-                        if ($popup) {
-                            $down_link .= ' ' . dgettext('menu',
-                                            'Move link down');
-                            $vars['pu'] = 1;
-                            $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link,
-                                            'menu', $vars);
-                        } else {
-                            $template['MOVE_LINK_DOWN'] = sprintf('<a style="cursor : pointer" onclick="move_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                                    $this->menu_id, $this->id, 'down',
-                                    $down_link);
-                        }
-                    }
-
-                    // Create the 'link indent' button
-                    //TODO: remove the magic number
-                    if ($this->link_order != 1) {
-                        $template['LINK_INDENT'] = sprintf('<a style="cursor : pointer" id="menu-indent-%s-%s" class="menu-indent">%s</a>',
-                                $this->menu_id, $this->id,
-                                MENU_LINK_INDENT_INCREASE);
-                    }
-
-                    // Create the 'outdent' button if this link has a parent (i.e. is not a top-level link)
-                    if ($this->parent) {
-                        $template['LINK_OUTDENT'] = sprintf('<a style="cursor : pointer" id="menu-outdent-%s-%s" class="menu-outdent">%s</a>',
-                                $this->menu_id, $this->id,
-                                MENU_LINK_INDENT_DECREASE);
-                    }
-
-                    if ($popup) {
-                        $template['LINK_INDENT'] = PHPWS_Text::secureLink(sprintf('%s %s',
-                                                MENU_LINK_INDENT_INCREASE,
-                                                dgettext('menu',
-                                                        'Increase indent')),
-                                        'menu',
-                                        array('command' => 'indent_link', 'menu_id' => $this->menu_id,
-                                    'link_id' => $this->id, 'po' => 1));
-                        $template['LINK_OUTDENT'] = PHPWS_Text::secureLink(sprintf('%s %s',
-                                                MENU_LINK_INDENT_DECREASE,
-                                                dgettext('menu',
-                                                        'Decrease indent')),
-                                        'menu',
-                                        array('command' => 'outdent_link', 'menu_id' => $this->menu_id,
-                                    'link_id' => $this->id, 'po' => 1));
-                    }
-
-
-                    $template['ADMIN'] = MENU_LINK_ADMIN;
-                } else {
-                    $vars['command'] = 'popup_admin';
-                    $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
-                    if ($keyed) {
-                        $vars['key_id'] = $key->id;
-                    }
-
-                    $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-                    $js['label'] = MENU_LINK_ADMIN;
-                    $js['width'] = 200;
-                    $js['height'] = 300;
-
-                    $template['ADMIN'] = javascript('open_window', $js);
-                }
-            } else {
-                $template['ADMIN'] = NO_POST;
-            }
-        }
     }
 
     public function editLink($popup = false)

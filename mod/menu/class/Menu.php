@@ -13,7 +13,8 @@ class Menu {
     public static function admin()
     {
         PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
-        Menu_Admin::main();
+        $admin = new Menu_Admin;
+        $admin->main();
     }
 
     public static function getPinAllMenus()
@@ -31,8 +32,6 @@ class Menu {
      */
     public static function showPinned()
     {
-        Layout::addStyle('menu');
-
         $result = Menu::getPinAllMenus();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
@@ -52,22 +51,15 @@ class Menu {
 
     public static function miniadmin()
     {
-        if (!PHPWS_Settings::get('menu', 'miniadmin') ||
-                !Current_User::allow('menu')) {
+        if (!Current_User::allow('menu')) {
             return;
         }
 
-        if (Menu::isAdminMode()) {
-            $vars['command'] = 'disable_admin_mode';
-            $vars['return'] = 1;
-            MiniAdmin::add('menu',
-                    PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars));
-        } else {
-            $vars['command'] = 'enable_admin_mode';
-            $vars['return'] = 1;
-            MiniAdmin::add('menu',
-                    PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
-        }
+        MiniAdmin::add('menu', \PHPWS_Text::secureLink('Administrate menus', 'menu', array('command'=>'list')));
+        MiniAdmin::add('menu', '<a href="#">' . t('Link this page') . '</a>');
+        MiniAdmin::add('menu', '<a href="#">' . t('Show menu here') . '</a>');
+        MiniAdmin::add('menu', '<a href="#">' . t('Remove menu') . '</a>');
+
     }
 
     /**
@@ -82,8 +74,6 @@ class Menu {
         if (empty($key) || empty($key->title) || empty($key->url)) {
             return;
         }
-
-        Layout::addStyle('menu');
 
         $db = new PHPWS_DB('menus');
         $db->addWhere('menu_assoc.key_id', $key->id);
@@ -244,12 +234,6 @@ class Menu {
 
     public static function pinLink($title, $url, $key_id = 0)
     {
-        $key = substr(md5($title . $url), 0, 8);
-        $_SESSION['Menu_Pin_Links'][$key]['title'] = strip_tags($title);
-        $_SESSION['Menu_Pin_Links'][$key]['url'] = strip_tags($url);
-        if ($key_id) {
-            $_SESSION['Menu_Pin_Links'][$key]['key_id'] = $key_id;
-        }
     }
 
     /**
@@ -318,7 +302,7 @@ class Menu {
     /**
      * @modified Verdon Vaillancourt
      */
-    public function siteMap()
+    public static function siteMap()
     {
         if (!isset($_GET['site_map'])) {
             PHPWS_Core::errorPage('404');
@@ -374,12 +358,13 @@ class Menu {
         Layout::add(PHPWS_Template::process($tpl, 'menu', 'site_map.tpl'));
     }
 
-    public function walkLinks($links, &$content)
+    public static function walkLinks($links, &$content)
     {
+        $admin = \Current_User::allow('menu');
         $content[] = '<ol>';
         foreach ($links as $link) {
             $content[] = '<li>';
-            $content[] = $link->getAnchorTag();
+            $content[] = $link->getAnchorTag($admin);
             if (!empty($link->_children)) {
                 Menu::walkLinks($link->_children, $content);
             }
