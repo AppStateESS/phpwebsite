@@ -65,6 +65,10 @@ class Menu_Admin {
             case 'remove_key_link':
                 $this->removeKeyLink($request);
                 exit();
+
+            case 'delete_menu':
+                $this->deleteMenu($request);
+                exit();
         } // end command switch
 
         $tpl['title'] = $title;
@@ -76,6 +80,13 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function deleteMenu($request)
+    {
+        $menu_id = $request->getVar('menu_id');
+        $menu = new Menu_Item($menu_id);
+        $menu->kill();
     }
 
     private function addKeyLink(\Request $request)
@@ -297,10 +308,11 @@ class Menu_Admin {
         $vars['blank_title'] = t('Title must not be blank');
         $vars['title_error'] = t('Make sure you have filled in the required inputs.');
         $vars['url_error'] = t('Please enter a url or choose a PageSmith page.');
+        $vars['delete_menu_message'] = t('Are you sure you want to delete this menu and links?');
 
         $jvar = json_encode($vars);
         $script = <<<EOF
-<script type="text/javascript">var z = $jvar;</script>
+<script type="text/javascript">var translate = $jvar;</script>
 EOF;
         \Layout::addJSHeader($script);
         \Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/menu/javascript/administrate/script.js"></script>');

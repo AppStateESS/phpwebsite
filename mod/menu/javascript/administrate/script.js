@@ -1,7 +1,7 @@
 var menu_admin = new MenuAdmin;
 // assigned by Menu_Admin::menuList
 $(window).load(function() {
-    menu_admin.menu_id = z.first_menu_id;
+    menu_admin.menu_id = translate.first_menu_id;
     menu_admin.init();
 });
 
@@ -98,6 +98,7 @@ function MenuAdmin() {
 
         this.keyChange();
         this.addLinkButton();
+        this.deleteMenuButton();
 
         this.modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
@@ -221,15 +222,15 @@ function MenuAdmin() {
 
     this.checkForm = function() {
         if (t.input.title.val().length < 1) {
-            t.input.title.attr('placeholder', z.blank_title);
-            t.alert.html(z.title_error);
+            t.input.title.attr('placeholder', translate.blank_title);
+            t.alert.html(translate.title_error);
             t.alert.show();
             return false;
         }
 
         if (t.input.url.val().length < 1 &&
                 $('option:selected', t.input.key_select).val() === '--') {
-            t.alert.html(z.url_error);
+            t.alert.html(translate.url_error);
             t.alert.show();
             return false;
         }
@@ -261,6 +262,19 @@ function MenuAdmin() {
             t.input.reset();
             t.populateKeySelect();
             t.modal.modal('show');
+        });
+    };
+
+    this.deleteMenuButton = function() {
+        $('#delete-menu').click(function(){
+            if (window.confirm(translate.delete_menu_message)) {
+                $.get('index.php', {
+                    module: 'menu',
+                    command: 'delete_menu',
+                    menu_id: t.menu_id
+                });
+                window.location.reload();
+            }
         });
     };
 
@@ -315,7 +329,7 @@ function MenuAdmin() {
     this.deleteButton = function()
     {
         t.button.db.click(function() {
-            $(this).html(z.confirm_delete);
+            $(this).html(translate.confirm_delete);
             t.button.db.click(function() {
                 var link = this;
                 $.get('index.php', {
@@ -339,7 +353,7 @@ function MenuAdmin() {
             t.button.db.show();
         }
         t.button.db.unbind('click');
-        t.button.db.html(z.delete);
+        t.button.db.html(translate.delete);
         t.saveButton();
         t.deleteButton();
     };
