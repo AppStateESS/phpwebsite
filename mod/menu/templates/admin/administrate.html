@@ -2,7 +2,7 @@
 <div class="clearfix"></div>
 <div id="menu-list">
     <div id="menu-select">
-        <div class="">
+        <div>
             <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
             <button class="btn btn-default menu-edit" data-menu-id="<?=$id?>"><?=$title?></button>
             <?php endforeach; endif;?></div>

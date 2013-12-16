@@ -52,3 +52,8 @@
     float : right;
     margin : 4px;
 }
+
+button.menu-edit {
+    min-width : 120px;
+    margin-bottom : 6px;
+}

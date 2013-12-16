@@ -241,7 +241,7 @@ class Menu_Link {
         }
     }
 
-    public function view($level = '1')
+    public function view($level = '1', $admin=false)
     {
         \PHPWS_Core::requireConfig('menu');
         static $current_parent = array();
@@ -272,7 +272,7 @@ class Menu_Link {
 
         if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
                 in_array($this->parent, $current_parent)) {
-            $link = $this->getAnchorTag();
+            $link = $this->getAnchorTag($admin);
 
             $template['LINK'] = $link;
             $template['LINK_URL'] = $this->url;
@@ -281,7 +281,7 @@ class Menu_Link {
             if (!empty($this->_children)) {
                 foreach ($this->_children as $kid) {
                     $kid->_menu = & $this->_menu;
-                    if ($kid_link = $kid->view($level + 1)) {
+                    if ($kid_link = $kid->view($level + 1, $admin)) {
                         $sublinks[] = $kid_link;
                     }
                 }

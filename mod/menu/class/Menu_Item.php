@@ -192,7 +192,7 @@ class Menu_Item {
     /**
      * Returns all the links in a menu for display
      */
-    public function displayLinks()
+    public function displayLinks($admin=false)
     {
         $all_links = $this->getLinks();
         if (empty($all_links)) {
@@ -200,7 +200,7 @@ class Menu_Item {
         }
 
         foreach ($all_links as $link) {
-            $i = $link->view();
+            $i = $link->view(1, $admin);
             if ($i) {
                 $link_list[] = $i;
             }
@@ -256,7 +256,7 @@ class Menu_Item {
         return $new_list;
     }
 
-     public function kill()
+    public function kill()
     {
         $db = new PHPWS_DB('menu_assoc');
         $db->addWhere('menu_id', $this->id);
@@ -305,7 +305,6 @@ class Menu_Item {
         return $link->save();
     }
 
-
     public function parseIni()
     {
         $inifile = PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
@@ -327,10 +326,8 @@ class Menu_Item {
     /**
      * Returns a menu and its links for display
      */
-    public function view($pin_mode = FALSE, $return_content = false)
+    public function view($admin = false)
     {
-        // pin mode not used
-        $pin_mode = null;
         $key = Key::getCurrent();
         if ($key && $key->isDummy(true)) {
             return;
@@ -352,19 +349,14 @@ class Menu_Item {
             //Layout::addStyle('menu', $style);
         }
 
-        $content_var = 'menu_' . $this->id;
-
         $tpl['TITLE'] = $this->getTitle();
-        $tpl['LINKS'] = $this->displayLinks();
+        $tpl['LINKS'] = $this->displayLinks($admin);
         $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
 
         $content = PHPWS_Template::process($tpl, 'menu', $file);
 
-        if ($return_content) {
-            return $content;
-        } else {
-            Layout::set($content, 'menu', $content_var);
-        }
+        return $content;
+        //Layout::set($content, 'menu', $content_var);
     }
 
     public function reorderLinks()

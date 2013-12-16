@@ -45,7 +45,7 @@ class Menu {
         $GLOBALS['Pinned_Menus'] = $result;
 
         foreach ($result as $menu) {
-            $menu->view();
+            Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
         }
     }
 
@@ -100,12 +100,6 @@ class Menu {
                 $choice[] = '</select>';
 
                 $menu_choice = implode("\n", $choice);
-                /*
-                  MiniAdmin::add('menu',
-                  '<a href="javascript:void(0)" data-key-id="' . $key->id
-                  . '" id="menu-add-page">' . t('Link this page') . '</a>');
-                 *
-                 */
                 MiniAdmin::add('menu', $menu_choice);
             }
         }
@@ -152,17 +146,7 @@ class Menu {
         } elseif (!empty($result)) {
             foreach ($result as $menu) {
                 $seen[] = $menu->id;
-                $menu->view();
-            }
-        }
-
-        if (isset($_SESSION['Menu_Clip'])) {
-            foreach ($_SESSION['Menu_Clip'] as $menu_id) {
-                if (in_array($menu_id, $seen)) {
-                    continue;
-                }
-                $menu = new Menu_Item($menu_id);
-                $menu->view(true);
+                Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
             }
         }
     }

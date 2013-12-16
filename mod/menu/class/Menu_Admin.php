@@ -259,7 +259,7 @@ class Menu_Admin {
     {
         $menu = new \Menu_Item($request->getVar('menu_id'));
         $menu->_show_all = true;
-        echo $menu->view(false, true);
+        echo $menu->view(true);
     }
 
     private function menuList()
@@ -283,7 +283,7 @@ class Menu_Admin {
                 }
                 $tpl['menus'][] = array('title' => $menu->title, 'id' => $menu->id);
             }
-            $tpl['first_menu'] = $first_menu->view(false, true);
+            $tpl['first_menu'] = $first_menu->view(true);
             $first_menu_id = $first_menu->id;
         } else {
             $first_menu_id = 0;
