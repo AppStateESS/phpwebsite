@@ -57,6 +57,14 @@ class Menu_Admin {
             case 'move_under':
                 $this->moveUnder($request);
                 exit();
+
+            case 'add_key_link':
+                $this->addKeyLink($request);
+                exit();
+
+            case 'remove_key_link':
+                $this->removeKeyLink($request);
+                exit();
         } // end command switch
 
         $tpl['title'] = $title;
@@ -68,6 +76,35 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function addKeyLink(\Request $request)
+    {
+        $key_id = $request->getVar('key_id');
+        $menu_id = $request->getVar('menu_id');
+
+        $menu = new Menu_Item($menu_id);
+        $menu->addLink($key_id,0);
+    }
+
+    private function removeKeyLink(\Request $request)
+    {
+        $key_id = $request->getVar('key_id');
+        $menu_id = $request->getVar('menu_id');
+
+        $db = \Database::newDB();
+        $ml = $db->addTable('menu_links');
+        $ml->addFieldConditional('key_id', $key_id);
+        $ml->addFieldConditional('menu_id', $menu_id);
+        $links = $db->select();
+        if (empty($links)) {
+            throw \Exception('Menu link not found');
+        }
+        foreach ($links as $l) {
+            $menu_link = new Menu_Link;
+            PHPWS_Core::plugObject($menu_link, $l);
+            $menu_link->delete();
+        }
     }
 
     private function moveUnder(\Request $request)
@@ -159,7 +196,7 @@ class Menu_Admin {
                 // moved item is on a different level, reset links where moved link was
                 $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
                 $db->exec($query);
-                $move_link->link_order = $prev_link_order+1;
+                $move_link->link_order = $prev_link_order + 1;
                 $move_link->parent = $prev_parent;
             }
         }
@@ -221,6 +258,7 @@ class Menu_Admin {
     private function adminLinks($request)
     {
         $menu = new \Menu_Item($request->getVar('menu_id'));
+        $menu->_show_all = true;
         echo $menu->view(false, true);
     }
 

@@ -55,11 +55,76 @@ class Menu {
             return;
         }
 
-        MiniAdmin::add('menu', \PHPWS_Text::secureLink('Administrate menus', 'menu', array('command'=>'list')));
-        MiniAdmin::add('menu', '<a href="#">' . t('Link this page') . '</a>');
-        MiniAdmin::add('menu', '<a href="#">' . t('Show menu here') . '</a>');
-        MiniAdmin::add('menu', '<a href="#">' . t('Remove menu') . '</a>');
+        MiniAdmin::add('menu',
+                \PHPWS_Text::secureLink('Administrate menus', 'menu',
+                        array('command' => 'list')));
 
+        $key = \Key::getCurrent();
+
+        $link_list = self::getLinkList();
+
+        if ($key && !$key->isDummy()) {
+            javascript('jquery');
+            \Layout::addJSHeader('<script type="text/javascript" src="' .
+                    PHPWS_SOURCE_HTTP . 'mod/menu/javascript/administrate/minilink.js"></script>');
+            $found = false;
+            $used_menus = array();
+            foreach ($link_list as $link) {
+                $menu_id = 0;
+                extract($link);
+                if ($key_id == $key->id) {
+                    if (!in_array($menu_id, $used_menus)) {
+                        $used_menus[] = $menu_id;
+                        MiniAdmin::add('menu',
+                                '<a href="javascript:void(0)" data-key-id="' . $key->id
+                                . '" data-menu-id="' . $menu_id
+                                . '" id="menu-remove-page">' . t('Remove from %s',
+                                        $menu_title) . '</a>');
+                        $found = true;
+                    }
+                }
+            }
+            if (!$found) {
+                $db2 = \Database::newDB();
+                $t2 = $db2->addTable('menus');
+                $t2->addOrderBy($t2->addField('title'));
+                $t2->addField('id');
+                $menus = $db2->select();
+
+                $choice[] = '<select class="form-control" name="menu_id" id="menu-add-page" data-key-id="'
+                        . $key->id . '">';
+                $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . t('Add link to menu') . '</option>';
+                foreach ($menus as $menu) {
+                    $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
+                }
+                $choice[] = '</select>';
+
+                $menu_choice = implode("\n", $choice);
+                /*
+                  MiniAdmin::add('menu',
+                  '<a href="javascript:void(0)" data-key-id="' . $key->id
+                  . '" id="menu-add-page">' . t('Link this page') . '</a>');
+                 *
+                 */
+                MiniAdmin::add('menu', $menu_choice);
+            }
+        }
+    }
+
+    public static function getLinkList()
+    {
+        $db = \Database::newDB();
+        $t1 = $db->addTable('menu_links');
+        $t2 = $db->addTable('menus');
+        $db->joinResources($t1, $t2,
+                $db->createConditional($t1->getField('menu_id'),
+                        $t2->getField('id'), '='));
+        $t1->addField('id');
+        $t1->addField('key_id');
+        $t1->addField('menu_id');
+        $t2->addField('title', 'menu_title');
+        $link_list = $db->select();
+        return $link_list;
     }
 
     /**
@@ -108,194 +173,11 @@ class Menu {
         return $url == $compare;
     }
 
-    public static function getSiteLink($menu_id, $parent_id = 0, $isKeyed = false, $popup = false, $template = '')
-    {
-        $vars['command'] = 'add_site_link';
-        $vars['menu_id'] = $menu_id;
-        $vars['parent_id'] = $parent_id;
-
-        if (!$isKeyed) {
-            if (isset($_GET['curl'])) {
-                $vars['dadd'] = urlencode($_GET['curl']);
-            } else {
-                $vars['dadd'] = urlencode(PHPWS_Core::getCurrentUrl(false));
-            }
-        }
-
-        $js['link_title'] = dgettext('menu', 'Add other link');
-        $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
-        $js['label'] = MENU_LINK_ADD_SITE;
-        if ($parent_id) {
-            $js['label'] = MENU_SUBLINK_ADD_SITE;
-        }
-        if ($popup) {
-            $js['label'] .= ' ' . dgettext('menu', 'Add other link');
-        }
-        $js['width'] = 500;
-        $js['height'] = 300;
-        $js['ICON'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/menu/img/icon_link.png" />';
-
-        // Look for the template file that was passed in
-        $tplDir = PHPWS_Template::getTemplateDirectory('menu');
-        $relativePath = 'menu_layout/' . $template . '/addSiteLink.tpl';
-        $filename = $tplDir . $relativePath;
-
-        if (file_exists($filename)) {
-            javascript('open_window');
-            return PHPWS_Template::processTemplate($js, 'menu', $relativePath);
-        } else {
-            return javascript('open_window', $js);
-        }
-    }
-
-    public static function getAddLink($menu_id, $parent_id = null, $popup = false, $template = '')
-    {
-        $key = Key::getCurrent();
-        if (empty($key->url)) {
-            return null;
-        }
-
-        if (empty($key)) {
-            return null;
-        }
-
-        $vars['command'] = 'add_link';
-        $vars['menu_id'] = $menu_id;
-        if (empty($parent_id)) {
-            $parent_id = 0;
-        }
-
-        $vars['parent'] = (int) $parent_id;
-        if ($key->id || $key->module == 'home') {
-            $link = '<i class="fa fa-plus"></i> ' . dgettext('menu',
-                            'Link current page');
-            if ($parent_id) {
-                $link = MENU_SUBLINK_ADD;
-            }
-            if ($popup) {
-                $link .= ' ' . dgettext('menu', 'Add current page');
-                $vars['pu'] = 1;
-            }
-        } else {
-            $link = null;
-        }
-
-        // Look for the template file that was passed in
-        $tplDir = PHPWS_Template::getTemplateDirectory('menu');
-        $relativePath = 'menu_layout/' . $template . '/addMenuLink.tpl';
-        $filename = $tplDir . $relativePath;
-
-        if ($key->id) {
-
-            if (!$popup) {
-                return sprintf('<a style="cursor : pointer" onclick="add_keyed_link(\'%s\', \'%s\')">%s</a>',
-                        $menu_id, $parent_id, $link);
-            } else {
-                $vars['key_id'] = $key->id;
-                return PHPWS_Text::secureLink($link, 'menu', $vars);
-            }
-        } else {
-            // for dummy keys
-            if (empty($key->title)) {
-                $vars['url'] = urlencode($key->url);
-                $js['question'] = dgettext('menu', 'Enter link title');
-                $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE,
-                                FALSE);
-                $js['link'] = $link;
-                $js['value_name'] = 'link_title';
-                return javascript('prompt', $js);
-            } else {
-                $vars['link_title'] = urlencode($key->title);
-                $vars['url'] = urlencode($key->url);
-
-                if ($popup) {
-                    return PHPWS_Text::secureLink($link, 'menu', $vars);
-                } else {
-                    // If the template file exists, use it to form the link
-                    if (file_exists($filename)) {
-                        $vars['MENU_ID'] = $menu_id;
-                        $vars['PARENT_ID'] = $parent_id;
-                        $vars['LINK'] = $link;
-                        $vars['ICON'] = Icon::show('add');
-                        $vars['LINK_NAME'] = dgettext('menu',
-                                'Link current page');
-                        return PHPWS_Template::processTemplate($vars, 'menu',
-                                        $relativePath);
-                    } else {
-                        // Return old style link for template compatibility
-                        return sprintf('<a style="cursor : pointer" onclick="add_unkeyed_link(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>',
-                                $menu_id, $parent_id, $vars['url'],
-                                $vars['link_title'], $link);
-                    }
-                }
-            }
-        }
-    }
-
-    public static function pinLink($title, $url, $key_id = 0)
-    {
-    }
-
-    /**
-     *
-     * @param unknown $menu_id
-     * @param unknown $key_id
-     * @param number $pin_all
-     * @param string $template The name of the menu template being used (e.g. "basic" for templates in /mod/menu/templates/menu_layout/basic/)
-     * @return Ambigous <unknown_type, string, NULL, void, mixed, object>
-     */
-    public static function getUnpinLink($menu_id, $key_id, $pin_all = 0, $template)
-    {
-        $vars['command'] = 'unpin_menu';
-        $vars['menu_id'] = $menu_id;
-        if ($key_id >= 0) {
-            $vars['key_id'] = $key_id;
-        }
-        $vars['pin_all'] = $pin_all;
-        if ($pin_all) {
-            $js['QUESTION'] = dgettext('menu',
-                    'Are you sure you want to unpin this menu from all pages?');
-        } else {
-            $js['QUESTION'] = dgettext('menu',
-                    'Are you sure you want to unpin this menu from this page?');
-        }
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-        $js['LINK'] = MENU_UNPIN;
-        $js['ICON'] = '<img src="' . PHPWS_SOURCE_HTTP . 'mod/menu/img/remove.png" />';
-
-        $tplDir = PHPWS_Template::getTemplateDirectory('menu');
-        $relativePath = 'menu_layout/' . $template . '/unpinMenuLink.tpl';
-        $filename = $tplDir . $relativePath;
-
-        // If the template file exists, use it to form the link
-        if (file_exists($filename)) {
-            javascript('confirm');
-            return PHPWS_Template::processTemplate($js, 'menu', $relativePath);
-        } else {
-            // Do the old style javascript thing for previous template compatibility
-            return javascript('confirm', $js);
-        }
-    }
-
     public static function deleteLink($link_id)
     {
         $link = new Menu_Link($link_id);
         if ($link->id) {
             return $link->delete();
-        }
-    }
-
-    public function enableAdminMode()
-    {
-        $_SESSION['Menu_Admin_Mode'] = true;
-    }
-
-    public static function isAdminMode()
-    {
-        if (isset($_SESSION['Menu_Admin_Mode'])) {
-            return $_SESSION['Menu_Admin_Mode'];
-        } else {
-            return false;
         }
     }
 

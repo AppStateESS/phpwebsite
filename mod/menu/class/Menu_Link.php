@@ -245,11 +245,6 @@ class Menu_Link {
     {
         \PHPWS_Core::requireConfig('menu');
         static $current_parent = array();
-        static $admin = null;
-
-        if (is_null($admin)) {
-            $admin = \Current_User::allow('menu');
-        }
 
         $current_link = false;
         $current_key = Key::getCurrent();
@@ -277,7 +272,7 @@ class Menu_Link {
 
         if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
                 in_array($this->parent, $current_parent)) {
-            $link = $this->getAnchorTag($admin);
+            $link = $this->getAnchorTag();
 
             $template['LINK'] = $link;
             $template['LINK_URL'] = $this->url;
@@ -350,58 +345,6 @@ class Menu_Link {
         return false;
     }
 
-    public function editLink($popup = false)
-    {
-        $vars['link_id'] = $this->id;
-        $link = MENU_LINK_EDIT;
-        if ($popup) {
-            $link .= ' ' . dgettext('menu', 'Edit link');
-            $vars['pu'] = 1;
-        }
-
-        if ($this->key_id) {
-            $vars['command'] = 'edit_link_title';
-            $prompt_js['question'] = dgettext('menu',
-                    'Type the new title for this link.');
-            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-            $prompt_js['answer'] = $this->title;
-            $prompt_js['value_name'] = 'link_title';
-            $prompt_js['link'] = $link;
-            return javascript('prompt', $prompt_js);
-        } else {
-            $vars['command'] = 'edit_link';
-            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-            $prompt_js['label'] = $link;
-            $prompt_js['width'] = 500;
-            $prompt_js['height'] = 300;
-            return javascript('open_window', $prompt_js);
-        }
-    }
-
-    public function deleteLink($popup = false)
-    {
-        $link = MENU_LINK_DELETE;
-
-        if (!$popup) {
-            return sprintf('<a style="cursor : pointer" onclick="delete_link(\'%s\', \'%s\', \'%s\')">%s</a>',
-                    $this->menu_id, $this->id,
-                    htmlentities($this->getTitle(), ENT_QUOTES, 'UTF-8'), $link);
-        } else {
-            $link .= ' ' . dgettext('menu', 'Delete link');
-            $vars['pu'] = 1;
-        }
-
-        $js['LINK'] = & $link;
-
-        $vars['link_id'] = $this->id;
-        $vars['command'] = 'delete_link';
-        $js['QUESTION'] = dgettext('menu',
-                'Are you sure you want to delete this link: ' .
-                addslashes($this->getTitle()));
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, true);
-        return javascript('confirm', $js);
-    }
-
     public function delete($save_links = false)
     {
         $db = $this->getDB();
@@ -420,64 +363,6 @@ class Menu_Link {
             return $db->delete();
         }
     }
-
-    public function moveUp()
-    {
-        if ($this->link_order == 1) {
-            $this->link_order = $this->_getOrder();
-            $this->save();
-            $this->resetOrder();
-            return true;
-        }
-
-        $above = new Menu_Link;
-
-        $db = $this->getDB();
-        $db->addWhere('menu_id', $this->menu_id);
-        $db->addWhere('parent', $this->parent);
-        $db->addWhere('link_order', $this->link_order - 1);
-        $db->loadObject($above);
-
-        $above->link_order = $this->link_order;
-        $this->link_order--;
-        $result = $above->save();
-
-        if (PHPWS_Error::isError($result)) {
-            return $result;
-        }
-
-        return $this->save();
-    }
-
-    public function moveDown()
-    {
-        $top_value = $this->_getOrder();
-        if ($this->link_order == ($top_value - 1)) {
-            $this->link_order = -1;
-            $this->save();
-            $this->resetOrder();
-            return true;
-        }
-
-        $below = new Menu_Link;
-
-        $db = $this->getDB();
-        $db->addWhere('menu_id', $this->menu_id);
-        $db->addWhere('parent', $this->parent);
-        $db->addWhere('link_order', $this->link_order + 1);
-        $db->loadObject($below);
-
-        $below->link_order = $this->link_order;
-        $this->link_order++;
-        $result = $below->save();
-
-        if (PHPWS_Error::isError($result)) {
-            return $result;
-        }
-
-        return $this->save();
-    }
-
 }
 
 ?>

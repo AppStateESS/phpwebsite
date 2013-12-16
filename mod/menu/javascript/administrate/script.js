@@ -93,10 +93,7 @@ function MenuAdmin() {
 
         });
 
-        $('.menu-link-href').click(function(e) {
-            e.preventDefault();
-        });
-
+        this.preventClick();
         this.selectClick();
         this.keyChange();
         this.editLink();
@@ -107,6 +104,12 @@ function MenuAdmin() {
         this.modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
             t.alert.hide();
+        });
+    };
+
+    this.preventClick = function() {
+        $('#menu-admin-area .menu-link-href').click(function(e) {
+            e.preventDefault();
         });
     };
 
@@ -267,6 +270,7 @@ function MenuAdmin() {
         }).always(function() {
             t.editLink();
             t.initSort();
+            t.preventClick();
         });
     };
 
