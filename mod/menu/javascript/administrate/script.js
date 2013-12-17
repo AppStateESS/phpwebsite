@@ -365,7 +365,7 @@ function MenuAdmin() {
             next_id: next_row_id,
             prev_id: prev_row_id
         }, function(data) {
-            console.log(data);
+            //console.log(data);
         }).always(function() {
             t.populateMenuEdit();
         });

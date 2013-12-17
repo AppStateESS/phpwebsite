@@ -85,24 +85,103 @@ class Menu {
                 }
             }
             if (!$found) {
-                $db2 = \Database::newDB();
-                $t2 = $db2->addTable('menus');
-                $t2->addOrderBy($t2->addField('title'));
-                $t2->addField('id');
-                $menus = $db2->select();
+                self::miniadminAddMenu($key);
+            }
 
-                $choice[] = '<select class="form-control" name="menu_id" id="menu-add-page" data-key-id="'
-                        . $key->id . '">';
-                $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . t('Add link to menu') . '</option>';
-                foreach ($menus as $menu) {
-                    $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
-                }
-                $choice[] = '</select>';
+            self::miniadminPinMenu($key);
+            self::miniadminUnpin($key);
+        }
+    }
 
-                $menu_choice = implode("\n", $choice);
-                MiniAdmin::add('menu', $menu_choice);
+    private static function miniadminAddMenu($key)
+    {
+        $menus = self::getMenuListing();
+
+        $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-add-page" data-key-id="'
+                . $key->id . '">';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . t('Add link to menu') . '</option>';
+        foreach ($menus as $menu) {
+            $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
+        }
+        $choice[] = '</select></div>';
+
+        $menu_choice = implode("\n", $choice);
+        MiniAdmin::add('menu', $menu_choice);
+    }
+
+    private static function miniadminUnpin($key)
+    {
+        $menus = self::getMenuListing(false);
+        $assoc = self::getAssociations($key->id);
+
+        if (!empty($assoc)) {
+            foreach ($assoc as $a) {
+                $ignore[] = $a['menu_id'];
+            }
+        } else {
+            $ignore = array();
+        }
+
+        $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-unpin-page" data-key-id="'
+                . $key->id . '">';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . t('Remove menu') . '</option>';
+        $menu_found = false;
+        foreach ($menus as $menu) {
+            if (in_array($menu['id'], $ignore)) {
+                $menu_found = true;
+                $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
             }
         }
+        if (!$menu_found) {
+            // No menus need removing
+            return;
+        }
+        $choice[] = '</select></div>';
+
+        $menu_choice = implode("\n", $choice);
+        MiniAdmin::add('menu', $menu_choice);
+    }
+
+    private static function miniadminPinMenu($key)
+    {
+        $menus = self::getMenuListing(false);
+        $assoc = self::getAssociations($key->id);
+
+        if (!empty($assoc)) {
+            foreach ($assoc as $a) {
+                $ignore[] = $a['menu_id'];
+            }
+        } else {
+            $ignore = array();
+        }
+
+        $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-pin-page" data-key-id="'
+                . $key->id . '">';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' .
+                t('Show menu here') . '</option>';
+        $menu_found = false;
+        foreach ($menus as $menu) {
+            if (!in_array($menu['id'], $ignore)) {
+                $menu_found = true;
+                $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
+            }
+        }
+        if (!$menu_found) {
+            // This means all menus are on this key
+            return;
+        }
+        $choice[] = '</select></div>';
+        $content = implode("\n", $choice);
+        Miniadmin::add('menu', $content);
+    }
+
+    private static function getAssociations($key_id)
+    {
+        $db = \Database::newDB();
+        $tbl = $db->addTable('menu_assoc');
+        $tbl->addField('menu_id');
+        $tbl->addFieldConditional('key_id', $key_id);
+        return $db->select();
     }
 
     public static function getLinkList()
@@ -301,6 +380,19 @@ class Menu {
         $link->url = & $key->url;
         $link->active = & $key->active;
         return !PHPWS_Error::logIfError($link->save());
+    }
+
+    private static function getMenuListing($include_pin_all = true)
+    {
+        $db2 = \Database::newDB();
+        $t2 = $db2->addTable('menus');
+        $t2->addOrderBy($t2->addField('title'));
+        $t2->addField('id');
+        if (!$include_pin_all) {
+            $t2->addFieldConditional('pin_all', 0);
+        }
+        $menus = $db2->select();
+        return $menus;
     }
 
 }

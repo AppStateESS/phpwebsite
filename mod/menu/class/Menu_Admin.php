@@ -73,6 +73,14 @@ class Menu_Admin {
             case 'post_new_menu':
                 $this->postMenu($request);
                 exit();
+
+            case 'pin_menu':
+                $this->pinMenu($request);
+                exit();
+
+            case 'unpin_menu':
+                $this->unpinMenu($request);
+                exit();
         } // end command switch
 
         $tpl['title'] = $title;
@@ -84,6 +92,24 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function pinMenu($request)
+    {
+        $db = \Database::newDB();
+        $tbl = $db->addTable('menu_assoc');
+        $tbl->addValue('menu_id', (int) $request->getVar('menu_id'));
+        $tbl->addValue('key_id', (int) $request->getVar('key_id'));
+        $tbl->insert();
+    }
+
+    private function unpinMenu($request)
+    {
+        $db = \Database::newDB();
+        $tbl = $db->addTable('menu_assoc');
+        $tbl->addFieldConditional('menu_id', (int) $request->getVar('menu_id'));
+        $tbl->addFieldConditional('key_id', (int) $request->getVar('key_id'));
+        $db->delete();
     }
 
     private function postMenu($request)
@@ -149,8 +175,16 @@ class Menu_Admin {
     private function moveLink(\Request $request)
     {
         $move_id = $request->getVar('move_id');
-        $next_id = $request->getVar('next_id');
-        $prev_id = $request->getVar('prev_id');
+        if ($request->isVar('next_id')) {
+            $next_id = $request->getVar('next_id');
+        } else {
+            $next_id = 0;
+        }
+        if ($request->isVar('prev_id')) {
+            $prev_id = $request->getVar('prev_id');
+        } else {
+            $prev_id = 0;
+        }
 
         $move_link = new Menu_Link($move_id);
         $move_link_order = $move_link->link_order;
@@ -337,8 +371,7 @@ EOF;
 
         $tpl['templates'] = null;
         foreach ($included_result as $menu_tpl) {
-        $tpl['templates'] .= "<option>$menu_tpl</option>";
-
+            $tpl['templates'] .= "<option>$menu_tpl</option>";
         }
         $template->addVariables($tpl);
         return $template->get();
