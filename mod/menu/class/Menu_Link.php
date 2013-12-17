@@ -136,7 +136,7 @@ class Menu_Link {
      *
      * @return String Html anchor tag for this link.
      */
-    public function getAnchorTag($admin=false)
+    public function getAnchorTag($admin = false)
     {
         if ($admin) {
             $data = ' data-link-id="' . $this->id . '" data-key-id="' . $this->key_id . '"';
@@ -204,7 +204,7 @@ class Menu_Link {
     {
         if (empty($this->menu_id) || empty($this->title) ||
                 empty($this->url) || !isset($this->key_id)) {
-            return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
+            throw new \Exception(MENU_MISSING_INFO);
         }
 
         if (empty($this->id) || empty($this->link_order)) {
@@ -241,7 +241,7 @@ class Menu_Link {
         }
     }
 
-    public function view($level = '1', $admin=false)
+    public function view($level = '1', $admin = false)
     {
         \PHPWS_Core::requireConfig('menu');
         static $current_parent = array();
@@ -363,6 +363,7 @@ class Menu_Link {
             return $db->delete();
         }
     }
+
 }
 
 ?>

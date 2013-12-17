@@ -69,6 +69,10 @@ class Menu_Admin {
             case 'delete_menu':
                 $this->deleteMenu($request);
                 exit();
+
+            case 'post_new_menu':
+                $this->postMenu($request);
+                exit();
         } // end command switch
 
         $tpl['title'] = $title;
@@ -80,6 +84,16 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function postMenu($request)
+    {
+        $title = $request->getVar('title');
+        $template = $request->getVar('template');
+        $menu = new Menu_Item;
+        $menu->setTitle($title);
+        $menu->setTemplate($template);
+        $menu->save();
     }
 
     private function deleteMenu($request)
@@ -95,7 +109,7 @@ class Menu_Admin {
         $menu_id = $request->getVar('menu_id');
 
         $menu = new Menu_Item($menu_id);
-        $menu->addLink($key_id,0);
+        $menu->addLink($key_id, 0);
     }
 
     private function removeKeyLink(\Request $request)
@@ -309,6 +323,8 @@ class Menu_Admin {
         $vars['title_error'] = t('Make sure you have filled in the required inputs.');
         $vars['url_error'] = t('Please enter a url or choose a PageSmith page.');
         $vars['delete_menu_message'] = t('Are you sure you want to delete this menu and links?');
+        $vars['edit'] = t('Edit');
+        $vars['title_error'] = 'Please enter a menu title';
 
         $jvar = json_encode($vars);
         $script = <<<EOF
@@ -317,6 +333,13 @@ EOF;
         \Layout::addJSHeader($script);
         \Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/menu/javascript/administrate/script.js"></script>');
 
+        $included_result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
+
+        $tpl['templates'] = null;
+        foreach ($included_result as $menu_tpl) {
+        $tpl['templates'] .= "<option>$menu_tpl</option>";
+
+        }
         $template->addVariables($tpl);
         return $template->get();
     }

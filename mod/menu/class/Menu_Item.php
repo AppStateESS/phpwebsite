@@ -148,7 +148,7 @@ class Menu_Item {
         $this->resetdb();
         $result = $this->_db->saveObject($this);
         if (PHPWS_Error::isError($result)) {
-            return $result;
+            throw new \Exception($result->getMessage());
         }
 
         if ($save_key) {
@@ -161,7 +161,10 @@ class Menu_Item {
             $link->title = dgettext('menu', 'Home');
             $link->url = 'index.php';
             $link->key_id = 0;
-            PHPWS_Error::logIfError($link->save());
+            $result = $link->save();
+            if (\PHPWS_Error::isError($result)) {
+                throw new \Exception($result->getMessage());
+            }
         }
 
         return true;
@@ -192,7 +195,7 @@ class Menu_Item {
     /**
      * Returns all the links in a menu for display
      */
-    public function displayLinks($admin=false)
+    public function displayLinks($admin = false)
     {
         $all_links = $this->getLinks();
         if (empty($all_links)) {

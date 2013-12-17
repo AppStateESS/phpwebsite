@@ -14,7 +14,8 @@ function MenuAdmin() {
     var key_id;
     var menu_id;
 
-    var modal;
+    var link_modal;
+    var menu_modal;
     var alert;
 
     var input;
@@ -67,6 +68,10 @@ function MenuAdmin() {
 
     }
 
+    /**
+     * Class for the modal form buttons save and delete
+     * @returns {MenuAdmin.Button}
+     */
     function Button()
     {
         var sb;
@@ -84,25 +89,34 @@ function MenuAdmin() {
         this.button = new Button;
         this.button.init();
 
-        this.alert = $('#warning');
+        this.alert = $('.warning');
         this.alert.hide();
 
-        this.modal = $('#link-edit-modal');
+        this.link_modal = $('#link-edit-modal');
+        this.menu_modal = $('#menu-modal');
 
-        $('#create-submenu').click(function() {
-
-        });
-
+        this.createMenu();
         this.selectClick();
         this.resetLinks();
 
         this.keyChange();
         this.addLinkButton();
         this.deleteMenuButton();
+        this.saveMenuButton();
 
-        this.modal.on('hidden.bs.modal', function(e) {
+        this.link_modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
             t.alert.hide();
+        });
+        this.menu_modal.on('hidden.bs.modal', function(e) {
+            t.alert.html('');
+            t.alert.hide();
+        });
+    };
+
+    this.createMenu = function() {
+        $('#create-menu').click(function() {
+            t.menu_modal.modal('show');
         });
     };
 
@@ -122,7 +136,7 @@ function MenuAdmin() {
         var insert = '\n\
 <div class="link-options btn-group btn-group-sm">\n\
 <button class="link-edit btn btn-default">\n\
-<i class="fa fa-edit"></i> Edit</button>\n\
+<i class="fa fa-edit"></i> ' + translate.edit + '</button>\n\
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\n\
     <i class="fa fa-arrow-circle-down"></i> Move under\n\
   </button>\n\
@@ -178,7 +192,7 @@ function MenuAdmin() {
                 $('.form-url-group').show();
                 $('.form-key-group').show();
             }
-            t.modal.modal('show');
+            t.link_modal.modal('show');
         });
     };
 
@@ -192,6 +206,26 @@ function MenuAdmin() {
 
     this.loadKeyId = function() {
         this.key_id = this.input.getSelectedKeyId();
+    };
+
+    this.saveMenuButton = function() {
+        $('#form-menu-save').click(function() {
+            var title = $('#menu-title').val();
+            if (title.length < 1) {
+                $('#menu-title').attr('placeholder', translate.title_error);
+            } else {
+                $.post('index.php', {
+                    module: 'menu',
+                    command: 'post_new_menu',
+                    title: $('#menu-title').val(),
+                    template: $('#menu-template option:selected').val()
+                }, function(data) {
+                    //console.log(data);
+                }).always(function() {
+                    window.location.reload();
+                });
+            }
+        });
     };
 
     this.saveButton = function() {
@@ -213,7 +247,7 @@ function MenuAdmin() {
                     //$('body').prepend(data);
                     //console.log(data);
                 }).always(function() {
-                    t.modal.modal('hide');
+                    t.link_modal.modal('hide');
                     t.populateMenuEdit();
                 });
             }
@@ -255,27 +289,38 @@ function MenuAdmin() {
     };
 
     this.addLinkButton = function() {
-        $('#add-link').click(function() {
-            t.key_id = 0;
-            t.link_id = 0;
-            t.initFormButtons();
-            t.input.reset();
-            t.populateKeySelect();
-            t.modal.modal('show');
-        });
+        if (t.menu_id === undefined || t.menu_id < 1) {
+            $('#add-link').hide();
+        } else {
+            $('#add-link').show();
+            $('#add-link').click(function() {
+                t.key_id = 0;
+                t.link_id = 0;
+                t.initFormButtons();
+                t.input.reset();
+                t.populateKeySelect();
+                t.link_modal.modal('show');
+            });
+        }
     };
 
     this.deleteMenuButton = function() {
-        $('#delete-menu').click(function(){
-            if (window.confirm(translate.delete_menu_message)) {
-                $.get('index.php', {
-                    module: 'menu',
-                    command: 'delete_menu',
-                    menu_id: t.menu_id
-                });
-                window.location.reload();
-            }
-        });
+        if (t.menu_id === undefined || t.menu_id < 1) {
+            $('#delete-menu').hide();
+        } else {
+            $('#delete-menu').show();
+            $('#delete-menu').click(function() {
+                if (window.confirm(translate.delete_menu_message)) {
+                    $.get('index.php', {
+                        module: 'menu',
+                        command: 'delete_menu',
+                        menu_id: t.menu_id
+                    }).always(function() {
+                        window.location.reload();
+                    });
+                }
+            });
+        }
     };
 
     this.populateMenuEdit = function() {
@@ -339,7 +384,7 @@ function MenuAdmin() {
                 }, function(data) {
                     //console.log(data);
                 }).always(function() {
-                    t.modal.modal('hide');
+                    t.link_modal.modal('hide');
                     t.populateMenuEdit();
                 });
             });

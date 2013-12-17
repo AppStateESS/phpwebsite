@@ -1,4 +1,4 @@
-<button class="btn btn-success" id="create-submenu" style="margin-bottom:1em"><?=t('Create submenu');?></button>
+<button class="btn btn-success" id="create-menu" style="margin-bottom:1em"><?=t('Create menu');?></button>
 <div class="clearfix"></div>
 <div id="menu-list">
     <div id="menu-select">
@@ -18,7 +18,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <div id="warning" class="alert alert-danger"></div>
+                <div class="warning alert alert-danger"></div>
                 <form id="link-edit-form">
                     <div class="form-group">
                         <label for="form-title"><?=t('Title');?></label>
@@ -40,6 +40,31 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?=t('Close')?></button>
                 <button type="button" id="form-link-save" class="btn btn-primary"><?=t('Save')?></button>
                 <button type="button" id="form-link-delete" class="btn btn-danger"><?=t('Delete')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="menu-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="warning alert alert-danger"></div>
+                <form id="menu-edit-form">
+                    <div class="form-group">
+                        <label for="menu-title"><?=t('Menu title');?></label>
+                        <input type="text" name="menu_title" value="" id="menu-title" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="menu-template"><?=t('Menu template');?></label>
+                        <select name="menu_template" id="menu-template" class="form-control">
+                            <?=$templates?>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=t('Close')?></button>
+                <button type="button" id="form-menu-save" class="btn btn-primary"><?=t('Save')?></button>
             </div>
         </div>
     </div>
