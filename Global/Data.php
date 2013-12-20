@@ -340,7 +340,11 @@ abstract class Data {
             }
         }
 
-        return $new_vars;
+        if (!empty($new_vars)) {
+            return $new_vars;
+        } else {
+            throw new \Exception(t('No string variable in Data object'));
+        }
     }
 
     /**
