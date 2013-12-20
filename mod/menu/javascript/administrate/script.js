@@ -429,13 +429,8 @@ function MenuAdmin() {
             move_id: moved_row_id,
             next_id: next_row_id,
             prev_id: prev_row_id
-        }, function(data) {
-            console.log(data);
-        }).always(function() {
-            //t.populateMenuSelect();
         });
     };
-
 
 
     this.deleteButton = function()

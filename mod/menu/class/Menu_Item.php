@@ -55,7 +55,7 @@ class Menu_Item {
         $this->resetdb();
         $result = $this->_db->loadObject($this);
         if (PHPWS_Error::isError($result)) {
-            return $result;
+            throw new \Exception($result->getMessage());
         }
     }
 

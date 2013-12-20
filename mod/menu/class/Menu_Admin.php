@@ -85,6 +85,9 @@ class Menu_Admin {
             case 'change_display_type':
                 $this->changeDisplayType($request);
                 exit();
+
+            case 'populate_menu_select':
+                exit();
         }
 
         // This is the display switch or the HTML view switch
@@ -239,13 +242,29 @@ class Menu_Admin {
                 // moved item is on the same level
                 if ($move_link_order > $next_link_order) {
                     // the link was moved BEFORE another link
-                    $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.link_order >= $next_link_order AND menu_links.link_order < $move_link_order AND menu_links.parent = $next_parent)";
-                    $db->exec($query);
+                    $ml = $db->addTable('menu_links');
+                    $lorder = $ml->getField('link_order');
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' + 1'));
+                    $ml->addFieldConditional($lorder, $next_link_order, '>=');
+                    $ml->addFieldConditional($lorder, $move_link_order, '<');
+                    $ml->addFieldConditional('parent', $next_parent);
+                    $db->update();
+                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.link_order >= $next_link_order AND menu_links.link_order < $move_link_order AND menu_links.parent = $next_parent)";
+                    //$db->exec($query);
                     $move_link->link_order = $next_link_order;
                 } else {
                     // the link was moved AFTER another link
-                    $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order < $next_link_order AND menu_links.link_order > $move_link_order AND menu_links.parent = $next_parent)";
-                    $db->exec($query);
+                    $ml = $db->addTable('menu_links');
+                    $lorder = $ml->getField('link_order');
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' - 1'));
+                    $ml->addFieldConditional($lorder, $next_link_order, '<');
+                    $ml->addFieldConditional($lorder, $move_link_order, '>');
+                    $ml->addFieldConditional('parent', $next_parent);
+                    $db->update();
+                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order < $next_link_order AND menu_links.link_order > $move_link_order AND menu_links.parent = $next_parent)";
+                    //$db->exec($query);
                     $move_link->link_order = $next_link_order - 1;
                 }
             } else {
@@ -253,30 +272,62 @@ class Menu_Admin {
                 $move_link->parent = $next_parent;
                 if (!$prev_link) {
                     // moved to top of list
-                    $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.parent = $next_parent)";
-                    $db->exec($query);
+                    $ml = $db->addTable('menu_links');
+                    $lorder = $ml->getField('link_order');
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' + 1'));
+                    $ml->addFieldConditional('parent', $next_parent);
+                    $db->update();
+                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.parent = $next_parent)";
+                    //$db->exec($query);
                     $move_link->link_order = 1;
                 } else {
                     // there is a previous link so we number from there
-                    $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.link_order > $prev_link_order AND menu_links.parent = $next_parent)";
-                    $db->exec($query);
+                    $ml = $db->addTable('menu_links');
+                    $lorder = $ml->getField('link_order');
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' + 1'));
+                    $ml->addFieldConditional($lorder, $prev_link_order, '>');
+                    $ml->addFieldConditional('parent', $next_parent);
+                    $db->update();
+                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.link_order > $prev_link_order AND menu_links.parent = $next_parent)";
+                    //$db->exec($query);
                     $move_link->link_order = $prev_link_order + 1;
                 }
                 // reset links where moved item was
-                $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
-                $db->exec($query);
+                $db->reset();
+                $ml = $db->addTable('menu_links');
+                $lorder = $ml->getField('link_order');
+                $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
+                $ml->addFieldConditional($lorder, $move_link_order, '>');
+                $ml->addFieldConditional('parent', $move_parent);
+                $db->update();
+                //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
+                //$db->exec($query);
             }
         } else {
             // moved item is at the end of a list
             if ($move_parent == $prev_parent) {
                 // moved item is on the same level at the bottom of the list, move everything that was after moved down a peg
-                $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $prev_parent)";
-                $db->exec($query);
+                $ml = $db->addTable('menu_links');
+                $lorder = $ml->getField('link_order');
+                $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
+                $ml->addFieldConditional($lorder, $move_link_order, '>');
+                $ml->addFieldConditional('parent', $move_parent);
+                $db->update();
+                //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $prev_parent)";
+                //$db->exec($query);
                 $move_link->link_order = $prev_link_order;
             } else {
                 // moved item is on a different level, reset links where moved link was
-                $query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
-                $db->exec($query);
+                $ml = $db->addTable('menu_links');
+                $lorder = $ml->getField('link_order');
+                $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
+                $ml->addFieldConditional($lorder, $move_link_order, '>');
+                $ml->addFieldConditional('parent', $move_parent);
+                $db->update();
+                //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
+                //$db->exec($query);
                 $move_link->link_order = $prev_link_order + 1;
                 $move_link->parent = $prev_parent;
             }
@@ -290,14 +341,14 @@ class Menu_Admin {
         $move_menu = new Menu_Item($move_id);
 
         if ($request->isVar('next_id')) {
-            $next_id = $request->isVar('next_id');
+            $next_id = $request->getVar('next_id');
             $next_menu = new Menu_Item($next_id);
         } else {
             $next_id = 0;
         }
 
         if ($request->isVar('prev_id')) {
-            $prev_id = $request->isVar('prev_id');
+            $prev_id = $request->getVar('prev_id');
             $prev_menu = new Menu_Item($prev_id);
         } else {
             $prev_id = 0;
@@ -305,26 +356,37 @@ class Menu_Admin {
 
         $db = \Database::newDB();
         $tbl = $db->addTable('menus');
+        $queue = $tbl->getField('queue');
 
         if ($next_id == 0) {
             // moved to end of list
-            $exp = $db->addExpression('max(' . $tbl->getField('queue') . ')');
-            $last_queue = $db->selectOneRow();
-            $db->reset();
-            $tbl = $db->addTable('menus');
+            $exp = $db->getExpression('max(' . $queue . ')', 'max_queue');
+            $tbl->addField($exp);
+            $last_queue = $db->selectColumn();
+            $tbl->addValue('queue', $db->getExpression($queue . ' - 1'));
             $tbl->addFieldConditional('queue', $move_menu->queue, '>');
             $db->update();
             $move_menu->queue = $last_queue;
         } elseif ($prev_id == 0) {
             // moved to beginning of list
-            $tbl->addFieldConditional('queue', 1, '>');
+            $tbl->addValue('queue', $db->getExpression($queue . ' + 1'));
+            $tbl->addFieldConditional('queue', $move_menu->queue, '<');
             $db->update();
             $move_menu->queue = 1;
         } else {
             // moved in the middle of list
-            //$tbl->addFieldConditional('queue', $move_menu->queue, '>');
-            $query = 'UPDATE menus SET menus.queue=menus.queue-1 WHERE menus.queue > ' . $move_menu->queue;
-            $db->exec($query);
+            if ($move_menu->queue < $next_menu->queue) {
+                $tbl->addValue('queue', $db->getExpression($queue . ' - 1'));
+                $tbl->addFieldConditional('queue', $move_menu->queue, '>=');
+                $tbl->addFieldConditional('queue', $next_menu->queue, '<');
+                $move_menu->queue = $prev_menu->queue;
+            } else {
+                $tbl->addValue('queue', $db->getExpression($queue . ' + 1'));
+                $tbl->addFieldConditional('queue', $next_menu->queue, '>=');
+                $tbl->addFieldConditional('queue', $move_menu->queue, '<');
+                $move_menu->queue = $next_menu->queue;
+            }
+            $db->update();
         }
         $move_menu->save();
     }
