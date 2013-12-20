@@ -38,18 +38,12 @@
                     <label for="{VIEW_ONLY_ID}">{VIEW_ONLY_LABEL_TEXT}</label> {VIEW_ONLY}
                 </div>
 
-            </fieldset>
-
-            <fieldset>
-                <legend>{SUBMISSION_LABEL}</legend>
-                <div class="checkbox">
-                    <label>{ALLOW_ANONYMOUS_SUBMITS} {ALLOW_ANONYMOUS_SUBMITS_LABEL_TEXT}</label>
+                <div class="form-group checkbox">
+                    <label for="{SHOW_POSTED_DATE_ID}">{SHOW_POSTED_DATE} {SHOW_POSTED_DATE_LABEL_TEXT}</label>
                 </div>
-                <!-- BEGIN menu-link -->
-                <small>{MENU_LINK}</small>
-                <!-- END menu-link -->
-                <div class="checkbox">
-                    <label>{CAPTCHA_SUBMISSIONS} {CAPTCHA_SUBMISSIONS_LABEL_TEXT}</label>
+
+                <div class="form-group checkbox">
+                    <label for="{SHOW_POSTED_BY_ID}">{SHOW_POSTED_BY} {SHOW_POSTED_BY_LABEL_TEXT}</label>
                 </div>
 
             </fieldset>

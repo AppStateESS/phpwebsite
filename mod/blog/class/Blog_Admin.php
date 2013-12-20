@@ -354,6 +354,14 @@ class Blog_Admin {
                         PHPWS_Settings::set('blog', 'logged_users_only', 1) :
                         PHPWS_Settings::set('blog', 'logged_users_only', 0);
 
+        isset($_POST['show_posted_date']) ?
+                        PHPWS_Settings::set('blog', 'show_posted_date', 1) :
+                        PHPWS_Settings::set('blog', 'show_posted_date', 0);
+
+        isset($_POST['show_posted_by']) ?
+                        PHPWS_Settings::set('blog', 'show_posted_by', 1) :
+                        PHPWS_Settings::set('blog', 'show_posted_by', 0);
+
 
         if (isset($_POST['view_only']) && is_array($_POST['view_only'])) {
             $view_only = implode(':', $_POST['view_only']);
