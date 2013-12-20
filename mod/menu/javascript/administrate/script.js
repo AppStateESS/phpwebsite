@@ -88,6 +88,7 @@ function MenuAdmin() {
         this.input.init();
         this.button = new Button;
         this.button.init();
+        this.pinned_button = $('#pinned-button');
 
         this.alert = $('.warning');
         this.alert.hide();
@@ -103,6 +104,7 @@ function MenuAdmin() {
         this.addLinkButton();
         this.deleteMenuButton();
         this.saveMenuButton();
+        this.displayType();
 
         this.link_modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
@@ -111,6 +113,21 @@ function MenuAdmin() {
         this.menu_modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
             t.alert.hide();
+        });
+    };
+
+    this.displayType = function() {
+        $('#menu-display').change(function() {
+            var display_type = $('option:selected', this).val();
+            $.get('index.php', {
+                module: 'menu',
+                command: 'change_display_type',
+                display_type: display_type
+            }, function(data) {
+                //console.log(data);
+            }).always(function() {
+                window.location.reload();
+            });
         });
     };
 
@@ -329,8 +346,17 @@ function MenuAdmin() {
             command: 'adminlinks',
             menu_id: t.menu_id
         }, function(data) {
-            $('#menu-admin-area').html(data);
-        }).always(function() {
+            $('#menu-admin-area').html(data.html);
+            if (data.pin_all == '1') {
+                t.pinned_button.html(translate.pin_all);
+                t.pinned_button.removeClass('btn-default');
+                t.pinned_button.addClass('btn-primary');
+            } else {
+                t.pinned_button.removeClass('btn-primary');
+                t.pinned_button.addClass('btn-default');
+                t.pinned_button.html(translate.pin_some);
+            }
+        }, 'json').always(function() {
             t.resetLinks();
         });
     };
@@ -346,6 +372,13 @@ function MenuAdmin() {
             }
         });
         $('#menu-admin-area .menu-links').disableSelection();
+
+        $('#menu-select ul').sortable({
+            helper: 'clone',
+            update: function(event, ui) {
+                t.sortMenu(event, ui);
+            }});
+        $('#menu-select ul').disableSelection();
     };
 
     this.sortLink = function(event, ui) {
@@ -370,6 +403,40 @@ function MenuAdmin() {
             t.populateMenuEdit();
         });
     };
+
+    this.populateMenuSelect = function() {
+        $.get('index.php', {
+            module: 'menu',
+            command: 'populate_menu_select'
+        }, function(data) {
+            $('#menu-select').html(data);
+        });
+    };
+
+    this.sortMenu = function(event, ui) {
+        var moved_row = ui.item;
+        var moved_row_id = $(moved_row).data('menuId');
+
+        var next_row = moved_row.next('li');
+        var next_row_id = $(next_row).data('menuId');
+
+        var prev_row = moved_row.prev('li');
+        var prev_row_id = $(prev_row).data('menuId');
+
+        $.get('index.php', {
+            module: 'menu',
+            command: 'move_menu',
+            move_id: moved_row_id,
+            next_id: next_row_id,
+            prev_id: prev_row_id
+        }, function(data) {
+            console.log(data);
+        }).always(function() {
+            //t.populateMenuSelect();
+        });
+    };
+
+
 
     this.deleteButton = function()
     {

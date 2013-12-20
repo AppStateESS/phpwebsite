@@ -27,12 +27,8 @@ class Menu_Admin {
             $command = 'list';
         }
 
+        // This is the AJAX switch. Byproduct of old module design :(
         switch ($command) {
-
-            case 'list':
-                $title = ('Menus');
-                $content = $this->menuList();
-                break;
 
             case 'adminlinks':
                 $this->adminLinks($request);
@@ -52,6 +48,10 @@ class Menu_Admin {
 
             case 'move_link':
                 $this->moveLink($request);
+                exit();
+
+            case 'move_menu':
+                $this->moveMenu($request);
                 exit();
 
             case 'move_under':
@@ -81,7 +81,22 @@ class Menu_Admin {
             case 'unpin_menu':
                 $this->unpinMenu($request);
                 exit();
-        } // end command switch
+
+            case 'change_display_type':
+                $this->changeDisplayType($request);
+                exit();
+        }
+
+        // This is the display switch or the HTML view switch
+        switch ($command) {
+            case 'list':
+                $title = ('Menus');
+                $content = $this->menuList();
+                break;
+
+            default:
+                throw new \Http\MethodNotAllowedException;
+        }
 
         $tpl['title'] = $title;
         $tpl['content'] = $content;
@@ -92,6 +107,13 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function changeDisplayType($request)
+    {
+        \PHPWS_Settings::set('menu', 'display_type',
+                (int) $request->getVar('display_type'));
+        \PHPWS_Settings::save('menu');
     }
 
     private function pinMenu($request)
@@ -262,6 +284,51 @@ class Menu_Admin {
         $move_link->save();
     }
 
+    private function moveMenu(\Request $request)
+    {
+        $move_id = $request->getVar('move_id');
+        $move_menu = new Menu_Item($move_id);
+
+        if ($request->isVar('next_id')) {
+            $next_id = $request->isVar('next_id');
+            $next_menu = new Menu_Item($next_id);
+        } else {
+            $next_id = 0;
+        }
+
+        if ($request->isVar('prev_id')) {
+            $prev_id = $request->isVar('prev_id');
+            $prev_menu = new Menu_Item($prev_id);
+        } else {
+            $prev_id = 0;
+        }
+
+        $db = \Database::newDB();
+        $tbl = $db->addTable('menus');
+
+        if ($next_id == 0) {
+            // moved to end of list
+            $exp = $db->addExpression('max(' . $tbl->getField('queue') . ')');
+            $last_queue = $db->selectOneRow();
+            $db->reset();
+            $tbl = $db->addTable('menus');
+            $tbl->addFieldConditional('queue', $move_menu->queue, '>');
+            $db->update();
+            $move_menu->queue = $last_queue;
+        } elseif ($prev_id == 0) {
+            // moved to beginning of list
+            $tbl->addFieldConditional('queue', 1, '>');
+            $db->update();
+            $move_menu->queue = 1;
+        } else {
+            // moved in the middle of list
+            //$tbl->addFieldConditional('queue', $move_menu->queue, '>');
+            $query = 'UPDATE menus SET menus.queue=menus.queue-1 WHERE menus.queue > ' . $move_menu->queue;
+            $db->exec($query);
+        }
+        $move_menu->save();
+    }
+
     private function postLink(\Request $request)
     {
         $link_id = $menu_id = $title = $url = $key_id = null;
@@ -318,7 +385,9 @@ class Menu_Admin {
     {
         $menu = new \Menu_Item($request->getVar('menu_id'));
         $menu->_show_all = true;
-        echo $menu->view(true);
+        $data['html'] = $menu->view(true);
+        $data['pin_all'] = $menu->pin_all;
+        echo json_encode($data);
     }
 
     private function menuList()
@@ -330,7 +399,7 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/administrate.html');
 
         $db = new PHPWS_DB('menus');
-        $db->addOrder('title');
+        $db->addOrder('queue');
         $result = $db->getObjects('Menu_Item');
         if (!empty($result)) {
             $first_menu = null;
@@ -358,7 +427,9 @@ class Menu_Admin {
         $vars['url_error'] = t('Please enter a url or choose a PageSmith page.');
         $vars['delete_menu_message'] = t('Are you sure you want to delete this menu and links?');
         $vars['edit'] = t('Edit');
-        $vars['title_error'] = 'Please enter a menu title';
+        $vars['title_error'] = t('Please enter a menu title');
+        $vars['pin_all'] = t('Shown on all pages');
+        $vars['pin_some'] = t('Shown on some pages');
 
         $jvar = json_encode($vars);
         $script = <<<EOF
@@ -373,6 +444,16 @@ EOF;
         foreach ($included_result as $menu_tpl) {
             $tpl['templates'] .= "<option>$menu_tpl</option>";
         }
+
+        $tpl['display_type'] = \PHPWS_Settings::get('menu', 'display_type');
+        if ($first_menu->pin_all) {
+            $tpl['pin_all'] = $vars['pin_all'];
+            $tpl['pin_button_class'] = 'btn-primary';
+        } else {
+            $tpl['pin_all'] = $vars['pin_some'];
+            $tpl['pin_button_class'] = 'btn-default';
+        }
+
         $template->addVariables($tpl);
         return $template->get();
     }

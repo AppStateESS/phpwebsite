@@ -298,6 +298,27 @@ Please download 1.2.1.</pre>';
 + Old graphic files removed.
 + Changed some working to make admin options more clear.
 </pre>';
+
+        case version_compare($currentVersion, '2.0.0', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $tbl->addDataType('queue', 'smallint')->add();
+
+            $tbl->addField('id');
+            $count = 0;
+            while ($id = $db->selectColumn()) {
+                $count++;
+                $tbl->addValue('queue', $count);
+                $tbl->addFieldConditional('id', $id);
+                $db->update();
+                $tbl->resetValues();
+                $db->clearConditional();
+            }
+
+            $content[] = '<pre>2.0.0 changes
+----------------
++ Rewrote large parts of administration
+</pre>';
     }
     return true;
 }

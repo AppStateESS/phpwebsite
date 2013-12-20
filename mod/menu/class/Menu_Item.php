@@ -16,6 +16,7 @@ class Menu_Item {
     public $title = NULL;
     public $template = NULL;
     public $pin_all = 0;
+    public $queue = 0;
     public $_db = NULL;
     public $_show_all = false;
     public $_style = null;
@@ -146,6 +147,17 @@ class Menu_Item {
         $new_menu = !(bool) $this->id;
 
         $this->resetdb();
+
+        if (!$this->id) {
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $exp = $db->addExpression('max(' . $tbl->getField('queue') . ')');
+            $queue = $db->selectColumn();
+            if ($queue) {
+                $this->queue = $queue + 1;
+            }
+        }
+
         $result = $this->_db->saveObject($this);
         if (PHPWS_Error::isError($result)) {
             throw new \Exception($result->getMessage());
@@ -219,7 +231,7 @@ class Menu_Item {
     {
         // If we have been here already, return the data
         if (isset($GLOBALS['MENU_LINKS'][$this->id])) {
-            return $GLOBALS['MENU_LINKS'][$this->id];
+            //return $GLOBALS['MENU_LINKS'][$this->id];
         }
 
         if (!$this->id) {
@@ -275,6 +287,10 @@ class Menu_Item {
         $db->addWhere('id', $this->id);
         $db->delete();
         Layout::purgeBox('menu_' . $this->id);
+
+        $db2 = \Database::newDB();
+        $tbl = $db2->addTable('menus');
+        $tbl->addFieldConditional('queue', $this->queue, '>');
     }
 
     public function addRawLink($title, $url, $parent = 0)
@@ -359,7 +375,6 @@ class Menu_Item {
         $content = PHPWS_Template::process($tpl, 'menu', $file);
 
         return $content;
-        //Layout::set($content, 'menu', $content_var);
     }
 
     public function reorderLinks()

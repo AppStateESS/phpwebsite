@@ -1,15 +1,25 @@
+<div class="form-group">
+    <select name="menu-display" id="menu-display" class="form-control">
+        <option <?=$display_type ? null : 'selected="selected"';?> value="0">Classic - Menus only shown on pages they are pinned</option>
+        <option <?=$display_type ? 'selected="selected"':null;?> value="1">Categorized with extra view - Menus only appear when a page is on it</option>
+    </select>
+</div>
 <button class="btn btn-success" id="create-menu" style="margin-bottom:1em"><?=t('Create menu');?></button>
 <div class="clearfix"></div>
 <div id="menu-list">
     <div id="menu-select">
-        <div>
+        <ul>
             <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
-            <button class="btn btn-default menu-edit" data-menu-id="<?=$id?>"><?=$title?></button>
-            <?php endforeach; endif;?></div>
+            <li data-menu-id="<?=$id?>"><a href="javascript:void(0)" class="btn btn-default menu-edit" data-menu-id="<?=$id?>"><?=$title?></a></li>
+            <?php endforeach; endif;?>
+        </ul>
     </div>
 </div>
 <div id="menu-admin">
-    <button class="btn btn-success" id="add-link"><?=t('Add link');?></button> <button class="btn btn-danger" id="delete-menu"><?=t('Delete menu');?></button><hr />
+    <button class="btn btn-success" id="add-link"><?=t('Add link');?></button>
+    <button class="btn btn-danger" id="delete-menu"><?=t('Delete menu');?></button>
+    <button class="btn <?=$pin_button_class?>" id="pinned-button"><?=$pin_all;?></button>
+    <hr />
     <div id="menu-admin-area">
         <?=$first_menu?>
     </div>

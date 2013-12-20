@@ -9,11 +9,16 @@
 #menu-select {
     padding : 5px;
 }
+#menu-select ul {
+    margin : 0px;
+    padding : 0px;
+    list-style-type: none;
+}
 
 #menu-admin {
     border : 1px solid black;
     border-radius: 6px;
-    width : 75%;
+    width : 78%;
     float : left;
     padding : 6px;
 }
@@ -53,7 +58,7 @@
     margin : 4px;
 }
 
-button.menu-edit {
+.menu-edit {
     min-width : 120px;
     margin-bottom : 6px;
 }
