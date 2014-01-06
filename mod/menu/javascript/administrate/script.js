@@ -193,6 +193,7 @@ function MenuAdmin() {
         this.editButtons();
         $('.link-edit').unbind('click');
         $('.link-edit').click(function() {
+            t.populateKeySelect();
             var link = $('a.menu-link-href', $(this).parents('.menu-link').first());
             t.input.title.val(link.html());
             t.link_id = link.data('linkId');
@@ -207,7 +208,8 @@ function MenuAdmin() {
                 t.input.url.val(t.url);
                 t.input.select(t.key_id);
                 $('.form-url-group').show();
-                $('.form-key-group').show();
+                $('.form-key-group').hide();
+                //$('.form-key-group').show();
             }
             t.link_modal.modal('show');
         });

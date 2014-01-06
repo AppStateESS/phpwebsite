@@ -382,7 +382,7 @@ class Menu {
         return !PHPWS_Error::logIfError($link->save());
     }
 
-    private static function getMenuListing($include_pin_all = true)
+    public static function getMenuListing($include_pin_all = true)
     {
         $db2 = \Database::newDB();
         $t2 = $db2->addTable('menus');
@@ -393,6 +393,53 @@ class Menu {
         }
         $menus = $db2->select();
         return $menus;
+    }
+
+    public static function categoryView()
+    {
+        $active_menu = self::getCurrentActiveMenu();
+        if ($active_menu == 0) {
+            $menu_tpl['home_active'] = 1;
+        } else {
+            $menu_tpl['home_active'] = 0;
+        }
+
+        $db = \Database::newDB();
+        $t = $db->addTable('menus');
+        $t->addOrderBy($t->getField('queue'));
+        $menus = $db->select();
+        foreach ($menus as $m) {
+            $menu = new Menu_Item;
+            PHPWS_Core::plugObject($menu, $m);
+            $menu->init();
+            $menu->_show_all = true;
+            $active = $active_menu == $menu->id ? 1 : 0;
+            if ($active) {
+                $menu->template = 'basic';
+                Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
+            }
+            $menu_tpl['menus'][] = array('active' => $active, 'title' => $menu->title, 'links' => $menu->displayLinks());
+        }
+        $template = new \Template($menu_tpl);
+        $template->setModuleTemplate('menu', 'category_menu.html');
+        \Layout::add($template->get(), 'menu', 'top_view');
+    }
+
+    private static function getCurrentActiveMenu()
+    {
+        $key = \Key::getCurrent(true);
+        if (empty($key) || $key->isDummy(true)) {
+            return -1;
+        } elseif ($key->isHomeKey()) {
+            return 0;
+        }
+        $db = \Database::newDB();
+        $t = $db->addTable('menu_links');
+        $t->addFieldConditional('key_id', $key->id);
+        $t->addField('menu_id');
+        $db->setLimit(1);
+        $row = $db->selectOneRow();
+        return $row['menu_id'];
     }
 
 }
