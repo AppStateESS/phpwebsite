@@ -42,6 +42,7 @@
                 </div><!--/.nav-collapse -->
             </div>
         </div>
+        <div>{MENU_TOP_VIEW}</div>
         {CAROUSEL_SLIDES}
         <div id="hero">
             <div class="row">

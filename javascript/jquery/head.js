@@ -1,1 +1,1 @@
-<script type="text/javascript" src="{source_http}javascript/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="{source_http}javascript/jquery/jquery-2.0.3.min.js"></script>
