@@ -12,6 +12,9 @@ class Template implements View {
     private $encode = false;
     private $encode_type = ENT_QUOTES;
     private $content_type;
+    private $allow_theme = false;
+    private $theme_file;
+    private $using_module_file = false;
 
     /**
      * @param array|null $variables Values shown inside the template
@@ -76,7 +79,9 @@ class Template implements View {
 
     public function setModuleTemplate($module, $file)
     {
+        $this->using_module_file = true;
         $this->setFile(PHPWS_SOURCE_DIR . "mod/$module/templates/$file");
+        $this->setThemeFile($module, $file);
     }
 
     public function setFile($file)
@@ -85,6 +90,13 @@ class Template implements View {
             throw new \Exception(t('Template file not found: %s', $file));
         }
         $this->file = $file;
+    }
+
+    public function setThemeFile($module, $file)
+    {
+        $current_theme = \Layout::getCurrentTheme();
+        $this->theme_file = implode('',
+                array(PHPWS_SOURCE_DIR, 'themes/', $current_theme, '/', 'templates/', $module, '/', $file));
     }
 
     /**
@@ -120,9 +132,14 @@ class Template implements View {
         }
         $template_content_array = $this->encode ? $this->encode($this->variables) : $this->variables;
         extract($template_content_array);
+        if ($this->using_module_file && is_file($this->theme_file)) {
+            $template_file = $this->theme_file;
+        } else {
+            $template_file = $this->file;
+        }
         try {
             ob_start();
-            include $this->file;
+            include $template_file;
             $result = ob_get_contents();
             ob_end_clean();
         } catch (\Exception $e) {
