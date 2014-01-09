@@ -10,15 +10,16 @@
     <div id="menu-select">
         <ul>
             <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
-            <li data-menu-id="<?=$id?>"><a href="javascript:void(0)" class="btn btn-default menu-edit" data-menu-id="<?=$id?>"><?=$title?></a></li>
+            <li data-menu-id="<?=$id?>"><a href="javascript:void(0)" class="btn btn-default menu-edit <?=$active?>" data-menu-id="<?=$id?>"><?=$title?></a></li>
             <?php endforeach; endif;?>
         </ul>
     </div>
 </div>
 <div id="menu-admin">
+    <button class="btn btn-default" id="edit-menu"><?=t('Edit menu');?></button>
     <button class="btn btn-success" id="add-link"><?=t('Add link');?></button>
     <button class="btn btn-danger" id="delete-menu"><?=t('Delete menu');?></button>
-    <button class="btn <?=$pin_button_class?>" id="pinned-button"><?=$pin_all;?></button>
+    <?php if ($pin_all):?><button class="btn <?=$pin_button_class?>" id="pinned-button"><?=$pin_all;?></button><?php endif;?>
     <hr />
     <div id="menu-admin-area">
         <?=$first_menu?>

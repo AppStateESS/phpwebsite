@@ -2,6 +2,7 @@ var menu_admin = new MenuAdmin;
 // assigned by Menu_Admin::menuList
 $(window).load(function() {
     menu_admin.menu_id = translate.first_menu_id;
+    menu_admin.selected_menu_id = menu_admin.menu_id;
     menu_admin.init();
 });
 
@@ -13,6 +14,7 @@ function MenuAdmin() {
     var link_id;
     var key_id;
     var menu_id;
+    var selected_menu_id;
 
     var link_modal;
     var menu_modal;
@@ -38,7 +40,7 @@ function MenuAdmin() {
         this.reset = function() {
             this.title.val('');
             this.url.val('');
-            this.select('--');
+            this.select('0');
             $('.form-url-group').show();
             $('.form-key-group').show();
         };
@@ -58,7 +60,7 @@ function MenuAdmin() {
 
         this.locationSwitch = function() {
             this.url.focus(function() {
-                inp.select('--');
+                inp.select('0');
             });
 
             this.key_select.focus(function() {
@@ -102,6 +104,7 @@ function MenuAdmin() {
 
         this.keyChange();
         this.addLinkButton();
+        this.editMenuButton();
         this.deleteMenuButton();
         this.saveMenuButton();
         this.displayType();
@@ -113,6 +116,7 @@ function MenuAdmin() {
         this.menu_modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
             t.alert.hide();
+            t.menu_id = t.selected_menu_id;
         });
     };
 
@@ -133,6 +137,9 @@ function MenuAdmin() {
 
     this.createMenu = function() {
         $('#create-menu').click(function() {
+            t.menu_id = 0;
+            $('#menu-title').val('');
+            $('#menu-template option:selected').removeAttr('selected');
             t.menu_modal.modal('show');
         });
     };
@@ -141,7 +148,7 @@ function MenuAdmin() {
         this.preventClick();
         this.editLink();
         this.initSort();
-    }
+    };
 
     this.preventClick = function() {
         $('#menu-admin-area .menu-link-href').click(function(e) {
@@ -209,7 +216,6 @@ function MenuAdmin() {
                 t.input.select(t.key_id);
                 $('.form-url-group').show();
                 $('.form-key-group').hide();
-                //$('.form-key-group').show();
             }
             t.link_modal.modal('show');
         });
@@ -235,7 +241,8 @@ function MenuAdmin() {
             } else {
                 $.post('index.php', {
                     module: 'menu',
-                    command: 'post_new_menu',
+                    command: 'post_menu',
+                    menu_id: t.menu_id,
                     title: $('#menu-title').val(),
                     template: $('#menu-template option:selected').val()
                 }, function(data) {
@@ -280,9 +287,8 @@ function MenuAdmin() {
             t.alert.show();
             return false;
         }
-
-        if (t.input.url.val().length < 1 &&
-                $('option:selected', t.input.key_select).val() === '--') {
+        if (t.key_id === '0' && t.input.url.val().length < 1 &&
+                $('option:selected', t.input.key_select).val() === '0') {
             t.alert.html(translate.url_error);
             t.alert.show();
             return false;
@@ -303,6 +309,9 @@ function MenuAdmin() {
         $('.menu-edit').unbind('click');
         $('.menu-edit').click(function() {
             t.menu_id = $(this).data('menuId');
+            t.selected_menu_id = t.menu_id;
+            $('#menu-select ul li a').removeClass('active');
+            $(this).addClass('active');
             t.populateMenuEdit();
         });
     };
@@ -319,6 +328,27 @@ function MenuAdmin() {
                 t.input.reset();
                 t.populateKeySelect();
                 t.link_modal.modal('show');
+            });
+        }
+    };
+
+    this.editMenuButton = function() {
+        if (t.menu_id === undefined || t.menu_id < 1) {
+            $('#edit-menu').hide();
+        } else {
+            $('#edit-menu').show();
+            $('#edit-menu').click(function() {
+                t.menu_id = t.selected_menu_id;
+                $.get('index.php', {
+                    module: 'menu',
+                    command: 'menu_data',
+                    menu_id: t.menu_id
+                }, function(data) {
+                    $('#menu-title').val(data.title);
+                    $('#menu-template>option:selected').removeAttr('selected');
+                    $('#menu-template>option[value="' + data.template + '"]').attr('selected');
+                }, 'json');
+                t.menu_modal.modal('show');
             });
         }
     };

@@ -70,7 +70,7 @@ class Menu_Admin {
                 $this->deleteMenu($request);
                 exit();
 
-            case 'post_new_menu':
+            case 'post_menu':
                 $this->postMenu($request);
                 exit();
 
@@ -87,6 +87,10 @@ class Menu_Admin {
                 exit();
 
             case 'populate_menu_select':
+                exit();
+
+            case 'menu_data':
+                $this->menuData($request);
                 exit();
         }
 
@@ -110,6 +114,12 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function menuData($request)
+    {
+        $menu = new Menu_Item($request->getVar('menu_id'));
+        echo json_encode(array('title' => $menu->title, 'template' => $menu->template));
     }
 
     private function changeDisplayType($request)
@@ -141,7 +151,7 @@ class Menu_Admin {
     {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
-        $menu = new Menu_Item;
+        $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->setTitle($title);
         $menu->setTemplate($template);
         $menu->save();
@@ -403,7 +413,7 @@ class Menu_Admin {
             $link = new Menu_Link;
             $link->setTitle($title);
             $link->setMenuId($menu_id);
-            if ($key_id !== '--') {
+            if ($key_id !== '0') {
                 $key = new Key($key_id);
                 $link->setKeyId($key_id);
                 $url = $key->url;
@@ -424,11 +434,17 @@ class Menu_Admin {
         $key->addField('title');
         $key->addFieldConditional('active', 1);
         $key->addFieldConditional('module', 'pagesmith');
+
+        // We do not all duplicate menu links
+        $links = $db->buildTable('menu_links');
+        $db->addConditional($links->getFieldConditional('key_id', null, 'is'));
+        $db->join($key->getField('id'), $links->getField('key_id'), 'left');
+
         $key_list = $db->select();
         if (empty($key_list)) {
             return;
         }
-        $opt[] = '<option value="--"></option>';
+        $opt[] = '<option value="0"></option>';
         foreach ($key_list as $k) {
             extract($k);
             $opt[] = "<option value='$id'>$title</option>";
@@ -470,8 +486,11 @@ class Menu_Admin {
                 $menu->_show_all = true;
                 if (empty($first_menu)) {
                     $first_menu = $menu;
+                    $active = 'active';
+                } else {
+                    $active = null;
                 }
-                $tpl['menus'][] = array('title' => $menu->title, 'id' => $menu->id);
+                $tpl['menus'][] = array('title' => $menu->title, 'id' => $menu->id, 'active' => $active);
             }
             $tpl['first_menu'] = $first_menu->view(true);
             $first_menu_id = $first_menu->id;
@@ -490,8 +509,14 @@ class Menu_Admin {
         $vars['delete_menu_message'] = t('Are you sure you want to delete this menu and links?');
         $vars['edit'] = t('Edit');
         $vars['title_error'] = t('Please enter a menu title');
-        $vars['pin_all'] = t('Shown on all pages');
-        $vars['pin_some'] = t('Shown on some pages');
+
+        if (PHPWS_Settings::get('menu', 'display_type')) {
+            $vars['pin_all'] = null;
+            $vars['pin_some'] = null;
+        } else {
+            $vars['pin_all'] = t('Shown on all pages');
+            $vars['pin_some'] = t('Shown on some pages');
+        }
 
         $jvar = json_encode($vars);
         $script = <<<EOF
@@ -508,7 +533,7 @@ EOF;
         }
 
         $tpl['display_type'] = \PHPWS_Settings::get('menu', 'display_type');
-        if ($first_menu->pin_all) {
+        if (isset($first_menu) && $first_menu->pin_all) {
             $tpl['pin_all'] = $vars['pin_all'];
             $tpl['pin_button_class'] = 'btn-primary';
         } else {
