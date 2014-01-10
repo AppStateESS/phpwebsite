@@ -260,8 +260,6 @@ class Menu_Admin {
                     $ml->addFieldConditional($lorder, $move_link_order, '<');
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
-                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.link_order >= $next_link_order AND menu_links.link_order < $move_link_order AND menu_links.parent = $next_parent)";
-                    //$db->exec($query);
                     $move_link->link_order = $next_link_order;
                 } else {
                     // the link was moved AFTER another link
@@ -273,8 +271,6 @@ class Menu_Admin {
                     $ml->addFieldConditional($lorder, $move_link_order, '>');
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
-                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order < $next_link_order AND menu_links.link_order > $move_link_order AND menu_links.parent = $next_parent)";
-                    //$db->exec($query);
                     $move_link->link_order = $next_link_order - 1;
                 }
             } else {
@@ -288,8 +284,6 @@ class Menu_Admin {
                             $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
-                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.parent = $next_parent)";
-                    //$db->exec($query);
                     $move_link->link_order = 1;
                 } else {
                     // there is a previous link so we number from there
@@ -300,8 +294,6 @@ class Menu_Admin {
                     $ml->addFieldConditional($lorder, $prev_link_order, '>');
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
-                    //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order+1 WHERE (menu_links.link_order > $prev_link_order AND menu_links.parent = $next_parent)";
-                    //$db->exec($query);
                     $move_link->link_order = $prev_link_order + 1;
                 }
                 // reset links where moved item was
@@ -312,8 +304,6 @@ class Menu_Admin {
                 $ml->addFieldConditional($lorder, $move_link_order, '>');
                 $ml->addFieldConditional('parent', $move_parent);
                 $db->update();
-                //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
-                //$db->exec($query);
             }
         } else {
             // moved item is at the end of a list
@@ -325,8 +315,6 @@ class Menu_Admin {
                 $ml->addFieldConditional($lorder, $move_link_order, '>');
                 $ml->addFieldConditional('parent', $move_parent);
                 $db->update();
-                //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $prev_parent)";
-                //$db->exec($query);
                 $move_link->link_order = $prev_link_order;
             } else {
                 // moved item is on a different level, reset links where moved link was
@@ -336,8 +324,6 @@ class Menu_Admin {
                 $ml->addFieldConditional($lorder, $move_link_order, '>');
                 $ml->addFieldConditional('parent', $move_parent);
                 $db->update();
-                //$query = "UPDATE menu_links SET menu_links.link_order=menu_links.link_order-1 WHERE (menu_links.link_order > $move_link_order AND menu_links.parent = $move_parent)";
-                //$db->exec($query);
                 $move_link->link_order = $prev_link_order + 1;
                 $move_link->parent = $prev_parent;
             }
@@ -435,19 +421,25 @@ class Menu_Admin {
         $key->addFieldConditional('active', 1);
         $key->addFieldConditional('module', 'pagesmith');
 
-        // We do not all duplicate menu links
-        $links = $db->buildTable('menu_links');
-        $db->addConditional($links->getFieldConditional('key_id', null, 'is'));
-        $db->join($key->getField('id'), $links->getField('key_id'), 'left');
-
         $key_list = $db->select();
         if (empty($key_list)) {
             return;
         }
+
+        $db2 = \Database::newDB();
+        $db2->addTable('menu_links')->addField('key_id');
+        while ($key_id = $db2->selectColumn()) {
+            $keys[] = $key_id;
+        }
         $opt[] = '<option value="0"></option>';
         foreach ($key_list as $k) {
+            $id = $title = null;
             extract($k);
-            $opt[] = "<option value='$id'>$title</option>";
+            if (in_array($id, $keys)) {
+                $opt[] = '<option value="$id" disabled="disabled">*' . $title . '</option>';
+            } else {
+                $opt[] = "<option value='$id'>$title</option>";
+            }
         }
         echo implode("\n", $opt);
     }
@@ -473,6 +465,8 @@ class Menu_Admin {
         \Layout::addStyle('menu', 'admin.css');
         javascript('jquery');
         javascript('jquery_ui');
+        javascript('select2');
+
         $template = new \Template;
         $template->setModuleTemplate('menu', 'admin/administrate.html');
 

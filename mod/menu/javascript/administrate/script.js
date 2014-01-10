@@ -4,6 +4,7 @@ $(window).load(function() {
     menu_admin.menu_id = translate.first_menu_id;
     menu_admin.selected_menu_id = menu_admin.menu_id;
     menu_admin.init();
+    $('#form-key-select').select2();
 });
 
 
