@@ -109,6 +109,7 @@ function MenuAdmin() {
         this.deleteMenuButton();
         this.saveMenuButton();
         this.displayType();
+        this.populateKeySelect();
 
         this.link_modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
@@ -201,7 +202,7 @@ function MenuAdmin() {
         this.editButtons();
         $('.link-edit').unbind('click');
         $('.link-edit').click(function() {
-            t.populateKeySelect();
+            //t.populateKeySelect();
             var link = $('a.menu-link-href', $(this).parents('.menu-link').first());
             t.input.title.val(link.html());
             t.link_id = link.data('linkId');
@@ -245,7 +246,8 @@ function MenuAdmin() {
                     command: 'post_menu',
                     menu_id: t.menu_id,
                     title: $('#menu-title').val(),
-                    template: $('#menu-template option:selected').val()
+                    template: $('#menu-template option:selected').val(),
+                    assoc_key: $('#menu-associated-page option:selected').val()
                 }, function(data) {
                     //console.log(data);
                 }).always(function() {
@@ -303,6 +305,7 @@ function MenuAdmin() {
             command: 'key_select'
         }, function(data) {
             t.input.key_select.html(data);
+            $('#menu-associated-page').html(data);
         });
     };
 
@@ -327,7 +330,6 @@ function MenuAdmin() {
                 t.link_id = 0;
                 t.initFormButtons();
                 t.input.reset();
-                t.populateKeySelect();
                 t.link_modal.modal('show');
             });
         }
@@ -347,7 +349,9 @@ function MenuAdmin() {
                 }, function(data) {
                     $('#menu-title').val(data.title);
                     $('#menu-template>option:selected').removeAttr('selected');
-                    $('#menu-template>option[value="' + data.template + '"]').attr('selected');
+                    $('#menu-template>option[value="' + data.template + '"]').attr('selected', 'selected');
+                    $('#menu-associated-page>option:selected').removeAttr('selected');
+                    $('#menu-associated-page>option[value="' + data.assoc_key + '"]').attr('selected', 'selected');
                 }, 'json');
                 t.menu_modal.modal('show');
             });

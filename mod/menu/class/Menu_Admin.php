@@ -119,7 +119,7 @@ class Menu_Admin {
     private function menuData($request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
-        echo json_encode(array('title' => $menu->title, 'template' => $menu->template));
+        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key'=>$menu->getAssocKey()));
     }
 
     private function changeDisplayType($request)
@@ -151,9 +151,11 @@ class Menu_Admin {
     {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
+        $assoc_key = $request->getVar('assoc_key');
         $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->setTitle($title);
         $menu->setTemplate($template);
+        $menu->setAssocKey($assoc_key);
         $menu->save();
     }
 
@@ -436,7 +438,7 @@ class Menu_Admin {
             $id = $title = null;
             extract($k);
             if (in_array($id, $keys)) {
-                $opt[] = '<option value="$id" disabled="disabled">*' . $title . '</option>';
+                $opt[] = '<option disabled="disabled">*' . $title . '</option>';
             } else {
                 $opt[] = "<option value='$id'>$title</option>";
             }

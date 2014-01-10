@@ -318,7 +318,18 @@ Please download 1.2.1.</pre>';
             $content[] = '<pre>2.0.0 changes
 ----------------
 + Rewrote large parts of administration
++ Category view for menus
 </pre>';
+
+        case version_compare($currentVersion, '2.0.1', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $tbl->addDataType('assoc_key', 'int')->add();
+            $content[] = '<pre>2.0.1 changes
+----------------
++ Can associate page to a menu
+</pre>';
+
     }
     return true;
 }

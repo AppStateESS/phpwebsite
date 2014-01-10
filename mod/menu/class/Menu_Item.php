@@ -17,6 +17,7 @@ class Menu_Item {
     public $template = NULL;
     public $pin_all = 0;
     public $queue = 0;
+    public $assoc_key;
     public $_db = NULL;
     public $_show_all = false;
     public $_style = null;
@@ -74,6 +75,16 @@ class Menu_Item {
     public function setTemplate($template)
     {
         $this->template = $template;
+    }
+
+    public function setAssocKey($key)
+    {
+        $this->assoc_key = (int)$key;
+    }
+
+    public function getAssocKey()
+    {
+        return $this->assoc_key;
     }
 
     public function setPinAll($pin)

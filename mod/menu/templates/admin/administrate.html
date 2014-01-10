@@ -44,7 +44,7 @@
                         <label for="form-url"><?=t('PageSmith page');?></label>
                         <select name="key_select" class="form-control" id="form-key-select">
                         </select>
-                        <p>* <?=t('Link already in use');?></p>
+                        <p>* <?=t('Page already associated to a menu');?></p>
                     </div>
                 </form>
             </div>
@@ -71,6 +71,12 @@
                         <select name="menu_template" id="menu-template" class="form-control">
                             <?=$templates?>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="menu-associated-page"><?=t('Associated page');?></label>
+                        <select name="assoc_key" id="menu-associated-page" class="form-control">
+                        </select>
+                         <p>* <?=t('Page already associated to a menu');?></p>
                     </div>
                 </form>
             </div>

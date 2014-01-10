@@ -19,6 +19,8 @@ CREATE TABLE menus (
   template varchar(50) NOT NULL,
   restricted smallint NOT NULL default 0,
   pin_all smallint NOT NULL default 0,
+  queue smallint NOT NULL default 0,
+  assoc_key int not null default 0,
   PRIMARY KEY  (id)
 );
 
