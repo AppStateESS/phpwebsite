@@ -1,0 +1,8 @@
+<li class="dropdown <?=$active ?'active':null?>">
+    <a class="dropdown-toggle" data-toggle='dropdown' href='#'><?=$title?> <span class='caret'></span></a>
+    <?php if (!empty($links)): ?>
+    <ul class='menu-top-links dropdown-menu'>
+        <?=$links?>
+    </ul>
+    <?php endif;?>
+</li>
