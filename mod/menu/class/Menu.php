@@ -405,26 +405,63 @@ class Menu {
         }
 
         $db = \Database::newDB();
-        $t = $db->addTable('menus');
-        $t->addOrderBy($t->getField('queue'));
+        $m = $db->addTable('menus');
+        $k = $db->addTable('phpws_key');
+        $k->addField('url');
+        $db->joinResources($m, $k,
+                $db->createConditional($m->getField('assoc_key'),
+                        $k->getField('id'), '='), 'left');
+        $m->addOrderBy($m->getField('queue'));
+
+        $key = \Key::getCurrent();
+        if ($key) {
+            $current_key_id = $key->id;
+        } else {
+            $current_key_id = null;
+        }
+
         $menus = $db->select();
         foreach ($menus as $m) {
             $menu = new Menu_Item;
             PHPWS_Core::plugObject($menu, $m);
-            $menu->init();
             $menu->_show_all = true;
-            $active = $active_menu == $menu->id ? 1 : 0;
-            if ($active) {
-                $menu->template = 'basic';
+            $menu->setAssocUrl($m['url']);
+            // if the current menu matches a used link (either by it being in the
+            // in the menu or associated to it) mark as ACTIVE
+            $active = ($active_menu == $menu->id || $current_key_id == $menu->assoc_key) ? 1 : 0;
+            // if there is not an assoc key, them menu is using drop downs, so
+            // we do not add the side menu
+            if ($active && $menu->assoc_key) {
                 Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
             }
-            $menu_tpl['menus'][] = array('active' => $active, 'title' => $menu->title, 'links' => $menu->displayLinks());
+
+            $menu_tpl['menus'][] = self::getCategoryViewLine($menu, $active);
         }
         $template = new \Template($menu_tpl);
-        $template->setModuleTemplate('menu', 'category_menu.html');
+        $template->setModuleTemplate('menu', 'category_view/category_menu.html');
         \Layout::add($template->get(), 'menu', 'top_view');
     }
 
+    private static function getCategoryViewLine($menu, $active)
+    {
+        $template = new \Template();
+        $line = array('active' => $active, 'title' => $menu->title, 'assoc_key' => $menu->assoc_key);
+        if ($menu->assoc_key) {
+            $line['assoc_url'] = $menu->getAssocUrl();
+            $template->setModuleTemplate('menu', 'category_view/associated_menu.html');
+        } else {
+            $line['links'] = $menu->displayLinks();
+            $template->setModuleTemplate('menu', 'category_view/dropdown_menu.html');
+        }
+        $template->addVariables($line);
+        return $template->get();
+    }
+
+    /**
+     * Determines the current menu to be shown based on the current key.
+     * This is for category view only.
+     * @return int
+     */
     private static function getCurrentActiveMenu()
     {
         $key = \Key::getCurrent(true);

@@ -22,6 +22,7 @@ class Menu_Item {
     public $_show_all = false;
     public $_style = null;
     public $_error = NULL;
+    private $assoc_url;
 
     public function __construct($id = NULL)
     {
@@ -52,12 +53,32 @@ class Menu_Item {
         if (!isset($this->id)) {
             return FALSE;
         }
+        $db = \Database::newDB();
+        $m = $db->addTable('menus');
+        $k = $db->addTable('phpws_key');
+        $k->addField('url');
+        $db->joinResources($m, $k, $db->createConditional($m->getField('assoc_key'), $k->getField('id'), '='), 'left');
+        $m->addFieldConditional('id', $this->id);
 
-        $this->resetdb();
-        $result = $this->_db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
-            throw new \Exception($result->getMessage());
-        }
+        $result = $db->selectOneRow();
+        $this->id = $result['id'];
+        $this->key_id = $result['key_id'];
+        $this->title = $result['title'];
+        $this->template = $result['template'];
+        $this->pin_all = $result['pin_all'];
+        $this->queue = $result['queue'];
+        $this->assoc_key = $result['assoc_key'];
+        $this->assoc_url = $result['url'];
+    }
+
+    public function getAssocUrl()
+    {
+        return $this->assoc_url;
+    }
+
+    public function setAssocUrl($url)
+    {
+        $this->assoc_url = $url;
     }
 
     public function getTitle()
