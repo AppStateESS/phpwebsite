@@ -680,10 +680,7 @@ class PHPWS_Core {
      */
     public static function checkBranch()
     {
-        if (substr(php_sapi_name(), 0, 3) == 'cgi' && PHPWS_SOURCE_DIR == getcwd() . '/') {
-            $GLOBALS['Is_Branch'] = false;
-            return true;
-        } elseif (str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
+        if (substr(php_sapi_name(), 0, 3) != 'cli' && PHPWS_SOURCE_DIR == getcwd() . '/') {
             $GLOBALS['Is_Branch'] = false;
             return true;
         } else {
