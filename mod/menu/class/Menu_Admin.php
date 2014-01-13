@@ -92,6 +92,10 @@ class Menu_Admin {
             case 'menu_data':
                 $this->menuData($request);
                 exit();
+
+            case 'pin_all':
+                $this->menuPinAll($request);
+                exit();
         }
 
         // This is the display switch or the HTML view switch
@@ -114,6 +118,14 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function menuPinAll($request)
+    {
+        $menu = new Menu_Item($request->getVar('menu_id'));
+        $menu->pin_all = $request->getVar('pin_all') ? 1 : 0;
+        echo 'menu pin_all is ' . $menu->pin_all;
+        $menu->save();
     }
 
     private function menuData($request)
@@ -489,6 +501,7 @@ class Menu_Admin {
                 $tpl['menus'][] = array('title' => $menu->title, 'id' => $menu->id, 'active' => $active);
             }
             $tpl['first_menu'] = $first_menu->view(true);
+            $first_menu_pin_all = $first_menu->pin_all;
             $first_menu_id = $first_menu->id;
         } else {
             $first_menu_id = 0;
@@ -516,7 +529,7 @@ class Menu_Admin {
 
         $jvar = json_encode($vars);
         $script = <<<EOF
-<script type="text/javascript">var translate = $jvar;</script>
+<script type="text/javascript">var translate = $jvar; var fmp=$first_menu_pin_all;</script>
 EOF;
         \Layout::addJSHeader($script);
         \Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/menu/javascript/administrate/script.js"></script>');

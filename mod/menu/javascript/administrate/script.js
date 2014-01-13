@@ -91,6 +91,7 @@ function MenuAdmin() {
         this.input.init();
         this.button = new Button;
         this.button.init();
+        this.pin_all = fmp;
         this.pinned_button = $('#pinned-button');
 
         this.alert = $('.warning');
@@ -108,6 +109,7 @@ function MenuAdmin() {
         this.editMenuButton();
         this.deleteMenuButton();
         this.saveMenuButton();
+        this.pinnedMenuButton();
         this.displayType();
         this.populateKeySelect();
 
@@ -233,6 +235,30 @@ function MenuAdmin() {
 
     this.loadKeyId = function() {
         this.key_id = this.input.getSelectedKeyId();
+    };
+
+    this.pinnedMenuButton = function()
+    {
+        var change_pin_all = 0;
+        t.pinned_button.click(function() {
+            if (t.pin_all) {
+                change_pin_all = 0;
+            } else {
+                change_pin_all = 1;
+            }
+            console.log('sending ' + change_pin_all);
+            $.get('index.php', {
+                module: 'menu',
+                command: 'pin_all',
+                menu_id: t.menu_id,
+                pin_all: change_pin_all
+            }, function(data) {
+                //console.log(data);
+            }).always(function() {
+                t.pin_all = change_pin_all;
+                t.populateMenuEdit();
+            });
+        });
     };
 
     this.saveMenuButton = function() {
@@ -385,10 +411,12 @@ function MenuAdmin() {
         }, function(data) {
             $('#menu-admin-area').html(data.html);
             if (data.pin_all == '1') {
+                t.pin_all = 1;
                 t.pinned_button.html(translate.pin_all);
                 t.pinned_button.removeClass('btn-default');
                 t.pinned_button.addClass('btn-primary');
             } else {
+                t.pin_all = 0;
                 t.pinned_button.removeClass('btn-primary');
                 t.pinned_button.addClass('btn-default');
                 t.pinned_button.html(translate.pin_some);
