@@ -257,6 +257,7 @@ class Menu_Link {
                 $current_link = true;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
+                $template['ACTIVE'] = 'active'; // booststrap theme
             }
         }
         if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl() && $this->url != 'index.php') {

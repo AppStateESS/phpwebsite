@@ -57,7 +57,9 @@ class Menu_Item {
         $m = $db->addTable('menus');
         $k = $db->addTable('phpws_key');
         $k->addField('url');
-        $db->joinResources($m, $k, $db->createConditional($m->getField('assoc_key'), $k->getField('id'), '='), 'left');
+        $db->joinResources($m, $k,
+                $db->createConditional($m->getField('assoc_key'),
+                        $k->getField('id'), '='), 'left');
         $m->addFieldConditional('id', $this->id);
 
         $result = $db->selectOneRow();
@@ -100,7 +102,7 @@ class Menu_Item {
 
     public function setAssocKey($key)
     {
-        $this->assoc_key = (int)$key;
+        $this->assoc_key = (int) $key;
     }
 
     public function getAssocKey()
@@ -356,9 +358,9 @@ class Menu_Item {
         return $link->save();
     }
 
-    public function parseIni()
+    private function parseIni($directory)
     {
-        $inifile = PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
+        $inifile = $directory . 'options.ini';
         if (!is_file($inifile)) {
             return;
         }
@@ -366,7 +368,6 @@ class Menu_Item {
         $results = parse_ini_file($inifile);
         if (!empty($results['show_all'])) {
             $this->_show_all = (bool) $results['show_all'];
-            ;
         }
 
         if (!empty($results['style_sheet'])) {
@@ -384,27 +385,39 @@ class Menu_Item {
             return;
         }
 
-        $tpl_dir = PHPWS_Template::getTemplateDirectory('menu');
-        $file = 'menu_layout/' . $this->template . '/menu.tpl';
+        $theme_tpl_dir = \PHPWS_Template::getTplDir('menu') . 'menu_layout/';
+        $menu_tpl_dir = PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/';
 
-        if (!is_file($tpl_dir . $file)) {
-            PHPWS_Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view',
-                    $tpl_dir . $file);
-            return false;
+        $theme_path = $theme_tpl_dir . $this->template . '/';
+        $menu_path = $menu_tpl_dir . $this->template . '/';
+
+        if (is_file($theme_path. 'menu.tpl')) {
+            $file = $theme_path . 'menu.tpl';
+            $path = $theme_path;
+            $http = PHPWS_SOURCE_HTTP . Layout::getThemeDirRoot() . Layout::getTheme() . 'templates/menu_layout/' . $this->template . '/';
+        } elseif (is_file($menu_path . 'menu.tpl')) {
+            $file = $menu_path . 'menu.tpl';
+            $path = $menu_path;
+            $http = PHPWS_SOURCE_HTTP . 'mod/menu/templates/menu_layout/' . $this->template . '/';
+        } else {
+            $this->template = 'basic';
+            $this->save();
+            $path = $menu_tpl_dir . 'basic/';
+            $http = PHPWS_SOURCE_HTTP . 'mod/menu/templates/menu_layout/basic/';
+            $file = $path . '/menu.tpl';
         }
 
-        $this->parseIni();
+        $this->parseIni($path);
 
         if ($this->_style) {
-            $style = sprintf('menu_layout/%s/%s', $this->template, $this->_style);
-            //Layout::addStyle('menu', $style);
+            $style = $http . 'style.css';
+            Layout::addStyle('menu', $style);
         }
 
         $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($admin);
         $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
-
-        $content = PHPWS_Template::process($tpl, 'menu', $file);
+        $content = PHPWS_Template::process($tpl, 'menu', $file, true);
 
         return $content;
     }

@@ -86,9 +86,6 @@ class Menu_Admin {
                 $this->changeDisplayType($request);
                 exit();
 
-            case 'populate_menu_select':
-                exit();
-
             case 'menu_data':
                 $this->menuData($request);
                 exit();
@@ -131,7 +128,7 @@ class Menu_Admin {
     private function menuData($request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
-        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key'=>$menu->getAssocKey()));
+        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key' => $menu->getAssocKey()));
     }
 
     private function changeDisplayType($request)
@@ -490,7 +487,6 @@ class Menu_Admin {
         if (!empty($result)) {
             $first_menu = null;
             foreach ($result as $menu) {
-                $menu->template = 'basic';
                 $menu->_show_all = true;
                 if (empty($first_menu)) {
                     $first_menu = $menu;
@@ -500,6 +496,9 @@ class Menu_Admin {
                 }
                 $tpl['menus'][] = array('title' => $menu->title, 'id' => $menu->id, 'active' => $active);
             }
+            $first_menu_template = $first_menu->template;
+            // for display, use the admin template
+            $first_menu->template = 'admin';
             $tpl['first_menu'] = $first_menu->view(true);
             $first_menu_pin_all = $first_menu->pin_all;
             $first_menu_id = $first_menu->id;
@@ -534,12 +533,34 @@ EOF;
         \Layout::addJSHeader($script);
         \Layout::addJSHeader('<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/menu/javascript/administrate/script.js"></script>');
 
-        $included_result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
+        $main_menu_templates = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
+        $theme_menu_templates = PHPWS_File::listDirectories(PHPWS_Template::getTplDir('menu') . 'menu_layout/');
 
-        $tpl['templates'] = null;
-        foreach ($included_result as $menu_tpl) {
-            $tpl['templates'] .= "<option>$menu_tpl</option>";
+        $menu_tpls[] = '<optgroup label="' . t('Menu module templates') . '">';
+        foreach ($main_menu_templates as $menu_tpl) {
+            if ($first_menu_template == $menu_tpl) {
+                $selected = ' selected="selected"';
+            } else {
+                $selected = null;
+            }
+            $menu_tpls[] = "<option$selected>$menu_tpl</option>";
         }
+        $menu_tpls[] = '</optgroup>';
+
+        if (!empty($theme_menu_templates)) {
+            $menu_tpls[] = '<optgroup label="' . t('Theme templates') . '">';
+            foreach ($theme_menu_templates as $menu_tpl) {
+                if ($first_menu_template == $menu_tpl) {
+                    $selected = ' selected="selected"';
+                } else {
+                    $selected = null;
+                }
+                $menu_tpls[] = "<option$selected>$menu_tpl</option>";
+            }
+            $menu_tpls[] = '</optgroup>';
+        }
+
+        $tpl['templates'] = implode('', $menu_tpls);
 
         $tpl['display_type'] = \PHPWS_Settings::get('menu', 'display_type');
         if (isset($first_menu) && $first_menu->pin_all) {

@@ -246,7 +246,6 @@ function MenuAdmin() {
             } else {
                 change_pin_all = 1;
             }
-            console.log('sending ' + change_pin_all);
             $.get('index.php', {
                 module: 'menu',
                 command: 'pin_all',
