@@ -101,8 +101,16 @@ class PHPWS_Template extends HTML_Template_Sigma {
     }
 
     /**
+     * Updated comment:
+     * Returns a theme directory if the FORCE_THEME_TEMPLATES is defined and
+     * it exists. Returns menu otherwise. If you are trying to decide whether to
+     * use a theme template or a base module template, this function is not
+     * very helpful.
+     *
      * returns the expected template directory based on settings in
      * the template.php config file and the existence of files
+     *
+     *
      */
     public static function getTemplateDirectory($module, $directory=NULL)
     {
@@ -175,7 +183,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
                 $result = $this->loadTemplateFile($mod_tpl);
                 $used_tpl = & $mod_tpl;
             } else {
-                throw new Exception(t('Missing template file: %', $file));
+                throw new Exception(t('Missing template file: %s', $file));
             }
         }
 
