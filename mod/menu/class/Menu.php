@@ -414,12 +414,11 @@ class Menu {
         $m->addOrderBy($m->getField('queue'));
 
         $key = \Key::getCurrent();
-        if ($key) {
+        if ($key && $key->id) {
             $current_key_id = $key->id;
         } else {
-            $current_key_id = null;
+            $current_key_id = -1;
         }
-
         $menus = $db->select();
         foreach ($menus as $m) {
             $menu = new Menu_Item;
