@@ -420,6 +420,9 @@ class Menu {
             $current_key_id = -1;
         }
         $menus = $db->select();
+        if (empty($menus)) {
+            return;
+        }
         foreach ($menus as $m) {
             $menu = new Menu_Item;
             PHPWS_Core::plugObject($menu, $m);

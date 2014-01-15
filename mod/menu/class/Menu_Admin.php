@@ -162,7 +162,7 @@ class Menu_Admin {
     private function menuData($request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
-        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key' => $menu->getAssocKey(), 'assoc_url'=>$menu->getAssocUrl()));
+        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key' => $menu->getAssocKey(), 'assoc_url' => $menu->getAssocUrl()));
     }
 
     private function changeDisplayType($request)
@@ -524,12 +524,14 @@ class Menu_Admin {
 
         $template = new \Template;
         $template->setModuleTemplate('menu', 'admin/administrate.html');
+        $first_menu_pin_all = 0;
+        $first_menu_template = null;
 
         $db = new PHPWS_DB('menus');
         $db->addOrder('queue');
         $result = $db->getObjects('Menu_Item');
+        $first_menu = null;
         if (!empty($result)) {
-            $first_menu = null;
             foreach ($result as $menu) {
                 $menu->_show_all = true;
                 if (empty($first_menu)) {
