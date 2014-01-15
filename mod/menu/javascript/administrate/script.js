@@ -4,7 +4,7 @@ $(window).load(function() {
     menu_admin.menu_id = translate.first_menu_id;
     menu_admin.selected_menu_id = menu_admin.menu_id;
     menu_admin.init();
-    $('#form-key-select').select2();
+    //$('#form-key-select').select2();
 });
 
 
@@ -59,8 +59,8 @@ function MenuAdmin() {
         };
 
         this.setAssocPage = function(assoc_key) {
-            $('#menu-associated-page>option:selected').removeAttr('selected');
-            $('#menu-associated-page>option[value="' + assoc_key + '"]').attr('selected', 'selected');
+            $('#menu-associated-page option:selected').removeAttr('selected');
+            $('#menu-associated-page option[value="' + assoc_key + '"]').attr('selected', 'selected');
         };
 
         this.setAssocUrl = function(assoc_url)
@@ -138,6 +138,7 @@ function MenuAdmin() {
             } else {
                 $('#add-link').show();
                 $('#add-link').click(function() {
+                    t.resetAssociatedPage();
                     t.key_id = 0;
                     t.link_id = 0;
                     t.initFormButtons();
@@ -162,6 +163,7 @@ function MenuAdmin() {
                     }).always(function() {
                         t.link_modal.modal('hide');
                         t.populateMenuEdit();
+                        t.populateKeySelect();
                     });
                 });
             });
@@ -262,6 +264,7 @@ function MenuAdmin() {
                     }).always(function() {
                         t.link_modal.modal('hide');
                         t.populateMenuEdit();
+                        t.populateKeySelect();
                     });
                 }
             });
@@ -320,6 +323,10 @@ function MenuAdmin() {
             t.alert.hide();
             t.menu_id = t.selected_menu_id;
         });
+    };
+
+    this.resetAssociatedPage = function() {
+       $('#menu-associated-page').select2('data', {id:null,text:null});
     };
 
     this.displayType = function() {
@@ -394,7 +401,7 @@ function MenuAdmin() {
         $('.link-edit').unbind('click');
         $('.link-edit').click(function() {
             var link = $('a.menu-link-href', $(this).parents('.menu-link').first());
-            t.input.title.val(link.html());
+            t.input.title.val(link.text());
             t.link_id = link.data('linkId');
             t.current_link = link;
             t.key_id = link.data('keyId');
@@ -442,6 +449,7 @@ function MenuAdmin() {
     };
 
     this.populateKeySelect = function() {
+        $('#menu-associated-page option').removeAttr('selected');
         $.get('index.php', {
             module: 'menu',
             command: 'key_select'

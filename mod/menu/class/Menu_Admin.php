@@ -155,7 +155,6 @@ class Menu_Admin {
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->pin_all = $request->getVar('pin_all') ? 1 : 0;
-        echo 'menu pin_all is ' . $menu->pin_all;
         $menu->save();
     }
 
@@ -483,9 +482,11 @@ class Menu_Admin {
 
         $db2 = \Database::newDB();
         $db2->addTable('menu_links')->addField('key_id');
-        while ($key_id = $db2->selectColumn()) {
-            $keys[] = $key_id;
+        $rows = $db2->select();
+        foreach ($rows as $r) {
+            $keys[] = $r['key_id'];
         }
+
         $opt[] = '<option value="0"></option>';
         foreach ($key_list as $k) {
             $id = $title = null;
@@ -521,7 +522,8 @@ class Menu_Admin {
         \Layout::addStyle('menu', 'admin.css');
         javascript('jquery');
         javascript('jquery_ui');
-        javascript('select2');
+        //commenting out for now. problem clearing select dropdown
+        //javascript('select2');
 
         $template = new \Template;
         $template->setModuleTemplate('menu', 'admin/administrate.html');
