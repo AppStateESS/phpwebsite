@@ -218,6 +218,10 @@ function MenuAdmin() {
         this.saveMenuButton = function() {
             $('#form-menu-save').click(function() {
                 var title = $('#menu-title').val();
+                var akey = $('#menu-associated-page option:selected').val();
+                if (akey === undefined) {
+                    akey = 0;
+                }
                 if (title.length < 1) {
                     $('#menu-title').attr('placeholder', translate.title_error);
                 } else {
@@ -227,11 +231,12 @@ function MenuAdmin() {
                         menu_id: t.menu_id,
                         title: $('#menu-title').val(),
                         template: $('#menu-template option:selected').val(),
-                        assoc_key: $('#menu-associated-page option:selected').val(),
+                        assoc_key: akey,
                         assoc_url: t.input.assoc_url.val()
                     }, function(data) {
                         //console.log(data);
                     }).always(function() {
+                        //console.log('saving menu');
                         window.location.reload();
                     });
                 }
