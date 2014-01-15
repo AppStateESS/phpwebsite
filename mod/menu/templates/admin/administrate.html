@@ -5,6 +5,7 @@
     </select>
 </div>
 <button class="btn btn-success" id="create-menu" style="margin-bottom:1em"><?=t('Create menu');?></button>
+<?php if (\Current_User::isDeity()): ?><a href="<?=$reset_menu_link?>" class="btn btn-warning" id="reset-menu" style="margin-bottom:1em"><?=t('Reset menu');?></a><?php endif; ?>
 <div class="clearfix"></div>
 <div id="menu-list">
     <div id="menu-select">
@@ -77,6 +78,10 @@
                         <select name="assoc_key" id="menu-associated-page" class="form-control">
                         </select>
                          <p>* <?=t('Page already associated to a menu');?></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="menu-associated-url"><?=t('Associated url');?></label>
+                        <input type="textfield" name="assoc_url" id="menu-associated-url" class="form-control" />
                     </div>
                 </form>
             </div>

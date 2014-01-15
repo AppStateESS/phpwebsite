@@ -93,6 +93,7 @@ class Menu_Admin {
             case 'pin_all':
                 $this->menuPinAll($request);
                 exit();
+
         }
 
         // This is the display switch or the HTML view switch
@@ -101,6 +102,14 @@ class Menu_Admin {
                 $title = ('Menus');
                 $content = $this->menuList();
                 break;
+
+            case 'reset_menu':
+                if (!\Current_User::isDeity() && !\Current_User::authorized('menu')) {
+                    throw new \Http\MethodNotAllowedException;
+                }
+                $this->resetMenu();
+                PHPWS_Core::goBack();
+                exit();
 
             default:
                 throw new \Http\MethodNotAllowedException;
@@ -115,6 +124,32 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    /**
+     * Resets the queue order of the menus
+     */
+    private function resetMenu()
+    {
+        $db = \Database::newDB();
+        $m = $db->addTable('menus');
+        $m->addField('id');
+        $m->addOrderBy('queue');
+        $result = $db->select();
+
+        if (empty($result)) {
+            return;
+        }
+
+        $queue = 1;
+        foreach ($result as $row) {
+            $db->clearConditional();
+            $m->resetValues();
+            $m->addValue('queue', $queue);
+            $m->addFieldConditional('id', $row['id']);
+            $db->update();
+            $queue++;
+        }
     }
 
     private function menuPinAll($request)
@@ -466,6 +501,7 @@ class Menu_Admin {
     {
         $menu = new \Menu_Item($request->getVar('menu_id'));
         $menu->_show_all = true;
+        $menu->template = 'admin';
         $data['html'] = $menu->view(true);
         $data['pin_all'] = $menu->pin_all;
         echo json_encode($data);
@@ -569,6 +605,12 @@ EOF;
         } else {
             $tpl['pin_all'] = $vars['pin_some'];
             $tpl['pin_button_class'] = 'btn-default';
+        }
+
+        if (\Current_User::isDeity()) {
+            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu', array('command'=>'reset_menu'), true);
+        } else {
+            $tpl['reset_menu_link'] = '#';
         }
 
         $template->addVariables($tpl);
