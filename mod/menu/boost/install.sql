@@ -21,6 +21,7 @@ CREATE TABLE menus (
   pin_all smallint NOT NULL default 0,
   queue smallint NOT NULL default 0,
   assoc_key int not null default 0,
+  assoc_url varchar(255) default NULL,
   PRIMARY KEY  (id)
 );
 

@@ -93,7 +93,6 @@ class Menu_Admin {
             case 'pin_all':
                 $this->menuPinAll($request);
                 exit();
-
         }
 
         // This is the display switch or the HTML view switch
@@ -163,7 +162,7 @@ class Menu_Admin {
     private function menuData($request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
-        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key' => $menu->getAssocKey()));
+        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key' => $menu->getAssocKey(), 'assoc_url'=>$menu->getAssocUrl()));
     }
 
     private function changeDisplayType($request)
@@ -196,10 +195,19 @@ class Menu_Admin {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
         $assoc_key = $request->getVar('assoc_key');
+        $assoc_url = trim(strip_tags($request->getVar('assoc_url')));
+
         $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->setTitle($title);
         $menu->setTemplate($template);
-        $menu->setAssocKey($assoc_key);
+        if ($assoc_key) {
+            $menu->setAssocKey($assoc_key);
+        } elseif (!empty($assoc_url)) {
+            $menu->setAssocUrl($assoc_url);
+        } else {
+            $menu->assoc_key = 0;
+            $menu->assoc_url = null;
+        }
         $menu->save();
     }
 
@@ -608,7 +616,8 @@ EOF;
         }
 
         if (\Current_User::isDeity()) {
-            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu', array('command'=>'reset_menu'), true);
+            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu',
+                            array('command' => 'reset_menu'), true);
         } else {
             $tpl['reset_menu_link'] = '#';
         }

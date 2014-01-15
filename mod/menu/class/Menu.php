@@ -424,13 +424,15 @@ class Menu {
             $menu = new Menu_Item;
             PHPWS_Core::plugObject($menu, $m);
             $menu->_show_all = true;
-            $menu->setAssocUrl($m['url']);
+            if (empty($menu->assoc_url)) {
+                $menu->setAssocUrl($m['url']);
+            }
             // if the current menu matches a used link (either by it being in the
             // in the menu or associated to it) mark as ACTIVE
             $active = ($active_menu == $menu->id || $current_key_id == $menu->assoc_key) ? 1 : 0;
             // if there is not an assoc key, them menu is using drop downs, so
             // we do not add the side menu
-            if ($active && $menu->assoc_key) {
+            if ($active && $menu->assoc_key && empty($menu->assoc_url)) {
                 Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
             }
 
@@ -445,12 +447,14 @@ class Menu {
     {
         $template = new \Template();
         $line = array('active' => $active, 'title' => $menu->title, 'assoc_key' => $menu->assoc_key);
-        if ($menu->assoc_key) {
+        if ($menu->assoc_key || !empty($menu->assoc_url)) {
             $line['assoc_url'] = $menu->getAssocUrl();
-            $template->setModuleTemplate('menu', 'category_view/associated_menu.html');
+            $template->setModuleTemplate('menu',
+                    'category_view/associated_menu.html');
         } else {
             $line['links'] = $menu->displayLinks();
-            $template->setModuleTemplate('menu', 'category_view/dropdown_menu.html');
+            $template->setModuleTemplate('menu',
+                    'category_view/dropdown_menu.html');
         }
         $template->addVariables($line);
         return $template->get();

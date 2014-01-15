@@ -330,6 +330,16 @@ Please download 1.2.1.</pre>';
 + Can associate page to a menu
 </pre>';
 
+        case version_compare($currentVersion, '2.0.2', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $dt = $tbl->addDataType('assoc_url', 'varchar');
+            $dt->setIsNull(true);
+            $dt->add();
+            $content[] = '<pre>2.0.2 changes
+----------------
++ Can associate url
+</pre>';
     }
     return true;
 }

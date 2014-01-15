@@ -73,16 +73,19 @@
                             <?=$templates?>
                         </select>
                     </div>
+                    <fieldset><legend><?=t('Association')?></legend>
                     <div class="form-group">
-                        <label for="menu-associated-page"><?=t('Associated page');?></label>
+                        <label for="menu-associated-page"><?=t('Page');?></label>
                         <select name="assoc_key" id="menu-associated-page" class="form-control">
                         </select>
-                         <p>* <?=t('Page already associated to a menu');?></p>
+                         <p style="font-style:italic">* <?=t('Pages already associated to a menu may not be selected.');?></p>
                     </div>
                     <div class="form-group">
-                        <label for="menu-associated-url"><?=t('Associated url');?></label>
+                        <label for="menu-associated-url"><?=t('URL');?></label>
                         <input type="textfield" name="assoc_url" id="menu-associated-url" class="form-control" />
+                         <p style="font-style:italic">* <?=t('Using a URL prevents display of drop down and side menu.');?></p>
                     </div>
+                    </fieldset>
                 </form>
             </div>
             <div class="modal-footer">

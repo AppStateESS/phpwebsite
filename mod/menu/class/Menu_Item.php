@@ -18,11 +18,11 @@ class Menu_Item {
     public $pin_all = 0;
     public $queue = 0;
     public $assoc_key;
+    public $assoc_url;
     public $_db = NULL;
     public $_show_all = false;
     public $_style = null;
     public $_error = NULL;
-    private $assoc_url;
 
     public function __construct($id = NULL)
     {
@@ -70,17 +70,21 @@ class Menu_Item {
         $this->pin_all = $result['pin_all'];
         $this->queue = $result['queue'];
         $this->assoc_key = $result['assoc_key'];
-        $this->assoc_url = $result['url'];
-    }
-
-    public function getAssocUrl()
-    {
-        return $this->assoc_url;
+        if (!empty($result['assoc_url'])) {
+            $this->assoc_url = $result['assoc_url'];
+        } elseif ($result['assoc_key']) {
+            $this->assoc_url = $result['url'];
+        }
     }
 
     public function setAssocUrl($url)
     {
         $this->assoc_url = $url;
+    }
+
+    public function getAssocUrl()
+    {
+        return $this->assoc_url;
     }
 
     public function getTitle()
@@ -391,7 +395,7 @@ class Menu_Item {
         $theme_path = $theme_tpl_dir . $this->template . '/';
         $menu_path = $menu_tpl_dir . $this->template . '/';
 
-        if (is_file($theme_path. 'menu.tpl')) {
+        if (is_file($theme_path . 'menu.tpl')) {
             $file = $theme_path . 'menu.tpl';
             $path = $theme_path;
             $http = PHPWS_SOURCE_HTTP . Layout::getThemeDirRoot() . Layout::getTheme() . 'templates/menu_layout/' . $this->template . '/';
