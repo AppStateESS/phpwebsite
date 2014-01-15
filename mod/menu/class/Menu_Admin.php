@@ -467,6 +467,7 @@ class Menu_Admin {
 
     private function keySelect()
     {
+        $keys = array();
         $db = \Database::newDB();
         $key = $db->addTable('phpws_key');
         $key->addOrderBy($key->getField('title'));
@@ -589,7 +590,7 @@ EOF;
             } else {
                 $selected = null;
             }
-            $menu_tpls[] = "<option$selected>$menu_tpl</option>";
+            $menu_tpls[] = "<option value='$menu_tpl'$selected>$menu_tpl</option>";
         }
         $menu_tpls[] = '</optgroup>';
 
@@ -601,7 +602,7 @@ EOF;
                 } else {
                     $selected = null;
                 }
-                $menu_tpls[] = "<option$selected>$menu_tpl</option>";
+                $menu_tpls[] = "<option value='$menu_tpl'$selected>$menu_tpl</option>";
             }
             $menu_tpls[] = '</optgroup>';
         }

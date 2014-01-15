@@ -182,8 +182,8 @@ function MenuAdmin() {
                         menu_id: t.menu_id
                     }, function(data) {
                         $('#menu-title').val(data.title);
-                        $('#menu-template>option:selected').removeAttr('selected');
-                        $('#menu-template>option[value="' + data.template + '"]').attr('selected', 'selected');
+                        $('#menu-template option').removeAttr('selected');
+                        $('#menu-template option[value="' + data.template + '"]').attr('selected', 'selected');
                         t.input.setAssocPage(data.assoc_key);
                         if (data.assoc_key === '0') {
                             t.input.setAssocUrl(data.assoc_url);
@@ -236,7 +236,6 @@ function MenuAdmin() {
                     }, function(data) {
                         //console.log(data);
                     }).always(function() {
-                        //console.log('saving menu');
                         window.location.reload();
                     });
                 }
@@ -259,7 +258,6 @@ function MenuAdmin() {
                         url: t.input.url.val(),
                         key_id: t.key_id
                     }, function(data) {
-                        //$('body').prepend(data);
                         //console.log(data);
                     }).always(function() {
                         t.link_modal.modal('hide');
@@ -395,7 +393,6 @@ function MenuAdmin() {
         this.editButtons();
         $('.link-edit').unbind('click');
         $('.link-edit').click(function() {
-            //t.populateKeySelect();
             var link = $('a.menu-link-href', $(this).parents('.menu-link').first());
             t.input.title.val(link.html());
             t.link_id = link.data('linkId');

@@ -189,13 +189,21 @@ class Menu_Item {
         if (!$this->id) {
             $db = \Database::newDB();
             $tbl = $db->addTable('menus');
-            $exp = $db->addExpression('max(' . $tbl->getField('queue') . ')');
-            $queue = $db->selectColumn();
+            $exp = $db->addExpression('max(' . $tbl->getField('queue') . ')',
+                    'max');
+            $row = $db->selectOneRow();
+            if ($row) {
+                $queue = $row['queue'];
+            } else {
+                $queue = 0;
+            }
             if ($queue) {
                 $this->queue = $queue + 1;
             }
         }
-
+        if (!$this->assoc_key) {
+            $this->assoc_key = 0;
+        }
         $result = $this->_db->saveObject($this);
         if (PHPWS_Error::isError($result)) {
             throw new \Exception($result->getMessage());
