@@ -59,7 +59,7 @@ function MenuAdmin() {
         };
 
         this.setAssocPage = function(assoc_key) {
-            $('#menu-associated-page option:selected').removeAttr('selected');
+            $('#menu-associated-page option').removeAttr('selected');
             $('#menu-associated-page option[value="' + assoc_key + '"]').attr('selected', 'selected');
         };
 
@@ -138,7 +138,7 @@ function MenuAdmin() {
             } else {
                 $('#add-link').show();
                 $('#add-link').click(function() {
-                    t.resetAssociatedPage();
+                    //t.resetAssociatedPage();
                     t.key_id = 0;
                     t.link_id = 0;
                     t.initFormButtons();
@@ -326,7 +326,7 @@ function MenuAdmin() {
     };
 
     this.resetAssociatedPage = function() {
-       $('#menu-associated-page').select2('data', {id:null,text:null});
+       //$('#menu-associated-page').select2('data', {id:null,text:null});
     };
 
     this.displayType = function() {

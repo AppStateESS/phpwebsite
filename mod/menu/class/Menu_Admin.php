@@ -464,6 +464,21 @@ class Menu_Admin {
         $result = $link->save();
     }
 
+    private function getUsedKeys()
+    {
+        $db = \Database::newDB();
+        $db->addTable('menus')->addField('assoc_key', 'key_id');
+        $db2 = \Database::newDB();
+        $db2->addTable('menu_links')->addField('key_id');
+        $union = new \Database\Union(array($db, $db2));
+        $rows = $union->select();
+
+        foreach ($rows as $r) {
+            $keys[] = $r['key_id'];
+        }
+        return $keys;
+    }
+
     private function keySelect()
     {
         $keys = array();
@@ -480,19 +495,14 @@ class Menu_Admin {
             return;
         }
 
-        $db2 = \Database::newDB();
-        $db2->addTable('menu_links')->addField('key_id');
-        $rows = $db2->select();
-        foreach ($rows as $r) {
-            $keys[] = $r['key_id'];
-        }
+        $keys = $this->getUsedKeys();
 
         $opt[] = '<option value="0"></option>';
         foreach ($key_list as $k) {
             $id = $title = null;
             extract($k);
             if (in_array($id, $keys)) {
-                $opt[] = '<option disabled="disabled">*' . $title . '</option>';
+                $opt[] = "<option value='$id' disabled='disabled'>*$title</option>";
             } else {
                 $opt[] = "<option value='$id'>$title</option>";
             }
