@@ -435,7 +435,7 @@ class Menu {
             $active = ($active_menu == $menu->id || $current_key_id == $menu->assoc_key) ? 1 : 0;
             // if there is not an assoc key, them menu is using drop downs, so
             // we do not add the side menu
-            if ($active && $menu->assoc_key && empty($menu->assoc_url)) {
+            if ($active && $menu->assoc_key) {
                 Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
             }
 
