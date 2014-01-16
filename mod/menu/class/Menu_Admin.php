@@ -199,13 +199,12 @@ class Menu_Admin {
         $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->setTitle($title);
         $menu->setTemplate($template);
+            $menu->assoc_url = null;
+            $menu->assoc_key = 0;
         if ($assoc_key) {
             $menu->setAssocKey($assoc_key);
         } elseif (!empty($assoc_url)) {
             $menu->setAssocUrl($assoc_url);
-        } else {
-            $menu->assoc_key = 0;
-            $menu->assoc_url = null;
         }
         $menu->save();
     }
