@@ -338,7 +338,20 @@ Please download 1.2.1.</pre>';
             $dt->add();
             $content[] = '<pre>2.0.2 changes
 ----------------
-+ Can associate url
++ Can associate url to a menu
+</pre>';
+        case version_compare($currentVersion, '2.0.3', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $dt = $tbl->addDataType('assoc_image', 'varchar');
+            $dt->setIsNull(true);
+            $dt->add();
+            if (!is_dir(PHPWS_HOME_DIR . 'images/menu/')) {
+                mkdir(PHPWS_HOME_DIR . 'images/menu/', 0755);
+            }
+            $content[] = '<pre>2.0.3 changes
+----------------
++ Can associate image to a menu
 </pre>';
     }
     return true;

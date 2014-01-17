@@ -39,6 +39,7 @@ function MenuAdmin() {
             this.assoc_url = $('#menu-associated-url');
             this.key_select = $('#form-key-select');
             this.assoc_page = $('#menu-associated-page');
+            this.assoc_image_thumbnail = $('#assoc-image-thumbnail');
             this.locationSwitch();
             this.associatedPage();
             this.associatedUrl();
@@ -66,6 +67,11 @@ function MenuAdmin() {
         this.setAssocUrl = function(assoc_url)
         {
             this.assoc_url.val(assoc_url);
+        };
+
+        this.setAssocImageThumbnail = function(assoc_image_thumbnail) {
+            var tn = '<img src="' + assoc_image_thumbnail + '" />';
+            this.assoc_image_thumbnail.html(tn);
         };
 
         this.select = function(key_id) {
@@ -119,14 +125,26 @@ function MenuAdmin() {
             this.saveMenuButton();
             this.pinnedMenuButton();
             this.createMenu();
+            this.clearImage();
         };
 
 
+        this.clearImage = function() {
+            $('#clear-image').click(function() {
+                $.get('index.php', {
+                    module: 'menu',
+                    command: 'clear_image',
+                    menu_id: t.menu_id
+                }).always(function() {
+                    $('#assoc-image-thumbnail').remove();
+                    $('#clear-image').hide();
+                });
+            });
+        };
+
         this.createMenu = function() {
             $('#create-menu').click(function() {
-                t.menu_id = 0;
-                $('#menu-title').val('');
-                $('#menu-template option:selected').removeAttr('selected');
+                t.resetMenuForm();
                 t.menu_modal.modal('show');
             });
         };
@@ -148,8 +166,7 @@ function MenuAdmin() {
             }
         };
 
-        this.deleteButton = function()
-        {
+        this.deleteButton = function() {
             this.db.click(function() {
                 $(this).html(translate.confirm_delete);
                 t.button.db.click(function() {
@@ -169,14 +186,13 @@ function MenuAdmin() {
             });
         };
 
-
-
         this.editMenuButton = function() {
             if (t.menu_id === undefined || t.menu_id < 1) {
                 $('#edit-menu').hide();
             } else {
                 $('#edit-menu').show();
                 $('#edit-menu').click(function() {
+                    t.resetMenuForm();
                     t.menu_id = t.selected_menu_id;
                     $.get('index.php', {
                         module: 'menu',
@@ -184,13 +200,21 @@ function MenuAdmin() {
                         menu_id: t.menu_id
                     }, function(data) {
                         $('#menu-title').val(data.title);
+                        if (data.assoc_image_thumbnail.length > 0) {
+                            $('#clear-image').show();
+                        } else {
+                            $('#clear-image').hide();
+                        }
+
                         $('#menu-template option').removeAttr('selected');
                         $('#menu-template option[value="' + data.template + '"]').attr('selected', 'selected');
                         t.input.setAssocPage(data.assoc_key);
+                        t.input.setAssocImageThumbnail(data.assoc_image_thumbnail);
+                        if (data.assoc_image_thumbnail.length > 0) {
+                            $('#clear-image').show();
+                        }
                         if (data.assoc_key === '0') {
                             t.input.setAssocUrl(data.assoc_url);
-                        } else {
-                            t.input.setAssocUrl('');
                         }
                     }, 'json');
                     t.menu_modal.modal('show');
@@ -314,8 +338,19 @@ function MenuAdmin() {
         });
     };
 
+    this.resetMenuForm = function() {
+        t.menu_id = 0;
+        $('#menu-title').val('');
+        $('#menu-template option:selected').removeAttr('selected');
+        $('#menu-associated-image').val('');
+        $('#clear-image').hide();
+        t.input.setAssocPage(0);
+        t.input.setAssocImageThumbnail('');
+        t.input.setAssocUrl('');
+    };
+
     this.resetAssociatedPage = function() {
-       //$('#menu-associated-page').select2('data', {id:null,text:null});
+        //$('#menu-associated-page').select2('data', {id:null,text:null});
     };
 
     this.displayType = function() {

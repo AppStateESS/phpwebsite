@@ -94,6 +94,10 @@ class Menu_Admin {
             case 'pin_all':
                 $this->menuPinAll($request);
                 exit();
+
+            case 'clear_image':
+                $this->clearImage($request);
+                exit();
         }
 
         // This is the display switch or the HTML view switch
@@ -124,6 +128,14 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function clearImage(\Request $request)
+    {
+        $menu = new Menu_Item($request->getVar('menu_id'));
+        $menu->deleteImage();
+        $menu->setAssocImage(null);
+        $menu->save();
     }
 
     /**
@@ -162,7 +174,9 @@ class Menu_Admin {
     private function menuData($request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
-        echo json_encode(array('title' => $menu->title, 'template' => $menu->template, 'assoc_key' => $menu->getAssocKey(), 'assoc_url' => $menu->getAssocUrl()));
+        echo json_encode(array('title' => $menu->title, 'template' => $menu->template,
+            'assoc_key' => $menu->getAssocKey(), 'assoc_url' => $menu->getAssocUrl(),
+            'assoc_image_thumbnail' => $menu->getAssocImageThumbnail()));
     }
 
     private function changeDisplayType($request)
@@ -194,19 +208,38 @@ class Menu_Admin {
     {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
-        $assoc_key = $request->getVar('assoc_key');
+        if ($request->isVar('assoc_key')) {
+            $assoc_key = $request->getVar('assoc_key');
+        } else {
+            $assoc_key = 0;
+        }
         $assoc_url = trim(strip_tags($request->getVar('assoc_url')));
 
         $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->setTitle($title);
         $menu->setTemplate($template);
-            $menu->assoc_url = null;
-            $menu->assoc_key = 0;
+        $menu->assoc_url = null;
+        $menu->assoc_key = 0;
         if ($assoc_key) {
             $menu->setAssocKey($assoc_key);
         } elseif (!empty($assoc_url)) {
             $menu->setAssocUrl($assoc_url);
         }
+
+        if ($request->isUploadedFile('assoc_image')) {
+            $menu->deleteImage();
+
+            $file = $request->getUploadedFileArray('assoc_image');
+            $file_name = randomString(12) . '.' . str_replace('image/', '',
+                            $file['type']);
+
+            \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name,
+                    false, true);
+            \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
+                    'images/menu/', 200);
+            $menu->setAssocImage('images/menu/' . $file_name);
+        }
+
         $menu->save();
     }
 

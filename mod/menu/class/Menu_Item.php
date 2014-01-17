@@ -19,6 +19,7 @@ class Menu_Item {
     public $queue = 0;
     public $assoc_key;
     public $assoc_url;
+    public $assoc_image;
     public $_db = NULL;
     public $_show_all = false;
     public $_style = null;
@@ -75,6 +76,7 @@ class Menu_Item {
         } elseif ($result['assoc_key']) {
             $this->assoc_url = $result['url'];
         }
+        $this->assoc_image = $result['assoc_image'];
     }
 
     public function setAssocUrl($url)
@@ -176,6 +178,50 @@ class Menu_Item {
         }
     }
 
+    private function thumbPath($path)
+    {
+        return preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $path);
+    }
+
+    public function deleteImage()
+    {
+        $file = $this->assoc_image;
+        if (empty($file)) {
+            return;
+        }
+        if (is_file($file)) {
+            unlink($file);
+        }
+        $thumb = $this->thumbPath($file);
+        if (is_file($thumb)) {
+            unlink($thumb);
+        }
+    }
+
+    public function setAssocImage($path)
+    {
+        $this->assoc_image = $path;
+    }
+
+    public function getAssocImage()
+    {
+        return $this->assoc_image;
+    }
+
+    public function showAssocImage()
+    {
+        if (empty($this->assoc_image)) {
+            return null;
+        }
+
+        return "<img src='$this->assoc_image' />";
+    }
+
+    public function getAssocImageThumbnail()
+    {
+        return $this->thumbPath($this->assoc_image);
+    }
+
     public function save($save_key = true)
     {
         if (empty($this->title)) {
@@ -189,8 +235,7 @@ class Menu_Item {
         if (!$this->id) {
             $db = \Database::newDB();
             $tbl = $db->addTable('menus');
-            $db->addExpression('max(' . $tbl->getField('queue') . ')',
-                    'max');
+            $db->addExpression('max(' . $tbl->getField('queue') . ')', 'max');
             $row = $db->selectOneRow();
             if ($row) {
                 $queue = $row['queue'];

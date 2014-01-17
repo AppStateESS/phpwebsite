@@ -91,9 +91,11 @@
                         <div class="form-group">
                             <label for="menu-associated-image"><?=t('Image');?></label>
                             <input type="file" name="assoc_image" id="menu-associated-image" class="form-control" />
+                            <div id='assoc-image-thumbnail' style='margin: 6px 0px'></div>
                         </div>
                     </fieldset>
                 </form>
+                <button class='btn btn-danger' id='clear-image'><?=t('Clear image')?></button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?=t('Close')?></button>

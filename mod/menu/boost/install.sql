@@ -22,6 +22,7 @@ CREATE TABLE menus (
   queue smallint NOT NULL default 0,
   assoc_key int not null default 0,
   assoc_url varchar(255) default NULL,
+  assoc_image varchar(255) default NULL,
   PRIMARY KEY  (id)
 );
 
