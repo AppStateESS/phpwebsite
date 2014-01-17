@@ -189,7 +189,7 @@ class Menu_Item {
         if (!$this->id) {
             $db = \Database::newDB();
             $tbl = $db->addTable('menus');
-            $exp = $db->addExpression('max(' . $tbl->getField('queue') . ')',
+            $db->addExpression('max(' . $tbl->getField('queue') . ')',
                     'max');
             $row = $db->selectOneRow();
             if ($row) {

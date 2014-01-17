@@ -436,7 +436,7 @@ class Menu {
             // if there is not an assoc key, them menu is using drop downs, so
             // we do not add the side menu
             if ($active && $menu->assoc_key) {
-                Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
+                Layout::set($menu->view(), 'menu', 'side');
             }
 
             $menu_tpl['menus'][] = self::getCategoryViewLine($menu, $active);

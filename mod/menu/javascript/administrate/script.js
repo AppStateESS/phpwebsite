@@ -227,19 +227,8 @@ function MenuAdmin() {
                 if (title.length < 1) {
                     $('#menu-title').attr('placeholder', translate.title_error);
                 } else {
-                    $.post('index.php', {
-                        module: 'menu',
-                        command: 'post_menu',
-                        menu_id: t.menu_id,
-                        title: $('#menu-title').val(),
-                        template: $('#menu-template option:selected').val(),
-                        assoc_key: akey,
-                        assoc_url: t.input.assoc_url.val()
-                    }, function(data) {
-                        //console.log(data);
-                    }).always(function() {
-                        window.location.reload();
-                    });
+                    $('#menu-id').val(t.menu_id);
+                    $('#menu-edit-form').submit();
                 }
             });
         };

@@ -72,6 +72,7 @@ class Menu_Admin {
 
             case 'post_menu':
                 $this->postMenu($request);
+                \PHPWS_Core::goBack();
                 exit();
 
             case 'pin_menu':
@@ -214,6 +215,7 @@ class Menu_Admin {
         $menu_id = $request->getVar('menu_id');
         $menu = new Menu_Item($menu_id);
         $menu->kill();
+        $this->resetMenu();
     }
 
     private function addKeyLink(\Request $request)
