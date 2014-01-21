@@ -14,6 +14,7 @@
             <li>{ALTERNATE_1} {ALTERNATE_1_LABEL}</li>
             <li>{ALTERNATE_2} {ALTERNATE_2_LABEL}</li>
             <li>{ALTERNATE_3} {ALTERNATE_3_LABEL}</li>
+            <li>{ALTERNATE_4} {ALTERNATE_4_LABEL}</li>
         </ul>
         </td>
     </tr>

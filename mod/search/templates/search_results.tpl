@@ -1,6 +1,6 @@
 <!-- BEGIN search-found -->
 <div id="searchresults">
-<table width="100%" cellpadding="4">
+<table class="table table-striped">
     <tr>
         <th>{TITLE_LABEL} {TITLE_SORT}</th>
         <th>{MODULE_LABEL} {MODULE_SORT}</th>
