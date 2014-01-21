@@ -40,7 +40,6 @@ class Menu_Link {
 
     public function init()
     {
-        $db = $this->getDB();
         $db = new PHPWS_DB('menu_links');
         $result = $db->loadObject($this);
         if (PHPWS_Error::isError($result)) {
