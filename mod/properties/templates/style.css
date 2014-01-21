@@ -1,0 +1,83 @@
+img.property-thumb {
+    border: 1px solid black;
+    float: left;
+    margin-right: 10px;
+}
+
+div.property-listing {
+    border-bottom: 2px dotted #e3e3e3;
+    padding: 4px;
+    margin-bottom: 10px;
+    overflow : auto;
+
+}
+div.property-info {
+    float : left;
+}
+
+h3.open-box {
+    cursor: pointer;
+}
+
+#page-listing {
+    float: right;
+}
+
+h2.property-name {
+    margin : 0 0 .5em 0;
+}
+
+#message {
+   font-size : 110%;
+   font-weight : bold;
+   background-color : #e3e3e3;
+   color : black;
+   width : 98%;
+   padding : 3px;
+   margin : 3px auto;
+   text-align : center;
+}
+
+div#property-tabs {
+height : 28px;
+}
+
+div#body-content #property-tabs ul {
+    list-style-type: none;
+    margin : 0px;
+    padding : 0px;
+    display : block;
+}
+
+#property-tabs ul li {
+    display:block;
+    float : left;
+    background-image: url(tab-home.png);
+    background-repeat: no-repeat;
+}
+
+#property-tabs ul li.current {
+    background-position: 0px -60px;
+}
+
+#property-tabs ul li.other {
+    background-position-y: 0px -30px;
+}
+
+
+#property-tabs ul li a {
+    display:block;
+    height : 22px;
+    width : 100px;
+    font-weight : bold;
+    color : white;
+    font-size : 10px;
+    padding : 0px 8px;
+    vertical-align: middle;
+}
+
+#property-tabs ul li a span {
+    margin-top : 6px;
+    display:block;
+}
+
