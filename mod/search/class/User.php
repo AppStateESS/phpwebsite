@@ -96,7 +96,7 @@ class Search_User {
         return $mod_list;
     }
 
-    public function sendToAlternate($alternate, $search_phrase)
+    public static function sendToAlternate($alternate, $search_phrase)
     {
         $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
         if (!$file) {
