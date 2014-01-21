@@ -332,6 +332,11 @@ function blog_update(&$content, $currentVersion)
 + Create Blog link in miniadmin now works as intended.
 + Static methods set to avoid error notices.
 </pre>';
+        case version_compare($currentVersion, '1.10.3', '<'):
+            $content[] = '<pre>1.10.3 changes
+---------------------
++ Horizontal rules are acknowledged on save.
+</pre>';
     } // end of switch
     return true;
 }

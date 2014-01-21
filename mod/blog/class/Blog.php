@@ -433,14 +433,14 @@ class Blog {
             }
         }
 
-      
+
         // Check setting for showing when the entry was posted
 
-        if (PHPWS_Settings::get('blog', 'show_posted_by')){
+        if (PHPWS_Settings::get('blog', 'show_posted_by')) {
             $template['POSTED_BY'] = dgettext('blog', 'By');
             $template['AUTHOR'] = $this->author;
         }
-        
+
         // Check settings for showing the author of the entry
         if (PHPWS_Settings::get('blog', 'show_posted_date')) {
             $template['PUBLISHED'] = dgettext('blog', 'Published');
@@ -541,10 +541,12 @@ class Blog {
         $summary_and_entry = $_POST['summary'];
 
         if (!$this->id && strlen($summary_and_entry) > 1000) {
-            $paragraphs = explode('<p>', $summary_and_entry);
-            if (count($paragraphs) > 3) {
-                $paragraphs[2] .= '<hr />';
-                $summary_and_entry = implode('<p>', $paragraphs);
+            if (!preg_match('/<hr[^>]?/', $summary_and_entry)) {
+                $paragraphs = explode('<p>', $summary_and_entry);
+                if (count($paragraphs) > 3) {
+                    $paragraphs[2] .= '<hr />';
+                    $summary_and_entry = implode('<p>', $paragraphs);
+                }
             }
         }
 
@@ -556,8 +558,8 @@ class Blog {
             // We don't catch the regular expression result because we only care about matches
             preg_replace_callback('@(.*?)<hr[^>]*/>(.*)@s',
                     function($matches) {
-                        $GLOBALS['split_summary'] = $matches;
-                    }, $summary_and_entry);
+                $GLOBALS['split_summary'] = $matches;
+            }, $summary_and_entry);
             if (isset($GLOBALS['split_summary'])) {
                 $this->setSummary($GLOBALS['split_summary'][1]);
                 $this->setEntry($GLOBALS['split_summary'][2]);
