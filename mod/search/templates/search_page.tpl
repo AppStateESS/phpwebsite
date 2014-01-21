@@ -2,13 +2,13 @@
 <div class="box-content">
 <h2>{ADVANCED_LABEL}</h2>
 {START_FORM}
-<table class="form-table">
+<table class="table table-striped">
     <tr>
         <td>{SEARCH_LABEL}</td>
         <td>{SEARCH}</td>
     </tr>
     <tr>
-        <td>{SEARCH_LOCATION}</td>
+        <td><strong>{SEARCH_LOCATION}</strong></td>
         <td>
         <ul style="list-style: none; margin: 0">
             <li>{ALTERNATE_1} {ALTERNATE_1_LABEL}</li>
