@@ -618,7 +618,8 @@ class User_Form {
             }
         }
         if (!isset($template['members'])) {
-            $template['EMPTY_GROUP'] = dgettext('user', 'User not a member of any group');
+            $template['EMPTY_GROUP'] = dgettext('user',
+                    'User not a member of any group');
         }
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
@@ -680,8 +681,7 @@ class User_Form {
         if ($group->getId() > 0) {
             $form->addHidden('group_id', $group->getId());
             $form->addSubmit('submit', dgettext('users', 'Update Group'));
-        }
-        else
+        } else
             $form->addSubmit('submit', dgettext('users', 'Add Group'));
 
         $form->addHidden('module', 'users');
@@ -727,8 +727,7 @@ class User_Form {
                 $template['LIKE_GROUPS'] = $result;
                 $template['LIKE_INSTRUCTION'] = dgettext('users',
                         'Members found.');
-            }
-            else
+            } else
                 $template['LIKE_INSTRUCTION'] = dgettext('users',
                         'No matches found.');
         }
@@ -1112,6 +1111,9 @@ class User_Form {
         $form->addText('phpws_username', $username);
         $form->addPassword('phpws_password');
         $form->addSubmit('submit', LOGIN_BUTTON);
+
+        $form->setClass('phpws_username', 'form-control');
+        $form->setClass('phpws_password', 'form-control');
 
         $form->setLabel('phpws_username', dgettext('users', 'Username'));
         $form->setLabel('phpws_password', dgettext('users', 'Password'));
