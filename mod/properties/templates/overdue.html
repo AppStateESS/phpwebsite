@@ -1,0 +1,16 @@
+<table cellpadding="4">
+    <tr>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Inactive properties</th>
+        <th></th>
+    </tr>
+    <?php foreach ($rows as $r): extract($r);?>
+    <tr>
+        <td><?=$first_name,' ',$last_name,'<br>',$email_address?></td>
+        <td><?=$company_name?></td>
+        <td><?=$properties?></td>
+        <td><?=$action?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>

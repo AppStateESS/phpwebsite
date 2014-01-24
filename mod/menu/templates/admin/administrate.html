@@ -1,0 +1,106 @@
+<div class="form-group">
+    <select name="menu-display" id="menu-display" class="form-control">
+        <option <?=$display_type ? null : 'selected="selected"';?> value="0">Classic - Menus only shown on pages they are pinned</option>
+        <option <?=$display_type ? 'selected="selected"':null;?> value="1">Categorized with extra view - Menus only appear when a page is on it</option>
+    </select>
+</div>
+<button class="btn btn-success" id="create-menu" style="margin-bottom:1em"><?=t('Create menu');?></button>
+<?php if (\Current_User::isDeity()): ?><a href="<?=$reset_menu_link?>" class="btn btn-warning" id="reset-menu" style="margin-bottom:1em"><?=t('Reset menu');?></a><?php endif; ?>
+<div class="clearfix"></div>
+<div id="menu-list">
+    <div id="menu-select">
+        <ul>
+            <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
+            <li data-menu-id="<?=$id?>"><a href="javascript:void(0)" class="btn btn-default menu-edit <?=$active?>" data-menu-id="<?=$id?>"><?=$title?></a></li>
+            <?php endforeach; endif;?>
+        </ul>
+    </div>
+</div>
+<div id="menu-admin">
+    <button class="btn btn-default" id="edit-menu"><?=t('Edit menu');?></button>
+    <button class="btn btn-success" id="add-link"><?=t('Add link');?></button>
+    <button class="btn btn-danger" id="delete-menu"><?=t('Delete menu');?></button>
+    <?php if ($pin_all):?><button class="btn <?=$pin_button_class?>" id="pinned-button"><?=$pin_all;?></button><?php endif;?>
+    <hr />
+    <div id="menu-admin-area">
+        <?=$first_menu?>
+    </div>
+</div>
+<div class="modal fade" id="link-edit-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="warning alert alert-danger"></div>
+                <form id="link-edit-form">
+                    <div class="form-group">
+                        <label for="form-title"><?=t('Title');?></label>
+                        <input type="text" name="title" value="" id="form-title" class="form-control" />
+                    </div>
+                    <div class="form-group form-url-group">
+                        <label for="form-url"><?=t('Url');?></label>
+                        <input type="text" name="url" value="" id="form-url" class="form-control" placeholder="http://address.com" />
+                    </div>
+                    <div class="form-group form-key-group">
+                        <div class="text-center"><strong>- <?=t('or')?> -</strong></div>
+                        <label for="form-url"><?=t('PageSmith page');?></label>
+                        <select name="key_select" class="form-control" id="form-key-select">
+                        </select>
+                        <p>* <?=t('Page already associated to a menu');?></p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=t('Close')?></button>
+                <button type="button" id="form-link-save" class="btn btn-primary"><?=t('Save')?></button>
+                <button type="button" id="form-link-delete" class="btn btn-danger"><?=t('Delete')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="menu-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="warning alert alert-danger"></div>
+                <form id="menu-edit-form" action='index.php' method='post' enctype="multipart/form-data">
+                    <input type='hidden' name='module' value='menu' />
+                    <input type='hidden' name='command' value='post_menu' />
+                    <input type='hidden' name='menu_id' id='menu-id' value='' />
+                    <div class="form-group">
+                        <label for="menu-title"><?=t('Menu title');?></label>
+                        <input type="text" name="title" value="" id="menu-title" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="menu-template"><?=t('Menu template');?></label>
+                        <select name="template" id="menu-template" class="form-control">
+                            <?=$templates?>
+                        </select>
+                    </div>
+                    <fieldset><legend><?=t('Association')?></legend>
+                        <div class="form-group">
+                            <label for="menu-associated-page"><?=t('Page');?></label>
+                            <select name="assoc_key" id="menu-associated-page" class="form-control">
+                            </select>
+                            <p style="font-style:italic">* <?=t('Pages already associated to a menu may not be selected.');?></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="menu-associated-url"><?=t('URL');?></label>
+                            <input type="text" name="assoc_url" id="menu-associated-url" class="form-control" placeholder="http://address.com" />
+                            <p style="font-style:italic">* <?=t('Using a URL prevents display of drop down and side menu.');?></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="menu-associated-image"><?=t('Image');?></label>
+                            <input type="file" name="assoc_image" id="menu-associated-image" class="form-control" />
+                            <div id='assoc-image-thumbnail' style='margin: 6px 0px'></div>
+                        </div>
+                    </fieldset>
+                </form>
+                <button class='btn btn-danger' id='clear-image'><?=t('Clear image')?></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=t('Close')?></button>
+                <button type="button" id="form-menu-save" class="btn btn-primary"><?=t('Save')?></button>
+            </div>
+        </div>
+    </div>
+</div>

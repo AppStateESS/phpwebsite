@@ -298,6 +298,61 @@ Please download 1.2.1.</pre>';
 + Old graphic files removed.
 + Changed some working to make admin options more clear.
 </pre>';
+
+        case version_compare($currentVersion, '2.0.0', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $tbl->addDataType('queue', 'smallint')->add();
+
+            $tbl->addField('id');
+            $count = 0;
+            while ($id = $db->selectColumn()) {
+                $count++;
+                $tbl->addValue('queue', $count);
+                $tbl->addFieldConditional('id', $id);
+                $db->update();
+                $tbl->resetValues();
+                $db->clearConditional();
+            }
+
+            $content[] = '<pre>2.0.0 changes
+----------------
++ Rewrote large parts of administration
++ Category view for menus
+</pre>';
+
+        case version_compare($currentVersion, '2.0.1', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $tbl->addDataType('assoc_key', 'int')->add();
+            $content[] = '<pre>2.0.1 changes
+----------------
++ Can associate page to a menu
+</pre>';
+
+        case version_compare($currentVersion, '2.0.2', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $dt = $tbl->addDataType('assoc_url', 'varchar');
+            $dt->setIsNull(true);
+            $dt->add();
+            $content[] = '<pre>2.0.2 changes
+----------------
++ Can associate url to a menu
+</pre>';
+        case version_compare($currentVersion, '2.0.3', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $dt = $tbl->addDataType('assoc_image', 'varchar');
+            $dt->setIsNull(true);
+            $dt->add();
+            if (!is_dir(PHPWS_HOME_DIR . 'images/menu/')) {
+                mkdir(PHPWS_HOME_DIR . 'images/menu/', 0755);
+            }
+            $content[] = '<pre>2.0.3 changes
+----------------
++ Can associate image to a menu
+</pre>';
     }
     return true;
 }

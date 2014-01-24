@@ -1,14 +1,5 @@
 <div class="menu" id="{MENU_ID}">
-<div class="box">
-<div class="box-title">{CLIP}
-<h2>{PIN_LINK} {ADD_LINK} {ADD_SITE_LINK} {TITLE}</h2>
-</div>
-<div class="box-content">
-<ul id="sort-{MENU_ID}" class="box-content menu-links">
-    {LINKS}
-</ul>
-<div class="align-center"><!-- BEGIN pin -->{PIN_PAGE}<br />
-<!-- END pin -->{ADMIN_LINK}</div>
-</div>
-</div>
+    <ul id="sort-{MENU_ID}" class="menu-links nav nav-pills">
+        {LINKS}
+    </ul>
 </div>
