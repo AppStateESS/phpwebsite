@@ -16,6 +16,10 @@ class Menu_Item {
     public $title = NULL;
     public $template = NULL;
     public $pin_all = 0;
+    public $queue = 0;
+    public $assoc_key;
+    public $assoc_url;
+    public $assoc_image;
     public $_db = NULL;
     public $_show_all = false;
     public $_style = null;
@@ -50,12 +54,39 @@ class Menu_Item {
         if (!isset($this->id)) {
             return FALSE;
         }
+        $db = \Database::newDB();
+        $m = $db->addTable('menus');
+        $k = $db->addTable('phpws_key');
+        $k->addField('url');
+        $db->joinResources($m, $k,
+                $db->createConditional($m->getField('assoc_key'),
+                        $k->getField('id'), '='), 'left');
+        $m->addFieldConditional('id', $this->id);
 
-        $this->resetdb();
-        $result = $this->_db->loadObject($this);
-        if (PHPWS_Error::isError($result)) {
-            return $result;
+        $result = $db->selectOneRow();
+        $this->id = $result['id'];
+        $this->key_id = $result['key_id'];
+        $this->title = $result['title'];
+        $this->template = $result['template'];
+        $this->pin_all = $result['pin_all'];
+        $this->queue = $result['queue'];
+        $this->assoc_key = $result['assoc_key'];
+        if (!empty($result['assoc_url'])) {
+            $this->assoc_url = $result['assoc_url'];
+        } elseif ($result['assoc_key']) {
+            $this->assoc_url = $result['url'];
         }
+        $this->assoc_image = $result['assoc_image'];
+    }
+
+    public function setAssocUrl($url)
+    {
+        $this->assoc_url = $url;
+    }
+
+    public function getAssocUrl()
+    {
+        return $this->assoc_url;
     }
 
     public function getTitle()
@@ -73,6 +104,16 @@ class Menu_Item {
     public function setTemplate($template)
     {
         $this->template = $template;
+    }
+
+    public function setAssocKey($key)
+    {
+        $this->assoc_key = (int) $key;
+    }
+
+    public function getAssocKey()
+    {
+        return $this->assoc_key;
     }
 
     public function setPinAll($pin)
@@ -137,6 +178,50 @@ class Menu_Item {
         }
     }
 
+    private function thumbPath($path)
+    {
+        return preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $path);
+    }
+
+    public function deleteImage()
+    {
+        $file = $this->assoc_image;
+        if (empty($file)) {
+            return;
+        }
+        if (is_file($file)) {
+            unlink($file);
+        }
+        $thumb = $this->thumbPath($file);
+        if (is_file($thumb)) {
+            unlink($thumb);
+        }
+    }
+
+    public function setAssocImage($path)
+    {
+        $this->assoc_image = $path;
+    }
+
+    public function getAssocImage()
+    {
+        return $this->assoc_image;
+    }
+
+    public function showAssocImage()
+    {
+        if (empty($this->assoc_image)) {
+            return null;
+        }
+
+        return "<img src='$this->assoc_image' />";
+    }
+
+    public function getAssocImageThumbnail()
+    {
+        return $this->thumbPath($this->assoc_image);
+    }
+
     public function save($save_key = true)
     {
         if (empty($this->title)) {
@@ -146,9 +231,27 @@ class Menu_Item {
         $new_menu = !(bool) $this->id;
 
         $this->resetdb();
+
+        if (!$this->id) {
+            $db = \Database::newDB();
+            $tbl = $db->addTable('menus');
+            $db->addExpression('max(' . $tbl->getField('queue') . ')', 'max');
+            $row = $db->selectOneRow();
+            if ($row) {
+                $queue = $row['queue'];
+            } else {
+                $queue = 0;
+            }
+            if ($queue) {
+                $this->queue = $queue + 1;
+            }
+        }
+        if (!$this->assoc_key) {
+            $this->assoc_key = 0;
+        }
         $result = $this->_db->saveObject($this);
         if (PHPWS_Error::isError($result)) {
-            return $result;
+            throw new \Exception($result->getMessage());
         }
 
         if ($save_key) {
@@ -161,7 +264,10 @@ class Menu_Item {
             $link->title = dgettext('menu', 'Home');
             $link->url = 'index.php';
             $link->key_id = 0;
-            PHPWS_Error::logIfError($link->save());
+            $result = $link->save();
+            if (\PHPWS_Error::isError($result)) {
+                throw new \Exception($result->getMessage());
+            }
         }
 
         return true;
@@ -192,19 +298,16 @@ class Menu_Item {
     /**
      * Returns all the links in a menu for display
      */
-    public function displayLinks($edit = FALSE)
+    public function displayLinks($admin = false)
     {
-        if (Menu::isAdminMode()) {
-            $this->loadJS();
-        }
-
         $all_links = $this->getLinks();
         if (empty($all_links)) {
             return NULL;
         }
 
         foreach ($all_links as $link) {
-            if ($i = $link->view()) {
+            $i = $link->view(1, $admin);
+            if ($i) {
                 $link_list[] = $i;
             }
         }
@@ -212,31 +315,14 @@ class Menu_Item {
         return implode("\n", $link_list);
     }
 
-    public function loadJS()
-    {
-        static $loaded = false;
-
-        if ($loaded) {
-            return;
-        }
-        javascript('jquery');
-        $vars['authkey'] = Current_User::getAuthKey();
-        $vars['drag_sort'] = PHPWS_Settings::get('menu', 'drag_sort');
-
-        javascriptMod('menu', 'admin_link', $vars);
-        $loaded = true;
-    }
-
     /**
      * Returns the menu link objects associated to a menu
      */
     public function getLinks($parent = 0, $active_only = TRUE)
     {
-        $final = NULL;
-
         // If we have been here already, return the data
         if (isset($GLOBALS['MENU_LINKS'][$this->id])) {
-            return $GLOBALS['MENU_LINKS'][$this->id];
+            //return $GLOBALS['MENU_LINKS'][$this->id];
         }
 
         if (!$this->id) {
@@ -276,52 +362,6 @@ class Menu_Item {
         return $new_list;
     }
 
-    public function getRowTags()
-    {
-        $vars['menu_id'] = $this->id;
-        $vars['command'] = 'edit_menu';
-        $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Edit'), 'menu',
-                        $vars);
-
-        if (!isset($_SESSION['Menu_Clip']) ||
-                !isset($_SESSION['Menu_Clip'][$this->id])) {
-            $vars['command'] = 'clip';
-            $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Clip'), 'menu',
-                            $vars);
-        } else {
-            $vars['command'] = 'unclip';
-            $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Unclip'),
-                            'menu', $vars);
-        }
-
-        $vars['command'] = 'pin_all';
-        if ($this->pin_all == 0) {
-            $link_title = dgettext('menu', 'Pin');
-            $vars['hook'] = 1;
-        } else {
-            $link_title = dgettext('menu', 'Unpin');
-            $vars['hook'] = 0;
-        }
-        $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
-        unset($vars['hook']);
-
-        $vars['command'] = 'delete_menu';
-        $js['QUESTION'] = dgettext('menu',
-                'Are you sure you want to delete this menu and all its links.');
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-        $js['LINK'] = dgettext('menu', 'Delete');
-        $links[] = javascript('confirm', $js);
-
-        $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Reorder links'),
-                        'menu',
-                        array('command' => 'reorder_links',
-                    'menu_id' => $this->id));
-        $links[] = Current_User::popupPermission($this->key_id);
-
-        $tpl['ACTION'] = implode(' | ', $links);
-        return $tpl;
-    }
-
     public function kill()
     {
         $db = new PHPWS_DB('menu_assoc');
@@ -338,6 +378,10 @@ class Menu_Item {
         $db->addWhere('id', $this->id);
         $db->delete();
         Layout::purgeBox('menu_' . $this->id);
+
+        $db2 = \Database::newDB();
+        $tbl = $db2->addTable('menus');
+        $tbl->addFieldConditional('queue', $this->queue, '>');
     }
 
     public function addRawLink($title, $url, $parent = 0)
@@ -371,38 +415,9 @@ class Menu_Item {
         return $link->save();
     }
 
-    /**
-     * This link lets you add a stored link to the menu
-     */
-    public static function getPinLink($menu_id, $link_id = 0, $popup = false)
+    private function parseIni($directory)
     {
-        if (!isset($_SESSION['Menu_Pin_Links'])) {
-            return null;
-        }
-
-        $vars['command'] = 'pick_link';
-        $vars['menu_id'] = $menu_id;
-        if ($link_id) {
-            $vars['link_id'] = $link_id;
-        }
-
-        $js['width'] = '300';
-        $js['height'] = '100';
-
-        $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-        if ($popup) {
-            $js['label'] = sprintf('%s %s', MENU_PIN_LINK,
-                    dgettext('menu', 'Paste page link'));
-        } else {
-            $js['label'] = MENU_PIN_LINK;
-        }
-
-        return javascript('open_window', $js);
-    }
-
-    public function parseIni()
-    {
-        $inifile = PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
+        $inifile = $directory . 'options.ini';
         if (!is_file($inifile)) {
             return;
         }
@@ -410,7 +425,6 @@ class Menu_Item {
         $results = parse_ini_file($inifile);
         if (!empty($results['show_all'])) {
             $this->_show_all = (bool) $results['show_all'];
-            ;
         }
 
         if (!empty($results['style_sheet'])) {
@@ -421,124 +435,48 @@ class Menu_Item {
     /**
      * Returns a menu and its links for display
      */
-    public function view($pin_mode = FALSE, $return_content = false)
+    public function view($admin = false)
     {
-        static $pin_page = true;
-
         $key = Key::getCurrent();
-
-        if ($pin_mode && $key->isDummy(true)) {
+        if ($key && $key->isDummy(true)) {
             return;
         }
 
-        $tpl_dir = PHPWS_Template::getTemplateDirectory('menu');
-        $edit = FALSE;
-        $file = 'menu_layout/' . $this->template . '/menu.tpl';
+        $theme_tpl_dir = \PHPWS_Template::getTplDir('menu') . 'menu_layout/';
+        $menu_tpl_dir = PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/';
 
-        if (!is_file($tpl_dir . $file)) {
-            PHPWS_Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view',
-                    $tpl_dir . $file);
-            return false;
+        $theme_path = $theme_tpl_dir . $this->template . '/';
+        $menu_path = $menu_tpl_dir . $this->template . '/';
+
+        if (is_file($theme_path . 'menu.tpl')) {
+            $file = $theme_path . 'menu.tpl';
+            $path = $theme_path;
+            $http = PHPWS_SOURCE_HTTP . Layout::getThemeDirRoot() . Layout::getTheme() . 'templates/menu_layout/' . $this->template . '/';
+        } elseif (is_file($menu_path . 'menu.tpl')) {
+            $file = $menu_path . 'menu.tpl';
+            $path = $menu_path;
+            $http = PHPWS_SOURCE_HTTP . 'mod/menu/templates/menu_layout/' . $this->template . '/';
+        } else {
+            $this->template = 'basic';
+            $this->save();
+            $path = $menu_tpl_dir . 'basic/';
+            $http = PHPWS_SOURCE_HTTP . 'mod/menu/templates/menu_layout/basic/';
+            $file = $path . '/menu.tpl';
         }
 
-        $this->parseIni();
+        $this->parseIni($path);
 
         if ($this->_style) {
-            $style = sprintf('menu_layout/%s/%s', $this->template, $this->_style);
+            $style = $http . 'style.css';
             Layout::addStyle('menu', $style);
         }
 
-        $admin_link = !PHPWS_Settings::get('menu', 'miniadmin');
-
-        $content_var = 'menu_' . $this->id;
-
-        if (!$pin_mode && Current_User::allow('menu')) {
-            if (Menu::isAdminMode()) {
-                if (!isset($_REQUEST['authkey'])) {
-                    $pinvars['command'] = 'pin_page';
-                    if ($key) {
-                        if ($key->isDummy()) {
-                            $pinvars['ltitle'] = urlencode($key->title);
-                            $pinvars['lurl'] = urlencode($key->url);
-                        } else {
-                            $pinvars['key_id'] = $key->id;
-                        }
-                    } else {
-                        $pinvars['lurl'] = urlencode(PHPWS_Core::getCurrentUrl());
-                    }
-
-                    $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);
-                    $js['label'] = '<i class="fa fa-copy"></i> '  . dgettext('menu', 'Copy page location');
-                    $js['width'] = 300;
-                    $js['height'] = 180;
-                    if (!PHPWS_Settings::get('menu', 'miniadmin')) {
-                        $tpl['PIN_PAGE'] = javascript('open_window', $js);
-                    } elseif ($pin_page) {
-                        MiniAdmin::add('menu', javascript('open_window', $js));
-                        $pin_page = false;
-                    }
-                }
-
-                $tpl['ADD_LINK'] = Menu::getAddLink($this->id, null, null,
-                                $this->template);
-                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0,
-                                isset($key), null, $this->template);
-
-                if (!empty($key)) {
-                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id,
-                                    $this->pin_all, $this->template);
-                } else {
-                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1,
-                                    $this->pin_all, $this->template);
-                }
-
-                $vars['command'] = 'disable_admin_mode';
-                $vars['return'] = 1;
-                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF,
-                                'menu', $vars);
-
-                if (isset($_SESSION['Menu_Pin_Links'])) {
-                    $tpl['PIN_LINK'] = $this->getPinLink($this->id,0,true);
-                }
-            } elseif ($admin_link) {
-                $vars['command'] = 'enable_admin_mode';
-                $vars['return'] = 1;
-                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_ON,
-                                'menu', $vars);
-            }
-
-            if (empty($tpl['ADD_LINK']) && PHPWS_Settings::get('menu',
-                            'always_add') && Key::checkKey($key)) {
-                $this->loadJS();
-                $tpl['ADD_LINK'] = Menu::getAddLink($this->id, null, null,
-                                $this->template);
-                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0,
-                                isset($key), null, $this->template);
-            }
-        }
-
         $tpl['TITLE'] = $this->getTitle();
-        $tpl['LINKS'] = $this->displayLinks($edit);
+        $tpl['LINKS'] = $this->displayLinks($admin);
         $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
+        $content = PHPWS_Template::process($tpl, 'menu', $file, true);
 
-        if ($pin_mode &&
-                Current_User::allow('menu') &&
-                isset($_SESSION['Menu_Clip']) &&
-                isset($_SESSION['Menu_Clip'][$this->id])) {
-
-            $pinvars['command'] = 'pin_menu';
-            $pinvars['key_id'] = $key->id;
-            $pinvars['menu_id'] = $this->id;
-            $tpl['CLIP'] = PHPWS_Text::secureLink(MENU_PIN, 'menu', $pinvars);
-        }
-
-        $content = PHPWS_Template::process($tpl, 'menu', $file);
-
-        if ($return_content) {
-            return $content;
-        } else {
-            Layout::set($content, 'menu', $content_var);
-        }
+        return $content;
     }
 
     public function reorderLinks()
