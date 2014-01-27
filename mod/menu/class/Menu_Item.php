@@ -451,16 +451,16 @@ class Menu_Item {
         if (is_file($theme_path . 'menu.tpl')) {
             $file = $theme_path . 'menu.tpl';
             $path = $theme_path;
-            $http = PHPWS_SOURCE_HTTP . Layout::getThemeDirRoot() . Layout::getTheme() . 'templates/menu_layout/' . $this->template . '/';
+            $http = Layout::getThemeDirRoot() . Layout::getTheme() . 'templates/menu_layout/' . $this->template . '/';
         } elseif (is_file($menu_path . 'menu.tpl')) {
             $file = $menu_path . 'menu.tpl';
             $path = $menu_path;
-            $http = PHPWS_SOURCE_HTTP . 'mod/menu/templates/menu_layout/' . $this->template . '/';
+            $http = 'mod/menu/templates/menu_layout/' . $this->template . '/';
         } else {
             $this->template = 'basic';
             $this->save();
             $path = $menu_tpl_dir . 'basic/';
-            $http = PHPWS_SOURCE_HTTP . 'mod/menu/templates/menu_layout/basic/';
+            $http = 'mod/menu/templates/menu_layout/basic/';
             $file = $path . '/menu.tpl';
         }
 
@@ -468,7 +468,7 @@ class Menu_Item {
 
         if ($this->_style) {
             $style = $http . 'style.css';
-            Layout::addStyle('menu', $style);
+            Layout::addToStyleList($style);
         }
 
         $tpl['TITLE'] = $this->getTitle();
