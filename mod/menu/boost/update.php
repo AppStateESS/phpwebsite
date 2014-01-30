@@ -341,14 +341,21 @@ Please download 1.2.1.</pre>';
 + Can associate url to a menu
 </pre>';
         case version_compare($currentVersion, '2.0.3', '<'):
+            $branch = PHPWS_Boost::inBranch(true);
+            if ($branch) {
+                $new_directory = $branch->direcory . 'images/menu/';
+            } else {
+                $new_directory = PHPWS_SOURCE_DIR . 'images/menu/';
+            }
+            if (!is_dir($new_directory)) {
+                mkdir($new_directory);
+            }
+
             $db = \Database::newDB();
             $tbl = $db->addTable('menus');
             $dt = $tbl->addDataType('assoc_image', 'varchar');
             $dt->setIsNull(true);
             $dt->add();
-            if (!is_dir(PHPWS_HOME_DIR . 'images/menu/')) {
-                mkdir(PHPWS_HOME_DIR . 'images/menu/', 0755);
-            }
             $content[] = '<pre>2.0.3 changes
 ----------------
 + Can associate image to a menu
