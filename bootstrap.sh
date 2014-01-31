@@ -8,6 +8,11 @@ DBUSER=phpwebsite
 DBPASS=phpwebsite
 DBNAME=phpwebsite
 
+RC_DBUSER=roundcube
+RC_DBPASS=roundcube
+RC_DBNAME=roundcube
+RC_VERSION=0.9.5
+
 CONFIG=/var/phpws/config
 FILES=/var/phpws/files
 IMAGES=/var/phpws/images
@@ -21,7 +26,10 @@ echo "==================="
 echo "Installing Packages"
 echo "==================="
 yum -y install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-yum -y install httpd php-cli php-pgsql php-pecl-xdebug php-pdo php php-mbstring php-common php-mysql php-soap php-gd php-xml php-pecl-apc mysql-server mysql postgresql-server postgresql phpmyadmin phpPgAdmin
+yum -y install httpd php-cli php-pgsql php-pecl-xdebug php-pdo php \
+    php-mbstring php-common php-mysql php-soap php-gd php-xml php-pecl-apc \
+    mysql-server mysql postgresql-server postgresql phpmyadmin phpPgAdmin \
+    roundcubemail dovecot
 
 echo "================"
 echo "Setting up MySQL"
@@ -43,6 +51,9 @@ mysql -u root <<MySQL
 CREATE DATABASE $DBNAME;
 GRANT ALL ON $DBNAME.* TO $DBUSER@localhost IDENTIFIED BY '$DBPASS';
 GRANT ALL ON *.* TO root@'%';
+CREATE DATABASE $RC_DBNAME;
+GRANT ALL ON $RC_DBNAME.* TO $RC_DBUSER@localhost IDENTIFIED BY '$RC_DBPASS';
+GRANT ALL ON *.* TO root@'%';
 MySQL
 
 echo "====================="
@@ -58,6 +69,263 @@ echo "listen_addresses = '*'" >> /var/lib/pgsql/data/postgresql.conf
 service postgresql start
 echo -e 'phpwebsite\nphpwebsite' | su - postgres -c 'createuser -SDREP phpwebsite'
 su - postgres -c 'createdb -E utf8 -O phpwebsite phpwebsite'
+
+echo "=================="
+echo "Setting up Postfix"
+echo "=================="
+useradd email -G mail
+echo "email" | passwd email --stdin
+cat << POSTFIX >> /etc/postfix/main.cf
+transport_maps = hash:/etc/postfix/transport
+always_bcc = email@localhost
+POSTFIX
+cat << TRANSPORT >> /etc/postfix/transport
+localhost :
+*         :discard
+TRANSPORT
+postmap /etc/postfix/transport
+service postfix restart
+
+echo "=================="
+echo "Setting up Dovecot"
+echo "=================="
+cat << DOVECOT > /etc/dovecot/dovecot.conf
+mail_location = mbox:~/mail:INBOX=/var/mail/%u
+mbox_write_locks = fcntl
+passdb {
+  driver = pam
+  }
+  ssl_cert = </etc/pki/dovecot/certs/dovecot.pem
+  ssl_key = </etc/pki/dovecot/private/dovecot.pem
+  userdb {
+    driver = passwd
+}
+DOVECOT
+service dovecot start
+
+echo "===================="
+echo "Setting up RoundCube"
+echo "===================="
+cat << RCDB > /etc/roundcubemail/db.inc.php
+<?php
+\$rcmail_config = array();
+\$rcmail_config['db_dsnw'] = 'mysql://$RC_DBUSER:$RC_DBPASS@localhost/$RC_DBNAME';
+\$rcmail_config['db_dsnr'] = '';
+\$rcmail_config['db_persistent'] = FALSE;
+\$rcmail_config['db_table_users'] = 'users';
+\$rcmail_config['db_table_identities'] = 'identities';
+\$rcmail_config['db_table_contacts'] = 'contacts';
+\$rcmail_config['db_table_contactgroups'] = 'contactgroups';
+\$rcmail_config['db_table_contactgroupmembers'] = 'contactgroupmembers';
+\$rcmail_config['db_table_session'] = 'session';
+\$rcmail_config['db_table_cache'] = 'cache';
+\$rcmail_config['db_table_cache_index'] = 'cache_index';
+\$rcmail_config['db_table_cache_thread'] = 'cache_thread';
+\$rcmail_config['db_table_cache_messages'] = 'cache_messages';
+\$rcmail_config['db_table_dictionary'] = 'dictionary';
+\$rcmail_config['db_table_searches'] = 'searches';
+\$rcmail_config['db_table_system'] = 'system';
+\$rcmail_config['db_sequence_users'] = 'user_ids';
+\$rcmail_config['db_sequence_identities'] = 'identity_ids';
+\$rcmail_config['db_sequence_contacts'] = 'contact_ids';
+\$rcmail_config['db_sequence_contactgroups'] = 'contactgroups_ids';
+\$rcmail_config['db_sequence_searches'] = 'search_ids';
+?>
+RCDB
+cat << RCMAIN > /etc/roundcubemail/main.inc.php
+<?php
+\$rcmail_config = array();
+\$rcmail_config['debug_level'] = 1;
+\$rcmail_config['log_driver'] = 'file';
+\$rcmail_config['log_date_format'] = 'd-M-Y H:i:s O';
+\$rcmail_config['syslog_id'] = 'roundcube';
+\$rcmail_config['syslog_facility'] = LOG_USER;
+\$rcmail_config['smtp_log'] = true;
+\$rcmail_config['log_logins'] = false;
+\$rcmail_config['log_session'] = false;
+\$rcmail_config['sql_debug'] = false;
+\$rcmail_config['imap_debug'] = false;
+\$rcmail_config['ldap_debug'] = false;
+\$rcmail_config['smtp_debug'] = false;
+\$rcmail_config['default_host'] = 'localhost';
+\$rcmail_config['default_port'] = 143;
+\$rcmail_config['imap_auth_type'] = null;
+\$rcmail_config['imap_delimiter'] = null;
+\$rcmail_config['imap_ns_personal'] = null;
+\$rcmail_config['imap_ns_other']    = null;
+\$rcmail_config['imap_ns_shared']   = null;
+\$rcmail_config['imap_force_caps'] = false;
+\$rcmail_config['imap_force_lsub'] = false;
+\$rcmail_config['imap_force_ns'] = false;
+\$rcmail_config['imap_timeout'] = 0;
+\$rcmail_config['imap_auth_cid'] = null;
+\$rcmail_config['imap_auth_pw'] = null;
+\$rcmail_config['imap_cache'] = null;
+\$rcmail_config['messages_cache'] = false;
+\$rcmail_config['smtp_server'] = '';
+\$rcmail_config['smtp_port'] = 25;
+\$rcmail_config['smtp_user'] = '';
+\$rcmail_config['smtp_pass'] = '';
+\$rcmail_config['smtp_auth_type'] = '';
+\$rcmail_config['smtp_auth_cid'] = null;
+\$rcmail_config['smtp_auth_pw'] = null;
+\$rcmail_config['smtp_helo_host'] = '';
+\$rcmail_config['smtp_timeout'] = 0;
+\$rcmail_config['enable_installer'] = false;
+\$rcmail_config['dont_override'] = array();
+\$rcmail_config['support_url'] = '';
+\$rcmail_config['skin_logo'] = null;
+\$rcmail_config['auto_create_user'] = true;
+\$rcmail_config['user_aliases'] = false;
+\$rcmail_config['log_dir'] = '/var/log/roundcubemail/';
+\$rcmail_config['temp_dir'] = '\${_tmppath}';
+\$rcmail_config['message_cache_lifetime'] = '10d';
+\$rcmail_config['force_https'] = false;
+\$rcmail_config['use_https'] = false;
+\$rcmail_config['login_autocomplete'] = 0;
+\$rcmail_config['login_lc'] = 2;
+\$rcmail_config['skin_include_php'] = false;
+\$rcmail_config['display_version'] = false;
+\$rcmail_config['session_lifetime'] = 10;
+\$rcmail_config['session_domain'] = '';
+\$rcmail_config['session_name'] = null;
+\$rcmail_config['session_auth_name'] = null;
+\$rcmail_config['session_path'] = null;
+\$rcmail_config['session_storage'] = 'db';
+\$rcmail_config['memcache_hosts'] = null;
+\$rcmail_config['ip_check'] = false;
+\$rcmail_config['referer_check'] = false;
+\$rcmail_config['x_frame_options'] = 'sameorigin';
+\$rcmail_config['des_key'] = 'AGVuQql0VnRCMUosAmH32WWz';
+\$rcmail_config['username_domain'] = '';
+\$rcmail_config['mail_domain'] = '';
+\$rcmail_config['password_charset'] = 'ISO-8859-1';
+\$rcmail_config['sendmail_delay'] = 0;
+\$rcmail_config['max_recipients'] = 0; 
+\$rcmail_config['max_group_members'] = 0; 
+\$rcmail_config['useragent'] = 'Roundcube Webmail/'.RCMAIL_VERSION;
+\$rcmail_config['product_name'] = 'Roundcube Webmail';
+\$rcmail_config['include_host_config'] = false;
+\$rcmail_config['generic_message_footer'] = '';
+\$rcmail_config['generic_message_footer_html'] = '';
+\$rcmail_config['http_received_header'] = false;
+\$rcmail_config['http_received_header_encrypt'] = false;
+\$rcmail_config['mail_header_delimiter'] = NULL;
+\$rcmail_config['line_length'] = 72;
+\$rcmail_config['send_format_flowed'] = true;
+\$rcmail_config['mdn_use_from'] = false;
+\$rcmail_config['identities_level'] = 0;
+\$rcmail_config['client_mimetypes'] = null;
+\$rcmail_config['mime_magic'] = null;
+\$rcmail_config['mime_types'] = null;
+\$rcmail_config['im_identify_path'] = null;
+\$rcmail_config['im_convert_path'] = null;
+\$rcmail_config['image_thumbnail_size'] = 240;
+\$rcmail_config['contact_photo_size'] = 160;
+\$rcmail_config['email_dns_check'] = false;
+\$rcmail_config['no_save_sent_messages'] = false;
+\$rcmail_config['plugins'] = array();
+\$rcmail_config['message_sort_col'] = '';
+\$rcmail_config['message_sort_order'] = 'DESC';
+\$rcmail_config['list_cols'] = array('subject', 'status', 'fromto', 'date', 'size', 'flag', 'attachment');
+\$rcmail_config['language'] = null;
+\$rcmail_config['date_format'] = 'Y-m-d';
+\$rcmail_config['date_formats'] = array('Y-m-d', 'Y/m/d', 'Y.m.d', 'd-m-Y', 'd/m/Y', 'd.m.Y', 'j.n.Y');
+\$rcmail_config['time_format'] = 'H:i';
+\$rcmail_config['time_formats'] = array('G:i', 'H:i', 'g:i a', 'h:i A');
+\$rcmail_config['date_short'] = 'D H:i';
+\$rcmail_config['date_long'] = 'Y-m-d H:i';
+\$rcmail_config['drafts_mbox'] = 'Drafts';
+\$rcmail_config['junk_mbox'] = 'Junk';
+\$rcmail_config['sent_mbox'] = 'Sent';
+\$rcmail_config['trash_mbox'] = 'Trash';
+\$rcmail_config['default_folders'] = array('INBOX', 'Drafts', 'Sent', 'Junk', 'Trash');
+\$rcmail_config['create_default_folders'] = false;
+\$rcmail_config['protect_default_folders'] = true;
+\$rcmail_config['quota_zero_as_unlimited'] = false;
+\$rcmail_config['enable_spellcheck'] = true;
+\$rcmail_config['spellcheck_dictionary'] = false;
+\$rcmail_config['spellcheck_engine'] = 'googie';
+\$rcmail_config['spellcheck_uri'] = '';
+\$rcmail_config['spellcheck_languages'] = NULL;
+\$rcmail_config['spellcheck_ignore_caps'] = false;
+\$rcmail_config['spellcheck_ignore_nums'] = false;
+\$rcmail_config['spellcheck_ignore_syms'] = false;
+\$rcmail_config['recipients_separator'] = ',';
+\$rcmail_config['max_pagesize'] = 200;
+\$rcmail_config['min_refresh_interval'] = 60;
+\$rcmail_config['upload_progress'] = false;
+\$rcmail_config['undo_timeout'] = 0;
+\$rcmail_config['address_book_type'] = 'sql';
+\$rcmail_config['ldap_public'] = array();
+\$rcmail_config['autocomplete_addressbooks'] = array('sql');
+\$rcmail_config['autocomplete_min_length'] = 1;
+\$rcmail_config['autocomplete_threads'] = 0;
+\$rcmail_config['autocomplete_max'] = 15;
+\$rcmail_config['address_template'] = '{street}<br/>{locality} {zipcode}<br/>{country} {region}';
+\$rcmail_config['addressbook_search_mode'] = 0;
+\$rcmail_config['default_charset'] = 'ISO-8859-1';
+\$rcmail_config['skin'] = 'larry';
+\$rcmail_config['mail_pagesize'] = 50;
+\$rcmail_config['addressbook_pagesize'] = 50;
+\$rcmail_config['addressbook_sort_col'] = 'surname';
+\$rcmail_config['addressbook_name_listing'] = 0;
+\$rcmail_config['timezone'] = 'auto';
+\$rcmail_config['prefer_html'] = true;
+\$rcmail_config['show_images'] = 0;
+\$rcmail_config['message_extwin'] = false;
+\$rcmail_config['compose_extwin'] = false;
+\$rcmail_config['htmleditor'] = 0;
+\$rcmail_config['prettydate'] = true;
+\$rcmail_config['draft_autosave'] = 300;
+\$rcmail_config['preview_pane'] = false;
+\$rcmail_config['preview_pane_mark_read'] = 0;
+\$rcmail_config['logout_purge'] = false;
+\$rcmail_config['logout_expunge'] = false;
+\$rcmail_config['inline_images'] = true;
+\$rcmail_config['mime_param_folding'] = 1;
+\$rcmail_config['skip_deleted'] = false;
+\$rcmail_config['read_when_deleted'] = true;
+\$rcmail_config['flag_for_deletion'] = false;
+\$rcmail_config['refresh_interval'] = 60;
+\$rcmail_config['check_all_folders'] = false;
+\$rcmail_config['display_next'] = true;
+\$rcmail_config['autoexpand_threads'] = 0;
+\$rcmail_config['reply_mode'] = 0;
+\$rcmail_config['strip_existing_sig'] = true;
+\$rcmail_config['show_sig'] = 1;
+\$rcmail_config['force_7bit'] = false;
+\$rcmail_config['search_mods'] = null;
+\$rcmail_config['addressbook_search_mods'] = null;
+\$rcmail_config['delete_always'] = false;
+\$rcmail_config['delete_junk'] = false;
+\$rcmail_config['mdn_requests'] = 0;
+\$rcmail_config['mdn_default'] = 0;
+\$rcmail_config['dsn_default'] = 0;
+\$rcmail_config['reply_same_folder'] = false;
+\$rcmail_config['forward_attachment'] = false;
+\$rcmail_config['default_addressbook'] = null;
+\$rcmail_config['spellcheck_before_send'] = false;
+\$rcmail_config['autocomplete_single'] = false;
+\$rcmail_config['default_font'] = 'Verdana';
+RCMAIN
+cat << RCHTTPD > /etc/httpd/conf.d/roundcubemail.conf
+Alias /roundcubemail /usr/share/roundcubemail
+<Directory /usr/share/roundcubemail/>
+    <IfModule mod_authz_core.c>
+        # Apache 2.4
+        Require local
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        # Apache 2.2
+        Order Deny,Allow
+        Allow from all
+    </IfModule>
+</Directory>
+RCHTTPD
+mysql $RC_DBNAME < /usr/share/doc/roundcubemail-$RC_VERSION/SQL/mysql.initial.sql
+useradd email
+echo "email" | passwd email --stdin
 
 echo "==========================="
 echo "Configuring php[My|Pg]Admin"
@@ -644,6 +912,13 @@ cat << USAGE
      http://localhost:7970/phpPgAdmin
      user: postgres
      [leave password blank]
+
+ Regarding Email: This VM is explicitly configured NOT to allow any outbound
+ emails.  Instead, they are forwarded verbatim to email@localhost.  You can
+ check this account by logging into RoundCube at:
+     http://localhost:7970/roundcubemail
+     User: email
+     Pass: email
 
  And of course, phpWebSite is located at:
      http://localhost:7970
