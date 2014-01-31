@@ -341,14 +341,13 @@ Please download 1.2.1.</pre>';
 + Can associate url to a menu
 </pre>';
         case version_compare($currentVersion, '2.0.3', '<'):
-            $branch = PHPWS_Boost::inBranch(true);
-            if ($branch) {
-                $new_directory = $branch->direcory . 'images/menu/';
-            } else {
-                $new_directory = PHPWS_SOURCE_DIR . 'images/menu/';
-            }
+            $new_directory = $home_directory . 'images/menu/';
             if (!is_dir($new_directory)) {
-                mkdir($new_directory);
+                $status = mkdir($new_directory);
+                if(!$status) {
+                    $content[] = "Could not create directory $new_directory.";
+                    return false;
+                }
             }
 
             $db = \Database::newDB();
@@ -356,10 +355,11 @@ Please download 1.2.1.</pre>';
             $dt = $tbl->addDataType('assoc_image', 'varchar');
             $dt->setIsNull(true);
             $dt->add();
-            $content[] = '<pre>2.0.3 changes
+            $content[] = "<pre>2.0.3 changes
 ----------------
++ Created $new_directory
 + Can associate image to a menu
-</pre>';
+</pre>";
     }
     return true;
 }
