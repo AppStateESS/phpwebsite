@@ -421,6 +421,7 @@ Group apache
 ServerAdmin root@localhost
 UseCanonicalName Off
 DocumentRoot "/vagrant"
+EnableSendfile off
 <Directory />
     Options FollowSymLinks
     AllowOverride None
