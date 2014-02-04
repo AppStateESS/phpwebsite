@@ -208,14 +208,19 @@ class Menu_Admin {
     {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
+
+        $menu = new Menu_Item($request->getVar('menu_id'));
+
         if ($request->isVar('assoc_key')) {
             $assoc_key = $request->getVar('assoc_key');
+        } elseif ($menu->assoc_key) {
+            $assoc_key = $menu->assoc_key;
         } else {
             $assoc_key = 0;
         }
         $assoc_url = trim(strip_tags($request->getVar('assoc_url')));
 
-        $menu = new Menu_Item($request->getVar('menu_id'));
+
         $menu->setTitle($title);
         $menu->setTemplate($template);
         $menu->assoc_url = null;
