@@ -389,7 +389,7 @@ class Menu_Admin {
                     $move_link->link_order = $prev_link_order + 1;
                 }
                 // reset links where moved item was
-                $db->reset();
+                $db = \Database::newDB();
                 $ml = $db->addTable('menu_links');
                 $lorder = $ml->getField('link_order');
                 $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
