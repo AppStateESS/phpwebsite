@@ -487,6 +487,7 @@ class Menu_Admin {
         if ($link_id) {
             $link = new Menu_Link($link_id);
             $link->setTitle($title);
+            $link->setUrl($url);
         } else {
             $link = new Menu_Link;
             $link->setTitle($title);

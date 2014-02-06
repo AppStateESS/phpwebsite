@@ -11,4 +11,5 @@ $import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/menu/check.xml';
 $about        = true;
 $dependency   = true;
+$image_dir    = true;
 ?>

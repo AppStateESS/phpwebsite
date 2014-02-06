@@ -209,9 +209,9 @@ class Menu_Link {
         if (empty($this->id) || empty($this->link_order)) {
             $this->link_order = $this->_getOrder();
         }
-
         $db = $this->getDB();
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+        return $result;
     }
 
     public function isCurrentUrl()
