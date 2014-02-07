@@ -42,7 +42,7 @@ if (!PHPWS_Settings::get('properties', 'roommate_only')) {
         $form->setPlaceHolder('c_password', 'Password');
         $form->setSize('c_password', 10);
         $form->setClass('c_password', 'form-control');
-        $form->addSubmit('submit', 'Login');
+        $form->addSubmit('submit', 'Log in to Manager Account');
         $form->setClass('submit', 'btn btn-success');
         $tpl = $form->getTemplate();
         $content = PHPWS_Template::process($tpl, 'properties', 'clogin.tpl');
