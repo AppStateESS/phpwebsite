@@ -148,9 +148,9 @@ class Boost_Action {
         $boost->loadModules(array($module_title), FALSE);
 
         $content = array();
-        if ($boost->update($content)) {
-            $boost->updateBranches($content);
-        }
+
+        $boost->updateBranches($content);
+        $boost->update($content)
         return implode('<br />', $content);
     }
 
