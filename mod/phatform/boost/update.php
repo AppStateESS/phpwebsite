@@ -120,6 +120,7 @@ function phatform_update(&$content, $version)
 
         case version_compare($version, '3.1.9', '<'):
             if (!is_file(PHPWS_HOME_DIR . 'files/phatform/.htaccess')) {
+                mkdir(PHPWS_HOME_DIR . 'files/phatform', 0755, true);
                 copy(PHPWS_SOURCE_DIR . 'mod/phatform/boost/htaccess',
                         PHPWS_HOME_DIR . 'files/phatform/.htaccess');
             }
