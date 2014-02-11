@@ -205,7 +205,7 @@ UPDATES;
 
         case version_compare($version, '2.3.0', '<'):
             try {
-                include PHPWS_SOURCE_DIR . 'core/boost/updates/2_3_0.php';
+                include_once PHPWS_SOURCE_DIR . 'core/boost/updates/2_3_0.php';
                 update_core_2_3_0();
             } catch (\Exception $e) {
                 $content[] = 'Error: ' . $e->getMessage();
