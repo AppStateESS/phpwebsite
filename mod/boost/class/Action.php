@@ -150,7 +150,7 @@ class Boost_Action {
         $content = array();
 
         $boost->updateBranches($content);
-        $boost->update($content)
+        $boost->update($content);
         return implode('<br />', $content);
     }
 
