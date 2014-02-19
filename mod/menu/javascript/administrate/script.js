@@ -424,12 +424,13 @@ function MenuAdmin() {
         this.editButtons();
         $('.link-edit').unbind('click');
         $('.link-edit').click(function() {
-            var link = $('a.menu-link-href', $(this).parents('.menu-link').first());
+            var link = $($('a.menu-link-href', $(this).parents('.menu-link').first())[0]);
             t.input.title.val(link.text());
             t.link_id = link.data('linkId');
             t.current_link = link;
             t.key_id = link.data('keyId');
             t.url = link.attr('href');
+            t.loadMoveLinkOptions();
             t.initFormButtons();
             if (t.key_id > 0) {
                 $('.form-url-group').hide();
@@ -444,6 +445,29 @@ function MenuAdmin() {
         });
     };
 
+    this.loadMoveLinkOptions = function() {
+        $.get('index.php', {
+            module: 'menu',
+            command: 'menu_options',
+            menu_id: t.menu_id
+        }, function(data) {
+            $('#move-to-menu').html(data);
+        }
+        );
+
+        $('#move-to-menu').change(function() {
+            var menu_id = $('option:selected', this).val();
+            $.get('index.php', {
+                module: 'menu',
+                command: 'transfer_link',
+                menu_id: menu_id,
+                link_id: t.link_id
+            }).always(function() {
+                t.link_modal.modal('hide');
+                t.populateMenuEdit();
+            });
+        });
+    };
 
     this.keyChange = function() {
         this.input.key_select.change(function() {

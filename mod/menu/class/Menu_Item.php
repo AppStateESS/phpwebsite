@@ -336,7 +336,6 @@ class Menu_Item {
         $db->addOrder('link_order');
         $db->setIndexBy('id');
         $data = $db->getObjects('Menu_Link');
-
         if (empty($data) || PHPWS_Error::logIfError($data)) {
             return NULL;
         }
@@ -349,6 +348,7 @@ class Menu_Item {
 
     public function formLink($data)
     {
+        $new_list = array();
         foreach ($data as $key => $link) {
             $link->_menu = $this;
             if ($link->parent == 0) {

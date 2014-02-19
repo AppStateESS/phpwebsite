@@ -54,8 +54,16 @@ class Menu_Admin {
                 $this->moveMenu($request);
                 exit();
 
+            case 'menu_options':
+                $this->menuOptions($request);
+                exit();
+
             case 'move_under':
                 $this->moveUnder($request);
+                exit();
+
+            case 'transfer_link':
+                $this->transferLink($request);
                 exit();
 
             case 'add_key_link':
@@ -164,6 +172,51 @@ class Menu_Admin {
         }
     }
 
+    private function transferLink($request)
+    {
+        $menu_id = $request->getVar('menu_id');
+        $link_id = $request->getVar('link_id');
+
+        $link = new Menu_Link($link_id);
+        $old_menu_id = $link->menu_id;
+        $link->parent = 0;
+        $link->menu_id = $menu_id;
+        $link->link_order = 0;
+        $link->save();
+
+        $children = $this->getAllChildren($link_id);
+        if (!empty($children)) {
+            $db = \Database::newDB();
+            $t1 = $db->addTable('menu_links');
+            $t1->addFieldConditional('id', $children, 'in');
+            $t1->addValue('menu_id', $menu_id);
+            $db->update();
+        }
+
+        $menu = new Menu_Item($menu_id);
+        $menu->reorderLinks();
+        $menu = new Menu_Item($old_menu_id);
+        $menu->reorderLinks();
+    }
+
+
+    private function getAllChildren($id, $kids = null)
+    {
+        if (empty($kids)) {
+            $kids = array();
+        }
+
+        $db = \Database::newDB();
+        $t1 = $db->addTable('menu_links');
+        $t1->addField('id');
+        $t1->addFieldConditional('parent', $id);
+        while ($col = $db->selectColumn()) {
+            $kids[] = $col;
+            $kids = $this->getAllChildren($col, $kids);
+        }
+        return $kids;
+    }
+
     private function menuPinAll($request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
@@ -184,6 +237,27 @@ class Menu_Admin {
         \PHPWS_Settings::set('menu', 'display_type',
                 (int) $request->getVar('display_type'));
         \PHPWS_Settings::save('menu');
+    }
+
+    private function menuOptions($request)
+    {
+        $menu_id = (int) $request->getVar('menu_id');
+
+        $db = \Database::newDB();
+        $t1 = $db->addTable('menus');
+        $t1->addFieldConditional('id', $menu_id, '!=');
+        $t1->addOrderBy('title');
+        $result = $db->select();
+        if (empty($result)) {
+            return;
+        }
+
+        $options[] = '<option value="" selected disabled>' . t('Move link to menu below...') . '</option>';
+        foreach ($result as $menu) {
+            extract($menu);
+            $options[] = "<option value='$id'>$title</option>";
+        }
+        echo implode("\n", $options);
     }
 
     private function pinMenu($request)

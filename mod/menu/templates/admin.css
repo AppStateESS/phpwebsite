@@ -1,9 +1,10 @@
 #menu-list {
     margin-right : 10px;
     float: left;
-    width : 20%;
+    width : 24%;
     border : 1px solid black;
     border-radius: 6px;
+    overflow:hidden;
 }
 
 #menu-select {
@@ -18,7 +19,7 @@
 #menu-admin {
     border : 1px solid black;
     border-radius: 6px;
-    width : 78%;
+    width : 74%;
     float : left;
     padding : 6px;
 }
