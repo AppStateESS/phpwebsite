@@ -203,7 +203,7 @@ class Menu_Link {
     {
         if (empty($this->menu_id) || empty($this->title) ||
                 empty($this->url) || !isset($this->key_id)) {
-            throw new \Exception(MENU_MISSING_INFO);
+            throw new \Exception('Link is missing a title, url, or menu id');
         }
 
         if (empty($this->id) || empty($this->link_order)) {

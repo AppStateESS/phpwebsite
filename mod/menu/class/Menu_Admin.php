@@ -199,7 +199,6 @@ class Menu_Admin {
         $menu->reorderLinks();
     }
 
-
     private function getAllChildren($id, $kids = null)
     {
         if (empty($kids)) {
@@ -560,21 +559,19 @@ class Menu_Admin {
         extract($s);
         if ($link_id) {
             $link = new Menu_Link($link_id);
-            $link->setTitle($title);
-            $link->setUrl($url);
         } else {
             $link = new Menu_Link;
-            $link->setTitle($title);
             $link->setMenuId($menu_id);
-            if ($key_id !== '0') {
-                $key = new Key($key_id);
-                $link->setKeyId($key_id);
-                $url = $key->url;
-            } else {
-                $link->key_id = 0;
-            }
-            $link->setUrl($url);
         }
+        if ($key_id !== '0') {
+            $key = new Key($key_id);
+            $link->setKeyId($key_id);
+            $url = $key->url;
+        } else {
+            $link->key_id = 0;
+        }
+        $link->setTitle($title);
+        $link->setUrl($url);
         $result = $link->save();
     }
 

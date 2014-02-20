@@ -615,8 +615,10 @@ function MenuAdmin() {
 
     this.initFormButtons = function() {
         if (!t.link_id) {
+            $('#move-to-menu').hide();
             t.button.db.hide();
         } else {
+            $('#move-to-menu').show();
             t.button.db.show();
         }
         t.button.db.unbind('click');
