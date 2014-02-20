@@ -213,8 +213,7 @@ class Menu_Item {
         if (empty($this->assoc_image)) {
             return null;
         }
-
-        return "<img src='$this->assoc_image' />";
+        return "<img id='menu-associated-image' src='$this->assoc_image' />";
     }
 
     public function getAssocImageThumbnail()
