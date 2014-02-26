@@ -1,5 +1,9 @@
-Datepicker was written by Marc Grabanski and Keith Wood. Please see ui.datepicker.js
-for more details.
+Updated February 2014
+
+We are now using Bootstrap datepicker by Stefan Petre at http://www.eyecon.ro/
+
+The original Datepicker was written by Marc Grabanski and Keith Wood.
+http://api.jqueryui.com/datepicker/
 
 Usage
 -----------------------------

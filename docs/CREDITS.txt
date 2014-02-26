@@ -120,10 +120,14 @@ Steven Wittens
 Farbtastic jQuery plugin
 http://www.acko.net/dev/farbtastic
 
+Stefan Petre
+datepicker for Bootstrap
+http://www.eyecon.ro/bootstrap-datepicker/
+
 Marc Grabanski
 Keith Wood
-datepicker - jquery plugin
-http://docs.jquery.com/UI/Datepicker
+datepicker - jquery plugin (note: no longer in use)
+
 
 Jan Sorgalla
 jCarousel
