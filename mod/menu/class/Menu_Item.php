@@ -233,11 +233,12 @@ class Menu_Item {
 
         if (!$this->id) {
             $db = \Database::newDB();
-            $tbl = $db->addTable('menus');
-            $db->addExpression('max(' . $tbl->getField('queue') . ')', 'max');
+            $tbl = $db->addTable('menus', null, false);
+            $queue_field = $tbl->getField('queue');
+            $db->addExpression('max(' . $queue_field . ')', 'max');
             $row = $db->selectOneRow();
             if ($row) {
-                $queue = $row['queue'];
+                $queue = $row['max'];
             } else {
                 $queue = 0;
             }
