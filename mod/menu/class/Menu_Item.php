@@ -242,9 +242,7 @@ class Menu_Item {
             } else {
                 $queue = 0;
             }
-            if ($queue) {
-                $this->queue = $queue + 1;
-            }
+            $this->queue = $queue + 1;
         }
         if (!$this->assoc_key) {
             $this->assoc_key = 0;
