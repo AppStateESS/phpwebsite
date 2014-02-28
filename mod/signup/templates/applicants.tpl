@@ -1,5 +1,5 @@
 {BACK} | {PRINT} | {CSV} | {SLOT_LISTING} | {EMAIL}
-<table cellpadding="5" width="100%">
+<table class="table table-striped">
     <tr>
         <th>{LAST_NAME_SORT}</th>
         <th>{FIRST_NAME_SORT}</th>
