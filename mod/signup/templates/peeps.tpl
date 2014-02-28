@@ -1,5 +1,5 @@
 <!-- BEGIN people -->
-<table cellpadding="5" border="1" width="100%">
+<table class="table table-striped">
     <tr>
         <th>&nbsp;</th>
         <th>{NAME_LABEL}, {EMAIL_LABEL}, {PHONE_LABEL}</th>
@@ -8,7 +8,7 @@
     </tr>
     <!-- BEGIN peep-row -->
     <tr>
-        <td>{ACTION}</td>
+        <td class="admin-icons">{ACTION}</td>
         <td>{FIRST_NAME} {LAST_NAME}<br />
         {EMAIL}<br />
         {PHONE}</td>

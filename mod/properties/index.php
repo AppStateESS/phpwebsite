@@ -67,8 +67,8 @@ if (isset($_REQUEST['aop'])) {
         $property = new Properties\Property($_GET['id']);
         $property->view();
     } catch (Exception $e) {
-        PHPWS_Error::log($e->getMessage());
-        Layout::errorPage('404');
+        \PHPWS_Error::log($e->getMessage());
+        \PHPWS_Core::errorPage('404');
     }
 }
 ?>

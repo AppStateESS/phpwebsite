@@ -71,6 +71,12 @@ class Admin extends Base {
                 \PHPWS_Core::goBack();
                 break;
 
+            case 'show_properties':
+                $this->panel->setCurrentTab('properties');
+                $this->loadContact();
+                $this->contactPropertiesList($_GET['cid']);
+                break;
+
             case 'contacts':
                 $this->title = 'Contacts list';
                 $this->contactList();
@@ -207,6 +213,34 @@ class Admin extends Base {
         $this->display();
     }
 
+    private function contactPropertiesList($contact_id)
+    {
+        \PHPWS_Core::initModClass('properties', 'Property.php');
+
+        $this->title = $this->contact->getCompanyName() . '<br /> (c/o ' . $this->contact->getFirstName() . ' ' . $this->contact->getLastName() . ')';
+
+        $pager = new \DBPager('properties', 'Properties\Property');
+        $pager->addWhere('contact_id', $contact_id);
+        $data['is_contact'] = 1;
+        $page_tags['new'] = \PHPWS_Text::moduleLink('Add new property',
+                        'properties',
+                        array('aop' => 'edit_property', 'cid'=>$contact_id));
+
+        $pager->setSearch('name', 'company_name');
+        $pager->addSortHeader('name', 'Name of property');
+        $pager->addSortHeader('company_name', 'Management company');
+        $pager->addSortHeader('timeout', 'Time until purge');
+        $pager->setModule('properties');
+        $pager->setTemplate('properties_list.tpl');
+        $pager->addRowTags('row_tags');
+        $pager->joinResult('contact_id', 'prop_contacts', 'id', 'company_name',
+                null, true);
+        $pager->addPageTags($page_tags);
+        $pager->cacheQueries();
+        $pager->addToggle(' style="background-color : #e3e3e3"');
+        $this->content = $pager->get();
+    }
+
     public function emailContacts()
     {
         $oldtime = time() - 86400 * 30 * 12;
@@ -236,7 +270,6 @@ class Admin extends Base {
             $row['email_address'] = "<a href='mailto:$email_address?subject=Account&#160;query'>$email_address</a>";
             $row['action'] = '';
             $result['rows'][] = $row;
-
         }
         $tpl = new \Template($result);
         $tpl->setModuleTemplate('properties', 'overdue.html');

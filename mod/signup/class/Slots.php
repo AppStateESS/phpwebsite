@@ -1,24 +1,23 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 class Signup_Slot {
 
-    public $id         = 0;
-    public $sheet_id   = 0;
-    public $title      = null;
-    public $openings   = 0;
-    public $s_order    = 1;
+    public $id = 0;
+    public $sheet_id = 0;
+    public $title = null;
+    public $openings = 0;
+    public $s_order = 1;
+    public $_peeps = null;
+    public $_filled = 0;
 
-    public $_peeps     = null;
-    public $_filled    = 0;
-
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if ($id) {
-            $this->id = (int)$id;
+            $this->id = (int) $id;
             $this->init();
         }
     }
@@ -34,7 +33,7 @@ class Signup_Slot {
         return true;
     }
 
-    public function loadPeeps($registered=true)
+    public function loadPeeps($registered = true)
     {
         PHPWS_Core::initModClass('signup', 'Peeps.php');
 
@@ -59,7 +58,7 @@ class Signup_Slot {
 
     public function setOpenings($openings)
     {
-        $this->openings = (int)$openings;
+        $this->openings = (int) $openings;
     }
 
     public function setSheetId($sheet_id)
@@ -67,7 +66,7 @@ class Signup_Slot {
         if (!is_numeric($sheet_id)) {
             return false;
         } else {
-            $this->sheet_id = (int)$sheet_id;
+            $this->sheet_id = (int) $sheet_id;
             return true;
         }
     }
@@ -80,7 +79,8 @@ class Signup_Slot {
     public function save()
     {
         if (!$this->sheet_id) {
-            return PHPWS_Error::get(SU_NO_SHEET_ID, 'signup', 'Signup_Slot::save');
+            return PHPWS_Error::get(SU_NO_SHEET_ID, 'signup',
+                            'Signup_Slot::save');
         }
 
         $db = new PHPWS_DB('signup_slots');
@@ -103,12 +103,12 @@ class Signup_Slot {
 
     public function applicantAddLink()
     {
-        $vars['aop']      = 'add_slot_peep';
-        $vars['slot_id']  = $this->id;
-        $jsadd['label']   = dgettext('signup', 'Add applicant');
+        $vars['aop'] = 'add_slot_peep';
+        $vars['slot_id'] = $this->id;
+        $jsadd['label'] = dgettext('signup', 'Add applicant');
         $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $jsadd['width']   = 300;
-        $jsadd['height']  = 470;
+        $jsadd['width'] = 300;
+        $jsadd['height'] = 470;
         return javascript('open_window', $jsadd);
     }
 
@@ -117,8 +117,9 @@ class Signup_Slot {
         $vars['slot_id'] = $this->id;
 
         $vars['aop'] = 'edit_slot_popup';
-        $links[] = javascript('open_window', array('label'  => dgettext('signup', 'Edit Slot'),
-                                                   'address'=> PHPWS_Text::linkAddress('signup', $vars, true)));
+        $links[] = javascript('open_window',
+                array('label' => dgettext('signup', 'Edit Slot'),
+            'address' => PHPWS_Text::linkAddress('signup', $vars, true)));
 
         if ($this->_filled < $this->openings) {
             $links[] = $this->applicantAddLink();
@@ -126,7 +127,8 @@ class Signup_Slot {
 
         if (empty($this->_peeps)) {
             $vars['aop'] = 'delete_slot';
-            $jsconf['QUESTION'] = dgettext('signup', 'Are you certain you want to delete this slot?');
+            $jsconf['QUESTION'] = dgettext('signup',
+                    'Are you certain you want to delete this slot?');
             $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
             $jsconf['LINK'] = dgettext('signup', 'Delete slot');
             $links[] = javascript('confirm', $jsconf);
@@ -134,10 +136,12 @@ class Signup_Slot {
 
         if ($this->s_order > 1) {
             $vars['aop'] = 'move_top';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'), 'signup', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'),
+                            'signup', $vars);
 
             $vars['aop'] = 'move_up';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'),
+                            'signup', $vars);
         }
 
         $db = new PHPWS_DB('signup_slots');
@@ -146,15 +150,16 @@ class Signup_Slot {
         $slot_count = $db->select('one');
         if ($this->s_order < $slot_count) {
             $vars['aop'] = 'move_down';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'),
+                            'signup', $vars);
 
             $vars['aop'] = 'move_bottom';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Bottom'), 'signup', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Bottom'),
+                            'signup', $vars);
         }
 
         return implode(' | ', $links);
     }
-
 
     public function showPeeps()
     {
@@ -165,17 +170,21 @@ class Signup_Slot {
             if ($slot->id == $this->id) {
                 continue;
             } elseif (!isset($total_slots[$slot->id]) ||
-            $slot->openings != $total_slots[$slot->id]) {
+                    $slot->openings != $total_slots[$slot->id]) {
                 $options[$slot->id] = $slot->title;
             }
         }
 
-        $ex1 = sprintf('<abbr title="%s"><strong>1:</strong></abbr> ', $sheet->extra1);
-        $ex2 = sprintf('<abbr title="%s"><strong>2:</strong></abbr> ', $sheet->extra2);
-        $ex3 = sprintf('<abbr title="%s"><strong>3:</strong></abbr> ', $sheet->extra3);
+        $ex1 = sprintf('<abbr title="%s"><strong>1:</strong></abbr> ',
+                $sheet->extra1);
+        $ex2 = sprintf('<abbr title="%s"><strong>2:</strong></abbr> ',
+                $sheet->extra2);
+        $ex3 = sprintf('<abbr title="%s"><strong>3:</strong></abbr> ',
+                $sheet->extra3);
 
         if ($this->_peeps) {
-            $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
+            $jsconf['QUESTION'] = dgettext('signup',
+                    'Are you sure you want to delete this person from their signup slot?');
             $jsconf['LINK'] = Icon::show('delete');
             $jspop['label'] = Icon::show('edit');
 
@@ -183,30 +192,32 @@ class Signup_Slot {
                 $links = array();
                 $subtpl = array();
                 $subtpl['FIRST_NAME'] = $peep->first_name;
-                $subtpl['LAST_NAME']  = $peep->last_name;
-                $subtpl['EMAIL']      = $peep->getEmail();
-                $subtpl['PHONE']      = $peep->getPhone();
+                $subtpl['LAST_NAME'] = $peep->last_name;
+                $subtpl['EMAIL'] = $peep->getEmail();
+                $subtpl['PHONE'] = $peep->getPhone();
                 if (!empty($sheet->extra1)) {
-                    $subtpl['EXTRA1']     = $ex1 . $peep->getExtra1();
+                    $subtpl['EXTRA1'] = $ex1 . $peep->getExtra1();
                 }
 
                 if (!empty($sheet->extra2)) {
-                    $subtpl['EXTRA2']     = $ex2 . $peep->getExtra2();
+                    $subtpl['EXTRA2'] = $ex2 . $peep->getExtra2();
                 }
 
                 if (!empty($sheet->extra3)) {
-                    $subtpl['EXTRA3']     = $ex3 . $peep->getExtra3();
+                    $subtpl['EXTRA3'] = $ex3 . $peep->getExtra3();
                 }
 
                 $vars['peep_id'] = $peep->id;
-                $vars['aop']     = 'edit_slot_peep';
-                $jspop['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-                $jspop['width']  = 300;
+                $vars['aop'] = 'edit_slot_peep';
+                $jspop['address'] = PHPWS_Text::linkAddress('signup', $vars,
+                                true);
+                $jspop['width'] = 300;
                 $jspop['height'] = 600;
                 $links[] = javascript('open_window', $jspop);
 
-                $vars['aop']     = 'delete_slot_peep';
-                $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
+                $vars['aop'] = 'delete_slot_peep';
+                $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars,
+                                true);
                 $links[] = javascript('confirm', $jsconf);
 
                 $subtpl['ACTION'] = implode('', $links);
@@ -227,22 +238,23 @@ class Signup_Slot {
                 $tpl['peep-row'][] = $subtpl;
             }
 
-            $tpl['NAME_LABEL']         = dgettext('signup', 'Name');
-            $tpl['EMAIL_LABEL']        = dgettext('signup', 'Email');
-            $tpl['PHONE_LABEL']        = dgettext('signup', 'Phone');
-            $tpl['ACTION_LABEL']       = dgettext('signup', 'Action');
+            $tpl['NAME_LABEL'] = dgettext('signup', 'Name');
+            $tpl['EMAIL_LABEL'] = dgettext('signup', 'Email');
+            $tpl['PHONE_LABEL'] = dgettext('signup', 'Phone');
+            $tpl['ACTION_LABEL'] = dgettext('signup', 'Action');
             $tpl['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
-            $tpl['MOVE_LABEL']         = dgettext('signup', 'Move');
+            $tpl['MOVE_LABEL'] = dgettext('signup', 'Move');
+            $tpl['EXTRA1_LABEL'] = 'Extra info';
 
             return PHPWS_Template::process($tpl, 'signup', 'peeps.tpl');
         }
     }
 
-
     public function viewTpl()
     {
         $tpl['TITLE'] = $this->title;
-        $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);
+        $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'),
+                $this->openings);
         $this->loadPeeps();
 
         $left = $this->openings - count($this->_peeps);
@@ -250,28 +262,31 @@ class Signup_Slot {
 
         $tpl['PEEPS'] = $this->showPeeps();
         $filled = count($this->_peeps);
-        if ($filled< $this->openings) {
+        if ($filled < $this->openings) {
             $tpl['ADD'] = $this->applicantAddLink();
         }
 
-        javascript('close_refresh', array('use_link'=>1));
+        javascript('close_refresh', array('use_link' => 1));
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
-        dgettext('signup', 'Close'));
+                dgettext('signup', 'Close'));
         return $tpl;
     }
 
     public function listTpl()
     {
-        $vars['address'] = PHPWS_Text::linkAddress('signup', array('aop'=>'edit_peep_popup',
-                                                                   'slot_id'=>$this->id));
-        $vars['label']      = 'Click to edit'; // click this link to edit the slot
-        $vars['width']      = 800;
-        $vars['height']     = 600;
-        $vars['link_title'] = dgettext('signup', 'Click to view and edit signups for this slot.');
+        $vars['address'] = PHPWS_Text::linkAddress('signup',
+                        array('aop' => 'edit_peep_popup',
+                    'slot_id' => $this->id));
+        $vars['label'] = 'Click to edit'; // click this link to edit the slot
+        $vars['width'] = 800;
+        $vars['height'] = 600;
+        $vars['link_title'] = dgettext('signup',
+                'Click to view and edit signups for this slot.');
 
         $tpl['TITLE'] = $this->title;   // Slot name
         $tpl['EDIT'] = javascript('open_window', $vars);    // Edit link
-        $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'), $this->openings);
+        $tpl['OPENINGS'] = sprintf(dgettext('signup', 'Total openings: %s'),
+                $this->openings);
         $left = $this->openings - $this->_filled;
         $tpl['LEFT'] = sprintf(dgettext('signup', 'Slots left: %s'), $left);
         $tpl['LINKS'] = $this->slotLinks();
@@ -320,7 +335,8 @@ class Signup_Slot {
         }
     }
 
-    public function moveBottom() {
+    public function moveBottom()
+    {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->sheet_id);
         $db->addColumn('id', null, null, true);
@@ -362,4 +378,5 @@ class Signup_Slot {
     }
 
 }
+
 ?>

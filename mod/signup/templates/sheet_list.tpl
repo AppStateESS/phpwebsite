@@ -1,4 +1,4 @@
-<table width="99%" cellpadding="4">
+<table class="table table-striped">
     <tr>
         <th>{TITLE_HEADER} {TITLE_SORT}</th>
         <th>{START_TIME_HEADER} {START_TIME_SORT}</th>

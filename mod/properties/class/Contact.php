@@ -380,10 +380,14 @@ class Contact {
 
     public function row_tags()
     {
-        $tpl['LAST_NAME'] = $this->last_name . ', ' . $this->first_name;
+        //$tpl['LAST_NAME'] = $this->last_name . ', ' . $this->first_name;
+        $tpl['LAST_NAME'] = sprintf('<a href="mailto:%s">%s, %s <i class="fa fa-envelope-o"></i></a>', $this->email_address, $this->last_name, $this->first_name);
+        /*
         if ($this->email_address) {
             $tpl['EMAIL_ADDRESS'] = sprintf('<a href="mailto:%s">%s</a>', $this->email_address, $this->email_address);
         }
+         *
+         */
         $tpl['PHONE'] = $this->getPhone();
 
         $tpl['COMPANY_NAME'] = $this->getCompanyUrl();
@@ -403,6 +407,9 @@ class Contact {
         $js['ADDRESS'] = 'index.php?module=properties&aop=delete_contact&cid=' . $this->id . '&authkey=' . \Current_User::getAuthKey();
 
         $admin[] = javascript('confirm', $js);
+
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('home', 'Show properties'), 'properties', array('aop'=>'show_properties', 'cid'=>$this->id));
+
         $tpl['LAST_LOG'] = strftime('%x', $this->last_log);
         $tpl['ACTION'] = implode('', $admin);
         return $tpl;
