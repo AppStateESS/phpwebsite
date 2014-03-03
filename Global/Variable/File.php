@@ -13,7 +13,7 @@ class File extends \Variable\String {
 
     public function __construct($value = null, $varname = null)
     {
-        $this->setRegexpMatch('/^[^|;,!@#$()<>\\"\'`~{}\[\]=+&\^\s\t]+([\w\s]+(\.[\w]+))$/i');
+        $this->setRegexpMatch('/^[^|;,!@#$()<>\\"\'`~{}\[\]=+&\^\s\t]+([\w\s\-]+(\.[\w]+))$/i');
         parent::__construct($value, $varname);
         $this->setLimit(255);
     }
