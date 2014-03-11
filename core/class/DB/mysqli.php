@@ -8,7 +8,7 @@
  * @version $Id$
  */
 
-class mysql_PHPWS_SQL {
+class mysqli_PHPWS_SQL {
     public function export(&$info)
     {
         switch ($info['type']){
