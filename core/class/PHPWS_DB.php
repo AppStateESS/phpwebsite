@@ -239,52 +239,31 @@ class PHPWS_DB {
         }
     }
 
+    /**
+     * Returns true if $table is in the current database. If $column is added
+     * then the existence of column in that table must also be met.
+     * @param type $table
+     * @param type $column
+     * @return boolean
+     */
     public function inDatabase($table, $column = null)
     {
-        $table = PHPWS_DB::addPrefix(strip_tags($table));
         if (!PHPWS_DB::allowed($table)) {
             return false;
         }
 
-        PHPWS_DB::touchDB();
-        static $database_info = null;
-
-        $column = trim($column);
-        $answer = false;
-
-        if (!empty($database_info[$table])) {
-            if (empty($column)) {
-                return true;
-            } else {
-                return in_array($column, $database_info[$table]);
-            }
-        }
-
-        $GLOBALS['PHPWS_DB']['connection']->loadModule('Reverse', null, true);
-        $result = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-        if (PHPWS_Error::isError($result)) {
-            if ($result->getCode() == DB_ERROR_NEED_MORE_DATA) {
-                return false;
-            } else {
-                return $result;
-            }
+        $tables = $this->listTables();
+        if (!in_array($table, $tables)) {
+            return false;
         }
 
         if (empty($column)) {
             return true;
         }
 
-        foreach ($result as $colInfo) {
-            $list_columns[] = $colInfo['name'];
+        $fields = $GLOBALS['PHPWS_DB']['connection']->listTableFields($table);
 
-            if ($colInfo['name'] == $column) {
-                $answer = true;
-            }
-        }
-
-        $database_info[$table] = $list_columns;
-
-        return $answer;
+        return in_array($column, $fields);
     }
 
     /**
