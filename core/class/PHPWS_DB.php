@@ -434,7 +434,7 @@ class PHPWS_DB {
         }
 
         $table = $this->addPrefix($table);
-        $GLOBALS['PHPWS_DB']['connection']->loadModule('Reverse', null, true);
+        $GLOBALS['PHPWS_DB']['connection']->loadModule('Reverse');
         $columns = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
 
         if (PHPWS_Error::isError($columns)) {
