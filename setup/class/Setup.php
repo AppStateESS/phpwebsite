@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-require_once 'DB.php';
+require_once 'MDB2.php';
 require_once 'core/class/Debug.php';
 if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
     define('DIRECTORY_SLASH', '\\');
@@ -290,7 +290,7 @@ class Setup {
     public function createDatabase()
     {
         $dsn = $this->getDSN(1);
-        $dbobj = new DB;
+        $dbobj = new MDB2;
         $db = $dbobj->connect($dsn);
 
         if (PHPWS_Error::isError($db)) {
@@ -353,7 +353,7 @@ class Setup {
     {
         if (empty($dsn)) {
             $dsn = $this->getDSN(1);
-            $pear_db = new DB;
+            $pear_db = new MDB2;
             $connection = $pear_db->connect($dsn);
 
             if (PHPWS_Error::isError($connection)) {
@@ -364,21 +364,21 @@ class Setup {
             $dsn = $this->getDSN(2);
         }
 
-        $tdb = new DB;
-        $result = $tdb->connect($dsn);
+        $tdb = new MDB2;
+        $mdb2_connection = $tdb->connect($dsn);
 
-        if (PHPWS_Error::isError($result)) {
+        if (PHPWS_Error::isError($mdb2_connection)) {
             // mysql delivers the first error, postgres the second
-            if ($result->getCode() == DB_ERROR_NOSUCHDB ||
-                    $result->getCode() == DB_ERROR_CONNECT_FAILED) {
+            if ($mdb2_connection->getCode() == MDB2_ERROR_NOSUCHDB ||
+                    $mdb2_connection->getCode() == MDB2_ERROR_CONNECT_FAILED) {
                 return -1;
             } else {
                 PHPWS_Error::log($connection);
                 return 0;
             }
         }
-
-        $tables = $result->getlistOf('tables');
+        $mdb2_connection->loadModule('Manager', null, true);
+        $tables = $mdb2_connection->listTables();
         if (count($tables)) {
             return 2;
         }
@@ -406,7 +406,7 @@ class Setup {
         $form = new PHPWS_Form();
         $form->addHidden('step', '2');
 
-        $databases = array('mysql' => 'MySQL', 'pgsql' => 'PostgreSQL');
+        $databases = array('mysqli' => 'MySQL', 'pgsql' => 'PostgreSQL');
 
         $formTpl['DBTYPE_DEF'] = dgettext('core',
                 'phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
@@ -765,7 +765,7 @@ class Setup {
                 'Session auto start disabled');
         $test['session_auto_start']['crit'] = true;
 
-        $test['pear_files']['pass'] = is_file('lib/pear/DB.php');
+        $test['pear_files']['pass'] = is_file('lib/pear/MDB2.php');
         $test['pear_files']['fail'] = sprintf(dgettext('core',
                         'Could not find Pear library files. You will need to %sdownload the pear package from our site%s and unzip it in your installation directory.'),
                 '<a href="http://phpwebsite.appstate.edu/downloads/pear.zip">',
