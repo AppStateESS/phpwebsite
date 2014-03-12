@@ -34,7 +34,7 @@ if (is_file('config/core/config.php')) {
 }
 
 require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
-date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+loadTimeZone();
 $request = \Server::getCurrentRequest();
 $controller = new PhpwebsiteController();
 $controller->execute($request);
