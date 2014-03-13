@@ -488,7 +488,15 @@ class PHPWS_Text {
     }
 
     /**
-     * Returns a module link with the authkey attached
+     * Same as moduleLink but an authkey value is always added.
+     *
+     * @param string $subject Value of <a> tag
+     * @param string $module Module using string (e.g. users, layout)
+     * @param array $getVars Associative array of values to use in GET string.
+     * @param string $target index, blank, etc.
+     * @param string $title Value of title attribute for link
+     * @param string $class_name CSS class attribute value
+     * @return string Resultant link
      */
     public static function secureLink($subject, $module = null, $getVars = null, $target = null, $title = null, $class_name = null)
     {
