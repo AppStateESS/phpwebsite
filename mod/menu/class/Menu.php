@@ -488,7 +488,22 @@ class Menu {
         $t->addField('menu_id');
         $db->setLimit(1);
         $row = $db->selectOneRow();
-        return $row['menu_id'];
+        if ($row) {
+            return $row['menu_id'];
+        }
+        // menu link not found, now check menu assoc
+        $db2  = \Database::newDB();
+        $t2 = $db2->addTable('menus');
+        $t2->addFieldConditional('assoc_key', $key->id);
+        $t2->addField('id');
+        $db2->setLimit(1);
+        $row2 = $db2->selectOneRow();
+        if ($row2) {
+            return $row2['id'];
+        } else {
+            return 0;
+        }
+
     }
 
 }

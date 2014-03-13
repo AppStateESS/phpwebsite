@@ -360,6 +360,11 @@ Please download 1.2.1.</pre>';
 + Created $new_directory
 + Can associate image to a menu
 </pre>";
+        case version_compare($currentVersion, '2.0.4', '<'):
+            $content[] = "<pre>2.0.4 changes
+----------------
++ Fixed home icon set as active when menu associated page is chosen.
+</pre>";
     }
     return true;
 }
