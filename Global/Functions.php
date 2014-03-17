@@ -142,7 +142,7 @@ function logMessage($message, $filename)
     loadTimeZone();
     $log_path = LOG_DIRECTORY . $filename;
     $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . trim($message) . "\n";
-    if (@error_log($message, 3, $log_path)) {
+    if (error_log($message, 3, $log_path)) {
         chmod($log_path, LOG_PERMISSION);
         return true;
     } else {
