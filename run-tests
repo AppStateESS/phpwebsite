@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ ! -x phpunit ]; then
+PHPUNIT=`which phpunit`
+
+if [ ! -x $PHPUNIT ]; then
     echo "phpWebSite uses phpUnit for unit testing.  Please install phpUnit."
     exit
 fi
 
-phpunit -c phpunit-phpwebsite.xml
+$PHPUNIT -c phpunit-phpwebsite.xml
