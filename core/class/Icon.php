@@ -28,13 +28,17 @@ class Icon extends \Tag {
     {
         parent::__construct('i');
         if ($type) {
-            $this->type = $type;
+            $this->setType($type);
         }
     }
 
     public function setType($type)
     {
+        $type = strip_tags($type);
         $this->type = preg_replace('/[\s_]/', '-', $type);
+        if (empty($this->title)) {
+            $this->setTitle(ucwords($type));
+        }
     }
 
     public function setStyle($style)
@@ -86,7 +90,7 @@ class Icon extends \Tag {
                 break;
 
             case 'email':
-                $this->addClass('fa fa-envelope-alt');
+                $this->addClass('fa fa-envelope');
                 break;
 
             case 'error':
