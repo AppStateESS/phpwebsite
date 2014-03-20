@@ -5,6 +5,9 @@ php:
   - 5.5
 #  - hhvm
 
+env:
+  - secure: "aRt7YZbnHZk25FwsV6WWRcA8/6i8PO/YI+S3Yrq/fgZzUC2M3YLIVOoq6/N02zgR01SoZ8iIZ3nM+EEXv+eH3lsHeYyVC4rnKuR0lTzRLKdSXHzXk2lEEzmt4sjaigQnoBDGP9gX4nAPlRB6AQmx6XlA3l4zzANJXcmew8qdIr0="
+
 before_script:
   - lsb_release -a
   - lscpu
@@ -18,7 +21,7 @@ before_script:
   - sudo service apache2 restart
 
 script:
-  - secure: "N3HSOAf/xGRD72p/NJ+DHX6pc5ETINydyjueU9Ccv6A4HNuqO9zhP5H308DDkdX9YsTt1NLaeas5oC9zg6oyhgttuHVf7myCV+3FjH2J02oHpYFUfXHtG5VjgOlNUYp58Y/Vqvm5yGCbXV+zfBiHNSxpAFVuElGm76gPfyEGjGs="
+  - echo $SUPERSECRET 
   - ".travis-build/phplint ."
   - "phpunit"
 
