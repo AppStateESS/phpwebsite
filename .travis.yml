@@ -18,6 +18,7 @@ before_script:
   - sudo service apache2 restart
 
 script:
+  - secure: "N3HSOAf/xGRD72p/NJ+DHX6pc5ETINydyjueU9Ccv6A4HNuqO9zhP5H308DDkdX9YsTt1NLaeas5oC9zg6oyhgttuHVf7myCV+3FjH2J02oHpYFUfXHtG5VjgOlNUYp58Y/Vqvm5yGCbXV+zfBiHNSxpAFVuElGm76gPfyEGjGs="
   - ".travis-build/phplint ."
   - "phpunit"
 
