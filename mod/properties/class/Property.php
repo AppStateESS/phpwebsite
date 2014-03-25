@@ -837,6 +837,10 @@ class Property extends Room_Base {
 
     public function view()
     {
+        if (empty($this->id)) {
+            \Layout::add('<h1>Sorry</h1><p>This property is not in our system. Please return to the <a href="./">property listing page</a> to try again.</p>');
+            return;
+        }
         $tpl = $this->getBaseTpl();
         $refund = '<span style="font-size : 90%">(Refundable)</span>';
         \PHPWS_Core::initModClass('properties', 'Contact.php');
@@ -851,23 +855,29 @@ class Property extends Room_Base {
             javascriptMod('properties', 'galleryview',
                     array('panel_width' => $max_width, 'panel_height' => $max_height));
             foreach ($photos as $p) {
-                $dim = getimagesize($p['path']);
-                $width = & $dim[0];
-                $height = & $dim[1];
+                if (is_file($p['path'])) {
+                    $dim = getimagesize($p['path']);
+                    $width = & $dim[0];
+                    $height = & $dim[1];
 
-                $diff = \PHPWS_File::getDiff($width, $max_width, $height,
-                                $max_height);
+                    $diff = \PHPWS_File::getDiff($width, $max_width, $height,
+                                    $max_height);
 
-                $new_width = round($width * $diff);
-                $new_height = round($height * $diff);
-
-                if ($new_width > $max_width || $new_height > $max_height) {
-                    $diff = \PHPWS_File::getDiff($new_width, $max_width,
-                                    $new_height, $max_height);
                     $new_width = round($width * $diff);
                     $new_height = round($height * $diff);
-                }
 
+                    if ($new_width > $max_width || $new_height > $max_height) {
+                        $diff = \PHPWS_File::getDiff($new_width, $max_width,
+                                        $new_height, $max_height);
+                        $new_width = round($width * $diff);
+                        $new_height = round($height * $diff);
+                    }
+                } else {
+                    $p['path'] = PHPWS_SOURCE_HTTP . 'mod/properties/img/no_photo.gif';
+                    $p['title'] = 'Photo not found';
+                    $new_width = '150px';
+                    $new_height = '113px';
+                }
 
                 $all[] = sprintf('<li><img src="%s" title="%s" />
             <div class="panel-content lightbox">
