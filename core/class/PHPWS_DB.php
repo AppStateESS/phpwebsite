@@ -113,18 +113,19 @@ class PHPWS_DB {
         return array_pop($aDSN);
     }
 
-    public static function _updateCurrent($key)
-    {
-        $GLOBALS['PHPWS_DB']['lib'] = $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'];
-        $GLOBALS['PHPWS_DB']['dsn'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn'];
-        $GLOBALS['PHPWS_DB']['connection'] = $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'];
-        $GLOBALS['PHPWS_DB']['tbl_prefix'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'];
-        $GLOBALS['PHPWS_DB']['type'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['type'];
-    }
-
+    /**
+     * Loads a connection
+     *
+     * @param string $dsn
+     * @param string $tbl_prefix
+     * @param boolean $force_reconnect
+     * @param boolean $show_error
+     * @return boolean
+     */
     public static function loadDB($dsn = null, $tbl_prefix = null, $force_reconnect = false, $show_error = true)
     {
         if (!isset($dsn)) {
+
             if (!defined('PHPWS_DSN')) {
                 exit(_('Cannot load database. DSN not defined.'));
             }
@@ -135,14 +136,18 @@ class PHPWS_DB {
             }
         }
 
-        $key = substr(md5($dsn . $tbl_prefix), 0, 10);
-        $dbname = PHPWS_DB::getDbName($dsn);
-        $GLOBALS['PHPWS_DB']['key'] = $key;
-
-        if (!empty($GLOBALS['PHPWS_DB']['dbs'][$key]['connection']) && !$force_reconnect) {
-            PHPWS_DB::_updateCurrent($key);
-            return true;
+        /**
+         * if $dsn is already set and force_reconnect is false, don't bother on a reconnect
+         */
+        if (isset($GLOBALS['PHPWS_DB']['dsn']) && $GLOBALS['PHPWS_DB']['dsn'] == $dsn && !$force_reconnect) {
+            return;
         }
+
+        if (isset($GLOBALS['PHPWS_DB']['connection'])) {
+            $GLOBALS['PHPWS_DB']['connection']->disconnect();
+        }
+
+        $dbname = PHPWS_DB::getDbName($dsn);
 
         $pear_db = new MDB2;
         $connect = $pear_db->connect($dsn, array('persistent' => false));
@@ -178,13 +183,12 @@ class PHPWS_DB {
             $connect->setOption('portability', $dblib->portability);
         }
         $connect->setOption('seqcol_name', 'id');
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'] = $dblib;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn'] = $dsn;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'] = $connect;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['type'] = $type;
 
-        PHPWS_DB::_updateCurrent($key);
+        $GLOBALS['PHPWS_DB']['lib'] = $dblib;
+        $GLOBALS['PHPWS_DB']['dsn'] = $dsn;
+        $GLOBALS['PHPWS_DB']['connection'] = $connect;
+        $GLOBALS['PHPWS_DB']['tbl_prefix'] = $tbl_prefix;
+        $GLOBALS['PHPWS_DB']['type'] = $type;
 
         return true;
     }
