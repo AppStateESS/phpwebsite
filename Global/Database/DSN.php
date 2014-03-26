@@ -60,14 +60,16 @@ class DSN extends \Data {
      * variable
      * @param string $dsn
      */
-    public function __construct($database_type, $username, $password=null, $database_name=null, $host=null, $port=null)
+    public function __construct($database_type, $username, $password = null, $database_name = null, $host = null, $port = null)
     {
-        $this->database_type = \Variable::factory('string', $database_type, 'database_type');
+        $this->database_type = \Variable::factory('string', $database_type,
+                        'database_type');
         $this->database_type->setLimit(12);
         $this->database_type->setLabel(t('Database type'));
         $this->database_type->wordCharactersOnly();
 
-        $this->database_name = \Variable::factory('string', $database_name, 'database_name');
+        $this->database_name = \Variable::factory('string', $database_name,
+                        'database_name');
         $this->database_name->setLimit(58);
         $this->database_name->setLabel(t('Database name'));
         $this->database_name->wordCharactersOnly();
@@ -94,10 +96,13 @@ class DSN extends \Data {
         $this->host->allowNull(true);
         $this->host->set($host);
 
-        $this->port = \Variable::factory('integer', $port, 'port');
+        $this->port = \Variable::factory('integer', null, 'port');
         $this->port->setLabel('Database port');
         $this->port->setRange('1', '65535');
         $this->port->allowNull(true);
+        if (!empty($port)) {
+            $this->port->set($port);
+        }
     }
 
     public function getUsername()
@@ -117,7 +122,7 @@ class DSN extends \Data {
 
     public function getDatabaseName()
     {
-        return (string)$this->database_name;
+        return (string) $this->database_name;
     }
 
     public function getTablePrefix()
@@ -139,7 +144,6 @@ class DSN extends \Data {
     {
         return $this->port;
     }
-
 
     /**
      * Returns a string formatted for a database connection
@@ -163,7 +167,6 @@ class DSN extends \Data {
 
         return implode('', $pdo_string);
     }
-
 
     public function setUsername($username)
     {
