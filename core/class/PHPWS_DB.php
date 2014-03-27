@@ -925,6 +925,7 @@ class PHPWS_DB {
                     continue;
                 }
                 $sql[] = $group_in->buildSQL($first);
+                $first = false;
             }
         }
         if (!empty($sql)) {
@@ -1471,7 +1472,6 @@ class PHPWS_DB {
             } else {
                 $distinct = null;
             }
-
 
             $sql = "SELECT $distinct $columns FROM $table $where $group_by $order $limit";
         } else {
