@@ -93,6 +93,9 @@ function PagerList() {
         if (data.callback !== undefined) {
             this.callback = data.callback;
         }
+        if (data.onRefresh !== undefined) {
+            this.onRefresh = data.onRefresh;
+        }
     };
 
     this.reload = function(pager_id)
@@ -207,6 +210,9 @@ function PagerList() {
 
     this.processData = function(pager_id) {
         this.pagers[pager_id].processData();
+        if (this.onRefresh !== undefined) {
+            this.onRefresh();
+        }
     };
 
 
