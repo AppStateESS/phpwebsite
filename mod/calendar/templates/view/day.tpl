@@ -1,7 +1,7 @@
 <div class="box">
 <div class="box-title">
-<h1 class="align-center">{SCHEDULE_TITLE} - {DATE} {PICK}
-{DOWNLOAD}</h1>
+    <h1 class="align-center">{SCHEDULE_TITLE} - {DATE}</h1>
+    <div>{PICK} <span class="admin-icons">{DOWNLOAD}</span></div>
 <div class="view-links">{VIEW_LINKS}<br />
 {SUGGEST}</div>
 <div class="align-center smaller">{SCHEDULE_PICK}</div>

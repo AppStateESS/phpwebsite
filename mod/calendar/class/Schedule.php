@@ -140,7 +140,7 @@ class Calendar_Schedule {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
         }
-        $add_label = dgettext('calendar', 'Add event');
+        $add_label = '<i class="fa fa-plus"></i> ' . dgettext('calendar', 'Add event');
 
         if ($icon) {
             $add_label = Icon::show('add', $add_label);
@@ -153,10 +153,11 @@ class Calendar_Schedule {
             $vars['label'] = $add_label;
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
+            $vars['class'] = 'btn btn-success';
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink($add_label, 'calendar',
-                            array('aop' => 'create_event', 'sch_id' => $this->id, 'date' => $default_date));
+                            array('aop' => 'create_event', 'sch_id' => $this->id, 'date' => $default_date), null, null, 'btn btn-success');
         }
     }
 
