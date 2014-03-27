@@ -69,10 +69,6 @@ class User_Action {
                 $content = User_Form::manageUsers();
                 break;
 
-            case 'demographics':
-                $content = User_Form::demographics();
-                break;
-
             case 'editUser':
                 $title = dgettext('users', 'Edit User');
                 $user = new PHPWS_User($_REQUEST['user_id']);
