@@ -13,7 +13,6 @@ $core_modules = array('users',
                       'boost',
                       'filecabinet',
                       'version',
-                      'demographics',
                       'search',
                       'miniadmin',
                       'access'

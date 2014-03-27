@@ -377,6 +377,30 @@ UPDATES;
         select query will be inserted into the JSON return for evaluation
     - Total row calculation moved up in process so current page count is correct.
 </pre>';
+
+        case version_compare($version, '2.4.0', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('modules');
+            $tbl->addFieldConditional('title', 'clipboard');
+            $db->delete();
+
+            $db->clearConditional();
+            $tbl->addFieldConditional('title', 'demographics');
+            $db->delete();
+
+            $db->clearTables();
+
+            $tbl = $db->addTable('demographics');
+            $tbl->drop();
+
+            $content[] = <<<EOF
+<pre>Core 2.4.0 Changes
+--------------------------------
++ Dropping clipboard module.
++ Dropping demographics module.
+</pre>
+EOF;
+
     }
     return true;
 }
@@ -384,10 +408,10 @@ UPDATES;
 function coreUpdateFiles($files, &$content)
 {
     if (PHPWS_Boost::updateFiles($files, 'core')) {
-        $content[] = '--- Updated the following files:';
+        $content[] = ' --- Updated the following files:';
         $good = true;
     } else {
-        $content[] = '--- Unable to update the following files:';
+        $content[] = ' --- Unable to update the following files:';
         $good = false;
     }
     $content[] = "     " . implode("\n     ", $files);
