@@ -155,9 +155,6 @@ class PHPWS_Calendar {
                 $db->addColumn('id');
                 $db->addColumn('title');
                 $db->setIndexBy('id');
-//                $db->return_query = true;
-//                var_dump($db->select());
-//                $db->return_query = false;
                 return $db->select('col');
                 break;
         }
