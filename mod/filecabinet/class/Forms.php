@@ -103,7 +103,6 @@ class Cabinet_Form {
         $pager->setEmptyMessage(dgettext('filecabinet', 'No folders found.'));
         $pager->addWhere('ftype', $type);
         $pager->setAutoSort(false);
-        $pager->addToggle('bgcolor2');
         $this->cabinet->content = $pager->get();
     }
 
