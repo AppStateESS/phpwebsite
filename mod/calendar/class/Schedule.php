@@ -153,7 +153,6 @@ class Calendar_Schedule {
             $vars['label'] = $add_label;
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
-            $vars['class'] = 'btn btn-success';
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink($add_label, 'calendar',
