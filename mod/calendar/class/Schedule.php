@@ -140,10 +140,12 @@ class Calendar_Schedule {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
         }
-        $add_label = '<i class="fa fa-plus"></i> ' . dgettext('calendar', 'Add event');
 
         if ($icon) {
-            $add_label = Icon::show('add', $add_label);
+            $add_label = '<i class="fa fa-plus"></i> ' . dgettext('calendar',
+                            'Add event');
+        } else {
+            $add_label = dgettext('calendar', 'Add event');
         }
 
         if (javascriptEnabled()) {
@@ -156,7 +158,8 @@ class Calendar_Schedule {
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink($add_label, 'calendar',
-                            array('aop' => 'create_event', 'sch_id' => $this->id, 'date' => $default_date), null, null, 'btn btn-success');
+                            array('aop' => 'create_event', 'sch_id' => $this->id, 'date' => $default_date),
+                            null, null, 'btn btn-success');
         }
     }
 
