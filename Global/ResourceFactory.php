@@ -14,7 +14,7 @@ class ResourceFactory {
      * @param \Resource $resource
      * @param string $table_name
      * @throws \Exception
-     * @return void
+     * @return boolean True if found, false if not.
      */
     public static function loadByID(\Resource $resource, $id=null, $table_name = null)
     {
@@ -32,6 +32,9 @@ class ResourceFactory {
         $result = $db->selectOneRow();
         if (!empty($result)) {
             $resource->setVars($result);
+            return true;
+        } else {
+            return false;
         }
     }
 
