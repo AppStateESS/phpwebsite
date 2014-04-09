@@ -4,21 +4,21 @@
 </div>
 <table class="table table-striped table-hover" id="user-manager">
   <tr>
+    <th>{ACTIONS_LABEL}</th>
     <th>{DISPLAY_NAME_SORT}</th>
     <th>{USERNAME_SORT}</th>
     <th>{EMAIL_SORT}</th>
     <th>{LAST_LOGGED_SORT}</th>
     <th>{ACTIVE_SORT}</th>
-    <th>{ACTIONS_LABEL}</th>
   </tr>
   <!-- BEGIN listrows -->
   <tr>
+    <td class="admin-icons">{ACTIONS}</td>
     <td>{DISPLAY_NAME}</td>
     <td>{USERNAME}</td>
     <td>{EMAIL}</td>
     <td style="font-size: .8em;">{LAST_LOGGED}</td>
     <td align="left">{ACTIVE}</td>
-    <td class="admin-icons">{ACTIONS}</td>
   </tr>
   <!-- END listrows -->
 </table>
