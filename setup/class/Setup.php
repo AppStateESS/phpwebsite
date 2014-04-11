@@ -72,7 +72,7 @@ class Setup {
         if (!isset($_SESSION['configSettings']['database']) || $_SESSION['configSettings']['database'] == false) {
             $this->databaseConfig();
         } else {
-            $configDir = PHPWS_SOURCE_DIR . 'config/';
+            $configDir = PHPWS_SOURCE_DIR . 'config/core/';
             if (is_file($configDir . 'config.php')) {
                 $this->content[] = dgettext('core',
                         'Your configuration file already exists.');
