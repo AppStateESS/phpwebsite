@@ -512,8 +512,9 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      *
      * @return mixed array of view names on success, a MDB2 error on failure
      * @access public
+     *
      */
-    function listViews()
+    function listViews($database=null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -645,7 +646,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      * @return mixed array of table names on success, a MDB2 error on failure
      * @access public
      */
-    function listTables()
+    function listTables($database = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -952,7 +953,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      * @return mixed array of sequence names on success, a MDB2 error on failure
      * @access public
      */
-    function listSequences()
+    function listSequences($database = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
