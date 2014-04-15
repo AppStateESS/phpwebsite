@@ -50,7 +50,7 @@ function initializeDialog(editor)
             {
                 position: {my: 'center', at: 'center', of: this},
                 autoOpen: false,
-                width: 800,
+                width: '90%',
                 height: 500,
                 title: 'Edit text area',
                 buttons: [{text: "Save",
