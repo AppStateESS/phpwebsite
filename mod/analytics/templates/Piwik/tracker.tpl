@@ -5,7 +5,7 @@
   _paq.push(["enableLinkTracking"]);
 
   (function() {
-    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://" + {PIWIK_URL};
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://" + "{PIWIK_URL}";
     _paq.push(["setTrackerUrl", u+"piwik.php"]);
     _paq.push(["setSiteId", "{PIWIK_ID}"]);
     var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
