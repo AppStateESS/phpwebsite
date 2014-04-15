@@ -696,7 +696,7 @@ class PHPWS_File {
     {
         if (function_exists('gd_info')) {
             $gdver = gd_info();
-            return preg_match('@\(2\.\d@', $gdver['GD Version']);
+            return preg_match('@\(?2\.\d@', $gdver['GD Version']);
         } else {
             ob_start();
             phpinfo(8);
