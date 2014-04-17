@@ -370,6 +370,12 @@ class PS_Forms {
         $form->setLabel('back_to_top',
                 dgettext('pagesmith', 'Add "Back to top" links at page bottom.'));
 
+        $form->addCheck('create_shortcuts', 1);
+        $form->setMatch('create_shortcuts',
+                PHPWS_Settings::get('pagesmith', 'create_shortcuts'));
+        $form->setLabel('create_shortcuts',
+                dgettext('pagesmith', 'Create Access shortcuts automatically'));
+
 
         $form->addTplTag('LENGTH_EXAMPLE',
                 'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');

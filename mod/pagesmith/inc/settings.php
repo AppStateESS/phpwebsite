@@ -5,5 +5,6 @@
  */
 
 $settings['auto_link'] = 1;
+$settings['create_shortcuts'] = 1;
 
 ?>

@@ -373,6 +373,15 @@ Fixed bug causing blank editors on edit.</pre>';
 + Removed default background color from page template.
 + Fixed bug with pages saving untitled.
 </pre>';
+
+                    case version_compare($currentVersion, '1.5.4', '<'):
+            $content[] = '<pre>1.5.4 changes
+---------------
++ Added titles to admin icons
++ Removed @ to prevent PHP warning message
++ Style changes to pager listing
++ Pop up width is relative to browser
+</pre>';
     } // end switch
 
     return true;
