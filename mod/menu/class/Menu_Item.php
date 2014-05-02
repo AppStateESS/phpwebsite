@@ -333,7 +333,10 @@ class Menu_Item {
         Key::restrictView($db);
         $db->addOrder('link_order');
         $db->setIndexBy('id');
+        //$db->setTestMode(1);
         $data = $db->getObjects('Menu_Link');
+        //var_dump($data);
+        //exit();
         if (empty($data) || PHPWS_Error::logIfError($data)) {
             return NULL;
         }
