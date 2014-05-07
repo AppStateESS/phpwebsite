@@ -65,12 +65,6 @@ class PS_Text extends PS_Section {
             return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
         } else {
             return PHPWS_Text::decodeText($this->content);
-            /**
-             * Prior to 24 Mar 09, this was what it returned. This prevented anchors
-             * and filtered words in edit mode. Although testing the change does not
-             * indicate side effects, I am leaving this in just case. -Matt
-             */
-            //return PHPWS_Text::parseOutput($this->content);
         }
     }
 

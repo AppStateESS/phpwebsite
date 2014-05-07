@@ -279,7 +279,9 @@ class PageSmith {
 
     private function getUndoSession($page_id)
     {
-        return $_SESSION['page_undo'][$page_id];
+        if (isset($_SESSION['page_undo'][$page_id])) {
+            return $_SESSION['page_undo'][$page_id];
+        }
     }
 
     public function loadForms()
@@ -504,7 +506,8 @@ class PageSmith {
     public function postSettings()
     {
         PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
-        PHPWS_Settings::set('pagesmith', 'create_shortcuts', isset($_POST['create_shortcuts']));
+        PHPWS_Settings::set('pagesmith', 'create_shortcuts',
+                isset($_POST['create_shortcuts']));
         PHPWS_Settings::set('pagesmith', 'back_to_top',
                 isset($_POST['back_to_top']));
 

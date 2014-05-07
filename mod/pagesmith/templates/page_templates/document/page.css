@@ -1,17 +1,3 @@
-div#document-document {
-    margin-top: 10px;
-}
-
-div#document-page {
-    background-color: white;
-    color: inherit;
-    overflow: hidden;
-}
-
-div#document-page h2 {
-    margin-bottom: 1em;
-}
-
-div#document-document1 div.fc-download-document {
-    width: 100%;
+.document-download {
+    margin-top : 1em;
 }

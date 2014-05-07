@@ -355,7 +355,7 @@ Fixed bug causing blank editors on edit.</pre>';
 + Publish on date added.
 </pre>';
 
-            case version_compare($currentVersion, '1.5.2', '<'):
+        case version_compare($currentVersion, '1.5.2', '<'):
             $content[] = '<pre>1.5.2 changes
 ---------------
 - Fixed error message
@@ -363,7 +363,7 @@ Fixed bug causing blank editors on edit.</pre>';
 - Dialog editor made modal.
 </pre>';
 
-                case version_compare($currentVersion, '1.5.3', '<'):
+        case version_compare($currentVersion, '1.5.3', '<'):
             $content[] = '<pre>1.5.3 changes
 ---------------
 + Edit hinting changed to Boostrap standard
@@ -374,13 +374,33 @@ Fixed bug causing blank editors on edit.</pre>';
 + Fixed bug with pages saving untitled.
 </pre>';
 
-                    case version_compare($currentVersion, '1.5.4', '<'):
+        case version_compare($currentVersion, '1.5.4', '<'):
             $content[] = '<pre>1.5.4 changes
 ---------------
 + Added titles to admin icons
 + Removed @ to prevent PHP warning message
 + Style changes to pager listing
 + Pop up width is relative to browser
+</pre>';
+        case version_compare($currentVersion, '1.6.0', '<'):
+            $db = \Database::newDB();
+            $table = $db->addTable('ps_page');
+            $table->addFieldConditional('template', 'art');
+            $table->addValue('template', 'banner');
+            $db->update();
+
+            $db->clearConditional();
+            $table->reset();
+            $c1 = $table->getFieldConditional('template', 'vtour');
+            $c2 = $table->getFieldConditional('template', 'VTOUR');
+            $db->addConditional($db->createConditional($c1, $c2, 'OR'));
+            $table->addValue('template', 'threesec');
+            $db->update();
+
+            $content[] = '<pre>1.6.0 changes
+---------------
++ Rewrote page templates to be Bootstrap compatible.
++ Removed art and vtour template.
 </pre>';
     } // end switch
 

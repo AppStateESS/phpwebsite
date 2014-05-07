@@ -60,7 +60,6 @@ class PS_Block extends PS_Section {
 
             default:
         }
-
         $this->content = $manager->get();
     }
 
@@ -76,6 +75,8 @@ class PS_Block extends PS_Section {
             PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             $this->content = Cabinet::getTag($this->type_id);
         }
+        //echo htmlentities($this->content);
+        //exit();
         return $this->content;
     }
 

@@ -6,10 +6,6 @@
 	<style>page.css</style>
 	<structure>
 		<section>
-			<name>header1</name>
-			<type>header</type>
-		</section>
-		<section>
 			<name>text1</name>
 			<type>text</type>
 		</section>
