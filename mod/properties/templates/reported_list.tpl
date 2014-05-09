@@ -1,4 +1,4 @@
-{BLOCKED}
+<div style="margin-bottom: 1em">{BLOCKED}</div>
 <table class="table table-striped">
     <tr style="vertical-align: top">
         <th width="20%">{DATE_SENT_SORT}</th>

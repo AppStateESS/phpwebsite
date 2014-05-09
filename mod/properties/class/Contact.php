@@ -131,7 +131,8 @@ class Contact {
         $form->setCols('company_address', 20);
 
         $form->addTextArea('times_available', $this->times_available);
-        $form->setLabel('times_available', 'Days and hours available for contact');
+        $form->setLabel('times_available',
+                'Days and hours available for contact');
         $form->setRows('times_available', 4);
         $form->setCols('times_available', 20);
 
@@ -175,7 +176,8 @@ class Contact {
             }
 
             if (in_array($key, $vars)) {
-                $func = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
+                $func = 'set' . str_replace(' ', '',
+                                ucwords(str_replace('_', ' ', $key)));
                 try {
                     $this->$func($value);
                 } catch (\Exception $e) {
@@ -331,13 +333,15 @@ class Contact {
             return null;
         }
 
-        return sprintf('(%s) %s-%s', substr($this->phone, 0, 3), substr($this->phone, 3, 3), substr($this->phone, 6));
+        return sprintf('(%s) %s-%s', substr($this->phone, 0, 3),
+                substr($this->phone, 3, 3), substr($this->phone, 6));
     }
 
     public function getEmailAddress($html = false)
     {
         if ($html) {
-            return sprintf('<a href="mailto:%s">%s</a>', $this->email_address, $this->email_address);
+            return sprintf('<a href="mailto:%s">%s</a>', $this->email_address,
+                    $this->email_address);
         } else {
             return $this->email_address;
         }
@@ -380,27 +384,26 @@ class Contact {
 
     public function row_tags()
     {
-        //$tpl['LAST_NAME'] = $this->last_name . ', ' . $this->first_name;
-        $tpl['LAST_NAME'] = sprintf('<a href="mailto:%s">%s, %s <i class="fa fa-envelope-o"></i></a>', $this->email_address, $this->last_name, $this->first_name);
-        /*
-        if ($this->email_address) {
-            $tpl['EMAIL_ADDRESS'] = sprintf('<a href="mailto:%s">%s</a>', $this->email_address, $this->email_address);
-        }
-         *
-         */
+        $tpl['LAST_NAME'] = sprintf('<a href="mailto:%s">%s, %s <i class="fa fa-envelope-o"></i></a>',
+                $this->email_address, $this->last_name, $this->first_name);
         $tpl['PHONE'] = $this->getPhone();
 
         $tpl['COMPANY_NAME'] = $this->getCompanyUrl();
 
         if ($this->active) {
-            $admin[] = \PHPWS_Text::secureLink(\Icon::show('active', 'Click to deactivate'), 'properties', array('aop' => 'deactivate_contact', 'cid' => $this->id));
+            $admin[] = \PHPWS_Text::secureLink(\Icon::show('active',
+                                    'Click to deactivate'), 'properties',
+                            array('aop' => 'deactivate_contact', 'cid' => $this->id));
         } else {
-            $admin[] = \PHPWS_Text::secureLink(\Icon::show('inactive', 'Click to activate'), 'properties', array('aop' => 'activate_contact', 'cid' => $this->id));
+            $admin[] = \PHPWS_Text::secureLink(\Icon::show('inactive',
+                                    'Click to activate'), 'properties',
+                            array('aop' => 'activate_contact', 'cid' => $this->id));
         }
 
-
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('add'), 'properties', array('aop' => 'edit_property', 'cid' => $this->id));
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('edit'), 'properties', array('aop' => 'edit_contact', 'cid' => $this->id));
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('add'), 'properties',
+                        array('aop' => 'edit_property', 'cid' => $this->id));
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('edit'), 'properties',
+                        array('aop' => 'edit_contact', 'cid' => $this->id));
 
         $js['LINK'] = \Icon::show('delete');
         $js['QUESTION'] = 'Are you sure you want to delete this contact and all their properties?';
@@ -408,9 +411,15 @@ class Contact {
 
         $admin[] = javascript('confirm', $js);
 
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('home', 'Show properties'), 'properties', array('aop'=>'show_properties', 'cid'=>$this->id));
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('home', 'Show properties'),
+                        'properties',
+                        array('aop' => 'show_properties', 'cid' => $this->id));
 
-        $tpl['LAST_LOG'] = strftime('%x', $this->last_log);
+        if ($this->last_log) {
+            $tpl['LAST_LOG'] = strftime('%x', $this->last_log);
+        } else {
+            $tpl['LAST_LOG'] = 'Never';
+        }
         $tpl['ACTION'] = implode('', $admin);
         return $tpl;
     }
@@ -459,14 +468,18 @@ class Contact {
     {
         $vars['k'] = $this->key;
         $vars['cop'] = 'edit_property';
-        $tpl['CREATE'] = \PHPWS_Text::moduleLink('Create property', 'properties', $vars);
+        $tpl['CREATE'] = \PHPWS_Text::moduleLink('Create property',
+                        'properties', $vars);
         $vars['cop'] = 'view_properties';
-        $tpl['VIEW'] = \PHPWS_Text::moduleLink('View properties', 'properties', $vars);
+        $tpl['VIEW'] = \PHPWS_Text::moduleLink('View properties', 'properties',
+                        $vars);
         $vars['cop'] = 'edit_contact';
-        $tpl['EDIT'] = \PHPWS_Text::moduleLink('Edit my information', 'properties', $vars);
+        $tpl['EDIT'] = \PHPWS_Text::moduleLink('Edit my information',
+                        'properties', $vars);
         $vars['cop'] = 'logout';
         $tpl['LOGOUT'] = \PHPWS_Text::moduleLink('Logout', 'properties', $vars);
-        $content = \PHPWS_Template::process($tpl, 'properties', 'mini_contact.tpl');
+        $content = \PHPWS_Template::process($tpl, 'properties',
+                        'mini_contact.tpl');
         \Layout::add($content, 'properties', 'contact_login');
     }
 

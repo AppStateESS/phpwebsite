@@ -64,7 +64,7 @@ div.photo {
 }
 
 div#thumbnails {
-    overflow: auto;
+    height : 130px;
 }
 
 a.delete-photo {

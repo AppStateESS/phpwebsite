@@ -1016,8 +1016,8 @@ class Property extends Room_Base {
         if (\Current_User::allow('properties')) {
             javascriptMod('properties', 'photo_upload', $data);
             $tpl['ADD_PHOTO'] = $photo->uploadNew(false);
-            $tpl['EDIT'] = \PHPWS_Text::secureLink('Edit', 'properties',
-                            array('aop' => 'edit_property', 'pid' => $this->id));
+            $tpl['EDIT'] = \PHPWS_Text::secureLink('<i class="fa fa-edit"></i> Edit', 'properties',
+                            array('aop' => 'edit_property', 'pid' => $this->id), null, null, 'btn btn-default');
             if (!$this->active) {
                 $tpl['ACTIVE'] = '<div id="not-active">This property is currently NOT ACTIVE</div>';
             }

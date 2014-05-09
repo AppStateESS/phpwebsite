@@ -224,7 +224,7 @@ class Admin extends Base {
         $data['is_contact'] = 1;
         $page_tags['new'] = \PHPWS_Text::moduleLink('Add new property',
                         'properties',
-                        array('aop' => 'edit_property', 'cid'=>$contact_id));
+                        array('aop' => 'edit_property', 'cid' => $contact_id));
 
         $pager->setSearch('name', 'company_name');
         $pager->addSortHeader('name', 'Name of property');
@@ -271,9 +271,13 @@ class Admin extends Base {
             $row['action'] = '';
             $result['rows'][] = $row;
         }
-        $tpl = new \Template($result);
-        $tpl->setModuleTemplate('properties', 'overdue.html');
-        $this->content = $tpl->__toString();
+        if (empty($result)) {
+            $this->content = 'No inactive properties';
+        } else {
+            $tpl = new \Template($result);
+            $tpl->setModuleTemplate('properties', 'overdue.html');
+            $this->content = $tpl->__toString();
+        }
     }
 
     public function blockReport($report_id)
@@ -522,10 +526,12 @@ EOF;
             return;
         }
         \PHPWS_Core::initModClass('properties', 'Contact.php');
-        $page_tags['new'] = \PHPWS_Text::secureLink('Add new contact',
-                        'properties', array('aop' => 'edit_contact'));
-        $page_tags['email'] = \PHPWS_Text::secureLink('Inactive contacts',
-                        'properties', array('aop' => 'email_contacts'));
+        $page_tags['new'] = \PHPWS_Text::secureLink('<i class="fa fa-plus"></i> Add new contact',
+                        'properties', array('aop' => 'edit_contact'), null,
+                        null, 'btn btn-success');
+        $page_tags['email'] = \PHPWS_Text::secureLink('<i class="fa fa-minus-square-o"></i> Inactive contacts',
+                        'properties', array('aop' => 'email_contacts'), null,
+                        null, 'btn btn-default');
 
         $this->title = 'Contact listing';
 
@@ -557,12 +563,12 @@ EOF;
         if (!isset($_SESSION['prop_show_blocked'])) {
             $vars['aop'] = 'show_blocked';
             $tags['BLOCKED'] = \PHPWS_Text::secureLink('Show blocked',
-                            'properties', $vars);
+                            'properties', $vars, null, null, 'btn btn-default');
             $pager->db->addWhere('prop_report.block', 0);
         } else {
             $vars['aop'] = 'hide_blocked';
             $tags['BLOCKED'] = \PHPWS_Text::secureLink('Hide blocked',
-                            'properties', $vars);
+                            'properties', $vars, null, null, 'btn btn-default');
         }
         $pager->addPageTags($tags);
 

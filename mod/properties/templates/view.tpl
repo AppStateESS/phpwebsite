@@ -6,7 +6,7 @@
         <ul id="gallery">
             {PHOTOS}
         </ul><!-- END photos -->
-        <!-- BEGIN admin --><div>{ADD_PHOTO} | {EDIT}</div><!-- END admin -->
+        <!-- BEGIN admin --><div>{ADD_PHOTO} {EDIT}</div><!-- END admin -->
         <div id="contact">
             <h3>{COMPANY_NAME}</h3>
             <p class="info"><!-- BEGIN company -->{GOOGLE_COMPANY}{COMPANY_ADDRESS}<br />

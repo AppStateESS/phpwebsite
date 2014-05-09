@@ -7,21 +7,11 @@
     </tr><!-- END contact -->
     <tr>
         <td style="width: 160px">{NAME_LABEL}</td>
-        <td>{NAME} <!--  BEGIN error1 -->
-            <div class="error">
-                <div class="arrow-left"></div>
-                <div class="error-message">{NAME_ERROR}</div>
-            </div>
-            <!-- END error1 --></td>
+        <td>{NAME} <!--  BEGIN error1 --><span class="label label-danger">{NAME_ERROR}</span><!-- END error1 --></td>
     </tr>
     <tr>
         <td>{MONTHLY_RENT_LABEL}</td>
-        <td>${MONTHLY_RENT} <!--  BEGIN error2 -->
-            <div class="error">
-                <div class="arrow-left"></div>
-                <div class="error-message">{MONTHLY_RENT_ERROR}</div>
-            </div>
-            <!-- END error2 --></td>
+        <td>${MONTHLY_RENT} <!--  BEGIN error2 --><span class="label label-danger">{MONTHLY_RENT_ERROR}</span><!-- END error2 --></td>
     </tr>
     <tr>
         <td><strong>Lease type</strong></td>
@@ -33,31 +23,21 @@
     </tr>
     <tr>
         <td>{ADDRESS_LABEL}</td>
-        <td>{ADDRESS} <!--  BEGIN error3 -->
-            <div class="error">
-                <div class="arrow-left"></div>
-                <div class="error-message">{ADDRESS_ERROR}</div>
-            </div>
-            <!-- END error3 --></td>
-    </tr>
-    <tr>
-        <td>{EFFICIENCY_LABEL}</td>
-        <td>{EFFICIENCY} Yes</td>
+        <td>{ADDRESS} <!--  BEGIN error3 --><span class="label label-danger">{ADDRESS_ERROR}</span><!-- END error3 --></td>
     </tr>
     <tr>
         <td>{WINDOW_NUMBER_LABEL}</td>
         <td>{WINDOW_NUMBER} Yes</td>
     </tr>
     <tr>
+        <td>{EFFICIENCY_LABEL}</td>
+        <td>{EFFICIENCY} Yes</td>
+    </tr>
+    <tr>
         <td><strong>Rooms</strong></td>
         <td>
-            <div>{BEDROOM_NO_LABEL} {BEDROOM_NO} <!--  BEGIN error4 -->
-                <div class="error">
-                    <div class="arrow-left"></div>
-                    <div class="error-message">{BEDROOM_NO_ERROR}</div>
-                </div>
-            </div>
-            <!-- END error4 -->
+            <div>{BEDROOM_NO_LABEL} {BEDROOM_NO}<!--  BEGIN error4 --> <span class="label label-danger">{BEDROOM_NO_ERROR}</span><!-- END error4 -->
+</div>
             <div>{BATHROOM_NO_LABEL} {BATHROOM_NO}</div>
         </td>
     </tr>
@@ -91,7 +71,7 @@
 </table>
 <div style="text-align: center; padding: 3px; background-color: #DAE3DE">{SUBMIT}</div>
 <h2>Amenities and utilities</h2>
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
     <tr>
         <td style="width: 160px">
             <strong>Heating system</strong>
@@ -157,7 +137,7 @@
 </table>
 <div style="text-align: center; padding: 3px; background-color: #DAE3DE">{SUBMIT}</div>
 <h2>Conditionals</h2>
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
     <tr>
         <td style="width: 160px">{PETS_ALLOWED_LABEL}</td>
         <td>{PETS_ALLOWED} Yes</td>
@@ -178,7 +158,7 @@
 </table>
 <div style="text-align: center; padding: 3px; background-color: #DAE3DE">{SUBMIT}</div>
 <h2>Other fees</h2>
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
     <tr>
         <td style="width: 160px">{SECURITY_AMT_LABEL}</td>
         <td>{SECURITY_AMT}<br />
@@ -207,7 +187,7 @@
 <h2>Utility imbursement</h2>
 If you pay a portion of one of the following utilities, please enter that
 amount.
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
     <tr>
         <td style="width: 160px">{UTIL_CABLE_LABEL}</td>
         <td>{UTIL_CABLE}</td>

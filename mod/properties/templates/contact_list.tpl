@@ -1,9 +1,9 @@
-{new} | {email}
+<div style="margin-bottom : 1em">{new} {email}</div>
 
 <table class="table table-striped">
     <tr style="vertical-align: top">
         <th width="25%">{COMPANY_NAME_SORT}</th>
-        <th width="20%">{LAST_NAME_SORT}<br />{EMAIL_ADDRESS_SORT}</th>
+        <th width="20%">{LAST_NAME_SORT}</th>
         <th>{LAST_LOG_SORT}</th>
         <th class="admin-links">{ACTION}</th>
     </tr>

@@ -90,9 +90,9 @@ abstract class Base {
         if ($contact_id) {
             $pager->addWhere('contact_id', $contact_id);
             $data['is_contact'] = 1;
-            $page_tags['new'] = \PHPWS_Text::moduleLink('Add new property', 'properties', array('cop' => 'edit_property', 'k' => $this->contact->getKey()));
+            $page_tags['new'] = \PHPWS_Text::moduleLink('<i class="fa fa-plus"></i> Add new property', 'properties', array('cop' => 'edit_property', 'k' => $this->contact->getKey()), null, null, 'btn btn-success');
         } else {
-            $page_tags['new'] = \PHPWS_Text::secureLink('Add new property', 'properties', array('aop' => 'edit_property'));
+            $page_tags['new'] = \PHPWS_Text::secureLink('<i class="fa fa-plus"></i> Add new property', 'properties', array('aop' => 'edit_property'), null, null, 'btn btn-success');
         }
 
         // photo was previously uploaded

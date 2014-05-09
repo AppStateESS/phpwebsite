@@ -6,31 +6,31 @@
     <hr />
     {START_FORM}
 
-    <h3 class="open-box">Student preference</h3>
+    <div class="open-box">Student preference</div>
     <div class="options">{STUDENT_TYPE}</div>
     <hr />
-    <h3 class="open-box">Distance from campus</h3>
+    <div class="open-box">Distance from campus</div>
     <div class="options">{DISTANCE_OPTIONS}</div>
     <hr />
-    <h3 class="open-box">Price range</h3>
+    <div class="open-box">Price range</div>
     <div class="options">{PRICE_OPTIONS}</div>
     <hr />
-    <h3 class="open-box">Bedrooms</h3>
+    <div class="open-box">Bedrooms</div>
     <div class="options">{BEDROOM_CHOICE}</div>
     <hr />
-    <h3 class="open-box">Bathrooms</h3>
+    <div class="open-box">Bathrooms</div>
     <div class="options">{BATHROOM_CHOICE}</div>
     <hr />
-    <h3 class="open-box">Features/Amenities</h3>
+    <div class="open-box">Features/Amenities</div>
     <div class="options">{FEATURES}</div>
     <hr />
-    <h3 class="open-box">Manager</h3>
+    <div class="open-box">Manager</div>
     <div class="options">{MANAGER} {MANAGER_SUBMIT}</div>
     <hr />
-    <h3 class="open-box">Property name</h3>
+    <div class="open-box">Property name</div>
     <div class="options">{PROPERTY_NAME} {PROPERTY_NAME_SUBMIT}</div>
     <hr />
-    <h3 class="open-box">Contract</h3>
+    <div class="open-box">Contract</div>
     <div class="options">{SUBLEASE}<br />{NOSUB}</div>
         {END_FORM}
 </div>

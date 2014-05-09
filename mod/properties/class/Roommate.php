@@ -191,6 +191,8 @@ class Roommate extends Room_Base {
         $this->clubhouse = isset($_POST['clubhouse']);
         $this->workout_room = isset($_POST['workout_room']);
         $this->pets_allowed = isset($_POST['pets_allowed']);
+        $this->share_bedroom = isset($_POST['share_bedroom']);
+        $this->share_bathroom = isset($_POST['share_bathroom']);
         $this->gender = (int) $_POST['gender'];
         return!isset($this->errors);
     }

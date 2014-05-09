@@ -1,5 +1,7 @@
 <?php
+
 namespace Properties;
+
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -19,10 +21,10 @@ namespace Properties;
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-
 \PHPWS_Core::initModClass('properties', 'Base.php');
 
 class Contact_User extends Base {
+
     public $contact;
 
     public function __construct()
@@ -30,16 +32,45 @@ class Contact_User extends Base {
         $this->loadCarryMessage();
     }
 
+    private function contactLogin()
+    {
+        $vars = array();
+        $form = self::contactForm();
+        $vars = $form->getTemplate();
+        $template = new \Template($vars);
+        $template->setModuleTemplate('properties', 'contact_login.html');
+        \Layout::add($template->get());
+    }
+
+    public static function contactForm()
+    {
+        $form = new \PHPWS_Form('contact-login');
+        $form->addHidden('module', 'properties');
+        $form->addHidden('cop', 'login');
+        $form->addText('c_username');
+        $form->setPlaceHolder('c_username', 'Username');
+        $form->setSize('c_username', 10);
+        $form->setClass('c_username', 'form-control');
+
+        $form->addPassword('c_password');
+        $form->setPlaceHolder('c_password', 'Password');
+        $form->setSize('c_password', 10);
+        $form->setClass('c_password', 'form-control');
+        $form->addSubmit('submit', 'Log in to Manager Account');
+        $form->setClass('submit', 'btn btn-success');
+        return $form;
+    }
+
     public function post()
     {
         $this->loadContact();
-        switch($_POST['cop']) {
+        switch ($_POST['cop']) {
             case 'login':
                 if ($this->login()) {
                     \PHPWS_Core::home();
                     // login successful, contact page
                 } else {
-                    \Layout::add('Sorry, user name and password were not found. Please try again.');
+                    $this->contactLogin();
                 }
                 break;
 
@@ -149,8 +180,8 @@ class Contact_User extends Base {
     public function checkPermission()
     {
         if (!isset($this->contact) || !$this->contact->id ||
-        $this->contact->id != $_SESSION['Contact_User']->id ||
-        !$this->contact->checkKey()) {
+                $this->contact->id != $_SESSION['Contact_User']->id ||
+                !$this->contact->checkKey()) {
             unset($_SESSION['Contact_User']);
             \Layout::nakedDisplay('Command not allowed. <a href=".">Return to home page.</a>');
             exit();
@@ -242,15 +273,16 @@ class Contact_User extends Base {
         $this->display();
     }
 
-
     private function display()
     {
         $tpl['TITLE'] = $this->title;
         $tpl['CONTENT'] = $this->content;
         $tpl['MESSAGE'] = $this->message;
-        $final_content = \PHPWS_Template::process($tpl, 'properties', 'admin.tpl');
+        $final_content = \PHPWS_Template::process($tpl, 'properties',
+                        'admin.tpl');
         \Layout::add($final_content);
     }
+
 }
 
 ?>

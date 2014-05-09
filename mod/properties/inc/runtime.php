@@ -30,20 +30,8 @@ if (!PHPWS_Settings::get('properties', 'roommate_only')) {
     if (isset($_SESSION['Contact_User'])) {
         $_SESSION['Contact_User']->loginMenu();
     } else {
-        $form = new PHPWS_Form('contact-login');
-        $form->addHidden('module', 'properties');
-        $form->addHidden('cop', 'login');
-        $form->addText('c_username');
-        $form->setPlaceHolder('c_username', 'Username');
-        $form->setSize('c_username', 10);
-        $form->setClass('c_username', 'form-control');
-
-        $form->addPassword('c_password');
-        $form->setPlaceHolder('c_password', 'Password');
-        $form->setSize('c_password', 10);
-        $form->setClass('c_password', 'form-control');
-        $form->addSubmit('submit', 'Log in to Manager Account');
-        $form->setClass('submit', 'btn btn-success');
+        require_once PHPWS_SOURCE_DIR . 'mod/properties/class/Contact_User.php';
+        $form = \Properties\Contact_User::contactForm();
         $tpl = $form->getTemplate();
         $content = PHPWS_Template::process($tpl, 'properties', 'clogin.tpl');
         Layout::add($content, 'properties', 'contact_login');
