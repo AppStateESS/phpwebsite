@@ -1,5 +1,5 @@
 <div id="search-criteria">
-    <h2>Search criteria</h2>
+    <h3>Search criteria</h3>
     <p>{CRITERIA}</p>
 
     <div style="text-align : center; border-top : 1px dotted gray">{CLEAR}</div>

@@ -15,7 +15,7 @@ div.property-info {
     float : left;
 }
 
-h3.open-box {
+div.open-box {
     cursor: pointer;
 }
 
