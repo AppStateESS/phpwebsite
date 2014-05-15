@@ -51,7 +51,7 @@ function initializeDialog(editor)
                 position: {my: 'center', at: 'center', of: this},
                 autoOpen: false,
                 width: '90%',
-                height: 500,
+                height: 660,
                 title: 'Edit text area',
                 buttons: [{text: "Save",
                         click: function() {
