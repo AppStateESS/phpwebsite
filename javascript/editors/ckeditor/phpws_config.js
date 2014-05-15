@@ -7,6 +7,13 @@ basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
     CKEDITOR.plugins.addExternal('filecabinet', basePath + 'ckeditor/phpws_plugins/filecabinet/', 'plugin.js');
 })();
 
+/**
+ * to add aspell
+ * 1) make sure aspell is installed on your server
+ * 2) then add 'aspell' to config.extraPlugins
+ * 3) add 'SpellCheck' to the config.toolbar_MyToolbar
+ */
+// to the toolbar
 
 CKEDITOR.editorConfig = function(config)
 {
