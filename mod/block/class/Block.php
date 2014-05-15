@@ -22,10 +22,6 @@ class Block {
         }
         Block::showBlocks($key);
 
-        if (isset($_SESSION['Pinned_Blocks'])) {
-            Block::viewPinnedBlocks($key);
-        }
-
     }
 
     public static function showAllBlocks()
@@ -33,34 +29,6 @@ class Block {
         $key = new Key;
         $key->id = -1;
         Block::showBlocks($key);
-    }
-
-    public static function viewPinnedBlocks($key)
-    {
-        if (!isset($_SESSION['Pinned_Blocks'])) {
-            return FALSE;
-        }
-
-        $block_list = &$_SESSION['Pinned_Blocks'];
-        if (empty($block_list)) {
-            return NULL;
-        }
-
-        foreach ($block_list as $block_id => $block) {
-            if (isset($GLOBALS['Current_Blocks'][$block_id])) {
-                continue;
-            }
-
-            $block->setPinKey($key);
-            $content[] = $block->view(TRUE);
-        }
-
-        if (empty($content)) {
-            return;
-        }
-
-        $complete = implode('', $content);
-        Layout::add($complete, 'block', 'Block_List');
     }
 
     public static function showBlocks($key)
