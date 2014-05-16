@@ -256,16 +256,19 @@ class PS_Page {
 
     public function editLink($label = null, $icon = false)
     {
+        $vars['id'] = $this->id;
+        $vars['aop'] = 'edit_page';
+
         if ($icon) {
             $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith',
                             'Edit') . '"></i>';
+            return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
         } elseif (empty($label)) {
-            $label = dgettext('pagesmith', 'Edit');
+            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith',
+                            'Edit') . '"></i> ' . dgettext('pagesmith', 'Edit');
+            return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null,
+                            null, 'btn btn-primary');
         }
-
-        $vars['id'] = $this->id;
-        $vars['aop'] = 'edit_page';
-        return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
     }
 
     public function frontPageToggle($icon = false)
@@ -513,7 +516,7 @@ class PS_Page {
         $this->pageLinks($tpl);
         if (PHPWS_Settings::get('pagesmith', 'back_to_top')) {
             $tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>',
-                    PHPWS_Core::getCurrentUrl(), $anchor_title,
+                    PHPWS_Core::getCurrentUrl(), $anchor_title, '<i class="fa fa-arrow-circle-up"></i> ' .
                     dgettext('pagesmith', 'Back to top'));
         }
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
