@@ -213,7 +213,9 @@ class Menu_Item {
         if (empty($this->assoc_image)) {
             return null;
         }
-        return "<img id='menu-associated-image' src='$this->assoc_image' />";
+        return "<img id=\"menu-associated-image\" data-src=\">768:$this->assoc_image\" 
+        style=\"display:none;\" onload=\"this.style.display='inline';this.style.opacity='1';\" />
+        <noscript><img id=\"menu-associated-image\" src=\">768:$this->assoc_image\" \></noscript>";
     }
 
     public function getAssocImageThumbnail()
@@ -442,13 +444,11 @@ class Menu_Item {
         if ($key && $key->isDummy(true)) {
             return;
         }
-
         $theme_tpl_dir = \PHPWS_Template::getTplDir('menu') . 'menu_layout/';
         $menu_tpl_dir = PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/';
 
         $theme_path = $theme_tpl_dir . $this->template . '/';
         $menu_path = $menu_tpl_dir . $this->template . '/';
-
         if (is_file($theme_path . 'menu.tpl')) {
             $file = $theme_path . 'menu.tpl';
             $path = $theme_path;
