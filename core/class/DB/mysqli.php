@@ -7,30 +7,41 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class mysqli_PHPWS_SQL {
+
     public function export(&$info)
     {
-        switch ($info['type']){
+        switch ($info['type']) {
+            case 'smallint':
             case 'int':
-                if (!isset($info['len']) || $info['len'] > 6)
-                $setting = 'INT';
+                if (!isset($info['length']) || $info['length'] > 6)
+                    $setting = 'INT';
                 else
-                $setting = 'SMALLINT';
+                    $setting = 'SMALLINT';
                 break;
 
+            case 'text':
             case 'blob':
                 $setting = 'TEXT';
                 $info['flags'] = NULL;
                 break;
 
             case 'string':
-                if (!is_numeric($info['len']) || $info['len'] > 255) {
+                if (!is_numeric($info['length']) || $info['length'] > 255) {
                     $length = 255;
                 } else {
-                    $length = $info['len'];
+                    $length = $info['length'];
                 }
                 $setting = "CHAR($length)";
+                break;
+
+            case 'varchar':
+                if (!is_numeric($info['length']) || $info['length'] > 255) {
+                    $length = 255;
+                } else {
+                    $length = $info['length'];
+                }
+                $setting = "VARCHAR($length)";
                 break;
 
             case 'date':
@@ -46,17 +57,18 @@ class mysqli_PHPWS_SQL {
                 $info['flags'] = NULL;
                 break;
 
+            default:
+                throw new \Exception('Unknown SQL type: %s', $info['type']);
         }
 
         return $setting;
     }
 
-
     public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = PHPWS_DB::addPrefix($table);
-        $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
-        $table, $column_name, $new_name, $specs['parameters']);
+        $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s', $table, $column_name,
+                $new_name, $specs['parameters']);
         return $sql;
     }
 
@@ -94,7 +106,6 @@ class mysqli_PHPWS_SQL {
         return TRUE;
     }
 
-
     public function dropTableIndex($name, $table)
     {
         $table = PHPWS_DB::addPrefix($table);
@@ -111,7 +122,7 @@ class mysqli_PHPWS_SQL {
         return 'REGEXP';
     }
 
-    public function addColumn($table, $column, $parameter, $after=null)
+    public function addColumn($table, $column, $parameter, $after = null)
     {
         if (!empty($after)) {
             if (strtolower($after) == 'first') {
@@ -125,6 +136,7 @@ class mysqli_PHPWS_SQL {
 
         return array("ALTER TABLE $table ADD $column $parameter $location;");
     }
+
 }
 
 ?>
