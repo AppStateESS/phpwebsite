@@ -448,6 +448,8 @@ class Menu {
             $menu_tpl['menus'][] = self::getCategoryViewLine($menu, $active);
         }
         $template = new \Template($menu_tpl);
+        \Layout::addJSHeader("<script type='text/javascript' src='" .
+        PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",81);
         $template->setModuleTemplate('menu', 'category_view/category_menu.html');
         \Layout::add($template->get(), 'menu', 'top_view');
     }
