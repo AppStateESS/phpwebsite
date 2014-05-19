@@ -470,7 +470,8 @@ class Branch_Admin {
     public function getDSN($dbname = true)
     {
         if (isset($this->dbuser)) {
-            $dsn = sprintf('%s://%s:%s@%s', $this->dbtype, $this->dbuser,
+            $dbtype = str_replace('mysql', 'mysqli', $this->dbtype);
+            $dsn = sprintf('%s://%s:%s@%s', $dbtype, $this->dbuser,
                     $this->dbpass, $this->dbhost);
 
             if ($this->dbport) {
@@ -730,7 +731,9 @@ class Branch_Admin {
         $dsn->setDatabaseName($this->dbname);
         $db->setDSN($dsn);
 
-        if (!empty($db->listTables())) {
+        $table_listing = $db->listTables();
+
+        if (!empty($table_listing)) {
             return BRANCH_CONNECT_WITH_TABLES;
         }
 
