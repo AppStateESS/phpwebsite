@@ -158,32 +158,32 @@ class Signup_Sheet {
         if (Current_User::allow('signup', 'edit_sheet', $this->id, 'sheet')) {
             if (Current_User::isUnrestricted('signup')) {
                 $vars['aop']  = 'edit_sheet';
-                $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
+                $links[] = PHPWS_Text::secureLink(\Icon::show('edit', dgettext('signup', 'Edit')), 'signup', $vars);
             }
 
             $vars['aop']  = 'edit_slots';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
+            $links[] = PHPWS_Text::secureLink(\Icon::show('th-list', dgettext('signup', 'Slots')), 'signup', $vars);
 
             if (Current_User::isUnrestricted('signup')) {
-                $links[] = Current_User::popupPermission($this->key_id);
+                $links[] = Current_User::popupPermission($this->key_id,null, 'icon');
             }
         }
 
         $vars['aop'] = 'report';
-        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Report'), 'signup', $vars);
+        $links[] = PHPWS_Text::secureLink(\Icon::show('file-text', dgettext('signup', 'Report')), 'signup', $vars);
 
         if (Current_User::isUnrestricted('signup')) {
             $vars['aop'] = 'delete_sheet';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
             $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
-            $js['LINK'] = dgettext('signup', 'Delete');
+            $js['LINK'] = \Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
 
         $tpl['START_TIME'] = strftime("%D %R", $this->start_time);  // MM/DD/YY hh:mm 24-hour time format
         $tpl['END_TIME'] = strftime("%D %R", $this->end_time);      // MM/DD/YY hh:mm 24-hour time format
         $tpl['TITLE'] = $this->viewLink();
-        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['ACTION'] = implode('&nbsp;', $links);
         return $tpl;
     }
 
