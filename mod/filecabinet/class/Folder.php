@@ -92,7 +92,7 @@ class Folder {
                 $label = dgettext('filecabinet', 'Edit');
             }
         } else {
-            $label = '<button class="btn btn-success">' . dgettext('filecabinet', 'Add folder') . '</button>';
+            $label = dgettext('filecabinet', 'Add folder');
             $vars['aop'] = 'add_folder';
         }
 
