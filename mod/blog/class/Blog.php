@@ -231,7 +231,6 @@ class Blog {
 
     public function save()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = time();
@@ -611,7 +610,6 @@ class Blog {
     {
         $all_is_well = true;
 
-        PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('id', $this->id);
         $result = $db->delete();

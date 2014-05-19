@@ -27,7 +27,6 @@ class Blog_Admin {
 
         $panel = Blog_Admin::cpanel();
         $panel->enableSecure();
-        PHPWS_Core::initModClass('version', 'Version.php');
 
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -280,7 +279,6 @@ class Blog_Admin {
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
         $listLink = 'index.php?module=blog&amp;action=admin';
