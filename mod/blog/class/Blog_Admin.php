@@ -53,129 +53,7 @@ class Blog_Admin {
                 }
 
                 $title = dgettext('blog', 'Update Blog Entry');
-
-                $version = new Version('blog_entries');
-                $version->setSource($blog);
-                $approval_id = $version->isWaitingApproval();
-
-                if (isset($approval_id)) {
-                    $version->setId($approval_id);
-                    $version->init();
-
-                    $unapproved_blog = new Blog;
-                    $version->loadObject($unapproved_blog);
-
-                    if (Current_User::isRestricted('blog')) {
-                        $message = dgettext('blog',
-                                'This version has not been approved.');
-                        $content = Blog_Form::edit($unapproved_blog,
-                                        $version->id);
-                    } else {
-                        $link = dgettext('blog',
-                                'A version of this entry is awaiting approval.');
-                        $linkVar['action'] = 'admin';
-                        $linkVar['command'] = 'edit_unapproved';
-                        $linkVar['version_id'] = $approval_id;
-                        $message = PHPWS_Text::secureLink($link, 'blog',
-                                        $linkVar);
-                        $content = Blog_Form::edit($blog);
-                    }
-                } else {
-                    $content = Blog_Form::edit($blog);
-                }
-
-                break;
-
-            case 'approval':
-                $title = dgettext('blog', 'Blog Entries Awaiting Approval');
-                $approval = new Version_Approval('blog', 'blog_entries', 'blog',
-                        'brief_view');
-
-                $vars['action'] = 'admin';
-
-                $vars['command'] = 'edit_unapproved';
-                $approval->setEditUrl(PHPWS_Text::linkAddress('blog', $vars,
-                                TRUE));
-
-                $vars['command'] = 'view_version';
-                $approval->setViewUrl(PHPWS_Text::linkAddress('blog', $vars,
-                                TRUE));
-
-                $vars['command'] = 'approve_item';
-                $approval->setApproveUrl(PHPWS_Text::linkAddress('blog', $vars,
-                                TRUE));
-
-                $vars['command'] = 'disapprove_item';
-                $approval->setDisapproveUrl(PHPWS_Text::linkAddress('blog',
-                                $vars, TRUE));
-
-                $content = $approval->getList();
-                break;
-
-            case 'disapprove_item':
-                if (!Current_User::isUnrestricted('blog')) {
-                    Current_User::disallow('Attempted to disapprove an entry as a restricted user.');
-                    return;
-                }
-                $version = new Version('blog_entries', $_REQUEST['version_id']);
-                $result = $version->delete();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
-                    Blog_Admin::setForward(dgettext('blog',
-                                    'A problem occurred when trying to disapprove this entry.'),
-                            'approval');
-                } else {
-                    Blog_Admin::setForward(dgettext('blog',
-                                    'Blog entry disapproved.'), 'approval');
-                }
-                break;
-
-            case 'approve_item':
-                if (!Current_User::isUnrestricted('blog')) {
-                    Current_User::disallow('Attempted to approve an entry as a restricted user.');
-                    return;
-                }
-
-                $version = new Version('blog_entries', $_REQUEST['version_id']);
-                $version->loadObject($blog);
-                $blog->approved = 1;
-
-                if (!$blog->author_id) {
-                    // if author id is zero, then plug in the approver's information
-                    $blog->author = Current_User::getDisplayName();
-                    $blog->author_id = Current_User::getId();
-                }
-
-                $blog->save();
-                $version->setSource($blog);
-                $version->setApproved(TRUE);
-                $result = $version->save();
-                //Blog_Admin::resetCache();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
-                    Blog_Admin::setForward(dgettext('blog',
-                                    'An error occurred when saving your version.'),
-                            'approval');
-                } else {
-                    $key = new Key($version->source_data['key_id']);
-                    $version->authorizeCreator($key);
-                    Blog_Admin::setForward(dgettext('blog',
-                                    'Blog entry approved.'), 'approval');
-                }
-                break;
-
-            case 'edit_unapproved':
-                if (!Current_User::authorized('blog', 'edit_blog')) {
-                    Current_User::disallow(dgettext('blog',
-                                    'Tried to edit an unapproved item.'));
-                    return;
-                }
-
-                $version = new Version('blog_entries', $_REQUEST['version_id']);
-                $version->loadObject($blog);
-
-                $title = dgettext('blog', 'Update Unapproved Blog Entry');
-                $content = Blog_Form::edit($blog, $_REQUEST['version_id']);
+                $content = Blog_Form::edit($blog);
                 break;
 
             case 'new':
@@ -201,11 +79,6 @@ class Blog_Admin {
                 PHPWS_Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
                 break;
 
-            case 'restore':
-                $title = dgettext('blog', 'Blog Restore') . ' : ' . $blog->title;
-                $content = Blog_Admin::restoreVersionList($blog);
-                break;
-
             case 'sticky':
                 if (!Current_User::isUnrestricted('blog')) {
                     Current_User::disallow();
@@ -220,30 +93,6 @@ class Blog_Admin {
                 }
                 Blog_Admin::unsticky($blog);
                 PHPWS_Core::goBack();
-                break;
-
-            case 'restorePrevBlog':
-                if (Current_User::isRestricted('blog') || !Current_User::authorized('blog')) {
-                    Current_User::disallow();
-                    return;
-                }
-                //Blog_Admin::resetCache();
-                Blog_Admin::restoreBlog($_REQUEST['version_id']);
-                Blog_Admin::setForward(dgettext('blog', 'Blog entry restored.'),
-                        'list');
-                break;
-
-            case 'removePrevBlog':
-                if (!Current_User::isDeity()) {
-                    Current_User::disallow();
-                    return;
-                }
-
-                $blog_id = &$_REQUEST['blog_id'];
-
-                Blog_Admin::removePrevBlog($_REQUEST['version_id']);
-                Blog_Admin::setForward(dgettext('blog', 'Blog entry removed.'),
-                        'restore&blog_id=' . $blog_id);
                 break;
 
             case 'post_entry':
@@ -313,11 +162,6 @@ class Blog_Admin {
                 $panel->setCurrentTab('settings');
                 $title = dgettext('blog', 'Blog Settings');
                 $content = Blog_Form::settings();
-                break;
-
-            case 'view_version':
-                $title = dgettext('blog', 'View version');
-                $content = Blog_Admin::viewVersion($_REQUEST['version_id']);
                 break;
 
             case 'purge_entries':
@@ -414,37 +258,6 @@ class Blog_Admin {
         PHPWS_Settings::save('blog');
     }
 
-    public function viewVersion()
-    {
-        $version = new Version('blog_entries', (int) $_REQUEST['version_id']);
-        $blog = new Blog;
-        $version->loadObject($blog);
-
-        $vars['action'] = 'admin';
-        $vars['version_id'] = $version->id;
-        $vars['command'] = 'edit_unapproved';
-
-        $options[] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog',
-                        $vars);
-
-        if (!$version->vr_approved && Current_User::isUnrestricted('blog')) {
-            $vars['command'] = 'approve_item';
-            $options[] = PHPWS_Text::secureLink(dgettext('blog', 'Approve'),
-                            'blog', $vars);
-
-            $vars['command'] = 'disapprove_item';
-            $options[] = PHPWS_Text::secureLink(dgettext('blog', 'Disapprove'),
-                            'blog', $vars);
-        }
-
-        $vars['command'] = 'approval';
-        $options[] = PHPWS_Text::secureLink(dgettext('blog', 'Approval list'),
-                        'blog', $vars);
-
-        $template['OPTIONS'] = implode(' | ', $options);
-        $template['VIEW'] = $blog->brief_view();
-        return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
-    }
 
     public static function setForward($message, $command)
     {
@@ -473,23 +286,8 @@ class Blog_Admin {
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array('title' => dgettext('blog', 'List'), 'link' => $listLink);
 
-        /*
-          if (Current_User::isUnrestricted('blog')) {
-          $version = new Version('blog_entries');
-          $unapproved = $version->countUnapproved();
-
-          if (PHPWS_Error::isError($unapproved)) {
-          PHPWS_Error::log($unapproved);
-          $unapproved = '??';
-          }
-          $approvalLink = 'index.php?module=blog&amp;action=admin';
-          $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
-          }
-         */
-
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
-            //$tabs['approval'] = &$approvalCommand;
         }
 
         if (Current_User::allow('blog', 'settings')) {
@@ -538,36 +336,6 @@ class Blog_Admin {
         return $content;
     }
 
-    public static function restoreVersionList(&$blog)
-    {
-        PHPWS_Core::initModClass('version', 'Restore.php');
-        $vars['action'] = 'admin';
-        $vars['command'] = 'restorePrevBlog';
-        $vars['blog_id'] = $blog->id;
-        $restore_link = PHPWS_Text::linkAddress('blog', $vars, TRUE);
-
-        $vars['command'] = 'removePrevBlog';
-        $remove_link = PHPWS_Text::linkAddress('blog', $vars, TRUE);
-
-        $restore = new Version_Restore('blog', 'blog_entries', $blog->id,
-                'blog', 'brief_view');
-        $restore->setRestoreUrl($restore_link);
-        $restore->setRemoveUrl($remove_link);
-        $result = $restore->getList();
-        return $result;
-    }
-
-    public static function restoreBlog($version_id)
-    {
-        $version = new Version('blog_entries', $version_id);
-        $version->restore();
-    }
-
-    public static function removePrevBlog($version_id)
-    {
-        $version = new Version('blog_entries', $version_id);
-        $version->delete();
-    }
 
     public static function sticky($blog)
     {
