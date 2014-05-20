@@ -402,6 +402,14 @@ Fixed bug causing blank editors on edit.</pre>';
 + Rewrote page templates to be Bootstrap compatible.
 + Removed art and vtour template.
 </pre>';
+
+        case version_compare($currentVersion, '1.6.1', '<'):
+            $content[] = '<pre>1.6.1 changes
+---------------
++ changed content editor pop up to use bootstrap modal instead of jquery dialog
++ Bootstrap styling to some UI elements
++ Back to top link pulled right with new icon
+</pre>';
     } // end switch
 
     return true;
