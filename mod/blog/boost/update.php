@@ -337,6 +337,11 @@ function blog_update(&$content, $currentVersion)
 ---------------------
 + Horizontal rules are acknowledged on save.
 </pre>';
+        case version_compare($currentVersion, '1.10.4', '<'):
+            $content[] = '<pre>1.10.4 changes
+---------------------
++ Removed Version code
+</pre>';
     } // end of switch
     return true;
 }
