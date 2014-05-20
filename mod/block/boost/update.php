@@ -145,6 +145,11 @@ Please download version 1.1.2.</pre>';
 + Updated icons to Font Awesome
 + Fixed bug with Branch update.
 </pre>';
+        case version_compare($currentVersion, '1.3.9', '<'):
+            $content[] = '<pre>1.3.9 changes
+---------------
++ Removed viewPinnedBlocks code
+</pre>';
     }
     return TRUE;
 }
