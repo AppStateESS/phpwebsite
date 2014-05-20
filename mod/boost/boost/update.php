@@ -121,8 +121,16 @@ Please download update 2.1.1.</pre>';
 2.3.7 changes
 ----------------
 + Changed Boost to display update messages again.
-
 </pre>';
+
+        case version_compare($currentVersion, '2.3.8', '<'):
+            $content[] = '<pre>
+2.3.8 changes
+----------------
++ Boost updates branches first
++ Fixed database switch to hub
+</pre>';
+
     }
 
     return TRUE;
@@ -131,12 +139,12 @@ Please download update 2.1.1.</pre>';
 function update_boost_files($files, &$content)
 {
     if (PHPWS_Boost::updateFiles($files, 'boost')) {
-        $content[] = '--- The following files were updated successfully:';
+        $content[] = ' --- The following files were updated successfully:';
     } else {
-        $content[] = '--- Failed to update the following files:';
+        $content[] = ' --- Failed to update the following files:';
     }
 
-    $content[] = '    ' . implode("\n    ", $files);
+    $content[] = ' ' . implode("\n    ", $files);
     $content[] = '';
 }
 
