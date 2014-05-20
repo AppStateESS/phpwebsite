@@ -613,6 +613,16 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Removed clipboard functionality. Confused users and was not
 + Bootstrap icons and styles added.
 </pre>';
+
+            case version_compare($version, '2.5.0', '<'):
+            $content[] = '<pre>2.5.0 changes
+-----------------------
++ img-responsive added to inserted images to work with Bootstrap
++ removed image widths and heights
++ Cropping and resizing removed from manager
++ Manager made larger.
++ Manager upload header fixed position
+</pre>';
             return true;
     }
 }

@@ -509,22 +509,12 @@ EOF;
 
     public function getManagerIcon($fmanager)
     {
-        /*
-          if (($fmanager->max_width < $this->width) || ($fmanager->max_height < $this->height)) {
-          return sprintf('<a href="#" onclick="slider(%s); return false">%s</a>', $this->id, $this->getThumbnail());
-          } else {
-         *
-         */
         $vars = $fmanager->linkInfo(false);
         $vars['fop'] = 'pick_file';
         $vars['file_type'] = FC_IMAGE;
         $vars['id'] = $this->id;
         $link = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         return sprintf('<a href="%s">%s</a>', $link, $this->getThumbnail());
-        /*
-          }
-         *
-         */
     }
 
     public function managerTpl($fmanager)
