@@ -151,6 +151,13 @@ function branch_update(&$content, $version)
 + loadBranchDB and loadHubDB now include Global Database.
 + Fixed problems switching between hub and branch during installs and updates.
 </pre>';
+
+        case version_compare($version, '1.3.6', '<'):
+            $content[] = '<pre>1.3.6 Changes
+-------------
++ Fixed 1.3.5 update of branch_mod_limit getting removed.
++ Switched Branch to use mysqli library instead of mysql
+</pre>';
     }
     return true;
 }
