@@ -401,6 +401,29 @@ UPDATES;
 </pre>
 EOF;
 
+        case version_compare($version, '2.4.1', '<'):
+            $db = \Database::newDB();
+            $db->addTable('modules')->addFieldConditional('title', 'version');
+            $db->delete();
+            $content[] = <<<EOF
+<pre>Core 2.4.1 Changes
+--------------------------------
++ Removed Version module from Core modules
++ Pear DB changed to MDB2.
++ MDB2 using mysqli class instead of mysql class to prevent MySQL deprecation warnings.
++ Fixed GD library identification.
++ DTTIME format now includes hour, minute, and seconds set to zero as "all day" is interpreted differently by ical.
++ ResourceFactory returns True on successful load and false otherwise. Previously returned void.
++ Added aspell plugin for CKEditor. Written by Christian Boisjoli.
++ CKeditor
+    - altered to have smoother button transitions when width is changed.
+    - removed Style button
+    - default width is 100% instead of hard coded pixel
++ Javascript added to avoid image loading on small screens
++ Fixed createConfig function in setup script
+</pre>
+EOF;
+
     }
     return true;
 }
