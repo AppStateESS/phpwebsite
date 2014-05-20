@@ -6,7 +6,7 @@
  */
 
 $proper_name  = 'Calendar';
-$version      = '1.7.5';
+$version      = '1.7.6';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/calendar/check.xml';
 $import_sql   = true;
 $about        = true;
