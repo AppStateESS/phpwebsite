@@ -75,6 +75,7 @@ function analytics_update(&$content, $currentVersion)
 <pre>Version 1.1.1
 -------------------
 + Piwik fix.
++ Fixed uninstall script
 </pre>
 EOF;
 
