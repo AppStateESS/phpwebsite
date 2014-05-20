@@ -419,6 +419,7 @@ EOF;
     - altered to have smoother button transitions when width is changed.
     - removed Style button
     - default width is 100% instead of hard coded pixel
+    - imports images with img-responsive class added
 + Javascript added to avoid image loading on small screens
 + Fixed createConfig function in setup script
 </pre>
