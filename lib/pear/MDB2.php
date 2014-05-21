@@ -158,7 +158,7 @@ define('MDB2_PORTABILITY_NONE', 0);
  * "field_case" option when using the query*(), fetch*() and tableInfo() methods.
  * @see MDB2_Driver_Common::setOption()
  */
-define('MDB2_PORTABILITY_FIX_CASE', 1);
+define('MDB2_PORTABILITY_FIX_CASE', 0);
 
 /**
  * Portability: right trim the data output by query*() and fetch*().
@@ -1344,7 +1344,7 @@ class MDB2_Driver_Common
     protected $destructor_registered = true;
 
     /**
-     * @var PEAR 
+     * @var PEAR
      */
     protected $pear;
 
@@ -3631,7 +3631,7 @@ class MDB2_Driver_Common
     }
 
     /**
-     * @uses PEAR::staticPopErrorHandling() 
+     * @uses PEAR::staticPopErrorHandling()
      */
     public function staticPopErrorHandling()
     {
