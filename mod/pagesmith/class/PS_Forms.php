@@ -56,7 +56,23 @@ class PS_Forms {
      */
     public function pageLayout()
     {
-        javascript('editors/ckeditor');
+        javascript('jquery');
+        javascript('jquery_ui');
+        $source_http = PHPWS_SOURCE_HTTP;
+        $header = <<<EOF
+        <script type="text/javascript">var source_http = '{$source_http}javascript/editors/ckeditor/';var sn = '{session_name}';</script>
+<script type="text/javascript" src="{source_http}javascript/editors/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">CKEDITOR.config.customConfig = '{$source_http}mod/pagesmith/javascript/pageedit/phpws_config.js';</script>
+EOF;
+
+        Layout::addJSHeader($header, 'psckeditor');
+
+        Layout::addStyle('pagesmith', 'admin.css');
+        Layout::addJSHeader('<script type="text/javascript" src="' .
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
+                'pageedit');
+
+        //javascript('editors/ckeditor');
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
@@ -204,7 +220,7 @@ class PS_Forms {
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $createText = dgettext('pagesmith', 'New Page');
         $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$createText/a>";
-        $pgtags['NEW_PAGE_LINK_URI']  = "index.php?module=pagesmith&amp;aop=menu&amp;tab=new";
+        $pgtags['NEW_PAGE_LINK_URI'] = "index.php?module=pagesmith&amp;aop=menu&amp;tab=new";
         $pgtags['NEW_PAGE_LINK_TEXT'] = $createText;
 
         $pager = new DBPager('ps_page', 'PS_Page');
@@ -227,13 +243,6 @@ class PS_Forms {
 
     public function pageTemplateForm(PHPWS_Form $form)
     {
-        javascript('jquery');
-        javascript('jquery_ui');
-        Layout::addStyle('pagesmith', 'admin.css');
-        Layout::addJSHeader('<script type="text/javascript" src="' .
-                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
-                'pageedit');
-
         $edit_button = false;
         $page = $this->ps->page;
 
@@ -272,7 +281,8 @@ class PS_Forms {
         $template_file = $page->_tpl->page_path . 'page.tpl';
 
         if (empty($page->title)) {
-            $tpl['page_title'] = '<span id="page-title-edit" data-new="true" style="cursor:pointer;color : #969696">' . dgettext('pagesmith', 'Page Title (click to edit)') . '</span>';
+            $tpl['page_title'] = '<span id="page-title-edit" data-new="true" style="cursor:pointer;color : #969696">' . dgettext('pagesmith',
+                            'Page Title (click to edit)') . '</span>';
         } else {
             $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;">' . $page->title . '</span>';
         }
@@ -320,7 +330,7 @@ class PS_Forms {
             if ($template->folders) {
                 foreach ($template->folders as $folder_name) {
                     if (isset($folder_list[$folder_name])) {
-                        $folder_list[$folder_name]++;
+                        $folder_list[$folder_name] ++;
                     } else {
                         $folder_list[$folder_name] = 1;
                     }
@@ -383,17 +393,24 @@ class PS_Forms {
 
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
 
-        $tpl['SHORTEN_MENU_LINKS']  = PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', array('aop'=>'shorten_links'));
-        $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'shorten_links'), true);
+        $tpl['SHORTEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith',
+                                'Shorten all menu links'), 'pagesmith',
+                        array('aop' => 'shorten_links'));
+        $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith',
+                        array('aop' => 'shorten_links'), true);
 
-        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', array('aop'=>'lengthen_links'));
-        $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop'=>'lengthen_links'), true);
+        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith',
+                                'Lengthen all menu links'), 'pagesmith',
+                        array('aop' => 'lengthen_links'));
+        $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith',
+                        array('aop' => 'lengthen_links'), true);
 
         $form->mergeTemplate($tpl);
 
         $this->ps->content = PHPWS_Template::process($form->getTemplate(),
                         'pagesmith', 'settings.tpl');
     }
+
 }
 
 ?>

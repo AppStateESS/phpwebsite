@@ -7,8 +7,8 @@ $(document).ready(function() {
     initializeDialog(editor);
     initializePageTitleEdit();
     editBlock(editor);
-    $('#page-title-edit').popover({html:true, placement:'auto',trigger:'hover', content:'<span style="margin:0px;padding:0px;font-size:16px;font-weight:bold">Click on title to edit</span>'});
-    $('.block-edit').popover({html:true, placement:'auto',trigger:'hover', content:'<span style="font-size:16px;font-weight:bold">Click on text to edit</span>'});
+    $('#page-title-edit').popover({html: true, placement: 'auto', trigger: 'hover', content: '<span style="margin:0px;padding:0px;font-size:16px;font-weight:bold">Click on title to edit</span>'});
+    $('.block-edit').popover({html: true, placement: 'auto', trigger: 'hover', content: '<span style="font-size:16px;font-weight:bold">Click on text to edit</span>'});
 });
 function editBlock(editor)
 {
@@ -50,6 +50,7 @@ function initializeDialog(editor)
             {
                 position: {my: 'center', at: 'center', of: this},
                 autoOpen: false,
+                resizable : false,
                 width: '90%',
                 height: 660,
                 title: 'Edit text area',
