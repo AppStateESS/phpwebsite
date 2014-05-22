@@ -17,7 +17,7 @@ CKEDITOR.plugins.add('filecabinet',
             'filecabinet.dlg',
             'Filecabinet',
             'index.php?module=filecabinet&aop=ckeditor',
-            '100%',
+            1024,
             620,
             function(){
             }
