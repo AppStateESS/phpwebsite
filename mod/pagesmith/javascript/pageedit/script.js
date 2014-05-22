@@ -52,7 +52,7 @@ function initializeDialog(editor)
                 autoOpen: false,
                 resizable : false,
                 width: '90%',
-                height: 660,
+                height: 680,
                 title: 'Edit text area',
                 buttons: [{text: "Save",
                         click: function() {
