@@ -99,6 +99,7 @@ class PageSmith {
                 break;
 
             case 'pick_template':
+                $this->resetUndoSession(0);
                 $this->loadForms();
                 $this->loadPage();
                 $this->page->loadTemplate();
@@ -234,7 +235,7 @@ class PageSmith {
             $content = $ps_block->getContent();
             $this->setUndoSession($page_id, $block_id, $content);
         } elseif (isset($_SESSION['page_undo'][$page_id][$section_id])) {
-            echo $_SESSION['page_undo'][$page_id][$section_id][0];
+            echo end($_SESSION['page_undo'][$page_id][$section_id]);
         }
         echo $content;
     }
