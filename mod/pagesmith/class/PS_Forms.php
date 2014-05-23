@@ -61,7 +61,7 @@ class PS_Forms {
         $source_http = PHPWS_SOURCE_HTTP;
         $header = <<<EOF
         <script type="text/javascript">var source_http = '{$source_http}javascript/editors/ckeditor/';var sn = '{session_name}';</script>
-<script type="text/javascript" src="{source_http}javascript/editors/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="{$source_http}javascript/editors/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">CKEDITOR.config.customConfig = '{$source_http}mod/pagesmith/javascript/pageedit/phpws_config.js';</script>
 EOF;
 
