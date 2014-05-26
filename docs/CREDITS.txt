@@ -23,13 +23,13 @@ Developers:
 --------------------------------------------------------------------------
 
 Matt McNaney (mcnaney at gmail dot com)
-Jeff Tickle
 Jeremy Booker
-Hilmar Runge
 
 ---------------------
 Previous contributors
 ---------------------
+Jeff Tickle
+Hilmar Runge
 Darren Greene
 Steven Levin
 Adam Morton
@@ -128,7 +128,6 @@ Marc Grabanski
 Keith Wood
 datepicker - jquery plugin (note: no longer in use)
 
-
 Jan Sorgalla
 jCarousel
 http://sorgalla.com/jcarousel/
@@ -171,6 +170,9 @@ http://ivaynberg.github.io/select2/
 
 Aspell CKeditor 3.0 plugin
 Christian Boisjoli
+
+Responsive Image Javascript
+Koen Vendrik, http://kvendrik.com
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.
