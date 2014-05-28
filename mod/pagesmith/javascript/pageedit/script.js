@@ -27,10 +27,22 @@ function editBlock(editor)
         function(data) {
             editor.setData(data);
             $('#block-edit-popup').dialog('open');
-            $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
+            openOverlay();
         }
         );
     });
+}
+
+function openOverlay()
+{
+    $('body').attr('style', 'overflow:hidden');
+    $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
+}
+
+function closeOverlay()
+{
+    $('body').attr('style', 'overflow:auto');
+    $('.dialog-overlay').remove();
 }
 
 function initializePageTitleEdit()
@@ -40,7 +52,7 @@ function initializePageTitleEdit()
             $('#page-title-input').val($('#page-title-edit').html());
         }
         $('#title-edit-popup').dialog('open');
-        $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
+        openOverlay();
     });
 }
 
@@ -50,19 +62,19 @@ function initializeDialog(editor)
             {
                 position: {my: 'center', at: 'center', of: this},
                 autoOpen: false,
-                resizable : false,
+                resizable: false,
                 width: '90%',
-                height: 680,
+                height: 690,
                 title: 'Edit text area',
                 buttons: [{text: "Save",
                         click: function() {
                             updateBlock(editor);
                             $(this).dialog('close');
-                            $('.dialog-overlay').remove();
+                            closeOverlay();
                         }
                     }],
                 close: function() {
-                    $('.dialog-overlay').remove();
+                    closeOverlay();
                 }
             }
     );
@@ -83,7 +95,7 @@ function initializeDialog(editor)
                         }
                     }],
                 close: function() {
-                    $('.dialog-overlay').remove();
+                    closeOverlay();
                 }
             }
     );
