@@ -760,7 +760,7 @@ class Calendar_User {
         $form->setMatch('sch_id', $this->calendar->schedule->id);
         $form->addSubmit('go', dgettext('calendar', 'Change schedule'));
         $tpl = $form->getTemplate();
-        return implode("\n", $tpl);
+        return $tpl['START_FORM'] . $tpl['SCH_ID'] . $tpl['GO'] . $tpl['END_FORM'];
     }
 
     public function suggestLink()

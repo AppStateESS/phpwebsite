@@ -90,7 +90,6 @@ class PageSmith {
                 }
                 $this->loadForms();
 
-                //$this->killSaved($this->page->id);
                 if (!Current_User::allow('pagesmith', 'edit_page',
                                 $this->page->id)) {
                     Current_User::disallow();
@@ -100,6 +99,7 @@ class PageSmith {
                 break;
 
             case 'pick_template':
+                $this->resetUndoSession(0);
                 $this->loadForms();
                 $this->loadPage();
                 $this->page->loadTemplate();
@@ -235,7 +235,7 @@ class PageSmith {
             $content = $ps_block->getContent();
             $this->setUndoSession($page_id, $block_id, $content);
         } elseif (isset($_SESSION['page_undo'][$page_id][$section_id])) {
-            echo $_SESSION['page_undo'][$page_id][$section_id][0];
+            echo end($_SESSION['page_undo'][$page_id][$section_id]);
         }
         echo $content;
     }
@@ -280,7 +280,9 @@ class PageSmith {
 
     private function getUndoSession($page_id)
     {
-        return $_SESSION['page_undo'][$page_id];
+        if (isset($_SESSION['page_undo'][$page_id])) {
+            return $_SESSION['page_undo'][$page_id];
+        }
     }
 
     public function loadForms()
@@ -417,7 +419,11 @@ class PageSmith {
         PHPWS_Cache::clearCache();
         PHPWS_Core::initModClass('access', 'Shortcut.php');
 
-        $result = $this->page->createShortcut();
+        if (\PHPWS_Settings::get('pagesmith', 'create_shortcuts')) {
+            $result = $this->page->createShortcut();
+        } else {
+            $result = true;
+        }
 
         if (PHPWS_Error::isError($result) && $menu_link) {
             if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
@@ -501,6 +507,8 @@ class PageSmith {
     public function postSettings()
     {
         PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
+        PHPWS_Settings::set('pagesmith', 'create_shortcuts',
+                isset($_POST['create_shortcuts']));
         PHPWS_Settings::set('pagesmith', 'back_to_top',
                 isset($_POST['back_to_top']));
 

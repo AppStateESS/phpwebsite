@@ -169,6 +169,34 @@ class Menu_Admin {
             $m->addFieldConditional('id', $row['id']);
             $db->update();
             $queue++;
+
+            $this->reorderLinks($row['id'], 0);
+        }
+    }
+
+    private function reorderLinks($menu_id, $parent_id)
+    {
+        $link_db = \Database::newDB();
+        $link_table = $link_db->addTable('menu_links');
+        $link_table->addField('id');
+        $link_table->addField('link_order');
+        $link_table->addField('parent');
+        $link_table->addFieldConditional('menu_id', $menu_id);
+        $link_table->addFieldConditional('parent', $parent_id);
+        $link_table->addOrderBy('link_order');
+        $links = $link_db->select();
+
+        $link_queue = 0;
+        if (!empty($links)) {
+            foreach ($links as $l) {
+                $link_table->reset();
+                $link_db->clearConditional();
+                $link_queue++;
+                $link_table->addValue('link_order', $link_queue);
+                $link_table->addFieldConditional('id', $l['id']);
+                $link_db->update();
+                $this->reorderLinks($menu_id, $l['id']);
+            }
         }
     }
 

@@ -18,7 +18,7 @@ if (isset($_REQUEST['uop'])) {
     $pageSmith->user();
 } elseif (isset($_REQUEST['aop'])) {
     $pageSmith->admin();
-} elseif (@$_GET['id']) {
+} elseif (!empty($_GET['id'])) {
     $pageSmith->viewPage();
 } else {
     PHPWS_Core::errorPage('404');

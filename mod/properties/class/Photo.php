@@ -1,5 +1,7 @@
 <?php
+
 namespace Properties;
+
 /**
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  *
@@ -19,10 +21,10 @@ namespace Properties;
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-
 \PHPWS_Core::requireConfig('properties', 'defines.php');
 
 class Photo {
+
     public $id = 0;
     public $cid = 0;
     public $pid = 0;
@@ -32,13 +34,13 @@ class Photo {
     public $title;
     public $main_pic = false;
 
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
         }
         $db = new \PHPWS_DB('prop_photo');
-        $db->addWhere('id', (int)$id);
+        $db->addWhere('id', (int) $id);
         $db->loadObject($this);
     }
 
@@ -51,31 +53,32 @@ class Photo {
         $this->title = $title;
     }
 
-    public function uploadNew($use_icon=true)
+    public function uploadNew($use_icon = true)
     {
         if ($use_icon) {
             $label = \Icon::show('image');
-        } else {
-            $label = 'Add photo';
-        }
-
-        $content = <<<EOF
+            $content = <<<EOF
 <a style="cursor : pointer" id="{$this->pid}" class="photo-upload">$label</a>
 EOF;
+        } else {
+            $label = 'Add photo';
+            $content = <<<EOF
+<a style="cursor : pointer" id="{$this->pid}" class="btn btn-default photo-upload"><i class="fa fa-camera"></i> $label</a>
+EOF;
+        }
+
         return $content;
     }
 
-
     public function setContactId($cid)
     {
-        $this->cid = (int)$cid;
+        $this->cid = (int) $cid;
     }
 
     public function setPropertyId($pid)
     {
-        $this->pid = (int)$pid;
+        $this->pid = (int) $pid;
     }
-
 
     public function post()
     {
@@ -111,21 +114,25 @@ EOF;
                     throw new \Exception('No file upload');
 
                 case UPLOAD_ERR_NO_TMP_DIR:
-                    \PHPWS_Core::log('Temporary file directory is not writable', 'error.log', _('Error'));
+                    \PHPWS_Core::log('Temporary file directory is not writable',
+                            'error.log', _('Error'));
                     throw new \Exception('File could not be written');
             }
         }
         list($this->width, $this->height, $image_type, $image_attr) = getimagesize($photo['tmp_name']);
 
-        if (!in_array($image_type, array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG))) {
+        if (!in_array($image_type,
+                        array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG))) {
             throw new \Exception('Unacceptable image file type.');
         }
-        if (\PHPWS_File::scaleImage($photo['tmp_name'], $path, PROPERTIES_MAX_WIDTH, PROPERTIES_MAX_HEIGHT)) {
+        if (\PHPWS_File::scaleImage($photo['tmp_name'], $path,
+                        PROPERTIES_MAX_WIDTH, PROPERTIES_MAX_HEIGHT)) {
             $this->path = $path;
             $this->save();
             $tn = Photo::thumbnailPath($path);
 
-            $this->resize($path, $tn, PROP_THUMBNAIL_WIDTH, PROP_THUMBNAIL_HEIGHT);
+            $this->resize($path, $tn, PROP_THUMBNAIL_WIDTH,
+                    PROP_THUMBNAIL_HEIGHT);
         } else {
             throw new \Exception('Could not save image');
         }
@@ -165,12 +172,11 @@ EOF;
         return \PHPWS_Template::process($tpl, 'properties', 'photo_form.tpl');
     }
 
-
     public static function thumbnailPath($path)
     {
-        return preg_replace('@(images/properties/c\d+/\d+).(\w+)@', '\\1_tn.\\2', $path);
+        return preg_replace('@(images/properties/c\d+/\d+).(\w+)@',
+                '\\1_tn.\\2', $path);
     }
-
 
     public static function getThumbs($pid)
     {
@@ -228,12 +234,12 @@ EOF;
         if ($max_width > $this->width) {
             $crop_width = $new_width;
             $crop_height = $max_height;
-        } elseif($max_height > $this->height) {
+        } elseif ($max_height > $this->height) {
             $crop_width = $max_width;
             $crop_height = $new_height;
-        } elseif($max_width <= $max_height) {
+        } elseif ($max_width <= $max_height) {
             $new_height = $max_height;
-            $new_width  = round($new_height * $src_proportion);
+            $new_width = round($new_height * $src_proportion);
             $crop_width = $max_width;
             $crop_height = $new_height;
             if ($crop_width > $new_width) {
@@ -241,8 +247,8 @@ EOF;
                 $new_height = round($new_width / $src_proportion);
             }
         } else {
-            $new_width   = $max_width;
-            $new_height  = round($new_width * $src_proportion);
+            $new_width = $max_width;
+            $new_height = round($new_width * $src_proportion);
             $crop_width = $new_width;
             $crop_height = $max_height;
         }
@@ -285,5 +291,7 @@ EOF;
         $db->addValue('main_pic', 1);
         $db->update();
     }
+
 }
+
 ?>

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+err=0
+
+find "$1" -name '*.php' | while read i; do
+    php -l "$i"
+    if [ $? -ne 0 ]; then err=1; fi
+done
+
+exit $err

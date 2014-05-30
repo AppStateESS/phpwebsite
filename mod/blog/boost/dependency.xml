@@ -25,12 +25,6 @@
 		<url>http://phpwebsite.appstate.edu/downloads/modules/search/</url>
 	</module>
 	<module>
-		<title>version</title>
-		<properName>Version</properName>
-		<version>0.2.1</version>
-		<url>http://phpwebsite.appstate.edu/downloads/modules/version/</url>
-	</module>
-	<module>
 		<title>users</title>
 		<properName>Users</properName>
 		<version>2.6.3</version>

@@ -183,7 +183,7 @@ class File extends PEAR
      * @param   mixed   $lock Type of lock to use
      * @return  mixed   PEAR_Error if an error has occured or a string with the contents of the the file
      */
-    function readAll($filename, $lock = false)
+    public static function readAll($filename, $lock = false)
     {
         if (false === $file = @file_get_contents($filename)) {
             return PEAR::raiseError("Cannot read file: $filename");

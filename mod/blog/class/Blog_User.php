@@ -97,22 +97,8 @@ class Blog_User {
                     PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog',
                                     array('action' => 'admin', 'tab' => 'new'),
                                     1));
-                } elseif (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-                    // Must create a new blog. Don't use above shortcut
-                    $blog = new Blog;
-                    $content = Blog_User::submitAnonymous($blog);
                 } else {
-                    $content = dgettext('blog',
-                            'Site is not accepting anonymous submissions.');
-                }
-                break;
-
-            case 'post_suggestion':
-                // Must create a new blog. Don't use above shortcut
-                $blog = new Blog;
-                $content = Blog_User::postSuggestion($blog);
-                if (empty($content)) {
-                    $content = Blog_User::submitAnonymous($blog);
+                    PHPWS_Core::errorPage(403);
                 }
                 break;
 
@@ -122,77 +108,6 @@ class Blog_User {
         }
 
         Layout::add($content);
-    }
-
-    public function postSuggestion(Blog $blog)
-    {
-        if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-            return dgettext('blog',
-                    'Site is not accepting anonymous submissions.');
-        }
-
-
-        if (empty($_POST['title'])) {
-            $blog->title = dgettext('blog', 'No title');
-        } else {
-            $blog->setTitle($_POST['title']);
-        }
-
-        if (!Current_User::isLogged() && !empty($_POST['author'])) {
-            $blog->author = strip_tags($_POST['author']);
-            $blog->author_id = 0;
-        }
-
-        // Do not let anonymous users use html tags
-        $summary = strip_tags($_POST['summary']);
-        if (empty($summary)) {
-            $blog->_error[] = dgettext('blog',
-                    'Your submission must have a summary.');
-        } else {
-            $blog->setSummary($summary);
-        }
-
-        $blog->setEntry(strip_tags($_POST['entry']));
-
-        $blog->approved = false;
-
-        if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
-            PHPWS_Core::initCoreClass('Captcha.php');
-            if (!Captcha::verify()) {
-                $blog->_error[] = dgettext('blog',
-                        'Please enter word in image correctly.');
-            }
-        } elseif (PHPWS_Core::isPosted() && empty($blog->_error)) {
-            $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
-            $tpl['CONTENT'] = dgettext('blog',
-                    'Your submission is still awaiting approval.');
-            return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
-        }
-
-
-        if ($blog->_error) {
-            return null;
-        }
-        $result = $blog->save();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-            $tpl['TITLE'] = dgettext('blog', 'Sorry');
-            $tpl['CONTENT'] = dgettext('blog',
-                    'A problem occured with your submission. Please try again later.');
-        } else {
-            $tpl['TITLE'] = dgettext('blog', 'Thank you');
-            $tpl['CONTENT'] = dgettext('blog',
-                    'Your entry has been submitted for review.');
-        }
-        return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
-    }
-
-    public function submitAnonymous(Blog $blog)
-    {
-        PHPWS_Core::initModClass('blog', 'Blog_Form.php');
-        $tpl['TITLE'] = dgettext('blog', 'Submit Entry');
-        $tpl['CONTENT'] = Blog_Form::edit($blog, null, true);
-        return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
     public static function totalEntries(PHPWS_DB $db)
@@ -356,15 +271,6 @@ class Blog_User {
 
         $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
 
-        // again only caching first pages
-        /*
-          if ($page <= MAX_BLOG_CACHE_PAGES &&
-          !Current_User::isLogged() && !Current_User::allow('blog') &&
-          PHPWS_Settings::get('blog', 'cache_view')) {
-          PHPWS_Cache::save($cache_key, $content);
-          Layout::cacheHeaders($cache_key);
-          }
-         */
         if (Current_User::allow('blog', 'edit_blog')) {
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';

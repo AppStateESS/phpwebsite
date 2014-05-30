@@ -139,14 +139,50 @@ function logMessage($message, $filename)
     if (preg_match('|[/\\\]|', $filename)) {
         trigger_error('Slashes not allowed in log file names.', E_USER_ERROR);
     }
+    loadTimeZone();
     $log_path = LOG_DIRECTORY . $filename;
     $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . trim($message) . "\n";
-    if (@error_log($message, 3, $log_path)) {
+    if (error_log($message, 3, $log_path)) {
         chmod($log_path, LOG_PERMISSION);
         return true;
     } else {
         trigger_error("Could not write $filename file. Check error directory setting and file permissions.",
                 E_USER_ERROR);
+    }
+}
+
+function loadTimeZone()
+{
+    if (defined('DATE_SET_SERVER_TIME_ZONE')) {
+        date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+        return;
+    }
+
+
+    if (defined('PHPWS_SOURCE_DIR')) {
+        $dir = PHPWS_SOURCE_DIR . 'core/conf/';
+    } else {
+        $dir = 'core/conf/';
+    }
+
+    $tz = ini_get('date.timezone');
+
+    if (is_file($dir . 'defines.php')) {
+        $defines = $dir . 'defines.php';
+    } elseif (is_file($dir . 'defines.dist.php')) {
+        $defines = $dir . 'defines.dist.php';
+    } else {
+        $defines = null;
+    }
+
+    require_once $defines;
+
+    if (defined('DATE_SET_SERVER_TIME_ZONE')) {
+        date_default_timezone_set(DATE_SET_SERVER_TIME_ZONE);
+    } elseif (!empty($tz)) {
+        date_default_timezone_set($tz);
+    } else {
+        date_default_timezone_set('America/New_York');
     }
 }
 

@@ -71,6 +71,12 @@ class Admin extends Base {
                 \PHPWS_Core::goBack();
                 break;
 
+            case 'show_properties':
+                $this->panel->setCurrentTab('properties');
+                $this->loadContact();
+                $this->contactPropertiesList($_GET['cid']);
+                break;
+
             case 'contacts':
                 $this->title = 'Contacts list';
                 $this->contactList();
@@ -207,6 +213,34 @@ class Admin extends Base {
         $this->display();
     }
 
+    private function contactPropertiesList($contact_id)
+    {
+        \PHPWS_Core::initModClass('properties', 'Property.php');
+
+        $this->title = $this->contact->getCompanyName() . '<br /> (c/o ' . $this->contact->getFirstName() . ' ' . $this->contact->getLastName() . ')';
+
+        $pager = new \DBPager('properties', 'Properties\Property');
+        $pager->addWhere('contact_id', $contact_id);
+        $data['is_contact'] = 1;
+        $page_tags['new'] = \PHPWS_Text::moduleLink('Add new property',
+                        'properties',
+                        array('aop' => 'edit_property', 'cid' => $contact_id));
+
+        $pager->setSearch('name', 'company_name');
+        $pager->addSortHeader('name', 'Name of property');
+        $pager->addSortHeader('company_name', 'Management company');
+        $pager->addSortHeader('timeout', 'Time until purge');
+        $pager->setModule('properties');
+        $pager->setTemplate('properties_list.tpl');
+        $pager->addRowTags('row_tags');
+        $pager->joinResult('contact_id', 'prop_contacts', 'id', 'company_name',
+                null, true);
+        $pager->addPageTags($page_tags);
+        $pager->cacheQueries();
+        $pager->addToggle(' style="background-color : #e3e3e3"');
+        $this->content = $pager->get();
+    }
+
     public function emailContacts()
     {
         $oldtime = time() - 86400 * 30 * 12;
@@ -236,11 +270,14 @@ class Admin extends Base {
             $row['email_address'] = "<a href='mailto:$email_address?subject=Account&#160;query'>$email_address</a>";
             $row['action'] = '';
             $result['rows'][] = $row;
-
         }
-        $tpl = new \Template($result);
-        $tpl->setModuleTemplate('properties', 'overdue.html');
-        $this->content = $tpl->__toString();
+        if (empty($result)) {
+            $this->content = 'No inactive properties';
+        } else {
+            $tpl = new \Template($result);
+            $tpl->setModuleTemplate('properties', 'overdue.html');
+            $this->content = $tpl->__toString();
+        }
     }
 
     public function blockReport($report_id)
@@ -489,10 +526,12 @@ EOF;
             return;
         }
         \PHPWS_Core::initModClass('properties', 'Contact.php');
-        $page_tags['new'] = \PHPWS_Text::secureLink('Add new contact',
-                        'properties', array('aop' => 'edit_contact'));
-        $page_tags['email'] = \PHPWS_Text::secureLink('Inactive contacts',
-                        'properties', array('aop' => 'email_contacts'));
+        $page_tags['new'] = \PHPWS_Text::secureLink('<i class="fa fa-plus"></i> Add new contact',
+                        'properties', array('aop' => 'edit_contact'), null,
+                        null, 'btn btn-success');
+        $page_tags['email'] = \PHPWS_Text::secureLink('<i class="fa fa-minus-square-o"></i> Inactive contacts',
+                        'properties', array('aop' => 'email_contacts'), null,
+                        null, 'btn btn-default');
 
         $this->title = 'Contact listing';
 
@@ -524,12 +563,12 @@ EOF;
         if (!isset($_SESSION['prop_show_blocked'])) {
             $vars['aop'] = 'show_blocked';
             $tags['BLOCKED'] = \PHPWS_Text::secureLink('Show blocked',
-                            'properties', $vars);
+                            'properties', $vars, null, null, 'btn btn-default');
             $pager->db->addWhere('prop_report.block', 0);
         } else {
             $vars['aop'] = 'hide_blocked';
             $tags['BLOCKED'] = \PHPWS_Text::secureLink('Hide blocked',
-                            'properties', $vars);
+                            'properties', $vars, null, null, 'btn btn-default');
         }
         $pager->addPageTags($tags);
 

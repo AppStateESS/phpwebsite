@@ -131,6 +131,10 @@ class Database {
             $dbport = null;
         }
 
+        if ($dbtype == 'mysqli') {
+            $dbtype = 'mysql';
+        }
+
         self::setDefaultDSN(self::newDSN($dbtype, $dbuser, $dbpass, $dbname,
                         $dbhost, $dbport));
         if ($table_prefix) {

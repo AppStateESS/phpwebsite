@@ -302,14 +302,13 @@ class PHPWS_Text {
 
         $text = str_replace("\r\n", "\n", $text);
         $text = preg_replace($do_not_break, '\\1', $text);
-        $text = preg_replace('/<pre>(.*)<\/pre>/Uies',
-                "'<pre>' . str_replace(\"\n\", '[newline]', '\\1') . '</pre>'",
-                $text);
+        $text = preg_replace_callback('/<pre>(.*)<\/pre>/Uis', function($match) {'<pre>' . str_replace("\n", '[newline]', $match[0]) . '</pre>';}, $text);
+
         $text = nl2br($text);
         $text = str_replace('[newline]', "\n", $text);
         // removes extra breaks stuck in code tags by editors
-        $text = preg_replace('/<code>(.*)<\/code>/Uies',
-                "'<code>' . str_replace('<br />', '', '\\1') . '</code>'", $text);
+
+        $text = preg_replace_callback('/<code>(.*)<\/code>/Uis', function($match) { return '<code>' . str_replace('<br />', '', $matches[0]) . '</code>';}, $text);
         $text = preg_replace("/<br \/>([^\n])/", "<br />\n\\1", $text);
         return $text;
     }
@@ -488,7 +487,15 @@ class PHPWS_Text {
     }
 
     /**
-     * Returns a module link with the authkey attached
+     * Same as moduleLink but an authkey value is always added.
+     *
+     * @param string $subject Value of <a> tag
+     * @param string $module Module using string (e.g. users, layout)
+     * @param array $getVars Associative array of values to use in GET string.
+     * @param string $target index, blank, etc.
+     * @param string $title Value of title attribute for link
+     * @param string $class_name CSS class attribute value
+     * @return string Resultant link
      */
     public static function secureLink($subject, $module = null, $getVars = null, $target = null, $title = null, $class_name = null)
     {

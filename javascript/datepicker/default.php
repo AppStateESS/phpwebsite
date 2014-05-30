@@ -9,15 +9,10 @@ function loadDatepicker() {
     javascript('jquery');
     $source_http = PHPWS_SOURCE_HTTP;
     $script = <<<EOF
+<link href="{$source_http}javascript/datepicker/css/datepicker.css" rel="stylesheet" />
 <script type="text/javascript" src="{$source_http}javascript/datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 $(window).load(function() {
-    /*
-    $('.datepicker').datepicker().on('changeDate', function(ev){
-            $('.datepicker').datepicker('hide');
-        });
-    */
-
     $('.datepicker').datepicker({
         autoclose: true
     })
@@ -26,6 +21,5 @@ $(window).load(function() {
 </script>
 EOF;
 \Layout::addJSHeader($script);
-\Layout::addStyle('datepicker', '../../../javascript/datepicker/css/datepicker.css');
 }
 ?>

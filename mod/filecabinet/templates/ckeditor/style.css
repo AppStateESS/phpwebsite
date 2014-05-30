@@ -11,7 +11,7 @@ th {
 
 
 div#folders {
-    width : 150px;
+    width : 170px;
     height : 590px;
     background-color : white;
     position : absolute;
@@ -23,20 +23,23 @@ div#folders {
     white-space: nowrap;
 }
 
+div#files,
+div#tools {
+    left : 180px;
+    position : absolute;
+}
+
+
 div#files {
-    width : 640px;
+    width : 800px;
     height : 550px;
     background-color : white;
-    position : absolute;
-    left : 160px;
     top : 30px;
     overflow-y: auto;
     padding-top : 10px;
 }
 
 div#tools {
-    position : absolute;
-    left : 160px;
     top : 0px;
     width : 640px;
     height : 20px;

@@ -1,14 +1,10 @@
 <?xml version="1.0"?>
 <template>
-	<title>Two Columns with Headers and Banner</title>
-	<summary>Two 50% columns with headers and banner on top</summary>
+	<title>Two columns Header Top</title>
+	<summary>Two columns with header above the banner</summary>
 	<thumbnail>two-col-banner.png</thumbnail>
 	<style>page.css</style>
 	<structure>
-		<section>
-			<name>header1</name>
-			<type>header</type>
-		</section>
 		<section>
 			<name>text1</name>
 			<type>text</type>

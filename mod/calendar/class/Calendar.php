@@ -6,16 +6,15 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 PHPWS_Core::requireConfig('calendar');
 PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
-define('MINI_CAL_NO_SHOW',     0);
-define('MINI_CAL_SHOW_FRONT',  1);
+define('MINI_CAL_NO_SHOW', 0);
+define('MINI_CAL_SHOW_FRONT', 1);
 define('MINI_CAL_SHOW_ALWAYS', 2);
 
-
 class PHPWS_Calendar {
+
     /**
      * unix timestamp of today
      * @var integer
@@ -38,13 +37,13 @@ class PHPWS_Calendar {
      * day number based on current_date
      * @var integer
      */
-    public $int_day   = null;
+    public $int_day = null;
 
     /**
      * year number based on current_date
      * @var integer
      */
-    public $int_year  = null;
+    public $int_year = null;
 
     /**
      * Contains the administrative object
@@ -55,7 +54,6 @@ class PHPWS_Calendar {
      * Contains the user object
      */
     public $user = null;
-
     public $schedule = null;
 
     /**
@@ -63,9 +61,7 @@ class PHPWS_Calendar {
      * @var array
      */
     public $event_list = null;
-
     public $sorted_list = null;
-
 
     public function __construct()
     {
@@ -88,29 +84,28 @@ class PHPWS_Calendar {
     public function getDay()
     {
         require_once 'Calendar/Day.php';
-        $oDay = new Calendar_Day($this->int_year, $this->int_month, $this->int_day);
+        $oDay = new Calendar_Day($this->int_year, $this->int_month,
+                $this->int_day);
         $oDay->build();
         return $oDay;
     }
 
-
-    public function getEvents($start_search=null, $end_search=null) {
+    public function getEvents($start_search = null, $end_search = null)
+    {
         PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
-            $start_search = mktime(0,0,0,1,1,1970);
+            $start_search = mktime(0, 0, 0, 1, 1, 1970);
         }
 
         if (!isset($end_search)) {
             // if this line is a problem, you need to upgrade
-            $end_search = mktime(0,0,0,1,1,2050);
+            $end_search = mktime(0, 0, 0, 1, 1, 2050);
         }
 
         return $this->schedule->getEvents($start_search, $end_search);
     }
 
-
-
-    public function getMonth($month=0, $year=0)
+    public function getMonth($month = 0, $year = 0)
     {
         if (!$month) {
             $month = &$this->int_month;
@@ -120,7 +115,7 @@ class PHPWS_Calendar {
             $year = &$this->int_year;
         }
 
-        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
+        $start_day = (int) PHPWS_Settings::get('calendar', 'starting_day');
         require_once 'Calendar/Month/Weekdays.php';
         $oMonth = new Calendar_Month_Weekdays($year, $month, $start_day);
         return $oMonth;
@@ -129,15 +124,24 @@ class PHPWS_Calendar {
     /**
      * Returns a list of schedules according to the user's permissions
      */
-    public function getScheduleList($mode='object')
+    public function getScheduleList($mode = 'object')
     {
         $db = new PHPWS_DB('calendar_schedule');
         Key::restrictView($db);
         $user_id = Current_User::getId();
 
         if ($user_id) {
-            $db->addWhere('user_id', $user_id, '=', 'or', 'user_cal');
-            $db->setGroupConj('user_cal', 'or');
+            // this should always be true, adding just to create another where group
+            $db->addWhere('id', 0, '>', 'and', 'user_cal0');
+            $db->addWhere('user_id', $user_id, '=', 'and', 'user_cal1');
+            $db->addWhere('public', 0, '=', 'and', 'user_cal1');
+            $db->addWhere('public', 1, '=', 'or', 'user_cal2');
+            $db->setGroupConj('user_cal1', 'and');
+            $db->setGroupConj('user_cal2', 'or');
+            $db->groupIn('user_cal1', 'user_cal0');
+            $db->groupIn('user_cal2', 'user_cal0');
+        } else {
+            $db->addWhere('public', 1);
         }
 
         $db->addOrder('title');
@@ -156,29 +160,27 @@ class PHPWS_Calendar {
         }
     }
 
-
     public function getWeek()
     {
         require_once 'Calendar/Week.php';
-        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
-        $oWeek = new Calendar_Week($this->int_year, $this->int_month, $this->int_day, $start_day);
+        $start_day = (int) PHPWS_Settings::get('calendar', 'starting_day');
+        $oWeek = new Calendar_Week($this->int_year, $this->int_month,
+                $this->int_day, $start_day);
         $oWeek->build();
         return $oWeek;
     }
-
 
     public static function isJS()
     {
         return isset($_REQUEST['js']);
     }
 
-
     public function loadDefaultSchedule()
     {
         $sch_id = PHPWS_Settings::get('calendar', 'public_schedule');
 
         if ($sch_id > 0) {
-            $this->schedule = new Calendar_Schedule((int)$sch_id);
+            $this->schedule = new Calendar_Schedule((int) $sch_id);
         } elseif ($sch_id == -1) {
             $this->schedule = new Calendar_Schedule;
         } else {
@@ -201,15 +203,13 @@ class PHPWS_Calendar {
         }
     }
 
-
-    public function loadEventList($start_search=null, $end_search=null)
+    public function loadEventList($start_search = null, $end_search = null)
     {
         $result = $this->getEvents($start_search, $end_search);
         $this->event_list = & $result;
         $this->sortEvents();
         return true;
     }
-
 
     /**
      * Loads the date requested by user
@@ -219,56 +219,56 @@ class PHPWS_Calendar {
         $change = false;
 
         if (!empty($_REQUEST['date'])) {
-            $this->current_date = (int)$_REQUEST['date'];
-            $this->int_year  =    (int)date('Y', $this->current_date);
-            $this->int_month =    (int)date('m', $this->current_date);
-            $this->int_day   =    (int)date('j', $this->current_date);
+            $this->current_date = (int) $_REQUEST['date'];
+            $this->int_year = (int) date('Y', $this->current_date);
+            $this->int_month = (int) date('m', $this->current_date);
+            $this->int_day = (int) date('j', $this->current_date);
             return;
         } elseif (!empty($_REQUEST['jdate'])) {
-            $this->current_date = (int)strtotime($_REQUEST['jdate']);
-            $this->int_year  =    (int)date('Y', $this->current_date);
-            $this->int_month =    (int)date('m', $this->current_date);
-            $this->int_day   =    (int)date('j', $this->current_date);
+            $this->current_date = (int) strtotime($_REQUEST['jdate']);
+            $this->int_year = (int) date('Y', $this->current_date);
+            $this->int_month = (int) date('m', $this->current_date);
+            $this->int_day = (int) date('j', $this->current_date);
             return;
         } else {
             if (!empty($_REQUEST['y'])) {
-                $this->int_year = (int)$_REQUEST['y'];
+                $this->int_year = (int) $_REQUEST['y'];
                 $change = true;
             } elseif (!empty($_REQUEST['year'])) {
-                $this->int_year = (int)$_REQUEST['year'];
+                $this->int_year = (int) $_REQUEST['year'];
                 $change = true;
             }
 
             if (!empty($_REQUEST['m'])) {
-                $this->int_month = (int)$_REQUEST['m'];
+                $this->int_month = (int) $_REQUEST['m'];
                 $change = true;
             } elseif (!empty($_REQUEST['month'])) {
-                $this->int_month = (int)$_REQUEST['month'];
+                $this->int_month = (int) $_REQUEST['month'];
                 $change = true;
             }
 
             if (!empty($_REQUEST['d'])) {
-                $this->int_day = (int)$_REQUEST['d'];
+                $this->int_day = (int) $_REQUEST['d'];
                 $change = true;
             } elseif (!empty($_REQUEST['day'])) {
-                $this->int_day = (int)$_REQUEST['day'];
+                $this->int_day = (int) $_REQUEST['day'];
                 $change = true;
             }
         }
 
         if ($change) {
-            $this->current_date = mktime(0,0,0, $this->int_month, $this->int_day, $this->int_year);
+            $this->current_date = mktime(0, 0, 0, $this->int_month,
+                    $this->int_day, $this->int_year);
 
-            if ($this->current_date < mktime(0,0,0,1,1,1970)) {
+            if ($this->current_date < mktime(0, 0, 0, 1, 1, 1970)) {
                 $this->loadToday();
             } else {
-                $this->int_month = (int)date('m', $this->current_date);
-                $this->int_day   = (int)date('d', $this->current_date);
-                $this->int_year  = (int)date('Y', $this->current_date);
+                $this->int_month = (int) date('m', $this->current_date);
+                $this->int_day = (int) date('d', $this->current_date);
+                $this->int_year = (int) date('Y', $this->current_date);
             }
         }
     }
-
 
     /**
      * Loads either the requested schedule, the default public schedule
@@ -297,11 +297,11 @@ class PHPWS_Calendar {
     public function loadToday()
     {
         $atime = PHPWS_Time::getTimeArray();
-        $this->today            = &$atime['u'];
-        $this->current_date     = $this->today;
-        $this->int_month        = &$atime['m'];
-        $this->int_day          = &$atime['d'];
-        $this->int_year         = &$atime['y'];
+        $this->today = &$atime['u'];
+        $this->current_date = $this->today;
+        $this->int_month = &$atime['m'];
+        $this->int_day = &$atime['d'];
+        $this->int_year = &$atime['y'];
     }
 
     public function loadUser()
@@ -311,7 +311,6 @@ class PHPWS_Calendar {
         $this->user->calendar = & $this;
     }
 
-
     public function sortEvents()
     {
         if (empty($this->event_list)) {
@@ -319,12 +318,12 @@ class PHPWS_Calendar {
         }
 
         foreach ($this->event_list as $key => $event) {
-            $syear  = (int)date('Y', $event->start_time);
-            $smonth = (int)date('m', $event->start_time);
-            $sday   = (int)date('d', $event->start_time);
-            $shour  = (int)date('H', $event->start_time);
-            $sdate  = (int)date('Ymd', $event->start_time);
-            $edate  = (int)date('Ymd', $event->end_time);
+            $syear = (int) date('Y', $event->start_time);
+            $smonth = (int) date('m', $event->start_time);
+            $sday = (int) date('d', $event->start_time);
+            $shour = (int) date('H', $event->start_time);
+            $sdate = (int) date('Ymd', $event->start_time);
+            $edate = (int) date('Ymd', $event->end_time);
 
             $this->sorted_list[$syear]['events'][$key] = & $this->event_list[$key];
             $this->sorted_list[$syear]['months'][$smonth]['events'][$key] = & $this->event_list[$key];
@@ -333,9 +332,9 @@ class PHPWS_Calendar {
 
             if ($sdate != $edate) {
                 for ($i = $event->start_time + 86400; $i <= $event->end_time; $i += 86400) {
-                    $copy_month = (int)date('m', $i);
-                    $copy_day   = (int)date('d', $i);
-                    $copy_year  = (int)date('Y', $i);
+                    $copy_month = (int) date('m', $i);
+                    $copy_day = (int) date('d', $i);
+                    $copy_year = (int) date('Y', $i);
 
 
                     $this->sorted_list[$copy_year]['events'][$key] = & $this->event_list[$key];
@@ -359,6 +358,7 @@ class PHPWS_Calendar {
 
         $this->user->main();
     }
+
 }
 
 ?>

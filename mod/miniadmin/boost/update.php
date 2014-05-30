@@ -1,9 +1,9 @@
 <?php
+
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function miniadmin_update(&$content, $version)
 {
     switch ($version) {
@@ -53,8 +53,7 @@ function miniadmin_update(&$content, $version)
         case version_compare($version, '1.2.1', '<'):
             $content[] = '<pre>';
             miniadminUpdateFiles(array('templates/alt_mini_admin.tpl',
-                                   'templates/mini_admin.tpl'),
-            $content);
+                'templates/mini_admin.tpl'), $content);
             $content[] = '1.2.1 changes
 ------------------
 + Wrapped div box-content around links per Obones patch submission
@@ -66,7 +65,7 @@ function miniadmin_update(&$content, $version)
 ------------------
 + PHP 5 strict formatted.</pre>';
 
-            case version_compare($version, '1.2.3', '<'):
+        case version_compare($version, '1.2.3', '<'):
             $content[] = '<pre>
 1.2.3 changes
 ------------------
@@ -74,11 +73,18 @@ function miniadmin_update(&$content, $version)
 + Control panel link added as default to top of miniadmin.
 </pre>';
 
+        case version_compare($version, '1.2.4', '<'):
+            $content[] = '<pre>
+1.2.4 changes
+------------------
++ Bootstrap compatibility changes
+</pre>';
     }
     return true;
 }
 
-function miniadminUpdateFiles($files, &$content) {
+function miniadminUpdateFiles($files, &$content)
+{
     if (PHPWS_Boost::updateFiles($files, 'miniadmin')) {
         $content[] = '-- Successfully updated the following files:';
     } else {
@@ -87,6 +93,5 @@ function miniadminUpdateFiles($files, &$content) {
     $content[] = '    ' . implode("\n    ", $files);
     $content[] = '';
 }
-
 
 ?>

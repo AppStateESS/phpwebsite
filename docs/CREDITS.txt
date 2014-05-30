@@ -169,6 +169,9 @@ Select2
 Igor Vaynberg
 http://ivaynberg.github.io/select2/
 
+Aspell CKeditor 3.0 plugin
+Christian Boisjoli
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------

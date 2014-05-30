@@ -4,7 +4,7 @@
 <div>Roommates shown: {TOTAL_ROWS}</div>
 </div>
 <div>{LIMIT_LABEL} {LIMITS} {SEARCH}</div>
-<table cellpadding="4" width="100%">
+<table class="table table-striped">
     <tr>
         <th>{NAME_SORT}</th>
         <th>{MONTHLY_RENT_SORT}</th>

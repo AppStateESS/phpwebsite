@@ -194,7 +194,8 @@ class Property extends Room_Base {
         $form->setLabel('furnished', 'Furnished');
         $form->setMatch('furnished', $this->furnished);
 
-        $form->addRadioAssoc('lease_type', array(JOINT_LEASE => 'Per unit', INDIVIDUAL_LEASE => 'Per person'));
+        $form->addRadioAssoc('lease_type',
+                array(JOINT_LEASE => 'Per unit', INDIVIDUAL_LEASE => 'Per person'));
         $form->setMatch('lease_type', $this->lease_type);
 
         $form->addTextarea('other_fees', $this->other_fees);
@@ -240,7 +241,8 @@ class Property extends Room_Base {
         $form->setMatch('security_refund', $this->security_refund);
         $form->setLabel('security_refund', 'Fee refunded');
 
-        $form->addRadioAssoc('student_type', array(NO_STUDENT_PREFERENCE => 'No preference',
+        $form->addRadioAssoc('student_type',
+                array(NO_STUDENT_PREFERENCE => 'No preference',
             UNDERGRAD => 'Undergraduate', GRAD_STUDENT => 'Graduate'));
         $form->setMatch('student_type', $this->student_type);
 
@@ -311,7 +313,8 @@ class Property extends Room_Base {
 
         foreach ($_POST as $key => $value) {
             if (in_array($key, $vars)) {
-                $func = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
+                $func = 'set' . str_replace(' ', '',
+                                ucwords(str_replace('_', ' ', $key)));
                 try {
                     $this->$func($value);
                 } catch (\Exception $e) {
@@ -755,17 +758,23 @@ class Property extends Room_Base {
 
         if ($this->active) {
             $cmd_array[$cmd] = 'deactivate_property';
-            $admin[] = \PHPWS_Text::moduleLink(\Icon::show('active', 'Click to deactivate'), 'properties', $cmd_array);
+            $admin[] = \PHPWS_Text::moduleLink(\Icon::show('active',
+                                    'Click to deactivate'), 'properties',
+                            $cmd_array);
         } else {
             $cmd_array[$cmd] = 'activate_property';
-            $admin[] = \PHPWS_Text::moduleLink(\Icon::show('inactive', 'Click to activate'), 'properties', $cmd_array);
+            $admin[] = \PHPWS_Text::moduleLink(\Icon::show('inactive',
+                                    'Click to activate'), 'properties',
+                            $cmd_array);
         }
         $cmd_array[$cmd] = 'edit_property';
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('edit'), 'properties', $cmd_array);
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('edit'), 'properties',
+                        $cmd_array);
 
         $cmd_array[$cmd] = 'update';
         if ($this->active) {
-            $tpl['TIMEOUT'] = \PHPWS_Text::moduleLink($this->getTimeout(), 'properties', $cmd_array);
+            $tpl['TIMEOUT'] = \PHPWS_Text::moduleLink($this->getTimeout(),
+                            'properties', $cmd_array);
         } else {
             $tpl['TIMEOUT'] = 'N/A';
         }
@@ -792,7 +801,8 @@ class Property extends Room_Base {
     {
         $url = sprintf('./properties/%s/%s', $this->id, $this->getUrlName());
         if (!empty($label)) {
-            return sprintf('<a href="%s" title="%s">%s</a>', $url, $this->name, $label);
+            return sprintf('<a href="%s" title="%s">%s</a>', $url, $this->name,
+                    $label);
         } else {
             return $url;
         }
@@ -808,9 +818,11 @@ class Property extends Room_Base {
     {
         $tpl['NAME'] = $this->viewLink($this->name);
         if ($this->thumbnail) {
-            $thumbnail = sprintf('<img class="property-thumb" src="%s" />', Photo::thumbnailPath($this->thumbnail));
+            $thumbnail = sprintf('<img class="property-thumb" src="%s" />',
+                    Photo::thumbnailPath($this->thumbnail));
         } else {
-            $thumbnail = sprintf('<img class="property-thumb" src="%smod/properties/img/no_photo.gif" />', PHPWS_SOURCE_HTTP);
+            $thumbnail = sprintf('<img class="property-thumb" src="%smod/properties/img/no_photo.gif" />',
+                    PHPWS_SOURCE_HTTP);
         }
         $tpl['THUMBNAIL'] = $this->viewLink($thumbnail);
         $tpl['MONTHLY_RENT'] = $this->getMonthlyRent();
@@ -825,6 +837,10 @@ class Property extends Room_Base {
 
     public function view()
     {
+        if (empty($this->id)) {
+            \Layout::add('<h1>Sorry</h1><p>This property is not in our system. Please return to the <a href="./">property listing page</a> to try again.</p>');
+            return;
+        }
         $tpl = $this->getBaseTpl();
         $refund = '<span style="font-size : 90%">(Refundable)</span>';
         \PHPWS_Core::initModClass('properties', 'Contact.php');
@@ -834,29 +850,40 @@ class Property extends Room_Base {
         \Layout::addStyle('properties', 'view.css');
         $tpl['NAME'] = $this->viewLink($this->name);
         $photos = $this->getPhotos();
+
         if ($photos) {
-            javascriptMod('properties', 'galleryview', array('panel_width' => $max_width, 'panel_height' => $max_height));
+            javascriptMod('properties', 'galleryview',
+                    array('panel_width' => $max_width, 'panel_height' => $max_height));
             foreach ($photos as $p) {
-                $dim = getimagesize($p['path']);
-                $width = & $dim[0];
-                $height = & $dim[1];
+                if (is_file($p['path'])) {
+                    $dim = getimagesize($p['path']);
+                    $width = & $dim[0];
+                    $height = & $dim[1];
 
-                $diff = \PHPWS_File::getDiff($width, $max_width, $height, $max_height);
+                    $diff = \PHPWS_File::getDiff($width, $max_width, $height,
+                                    $max_height);
 
-                $new_width = round($width * $diff);
-                $new_height = round($height * $diff);
-
-                if ($new_width > $max_width || $new_height > $max_height) {
-                    $diff = \PHPWS_File::getDiff($new_width, $max_width, $new_height, $max_height);
                     $new_width = round($width * $diff);
                     $new_height = round($height * $diff);
-                }
 
+                    if ($new_width > $max_width || $new_height > $max_height) {
+                        $diff = \PHPWS_File::getDiff($new_width, $max_width,
+                                        $new_height, $max_height);
+                        $new_width = round($width * $diff);
+                        $new_height = round($height * $diff);
+                    }
+                } else {
+                    $p['path'] = PHPWS_SOURCE_HTTP . 'mod/properties/img/no_photo.gif';
+                    $p['title'] = 'Photo not found';
+                    $new_width = '150px';
+                    $new_height = '113px';
+                }
 
                 $all[] = sprintf('<li><img src="%s" title="%s" />
             <div class="panel-content lightbox">
             <a class="lightbox" href="%s"><img src="%s" width="%s" height="%s" /></a>
-            </div></li>', Photo::thumbnailPath($p['path']), $p['title'], $p['path'], $p['path'], $new_width, $new_height);
+            </div></li>', Photo::thumbnailPath($p['path']), $p['title'],
+                        $p['path'], $p['path'], $new_width, $new_height);
             }
             $tpl['PHOTOS'] = implode("\n", $all);
         } else {
@@ -867,7 +894,9 @@ class Property extends Room_Base {
         if (!empty($contact->company_address)) {
             $tpl['COMPANY_ADDRESS'] = $contact->getCompanyAddress();
             $tpl['GOOGLE_COMPANY'] = sprintf('<a target="_blank" href="http://maps.google.com/maps?q=%s">
-        <img class="google-map" src="%smod/properties/img/google-pin-red.gif" title="Google maps" target="_blank" /></a>', Property::googleMapUrl($contact->company_address), PHPWS_SOURCE_HTTP);
+        <img class="google-map" src="%smod/properties/img/google-pin-red.gif" title="Google maps" target="_blank" /></a>',
+                    Property::googleMapUrl($contact->company_address),
+                    PHPWS_SOURCE_HTTP);
         }
 
         $tpl['COMPANY_NAME'] = $contact->getCompanyUrl();
@@ -878,7 +907,8 @@ class Property extends Room_Base {
         $tpl['ADDRESS'] = $this->getAddress();
 
         $tpl['GOOGLE_MAP'] = sprintf('<a target="_blank" href="http://maps.google.com/maps?q=%s">
-        <img src="%smod/properties/img/google-pin-red.gif" title="Google maps" target="_blank" /></a>', Property::googleMapUrl($this->address), PHPWS_SOURCE_HTTP);
+        <img src="%smod/properties/img/google-pin-red.gif" title="Google maps" target="_blank" /></a>',
+                Property::googleMapUrl($this->address), PHPWS_SOURCE_HTTP);
 
         $tpl['LEASE_TYPE'] = $this->getLeaseType();
         if ($this->efficiency) {
@@ -986,7 +1016,8 @@ class Property extends Room_Base {
         if (\Current_User::allow('properties')) {
             javascriptMod('properties', 'photo_upload', $data);
             $tpl['ADD_PHOTO'] = $photo->uploadNew(false);
-            $tpl['EDIT'] = \PHPWS_Text::secureLink('Edit', 'properties', array('aop' => 'edit_property', 'pid' => $this->id));
+            $tpl['EDIT'] = \PHPWS_Text::secureLink('<i class="fa fa-edit"></i> Edit', 'properties',
+                            array('aop' => 'edit_property', 'pid' => $this->id), null, null, 'btn btn-default');
             if (!$this->active) {
                 $tpl['ACTIVE'] = '<div id="not-active">This property is currently NOT ACTIVE</div>';
             }
@@ -997,7 +1028,9 @@ class Property extends Room_Base {
             $data['is_contact'] = 1;
             javascriptMod('properties', 'photo_upload', $data);
             $tpl['ADD_PHOTO'] = $photo->uploadNew(false);
-            $tpl['EDIT'] = \PHPWS_Text::moduleLink('Edit property', 'properties', array('cop' => 'edit_property', 'pid' => $this->id, 'k' => $_SESSION['Contact_User']->getKey()));
+            $tpl['EDIT'] = \PHPWS_Text::moduleLink('Edit property',
+                            'properties',
+                            array('cop' => 'edit_property', 'pid' => $this->id, 'k' => $_SESSION['Contact_User']->getKey()));
         } elseif (!$this->active) {
             \Layout::add('This property is currently not available');
             return;

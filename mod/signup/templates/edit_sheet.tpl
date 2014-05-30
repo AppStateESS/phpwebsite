@@ -1,5 +1,5 @@
 {START_FORM} {EDIT_SLOT}
-<table cellpadding="4" width="100%">
+<table class="table table-striped">
     <tr>
         <td><strong>{TITLE_LABEL}</strong></td>
         <td>{TITLE}</td>

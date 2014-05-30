@@ -69,6 +69,16 @@ function analytics_update(&$content, $currentVersion)
                 return false;
             }
             $content[] = '--- Completed migration to Analytics 1.1.0 schema';
+
+        case version_compare($currentVersion, '1.1.1', '<'):
+            $content[] = <<<EOF
+<pre>Version 1.1.1
+-------------------
++ Piwik fix.
++ Fixed uninstall script
+</pre>
+EOF;
+
     }
 
     return true;

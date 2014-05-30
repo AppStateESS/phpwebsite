@@ -1,14 +1,10 @@
 <?xml version="1.0"?>
 <template>
-	<title>Two columns-Banner</title>
-	<summary>Two columns of text, each crowned by a small block.</summary>
+	<title>Two columns with banner</title>
+	<summary>Wide image header with two columns of text topped with smaller image.</summary>
 	<thumbnail>twocol.png</thumbnail>
 	<style>page.css</style>
 	<structure>
-		<section>
-			<name>header1</name>
-			<type>header</type>
-		</section>
 		<section>
 			<name>text1</name>
 			<type>text</type>
@@ -18,10 +14,6 @@
 			<type>block</type>
 			<width>200</width>
 			<height>200</height>
-		</section>
-		<section>
-			<name>header2</name>
-			<type>header</type>
 		</section>
 		<section>
 			<name>text2</name>

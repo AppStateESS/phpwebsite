@@ -15,7 +15,7 @@ div.property-info {
     float : left;
 }
 
-h3.open-box {
+div.open-box {
     cursor: pointer;
 }
 
@@ -80,4 +80,3 @@ div#body-content #property-tabs ul {
     margin-top : 6px;
     display:block;
 }
-

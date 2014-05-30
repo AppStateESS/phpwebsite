@@ -1,17 +1,17 @@
-{new}
+<div style="margin-bottom:1em">{new}</div>
 <table class="table table-striped">
     <tr style="vertical-align: top">
+        <th style="width : 100px">&#160;</th>
         <th>{NAME_SORT}</th>
         <th>{COMPANY_NAME_SORT}</th>
         <th>{TIMEOUT_SORT}</th>
-        <th style="width : 100px">&#160;</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr{TOGGLE}>
+        <td class="admin-icons">{ACTION}</td>
         <td>{NAME}</td>
         <td>{COMPANY_NAME}</td>
         <td>{TIMEOUT}</td>
-        <td class="admin-icons">{ACTION}</td>
     </tr>
     <!-- END listrows -->
 </table>

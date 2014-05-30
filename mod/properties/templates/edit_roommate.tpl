@@ -1,6 +1,6 @@
 {START_FORM}
 <h2>General information</h2>
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
      <tr>
         <td style="width: 160px">{NAME_LABEL}</td>
         <td>{NAME} <!--  BEGIN error1 -->
@@ -54,7 +54,7 @@
     </tr>
 </table>
 <h2>Amenities / Conditionals</h2>
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
     <tr>
         <td style="width: 160px">{INTERNET_TYPE_LABEL}</td>
         <td>{INTERNET_TYPE}</td>

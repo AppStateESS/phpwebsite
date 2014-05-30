@@ -1,10 +1,22 @@
 <?php
 
-if(Current_User::allow('pagesmith', 'edit_page')) {
+if (Current_User::allow('pagesmith', 'edit_page')) {
     $vars = array(
         'aop' => 'pick_template',
         'tpl' => 'text_only',
         'pid' => 0);
-    MiniAdmin::add('pagesmith', PHPWS_Text::secureLink(dgettext('pagesmith', 'Create New Web Page'), 'pagesmith', $vars));
+    MiniAdmin::add('pagesmith',
+            PHPWS_Text::secureLink(dgettext('pagesmith', 'Create New Web Page'),
+                    'pagesmith', $vars));
+    $key = \Key::getCurrent();
+    if (!empty($key) && !$key->isDummy() && $key->module == 'pagesmith') {
+        $vars['aop'] = 'edit_page';
+        $vars['id'] = $key->item_id;
+        unset($vars['tpl']);
+        unset($vars['pid']);
+        MiniAdmin::add('pagesmith',
+                PHPWS_Text::secureLink(dgettext('pagesmith',
+                                'Edit current page'), 'pagesmith', $vars));
+    }
 }
 ?>

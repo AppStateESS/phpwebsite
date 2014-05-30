@@ -377,6 +377,54 @@ UPDATES;
         select query will be inserted into the JSON return for evaluation
     - Total row calculation moved up in process so current page count is correct.
 </pre>';
+
+        case version_compare($version, '2.4.0', '<'):
+            $db = \Database::newDB();
+            $tbl = $db->addTable('modules');
+            $tbl->addFieldConditional('title', 'clipboard');
+            $db->delete();
+
+            $db->clearConditional();
+            $tbl->addFieldConditional('title', 'demographics');
+            $db->delete();
+
+            $db->clearTables();
+
+            $tbl = $db->addTable('demographics');
+            $tbl->drop();
+
+            $content[] = <<<EOF
+<pre>Core 2.4.0 Changes
+--------------------------------
++ Dropping clipboard module.
++ Dropping demographics module.
+</pre>
+EOF;
+
+        case version_compare($version, '2.4.1', '<'):
+            $db = \Database::newDB();
+            $db->addTable('modules')->addFieldConditional('title', 'version');
+            $db->delete();
+            $content[] = <<<EOF
+<pre>Core 2.4.1 Changes
+--------------------------------
++ Removed Version module from Core modules
++ Pear DB changed to MDB2.
++ MDB2 using mysqli class instead of mysql class to prevent MySQL deprecation warnings.
++ Fixed GD library identification.
++ DTTIME format now includes hour, minute, and seconds set to zero as "all day" is interpreted differently by ical.
++ ResourceFactory returns True on successful load and false otherwise. Previously returned void.
++ Added aspell plugin for CKEditor. Written by Christian Boisjoli.
++ CKeditor
+    - altered to have smoother button transitions when width is changed.
+    - removed Style button
+    - default width is 100% instead of hard coded pixel
+    - imports images with img-responsive class added
++ Javascript added to avoid image loading on small screens
++ Fixed createConfig function in setup script
+</pre>
+EOF;
+
     }
     return true;
 }
@@ -384,10 +432,10 @@ UPDATES;
 function coreUpdateFiles($files, &$content)
 {
     if (PHPWS_Boost::updateFiles($files, 'core')) {
-        $content[] = '--- Updated the following files:';
+        $content[] = ' --- Updated the following files:';
         $good = true;
     } else {
-        $content[] = '--- Unable to update the following files:';
+        $content[] = ' --- Unable to update the following files:';
         $good = false;
     }
     $content[] = "     " . implode("\n     ", $files);

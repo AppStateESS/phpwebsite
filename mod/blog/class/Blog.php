@@ -24,7 +24,7 @@ class Blog {
     public $updater = null;
     public $update_date = 0;
     public $allow_comments = 0;
-    public $approved = 0;
+    public $approved = 1;
     public $allow_anon = 0;
     public $publish_date = 0;
     public $expire_date = 0;
@@ -231,7 +231,6 @@ class Blog {
 
     public function save()
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = time();
@@ -259,41 +258,32 @@ class Blog {
 
         $this->update_date = time();
 
-        $version = new Version('blog_entries');
-
         if (empty($this->entry)) {
             $this->entry = '';
         }
-        if ($this->approved || !$this->id) {
-            $result = $db->saveObject($this);
-            if (PHPWS_Error::isError($result)) {
-                return $result;
-            }
+
+        $result = $db->saveObject($this);
+        if (PHPWS_Error::isError($result)) {
+            return $result;
         }
 
+        $update = (!$this->key_id) ? true : false;
 
-        if ($this->approved) {
-            $update = (!$this->key_id) ? true : false;
-
-            $this->saveKey();
-            if ($update) {
-                $db->saveObject($this);
-            }
-
-            $search = new Search($this->key_id);
-            $search->resetKeywords();
-            $search->addKeywords($this->title);
-            $search->addKeywords($this->summary);
-            $search->addKeywords($this->entry);
-            $result = $search->save();
-            if (PHPWS_Error::isError($result)) {
-                return $result;
-            }
+        $this->saveKey();
+        if ($update) {
+            $db->saveObject($this);
         }
 
-        $version->setSource($this);
-        $version->setApproved($this->approved);
-        return $version->save();
+        $search = new Search($this->key_id);
+        $search->resetKeywords();
+        $search->addKeywords($this->title);
+        $search->addKeywords($this->summary);
+        $search->addKeywords($this->entry);
+        $result = $search->save();
+        if (PHPWS_Error::isError($result)) {
+            return $result;
+        }
+        return $this->id;
     }
 
     public function saveKey()
@@ -527,9 +517,7 @@ class Blog {
 
     public function post_entry()
     {
-        if ($this->id && !Current_User::authorized('blog', 'edit_blog')) {
-            Current_User::disallow();
-        } elseif (empty($this->id) && !Current_User::authorized('blog')) {
+        if (!Current_User::authorized('blog', 'edit_blog')) {
             Current_User::disallow();
         }
 
@@ -595,11 +583,7 @@ class Blog {
             $this->expire_date = strtotime($_POST['expire_date']);
         }
 
-        if (isset($_POST['version_id']) || Current_User::isRestricted('blog')) {
-            $this->approved = 0;
-        } else {
-            $this->approved = 1;
-        }
+        $this->approved = 1;
         $link_choices[] = 'none';
         $link_choices[] = 'default';
         $link_choices[] = 'readmore';
@@ -626,8 +610,6 @@ class Blog {
     {
         $all_is_well = true;
 
-        PHPWS_Core::initModClass('version', 'Version.php');
-        Version::flush('blog_entries', $this->id);
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('id', $this->id);
         $result = $db->delete();

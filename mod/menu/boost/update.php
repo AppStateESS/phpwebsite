@@ -344,7 +344,7 @@ Please download 1.2.1.</pre>';
             $new_directory = $home_directory . 'images/menu/';
             if (!is_dir($new_directory)) {
                 $status = mkdir($new_directory);
-                if(!$status) {
+                if (!$status) {
                     $content[] = "Could not create directory $new_directory.";
                     return false;
                 }
@@ -359,6 +359,18 @@ Please download 1.2.1.</pre>';
 ----------------
 + Created $new_directory
 + Can associate image to a menu
+</pre>";
+        case version_compare($currentVersion, '2.0.4', '<'):
+            $content[] = "<pre>2.0.4 changes
+----------------
++ Fixed home icon set as active when menu associated page is chosen.
+</pre>";
+
+        case version_compare($currentVersion, '2.0.5', '<'):
+            $content[] = "<pre>2.0.5 changes
+----------------
++ Reset menu button now sorts all links as well
++ Menu images not loaded if tablet width or below
 </pre>";
     }
     return true;

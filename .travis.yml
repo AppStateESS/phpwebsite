@@ -1,0 +1,29 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+#  - hhvm
+
+env:
+  - secure: "aRt7YZbnHZk25FwsV6WWRcA8/6i8PO/YI+S3Yrq/fgZzUC2M3YLIVOoq6/N02zgR01SoZ8iIZ3nM+EEXv+eH3lsHeYyVC4rnKuR0lTzRLKdSXHzXk2lEEzmt4sjaigQnoBDGP9gX4nAPlRB6AQmx6XlA3l4zzANJXcmew8qdIr0="
+
+before_script:
+  - lsb_release -a
+  - lscpu
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  - sudo cp -f .travis-build/travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
+
+script:
+  - echo $SUPERSECRET 
+  - ".travis-build/phplint ."
+  - "phpunit"
+
+notifications:
+  irc: "irc.freenode.org#phpwebsite"

@@ -56,7 +56,7 @@ class PHPWS_Time {
 
 
 		if ($mode == 'all_day') {
-			return gmstrftime('%Y%m%d', $new_time);
+			return gmstrftime('%Y%m%dT000000', $new_time);
 		}
 
 		$dttime = gmstrftime('%Y%m%dT%H%M00', $new_time);

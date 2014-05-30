@@ -1,6 +1,8 @@
 Welcome to phpWebSite!
 ======================
 
+[![Build Status](https://travis-ci.org/AppStateESS/phpwebsite.png?branch=master)](https://travis-ci.org/AppStateESS/phpwebsite)
+
 * [phpWebSite Home](https://phpwebsite.appstate.edu)
 * [phpWebSite Continuous Integration](https://code.appstate.edu/jenkins/job/phpwebsite)
 * [phpWebSite on Github](https://github.com/AppStateESS/phpwebsite)

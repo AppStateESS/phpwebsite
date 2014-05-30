@@ -6,23 +6,25 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class pgsql_PHPWS_SQL {
+
     public $portability = null;
 
     public function __construct()
     {
-        $this->portability = DB_PORTABILITY_RTRIM;
+        $this->portability = MDB2_PORTABILITY_RTRIM;
     }
 
-    public function export(&$info){
-        switch ($info['type']){
+    public function export(&$info)
+    {
+        switch ($info['type']) {
 
             case 'int8':
             case 'int4':
             case 'int':
                 $setting = 'INT';
-                $info['flags'] = preg_replace('/unique primary/', 'PRIMARY KEY', $info['flags']);
+                $info['flags'] = preg_replace('/unique primary/', 'PRIMARY KEY',
+                        $info['flags']);
                 break;
 
             case 'int2':
@@ -75,11 +77,10 @@ class pgsql_PHPWS_SQL {
     public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = PHPWS_DB::addPrefix($table);
-        $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s',
-        $table, $column_name, $new_name);
+        $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s', $table,
+                $column_name, $new_name);
         return $sql;
     }
-
 
     public function getLimit($limit)
     {
@@ -92,23 +93,23 @@ class pgsql_PHPWS_SQL {
         return implode(' ', $sql);
     }
 
-    public function readyImport(&$query){
+    public function readyImport(&$query)
+    {
+        $query = str_ireplace('datetime', 'timestamp without time zone', $query);
 
-        $from = array('/datetime/i',
-                      '/double\((\d+),(\d+)\)/Uie'
-                      );
-                      $to   = array('timestamp without time zone',
-                      "'numeric(' . (\\1 + \\2) . ', \\2)'"
-                      );
-                      $query = preg_replace($from, $to, $query);
+        $from = '/double\((\d+),(\d+)\)/Ui';
+        $query = preg_replace_callback($from,
+                function($match) {
+            return 'numeric(' . $match[1] . ', ' . $match[2] . ')';
+        }, $query);
 
-                      if (preg_match('/id int [\w\s]* primary key[\w\s]*,/iU', $query)){
-                          $tableName = PHPWS_DB::extractTableName($query);
+        if (preg_match('/id int [\w\s]* primary key[\w\s]*,/iU', $query)) {
+            $tableName = PHPWS_DB::extractTableName($query);
 
-                          $query = preg_replace('/primary key/i', '', $query);
-                          $query = preg_replace('/if exists /i', '', $query);
-                          $query = preg_replace('/\);/', ', PRIMARY KEY (id));', $query);
-                      }
+            $query = preg_replace('/primary key/i', '', $query);
+            $query = preg_replace('/if exists /i', '', $query);
+            $query = preg_replace('/\);/', ', PRIMARY KEY (id));', $query);
+        }
     }
 
     public function randomOrder()
@@ -127,8 +128,7 @@ class pgsql_PHPWS_SQL {
         return TRUE;
     }
 
-
-    public function dropTableIndex($name, $table=NULL)
+    public function dropTableIndex($name, $table = NULL)
     {
         return sprintf('DROP INDEX %s', $name);
     }
@@ -148,11 +148,10 @@ class pgsql_PHPWS_SQL {
         return '!~*';
     }
 
-
     /**
      * Postgres doesn't accept "after" or "before"
      */
-    public function addColumn($table, $column, $parameter, $after=null)
+    public function addColumn($table, $column, $parameter, $after = null)
     {
         $parameter = strtolower($parameter);
         $parameter = preg_replace('/ {2,}/', ' ', trim($parameter));
@@ -178,12 +177,14 @@ class pgsql_PHPWS_SQL {
 
         $length = count($pararray);
 
-        for ($i=0; $i < $length; $i++) {
-            if ($pararray[$i] == 'default' && isset($pararray[$i+1])) {
+        for ($i = 0; $i < $length; $i++) {
+            if ($pararray[$i] == 'default' && isset($pararray[$i + 1])) {
                 if ($number) {
-                    $default_value = preg_replace('/\'"`/', '', $pararray[$i+1]);
+                    $default_value = preg_replace('/\'"`/', '',
+                            $pararray[$i + 1]);
                 } else {
-                    $default_value = preg_replace('/"`/', '\'', $pararray[$i+1]);
+                    $default_value = preg_replace('/"`/', '\'',
+                            $pararray[$i + 1]);
                 }
                 $extra[1] = "ALTER TABLE $table ALTER $column SET DEFAULT $default_value;";
                 $extra[2] = "UPDATE $table set $column = $default_value;";
@@ -192,7 +193,7 @@ class pgsql_PHPWS_SQL {
                 $unset_it[] = $i;
             }
 
-            if ($pararray[$i] == 'not' && $pararray[$i+1] == 'null') {
+            if ($pararray[$i] == 'not' && $pararray[$i + 1] == 'null') {
                 $extra[3] = "ALTER TABLE $table ALTER $column SET NOT NULL;";
                 $unset_it[] = $i;
                 $i++;
@@ -212,8 +213,6 @@ class pgsql_PHPWS_SQL {
                 $unset_it[] = $i;
                 continue;
             }
-
-
         }
 
         if (isset($unset_it)) {
@@ -262,6 +261,7 @@ class pgsql_PHPWS_SQL {
     {
         return 'COMMIT WORK;';
     }
+
 }
 
 ?>

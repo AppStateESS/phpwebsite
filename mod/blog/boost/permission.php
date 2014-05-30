@@ -5,7 +5,7 @@
  */
 
 $use_permissions = TRUE;
-$item_permissions = TRUE;
+$item_permissions = true;
 
 $permissions['edit_blog']   = dgettext('blog', 'Edit blog');
 $permissions['delete_blog'] = dgettext('blog', 'Delete blog');

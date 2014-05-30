@@ -30,7 +30,7 @@ if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
  * DISPLAY_ERRORS is defined in config/defines.php
  */
 if (DISPLAY_ERRORS) {
-    // For devleopment - show all errors
+    // For development - show all errors
     ini_set('display_errors', 'On');
     error_reporting(E_ALL | E_STRICT);
 } else {

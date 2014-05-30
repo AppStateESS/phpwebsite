@@ -29,7 +29,7 @@ yum -y install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-
 yum -y install httpd php-cli php-pgsql php-pecl-xdebug php-pdo php \
     php-mbstring php-common php-mysql php-soap php-gd php-xml php-pecl-apc \
     mysql-server mysql postgresql-server postgresql phpmyadmin phpPgAdmin \
-    roundcubemail dovecot
+    roundcubemail dovecot openoffice.org-headless
 
 echo "================"
 echo "Setting up MySQL"
@@ -340,9 +340,10 @@ PGADMIN
 cat << 'PGADMINCFG' > /etc/phpPgAdmin/config.inc.php
 <?php
 $conf['servers'][0]['desc'] = 'PostgreSQL on phpWebSite Vagrant';
+$conf['servers'][0]['host'] = null;
 $conf['servers'][0]['port'] = 5432;
 $conf['servers'][0]['sslmode'] = 'allow';
-$conf['servers'][0]['defaultdb'] = 'template1';
+$conf['servers'][0]['defaultdb'] = 'phpwebsite';
 $conf['servers'][0]['pg_dump_path'] = '/usr/bin/pg_dump';
 $conf['servers'][0]['pg_dumpall_path'] = '/usr/bin/pg_dumpall';
 $conf['servers'][0]['slony_support'] = false;

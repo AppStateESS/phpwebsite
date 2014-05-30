@@ -60,7 +60,6 @@ class PS_Block extends PS_Section {
 
             default:
         }
-
         $this->content = $manager->get();
     }
 

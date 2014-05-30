@@ -1,6 +1,6 @@
 {START_FORM}
 {CONTACT_CONTACT} {CONTACT_CONTACT_LABEL}
-<table cellpadding="6" cellspacing="0" style="width: 100%">
+<table class="table table-striped">
     <!-- BEGIN username --><tr>
         <td style="width : 35%">{USERNAME_LABEL}</td>
         <td>{USERNAME}<!--  BEGIN error1 -->
