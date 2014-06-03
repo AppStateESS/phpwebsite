@@ -66,13 +66,23 @@ function initializeDialog(editor)
                 width: '90%',
                 height: 690,
                 title: 'Edit text area',
-                buttons: [{text: "Save",
+                buttons: [
+                    {
+                        text: "Save",
                         click: function() {
                             updateBlock(editor);
                             $(this).dialog('close');
                             closeOverlay();
                         }
-                    }],
+                    },
+                    {
+                        text: "Cancel",
+                        click: function() {
+                            $(this).dialog('close');
+                            closeOverlay();
+                        }
+                    }
+                ],
                 close: function() {
                     closeOverlay();
                 }
