@@ -13,7 +13,10 @@ function loadDatepicker() {
 <script type="text/javascript" src="{$source_http}javascript/datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 $(window).load(function() {
-    $('.datepicker').datepicker();
+    $('.datepicker').datepicker({
+        autoclose: true
+    })
+
 });
 </script>
 EOF;
