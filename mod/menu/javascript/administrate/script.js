@@ -23,6 +23,7 @@ function MenuAdmin() {
 
     var input;
     var button;
+    var settings;
 
     function Input()
     {
@@ -104,6 +105,27 @@ function MenuAdmin() {
         };
 
     }
+
+    /**
+     *
+     * @returns {MenuAdmin.Settings}
+     */
+    function Settings()
+    {
+        this.init = function() {
+            $('#menu-link-limit').change(function(){
+                var link_limit = $('option:selected', this).val();
+                $.get('index.php', {
+                    module:'menu',
+                    command: 'update_character_limit',
+                    limit: link_limit
+                }).always(function(){
+                    $('#settingsModal').modal('hide');
+                });
+            });
+        };
+    }
+
 
     /**
      * Class for the modal form buttons save and delete
@@ -313,7 +335,10 @@ function MenuAdmin() {
         this.input.init();
         this.button = new Button;
         this.button.init();
+        this.settings = new Settings;
+        this.settings.init();
         this.pin_all = fmp;
+
 
         this.alert = $('.warning');
         this.alert.hide();
@@ -327,6 +352,7 @@ function MenuAdmin() {
         this.keyChange();
         this.displayType();
         this.populateKeySelect();
+
         this.link_modal.on('hidden.bs.modal', function(e) {
             t.alert.html('');
             t.alert.hide();

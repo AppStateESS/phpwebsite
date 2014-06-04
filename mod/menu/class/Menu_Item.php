@@ -213,7 +213,7 @@ class Menu_Item {
         if (empty($this->assoc_image)) {
             return null;
         }
-        return "<img id=\"menu-associated-image\" data-src=\">768:$this->assoc_image\" 
+        return "<img id=\"menu-associated-image\" data-src=\">768:$this->assoc_image\"
         style=\"display:none;\" onload=\"this.style.display='inline';this.style.opacity='1';\" />
         <noscript><img id=\"menu-associated-image\" src=\">768:$this->assoc_image\" \></noscript>";
     }
@@ -412,7 +412,17 @@ class Menu_Item {
         $link->setMenuId($this->id);
         $link->setKeyId($key->id);
         $link->setTitle($key->title);
-        $link->url = & $key->url;
+
+        $db = \Database::newDB();
+        $t1 = $db->addTable('access_shortcuts');
+        $t1->addFieldConditional('url', 'pagesmith:' . $key->item_id);
+        $t1->addFieldConditional('active', '1');
+        $access = $db->selectOneRow();
+        if (!empty($access)) {
+            $link->url = './' . $access['keyword'];
+        } else {
+            $link->url = & $key->url;
+        }
         $link->setParent($parent);
 
         return $link->save();

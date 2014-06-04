@@ -106,6 +106,10 @@ class Menu_Admin {
             case 'clear_image':
                 $this->clearImage($request);
                 exit();
+
+            case 'update_character_limit':
+                $this->updateCharacterLimit($request);
+                exit();
         }
 
         // This is the display switch or the HTML view switch
@@ -136,6 +140,12 @@ class Menu_Admin {
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
+    }
+
+    private function updateCharacterLimit(\Request $request)
+    {
+        \PHPWS_Settings::set('menu', 'max_link_characters', $request->getVar('limit'));
+        \PHPWS_Settings::save('menu');
     }
 
     private function clearImage(\Request $request)
@@ -775,6 +785,7 @@ EOF;
         } else {
             $tpl['reset_menu_link'] = '#';
         }
+        $tpl['link_limit'] = \PHPWS_Settings::get('menu', 'max_link_characters');
 
         $template->addVariables($tpl);
         return $template->get();
