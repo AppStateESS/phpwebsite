@@ -26,4 +26,3 @@ script:
   - "phpunit"
 
 notifications:
-  irc: "irc.freenode.org#phpwebsite"
