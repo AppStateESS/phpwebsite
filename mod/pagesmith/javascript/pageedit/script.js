@@ -2,8 +2,10 @@ var block_id = 0;
 var page_id = 0;
 var section_id = 0;
 var current_block;
+var editor = {};
 $(document).ready(function() {
-    var editor = CKEDITOR.replace('block-edit-textarea');
+    editor = CKEDITOR.replace('block-edit-textarea');
+    localStorage.clear();
     initializeDialog(editor);
     initializePageTitleEdit();
     editBlock(editor);
@@ -17,26 +19,58 @@ function editBlock(editor)
         block_id = $(this).data('block-id');
         page_id = $(this).data('page-id');
         section_id = $(this).attr('id');
-        $.get('index.php',
-                {'module': 'pagesmith',
-                    'aop': 'block_info',
-                    'pid': page_id,
-                    'bid': block_id,
-                    'section_id': section_id
-                },
-        function(data) {
-            editor.setData(data);
-            $('#block-edit-popup').dialog('open');
-            openOverlay();
+        if (localStorage[block_id] !== undefined) {
+                editor.setData(localStorage[block_id]);
+                openBlockEdit();
+        } else {
+            $.get('index.php',
+                    {'module': 'pagesmith',
+                        'aop': 'block_info',
+                        'pid': page_id,
+                        'bid': block_id,
+                        'section_id': section_id
+                    },
+            function(data) {
+                editor.setData(data);
+                openBlockEdit();
+            }
+            );
         }
-        );
     });
 }
 
-function openOverlay()
+function openBlockEdit()
+{
+    $('#block-edit-popup').dialog('open');
+    openOverlay('block-dialog');
+}
+
+function openTitleEdit()
+{
+    $('#title-edit-popup').dialog('open');
+    openOverlay('title-dialog');
+}
+
+function openOverlay(class_name)
 {
     $('body').attr('style', 'overflow:hidden');
-    $('.ui-dialog').before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
+    $('.' + class_name).before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
+    clickOutside();
+}
+
+function clickOutside()
+{
+    $('.ui-widget-overlay').click(function() {
+        ck_data = editor.getData();
+        localStorage[block_id] = ck_data;
+        closeBlockEdit();
+    });
+}
+
+function closeBlockEdit()
+{
+    $('#block-edit-popup').dialog('close');
+    closeOverlay();
 }
 
 function closeOverlay()
@@ -51,16 +85,17 @@ function initializePageTitleEdit()
         if (!$('#page-title-edit').data('new')) {
             $('#page-title-input').val($('#page-title-edit').html());
         }
-        $('#title-edit-popup').dialog('open');
-        openOverlay();
+        openTitleEdit();
     });
 }
 
 function initializeDialog(editor)
 {
+
     $('#block-edit-popup').dialog(
             {
                 position: {my: 'center', at: 'center', of: this},
+                dialogClass: 'block-dialog',
                 autoOpen: false,
                 resizable: false,
                 width: '90%',
@@ -71,26 +106,27 @@ function initializeDialog(editor)
                         text: "Save",
                         click: function() {
                             updateBlock(editor);
-                            $(this).dialog('close');
-                            closeOverlay();
+                            closeBlockEdit();
                         }
                     },
                     {
                         text: "Cancel",
                         click: function() {
-                            $(this).dialog('close');
-                            closeOverlay();
+                            closeBlockEdit();
                         }
                     }
                 ],
                 close: function() {
                     closeOverlay();
+                },
+                open: function() {
                 }
             }
     );
     $('#title-edit-popup').dialog(
             {
                 position: {my: 'center', at: 'center', of: this},
+                dialogClass: 'title-dialog',
                 autoOpen: false,
                 width: 650,
                 title: 'Edit page title',
@@ -113,6 +149,7 @@ function initializeDialog(editor)
 }
 
 function updateBlock(editor) {
+    localStorage.removeItem(block_id);
     content = editor.getData();
     $.post('index.php',
             {
