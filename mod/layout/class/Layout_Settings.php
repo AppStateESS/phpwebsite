@@ -250,8 +250,9 @@ class Layout_Settings {
 
             if (is_array($locked)) {
                 foreach ($locked as $ignore) {
-                    // add 2 because BODY and DEFAULT take the first two spaces
-                    unset($theme_variables[$ignore + 2]);
+                    // add 1 because BODY and DEFAULT take the first two spaces and zero is
+                    // the first key in the array
+                    unset($theme_variables[$ignore + 1]);
                 }
                 $this->_allowed_move = $theme_variables;
             }
