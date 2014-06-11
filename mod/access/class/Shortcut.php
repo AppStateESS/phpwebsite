@@ -69,7 +69,7 @@ class Access_Shortcut {
                 }
             }
             if (!empty($keyed_array)) {
-                foreach ($keyed_array as $key=>$vals) {
+                foreach ($keyed_array as $key => $vals) {
                     $request->setVar($key, $vals);
                 }
             }
@@ -79,12 +79,14 @@ class Access_Shortcut {
     public function postShortcut()
     {
         if (!isset($_POST['keyword'])) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
+            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access',
+                            'Shortcut::postShortcut');
         }
 
         if (!$this->id) {
             if (empty($_POST['key_id'])) {
-                return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
+                return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access',
+                                'Shortcut::postShortcut');
             } else {
                 $key = new Key((int) $_POST['key_id']);
                 $this->setUrl($key->module, $key->url);
@@ -124,21 +126,22 @@ class Access_Shortcut {
         $keyword = trim($keyword);
 
         if (empty($keyword)) {
-            return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
+            return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access',
+                            'Shortcut::setKeyword');
         }
 
-        if (!$this->id) {
-            $db = new PHPWS_DB('access_shortcuts');
-            $db->addWhere('keyword', $keyword);
-            $result = $db->select();
-            $this->keyword = substr($keyword, 0, 254);
-            if (!empty($result)) {
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
-                    return FALSE;
-                } else {
-                    return PHPWS_Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
-                }
+        $db = new PHPWS_DB('access_shortcuts');
+        $db->addWhere('keyword', $keyword);
+        $db->addWhere('id', $this->id, '!=');
+        $result = $db->select();
+        $this->keyword = substr($keyword, 0, 254);
+        if (!empty($result)) {
+            if (PHPWS_Error::isError($result)) {
+                PHPWS_Error::log($result);
+                return FALSE;
+            } else {
+                return PHPWS_Error::get(SHORTCUT_WORD_IN_USE, 'access',
+                                'Shortcut::setKeyword');
             }
         }
 
@@ -147,8 +150,10 @@ class Access_Shortcut {
 
     public function rowTags()
     {
-        $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
-        $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s', $this->id, Current_User::getAuthKey());
+        $js['QUESTION'] = dgettext('access',
+                'Are you sure you want to delete this shortcut?');
+        $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
+                $this->id, Current_User::getAuthKey());
         $js['LINK'] = dgettext('access', 'Delete');
         $tags[] = javascript('confirm', $js);
 
@@ -171,7 +176,8 @@ class Access_Shortcut {
         }
 
         $template['ACTION'] = implode(' | ', $tags);
-        $template['CHECKBOX'] = sprintf('<input type="checkbox" name="shortcut[]" value="%s" />', $this->id);
+        $template['CHECKBOX'] = sprintf('<input type="checkbox" name="shortcut[]" value="%s" />',
+                $this->id);
 
         return $template;
     }
@@ -179,11 +185,13 @@ class Access_Shortcut {
     public function save()
     {
         if (empty($this->keyword)) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
+            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access',
+                            'Shortcut::save');
         }
 
         if (empty($this->url)) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
+            return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access',
+                            'Shortcut::save');
         }
 
         $db = new PHPWS_DB('access_shortcuts');
