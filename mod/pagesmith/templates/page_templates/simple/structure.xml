@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <template>
 	<title>Simple</title>
-	<summary>A very basic layout with one large text area and a floating,
-		right block.</summary>
+	<summary>A very basic layout with one large text area and a responsive right column.</summary>
 	<thumbnail>simple.png</thumbnail>
-	<style>page.css</style>
 	<folders>
 		<name>one-column</name>
 		<name>one-image</name>
@@ -17,8 +15,6 @@
 		<section>
 			<name>block1</name>
 			<type>block</type>
-			<width>300</width>
-			<height>300</height>
 		</section>
 	</structure>
 </template>
