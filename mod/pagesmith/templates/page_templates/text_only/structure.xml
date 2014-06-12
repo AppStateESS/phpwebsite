@@ -3,7 +3,6 @@
 	<title>Text Only</title>
 	<summary>One large text area and nothing else.</summary>
 	<thumbnail>text_only.png</thumbnail>
-	<style>page.css</style>
 	<structure>
 		<section>
 			<name>text1</name>
