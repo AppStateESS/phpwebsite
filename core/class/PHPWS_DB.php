@@ -1487,12 +1487,31 @@ class PHPWS_DB {
         if ($this->return_query) {
             return trim($sql);
         }
-        // assoc does odd things if the resultant return is two items or less
-        // not sure why it is coded that way. Use the default instead
 
         switch ($type) {
             case 'assoc':
+                /*
+                 * Note: Previously, Pear's DB class would return two column results
+                 * as an array with the key as the first column and the value as the
+                 * second. This behavior was inconsistent with the expected functionality.
+                 * We had code programmed expecting this behavior. MDB2 did not
+                 * replicate it, so two column results were broken.
+                 * The seemingly errant code below brings the result back to the
+                 * expected action.
+                 * Users should NOT depend on this code but should instead use the
+                 * Global\DB class or use this class with setIndexBy and select('col').
+                 */
                 PHPWS_DB::logDB($sql);
+                if (count($this->columns) == 2) {
+                    $result = $GLOBALS['PHPWS_DB']['connection']->queryAll($sql,
+                            null, $mode);
+
+                    if (PHPWS_Error::isError($result)) {
+                        return $result;
+                    }
+                    return PHPWS_DB::_indexBy($result,
+                                    $this->columns[0]['name'], true);
+                }
                 return $GLOBALS['PHPWS_DB']['connection']->queryAll($sql, null,
                                 $mode);
                 break;
@@ -1558,7 +1577,7 @@ class PHPWS_DB {
                 return $result;
                 break;
 
-
+            case 'assoc':
             case 'all':
             default:
                 PHPWS_DB::logDB($sql);
