@@ -3,7 +3,6 @@
 	<title>Banner</title>
 	<summary>Wide banner image above text area.</summary>
 	<thumbnail>banner.png</thumbnail>
-	<style>page.css</style>
 	<folders>
 		<name>one-column</name>
 		<name>one-image</name>
