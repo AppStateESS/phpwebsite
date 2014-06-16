@@ -149,10 +149,10 @@ class PS_Page {
                         PHPWS_Core::plugObject($this->_sections[$secname],
                                 $section);
 
-                        if ($this->_sections[$secname]->width) {
+                        if ($this->_sections[$secname]->width && !empty($default_w)) {
                             $this->_sections[$secname]->width = $default_w;
                         }
-                        if ($this->_sections[$secname]->height) {
+                        if ($this->_sections[$secname]->height && !empty($default_h)) {
                             $this->_sections[$secname]->height = $default_h;
                         }
                         if ($form_mode && $this->_sections[$secname]->type_id) {
