@@ -612,7 +612,6 @@ function MenuAdmin() {
         }, function(data) {
             //console.log(data);
         }).always(function() {
-            $('#menu-admin-area').show();
             t.populateMenuEdit();
         });
     };
