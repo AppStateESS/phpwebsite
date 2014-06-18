@@ -113,13 +113,13 @@ function MenuAdmin() {
     function Settings()
     {
         this.init = function() {
-            $('#menu-link-limit').change(function(){
+            $('#menu-link-limit').change(function() {
                 var link_limit = $('option:selected', this).val();
                 $.get('index.php', {
-                    module:'menu',
+                    module: 'menu',
                     command: 'update_character_limit',
                     limit: link_limit
-                }).always(function(){
+                }).always(function() {
                     $('#settingsModal').modal('hide');
                 });
             });
@@ -588,6 +588,12 @@ function MenuAdmin() {
     };
 
     this.sortLink = function(event, ui) {
+        var waiting = '<div style="z-index: 100;text-align:center;position:absolute;  height:100%; width:100%">\n\
+<div style="margin: 0px auto; width : 200px; height : 200px; padding-top : 80px; opacity:.90; background-color: #e3e3e3; text-align:center;">\n\
+<img src="mod/menu/img/waiting.gif" /> Working... \n\
+</div>\n\
+</div>';
+        $('#menu-admin-area').prepend(waiting);
         var moved_row = ui.item;
         var moved_row_id = $('a.menu-link-href', moved_row).data('linkId');
 
@@ -606,6 +612,7 @@ function MenuAdmin() {
         }, function(data) {
             //console.log(data);
         }).always(function() {
+            $('#menu-admin-area').show();
             t.populateMenuEdit();
         });
     };

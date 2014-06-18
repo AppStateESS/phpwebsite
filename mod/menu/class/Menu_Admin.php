@@ -144,7 +144,8 @@ class Menu_Admin {
 
     private function updateCharacterLimit(\Request $request)
     {
-        \PHPWS_Settings::set('menu', 'max_link_characters', $request->getVar('limit'));
+        \PHPWS_Settings::set('menu', 'max_link_characters',
+                $request->getVar('limit'));
         \PHPWS_Settings::save('menu');
     }
 
