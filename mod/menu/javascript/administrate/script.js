@@ -351,6 +351,8 @@ function MenuAdmin() {
 
         this.keyChange();
         this.displayType();
+        this.menuCheckbox();
+
         this.populateKeySelect();
 
         this.link_modal.on('hidden.bs.modal', function(e) {
@@ -379,6 +381,17 @@ function MenuAdmin() {
         //$('#menu-associated-page').select2('data', {id:null,text:null});
     };
 
+
+    this.menuCheckbox = function() {
+        $('#home-link').change(function() {
+            $.get('index.php', {
+                module : 'menu',
+                command : 'new_link_menu',
+                check : $(this).prop('checked')
+            });
+        });
+    };
+
     this.displayType = function() {
         $('#menu-display').change(function() {
             var display_type = $('option:selected', this).val();
@@ -387,7 +400,6 @@ function MenuAdmin() {
                 command: 'change_display_type',
                 display_type: display_type
             }, function(data) {
-                //console.log(data);
             }).always(function() {
                 window.location.reload();
             });

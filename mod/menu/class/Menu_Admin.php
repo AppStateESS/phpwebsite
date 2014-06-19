@@ -110,6 +110,10 @@ class Menu_Admin {
             case 'update_character_limit':
                 $this->updateCharacterLimit($request);
                 exit();
+
+            case 'new_link_menu':
+                $this->updateNewLink($request);
+                exit();
         }
 
         // This is the display switch or the HTML view switch
@@ -183,6 +187,13 @@ class Menu_Admin {
 
             $this->reorderLinks($row['id'], 0);
         }
+    }
+
+    private function updateNewLink(\Request $request)
+    {
+        $menu_link = $request->getVar('check') == 'true' ? 1 : 0;
+        \PHPWS_Settings::set('menu', 'home_link', $menu_link);
+        \PHPWS_Settings::save('menu');
     }
 
     private function reorderLinks($menu_id, $parent_id)
@@ -316,11 +327,10 @@ class Menu_Admin {
         $db->delete();
     }
 
-    private function postMenu($request)
+    public function postMenu($request)
     {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
-
         $menu = new Menu_Item($request->getVar('menu_id'));
 
         if ($request->isVar('assoc_key')) {
@@ -330,7 +340,9 @@ class Menu_Admin {
         } else {
             $assoc_key = 0;
         }
-        $assoc_url = trim(strip_tags($request->getVar('assoc_url')));
+        if ($request->isVar('assoc_url')) {
+            $assoc_url = trim(strip_tags($request->getVar('assoc_url')));
+        }
 
 
         $menu->setTitle($title);
@@ -338,6 +350,18 @@ class Menu_Admin {
         $menu->assoc_url = null;
         $menu->assoc_key = 0;
         if ($assoc_key) {
+            $key = new \Key($assoc_key);
+            if ($key->module == 'pagesmith') {
+                $db = \Database::newDB();
+                $t1 = $db->addTable('access_shortcuts');
+                $t1->addFieldConditional('url', 'pagesmith:' . $key->item_id);
+                $t1->addFieldConditional('active', '1');
+                $access = $db->selectOneRow();
+                if (!empty($access)) {
+                    $menu->assoc_url = './' . $access['keyword'];
+                }
+            }
+
             $menu->setAssocKey($assoc_key);
         } elseif (!empty($assoc_url)) {
             $menu->setAssocUrl($assoc_url);
@@ -356,7 +380,6 @@ class Menu_Admin {
                     'images/menu/', 200);
             $menu->setAssocImage('images/menu/' . $file_name);
         }
-
         $menu->save();
     }
 

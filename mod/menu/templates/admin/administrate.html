@@ -115,20 +115,25 @@
                         <option <?=$display_type ? null : 'selected="selected"';?> value="0">Classic - Menus only shown on pages they are pinned</option>
                         <option <?=$display_type ? 'selected="selected"':null;?> value="1">Categorized with extra view - Menus only appear when a page is on it</option>
                     </select>
+                </div>
+                <div class="form-group">
                     <label for="menu-link-limit">Link character limit</label>
                     <select name="menu-link-limit" id="menu-link-limit" class="form-control">
                         <option value="0">No limit</option>
                         <?php
-                            for ($i = 5; $i < 51; $i += 5) {
-                                if ($i == $link_limit) {
-                                    $selected = " selected='selected'";
-                                } else {
-                                    $selected = null;
-                                }
-                                echo "<option$selected>$i</option>";
-                            }
+                        for ($i = 5; $i < 51; $i += 5) {
+                        if ($i == $link_limit) {
+                        $selected = " selected='selected'";
+                        } else {
+                        $selected = null;
+                        }
+                        echo "<option$selected>$i</option>";
+                        }
                         ?>
                     </select>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="home-link" name="home_link" value="1" <?= \PHPWS_Settings::get('menu', 'home_link') ? 'checked="checked"' : null; ?> /> <label for="home-link">New menus receive home link</label>
                 </div>
             </div>
             <div class="modal-footer">
