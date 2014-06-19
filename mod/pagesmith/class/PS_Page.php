@@ -552,6 +552,12 @@ class PS_Page {
             PHPWS_Error::logIfError($db->reduceColumn('page_order'));
         }
 
+        $db = \Database::newDB();
+        $t1 = $db->addTable('access_shortcuts');
+        $shortcut = 'pagesmith:' . $this->id;
+        $t1->addFieldConditional('url', $shortcut);
+        $db->delete();
+
         return true;
     }
 
