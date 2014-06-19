@@ -552,13 +552,21 @@ class PS_Page {
             PHPWS_Error::logIfError($db->reduceColumn('page_order'));
         }
 
+        $this->removeShortcuts();
+
+        return true;
+    }
+
+    /**
+     * Removes any shortcuts associated with this page
+     */
+    private function removeShortcuts()
+    {
         $db = \Database::newDB();
         $t1 = $db->addTable('access_shortcuts');
         $shortcut = 'pagesmith:' . $this->id;
         $t1->addFieldConditional('url', $shortcut);
         $db->delete();
-
-        return true;
     }
 
     private function pageLinks(&$tpl)
