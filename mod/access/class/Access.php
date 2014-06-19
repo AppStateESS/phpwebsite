@@ -295,7 +295,7 @@ class Access {
             $content[] = $url;
             $js['location'] = $url;
             javascript('close_refresh', $js);
-            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" return false" />',
                     dgettext('access', 'Close window'));
         }
         $tpl['CONTENT'] = implode('<br />', $content);
