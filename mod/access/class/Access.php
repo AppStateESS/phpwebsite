@@ -399,7 +399,8 @@ class Access {
         $link = PHPWS_Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = dgettext('access', 'Shortcut');
-        $js_vars['height'] = '200';
+        $js_vars['height'] = '300';
+        $js_vars['width'] = '300';
         $js_link = javascript('open_window', $js_vars);
         MiniAdmin::add('access', $js_link);
     }
