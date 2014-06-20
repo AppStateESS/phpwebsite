@@ -327,7 +327,7 @@ class Menu_Admin {
         $db->delete();
     }
 
-    public function postMenu($request)
+    private function postMenu($request)
     {
         $title = $request->getVar('title');
         $template = $request->getVar('template');
