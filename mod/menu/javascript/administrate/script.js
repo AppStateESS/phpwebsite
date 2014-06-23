@@ -352,6 +352,7 @@ function MenuAdmin() {
         this.keyChange();
         this.displayType();
         this.menuCheckbox();
+        this.forceShortcuts();
 
         this.populateKeySelect();
 
@@ -401,6 +402,17 @@ function MenuAdmin() {
                 display_type: display_type
             }, function(data) {
             }).always(function() {
+                window.location.reload();
+            });
+        });
+    };
+
+    this.forceShortcuts = function() {
+        $('#force-shortcuts').click(function(){
+            $.get('index.php', {
+                module : 'menu',
+                command : 'force_shortcut'
+            }).always(function(){
                 window.location.reload();
             });
         });
