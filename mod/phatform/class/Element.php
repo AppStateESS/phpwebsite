@@ -226,7 +226,7 @@ class PHAT_Element extends PHPWS_Item {
         $sql = 'SELECT id, label FROM mod_phatform_options';
         $optionResult = PHPWS_DB::query($sql);
         $options[0] = '';
-        while($row = $optionResult->fetchrow(DB_FETCHMODE_ASSOC)) {
+        while($row = $optionResult->fetchrow(MDB2_FETCHMODE_ASSOC)) {
             $options[$row['id']] = $row['label'];
         }
 
