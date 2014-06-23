@@ -114,6 +114,10 @@ class Menu_Admin {
             case 'new_link_menu':
                 $this->updateNewLink($request);
                 exit();
+
+            case 'force_shortcut':
+                $this->forceShortcut();
+                exit();
         }
 
         // This is the display switch or the HTML view switch
@@ -151,6 +155,31 @@ class Menu_Admin {
         \PHPWS_Settings::set('menu', 'max_link_characters',
                 $request->getVar('limit'));
         \PHPWS_Settings::save('menu');
+    }
+
+    private function forceShortcut()
+    {
+        $db = \Database::newDB();
+        $t1 = $db->addTable('menu_links');
+        $t1->addFieldConditional('url', 'pagesmith/%', 'like');
+        $result = $db->select();
+        foreach ($result as $row) {
+            $this->updateLinkShortcut($row);
+        }
+    }
+
+    private function updateLinkShortcut($row)
+    {
+        $url = str_replace('/', ':', $row['url']);
+
+        $db = \Database::newDB();
+        $t1 = $db->addTable('access_shortcuts');
+        $t1->addField('keyword');
+        $t1->addFieldConditional('url', $url);
+        $keyword = $db->selectColumn();
+        $menu_link = new Menu_Link($row['id']);
+        $menu_link->url = './' . $keyword;
+        $menu_link->save();
     }
 
     private function clearImage(\Request $request)
