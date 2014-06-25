@@ -69,6 +69,7 @@ class PHAT_Textfield extends PHAT_Element {
         $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(), ENCODE_PARSED_TEXT, false, true);
+        $viewTags['ID'] = 'textfield' . $this->_id;
         $viewTags['NAME'] = 'PHAT_' . $this->getLabel();
         $viewTags['SIZE'] = $this->_size;
         $viewTags['MAXSIZE'] = $this->_maxsize;

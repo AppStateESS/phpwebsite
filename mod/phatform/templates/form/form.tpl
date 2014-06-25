@@ -1,5 +1,5 @@
 <!-- BEGIN ELEMENTS -->
-<table border="0" width="100%" cellspacing="0" cellpadding="8">
+<table class="table table-striped">
     {ELEMENTS}
 </table>
 <!-- END ELEMENTS -->

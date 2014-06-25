@@ -24,18 +24,23 @@ class PHAT_Dropbox extends PHAT_Element {
      *
      * @param integer $id database id key for this PHAT_Dropbox
      */
-    function PHAT_Dropbox($id = NULL) {
+    function PHAT_Dropbox($id = NULL)
+    {
         $this->setTable('mod_phatform_dropbox');
 
-        if(isset($id)) {
+        if (isset($id)) {
             $this->setId($id);
             $leftOvers = $this->init();
-            // not expecting anything but kill it anyway :)
             unset($leftOvers);
         }
-    } // END FUNC PHAT_Dropbox
+    }
 
-    function hasOptions() {return TRUE;}
+// END FUNC PHAT_Dropbox
+
+    function hasOptions()
+    {
+        return TRUE;
+    }
 
     /**
      * View this PHAT_Dropobox
@@ -45,49 +50,57 @@ class PHAT_Dropbox extends PHAT_Element {
      * @param  mixed  $value whatever needed to match in the dropbox
      * @return string The HTML to be shown
      */
-    function view($value = NULL) {
+    function view($value = NULL)
+    {
         $label = $this->getLabel();
 
-        if(isset($_REQUEST['PHAT_' . $label])) {
+        if (isset($_REQUEST['PHAT_' . $label])) {
             $this->setValue($_REQUEST['PHAT_' . $label]);
         }
 
-        if($this->isRequired())
-        $viewTags['REQUIRED_FLAG'] = '&#42;';
+        if ($this->isRequired())
+            $viewTags['REQUIRED_FLAG'] = '&#42;';
 
         $optionText = $this->getOptionText();
         $optionValues = $this->getOptionValues();
 
-        for($i = 0; $i < sizeof($optionText); $i++)
-        $options[$optionValues[$i]] = $optionText[$i];
-
-        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(), ENCODE_PARSED_TEXT, false, true);
+        for ($i = 0; $i < sizeof($optionText); $i++) {
+            $options[$optionValues[$i]] = $optionText[$i];
+        }
+        $viewTags['BLURB'] = PHPWS_Text::parseOutput($this->getBlurb(),
+                        ENCODE_PARSED_TEXT, false, true);
         $element = new Form_Select('PHAT_' . $label, $options);
         $element->setMatch($this->getValue());
+        $element->setId($element->name);
+        $viewTags['ID'] = $element->getId();
 
         $viewTags['DROPBOX'] = $element->get();
 
         return PHPWS_Template::process($viewTags, 'phatform', 'dropbox/view.tpl');
-    } // END FUNC view
+    }
+
+// END FUNC view
 
     /**
      * Edit a new or existing PHAT_Dropbox element
      *
      * The edit function provides the HTML form to edit a new or existing
      * PHAT_Dropbox element.
-     *g
+     * g
      * return string The HTML form to edit a PHAT_Dropbox
      */
-    function edit() {
+    function edit()
+    {
         $numOptions = sizeof($this->getOptionText());
-        if(!$numOptions || $this->getOptionSet()) $numOptions='';
+        if (!$numOptions || $this->getOptionSet())
+            $numOptions = '';
 
         $form = new PHPWS_Form;
 
         $form->addHidden('module', 'phatform');
         $form->addHidden('PHAT_EL_OP', 'SaveElement');
 
-        if(!$this->getLabel()) {
+        if (!$this->getLabel()) {
             $num = $_SESSION['PHAT_FormManager']->form->numElements();
             $this->setLabel('Element' . ($num + 1));
         }
@@ -95,19 +108,23 @@ class PHAT_Dropbox extends PHAT_Element {
         $form->addTextArea('PHAT_ElementBlurb', $this->getBlurb());
         $form->setRows('PHAT_ElementBlurb', PHAT_DEFAULT_ROWS);
         $form->setCols('PHAT_ElementBlurb', PHAT_DEFAULT_COLS);
-        $form->setLabel('PHAT_ElementBlurb', dgettext('phatform', 'Associated Text'));
+        $form->setLabel('PHAT_ElementBlurb',
+                dgettext('phatform', 'Associated Text'));
 
         $form->addText('PHAT_ElementName', $this->getLabel());
-        $form->setSize('PHAT_ElementName', PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+        $form->setSize('PHAT_ElementName', PHAT_DEFAULT_SIZE,
+                PHAT_DEFAULT_MAXSIZE);
         $form->setLabel('PHAT_ElementName', dgettext('phatform', 'Name'));
 
         $form->addText('PHAT_ElementNumOptions', $numOptions);
         $form->setSize('PHAT_ElementNumOptions', 5, 3);
-        $form->setLabel('PHAT_ElementNumOptions', dgettext('phatform', 'Number of Options'));
+        $form->setLabel('PHAT_ElementNumOptions',
+                dgettext('phatform', 'Number of Options'));
 
         $options = $this->getOptionSets();
-        if(is_array($options)) {
-            $editTags['OPTION_SET_LABEL'] = dgettext('phatform', 'Predefined Option Set');
+        if (is_array($options)) {
+            $editTags['OPTION_SET_LABEL'] = dgettext('phatform',
+                    'Predefined Option Set');
             $form->addSelect('PHAT_OptionSet', $options);
             $form->setMatch('PHAT_OptionSet', $this->getOptionSet());
         }
@@ -118,12 +135,15 @@ class PHAT_Dropbox extends PHAT_Element {
         $form->setLabel('PHAT_ElementRequired', dgettext('phatform', 'Required'));
 
         $form->addSubmit('PHAT_ElementBack', dgettext('phatform', 'Back'));
-        $form->addSubmit('NEXT_BUTTON',dgettext('phatform', 'Next'));
+        $form->addSubmit('NEXT_BUTTON', dgettext('phatform', 'Next'));
 
         $template = $form->getTemplate();
 
-        return PHPWS_Template::processTemplate($template, 'phatform', 'dropbox/edit.tpl');
-    } // END FUNC edit
+        return PHPWS_Template::processTemplate($template, 'phatform',
+                        'dropbox/edit.tpl');
+    }
+
+// END FUNC edit
 
     /**
      * Save this PHAT_Dropbox
@@ -132,38 +152,45 @@ class PHAT_Dropbox extends PHAT_Element {
      *                or PHPWS_Error on failure.
      * @access public
      */
-    function save() {
+    function save()
+    {
         $error = FALSE;
         $label = $this->getLabel();
 
-        if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
-        || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
-            $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Dropbox::save()', $_REQUEST['PHAT_ElementName']);
+        if ((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label,
+                        $_REQUEST['PHAT_ElementName']) != 0)) || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
+            $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform',
+                            'PHAT_Dropbox::save()',
+                            $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }
 
         $result = $this->setBlurb($_REQUEST['PHAT_ElementBlurb']);
-        if(PHPWS_Error::isError($result)) {
+        if (PHPWS_Error::isError($result)) {
             $currentError = $result;
             $error = TRUE;
         }
 
-        if(isset($_REQUEST['PHAT_ElementRequired'])) {
+        if (isset($_REQUEST['PHAT_ElementRequired'])) {
             $this->setRequired(TRUE);
         } else {
             $this->setRequired(FALSE);
         }
 
-        if($error) {
+        if ($error) {
             return $currentError;
         } else {
-            if((is_numeric($_REQUEST['PHAT_ElementNumOptions']) && ($_REQUEST['PHAT_ElementNumOptions'] > 0)) || isset($_REQUEST['PHAT_OptionSet'])) {
+            if ((is_numeric($_REQUEST['PHAT_ElementNumOptions']) && ($_REQUEST['PHAT_ElementNumOptions'] > 0)) || isset($_REQUEST['PHAT_OptionSet'])) {
                 return $this->getOptions();
             } else {
-                return PHPWS_Error::get(PHATFORM_ZERO_OPTIONS, 'phatform', 'PHAT_Checkbox::save()');
+                return PHPWS_Error::get(PHATFORM_ZERO_OPTIONS, 'phatform',
+                                'PHAT_Checkbox::save()');
             }
         }
-    } // END FUNC save
-} // END CLASS PHAT_Dropbox
+    }
 
+// END FUNC save
+}
+
+// END CLASS PHAT_Dropbox
 ?>

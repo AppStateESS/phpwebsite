@@ -2,9 +2,7 @@
 <span style="color: #ff0000;">{REQUIRED_FLAG}</span>
 <!-- END requiredFlag -->
 <!-- BEGIN BLURB -->
-{BLURB}
+<label for="{ID}">{BLURB}</label>
 <br />
 <!-- END BLURB -->
-<input type="text" name="{NAME}" size="{SIZE}" maxlength="{MAXSIZE}"
-    value="{VALUE}"
-/>
+<input id="{ID}" type="text" name="{NAME}" size="{SIZE}" maxlength="{MAXSIZE}" value="{VALUE}" />
