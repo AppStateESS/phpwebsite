@@ -55,6 +55,11 @@
 <div class="modal fade" id="menu-modal">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <?=t('Edit menu')?>
+                </h3>
+            </div>
             <div class="modal-body">
                 <div class="warning alert alert-danger"></div>
                 <form id="menu-edit-form" action='index.php' method='post' enctype="multipart/form-data">
@@ -84,9 +89,18 @@
                             <p style="font-style:italic">* <?=t('Using a URL prevents display of drop down and side menu.');?></p>
                         </div>
                         <div class="form-group">
-                            <label for="menu-associated-image"><?=t('Image');?></label>
+                            <h4><?=t('Image');?></h4>
+                            <label for="menu-associated-image"><?=t('Upload');?></label>
                             <input type="file" name="assoc_image" id="menu-associated-image" class="form-control" />
-                            <div id='assoc-image-thumbnail' style='margin: 6px 0px'></div>
+                            <?php if(!empty($carousel)): ?>
+                            <p style='text-align:center'><?=t('or')?></p>
+                            <label for="carousel-slide"><?=t('Copy Carousel slide');?></label>
+                            <select class="form-control" id="carousel-slide" name="carousel_slide">
+                                <option></option>
+                                <?=$carousel?>
+                            </select>
+                            <?php endif; ?>
+                            <div id='assoc-image-thumbnail' style='margin: 6px 0px;'></div>
                         </div>
                     </fieldset>
                 </form>

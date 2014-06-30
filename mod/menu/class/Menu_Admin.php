@@ -373,6 +373,10 @@ class Menu_Admin {
             $assoc_url = trim(strip_tags($request->getVar('assoc_url')));
         }
 
+        if ($request->isVar('carousel_slide')) {
+            $carousel = trim(strip_tags($request->getVar('carousel_slide')));
+        }
+
 
         $menu->setTitle($title);
         $menu->setTemplate($template);
@@ -404,6 +408,17 @@ class Menu_Admin {
                             $file['type']);
 
             \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name,
+                    false, true);
+            \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
+                    'images/menu/', 200);
+            $menu->setAssocImage('images/menu/' . $file_name);
+        } elseif (!empty($carousel)) {
+            $menu->deleteImage();
+            $ext = \PHPWS_File::getFileExtension($carousel);
+            $file_name = randomString(12) . '.' . str_replace('image/', '',
+                            $ext);
+
+            \PHPWS_File::fileCopy($carousel, 'images/menu/', $file_name,
                     false, true);
             \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
                     'images/menu/', 200);
@@ -840,8 +855,28 @@ EOF;
         }
         $tpl['link_limit'] = \PHPWS_Settings::get('menu', 'max_link_characters');
 
+        if (\PHPWS_Core::moduleExists('carousel')) {
+            $tpl['carousel'] = $this->carouselSlidesForm();
+        } else {
+            $tpl['carousel'] = null;
+        }
+
         $template->addVariables($tpl);
         return $template->get();
+    }
+
+    public function carouselSlidesForm()
+    {
+        $slides = \carousel\SlideFactory::getSlides(true);
+        if (empty($slides)) {
+            return null;
+        }
+
+        foreach ($slides as $s) {
+            extract($s);
+            $form[] = "<option value='$filepath'>$title</option>";
+        }
+        return implode("\n", $form);
     }
 
 }

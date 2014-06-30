@@ -71,7 +71,7 @@ function MenuAdmin() {
         };
 
         this.setAssocImageThumbnail = function(assoc_image_thumbnail) {
-            var tn = '<img src="' + assoc_image_thumbnail + '" />';
+            var tn = '<img src="' + assoc_image_thumbnail + '" style="max-width:200px" />';
             this.assoc_image_thumbnail.html(tn);
         };
 
@@ -213,6 +213,7 @@ function MenuAdmin() {
                 $('#edit-menu').hide();
             } else {
                 $('#edit-menu').show();
+                this.initializeCarousel();
                 $('#edit-menu').click(function() {
                     t.resetMenuForm();
                     t.menu_id = t.selected_menu_id;
@@ -240,6 +241,18 @@ function MenuAdmin() {
                         }
                     }, 'json');
                     t.menu_modal.modal('show');
+                });
+            }
+        };
+
+        this.initializeCarousel = function() {
+            var caro = $('#carousel-slide');
+            if (caro.text().length < 1) {
+                return;
+            } else {
+                caro.change(function() {
+                    var slide = $('option:selected', this).val();
+                    t.input.setAssocImageThumbnail(slide);
                 });
             }
         };
@@ -386,9 +399,9 @@ function MenuAdmin() {
     this.menuCheckbox = function() {
         $('#home-link').change(function() {
             $.get('index.php', {
-                module : 'menu',
-                command : 'new_link_menu',
-                check : $(this).prop('checked')
+                module: 'menu',
+                command: 'new_link_menu',
+                check: $(this).prop('checked')
             });
         });
     };
@@ -408,11 +421,11 @@ function MenuAdmin() {
     };
 
     this.forceShortcuts = function() {
-        $('#force-shortcuts').click(function(){
+        $('#force-shortcuts').click(function() {
             $.get('index.php', {
-                module : 'menu',
-                command : 'force_shortcut'
-            }).always(function(){
+                module: 'menu',
+                command: 'force_shortcut'
+            }).always(function() {
                 window.location.reload();
             });
         });
