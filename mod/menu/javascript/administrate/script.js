@@ -404,6 +404,13 @@ function MenuAdmin() {
                 check: $(this).prop('checked')
             });
         });
+        $('#link-icons').change(function() {
+            $.get('index.php', {
+                module: 'menu',
+                command: 'link_icons',
+                check: $(this).prop('checked')
+            });
+        });
     };
 
     this.displayType = function() {
