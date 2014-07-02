@@ -121,7 +121,7 @@ class Menu_Link {
 
     public function setUrl($url)
     {
-        if (!preg_match('/^index.php/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/',
+        if (!preg_match('/^(\.\/|index.php)/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/',
                         $url)) {
             $url = PHPWS_Text::checkLink($url);
         }
@@ -144,13 +144,12 @@ class Menu_Link {
         }
         $icon = null;
         if (\PHPWS_Settings::get('menu', 'link_icons')) {
-            if (preg_match('/^http:/', $this->url)) {
-                $icon = '&nbsp;<i class="fa fa-external-link fa-fw" style="font-size : 80%"></i>';
+            if (preg_match('/^https?:/', $this->url)) {
+                $icon = '<i class="fa fa-external-link fa-fw" style="font-size : 80%"></i>';
             } elseif (preg_match('/(\.pdf|filecabinet\/\d+)$/', $this->url)) {
-                $icon = '&nbsp;<i class="fa fa-file-pdf-o fa-fw" style="font-size : 80%"></i>';
+                $icon = '<i class="fa fa-file-pdf-o fa-fw" style="font-size : 80%"></i>';
             }
         }
-
         return sprintf('<a href="%s" class="menu-link-href"%s id="menu-link-href-%s" title="%s">%s%s</a>',
                 str_replace('&', '&amp;', $this->url), $data, $this->id,
                 $this->title, $this->title, $icon);
