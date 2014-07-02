@@ -465,8 +465,6 @@ class Calendar_Event {
         }
 
         $tpl['BACK_LINK'] = PHPWS_Text::backLink();
-        var_dump($tpl);
-        exit();
         return $tpl;
     }
 
