@@ -385,7 +385,11 @@ class Layout {
                     PHPWS_Error::log(LAYOUT_BOX_ORDER_BROKEN, 'layout',
                             'Layout::display', $theme_var);
                 }
-                $unsortedLayout[$theme_var][$order] = $template;
+                if (isset($unsortedLayout[$theme_var][$order])) {
+                    $unsortedLayout[$theme_var][$order] .= $template;
+                } else {
+                    $unsortedLayout[$theme_var][$order] = $template;
+                }
             }
         }
 

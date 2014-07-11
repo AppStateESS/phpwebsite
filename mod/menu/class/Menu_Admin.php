@@ -115,6 +115,10 @@ class Menu_Admin {
                 $this->updateNewLink($request);
                 exit();
 
+            case 'link_icons':
+                $this->updateLinkIcons($request);
+                exit();
+
             case 'force_shortcut':
                 $this->forceShortcut();
                 exit();
@@ -222,6 +226,12 @@ class Menu_Admin {
     {
         $menu_link = $request->getVar('check') == 'true' ? 1 : 0;
         \PHPWS_Settings::set('menu', 'home_link', $menu_link);
+        \PHPWS_Settings::save('menu');
+    }
+    private function updateLinkIcons(\Request $request)
+    {
+        $link_icons = $request->getVar('check') == 'true' ? 1 : 0;
+        \PHPWS_Settings::set('menu', 'link_icons', $link_icons);
         \PHPWS_Settings::save('menu');
     }
 

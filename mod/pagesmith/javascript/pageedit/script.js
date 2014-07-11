@@ -101,6 +101,8 @@ function initializeDialog(editor)
                 width: '90%',
                 height: 690,
                 title: 'Edit text area',
+                dialogClass: 'dlgfixed',
+                position: 'center',
                 buttons: [
                     {
                         text: "Save",
@@ -120,6 +122,7 @@ function initializeDialog(editor)
                     closeOverlay();
                 },
                 open: function() {
+                    $(".dlgfixed").center(false);
                 }
             }
     );
@@ -166,3 +169,8 @@ function updateBlock(editor) {
         current_block.html(content);
     });
 }
+
+/*
+ * JQuery center fix by Andreas Lagerkvist
+ */
+jQuery.fn.center=function(absolute){return this.each(function(){var t=jQuery(this);t.css({position:absolute?'absolute':'fixed',left:'50%',top:'50%',zIndex:'99'}).css({marginLeft:'-'+(t.outerWidth()/2)+'px',marginTop:'-'+(t.outerHeight()/2)+'px'});if(absolute){t.css({marginTop:parseInt(t.css('marginTop'),10)+jQuery(window).scrollTop(),marginLeft:parseInt(t.css('marginLeft'),10)+jQuery(window).scrollLeft()})}})};
