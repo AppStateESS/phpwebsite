@@ -43,7 +43,13 @@ function phpwsAutoload($class_name)
         require_once $class_file;
     } elseif (isset($_REQUEST['module'])) {
         $module = preg_replace('/\W/', '', $_REQUEST['module']);
+        
+        if(preg_match("/^$module\//i", $class_name)) {
+            $class_name = preg_replace("/^$module\//i", '', $class_name);
+        }
+        
         $class_file = PHPWS_SOURCE_DIR . "mod/$module/class/$class_name.php";
+        var_dump($class_file);
         if (is_file($class_file)) {
             $files_found[$class_name] = $class_file;
             require_once $class_file;
