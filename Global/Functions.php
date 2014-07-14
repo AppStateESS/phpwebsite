@@ -43,7 +43,22 @@ function phpwsAutoload($class_name)
         require_once $class_file;
     } elseif (isset($_REQUEST['module'])) {
         $module = preg_replace('/\W/', '', $_REQUEST['module']);
+
+        /**
+         * If the module name is the first token in the class name,
+         * then remove it. Example:
+         * Class name: 'Intern/Command/ShowAddInternship'
+         * Should map to file: 'phpwebsite/mod/intern/class/Command/ShowAddInternship.php'
+         *
+         * In this example, we need to remove 'Intern/' from the class name in order to generate
+         * the correct file name.
+         */
+        if (preg_match("/^$module\//i", $class_name)) {
+            $class_name = preg_replace("/^$module\//i", '', $class_name);
+        }
+
         $class_file = PHPWS_SOURCE_DIR . "mod/$module/class/$class_name.php";
+
         if (is_file($class_file)) {
             $files_found[$class_name] = $class_file;
             require_once $class_file;
