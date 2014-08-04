@@ -4,7 +4,50 @@ var section_id = 0;
 var current_block;
 var editor = {};
 $(document).ready(function() {
-    editor = CKEDITOR.replace('block-edit-textarea');
+    editor = CKEDITOR.replace('block-edit-textarea',
+    {
+        on :
+          {
+             instanceReady : function( ev )
+             {
+                this.dataProcessor.writer.indentationChars = '  ';
+                this.dataProcessor.writer.setRules( 'p',
+                   {
+                      indent : false,
+                      breakBeforeOpen : true,
+                      breakAfterOpen : false,
+                      breakBeforeClose : false,
+                      breakAfterClose : true
+                   });
+
+                this.dataProcessor.writer.setRules( 'th',
+                   {
+                      indent : true,
+                      breakBeforeOpen : true,
+                      breakAfterOpen : false,
+                      breakBeforeClose : false,
+                      breakAfterClose : true
+                   });
+                this.dataProcessor.writer.setRules( 'li',
+                   {
+                      indent : true,
+                      breakBeforeOpen : true,
+                      breakAfterOpen : false,
+                      breakBeforeClose : false,
+                      breakAfterClose : true
+                   });
+                this.dataProcessor.writer.setRules( 'p',
+                   {
+                      indent : true,
+                      breakBeforeOpen : true,
+                      breakAfterOpen : true,
+                      breakBeforeClose : true,
+                      breakAfterClose : true
+                   });
+             }
+          }
+    }
+);
     localStorage.clear();
     initializeDialog(editor);
     initializePageTitleEdit();
