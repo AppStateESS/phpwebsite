@@ -11,14 +11,6 @@ $(document).ready(function() {
              instanceReady : function( ev )
              {
                 this.dataProcessor.writer.indentationChars = '  ';
-                this.dataProcessor.writer.setRules( 'p',
-                   {
-                      indent : false,
-                      breakBeforeOpen : true,
-                      breakAfterOpen : false,
-                      breakBeforeClose : false,
-                      breakAfterClose : true
-                   });
 
                 this.dataProcessor.writer.setRules( 'th',
                    {
