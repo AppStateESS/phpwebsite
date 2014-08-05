@@ -43,8 +43,13 @@ class Menu {
         }
 
         $GLOBALS['Pinned_Menus'] = $result;
-
+        \Layout::addJSHeader("<script type='text/javascript' src='" .
+                PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",
+                81);
         foreach ($result as $menu) {
+            if ($menu->assoc_image) {
+                Layout::set($menu->showAssocImage(), 'menu', 'image');
+            }
             Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
         }
     }
@@ -206,6 +211,9 @@ class Menu {
      */
     public static function show()
     {
+        \Layout::addJSHeader("<script type='text/javascript' src='" .
+                PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",
+                81);
         $seen = array();
 
         $key = Key::getCurrent();
@@ -225,6 +233,9 @@ class Menu {
         } elseif (!empty($result)) {
             foreach ($result as $menu) {
                 $seen[] = $menu->id;
+                if ($menu->assoc_image) {
+                    Layout::set($menu->showAssocImage(), 'menu', 'image');
+                }
                 Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
             }
         }
@@ -449,7 +460,8 @@ class Menu {
         }
         $template = new \Template($menu_tpl);
         \Layout::addJSHeader("<script type='text/javascript' src='" .
-        PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",81);
+                PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",
+                81);
         $template->setModuleTemplate('menu', 'category_view/category_menu.html');
         \Layout::add($template->get(), 'menu', 'top_view');
     }
@@ -494,7 +506,7 @@ class Menu {
             return $row['menu_id'];
         }
         // menu link not found, now check menu assoc
-        $db2  = \Database::newDB();
+        $db2 = \Database::newDB();
         $t2 = $db2->addTable('menus');
         $t2->addFieldConditional('assoc_key', $key->id);
         $t2->addField('id');
@@ -505,7 +517,6 @@ class Menu {
         } else {
             return 0;
         }
-
     }
 
 }
