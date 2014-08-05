@@ -462,7 +462,7 @@ class Menu_Item {
         if (is_file($theme_path . 'menu.tpl')) {
             $file = $theme_path . 'menu.tpl';
             $path = $theme_path;
-            $http = Layout::getThemeDirRoot() . Layout::getTheme() . 'templates/menu_layout/' . $this->template . '/';
+            $http = 'themes/' . Layout::getTheme() . '/templates/menu/menu_layout/' . $this->template . '/';
         } elseif (is_file($menu_path . 'menu.tpl')) {
             $file = $menu_path . 'menu.tpl';
             $path = $menu_path;
