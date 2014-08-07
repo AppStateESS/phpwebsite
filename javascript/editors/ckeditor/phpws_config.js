@@ -7,6 +7,8 @@ basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
     CKEDITOR.plugins.addExternal('filecabinet', basePath + 'ckeditor/phpws_plugins/filecabinet/', 'plugin.js');
 })();
 
+CKEDITOR.dtd.$removeEmpty.span = 0;
+
 /**
  * to add aspell
  * 1) make sure aspell is installed on your server
@@ -34,4 +36,6 @@ CKEDITOR.editorConfig = function(config)
                 ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
                 ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
             ];
+    config.protectedSource.push( /<i[\s\S]*?\>/g ); //allows beginning <i> tag
+    config.protectedSource.push( /<\/i[\s\S]*?\>/g ); //allows ending </i> tag
 };

@@ -34,4 +34,6 @@ CKEDITOR.editorConfig = function(config)
                 ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
                 ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
             ];
+    config.protectedSource.push( /<i[\s\S]*?\>/g ); //allows beginning <i> tag
+    config.protectedSource.push( /<\/i[\s\S]*?\>/g ); //allows ending </i> tag
 };
