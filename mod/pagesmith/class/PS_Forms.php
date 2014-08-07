@@ -99,10 +99,7 @@ EOF;
         $form->addSubmit('change_tpl', dgettext('pagesmith', 'Change template'));
 
         if ($page->id) {
-            $this->ps->title = dgettext('pagesmith', 'Update page');
             $form->addHidden('id', $page->id);
-        } else {
-            $this->ps->title = dgettext('pagesmith', 'Create page');
         }
 
         if (empty($page->_tpl) || $page->_tpl->error) {
