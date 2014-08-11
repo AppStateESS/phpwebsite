@@ -38,4 +38,6 @@ CKEDITOR.editorConfig = function(config)
             ];
     config.protectedSource.push( /<i[\s\S]*?\>/g ); //allows beginning <i> tag
     config.protectedSource.push( /<\/i[\s\S]*?\>/g ); //allows ending </i> tag
+    config.protectedSource.push( /<span[\s\S]*?\>/g ); //allows beginning <span> tag
+    config.protectedSource.push( /<\/span[\s\S]*?\>/g ); //allows ending </span> tag
 };
