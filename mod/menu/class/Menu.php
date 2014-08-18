@@ -60,6 +60,7 @@ class Menu {
             return;
         }
 
+        // Default link. Takes user to menu admin screen
         MiniAdmin::add('menu',
                 \PHPWS_Text::secureLink('Administrate menus', 'menu',
                         array('command' => 'list')));
@@ -68,7 +69,7 @@ class Menu {
 
         $link_list = self::getLinkList();
 
-        if ($key && !$key->isDummy()) {
+        if ($key && !$key->isDummy(true)) {
             javascript('jquery');
             \Layout::addJSHeader('<script type="text/javascript" src="' .
                     PHPWS_SOURCE_HTTP . 'mod/menu/javascript/administrate/minilink.js"></script>');
