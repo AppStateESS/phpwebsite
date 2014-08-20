@@ -1,32 +1,55 @@
 # .scrutinizer.yml
 
+build:
+    environment:
+        php: 
+            version: '5.4.28'
+
+filter:
+    excluded_paths:
+        - tests/*
+
+#this takes about 2min 30sec to run. Need a faster build
+tools:
+    php_mess_detector: false
+
+#take approximtely 2 min to run. Need a faster build
+tools:
+    php_analyzer:
+        config:
+            metrics_coupling:
+                enabled:              false
+                stable_code:
+                    namespace_prefixes:   []
+                    classes:              []
+
 checks:
     php:
         code_rating: true
-        duplication: true
-        variable_existence: true
+        duplication: false
+        variable_existence: false
         useless_calls: true
         use_statement_alias_conflict: true
-        unused_variables: true
-        unused_properties: true
-        unused_parameters: true
-        unused_methods: true
-        unreachable_code: true
+        unused_variables: false
+        unused_properties: false
+        unused_parameters: false
+        unused_methods: false
+        unreachable_code: false
         sql_injection_vulnerabilities: true
         security_vulnerabilities: true
         precedence_mistakes: true
         precedence_in_conditions: true
         parameter_non_unique: true
         no_property_on_interface: true
-        no_non_implemented_abstract_methods: true
+        no_non_implemented_abstract_methods: false
         deprecated_code_usage: true
         closure_use_not_conflicting: true
         closure_use_modifiable: true
-        avoid_useless_overridden_methods: true
+        avoid_useless_overridden_methods: false
         avoid_conflicting_incrementers: true
-        assignment_of_null_return: true
-        argument_type_checks: true
-        avoid_unnecessary_concatenation: true
+        assignment_of_null_return: false
+        argument_type_checks: false
+        avoid_unnecessary_concatenation: false
         method_calls_on_non_object: true
         no_duplicate_arguments: true
         no_error_suppression: true
@@ -35,5 +58,5 @@ checks:
         spacing_around_conditional_operators: true
 
 filter:
-	excluded_paths:
-		- lib/pear/*
+    excluded_paths:
+        - lib/*

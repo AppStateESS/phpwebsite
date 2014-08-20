@@ -234,6 +234,15 @@ class Branch_Admin {
             }
         }
 
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'secure/',
+                        $this->branch->directory . 'secure/')) {
+            $this->content[] = dgettext('branch',
+                    'Failed to copy secure directory to branch.');
+            return false;
+        } else {
+            $this->content[] = dgettext('branch', 'Copied secure directory to branch.');
+        }
+
         $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>',
                 PHPWS_SOURCE_DIR);
         $index_file = sprintf('<?php include \'%sindex.php\'; ?>',
