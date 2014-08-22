@@ -151,6 +151,9 @@ class Branch {
         if (!mkdir($this->directory . 'config/core/')) {
             return FALSE;
         }
+        if (!mkdir($this->directory . 'secure/')) {
+            return FALSE;
+        }
         return TRUE;
     }
 
