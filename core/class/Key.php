@@ -695,6 +695,12 @@ class Key {
         return true;
     }
 
+    /**
+     * Returns true if the key is a "dummy" or empty. Note that a home page key
+     * returns true unless allow_home is set to true
+     * @param boolean $allow_home
+     * @return boolean
+     */
     public function isDummy($allow_home = false)
     {
         if ($this->id === 0) {
