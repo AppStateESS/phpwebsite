@@ -9,7 +9,7 @@ if(file_exists('../config/core/config.php')) {
 
     if(isset($_SERVER['PHP_AUTH_USER'])) {
         require_once(PHPWS_SOURCE_DIR . 'mod/users/class/Current_User.php');
-        Current_User::loginUser(preg_replace('/@appstate.edu/', '', $_SERVER['PHP_AUTH_USER']));
+        Current_User::loginUser(preg_replace(PHPWS_SHIBB_USER_AUTH, '', $_SERVER['PHP_AUTH_USER']));
     }
 
     PHPWS_unBootstrap();
