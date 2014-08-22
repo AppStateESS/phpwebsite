@@ -1,5 +1,9 @@
 <div class="box">
-    <div class="align-right">{VIEW_LINKS}</div>
+    <div class="btn-group-wrap">
+        <div class="view-links btn-group">{VIEW_LINKS}<br />{SUGGEST}</div>
+    </div>
+    <div class="align-center smaller">{SCHEDULE_PICK}</div>
+</div>
     <div class="vevent">
         <div class="box-title">
             <h2 class="summary">{SUMMARY} {DOWNLOAD}</h2>

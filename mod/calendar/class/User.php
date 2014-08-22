@@ -1018,7 +1018,7 @@ class Calendar_User {
 
         if (!empty($left_arrow_time)) {
             $vars['date'] = $left_arrow_time;
-            $larrow = new PHPWS_Link('&lt;&lt;', 'calendar', $vars);
+            $larrow = new PHPWS_Link('<i class="fa fa-chevron-left"></i>', 'calendar', $vars);
             $larrow->setTitle($left_link_title);
             $larrow->setNoFollow($no_follow);
             array_unshift($links, $larrow->get());
@@ -1026,13 +1026,12 @@ class Calendar_User {
 
         if (!empty($right_arrow_time)) {
             $vars['date'] = $right_arrow_time;
-            $rarrow = new PHPWS_Link('&gt;&gt;', 'calendar', $vars);
+            $rarrow = new PHPWS_Link('<i class="fa fa-chevron-right"></i>', 'calendar', $vars);
             $rarrow->setTitle($right_link_title);
             $rarrow->setNoFollow($no_follow);
             $links[] = $rarrow->get();
         }
-
-        return implode(' | ', $links);
+        return "<button class='btn btn-default'>" . implode('</button><button class="btn btn-default">', $links) . "</button>";
     }
 
     public function week()

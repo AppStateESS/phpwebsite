@@ -135,13 +135,15 @@ class Calendar_Schedule {
         return javascript('open_window', $js);
     }
 
-    public function addEventLink($default_date = NULL, $icon = false)
+    public function addEventLink($default_date = NULL, $icon = false, $icon_only=false)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
         }
 
-        if ($icon) {
+        if ($icon_only) {
+            $add_label = '<i class="fa fa-plus"></i>';
+        } elseif ($icon) {
             $add_label = '<i class="fa fa-plus"></i> ' . dgettext('calendar',
                             'Add event');
         } else {
@@ -438,7 +440,7 @@ class Calendar_Schedule {
     public function rowTags()
     {
         if ($this->checkPermissions()) {
-            $links[] = $this->addEventLink(null, true);
+            $links[] = $this->addEventLink(null, true, true);
             $links[] = $this->uploadEventsLink(null, true);
             $links[] = $this->downloadEventsLink(null, true);
 

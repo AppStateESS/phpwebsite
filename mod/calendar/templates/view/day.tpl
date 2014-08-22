@@ -1,9 +1,9 @@
 <div class="box">
 <div class="box-title">
-    <h1 class="align-center">{SCHEDULE_TITLE} - {DATE}</h1>
-    <div>{PICK} <span class="admin-icons">{DOWNLOAD}</span></div>
-<div class="view-links">{VIEW_LINKS}<br />
-{SUGGEST}</div>
+<h2 class="text-center">{SCHEDULE_TITLE} - {DATE} {DOWNLOAD}</h2>
+<div class="btn-group-wrap">
+        <div class="view-links btn-group">{VIEW_LINKS}<br />{SUGGEST}</div>
+</div>
 <div class="align-center smaller">{SCHEDULE_PICK}</div>
 </div>
 <div class="box-content">{ADD_EVENT} <!-- BEGIN message -->

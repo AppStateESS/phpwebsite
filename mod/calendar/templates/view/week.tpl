@@ -1,17 +1,29 @@
 <div class="box">
     <div class="box-title">
-        <h2 class="align-center">{SCHEDULE_TITLE} - {DAY_RANGE} {PICK}
-            {DOWNLOAD}</h2>
-        <div class="view-links">{VIEW_LINKS}<br />
+        <h2 class="text-center">{SCHEDULE_TITLE} - {DAY_RANGE} {DOWNLOAD} </h2>
+
+        <div class="btn-group-wrap">
+        <div class="view-links btn-group">{VIEW_LINKS}<br>
             {SUGGEST}</div>
+            <br>
+            </div>
         <div class="align-center smaller">{SCHEDULE_PICK}</div>
     </div>
-    <div class="box-content">
+    <div class="container box-content">
         <div class="week-view">{ADD_EVENT} <!-- BEGIN message -->
             <p>{MESSAGE}</p>
             <!-- END message --> <!-- BEGIN days -->
-            <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
-            <!-- BEGIN calendar-events --> <!-- BEGIN hour -->
+            <div class="row clearfix">
+            <div class="col-sm-1">
+            <p class="date-label">
+            <span class="month">{ABBR_WEEKDAY}</span>
+			<span class="date-number">{DAY_NUMBER}</span>
+			</p>
+            </div>
+            <!-- BEGIN calendar-events -->
+             <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+             <!-- BEGIN hour -->
             <div class="hour bgcolor2">{HOUR}</div>
             <!-- END hour -->
             <div class="vevent">
@@ -24,7 +36,8 @@
                 <div class="description">{DESCRIPTION}</div>
                 <p class="calendar-admin">{LINKS}</p>
             </div>
-            <!-- END calendar-events --> <!-- END days -->
+            </div>
+            <!-- END calendar-events --></div><!-- END days -->
         </div>
     </div>
 </div>

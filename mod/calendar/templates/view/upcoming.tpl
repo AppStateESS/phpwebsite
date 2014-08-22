@@ -1,12 +1,17 @@
-<div class="upcoming">
-<div class="title">{TITLE}</div>
-<!-- BEGIN events --> <!-- BEGIN day-name -->
-<h3 class="day">{DAY}</h3>
-<!-- END day-name -->
-<div class="vevent"><span class="summary">{SUMMARY}</span><br />
-<abbr class="dtstart" title="{DTSTART}">{START_TIME}</abbr> <!-- BEGIN end-time -->{TO}
-<abbr class="dtend" title="{DTEND}">{END_TIME}</abbr><!-- END end-time -->
-<!-- BEGIN day-number -->({DAY_NUMBER})<!-- END day-number --> <!-- BEGIN location -->
-<p>{LOCATION_LABEL}: <span class="location">{LOCATION}</span></p>
-<!-- END location --></div>
-<!-- END events --></div>
+ <div class="section-content"> 
+ <!-- BEGIN events --> <!-- BEGIN day-name -->
+   <div class="event-item">
+    <p class="date-label">
+	<span class="month">{MONTH}</span>
+	<span class="date-number">{DAY}</span>
+    </p>
+<!-- END day-name -->    
+	 <div class="details">
+	  <h2 class="title">{SUMMARY}</h2>
+	  <p class="time" title="{DTSTART}"><i class="fa fa-clock-o"></i> {START_TIME} <!-- BEGIN end-time -->- {END_TIME}<!-- END end-time --></p>
+	   <!-- BEGIN location -->
+	  <p class="location"><i class="fa fa-map-marker"></i> {LOCATION}</p>
+	<!-- END location --></div>
+  </div><!-- END events -->
+   {TITLE}
+  </div>

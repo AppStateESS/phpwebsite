@@ -1,9 +1,11 @@
 <div class="box">
 <div class="box-title">
-<h2 class="align-center"><!-- BEGIN title -->{TITLE} -<!-- END title -->
-{FULL_MONTH_NAME}, {FULL_YEAR} {PICK} {DOWNLOAD}</h2>
-<div class="view-links">{VIEW_LINKS}<br />
-{SUGGEST}</div>
+<h2 class="text-center"><!-- BEGIN title -->{TITLE} -<!-- END title -->
+{FULL_MONTH_NAME}, {FULL_YEAR} {DOWNLOAD}</h2>
+<div class="btn-group-wrap">
+        <div class="view-links btn-group">{VIEW_LINKS}<br />
+            {SUGGEST}</div>
+            </div>
 <div class="align-center smaller">{SCHEDULE_PICK}</div>
 </div>
 <div class="box-content">
@@ -24,7 +26,7 @@
         <div class="cal-events">{COUNT} <!-- BEGIN show-events -->
         <ul class="event-listing">
             <!-- BEGIN event-list -->
-            <li>{EVENT}</li>
+            <li>{EVENT}<br><br></li>
             <!-- END event-list -->
         </ul>
         <!-- END show-events --></div>
