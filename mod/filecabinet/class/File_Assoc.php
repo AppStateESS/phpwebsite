@@ -235,7 +235,8 @@ class FC_File_Assoc {
 
             case FC_IMAGE_RESIZE:
             case FC_IMAGE_CROP:
-                return $this->_resize_parent->getThumbnail(null, $this->_link_image);
+                return $this->_resize_parent->getThumbnail(null,
+                                $this->_link_image);
 
             case FC_DOCUMENT:
                 return $this->_source->getIconView();
@@ -280,9 +281,11 @@ class FC_File_Assoc {
             case FC_IMAGE_RANDOM:
                 if (is_object($this->_source) && $this->_source->id) {
                     if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                        return $this->_source->captioned(null, $this->_link_image, $base);
+                        return $this->_source->captioned(null,
+                                        $this->_link_image, $base);
                     } else {
-                        return $this->_source->getTag(null, $this->_link_image, $base);
+                        return $this->_source->getTag(null, $this->_link_image,
+                                        $base);
                     }
                 } else {
                     $this->deadAssoc();
@@ -293,9 +296,11 @@ class FC_File_Assoc {
             case FC_IMAGE_CROP:
                 if (isset($this->_source->id) && $this->_source->id) {
                     if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                        return $this->_source->captioned(null, $this->_link_image, $base);
+                        return $this->_source->captioned(null,
+                                        $this->_link_image, $base);
                     } else {
-                        return $this->_source->getTag(null, $this->_link_image, $base);
+                        return $this->_source->getTag(null, $this->_link_image,
+                                        $base);
                     }
                 } else {
                     $this->deadAssoc();
@@ -333,8 +338,10 @@ class FC_File_Assoc {
             $tpl['files'][] = $document->getTag(true, true);
         }
 
-        $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
-        return PHPWS_Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
+        $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'),
+                $folder->title);
+        return PHPWS_Template::process($tpl, 'filecabinet',
+                        'multi_doc_download.tpl');
     }
 
     public function randomImage()
@@ -366,7 +373,8 @@ class FC_File_Assoc {
             if (!Current_User::allow('filecabinet')) {
                 return null;
             } else {
-                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
+                $message = dgettext('filecabinet',
+                        'Folder is private. Slideshow not available');
             }
         }
         $db = new PHPWS_DB('images');
@@ -377,7 +385,9 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail()));
+                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a title="%s" href="%s">%s</a>',
+                            $image->getTitle(), $image->getPath(),
+                            $image->getThumbnail()));
             }
 
             $this->loadCarousel($count);
@@ -431,7 +441,8 @@ class FC_File_Assoc {
             if (!Current_User::allow('filecabinet')) {
                 return null;
             } else {
-                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
+                $message = dgettext('filecabinet',
+                        'Folder is private. Slideshow not available');
             }
         }
         $db = new PHPWS_DB('images');
@@ -446,7 +457,9 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $img = sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail());
+                $img = sprintf('<a title="%s" href="%s">%s</a>',
+                        $image->getTitle(), $image->getPath(),
+                        $image->getThumbnail());
                 $tpl['thumbnails'][] = array('IMAGE' => $img);
             }
             if ($this->vertical) {
@@ -485,8 +498,7 @@ class FC_File_Assoc {
     public function getFolder()
     {
         $db = new PHPWS_DB('folders');
-        if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER || $this->file_type == FC_IMAGE_LIGHTBOX
-                || $this->file_type == FC_DOCUMENT_FOLDER) {
+        if ($this->file_type == FC_IMAGE_RANDOM || $this->file_type == FC_IMAGE_FOLDER || $this->file_type == FC_IMAGE_LIGHTBOX || $this->file_type == FC_DOCUMENT_FOLDER) {
             $folder = new Folder($this->file_id);
             if (PHPWS_Error::logIfError($folder) || !$folder->id) {
                 return false;
@@ -515,15 +527,29 @@ class FC_File_Assoc {
         return $db->saveObject($this);
     }
 
-    public static function updateTag($file_type, $id, $tag)
-    {
-        $db = new PHPWS_DB('fc_file_assoc');
-        $db->addWhere('ftype', (int) $file_type);
-        $db->addWhere('file_id', (int) $id);
-        $db->addValue('tag', htmlentities($tag, ENT_QUOTES, 'UTF-8'));
-        $db->update();
-    }
-
+    /**
+     * This function is pointless. Not sure what it originally did as there
+     * isn't a tag to save. Commenting out.
+     * @deprecated
+     * @param type $file_type
+     * @param type $id
+     * @param type $tag
+     * @throws Exception
+     */
+    /*
+      public static function updateTag($file_type, $id, $tag)
+      {
+      $db = new PHPWS_DB('fc_file_assoc');
+      $db->addWhere('file_type', (int) $file_type);
+      $db->addWhere('file_id', (int) $id);
+      $db->addValue('tag', htmlentities($tag, ENT_QUOTES, 'UTF-8'));
+      $result = $db->update();
+      if (PEAR::isError($result)) {
+      throw new Exception($result->getMessage());
+      }
+      }
+     */
+    
     public function imageFolderView()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');

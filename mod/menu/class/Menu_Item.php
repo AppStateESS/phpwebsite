@@ -320,11 +320,6 @@ class Menu_Item {
      */
     public function getLinks($parent = 0, $active_only = TRUE)
     {
-        // If we have been here already, return the data
-        if (isset($GLOBALS['MENU_LINKS'][$this->id])) {
-            //return $GLOBALS['MENU_LINKS'][$this->id];
-        }
-
         if (!$this->id) {
             return NULL;
         }
@@ -335,10 +330,7 @@ class Menu_Item {
         Key::restrictView($db);
         $db->addOrder('link_order');
         $db->setIndexBy('id');
-        //$db->setTestMode(1);
         $data = $db->getObjects('Menu_Link');
-        //var_dump($data);
-        //exit();
         if (empty($data) || PHPWS_Error::logIfError($data)) {
             return NULL;
         }

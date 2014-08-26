@@ -203,7 +203,8 @@ class FC_Document_Manager {
                 exit();
             }
             PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
-            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
+            // This function doesn't do anything
+            //FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             $this->document->moveToFolder();
             if (!isset($_POST['im'])) {
