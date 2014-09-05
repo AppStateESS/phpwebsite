@@ -105,7 +105,7 @@ abstract class Module extends Data implements Controller {
      * @see ModuleManager::afterRun()
      * @return void
      */
-    public function afterRun(\Request $request, \Response &$response)
+    public function afterRun(\Request $request, \Response $response)
     {
 
     }
