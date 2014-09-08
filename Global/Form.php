@@ -450,7 +450,7 @@ class Form extends Tag {
      */
     public function setAction($action)
     {
-        if (!preg_match('/^http:/i', $action)) {
+        if (!preg_match('/^http(s)?:/i', $action)) {
             $action = \Server::getSiteUrl() . $action;
         }
         $this->action = $action;
