@@ -34,6 +34,8 @@ class PHPWS_Link {
         }
         $this->secure = (bool)$secure;
         $this->salted = (bool)$salted;
+
+        $this->class_name = array();
     }
 
     public function get()
@@ -98,7 +100,16 @@ class PHPWS_Link {
 
     public function setClass($class_name)
     {
-        $this->class_name = strip_tags($class_name);
+        if(is_array($class_name)) {
+            $this->class_name = $class_name;
+        } else {
+            $this->class_name[] = strip_tags($class_name);
+        }
+    }
+
+    public function addClass($className)
+    {
+        $this->class_name[] = $className;
     }
 
     public function setModule($module)
@@ -180,7 +191,7 @@ class PHPWS_Link {
                 return sprintf('target="%s"', $this->target);
 
             case 'class_name':
-                return sprintf('class="%s"', $this->class_name);
+                return sprintf('class="%s"', implode(' ', $this->class_name));
 
             case 'style':
                 return sprintf('style="%s"', $this->style);
