@@ -565,7 +565,8 @@ class Calendar_User {
         $template['PICK'] = $date_pick;
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
-        $template['VIEW_LINKS'] = $this->viewLinks('grid');
+        //$template['VIEW_LINKS'] = $this->viewLinks('grid');
+        $template = array_merge($template, $this->viewLinks('grid'));
         $template['SCHEDULE_PICK'] = $this->schedulePick();
         $template['SUGGEST'] = $this->suggestLink();
         $template['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
@@ -800,7 +801,7 @@ class Calendar_User {
                 $view_name = dgettext('calendar', 'Today');
         }
 
-        return PHPWS_Text::moduleLink($view_name, 'calendar', $vars);
+        return PHPWS_Text::moduleLink($view_name, 'calendar', $vars, null, null, 'btn btn-default');
     }
 
     /**
@@ -939,7 +940,7 @@ class Calendar_User {
             unset($vars['y']);
         }
 
-        $links[] = $this->todayLink($current_view);
+        $links['today'] = $this->todayLink($current_view);
 
         if ($current_view == 'event') {
             $vars['date'] = $this->event->start_time;
@@ -959,23 +960,25 @@ class Calendar_User {
         }
 
         if ($current_view == 'grid') {
-            $links[] = dgettext('calendar', 'Grid');
+            $links['GRID'] = dgettext('calendar', 'Grid');
         } else {
             $vars['view'] = 'grid';
             $glink = new PHPWS_Link(dgettext('calendar', 'Grid'), 'calendar',
                     $vars);
             $glink->setNoFollow($no_follow);
-            $links[] = $glink->get();
+            $glink->addClass('btn btn-default');
+            $links['GRID'] = $glink->get();
         }
 
         if ($current_view == 'list') {
-            $links[] = dgettext('calendar', 'Month');
+            $links['LIST'] = dgettext('calendar', 'Month');
         } else {
             $vars['view'] = 'list';
             $glink = new PHPWS_Link(dgettext('calendar', 'Month'), 'calendar',
                     $vars);
+            $glink->addClass('btn btn-default');
             $glink->setNoFollow($no_follow);
-            $links[] = $glink->get();
+            $links['LIST'] = $glink->get();
         }
 
 
@@ -987,13 +990,14 @@ class Calendar_User {
             $left_link_title = dgettext('calendar', 'Previous week');
             $right_link_title = dgettext('calendar', 'Next week');
 
-            $links[] = dgettext('calendar', 'Week');
+            $links['WEEK'] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
             $wlink = new PHPWS_Link(dgettext('calendar', 'Week'), 'calendar',
                     $vars);
             $wlink->setNoFollow($no_follow);
-            $links[] = $wlink->get();
+            $wlink->addClass('btn btn-default');
+            $links['WEEK'] = $wlink->get();
         }
 
         if ($current_view == 'day') {
@@ -1005,13 +1009,14 @@ class Calendar_User {
             $left_link_title = dgettext('calendar', 'Previous day');
             $right_link_title = dgettext('calendar', 'Next day');
 
-            $links[] = dgettext('calendar', 'Day');
+            $links['DAY_LINK'] = dgettext('calendar', 'Day');
         } else {
             $vars['view'] = 'day';
             $dlink = new PHPWS_Link(dgettext('calendar', 'Day'), 'calendar',
                     $vars);
+            $dlink->addClass('btn btn-default');
             $dlink->setNoFollow($no_follow);
-            $links[] = $dlink->get();
+            $links['DAY_LINK'] = $dlink->get();
         }
 
         $vars['view'] = $current_view;
@@ -1019,19 +1024,22 @@ class Calendar_User {
         if (!empty($left_arrow_time)) {
             $vars['date'] = $left_arrow_time;
             $larrow = new PHPWS_Link('<i class="fa fa-chevron-left"></i>', 'calendar', $vars);
+            $larrow->addClass('btn btn-default');
             $larrow->setTitle($left_link_title);
             $larrow->setNoFollow($no_follow);
-            array_unshift($links, $larrow->get());
+            $links['LEFT_ARROW'] = $larrow->get();
         }
 
         if (!empty($right_arrow_time)) {
             $vars['date'] = $right_arrow_time;
             $rarrow = new PHPWS_Link('<i class="fa fa-chevron-right"></i>', 'calendar', $vars);
+            $rarrow->addClass('btn btn-default');
             $rarrow->setTitle($right_link_title);
             $rarrow->setNoFollow($no_follow);
-            $links[] = $rarrow->get();
+            $links['RIGHT_ARROW'] = $rarrow->get();
         }
-        return "<button class='btn btn-default'>" . implode('</button><button class="btn btn-default">', $links) . "</button>";
+
+        return $links;
     }
 
     public function week()

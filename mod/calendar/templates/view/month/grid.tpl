@@ -1,14 +1,26 @@
-<div class="box">
-<div class="box-title">
-<h2 class="text-center"><!-- BEGIN title -->{TITLE} -<!-- END title -->
-{FULL_MONTH_NAME}, {FULL_YEAR} {DOWNLOAD}</h2>
-<div class="btn-group-wrap">
-        <div class="view-links btn-group">{VIEW_LINKS}<br />
-            {SUGGEST}</div>
-            </div>
-<div class="align-center smaller">{SCHEDULE_PICK}</div>
+<div class="pull-right">
+{DOWNLOAD}
 </div>
-<div class="box-content">
+
+<h2 class="text-center"><!-- BEGIN title -->{TITLE} -<!-- END title -->
+    {FULL_MONTH_NAME}, {FULL_YEAR}
+</h2>
+
+<div class="pull-right">
+{LIST} {WEEK} {DAY_LINK}
+</div>
+
+<div class="view-links btn-group">
+    {LEFT_ARROW}{RIGHT_ARROW}
+</div>
+
+{SUGGEST}
+
+
+<div class="align-center smaller">
+    {SCHEDULE_PICK}
+</div>
+
 <div class="month-view-full">
 <table>
     <tr>
@@ -35,6 +47,4 @@
     </tr>
     <!-- END calendar-row -->
 </table>
-</div>
-</div>
 </div>
