@@ -350,7 +350,7 @@ class PHAT_Report {
             }
             $rowTags['ENTRY_LABEL'] = $key;
 
-            if(preg_match('/a:.:{/', $value)) {
+            if(preg_match('/a:\d+:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize($value));
             } else {
                 $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value, ENCODE_PARSED_TEXT, false, true);

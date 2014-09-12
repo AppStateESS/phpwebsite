@@ -71,12 +71,11 @@ class PHAT_Checkbox extends PHAT_Element {
             }
 
             $option_value = $optionValues[$i];
-            $element = new Form_CheckBox('PHAT_' . $label, $option_value);
+            $element = new Form_CheckBox('PHAT_' . $label . '[' . $i . ']', $option_value);
             $element->setMatch($match);
             $id = preg_replace('/\W/', '', $option_value) . $i;
             $element->setId($id);
             $label_text = "<label for='$id'>" . $optionText[$i] . "</label>";
-
             $viewTags['CHECK_BOXES'] .= $element->get() . " $label_text<br />\n";
         }
 
