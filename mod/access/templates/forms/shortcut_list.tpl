@@ -1,3 +1,4 @@
+<div style="float : right">{SEARCH}</div>
 {PAGE_FORWARDING}<br />
 {PAGE_FIX}<br />
 {MENU_FIX} (<i>{MENU_WARNING}</i>)
@@ -24,6 +25,5 @@
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
 <!-- END empty -->
-<div style="float : right">{SEARCH}</div>
 <div>{CHECK_ALL_SHORTCUTS}<br /> {LIST_ACTION} {SUBMIT}</div>
 {END_FORM}
