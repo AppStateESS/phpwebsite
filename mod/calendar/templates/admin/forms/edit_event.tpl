@@ -19,46 +19,44 @@
 <hr />
 <!-- END hr -->
 {START_FORM}
-<div id="event-tab" style="display: block">
-<table class="form-table">
+<div id="event-tab" class="col-sm-12">
+   <div class="form-group">
+    <div class="col-xs-2">{SUMMARY_LABEL}</div>
+    <div class="col-xs-10">{SUMMARY}</div>
+   </div>
+     <div class="form-group">
+      <div class="col-xs-2">{LOCATION_LABEL}</div>
+      <div class="col-xs-10">{LOCATION}</div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-2">{LOC_LINK_LABEL}</div>
+        <div class="col-xs-10">{LOC_LINK}</div>
+    </div>
+     <div class="form-group">
+        <div class="col-xs-2">{DESCRIPTION_LABEL}</div>
+        <div class="col-xs-10">{DESCRIPTION}</div>
+    </div>
+  
+    
+<table class="table">
     <tr>
-        <td>{SUMMARY_LABEL}</td>
-        <td>{SUMMARY}</td>
-    </tr>
+        <td>{START_DATE_LABEL}<br><small style="display:inline; font-size: .7em">(YYYY/MM/DD)</small></td>
+        <td>{START_DATE}</td><td>{START_CAL}</td><td><span id="start-time" style="display: inline">{START_TIME_HOUR} {START_TIME_MINUTE}</span></td>
+        <td>{ALL_DAY_LABEL}</td><td> {ALL_DAY}</td>
+    </tr> 
+    
+       
     <tr>
-        <td>{LOCATION_LABEL}</td>
-        <td>{LOCATION}</td>
-    </tr>
-    <tr>
-        <td>{LOC_LINK_LABEL}</td>
-        <td>{LOC_LINK}</td>
-    </tr>
-    <tr>
-        <td>{DESCRIPTION_LABEL}</td>
-        <td>{DESCRIPTION}</td>
-    </tr>
-    <tr>
-        <td>{START_DATE_LABEL}<br />
-        <small style="font-weight: normal">YYYY/MM/DD</small>
-        </td>
-        <td>{START_DATE} {START_CAL} <span id="start-time"
-            style="display: inline"
-        >{START_TIME_HOUR}:{START_TIME_MINUTE}</span> {ALL_DAY}
-        {ALL_DAY_LABEL}</td>
-    </tr>
-    <tr>
-        <td>{END_DATE_LABEL}<br />
-        <small style="font-weight: normal">YYYY/MM/DD</small></td>
-        <td>{END_DATE} {END_CAL} <span id="end-time"
-            style="display: inline"
-        >{END_TIME_HOUR}:{END_TIME_MINUTE}</span> {SHOW_BUSY}
-        {SHOW_BUSY_LABEL}</td>
-    </tr>
+        <td>{END_DATE_LABEL}<br><small style="display:inline; font-size: .7em">(YYYY/MM/DD)</small></td>
+        <td>{END_DATE}</td><td>{END_CAL}</td><td><span id="end-time" style="display: inline">{END_TIME_HOUR} {END_TIME_MINUTE}</span></td>
+        <td>{SHOW_BUSY_LABEL}</td><td> {SHOW_BUSY}</td>
+    </tr> 
+    
 </table>
 </div>
-<div id="repeat-tab" style="display: none">{REPEAT_EVENT}
+<div id="repeat-tab" class="col-sm-12" style="display: none">{REPEAT_EVENT}
 {REPEAT_EVENT_LABEL}
-<table class="form-table">
+<table class="table">
     <tr>
         <td>{END_REPEAT_DATE_LABEL}</td>
         <td>{END_REPEAT_DATE} {END_REPEAT}</td>
@@ -73,8 +71,8 @@
         {WEEKDAY_REPEAT_1_LABEL}</span> <span>{WEEKDAY_REPEAT_2}
         {WEEKDAY_REPEAT_2_LABEL}</span> <span>{WEEKDAY_REPEAT_3}
         {WEEKDAY_REPEAT_3_LABEL}</span> <span>{WEEKDAY_REPEAT_4}
-        {WEEKDAY_REPEAT_4_LABEL}</span> <br />
-        <span>{WEEKDAY_REPEAT_5} {WEEKDAY_REPEAT_5_LABEL}</span> <span>{WEEKDAY_REPEAT_6}
+        {WEEKDAY_REPEAT_4_LABEL}</span> <span>{WEEKDAY_REPEAT_5} 
+        {WEEKDAY_REPEAT_5_LABEL}</span> <span>{WEEKDAY_REPEAT_6}
         {WEEKDAY_REPEAT_6_LABEL}</span> <span>{WEEKDAY_REPEAT_7}
         {WEEKDAY_REPEAT_7_LABEL}</span></td>
     </tr>
