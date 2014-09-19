@@ -170,18 +170,22 @@ class Calendar_Admin {
         $form->addHidden('sch_id', $event->_schedule->id);
 
         $form->addText('summary', $event->summary);
-        $form->setLabel('summary', dgettext('calendar', 'Summary'));
+        $form->setClass('summary', 'form-control');
+        $form->setLabel('summary', dgettext('calendar', 'Event Title'));
         $form->setSize('summary', 60);
 
         $form->addText('location', $event->location);
+        $form->setClass('location', 'form-control');
         $form->setLabel('location', dgettext('calendar', 'Location'));
         $form->setSize('location', 60);
 
         $form->addText('loc_link', $event->loc_link);
+        $form->setClass('loc_link', 'form-control');
         $form->setLabel('loc_link', dgettext('calendar', 'Location link'));
         $form->setSize('loc_link', 60);
 
         $form->addTextArea('description', $event->description);
+        $form->setClass('description', 'form-control');
 
         if (!Editor::willWork() || $suggest) {
             $form->setRows('description', 8);
@@ -193,15 +197,18 @@ class Calendar_Admin {
         $form->setLabel('description', dgettext('calendar', 'Description'));
 
         $form->addText('start_date', $event->getStartTime('%Y/%m/%d'));
+        $form->setClass('start_date', 'form-control');
         $form->setLabel('start_date', dgettext('calendar', 'Start time'));
         $form->setExtra('start_date', 'onblur="check_start_date()"');
 
         $form->addText('end_date', $event->getEndTime('%Y/%m/%d'));
+        $form->setClass('end_date', 'form-control');
         $form->setLabel('end_date', dgettext('calendar', 'End time'));
         $form->setExtra('end_date', 'onblur="check_end_date()" onfocus="check_start_date()"');
 
         if (javascriptEnabled()) {
             $form->addButton('close', dgettext('calendar', 'Cancel'));
+            $form->setClass('close', 'btn btn-default');
             $form->setExtra('close', 'onclick="window.close()"');
         }
 
@@ -209,6 +216,10 @@ class Calendar_Admin {
         $event->timeForm('end_time', $event->end_time, $form);
 
         $form->setExtra('start_time_hour', 'onchange="check_start_date()"');
+        $form->setClass('start_time_hour', 'form-control');
+        $form->setClass('start_time_minute', 'form-control');
+        $form->setClass('end_time_hour', 'form-control');
+        $form->setClass('end_time_minute', 'form-control');
         $form->setExtra('end_time_hour', 'onchange="check_end_date()"');
 
         $form->addCheck('all_day', 1);
@@ -234,6 +245,7 @@ class Calendar_Admin {
             $form->setLabel('repeat_event', dgettext('calendar', 'Make a repeating event'));
 
             $form->addText('end_repeat_date', $event->getEndRepeat('%Y/%m/%d'));
+            $form->setClass('end_repeat_date', 'form-control');
             $form->setLabel('end_repeat_date', dgettext('calendar', 'Repeat event until:'));
 
             $modes = array('daily',
@@ -272,6 +284,7 @@ class Calendar_Admin {
             );
 
             $form->addSelect('monthly_repeat', $monthly);
+            $form->setClass('monthly_repeat', 'form-control');
 
             $every_repeat_week = array(1   => dgettext('calendar', '1st'),
             2   => dgettext('calendar', '2nd'),
@@ -295,8 +308,11 @@ class Calendar_Admin {
             12 => strftime('%B', mktime(0,0,0,12,1,1970)));
 
             $form->addSelect('every_repeat_number', $every_repeat_week);
+            $form->setClass('every_repeat_number', 'form-control');
             $form->addSelect('every_repeat_weekday', $weekday_labels);
+            $form->setClass('every_repeat_weekday', 'form-control');
             $form->addSelect('every_repeat_frequency', $frequency);
+            $form->setClass('every_repeat_frequency', 'form-control');
 
             /* set repeat form matches */
 
@@ -333,6 +349,7 @@ class Calendar_Admin {
                 $form->addHidden('pid', $event->pid);
                 // This is a repeat copy, if saved it removes it from the copy list
                 $form->addSubmit('save', dgettext('calendar', 'Save and remove repeat'));
+                $form->setClass('save', dgettext('calendar', 'btn btn-default'));
                 $form->setExtra('save', sprintf('onclick="return confirm(\'%s\')"',
                 dgettext('calendar', 'Remove event from repeat list?')) );
             } elseif ($event->id && $event->repeat_type) {
@@ -342,11 +359,14 @@ class Calendar_Admin {
                 // Not sure if coding this portion. commenting for now
                 // $form->addSubmit('save_source', dgettext('calendar', 'Save this event only'));
                 $form->addSubmit('save_copy', dgettext('calendar', 'Save and apply to repeats'));
+                $form->setClass('save_copy', dgettext('calendar', 'btn btn-default'));
+                
                 $form->setExtra('save_copy', sprintf('onclick="return confirm(\'%s\')"',
                 dgettext('calendar', 'Apply changes to repeats?')) );
             } else {
                 // this is a non-repeating event
                 $form->addSubmit('save', dgettext('calendar', 'Save event'));
+                $form->setClass('save', dgettext('calendar', 'btn btn-default'));
             }
         }
 
@@ -364,8 +384,8 @@ class Calendar_Admin {
         if (!$suggest) {
             $js_vars['date_name'] = 'end_repeat_date';
             $tpl['END_REPEAT'] = javascript('js_calendar', $js_vars);
-            $tpl['EVENT_TAB'] = dgettext('calendar', 'Event');
-            $tpl['REPEAT_TAB'] = dgettext('calendar', 'Repeat');
+            $tpl['EVENT_TAB'] = dgettext('calendar', 'Event Information');
+            $tpl['REPEAT_TAB'] = dgettext('calendar', 'Repeat Settings');
         }
 
         if (isset($event->_error)) {
@@ -384,7 +404,7 @@ class Calendar_Admin {
             $tpl['REPEAT_WARNING'] = dgettext('calendar', 'This is a repeat of another event.') . '<br />' . $source_link;
         }
 
-        $tpl['SYNC'] = sprintf('<input type="button" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />', dgettext('calendar', 'Sync dates'));
+        $tpl['SYNC'] = sprintf('<input type="button" class="btn btn-warning" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />', dgettext('calendar', 'Sync dates'));
 
         if (javascriptEnabled()) {
             javascriptMod('calendar', 'edit_event');
@@ -1352,7 +1372,7 @@ class Calendar_Admin {
             $vars['js'] = 1;
             $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
             $js_vars['label']   = $label;
-            $js_vars['width']   = 640;
+            $js_vars['width']   = 768;
             $js_vars['height']  = 640;
             $js_vars['class'] = 'btn btn-success';
             $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
