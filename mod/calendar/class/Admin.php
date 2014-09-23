@@ -8,16 +8,15 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class Calendar_Admin {
+
     /**
      * @var pointer to the parent object
      */
     public $calendar = null;
-    public $title    = null;
-    public $content  = null;
-    public $message  = null;
-
+    public $title = null;
+    public $content = null;
+    public $message = null;
 
     public function __construct()
     {
@@ -69,10 +68,12 @@ class Calendar_Admin {
         $pager->addRowTags('getTpl');
         $pager->addToggle('class="bgcolor2"');
 
-        $page_tags['TITLE_LABEL']    = dgettext('calendar', 'Title / Time / Description');
+        $page_tags['TITLE_LABEL'] = dgettext('calendar',
+                'Title / Time / Description');
         $page_tags['LOCATION_LABEL'] = dgettext('calendar', 'Location');
-        $page_tags['ACTION_LABEL']   = dgettext('calendar', 'Action');
-        $pager->setEmptyMessage(dgettext('calendar', 'No suggestions to approve.'));
+        $page_tags['ACTION_LABEL'] = dgettext('calendar', 'Action');
+        $pager->setEmptyMessage(dgettext('calendar',
+                        'No suggestions to approve.'));
         $pager->addPageTags($page_tags);
 
         $this->title = dgettext('calendar', 'Suggested events');
@@ -81,13 +82,13 @@ class Calendar_Admin {
 
     public function approveSuggestion($id)
     {
-        if ( !Current_User::authorized('calendar', 'edit_public') ||
-        Current_User::isRestricted('calendar') ) {
+        if (!Current_User::authorized('calendar', 'edit_public') ||
+                Current_User::isRestricted('calendar')) {
             PHPWS_Core::errorPage('403');
         }
 
         PHPWS_Core::initModClass('calendar', 'Suggestion.php');
-        $suggestion = new Calendar_Suggestion((int)$id);
+        $suggestion = new Calendar_Suggestion((int) $id);
         if (!$suggestion->id) {
             PHPWS_Core::errorPage('404');
         }
@@ -111,13 +112,13 @@ class Calendar_Admin {
 
     public function disapproveSuggestion($id)
     {
-        if ( !Current_User::authorized('calendar', 'edit_public') ||
-        Current_User::isRestricted('calendar') ) {
+        if (!Current_User::authorized('calendar', 'edit_public') ||
+                Current_User::isRestricted('calendar')) {
             PHPWS_Core::errorPage('403');
         }
 
         PHPWS_Core::initModClass('calendar', 'Suggestion.php');
-        $suggestion = new Calendar_Suggestion((int)$id);
+        $suggestion = new Calendar_Suggestion((int) $id);
         if (!$suggestion->id) {
             PHPWS_Core::errorPage('404');
         }
@@ -150,7 +151,7 @@ class Calendar_Admin {
     /**
      * Creates the edit form for an event
      */
-    public function event_form(Calendar_Event $event, $suggest=false)
+    public function event_form(Calendar_Event $event, $suggest = false)
     {
         Layout::addStyle('calendar');
 
@@ -198,7 +199,8 @@ class Calendar_Admin {
 
         $form->addText('end_date', $event->getEndTime('%Y/%m/%d'));
         $form->setLabel('end_date', dgettext('calendar', 'End time'));
-        $form->setExtra('end_date', 'onblur="check_end_date()" onfocus="check_start_date()"');
+        $form->setExtra('end_date',
+                'onblur="check_end_date()" onfocus="check_start_date()"');
 
         if (javascriptEnabled()) {
             $form->addButton('close', dgettext('calendar', 'Cancel'));
@@ -227,72 +229,76 @@ class Calendar_Admin {
         } else {
             // Suggested events are not allowed repeats
             /**
-            * Repeat form elements
-            */
-
+             * Repeat form elements
+             */
             $form->addCheck('repeat_event', 1);
-            $form->setLabel('repeat_event', dgettext('calendar', 'Make a repeating event'));
+            $form->setLabel('repeat_event',
+                    dgettext('calendar', 'Make a repeating event'));
 
             $form->addText('end_repeat_date', $event->getEndRepeat('%Y/%m/%d'));
-            $form->setLabel('end_repeat_date', dgettext('calendar', 'Repeat event until:'));
+            $form->setLabel('end_repeat_date',
+                    dgettext('calendar', 'Repeat event until:'));
 
             $modes = array('daily',
-                           'weekly',
-                           'monthly',
-                           'yearly',
-                           'every');
+                'weekly',
+                'monthly',
+                'yearly',
+                'every');
 
 
             $modes_label = array(dgettext('calendar', 'Daily'),
-            dgettext('calendar', 'Weekly'),
-            dgettext('calendar', 'Monthly'),
-            dgettext('calendar', 'Yearly'),
-            dgettext('calendar', 'Every'));
+                dgettext('calendar', 'Weekly'),
+                dgettext('calendar', 'Monthly'),
+                dgettext('calendar', 'Yearly'),
+                dgettext('calendar', 'Every'));
 
             $form->addRadio('repeat_mode', $modes);
             $form->setLabel('repeat_mode', $modes_label);
 
-            $weekdays = array(1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7);
+            $weekdays = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7);
 
-            $weekday_labels = array(1=>strftime('%A', mktime(0,0,0,1,5,1970)),
-            2=>strftime('%A', mktime(0,0,0,1,6,1970)),
-            3=>strftime('%A', mktime(0,0,0,1,7,1970)),
-            4=>strftime('%A', mktime(0,0,0,1,8,1970)),
-            5=>strftime('%A', mktime(0,0,0,1,9,1970)),
-            6=>strftime('%A', mktime(0,0,0,1,10,1970)),
-            7=>strftime('%A', mktime(0,0,0,1,11,1970))
+            $weekday_labels = array(1 => strftime('%A',
+                        mktime(0, 0, 0, 1, 5, 1970)),
+                2 => strftime('%A', mktime(0, 0, 0, 1, 6, 1970)),
+                3 => strftime('%A', mktime(0, 0, 0, 1, 7, 1970)),
+                4 => strftime('%A', mktime(0, 0, 0, 1, 8, 1970)),
+                5 => strftime('%A', mktime(0, 0, 0, 1, 9, 1970)),
+                6 => strftime('%A', mktime(0, 0, 0, 1, 10, 1970)),
+                7 => strftime('%A', mktime(0, 0, 0, 1, 11, 1970))
             );
 
             $form->addCheck('weekday_repeat', $weekdays);
             $form->setLabel('weekday_repeat', $weekday_labels);
 
-            $monthly = array('begin' => dgettext('calendar', 'Beginning of each month'),
-                             'end'   => dgettext('calendar', 'End of each month'),
-                             'start' => dgettext('calendar', 'Every month on start date')
+            $monthly = array('begin' => dgettext('calendar',
+                        'Beginning of each month'),
+                'end' => dgettext('calendar', 'End of each month'),
+                'start' => dgettext('calendar', 'Every month on start date')
             );
 
             $form->addSelect('monthly_repeat', $monthly);
 
-            $every_repeat_week = array(1   => dgettext('calendar', '1st'),
-            2   => dgettext('calendar', '2nd'),
-            3   => dgettext('calendar', '3rd'),
-            4   => dgettext('calendar', '4th'),
-            5   => dgettext('calendar', 'Last')
+            $every_repeat_week = array(1 => dgettext('calendar', '1st'),
+                2 => dgettext('calendar', '2nd'),
+                3 => dgettext('calendar', '3rd'),
+                4 => dgettext('calendar', '4th'),
+                5 => dgettext('calendar', 'Last')
             );
 
-            $frequency = array('every_month' => dgettext('calendar', 'Every month'),
-            1 => strftime('%B', mktime(0,0,0,1,1,1970)),
-            2 => strftime('%B', mktime(0,0,0,2,1,1970)),
-            3 => strftime('%B', mktime(0,0,0,3,1,1970)),
-            4 => strftime('%B', mktime(0,0,0,4,1,1970)),
-            5 => strftime('%B', mktime(0,0,0,5,1,1970)),
-            6 => strftime('%B', mktime(0,0,0,6,1,1970)),
-            7 => strftime('%B', mktime(0,0,0,7,1,1970)),
-            8 => strftime('%B', mktime(0,0,0,8,1,1970)),
-            9 => strftime('%B', mktime(0,0,0,9,1,1970)),
-            10 => strftime('%B', mktime(0,0,0,10,1,1970)),
-            11 => strftime('%B', mktime(0,0,0,11,1,1970)),
-            12 => strftime('%B', mktime(0,0,0,12,1,1970)));
+            $frequency = array('every_month' => dgettext('calendar',
+                        'Every month'),
+                1 => strftime('%B', mktime(0, 0, 0, 1, 1, 1970)),
+                2 => strftime('%B', mktime(0, 0, 0, 2, 1, 1970)),
+                3 => strftime('%B', mktime(0, 0, 0, 3, 1, 1970)),
+                4 => strftime('%B', mktime(0, 0, 0, 4, 1, 1970)),
+                5 => strftime('%B', mktime(0, 0, 0, 5, 1, 1970)),
+                6 => strftime('%B', mktime(0, 0, 0, 6, 1, 1970)),
+                7 => strftime('%B', mktime(0, 0, 0, 7, 1, 1970)),
+                8 => strftime('%B', mktime(0, 0, 0, 8, 1, 1970)),
+                9 => strftime('%B', mktime(0, 0, 0, 9, 1, 1970)),
+                10 => strftime('%B', mktime(0, 0, 0, 10, 1, 1970)),
+                11 => strftime('%B', mktime(0, 0, 0, 11, 1, 1970)),
+                12 => strftime('%B', mktime(0, 0, 0, 12, 1, 1970)));
 
             $form->addSelect('every_repeat_number', $every_repeat_week);
             $form->addSelect('every_repeat_weekday', $weekday_labels);
@@ -309,7 +315,7 @@ class Calendar_Admin {
 
                 $form->setMatch('repeat_mode', $repeat_mode_match);
 
-                switch($repeat_mode_match) {
+                switch ($repeat_mode_match) {
                     case 'weekly':
                         $form->setMatch('weekday_repeat', $repeat_vars);
                         break;
@@ -321,7 +327,8 @@ class Calendar_Admin {
                     case 'every':
                         $form->setMatch('every_repeat_number', $repeat_vars[0]);
                         $form->setMatch('every_repeat_weekday', $repeat_vars[1]);
-                        $form->setMatch('every_repeat_frequency', $repeat_vars[2]);
+                        $form->setMatch('every_repeat_frequency',
+                                $repeat_vars[2]);
                         break;
                 }
 
@@ -332,18 +339,22 @@ class Calendar_Admin {
             if ($event->pid) {
                 $form->addHidden('pid', $event->pid);
                 // This is a repeat copy, if saved it removes it from the copy list
-                $form->addSubmit('save', dgettext('calendar', 'Save and remove repeat'));
-                $form->setExtra('save', sprintf('onclick="return confirm(\'%s\')"',
-                dgettext('calendar', 'Remove event from repeat list?')) );
+                $form->addSubmit('save',
+                        dgettext('calendar', 'Save and remove repeat'));
+                $form->setExtra('save',
+                        sprintf('onclick="return confirm(\'%s\')"',
+                                dgettext('calendar',
+                                        'Remove event from repeat list?')));
             } elseif ($event->id && $event->repeat_type) {
                 // This is event is a source repeating event
-
                 // Save this
                 // Not sure if coding this portion. commenting for now
                 // $form->addSubmit('save_source', dgettext('calendar', 'Save this event only'));
-                $form->addSubmit('save_copy', dgettext('calendar', 'Save and apply to repeats'));
-                $form->setExtra('save_copy', sprintf('onclick="return confirm(\'%s\')"',
-                dgettext('calendar', 'Apply changes to repeats?')) );
+                $form->addSubmit('save_copy',
+                        dgettext('calendar', 'Save and apply to repeats'));
+                $form->setExtra('save_copy',
+                        sprintf('onclick="return confirm(\'%s\')"',
+                                dgettext('calendar', 'Apply changes to repeats?')));
             } else {
                 // this is a non-repeating event
                 $form->addSubmit('save', dgettext('calendar', 'Save event'));
@@ -373,27 +384,31 @@ class Calendar_Admin {
         }
 
         if ($event->pid) {
-            $linkvar['aop']      = 'edit_event';
-            $linkvar['sch_id']   = $event->_schedule->id;
+            $linkvar['aop'] = 'edit_event';
+            $linkvar['sch_id'] = $event->_schedule->id;
             $linkvar['event_id'] = $event->pid;
             if (javascriptEnabled()) {
                 $linkvar['js'] = 1;
             }
 
-            $source_link = PHPWS_Text::moduleLink(dgettext('calendar', 'Click here if you would prefer to edit the source event.'), 'calendar', $linkvar);
-            $tpl['REPEAT_WARNING'] = dgettext('calendar', 'This is a repeat of another event.') . '<br />' . $source_link;
+            $source_link = PHPWS_Text::moduleLink(dgettext('calendar',
+                                    'Click here if you would prefer to edit the source event.'),
+                            'calendar', $linkvar);
+            $tpl['REPEAT_WARNING'] = dgettext('calendar',
+                            'This is a repeat of another event.') . '<br />' . $source_link;
         }
 
-        $tpl['SYNC'] = sprintf('<input type="button" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />', dgettext('calendar', 'Sync dates'));
+        $tpl['SYNC'] = sprintf('<input type="button" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />',
+                dgettext('calendar', 'Sync dates'));
 
         if (javascriptEnabled()) {
             javascriptMod('calendar', 'edit_event');
             javascriptMod('calendar', 'check_date');
         }
 
-        return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
+        return PHPWS_Template::process($tpl, 'calendar',
+                        'admin/forms/edit_event.tpl');
     }
-
 
     public function getPanel()
     {
@@ -401,15 +416,16 @@ class Calendar_Admin {
 
         $vars['aop'] = 'schedules';
         $tabs['schedules'] = array('title' => dgettext('calendar', 'Schedules'),
-                                   'link' => PHPWS_Text::linkAddress('calendar', $vars));
+            'link' => PHPWS_Text::linkAddress('calendar', $vars));
 
         if (Current_User::allow('calendar', 'settings')) {
             $vars['aop'] = 'settings';
-            $tabs['settings']    = array('title' => dgettext('calendar', 'Settings'),
-                                         'link' => PHPWS_Text::linkAddress('calendar', $vars));
+            $tabs['settings'] = array('title' => dgettext('calendar', 'Settings'),
+                'link' => PHPWS_Text::linkAddress('calendar', $vars));
         }
 
-        if (Current_User::isUnrestricted('calendar') && Current_User::allow('calendar', 'edit_public')) {
+        if (Current_User::isUnrestricted('calendar') && Current_User::allow('calendar',
+                        'edit_public')) {
             $vars['aop'] = 'approval';
             $db = new PHPWS_DB('calendar_suggestions');
             $count = $db->count();
@@ -417,9 +433,9 @@ class Calendar_Admin {
                 PHPWS_Error::log($count);
                 $count = 0;
             }
-            $tabs['approval']    = array('title' => sprintf(dgettext('calendar', 'Approval (%s)'), $count),
-                                         'link' => PHPWS_Text::linkAddress('calendar', $vars));
-
+            $tabs['approval'] = array('title' => sprintf(dgettext('calendar',
+                                'Approval (%s)'), $count),
+                'link' => PHPWS_Text::linkAddress('calendar', $vars));
         }
 
         $panel->quickSetTabs($tabs);
@@ -469,14 +485,12 @@ class Calendar_Admin {
                 $event = $this->calendar->schedule->loadEvent();
                 if ($this->calendar->current_date) {
                     $event->start_time = mktime(12, 0, 0,
-                    $this->calendar->int_month,
-                    $this->calendar->int_day,
-                    $this->calendar->int_year);
+                            $this->calendar->int_month,
+                            $this->calendar->int_day, $this->calendar->int_year);
 
                     $event->end_time = mktime(12, 0, 0,
-                    $this->calendar->int_month,
-                    $this->calendar->int_day,
-                    $this->calendar->int_year);
+                            $this->calendar->int_month,
+                            $this->calendar->int_day, $this->calendar->int_year);
                 }
 
                 $this->editEvent($event);
@@ -484,8 +498,8 @@ class Calendar_Admin {
 
             case 'create_schedule':
                 if (!Current_User::allow('calendar') ||
-                (!Current_User::allow('calendar', 'edit_public') &&
-                !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
+                        (!Current_User::allow('calendar', 'edit_public') &&
+                        !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
                     Current_User::disallow();
                 }
                 $this->calendar->schedule = new Calendar_Schedule;
@@ -495,8 +509,8 @@ class Calendar_Admin {
 
             case 'blog_event':
                 if (PHPWS_Core::moduleExists('blog') &&
-                Current_User::allow('blog', 'edit_blog') &&
-                $this->calendar->schedule->checkPermissions(true)) {
+                        Current_User::allow('blog', 'edit_blog') &&
+                        $this->calendar->schedule->checkPermissions(true)) {
                     $event = $this->calendar->schedule->loadEvent();
                     $this->blogEvent();
                 }
@@ -504,8 +518,8 @@ class Calendar_Admin {
 
             case 'post_blog':
                 if (PHPWS_Core::moduleExists('blog') &&
-                Current_User::allow('blog', 'edit_blog') &&
-                $this->calendar->schedule->checkPermissions(true)) {
+                        Current_User::allow('blog', 'edit_blog') &&
+                        $this->calendar->schedule->checkPermissions(true)) {
                     $this->postBlog();
                 }
                 javascript('close_refresh');
@@ -535,7 +549,8 @@ class Calendar_Admin {
             case 'delete_schedule':
                 if (Current_User::authorized('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
                     $this->calendar->schedule->delete();
-                    $this->sendMessage(dgettext('calendar', 'Schedule deleted.'), 'schedules');
+                    $this->sendMessage(dgettext('calendar', 'Schedule deleted.'),
+                            'schedules');
                 } else {
                     Current_User::disallow();
                 }
@@ -560,9 +575,11 @@ class Calendar_Admin {
 
             case 'make_default_public':
                 if (Current_User::isUnrestricted('calendar')) {
-                    PHPWS_Settings::set('calendar', 'public_schedule', (int)$_REQUEST['sch_id']);
+                    PHPWS_Settings::set('calendar', 'public_schedule',
+                            (int) $_REQUEST['sch_id']);
                     PHPWS_Settings::save('calendar');
-                    $this->message =dgettext('calendar', 'Default public schedule set.');
+                    $this->message = dgettext('calendar',
+                            'Default public schedule set.');
                 }
                 $this->scheduleListing();
                 break;
@@ -620,7 +637,7 @@ class Calendar_Admin {
         }
 
         $tpl['CONTENT'] = $this->content;
-        $tpl['TITLE']   = $this->title;
+        $tpl['TITLE'] = $this->title;
 
         if (is_array($this->message)) {
             $tpl['MESSAGE'] = implode('<br />', $this->message);
@@ -657,15 +674,18 @@ class Calendar_Admin {
 
             if (!is_array($result)) {
                 $error = true;
-                $content[] = dgettext('calendar', 'Unable to parse file for events.');
+                $content[] = dgettext('calendar',
+                        'Unable to parse file for events.');
             } elseif (trim($result[0]) != 'BEGIN:VCALENDAR') {
                 $error = true;
-                $content[] = dgettext('calendar', 'File does not appear to be in iCal/vCal format.');
+                $content[] = dgettext('calendar',
+                        'File does not appear to be in iCal/vCal format.');
             }
         }
 
         if ($error) {
-            $content[] = $this->calendar->schedule->uploadEventsLink(false, dgettext('calendar', 'Return to upload form...'));
+            $content[] = $this->calendar->schedule->uploadEventsLink(false,
+                    dgettext('calendar', 'Return to upload form...'));
             $this->title = dgettext('calendar', 'Error');
             $this->content = implode('<br />', $content);
             return;
@@ -689,7 +709,7 @@ class Calendar_Admin {
             if ($semicolon = strpos($cal, ';')) {
                 $command = substr($cal, 0, $semicolon);
             }
-            $value = substr($cal, $colon+1, strlen($cal));
+            $value = substr($cal, $colon + 1, strlen($cal));
 
             if (empty($value)) {
                 continue;
@@ -766,7 +786,8 @@ class Calendar_Admin {
 
                         if (!empty($result)) {
                             if (PHPWS_Error::logIfError($result)) {
-                                $parse_errors[] = dgettext('calendar', 'Error accessing event table.');
+                                $parse_errors[] = dgettext('calendar',
+                                        'Error accessing event table.');
                             } else {
                                 $duplicates++;
                             }
@@ -774,7 +795,8 @@ class Calendar_Admin {
                             $save = $event->save();
 
                             if (PHPWS_Error::logIfError($save) || !$save) {
-                                $parse_errors[] = dgettext('calendar', 'Error saving new event.');
+                                $parse_errors[] = dgettext('calendar',
+                                        'Error saving new event.');
                             } else {
                                 $success++;
                             }
@@ -783,18 +805,20 @@ class Calendar_Admin {
                     }
                     break;
             }
-
         }
 
         $this->title = dgettext('calendar', 'Import complete!');
 
         if (isset($parse_errors)) {
-            $content[] = dgettext('calendar', 'The following errors occurred when trying to import your events:');
+            $content[] = dgettext('calendar',
+                    'The following errors occurred when trying to import your events:');
             $content[] = '<ul><li>' . implode('</li><li>', $parse_errors) . '</li></ul>';
         }
 
-        $content[] = sprintf(dgettext('calendar', '%s event(s) were successfully imported.'), $success);
-        $content[] = sprintf(dgettext('calendar', '%s duplicate event(s) were ignored.'), $duplicates);
+        $content[] = sprintf(dgettext('calendar',
+                        '%s event(s) were successfully imported.'), $success);
+        $content[] = sprintf(dgettext('calendar',
+                        '%s duplicate event(s) were ignored.'), $duplicates);
         $content[] = javascript('close_window');
         $this->content = implode('<br />', $content);
     }
@@ -836,45 +860,54 @@ class Calendar_Admin {
             $result = $event->save();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                if(PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your event.'), null, false);
+                if (PHPWS_Calendar::isJS()) {
+                    $this->sendMessage(dgettext('calendar',
+                                    'An error occurred when saving your event.'),
+                            null, false);
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your event.'), 'schedules');
+                    $this->sendMessage(dgettext('calendar',
+                                    'An error occurred when saving your event.'),
+                            'schedules');
                 }
             } else {
                 $result = $this->saveRepeat($event);
                 if (PHPWS_Error::isError($result)) {
                     if (PHPWS_Calendar::isJS()) {
                         PHPWS_Error::log($result);
-                        $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.', null, false));
+                        $this->sendMessage(dgettext('calendar',
+                                        'An error occurred when trying to repeat an event.',
+                                        null, false));
                         javascript('close_refresh');
                         Layout::nakedDisplay();
                         exit();
                     } else {
-                        $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.', 'schedules'));
+                        $this->sendMessage(dgettext('calendar',
+                                        'An error occurred when trying to repeat an event.',
+                                        'schedules'));
                     }
                 }
 
                 PHPWS_Cache::remove(sprintf('grid_%s_%s_%s',
-                date('n', $event->start_time),
-                date('Y', $event->start_time),
-                $this->calendar->schedule->id));
+                                date('n', $event->start_time),
+                                date('Y', $event->start_time),
+                                $this->calendar->schedule->id));
 
                 PHPWS_Cache::remove(sprintf('list_%s_%s_%s',
-                date('n', $event->start_time),
-                date('Y', $event->start_time),
-                $this->calendar->schedule->id));
+                                date('n', $event->start_time),
+                                date('Y', $event->start_time),
+                                $this->calendar->schedule->id));
 
 
-                if(PHPWS_Calendar::isJS()) {
+                if (PHPWS_Calendar::isJS()) {
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'Event saved.'), 'schedules');
+                    $this->sendMessage(dgettext('calendar', 'Event saved.'),
+                            'schedules');
                 }
             }
         } else {
@@ -884,16 +917,25 @@ class Calendar_Admin {
 
     public function postSettings()
     {
-        PHPWS_Settings::set('calendar', 'personal_schedules', (int)isset($_POST['personal_schedules']));
-        PHPWS_Settings::set('calendar', 'allow_submissions', (int)isset($_POST['allow_submissions']));
-        PHPWS_Settings::set('calendar', 'mini_event_link', (int)isset($_POST['mini_event_link']));
-        PHPWS_Settings::set('calendar', 'cache_month_views', (int)isset($_POST['cache_month_views']));
-        PHPWS_Settings::set('calendar', 'mini_grid', (int)isset($_POST['mini_grid']));
-        PHPWS_Settings::set('calendar', 'anon_ical', (int)isset($_POST['anon_ical']));
-        PHPWS_Settings::set('calendar', 'no_follow', (int)isset($_POST['no_follow']));
+        PHPWS_Settings::set('calendar', 'personal_schedules',
+                (int) isset($_POST['personal_schedules']));
+        PHPWS_Settings::set('calendar', 'allow_submissions',
+                (int) isset($_POST['allow_submissions']));
+        PHPWS_Settings::set('calendar', 'mini_event_link',
+                (int) isset($_POST['mini_event_link']));
+        PHPWS_Settings::set('calendar', 'cache_month_views',
+                (int) isset($_POST['cache_month_views']));
+        PHPWS_Settings::set('calendar', 'mini_grid',
+                (int) isset($_POST['mini_grid']));
+        PHPWS_Settings::set('calendar', 'anon_ical',
+                (int) isset($_POST['anon_ical']));
+        PHPWS_Settings::set('calendar', 'no_follow',
+                (int) isset($_POST['no_follow']));
 
-        PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
-        PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
+        PHPWS_Settings::set('calendar', 'display_mini',
+                (int) $_POST['display_mini']);
+        PHPWS_Settings::set('calendar', 'starting_day',
+                (int) $_POST['starting_day']);
         PHPWS_Settings::set('calendar', 'default_view', $_POST['default_view']);
         PHPWS_Settings::set('calendar', 'brief_grid', $_POST['brief_grid']);
 
@@ -923,7 +965,6 @@ class Calendar_Admin {
         }
 
         // Event is repeating
-
         // First check if the repeat scheme changed
 
         if ($event->_previous_repeat && $event->getCurrentHash() == $event->_previous_settings) {
@@ -990,17 +1031,22 @@ class Calendar_Admin {
             $result = $this->calendar->schedule->save();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                if(PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), null, false);
+                if (PHPWS_Calendar::isJS()) {
+                    $this->sendMessage(dgettext('calendar',
+                                    'An error occurred when saving your schedule.'),
+                            null, false);
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), 'schedules');
+                    $this->sendMessage(dgettext('calendar',
+                                    'An error occurred when saving your schedule.'),
+                            'schedules');
                 }
             } else {
-                if ( $this->calendar->schedule->public && ($default_public < 1)) {
-                    PHPWS_Settings::set('calendar', 'public_schedule', $this->calendar->schedule->id);
+                if ($this->calendar->schedule->public && ($default_public < 1)) {
+                    PHPWS_Settings::set('calendar', 'public_schedule',
+                            $this->calendar->schedule->id);
                     PHPWS_Settings::save('calendar');
                 }
 
@@ -1009,12 +1055,13 @@ class Calendar_Admin {
                     PHPWS_Settings::save('calendar');
                 }
 
-                if(PHPWS_Calendar::isJS()) {
+                if (PHPWS_Calendar::isJS()) {
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'Schedule saved.'), 'schedules');
+                    $this->sendMessage(dgettext('calendar', 'Schedule saved.'),
+                            'schedules');
                 }
             }
         } else {
@@ -1035,7 +1082,7 @@ class Calendar_Admin {
         $time_diff = $event->end_time - $event->start_time;
 
         $max_count = 0;
-        while($time_unit <= $event->end_repeat) {
+        while ($time_unit <= $event->end_repeat) {
             $copy_event->id = 0;
 
             $dst_current = date('I', $time_unit);
@@ -1050,7 +1097,8 @@ class Calendar_Admin {
 
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatDaily');
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar',
+                                'Calendar_Admin::repeatDaily');
             }
 
             $copy_event->start_time = $time_unit;
@@ -1071,7 +1119,8 @@ class Calendar_Admin {
             return;
         }
 
-        $this->title = sprintf(dgettext('calendar', 'Repeat event - %s'), $event->summary);
+        $this->title = sprintf(dgettext('calendar', 'Repeat event - %s'),
+                $event->summary);
         if (@$_REQUEST['js']) {
             $js = true;
         } else {
@@ -1090,7 +1139,7 @@ class Calendar_Admin {
         $max_count = 0;
 
         $every_repeat_number = &$_POST['every_repeat_number'];
-        $every_repeat_weekday =  &$_POST['every_repeat_weekday'];
+        $every_repeat_weekday = &$_POST['every_repeat_weekday'];
         $every_repeat_frequency = &$_POST['every_repeat_frequency'];
 
         $time_unit = $event->start_time + 86400;
@@ -1117,10 +1166,11 @@ class Calendar_Admin {
             }
 
             // First check if we are in the correct month or if the repeat is in every month
-            if ($every_repeat_frequency == 'every_month' || $every_repeat_frequency == (int)strftime('%m', $time_unit)) {
+            if ($every_repeat_frequency == 'every_month' || $every_repeat_frequency == (int) strftime('%m',
+                            $time_unit)) {
 
                 // next check if we are in the correct weekday
-                $current_weekday = (int)strftime('%u', $time_unit);
+                $current_weekday = (int) strftime('%u', $time_unit);
 
                 if ($current_weekday == $every_repeat_weekday) {
                     $current_day = strftime('%e', $time_unit);
@@ -1136,13 +1186,16 @@ class Calendar_Admin {
                      * if the repeat is set to the last day of the month, and we are in the fourth weekday,
                      * and next week would put us over the end of the month, then post this day
                      */
-                    if ( $weekday_count == $every_repeat_number ||
-                    ( $every_repeat_number == 5 && $weekday_count == 4 && ( ($current_day + 7) > date('t', $time_unit) ) ) ) {
+                    if ($weekday_count == $every_repeat_number ||
+                            ( $every_repeat_number == 5 && $weekday_count == 4 && ( ($current_day + 7) > date('t',
+                                    $time_unit) ) )) {
                         $weekday_found = true;
                         $max_count++;
 
                         if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                            return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
+                            return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED,
+                                            'calendar',
+                                            'Calendar_Admin::repeatWeekly');
                         }
 
                         $copy_event->start_time = $time_unit;
@@ -1152,7 +1205,6 @@ class Calendar_Admin {
                             return $result;
                         }
                     }
-
                 }
             }
 
@@ -1164,18 +1216,20 @@ class Calendar_Admin {
     public function repeatYearly(Calendar_Event $event)
     {
         $max_count = 0;
-        if ( (date('L', $event->start_time) && date('n', $event->start_time) == 2 && date('j', $event->start_time) == 29) &&
-        (date('L', $event->end_time) && date('n', $event->end_time) == 2 && date('j', $event->end_time) == 29) ) {
+        if ((date('L', $event->start_time) && date('n', $event->start_time) == 2 && date('j',
+                        $event->start_time) == 29) &&
+                (date('L', $event->end_time) && date('n', $event->end_time) == 2 && date('j',
+                        $event->end_time) == 29)) {
             $leap_year = true;
         } else {
             $leap_year = false;
         }
         printf('start time %s<br>', strftime('%c', $event->start_time));
-        $c_hour  = (int)strftime('%H', $event->start_time);
-        $c_min   = (int)strftime('%M', $event->start_time);
-        $c_month = (int)strftime('%m', $event->start_time);
-        $c_day   = (int)strftime('%d', $event->start_time);
-        $c_year  = (int)strftime('%Y', $event->start_time);
+        $c_hour = (int) strftime('%H', $event->start_time);
+        $c_min = (int) strftime('%M', $event->start_time);
+        $c_month = (int) strftime('%m', $event->start_time);
+        $c_day = (int) strftime('%d', $event->start_time);
+        $c_year = (int) strftime('%Y', $event->start_time);
 
         $time_diff = $event->end_time - $event->start_time;
         $copy_event = $event->repeatClone();
@@ -1189,21 +1243,22 @@ class Calendar_Admin {
 
         while ($ts_count <= $event->end_repeat) {
             $copy_event->id = 0;
-            $c_hour   = (int)strftime('%H', $ts_count);
-            $c_min    = (int)strftime('%M', $ts_count);
-            $ts_month = $c_month = (int)strftime('%m', $ts_count);
-            $ts_day   = $c_day = (int)strftime('%d', $ts_count);
-            $c_year   = (int)strftime('%Y', $ts_count);
+            $c_hour = (int) strftime('%H', $ts_count);
+            $c_min = (int) strftime('%M', $ts_count);
+            $ts_month = $c_month = (int) strftime('%m', $ts_count);
+            $ts_day = $c_day = (int) strftime('%d', $ts_count);
+            $c_year = (int) strftime('%Y', $ts_count);
 
             $max_count++;
 
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatYearly');
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar',
+                                'Calendar_Admin::repeatYearly');
             }
 
             $start_time = mktime($c_hour, $c_min, 0, $ts_month, $ts_day, $c_year);
             $copy_event->start_time = $start_time;
-            $copy_event->end_time   = $start_time + $time_diff;
+            $copy_event->end_time = $start_time + $time_diff;
 
             $result = $copy_event->save();
             if (PHPWS_Error::isError($result)) {
@@ -1211,14 +1266,15 @@ class Calendar_Admin {
             }
 
             if ($leap_year) {
-                $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day, $c_year + 4);
+                $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day,
+                        $c_year + 4);
             } else {
-                $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day, $c_year + 1);
+                $ts_count = mktime($c_hour, $c_min, 0, $c_month, $c_day,
+                        $c_year + 1);
             }
         }
         return true;
     }
-
 
     public function repeatMonthly(Calendar_Event $event)
     {
@@ -1228,11 +1284,11 @@ class Calendar_Admin {
 
         $max_count = 0;
 
-        $c_hour  = (int)strftime('%H', $event->start_time);
-        $c_min   = (int)strftime('%M', $event->start_time);
-        $c_month = (int)strftime('%m', $event->start_time);
-        $c_day   = (int)strftime('%d', $event->start_time);
-        $c_year  = (int)strftime('%Y', $event->start_time);
+        $c_hour = (int) strftime('%H', $event->start_time);
+        $c_min = (int) strftime('%M', $event->start_time);
+        $c_month = (int) strftime('%m', $event->start_time);
+        $c_day = (int) strftime('%d', $event->start_time);
+        $c_year = (int) strftime('%Y', $event->start_time);
 
 
         $time_diff = $event->end_time - $event->start_time;
@@ -1244,16 +1300,17 @@ class Calendar_Admin {
         while ($ts_count <= $event->end_repeat) {
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatMonthly');
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar',
+                                'Calendar_Admin::repeatMonthly');
             }
 
             $copy_event->id = 0;
 
-            $c_hour   = (int)strftime('%H', $ts_count);
-            $c_min    = (int)strftime('%M', $ts_count);
-            $ts_month = $c_month = (int)strftime('%m', $ts_count);
-            $ts_day   = $c_day = (int)strftime('%d', $ts_count);
-            $c_year   = (int)strftime('%Y', $ts_count);
+            $c_hour = (int) strftime('%H', $ts_count);
+            $c_min = (int) strftime('%M', $ts_count);
+            $ts_month = $c_month = (int) strftime('%m', $ts_count);
+            $ts_day = $c_day = (int) strftime('%d', $ts_count);
+            $c_year = (int) strftime('%Y', $ts_count);
 
             switch ($_POST['monthly_repeat']) {
                 case 'begin':
@@ -1281,11 +1338,11 @@ class Calendar_Admin {
         return true;
     }
 
-
     public function repeatWeekly(Calendar_Event $event)
     {
         if (!isset($_POST['weekday_repeat']) || !is_array($_POST['weekday_repeat'])) {
-            $this->message = dgettext('calendar', 'You must choose which weekdays to repeat.');
+            $this->message = dgettext('calendar',
+                    'You must choose which weekdays to repeat.');
             return false;
         }
 
@@ -1297,7 +1354,7 @@ class Calendar_Admin {
         $max_count = 0;
         $repeat_days = &$_POST['weekday_repeat'];
         $dst_start = date('I', $event->start_time);
-        while($time_unit <= $event->end_repeat) {
+        while ($time_unit <= $event->end_repeat) {
 
             if (!in_array(strftime('%u', $time_unit), $repeat_days)) {
                 $time_unit += 86400;
@@ -1318,7 +1375,8 @@ class Calendar_Admin {
 
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar',
+                                'Calendar_Admin::repeatWeekly');
             }
 
             $copy_event->start_time = $time_unit;
@@ -1332,35 +1390,43 @@ class Calendar_Admin {
         return TRUE;
     }
 
-
     public function scheduleListing()
     {
+        javascript('jquery');
+        $filename = PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/schedule.js';
+        $script = "<script type='text/javascript' src='$filename'></script>";
+        \Layout::addJSHeader($script, 'cal_sched');
         $this->title = dgettext('calendar', 'Schedules');
 
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
-        $page_tags['DESCRIPTION_LABEL']  = dgettext('calendar', 'Description');
-        $page_tags['PUBLIC_LABEL']       = dgettext('calendar', 'Public');
+        $page_tags['DESCRIPTION_LABEL'] = dgettext('calendar', 'Description');
+        $page_tags['PUBLIC_LABEL'] = dgettext('calendar', 'Public');
         $page_tags['DISPLAY_NAME_LABEL'] = dgettext('calendar', 'User');
         $page_tags['AVAILABILITY_LABEL'] = dgettext('calendar', 'Availability');
 
-        $vars = array('aop'=>'create_schedule');
-        $label = '<i class="fa fa-file-text"></i> ' . dgettext('calendar', 'Create schedule');
+        $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-file-text"></i> ' .
+                dgettext('calendar', 'Create schedule') . '</button>';
 
-        if (javascriptEnabled()) {
-            $vars['js'] = 1;
-            $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-            $js_vars['label']   = $label;
-            $js_vars['width']   = 640;
-            $js_vars['height']  = 640;
-            $js_vars['class'] = 'btn btn-success';
-            $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
-        } else {
-            $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);
-        }
+        $page_tags['SCHEDULE_FORM'] = $this->calendar->schedule->form();
 
-        $page_tags['ADMIN_LABEL']        = dgettext('calendar', 'Options');
+        /*
+        $vars = array('aop' => 'create_schedule');
+          if (javascriptEnabled()) {
+          $vars['js'] = 1;
+          $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
+          $js_vars['label']   = $label;
+          $js_vars['width']   = 640;
+          $js_vars['height']  = 640;
+          $js_vars['class'] = 'btn btn-success';
+          $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
+          } else {
+          $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);
+          }
+         */
+
+        $page_tags['ADMIN_LABEL'] = dgettext('calendar', 'Options');
 
         $pager = new DBPager('calendar_schedule', 'Calendar_Schedule');
         $pager->setModule('calendar');
@@ -1368,7 +1434,8 @@ class Calendar_Admin {
         $pager->addPageTags($page_tags);
         $pager->addRowTags('rowTags');
         $pager->addToggle('class="bgcolor1"');
-        $pager->setEmptyMessage(dgettext('calendar', 'No schedules have been created.'));
+        $pager->setEmptyMessage(dgettext('calendar',
+                        'No schedules have been created.'));
         $pager->addSortHeader('title', dgettext('calendar', 'Title'));
         $pager->addSortHeader('public', dgettext('calendar', 'Availability'));
 
@@ -1377,13 +1444,14 @@ class Calendar_Admin {
 
         $pager->db->addColumn('*');
         $pager->db->addColumn('users.display_name');
-        $pager->db->addJoin('left', 'calendar_schedule', 'users', 'user_id', 'id');
+        $pager->db->addJoin('left', 'calendar_schedule', 'users', 'user_id',
+                'id');
 
         $pager->initialize();
         $this->content = $pager->get();
     }
 
-    public function sendMessage($message, $command=null, $route=true)
+    public function sendMessage($message, $command = null, $route = true)
     {
         $_SESSION['Calendar_Admin_Message'] = $message;
         if ($route && !empty($command)) {
@@ -1398,57 +1466,80 @@ class Calendar_Admin {
         $form->addHidden('aop', 'post_settings');
 
         $form->addCheckbox('allow_submissions', 1);
-        $form->setMatch('allow_submissions', PHPWS_Settings::get('calendar', 'allow_submissions'));
-        $form->setLabel('allow_submissions', dgettext('calendar', 'Allow public event submissions'));
+        $form->setMatch('allow_submissions',
+                PHPWS_Settings::get('calendar', 'allow_submissions'));
+        $form->setLabel('allow_submissions',
+                dgettext('calendar', 'Allow public event submissions'));
 
         $form->addCheckbox('mini_event_link', 1);
-        $form->setMatch('mini_event_link', PHPWS_Settings::get('calendar', 'mini_event_link'));
-        $form->setLabel('mini_event_link', dgettext('calendar', 'Only link days with events in mini calendar'));
+        $form->setMatch('mini_event_link',
+                PHPWS_Settings::get('calendar', 'mini_event_link'));
+        $form->setLabel('mini_event_link',
+                dgettext('calendar',
+                        'Only link days with events in mini calendar'));
 
         $form->addCheckbox('anon_ical', 1);
-        $form->setMatch('anon_ical', PHPWS_Settings::get('calendar', 'anon_ical'));
-        $form->setLabel('anon_ical', dgettext('calendar', 'Allow anonymous iCal exports of public schedules'));
+        $form->setMatch('anon_ical',
+                PHPWS_Settings::get('calendar', 'anon_ical'));
+        $form->setLabel('anon_ical',
+                dgettext('calendar',
+                        'Allow anonymous iCal exports of public schedules'));
 
         $form->addCheckbox('no_follow', 1);
-        $form->setMatch('no_follow', PHPWS_Settings::get('calendar', 'no_follow'));
-        $form->setLabel('no_follow', dgettext('calendar', 'No follow directives added to navigation links'));
+        $form->setMatch('no_follow',
+                PHPWS_Settings::get('calendar', 'no_follow'));
+        $form->setLabel('no_follow',
+                dgettext('calendar',
+                        'No follow directives added to navigation links'));
 
-        $start_days = array(0,1);
-        $start_days_label[0] = strftime('%A', mktime(0,0,0,1,4,1970));
-        $start_days_label[1] = strftime('%A', mktime(0,0,0,1,5,1970));
+        $start_days = array(0, 1);
+        $start_days_label[0] = strftime('%A', mktime(0, 0, 0, 1, 4, 1970));
+        $start_days_label[1] = strftime('%A', mktime(0, 0, 0, 1, 5, 1970));
         $form->addRadio('starting_day', $start_days);
         $form->setLabel('starting_day', $start_days_label);
-        $form->setMatch('starting_day', PHPWS_Settings::get('calendar', 'starting_day'));
+        $form->setMatch('starting_day',
+                PHPWS_Settings::get('calendar', 'starting_day'));
 
-        $form->addRadio('brief_grid', array(0,1));
-        $form->setMatch('brief_grid', PHPWS_Settings::get('calendar', 'brief_grid'));
-        $form->setLabel('brief_grid', array(0 => dgettext('calendar', 'Show event titles'),
-        1 => dgettext('calendar', 'Show number of events')));
+        $form->addRadio('brief_grid', array(0, 1));
+        $form->setMatch('brief_grid',
+                PHPWS_Settings::get('calendar', 'brief_grid'));
+        $form->setLabel('brief_grid',
+                array(0 => dgettext('calendar', 'Show event titles'),
+            1 => dgettext('calendar', 'Show number of events')));
 
         $form->addCheck('personal_schedules', 1);
-        $form->setLabel('personal_schedules', dgettext('calendar', 'Allow personal schedules'));
-        $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
+        $form->setLabel('personal_schedules',
+                dgettext('calendar', 'Allow personal schedules'));
+        $form->setMatch('personal_schedules',
+                PHPWS_Settings::get('calendar', 'personal_schedules'));
 
         $form->addCheck('cache_month_views', 1);
-        $form->setLabel('cache_month_views', dgettext('calendar', 'Cache month views (public only)'));
-        $form->setMatch('cache_month_views', PHPWS_Settings::get('calendar', 'cache_month_views'));
+        $form->setLabel('cache_month_views',
+                dgettext('calendar', 'Cache month views (public only)'));
+        $form->setMatch('cache_month_views',
+                PHPWS_Settings::get('calendar', 'cache_month_views'));
 
         $form->addCheck('mini_grid', 1);
         $form->setLabel('mini_grid', dgettext('calendar', 'Show mini grid'));
-        $form->setMatch('mini_grid', PHPWS_Settings::get('calendar', 'mini_grid'));
+        $form->setMatch('mini_grid',
+                PHPWS_Settings::get('calendar', 'mini_grid'));
 
-        $form->addRadio('display_mini', array(0,1,2));
-        $form->setLabel('display_mini', array(dgettext('calendar', 'Don\'t show'), dgettext('calendar', 'Only on front page'), dgettext('calendar', 'On all pages')));
-        $form->setMatch('display_mini', PHPWS_Settings::get('calendar', 'display_mini'));
+        $form->addRadio('display_mini', array(0, 1, 2));
+        $form->setLabel('display_mini',
+                array(dgettext('calendar', 'Don\'t show'), dgettext('calendar',
+                    'Only on front page'), dgettext('calendar', 'On all pages')));
+        $form->setMatch('display_mini',
+                PHPWS_Settings::get('calendar', 'display_mini'));
 
         $views['grid'] = dgettext('calendar', 'Month grid');
         $views['list'] = dgettext('calendar', 'Month list');
-        $views['day']  = dgettext('calendar', 'Day view');
+        $views['day'] = dgettext('calendar', 'Day view');
         $views['week'] = dgettext('calendar', 'Week view');
 
         $form->addSelect('default_view', $views);
         $form->setLabel('default_view', dgettext('calendar', 'Default view'));
-        $form->setMatch('default_view', PHPWS_Settings::get('calendar', 'default_view'));
+        $form->setMatch('default_view',
+                PHPWS_Settings::get('calendar', 'default_view'));
 
         $form->addSubmit(dgettext('calendar', 'Save settings'));
         $tpl = $form->getTemplate();
@@ -1458,8 +1549,9 @@ class Calendar_Admin {
 
         $tpl['START_LABEL'] = dgettext('calendar', 'Week start day');
 
-        $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/settings.tpl');
-        $this->title   = dgettext('calendar', 'Calendar settings');
+        $this->content = PHPWS_Template::process($tpl, 'calendar',
+                        'admin/settings.tpl');
+        $this->title = dgettext('calendar', 'Calendar settings');
     }
 
     public function blogEvent()
@@ -1471,21 +1563,23 @@ class Calendar_Admin {
         $form->addHidden('event_id', $event->id);
         $form->addHidden('sch_id', $this->calendar->schedule->id);
 
-        $advance[0]  = dgettext('calendar', 'Date of occurence');
-        $advance[1]  = dgettext('calendar', 'A day prior');
-        $advance[2]  = dgettext('calendar', 'Two days prior');
-        $advance[3]  = dgettext('calendar', 'Three days prior');
-        $advance[7]  = dgettext('calendar', 'A week prior');
+        $advance[0] = dgettext('calendar', 'Date of occurence');
+        $advance[1] = dgettext('calendar', 'A day prior');
+        $advance[2] = dgettext('calendar', 'Two days prior');
+        $advance[3] = dgettext('calendar', 'Three days prior');
+        $advance[7] = dgettext('calendar', 'A week prior');
         $advance[14] = dgettext('calendar', 'Two weeks prior');
         $advance[30] = dgettext('calendar', 'One month prior');
         $form->addSelect('advance_post', $advance);
-        $form->setLabel('advance_post', dgettext('calendar', 'When should it post?'));
+        $form->setLabel('advance_post',
+                dgettext('calendar', 'When should it post?'));
         $form->addSubmit(dgettext('calendar', 'Post to Blog'));
 
         $tpl = $form->getTemplate();
         $tpl['CLOSE'] = javascript('close_window');
         $this->title = dgettext('calendar', 'Post Event to Blog');
-        $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/forms/blog.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'calendar',
+                        'admin/forms/blog.tpl');
     }
 
     public function postBlog()
@@ -1499,15 +1593,17 @@ class Calendar_Admin {
         $blog->title = $event->summary;
 
         $tpl = $event->tplFormatTime();
-        $summary[] = sprintf('%s %s %s', $tpl['START_TIME'], $tpl['TO'], $tpl['END_TIME']);
+        $summary[] = sprintf('%s %s %s', $tpl['START_TIME'], $tpl['TO'],
+                $tpl['END_TIME']);
         if (!empty($event->location)) {
             $summary[] = $event->getLocation();
         }
 
-        $blog->summary = PHPWS_Text::parseInput('<p class="calendar-post">' . implode('<br />', $summary) . '</p>') . $event->description;
+        $blog->summary = PHPWS_Text::parseInput('<p class="calendar-post">' . implode('<br />',
+                                $summary) . '</p>') . $event->description;
         $blog->approved = 1;
 
-        $days = (int)$_POST['advance_post'];
+        $days = (int) $_POST['advance_post'];
 
         $publish = $event->start_time - ($days * 86400);
         if ($publish < time()) {
@@ -1518,6 +1614,7 @@ class Calendar_Admin {
 
         return !PHPWS_Error::logIfError($blog->save());
     }
+
 }
 
 ?>
