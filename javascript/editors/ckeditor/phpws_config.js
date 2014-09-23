@@ -24,8 +24,8 @@ CKEDITOR.editorConfig = function(config)
     config.scayt_autoStartup = true;
     config.scayt_sLang = 'en_US';
     config.removePlugins = 'resize';
-    config.autoGrow_onStartup = true;
-    config.autoGrow_maxHeight = 600;
+    //config.autoGrow_onStartup = true;
+    config.autoGrow_maxHeight = 400;
     config.skin = 'kama';
     config.toolbar_MyToolbar =
             [
