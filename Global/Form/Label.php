@@ -11,7 +11,7 @@ class Label extends \Tag {
 
     protected $for;
 
-    protected $required = false;
+    private $required = false;
 
     public function __construct($text=null, $for = null)
     {
@@ -36,11 +36,11 @@ class Label extends \Tag {
         return $label;
     }
 
+
     public function setRequired($required)
     {
         $this->required = (bool) $required;
     }
-
 }
 
 ?>
