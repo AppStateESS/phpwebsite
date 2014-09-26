@@ -11,9 +11,9 @@ namespace Form\Input;
  */
 class Date extends Text {
 
-    private $min;
+    protected $min;
 
-    private $max;
+    protected $max;
 
     protected $step;
 
