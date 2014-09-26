@@ -135,7 +135,7 @@ class Calendar_Schedule {
         return javascript('open_window', $js);
     }
 
-    public function addEventLink($default_date = NULL, $icon = false, $icon_only=false)
+    public function addEventLink($default_date = NULL, $icon = false, $icon_only = false)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
@@ -443,21 +443,9 @@ class Calendar_Schedule {
             $links[] = $this->addEventLink(null, true, true);
             $links[] = $this->uploadEventsLink(null, true);
             $links[] = $this->downloadEventsLink(null, true);
-
-            $vars = array('aop' => 'edit_schedule', 'sch_id' => $this->id);
-
-            $label = Icon::show('edit');
-            if (javascriptEnabled()) {
-                $vars['js'] = 1;
-                $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-                $js_vars['label'] = & $label;
-                $js_vars['width'] = 640;
-                $js_vars['height'] = 600;
-                $links[] = javascript('open_window', $js_vars);
-            } else {
-                $links[] = PHPWS_Text::secureLink($label, 'calendar',
-                                array('aop' => 'edit_schedule', 'sch_id' => $this->id));
-            }
+            $links[] = '<i class="fa fa-edit" id="edit-schedule" data-schedule-id="' .
+                    $this->id . '" style="cursor:pointer" title="' . dgettext('calendar',
+                            'Edit schedule') . '"></i>';
         }
 
         if (Current_User::allow('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {

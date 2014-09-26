@@ -176,7 +176,10 @@ class Calendar_User {
         $template['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
 
         if ($this->calendar->schedule->id && $this->calendar->schedule->checkPermissions()) {
-            $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
+            //$template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
+            $label = dgettext('calendar', 'Add event');
+            $template['ADD_EVENT'] = "<button class='btn btn-success'><i class='fa fa-plus'></i> $label</button>";
+            $template['MODAL'] = PHPWS_Calendar::modal();
         }
 
         $tpl->setCurrentBlock('day');

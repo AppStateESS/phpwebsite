@@ -442,6 +442,16 @@ class Calendar_Admin {
         return $panel;
     }
 
+    private function scheduleJSON($id)
+    {
+        $schedule = new Calendar_Schedule($id);
+        $json['public'] = $schedule->public;
+        $json['title'] = $schedule->title;
+        $json['summary'] = html_entity_decode($schedule->summary);
+        $json['show_upcoming'] = $schedule->show_upcoming;
+        echo json_encode($json);
+    }
+
     /**
      * routes administrative commands
      */
@@ -468,6 +478,12 @@ class Calendar_Admin {
                     Current_User::disallow();
                 }
                 $this->postEvent();
+                break;
+
+            case 'schedule_json':
+                $this->scheduleJSON(filter_input(INPUT_GET, 'sch_id',
+                                FILTER_SANITIZE_NUMBER_INT));
+                exit();
                 break;
 
             case 'approval':
@@ -1409,22 +1425,11 @@ class Calendar_Admin {
         $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-file-text"></i> ' .
                 dgettext('calendar', 'Create schedule') . '</button>';
 
-        $page_tags['SCHEDULE_FORM'] = $this->calendar->schedule->form();
 
-        /*
-        $vars = array('aop' => 'create_schedule');
-          if (javascriptEnabled()) {
-          $vars['js'] = 1;
-          $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-          $js_vars['label']   = $label;
-          $js_vars['width']   = 640;
-          $js_vars['height']  = 640;
-          $js_vars['class'] = 'btn btn-success';
-          $page_tags['ADD_CALENDAR'] = javascript('open_window', $js_vars);
-          } else {
-          $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);
-          }
-         */
+        $schedule_form = $this->calendar->schedule->form();
+        $schedule_modal = new calendar\Modal('schedule-modal', $schedule_form,
+                'Create schedule');
+        $page_tags['SCHEDULE_FORM'] = $schedule_modal->__toString();
 
         $page_tags['ADMIN_LABEL'] = dgettext('calendar', 'Options');
 
