@@ -4,10 +4,10 @@
 <ul id="miniadmin" class="dropdown-menu">
     <li class="nav-header">phpWebSite</li>
     <li><a href="index.php?module=controlpanel&command=panel_view">Control panel</a></li>
-    <?php foreach($module_links as $module_name=>$mod_links):?>
+    <?php if (!empty($module_links)): foreach($module_links as $module_name=>$mod_links):?>
     <li class="divider"></li>
     <li class="nav-header"><?=$module_name?></li>
     <?php if (!empty($mod_links['links'])) : foreach($mod_links['links'] as $link): ?>
     <li><?=$link?></li>
-    <?php endforeach; endif; endforeach;?>
+    <?php endforeach; endif; endforeach; endif;?>
 </ul>

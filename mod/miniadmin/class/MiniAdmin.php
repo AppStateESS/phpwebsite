@@ -31,22 +31,25 @@ class MiniAdmin {
     {
         $modlist = PHPWS_Core::getModuleNames();
 
-        if (!isset($GLOBALS['MiniAdmin'])) {
-            return NULL;
-        }
-
+        /*
+          if (!isset($GLOBALS['MiniAdmin'])) {
+          return NULL;
+          }
+         */
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
         $tpl['MINIADMIN_TITLE_ALT'] = dgettext('miniadmin', 'Administrate');
 
-        foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
-            $mod_title = $modlist[$module];
-            if (isset($links['title_link'])) {
-                $mod_title = sprintf('<a href="%s">%s</a>',
-                        $links['title_link'], $mod_title);
+        if (isset($GLOBALS['MiniAdmin'])) {
+            foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
+                $mod_title = $modlist[$module];
+                if (isset($links['title_link'])) {
+                    $mod_title = sprintf('<a href="%s">%s</a>',
+                            $links['title_link'], $mod_title);
+                }
+                $module_links[$mod_title] = $links;
             }
-            $module_links[$mod_title] = $links;
+            $tpl['module_links'] = $module_links;
         }
-        $tpl['module_links'] = $module_links;
         $template = new \Template($tpl);
         $template->setModuleTemplate('miniadmin', MINIADMIN_TEMPLATE);
         $content = $template->get();
