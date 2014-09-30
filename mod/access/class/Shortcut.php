@@ -78,25 +78,32 @@ class Access_Shortcut {
 
     public function postShortcut()
     {
-        if (!isset($_POST['keyword'])) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access',
-                            'Shortcut::postShortcut');
+        $keyword = filter_input(INPUT_POST, 'keyword', FILTER_SANITIZE_STRING);
+
+        if ($keyword === false) {
+            throw new \Exception('Access shortcut submission missing keyword', 1);
         }
 
+        $key_id = filter_input(INPUT_POST, 'key_id', FILTER_SANITIZE_NUMBER_INT);
+
         if (!$this->id) {
-            if (empty($_POST['key_id'])) {
-                return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access',
-                                'Shortcut::postShortcut');
+            if ($key_id === false) {
+                throw new \Exception('Access shortcut missing a key id', 2);
             } else {
-                $key = new Key((int) $_POST['key_id']);
+                $key = new \Key($key_id);
                 $this->setUrl($key->module, $key->url);
             }
         }
 
-        $result = $this->setKeyword($_POST['keyword']);
-        if (PHPWS_Error::isError($result) || $result == FALSE) {
-            return $result;
+        $db = new PHPWS_DB('access_shortcuts');
+        $db->addWhere('keyword', $keyword);
+        $db->addWhere('id', $this->id, '!=');
+        $result = $db->select();
+        if ($result) {
+            throw new Exception('Shortcut keyword already in use', 3);
         }
+
+        $this->setKeyword($keyword);
 
         return TRUE;
     }
@@ -121,30 +128,15 @@ class Access_Shortcut {
 
     public function setKeyword($keyword)
     {
-        $keyword = preg_replace('/[^\w\s\-]/', '', strtolower($keyword));
+        $keyword = preg_replace('/[^\w\s\-]/', '', strtolower(trim($keyword)));
         $keyword = preg_replace('/\s/', '-', $keyword);
         $keyword = trim($keyword);
 
         if (empty($keyword)) {
-            return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access',
-                            'Shortcut::setKeyword');
+            throw new \Exception('Bad keyword used in Access shortcut');
         }
 
-        $db = new PHPWS_DB('access_shortcuts');
-        $db->addWhere('keyword', $keyword);
-        $db->addWhere('id', $this->id, '!=');
-        $result = $db->select();
         $this->keyword = substr($keyword, 0, 254);
-        if (!empty($result)) {
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
-                return FALSE;
-            } else {
-                return PHPWS_Error::get(SHORTCUT_WORD_IN_USE, 'access',
-                                'Shortcut::setKeyword');
-            }
-        }
-
         return TRUE;
     }
 
@@ -154,18 +146,26 @@ class Access_Shortcut {
                 'Are you sure you want to delete this shortcut?');
         $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
                 $this->id, Current_User::getAuthKey());
-        $js['LINK'] = dgettext('access', 'Delete');
+        $js['LINK'] = '<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> ' . dgettext('access',
+                        'Delete') . '</button>';
         $tags[] = javascript('confirm', $js);
 
-        $vars['command'] = 'edit_shortcut';
-        $vars['sc_id'] = $this->id;
-        $link = PHPWS_Text::linkAddress('access', $vars, true);
-        $js_vars['address'] = $link;
-        $js_vars['label'] = dgettext('access', 'Edit');
-        $js_vars['height'] = '200';
-        $js_link = javascript('open_window', $js_vars);
 
-        $tags[] = $js_link;
+        /*
+          $vars['command'] = 'edit_shortcut';
+          $vars['sc_id'] = $this->id;
+          $link = PHPWS_Text::linkAddress('access', $vars, true);
+          $js_vars['address'] = $link;
+          $js_vars['label'] = dgettext('access', 'Edit');
+          $js_vars['height'] = '200';
+          $js_link = javascript('open_window', $js_vars);
+
+          $tags[] = $js_link;
+         */
+
+        $tags[] = '<a class="btn btn-success btn-sm edit-shortcut" data-authkey="' . \Current_User::getAuthKey() .
+                '" data-schid="' . $this->id . '"><i class="fa fa-edit"></i> ' . dgettext('access',
+                        'Edit') . '</a>';
 
         $template['URL'] = $this->getUrl();
 
@@ -175,7 +175,7 @@ class Access_Shortcut {
             $template['ACTIVE'] = dgettext('access', 'No');
         }
 
-        $template['ACTION'] = implode(' | ', $tags);
+        $template['ACTION'] = implode(' ', $tags);
         $template['CHECKBOX'] = sprintf('<input type="checkbox" name="shortcut[]" value="%s" />',
                 $this->id);
 

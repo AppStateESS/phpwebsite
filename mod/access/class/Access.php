@@ -128,44 +128,56 @@ class Access {
 
                 case 'edit_shortcut':
                     PHPWS_Core::initModClass('access', 'Forms.php');
-                    $content = Access_Forms::shortcut_menu();
-                    Layout::nakedDisplay($content);
+                    echo Access_Forms::shortcut_menu();
                     exit();
                     break;
 
                 case 'post_shortcut':
                     PHPWS_Core::initModClass('access', 'Shortcut.php');
 
-                    if (isset($_POST['sc_id'])) {
-                        $shortcut = new Access_Shortcut($_POST['sc_id']);
+                    $sch_id = filter_input(INPUT_POST, 'sch_id', FILTER_SANITIZE_NUMBER_INT);
+
+                    if ($sch_id) {
+                        $shortcut = new Access_Shortcut($sch_id);
                     } else {
                         $shortcut = new Access_Shortcut;
                     }
 
-                    $result = $shortcut->postShortcut();
-                    $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />',
-                            dgettext('access', 'Close window'));
-                    if (PHPWS_Error::isError($result)) {
-                        PHPWS_Core::initModClass('access', 'Forms.php');
-                        $message = $result->getMessage();
-                        $content = Access_Forms::shortcut_menu();
-                    } elseif ($result == false) {
-                        $tpl['TITLE'] = dgettext('access',
-                                        'A serious error occurred. Please check your error.log.') . '<br />';
-                        $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>',
-                                $_SERVER['HTTP_REFERER'],
-                                dgettext('access', 'Return to previous page.'));
-                        $content = PHPWS_Template::process($tpl, 'access',
-                                        'box.tpl');
-                    } else {
-                        $content = Access::saveShortcut($shortcut);
+                    try {
+                        $shortcut->postShortcut();
+                        $shortcut->save();
+                        $json['error'] = 0;
+                    } catch (\Exception $e) {
+                        $json['message'] = $e->getMessage();
+                        $json['error'] = 1;
                     }
+                    /*
+                      if (PHPWS_Error::isError($result)) {
+                      PHPWS_Core::initModClass('access', 'Forms.php');
+                      echo json_encode(array('message' => $result->getMessage()));
+                      exit();
+                      } elseif ($result == false) {
+                      $tpl['TITLE'] = dgettext('access',
+                      'A serious error occurred. Please check your error.log.') . '<br />';
+                      $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>',
+                      $_SERVER['HTTP_REFERER'],
+                      dgettext('access', 'Return to previous page.'));
+                      $content = PHPWS_Template::process($tpl, 'access',
+                      'box.tpl');
+                      } else {
+                      $content = Access::saveShortcut($shortcut);
+                      }
 
-                    $tpl['MESSAGE'] = $message;
-                    $tpl['CONTENT'] = $content;
+                      $tpl['MESSAGE'] = $message;
+                      $tpl['CONTENT'] = $content;
 
-                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'access',
-                                    'main.tpl'));
+                      $content = PHPWS_Template::process($tpl, 'access',
+                      'main.tpl');
+                      echo $content;
+                     *
+                     */
+                    echo json_encode($json);
+                    exit();
                     break;
 
                 case 'htaccess':
@@ -394,15 +406,19 @@ class Access {
 
     public static function shortcut(Key $key)
     {
-        $vars['command'] = 'edit_shortcut';
-        $vars['key_id'] = $key->id;
-        $link = PHPWS_Text::linkAddress('access', $vars, true);
-        $js_vars['address'] = $link;
-        $js_vars['label'] = dgettext('access', 'Shortcut');
-        $js_vars['height'] = '300';
-        $js_vars['width'] = '300';
-        $js_link = javascript('open_window', $js_vars);
-        MiniAdmin::add('access', $js_link);
+        $modal = new Modal('access-shortcut', null,
+                dgettext('access', 'Shortcuts'));
+        $modal->sizeSmall();
+        $button = '<button class="btn btn-success" id="save-shortcut">Save</button>';
+        $modal->addButton($button);
+        \Layout::add((string) $modal);
+        javascript('jquery');
+        \Layout::includeJavascript('mod/access/javascript/access.min.js');
+
+        $link = '<a href="javascript:void(0)" data-authkey="' . \Current_User::getAuthKey() .
+                '" data-key="' . $key->id . '" id="add-shortcut">' . dgettext('access',
+                        'Shortcut') . '</a>';
+        MiniAdmin::add('access', $link);
     }
 
     public static function cpanel()

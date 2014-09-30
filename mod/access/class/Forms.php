@@ -15,6 +15,15 @@ class Access_Forms {
             return;
         }
 
+        $modal = new Modal('access-shortcut', null,
+                dgettext('access', 'Shortcuts'));
+        $modal->sizeSmall();
+        $button = '<button class="btn btn-success" id="save-shortcut">Save</button>';
+        $modal->addButton($button);
+        \Layout::add((string) $modal);
+        javascript('jquery');
+        \Layout::includeJavascript('mod/access/javascript/access.min.js');
+
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('access_shortcuts', 'Access_Shortcut');
@@ -229,13 +238,14 @@ class Access_Forms {
     public static function shortcut_menu()
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
-        if (isset($_REQUEST['sc_id'])) {
-            $sc_id = $_REQUEST['sc_id'];
-        } else {
-            $sc_id = 0;
+
+        $sch_id = filter_input(INPUT_GET, 'sch_id', FILTER_SANITIZE_NUMBER_INT);
+
+        if ($sch_id === false) {
+            $sch_id = 0;
         }
 
-        if (!$sc_id) {
+        if (!$sch_id) {
             @$key_id = $_REQUEST['key_id'];
             if (!$key_id) {
                 javascript('close_window');
@@ -251,30 +261,32 @@ class Access_Forms {
                                 $key->title));
             }
         } else {
-            $shortcut = new Access_Shortcut($sc_id);
+            $shortcut = new Access_Shortcut($sch_id);
             if (!$shortcut->id) {
-                javascript('close_window');
-                return;
+                return 'Error: shortcut not found';
             }
         }
 
-        $form = new PHPWS_Form('shortcut_menu');
+        $form = new \Form;
+        $form->setAction('index.php');
+        $form->appendCSS('bootstrap');
+        $form->setId('shortcut-menu');
+        $form->addHidden('authkey', \Current_User::getAuthKey());
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut');
         if (isset($key_id)) {
             $form->addHidden('key_id', $key_id);
         } else {
-            $form->addHidden('sc_id', $shortcut->id);
+            $form->addHidden('sch_id', $shortcut->id);
         }
 
-        $form->addText('keyword', $shortcut->keyword);
-        $form->addSubmit('go', dgettext('access', 'Go'));
-        $tpl = $form->getTemplate();
+        $keyword = $form->addTextField('keyword', $shortcut->keyword)->setRequired();
+        $keyword->setPlaceholder(dgettext('access', 'Type in a keyword'));
+        $tpl = $form->getInputStringArray();
 
-        $tpl['TITLE'] = dgettext('access', 'Shortcuts');
-        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />',
-                dgettext('access', 'Cancel'));
-        $content = PHPWS_Template::process($tpl, 'access', 'shortcut_menu.tpl');
+        $template = new \Template($tpl);
+        $template->setModuleTemplate('access', 'shortcut_menu.tpl');
+        $content = $template->render();
         return $content;
     }
 
