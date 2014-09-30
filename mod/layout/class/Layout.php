@@ -146,6 +146,16 @@ class Layout {
     }
 
     /**
+     * Path to javascript file you want included. Does not include PHPWS_SOURCE_HTTP
+     * @param string $file
+     */
+    public static function includeJavascript($file)
+    {
+        $path = PHPWS_SOURCE_HTTP . $file;
+        self::addJSHeader("<script type='text/javascript' src='$file'></script>", md5($path));
+    }
+
+    /**
      * Adds a script to the header of the theme.
      * @staticvar int $index_count
      * @param string $script Content of the javascript
