@@ -29,13 +29,11 @@ class MiniAdmin {
 
     public static function get()
     {
+        if (!\Current_User::isLogged()) {
+            return;
+        }
         $modlist = PHPWS_Core::getModuleNames();
 
-        /*
-          if (!isset($GLOBALS['MiniAdmin'])) {
-          return NULL;
-          }
-         */
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
         $tpl['MINIADMIN_TITLE_ALT'] = dgettext('miniadmin', 'Administrate');
 
