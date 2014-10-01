@@ -146,7 +146,7 @@ class Layout {
     }
 
     /**
-     * Path to javascript file you want included. Does not include PHPWS_SOURCE_HTTP
+     * Path to javascript file you want included. PHPWS_SOURCE_HTTP is added automatically.
      * @param string $file
      */
     public static function includeJavascript($file)
