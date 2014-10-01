@@ -43,7 +43,7 @@ class Modal {
     public function __construct($id, $content = null, $title = null)
     {
         $this->id = new \Variable\Attribute($id, 'id');
-        $this->title = new \Variable\Alphanumeric($title, 'title');
+        $this->title = new \Variable\TextOnly($title, 'title');
         $this->content = new \Variable\String($content, 'content');
     }
 
