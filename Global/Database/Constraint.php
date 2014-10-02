@@ -133,6 +133,9 @@ abstract class Constraint {
         return implode(' ', $sql);
     }
 
+    /**
+     * Creates the contraint on the current table
+     */
     public function add()
     {
         $sql[] = 'ALTER TABLE';

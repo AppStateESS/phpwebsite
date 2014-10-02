@@ -13,6 +13,11 @@ class Table extends \Database\Table {
 
     //DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 
+    /**
+     * Adds an integer datatype with a primary key index to the table. It is
+     * created when the table is built.
+     * @return \Database\Datatype\Integer
+     */
     public function addPrimaryIndexId()
     {
         $id = $this->addDatatype('id', 'int');
@@ -150,7 +155,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
 
         $indexes = $this->getIndexes();
 
-        foreach ($indexes as $index_name=> $indices) {
+        foreach ($indexes as $index_name => $indices) {
             foreach ($indices as $idx) {
                 if ($idx['column_name'] == $column_name) {
                     if ($idx['primary_key']) {
@@ -236,6 +241,25 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         $this->db->exec($sql);
         $sql2 = "ALTER TABLE $table_name AUTO_INCREMENT = $id";
         $this->db->exec($sql2);
+    }
+
+    public function dropIndex($name)
+    {
+        $table_name = $this->getFullName();
+        $sql = "ALTER TABLE $table_name DROP INDEX $name";
+        $this->db->exec($sql);
+    }
+
+    /**
+     * Creates a new auto-incrementing, primary key, column named "id"
+     */
+    public function createPrimaryIndexId()
+    {
+        $table_name = $this->getFullName();
+        $id = $this->addDatatype('id', 'int');
+        $id->setAutoIncrement();
+        $sql = "ALTER TABLE $table_name ADD COLUMN $id PRIMARY KEY";
+        $this->db->exec($sql);
     }
 
 }

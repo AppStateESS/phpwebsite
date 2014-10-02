@@ -158,7 +158,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $dt = \Database\Datatype::factory($this, $column_name, $column_type);
 
         $indexes = $this->getIndexes();
-        foreach ($indexes as $index_name=> $indices) {
+        foreach ($indexes as $index_name => $indices) {
             foreach ($indices as $idx) {
                 if ($idx['column_name'] == $column_name) {
                     if ($idx['primary_key']) {
@@ -229,6 +229,30 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $this->db->exec($sql);
         $sql2 = "ALTER SEQUENCE $sequence_table OWNED BY $table_name.id";
         $this->db->exec($sql2);
+    }
+
+    public function dropIndex($name)
+    {
+        $table_name = $this->getFullName();
+        $sql = "ALTER TABLE $table_name DROP CONSTRAINT $name";
+        $this->db->exec($sql);
+    }
+
+    /**
+     * Creates a new auto-incrementing, primary key, column named "id"
+     */
+    public function createPrimaryIndexId()
+    {
+        $table_name = $this->getFullName();
+
+        $id = $this->addDatatype('id', 'serial');
+
+        $sql = "ALTER TABLE $table_name ADD COLUMN $id";
+        $this->db->exec($sql);
+        $sql2 = "UPDATE $table_name SET id = DEFAULT";
+        $this->db->exec($sql2);
+        $sql3 = "ALTER TABLE $table_name ADD PRIMARY KEY (id)";
+        $this->db->exec($sql3);
     }
 
 }

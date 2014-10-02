@@ -184,6 +184,16 @@ abstract class Table extends Resource {
     abstract public function hasPearSequenceTable();
 
     /**
+     * Drops a table's index
+     */
+    abstract public function dropIndex($name);
+
+    /**
+     * Creates a new primary key index with column name id
+     */
+    abstract public function createPrimaryIndexId();
+
+    /**
      * @param string $name Name of the table
      * @param string $alias Alias used in place of table name
      * @param DB $db Current object housing this table object
