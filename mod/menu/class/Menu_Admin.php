@@ -877,7 +877,7 @@ EOF;
 
     public function carouselSlidesForm()
     {
-        $slides = \carousel\SlideFactory::getSlides(true);
+        $slides = \carousel\SlideFactory::getSlidesFromDB(true);
         if (empty($slides)) {
             return null;
         }
