@@ -146,7 +146,7 @@ class Layout {
     }
 
     /**
-     * Path to javascript file you want included. PHPWS_SOURCE_HTTP is added automatically.
+     * Path to javascript file you want included. Does not include PHPWS_SOURCE_HTTP
      * @param string $file
      */
     public static function includeJavascript($file)
@@ -417,8 +417,8 @@ class Layout {
                 ksort($unsortedLayout[$theme_var]);
                 $upper_theme_var = strtoupper($theme_var);
                 if (Layout::isMoveBox() && !isset($GLOBALS['Layout_Plugs'][$theme_var])) {
-                    $bodyLayout[$upper_theme_var] = '<fieldset class="layout-variable"><legend>' . $theme_var . '</legend>' . implode('',
-                                    $unsortedLayout[$theme_var]) . '</fieldset>';
+                    $bodyLayout[$upper_theme_var] = $theme_var . '' . implode('',
+                                    $unsortedLayout[$theme_var]);
                 } else {
                     $bodyLayout[$upper_theme_var] = implode('',
                             $unsortedLayout[$theme_var]);
@@ -869,18 +869,18 @@ class Layout {
         $vars['action'] = 'admin';
         if (Layout::isMoveBox()) {
             $vars['command'] = 'turn_off_box_move';
-            $links[] = PHPWS_Text::moduleLink(dgettext('layout', 'Box move off'),
+            $links[] = PHPWS_Text::moduleLink(dgettext('layout', '<span class="fa fa-toggle-on"></span> Box move off'),
                             'layout', $vars);
         } else {
             $vars['command'] = 'move_boxes_on';
-            $links[] = PHPWS_Text::secureLink(dgettext('layout', 'Box move on'),
+            $links[] = PHPWS_Text::secureLink(dgettext('layout', '<span class="fa fa-toggle-off"></span> Box move on'),
                             'layout', $vars);
         }
 
         unset($vars['command']);
         $vars['tab'] = 'meta';
         $links[] = PHPWS_Text::secureLink(dgettext('layout',
-                                'Change Website Title'), 'layout', $vars);
+                                '<span class="fa fa-edit"></span> Change Website Title'), 'layout', $vars);
 
         $key = Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
@@ -892,7 +892,7 @@ class Layout {
             $vars['key_id'] = $key->id;
             $vars['action'] = 'admin';
 
-            $js_vars['label'] = dgettext('layout', 'Change style');
+            $js_vars['label'] = dgettext('layout', '<span class="fa fa-paint-brush"></span> Change style');
             $vars['command'] = 'js_style_change';
 
             $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
