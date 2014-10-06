@@ -1,5 +1,3 @@
-<?php
-
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
@@ -18,7 +16,7 @@ if (Current_User::allow('block')) {
 
         Layout::add('<div id="block-form-dialog" style="display : none"></div>');
         MiniAdmin::add('block', '<a style="cursor:pointer" data-auth-key="' . Current_User::getAuthKey() .
-                '" data-key-id="'.$key->id.'" id="add-block">Add block here</a>');
+                '" data-key-id="'.$key->id.'" id="add-block"><span class="fa fa-plus"></span> Add block here</a>');
     }
 }
 ?>
