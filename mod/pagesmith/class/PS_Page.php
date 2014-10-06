@@ -274,16 +274,16 @@ class PS_Page {
     public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
-            $label = dgettext('pagesmith', 'Remove from front');
+            $label = dgettext('pagesmith', '<span class="fa fa-flag" title="%s"></span> Remove from front');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', $label);
+                $label = sprintf('<i class="fa fa-flag"></i>', $label);
             }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
-            $label = dgettext('pagesmith', 'Add to front');
+            $label = dgettext('pagesmith', '<span class="fa fa-flag-o" title="%s"></span> Add to front');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
+                $label = sprintf('<i class="fa fa-flag-o"></i>',
                         $label);
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
