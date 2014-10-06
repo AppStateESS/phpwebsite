@@ -50,13 +50,13 @@ class User_Form {
         $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink();
         $logout_link = $auth->getLogoutLink();
         $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page">' . dgettext('users',
-                        'Account') . '</a>';
+                        '<span class="glyphicon glyphicon-user"></span> Account') . '</a>';
 
         if ($logout_link) {
             $template['LOGOUT'] = & $logout_link;
         } else {
             $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users',
-                                    'Log Out'), 'users',
+                                    '<span class="fa fa-sign-out"></span> Log Out'), 'users',
                             array('action' => 'user', 'command' => 'logout'));
         }
         $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink(dgettext('users',
