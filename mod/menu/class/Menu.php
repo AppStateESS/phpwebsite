@@ -62,7 +62,7 @@ class Menu {
 
         // Default link. Takes user to menu admin screen
         MiniAdmin::add('menu',
-                \PHPWS_Text::secureLink('Administrate menus', 'menu',
+                \PHPWS_Text::secureLink('<span class="fa fa-cog fa-spin"></span> Administrate menus', 'menu',
                         array('command' => 'list')));
 
         $key = \Key::getCurrent();
@@ -84,7 +84,7 @@ class Menu {
                         MiniAdmin::add('menu',
                                 '<a href="javascript:void(0)" data-key-id="' . $key->id
                                 . '" data-menu-id="' . $menu_id
-                                . '" id="menu-remove-page">' . t('Remove from %s',
+                                . '" id="menu-remove-page">' . t('<span class="fa fa-times"></span> Remove from %s',
                                         $menu_title) . '</a>');
                         $found = true;
                     }
