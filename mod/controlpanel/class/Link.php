@@ -1,32 +1,33 @@
 <?php
+
 /**
  * Class to control the link icons in the Control Panel
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class PHPWS_Panel_Link {
-    public $id          = 0;
-    public $label       = null;
-    public $active      = 1;
-    public $itemname    = null;
-    public $restricted  = true;
-    public $tab         = null;
-    public $url         = null;
-    public $description = null;
-    public $image       = null;
-    public $link_order  = null;
 
-    public function __construct($id=null)
+    public $id = 0;
+    public $label = null;
+    public $active = 1;
+    public $itemname = null;
+    public $restricted = true;
+    public $tab = null;
+    public $url = null;
+    public $description = null;
+    public $image = null;
+    public $link_order = null;
+
+    public function __construct($id = null)
     {
         if (!isset($id))
-        return;
+            return;
 
         $this->setId($id);
         $result = $this->init();
         if (PHPWS_Error::isError($result))
-        PHPWS_Error::log($result);
+            PHPWS_Error::log($result);
     }
 
     public function init()
@@ -40,7 +41,7 @@ class PHPWS_Panel_Link {
 
     public function setId($id)
     {
-        $this->id = (int)$id;
+        $this->id = (int) $id;
     }
 
     public function setTab($tab)
@@ -50,7 +51,7 @@ class PHPWS_Panel_Link {
 
     public function setActive($active)
     {
-        $this->active = (bool)$active;
+        $this->active = (bool) $active;
     }
 
     public function getActive()
@@ -68,7 +69,6 @@ class PHPWS_Panel_Link {
         return dgettext($this->itemname, $this->label);
     }
 
-
     public function getDescription()
     {
         return dgettext($this->itemname, $this->description);
@@ -79,13 +79,12 @@ class PHPWS_Panel_Link {
         $this->description = strip_tags($description);
     }
 
-
     public function setImage($image)
     {
         $this->image = $image;
     }
 
-    public function getImage($tag=false, $linkable=false)
+    public function getImage($tag = false, $linkable = false)
     {
         if ($tag == false) {
             return $this->image;
@@ -98,18 +97,22 @@ class PHPWS_Panel_Link {
         }
 
         $image_path = $this->getImageSrc();
-        $image = sprintf('<img src="%s" title="%s" alt="%s" />', $image_path, $this->getLabel(),
-            sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
+        $image = sprintf('<img src="%s" title="%s" alt="%s" />', $image_path,
+                $this->getLabel(),
+                sprintf(dgettext('controlpanel', '%s module icon'),
+                        $this->getLabel()));
 
         if ($linkable == true) {
-            $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $image);
+            $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey,
+                    $image);
         }
         return $image;
     }
 
     public function getImageSrc()
     {
-        return sprintf('%smod/%s/img/%s', PHPWS_SOURCE_HTTP, $this->itemname, $this->image);
+        return sprintf('%smod/%s/img/%s', PHPWS_SOURCE_HTTP, $this->itemname,
+                $this->image);
     }
 
     public function setUrl($url)
@@ -117,7 +120,7 @@ class PHPWS_Panel_Link {
         $this->url = $url;
     }
 
-    public function getUrl($tag=false, $relative=false)
+    public function getUrl($tag = false, $relative = false)
     {
         if ($this->restricted) {
             $authkey = '&amp;authkey=' . Current_User::getAuthKey();
@@ -129,9 +132,8 @@ class PHPWS_Panel_Link {
 
         if ($tag) {
             return sprintf('<a href="%s">%s</a>', $relurl, $this->getLabel());
-        }
-        else {
-            if($relative) {
+        } else {
+            if ($relative) {
                 return $relurl;
             } else {
                 return $this->url;
@@ -141,7 +143,7 @@ class PHPWS_Panel_Link {
 
     public function setLinkOrder($order)
     {
-        $this->link_order = (int)$order;
+        $this->link_order = (int) $order;
     }
 
     public function getLinkOrder()
@@ -161,8 +163,7 @@ class PHPWS_Panel_Link {
 
         if (isset($max)) {
             return $max + 1;
-        }
-        else {
+        } else {
             return 1;
         }
     }
@@ -179,7 +180,7 @@ class PHPWS_Panel_Link {
 
     public function isRestricted()
     {
-        return (bool)$this->restricted;
+        return (bool) $this->restricted;
     }
 
     public function setRestricted($restrict)
@@ -197,12 +198,17 @@ class PHPWS_Panel_Link {
 
     public function view()
     {
-        $tpl['IMAGE']       = $this->getImage(true, true);
-        $tpl['IMAGE_SRC']   = $this->getImageSrc();
-        $tpl['NAME']        = $this->getUrl(true);
-        $tpl['LABEL']       = $this->getLabel();
-        $tpl['HREF']        = $this->getUrl(false, true);
+        $tpl['IMAGE'] = $this->getImage(true, true);
+        $tpl['IMAGE_SRC'] = $this->getImageSrc();
+        $tpl['NAME'] = $this->getUrl(true);
+        $tpl['LABEL'] = $this->getLabel();
+        $tpl['HREF'] = $this->getUrl(false, true);
         $tpl['DESCRIPTION'] = $this->getDescription();
+
+        if (isset($_SESSION['controlpanel_delete_links'])) {
+            $tpl['DELETE'] = ' <a href="index.php?module=controlpanel&amp;remove_cp_link=' . $this->id . '">'
+                    . '<i class="fa fa-trash-o"></i></a>';
+        }
 
         return PHPWS_Template::process($tpl, 'controlpanel', 'link.tpl');
     }
@@ -220,7 +226,7 @@ class PHPWS_Panel_Link {
         $allLinks = $db->getObjects('PHPWS_Panel_Link');
 
         $current_order = $this->getLinkOrder();
-        if ($current_order == 1){
+        if ($current_order == 1) {
             unset($allLinks[1]);
             $allLinks[] = $this;
         } else {
@@ -231,7 +237,7 @@ class PHPWS_Panel_Link {
 
 
         $count = 1;
-        foreach ($allLinks as $link){
+        foreach ($allLinks as $link) {
             $link->setLinkOrder($count);
             $link->save();
             $count++;
@@ -249,7 +255,7 @@ class PHPWS_Panel_Link {
         $number_of_links = count($allLinks);
 
         $current_order = $this->getLinkOrder();
-        if ($current_order == $number_of_links){
+        if ($current_order == $number_of_links) {
             unset($allLinks[$current_order]);
             array_unshift($allLinks, $this);
         } else {
@@ -259,7 +265,7 @@ class PHPWS_Panel_Link {
         }
 
         $count = 1;
-        foreach ($allLinks as $link){
+        foreach ($allLinks as $link) {
             $link->setLinkOrder($count);
             $link->save();
             $count++;
@@ -272,7 +278,7 @@ class PHPWS_Panel_Link {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (PHPWS_Error::isError($result))
-        return $result;
+            return $result;
 
         $db->reset();
         $db->addWhere('tab', $this->tab);
@@ -280,13 +286,13 @@ class PHPWS_Panel_Link {
         $result = $db->getObjects('PHPWS_Panel_Link');
 
         if (PHPWS_Error::isError($result))
-        return $result;
+            return $result;
 
         if (empty($result))
-        return true;
+            return true;
 
         $count = 1;
-        foreach ($result as $link){
+        foreach ($result as $link) {
             $link->setLinkOrder($count);
             $link->save();
             $count++;
@@ -294,4 +300,5 @@ class PHPWS_Panel_Link {
     }
 
 }
+
 ?>
