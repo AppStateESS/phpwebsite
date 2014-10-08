@@ -104,8 +104,7 @@ class Access_Shortcut {
             throw new Exception('Shortcut keyword already in use', 3);
         }
 
-
-        $this->setKeyword($keyword);
+        $this->setKeyword($keyword, false);
 
         return TRUE;
     }
@@ -134,8 +133,11 @@ class Access_Shortcut {
         return sprintf('<a href="%s">%s</a>', $this->keyword, $this->keyword);
     }
 
-    public function setKeyword($keyword)
+    public function setKeyword($keyword, $shorten = true)
     {
+        if ($shorten) {
+            $keyword = $this->shortenKeyword($keyword);
+        }
 
         if (empty($keyword)) {
             throw new \Exception('Bad keyword used in Access shortcut');
