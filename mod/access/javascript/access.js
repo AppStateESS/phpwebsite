@@ -26,7 +26,7 @@ $(document).ready(function () {
                 } else if (schedule_id > 0) {
                     location.reload();
                 } else {
-                    location.href = keyword;
+                    location.href = data.keyword;
                 }
             }, 'json');
         }

@@ -94,6 +94,7 @@ class Access_Shortcut {
                 $this->setUrl($key->module, $key->url);
             }
         }
+        $keyword = $this->shortenKeyword($keyword);
 
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $keyword);
@@ -103,9 +104,16 @@ class Access_Shortcut {
             throw new Exception('Shortcut keyword already in use', 3);
         }
 
+
         $this->setKeyword($keyword);
 
         return TRUE;
+    }
+
+    public function shortenKeyword($keyword)
+    {
+        $keyword = preg_replace('/[^\w\s\-]/', '', strtolower(trim($keyword)));
+        return preg_replace('/\s/', '-', $keyword);
     }
 
     public function setUrl($module, $url)
@@ -128,9 +136,6 @@ class Access_Shortcut {
 
     public function setKeyword($keyword)
     {
-        $keyword = preg_replace('/[^\w\s\-]/', '', strtolower(trim($keyword)));
-        $keyword = preg_replace('/\s/', '-', $keyword);
-        $keyword = trim($keyword);
 
         if (empty($keyword)) {
             throw new \Exception('Bad keyword used in Access shortcut');
@@ -149,19 +154,6 @@ class Access_Shortcut {
         $js['LINK'] = '<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> ' . dgettext('access',
                         'Delete') . '</button>';
         $tags[] = javascript('confirm', $js);
-
-
-        /*
-          $vars['command'] = 'edit_shortcut';
-          $vars['sc_id'] = $this->id;
-          $link = PHPWS_Text::linkAddress('access', $vars, true);
-          $js_vars['address'] = $link;
-          $js_vars['label'] = dgettext('access', 'Edit');
-          $js_vars['height'] = '200';
-          $js_link = javascript('open_window', $js_vars);
-
-          $tags[] = $js_link;
-         */
 
         $tags[] = '<a class="btn btn-success btn-sm edit-shortcut" data-authkey="' . \Current_User::getAuthKey() .
                 '" data-schid="' . $this->id . '"><i class="fa fa-edit"></i> ' . dgettext('access',

@@ -146,6 +146,7 @@ class Access {
                     try {
                         $shortcut->postShortcut();
                         $shortcut->save();
+                        $json['keyword'] = $shortcut->keyword;
                         $json['error'] = 0;
                     } catch (\Exception $e) {
                         $json['message'] = $e->getMessage();
@@ -413,6 +414,7 @@ class Access {
         $modal->addButton($button);
         \Layout::add((string) $modal);
         javascript('jquery');
+        //\Layout::includeJavascript('mod/access/javascript/access.js');
         \Layout::includeJavascript('mod/access/javascript/access.min.js');
 
         $link = '<a href="javascript:void(0)" data-authkey="' . \Current_User::getAuthKey() .
