@@ -84,7 +84,7 @@ class Integer extends \Variable {
         switch ($type) {
             case 'select':
                 if ($this->high_range - $this->low_range > 100000) {
-                    throw new \Exceptions(t('Range is too high for a select input'));
+                    throw new \Exception(t('Range is too high for a select input'));
                 }
                 $this->setChoices(range($this->low_range, $this->high_range, $this->increment));
                 break;
