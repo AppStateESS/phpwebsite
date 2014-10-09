@@ -771,6 +771,15 @@ class Form extends Tag {
         $this->group_class[] = $class_name;
     }
 
+    /**
+     * Clears an input from the form object
+     * @param string $input_name
+     */
+    public function removeInput($input_name)
+    {
+        unset($this->inputs[$input_name]);
+    }
+
 }
 
 ?>
