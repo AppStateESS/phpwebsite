@@ -362,7 +362,7 @@ final class Current_User {
         if (empty($label)) {
             $label = dgettext('users', 'Permission');
         } else {
-            $label = strip_tags($label);
+            $label = strip_tags($label, '<i>');
         }
 
         switch ($mode) {
