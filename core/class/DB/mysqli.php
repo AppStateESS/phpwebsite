@@ -137,6 +137,20 @@ class mysqli_PHPWS_SQL {
         return array("ALTER TABLE $table ADD $column $parameter $location;");
     }
 
+    public function lockTables($locked)
+    {
+        foreach ($locked as $lck) {
+            $tbls[] = sprintf('%s %s', $lck['table'], strtoupper($lck['status']));
+        }
+
+        return sprintf('LOCK TABLES %s', implode(', ', $tbls));
+    }
+
+    public function unlockTables()
+    {
+        return 'UNLOCK TABLES;';
+    }
+
 }
 
 ?>

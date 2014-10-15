@@ -531,7 +531,9 @@ class Signup {
 
     public function saveUnregistered()
     {
+        /* @var $peep Signup_Peep Current signup person */
         $peep = & $this->peep;
+        /* @var $slot Signup_Slot Current slot peep is requesting */
         $slot = & $this->slot;
 
         $db = new PHPWS_DB('signup_peeps');
@@ -540,16 +542,30 @@ class Signup {
         // lock carries over to saving of peep.
         $db->setLock('signup_peeps', 'read');
 
+        /**
+         * Check peeps table to count the number of registrations for the
+         * requested slot
+         * (addColumn has "count" indicated)
+         */
+        $db->addColumn('id', null, null, true);
+        $db->addWhere('registered', 1);
+        /**
+         * @var $filled Number of registered peeps in the slot
+         */
+        $filled = $db->select('one');
+
+        /**
+         * See if the peep previous signed up for this sheet. If multiple is
+         * allowed, previous is automatically false
+         */
         if ($this->sheet->multiple) {
             $previous = false;
         } else {
-            $db->addColumn('id', null, null, true);
-            $db->addWhere('registered', 1);
-            $filled = $db->select('one');
             $db->reset();
             $db->addWhere('sheet_id', $peep->sheet_id);
             $db->addWhere('email', $peep->email);
             $db->addColumn('id');
+            /* @var $previous integer */
             $previous = $db->select('one');
         }
 

@@ -169,6 +169,22 @@ function signup_update(&$content, $currentVersion)
             $content[] = '<pre>1.3.4 changes
 -----------------
 + Fixed bad form on moving slot member</pre>';
+        case version_compare($currentVersion, '1.3.5', '<'):
+            $db = \Database::newDB();
+            $sp = $db->addTable('signup_peeps');
+            if (!$sp->columnExists('extra1')) {
+                $dt1 = \Database\Datatype::factory($sp, 'extra1', 'varchar');
+                $dt1->add();
+                $dt2 = \Database\Datatype::factory($sp, 'extra2', 'varchar');
+                $dt2->add();
+                $dt3 = \Database\Datatype::factory($sp, 'extra3', 'varchar');
+                $dt3->add();
+            }
+            $content[] = '<pre>1.3.4 changes
+----------------
++ Installation did not include the extra columns.
+</pre>';
+            break;
     }
     return true;
 }
