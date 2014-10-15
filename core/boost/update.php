@@ -434,7 +434,26 @@ EOF;
 <pre>
 Core 2.4.2 Changes
 --------------------
-+ Index the Settings table
++ Index added to the Settings table
++ dropIndex and createPrimaryIndexId methods added to Database Table
++ Update autoloader to allow modules classes to be in their own top-level namespace
++ Global/Module: Unnecessary ampersand removed from afterRun
++ Global/Form: setAction missing https check.
++ Global/Form/Input/Date: Added min, max, and step parameters to conform with HTML5
++ Global/Form/Input/Date: setValue parses integer values
++ Global/Form/Label: required parameter made private. It was breaking the required tag.
++ Global/Modal: new class that allows for easier insertion of a bootstrap modal window.
++ Global/Variable/Integer: fixed typo with class name Exception
++ Global/Form: Added removeInput method
++ core/class/PHPWS_DB: Previously, Pear's DB class would return two column results
+  as an array with the key as the first column and the value as the second. This
+  behavior was inconsistent with the expected functionality. We had code programmed
+  expecting this behavior. MDB2 did not replicate it, so two column results were
+  broken. New code brings the result back to the expected action.
++ core/class/Link: addClass method added. setClass accepts an array
++ CKeditor: Allows i tags for use with Font Awesome and to not strip spans.
++ CKeditor: Shortened max height on autogrow. Previously, 600px frequently pushed
+            it outside the monitor bounds.
 </pre>
 EOF;
     }
