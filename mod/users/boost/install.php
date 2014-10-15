@@ -139,9 +139,12 @@ function userForm(&$user, $errors=NULL){
 
 function createLocalAuthScript()
 {
+    /*
     if (PHPWS_Settings::get('users', 'local_script')) {
         return true;
     }
+     * 
+     */
     $db = new PHPWS_DB('users_auth_scripts');
     $db->addValue('display_name', dgettext('users', 'Local'));
     $db->addValue('filename', 'local.php');

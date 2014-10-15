@@ -10,7 +10,7 @@ $settings = array('default_authorization' => 1,
     'graphic_confirm' => 0,
     'allow_remember' => 1,
     'forbidden_usernames' => "admin\nroot\nwebmaster\nadministrator\neditor",
-    'local_script' => 0,
+    'local_script' => 1,
     'allow_new_users' => 1,
     'show_login' => 1
 );

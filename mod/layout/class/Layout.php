@@ -152,7 +152,8 @@ class Layout {
     public static function includeJavascript($file)
     {
         $path = PHPWS_SOURCE_HTTP . $file;
-        self::addJSHeader("<script type='text/javascript' src='$file'></script>", md5($path));
+
+        self::addJSHeader("<script type='text/javascript' src='$path'></script>", md5($path));
     }
 
     /**
