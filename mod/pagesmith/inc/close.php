@@ -6,8 +6,8 @@ if (Current_User::allow('pagesmith', 'edit_page')) {
         'tpl' => 'text_only',
         'pid' => 0);
     MiniAdmin::add('pagesmith',
-            PHPWS_Text::secureLink(dgettext('pagesmith', '<span class="fa fa-file-text-o"></span> Create New Web Page'),
-                    'pagesmith', $vars));
+            PHPWS_Text::secureLink('<i class="fa fa-file-text-o"></i> ' . dgettext('pagesmith',
+                            'Create New Web Page'), 'pagesmith', $vars));
     $key = \Key::getCurrent();
     if (!empty($key) && !$key->isDummy() && $key->module == 'pagesmith') {
         $vars['aop'] = 'edit_page';
@@ -15,8 +15,8 @@ if (Current_User::allow('pagesmith', 'edit_page')) {
         unset($vars['tpl']);
         unset($vars['pid']);
         MiniAdmin::add('pagesmith',
-                PHPWS_Text::secureLink(dgettext('pagesmith',
-                                '<span class="fa fa-pencil-square-o"></span> Edit current page'), 'pagesmith', $vars));
+                PHPWS_Text::secureLink('<i class="fa fa-pencil-square-o"></i> ' . dgettext('pagesmith',
+                                'Edit current page'), 'pagesmith', $vars));
     }
 }
 ?>
