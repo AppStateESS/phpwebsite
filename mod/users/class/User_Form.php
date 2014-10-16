@@ -156,6 +156,7 @@ class User_Form {
         $form->addHidden('command', 'postPermission');
         $form->addHidden('group_id', $id);
         $form->addSubmit('update', dgettext('users', 'Update'));
+        $form->addCssClass('update', 'btn btn-primary');
         $template = $form->getTemplate();
 
         $vars['action'] = 'admin';
@@ -171,11 +172,11 @@ class User_Form {
         } else {
             $vars['user_id'] = $group->user_id;
             $vars['command'] = 'editUser';
-            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'),
-                            'users', $vars);
+            $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i> ' . dgettext('users', 'Edit'),
+                            'users', $vars, null, dgettext('users', 'Edit user'), 'btn btn-success');
         }
 
-        $template['LINKS'] = implode(' | ', $links);
+        $template['LINKS'] = implode(' ', $links);
 
         $template['CHECK_ALL'] = javascriptMod('users', 'check_all', $vars);
 

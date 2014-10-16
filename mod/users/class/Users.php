@@ -561,6 +561,7 @@ class PHPWS_User {
 
         if ($newUser == true) {
             $this->created = time();
+            $this->last_logged = time();
         } else {
             $this->updated = time();
         }
