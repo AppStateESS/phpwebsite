@@ -611,7 +611,7 @@ class Calendar_Event {
                         $this->repeat_type = 'weekly';
                         if (empty($_POST['weekday_repeat'])) {
                             $errors[] = dgettext('calendar',
-                                    '<div class="alert alert-danger">Weekly repeats require you pick one or more days.</div>');
+                                    'Weekly repeats require you pick one or more days.');
                         } else {
                             $this->repeat_type .= ':' . implode(';',
                                             $_POST['weekday_repeat']);

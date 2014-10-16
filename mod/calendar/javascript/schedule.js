@@ -25,11 +25,9 @@ plugScheduleForm = function (schedule_id) {
                 $('#schedule_form_sch_id').val(schedule_id);
                 console.log(data.public);
                 if (data.public == 1) {
-                    console.log('public 1');
                     $('#schedule_form_public_1').prop('checked', true);
                     $('#schedule_form_public_0').prop('checked', false);
                 } else {
-                    console.log('public 0');
                     $('#schedule_form_public_1').prop('checked', false);
                     $('#schedule_form_public_0').prop('checked', true);
                 }
@@ -37,6 +35,44 @@ plugScheduleForm = function (schedule_id) {
 };
 
 $(document).ready(function () {
+
+    editor = CKEDITOR.replace('schedule_form_summary',
+            {
+                on:
+                        {
+                            instanceReady: function (ev)
+                            {
+                                this.dataProcessor.writer.indentationChars = '  ';
+
+                                this.dataProcessor.writer.setRules('th',
+                                        {
+                                            indent: true,
+                                            breakBeforeOpen: true,
+                                            breakAfterOpen: false,
+                                            breakBeforeClose: false,
+                                            breakAfterClose: true
+                                        });
+                                this.dataProcessor.writer.setRules('li',
+                                        {
+                                            indent: true,
+                                            breakBeforeOpen: true,
+                                            breakAfterOpen: false,
+                                            breakBeforeClose: false,
+                                            breakAfterClose: true
+                                        });
+                                this.dataProcessor.writer.setRules('p',
+                                        {
+                                            indent: true,
+                                            breakBeforeOpen: true,
+                                            breakAfterOpen: true,
+                                            breakBeforeClose: true,
+                                            breakAfterClose: true
+                                        });
+                            }
+                        }
+            }
+    );
+
     $('#create-schedule').click(function () {
         resetScheduleForm();
         $('#schedule-modal').modal('show');

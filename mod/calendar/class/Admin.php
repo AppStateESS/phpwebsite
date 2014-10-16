@@ -311,6 +311,8 @@ class Calendar_Admin {
                 $repeat_mode_match = $repeat_info[0];
                 if (isset($repeat_info[1])) {
                     $repeat_vars = explode(';', $repeat_info[1]);
+                } else {
+                    $repeat_vars = null;
                 }
 
                 $form->setMatch('repeat_mode', $repeat_mode_match);
@@ -1408,9 +1410,12 @@ class Calendar_Admin {
 
     public function scheduleListing()
     {
+        require_once(PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php');
         javascript('jquery');
+        $authkey = \Current_User::getAuthKey();
         $filename = PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/schedule.js';
-        $script = "<script type='text/javascript' src='$filename'></script>";
+        $script = "<script type='text/javascript' src='$filename'></script>" .
+                "<script type='text/javascript'>var authkey='$authkey';</script>";
         \Layout::addJSHeader($script, 'cal_sched');
         $this->title = dgettext('calendar', 'Schedules');
 
@@ -1422,14 +1427,23 @@ class Calendar_Admin {
         $page_tags['DISPLAY_NAME_LABEL'] = dgettext('calendar', 'User');
         $page_tags['AVAILABILITY_LABEL'] = dgettext('calendar', 'Availability');
 
-        $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-file-text"></i> ' .
-                dgettext('calendar', 'Create schedule') . '</button>';
+        $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-file-text"></i> ' . dgettext('calendar',
+                        'Create schedule') . '</button>';
 
 
         $schedule_form = $this->calendar->schedule->form();
         $schedule_modal = new calendar\Modal('schedule-modal', $schedule_form,
                 'Create schedule');
         $page_tags['SCHEDULE_FORM'] = $schedule_modal->__toString();
+
+        // just a fake schedule to get event to work
+        $schedule = new Calendar_Schedule;
+        $schedule->id = 1;
+
+        $event = new Calendar_Event(0, $schedule);
+
+        $event_modal = new calendar\Modal('event-modal', $this->event_form($event), 'Create event');
+        $page_tags['EVENT_FORM'] = $event_modal->__toString();
 
         $page_tags['ADMIN_LABEL'] = dgettext('calendar', 'Options');
 

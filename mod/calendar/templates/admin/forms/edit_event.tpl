@@ -14,7 +14,7 @@
 <!-- END repeat-warning --></div>
 <!-- END event-tab -->
 <!-- BEGIN error -->
-<h2 class="error">{ERROR}</h2>
+<div class="alert alert-danger">{ERROR}</div>
 <!-- END error -->
 <hr />
 <!-- END hr -->
