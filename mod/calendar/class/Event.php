@@ -531,7 +531,7 @@ class Calendar_Event {
     {
         if (empty($_POST['summary'])) {
             $errors[] = dgettext('calendar',
-                    'You must give your event a summary.');
+                    'You must give your event a title.');
         } else {
             $this->setSummary($_POST['summary']);
         }
@@ -611,7 +611,7 @@ class Calendar_Event {
                         $this->repeat_type = 'weekly';
                         if (empty($_POST['weekday_repeat'])) {
                             $errors[] = dgettext('calendar',
-                                    'Weekly repeats require you pick one or more days.');
+                                    '<div class="alert alert-danger">Weekly repeats require you pick one or more days.</div>');
                         } else {
                             $this->repeat_type .= ':' . implode(';',
                                             $_POST['weekday_repeat']);
@@ -846,6 +846,8 @@ class Calendar_Event {
             $contact = PHPWS_Settings::get('users', 'site_contact');
         }
 
+        $tpl['BEGINEVENT'] = "\n";
+        $tpl['ENDEVENT'] = "\n";
         $tpl['TODAY'] = PHPWS_Time::getDTTime($today);
         $tpl['EMAIL'] = $contact;
         $tpl['UID'] = sprintf('%s-%s.%s', $this->_schedule->title,
@@ -854,7 +856,7 @@ class Calendar_Event {
 
         if (!empty($this->location)) {
             if (!empty($this->loc_link)) {
-                $tpl['LOCATION'] = $this->loc_link . "\n" . $this->location;
+                $tpl['LOCATION'] = $this->loc_link . " " . $this->location;
             } else {
                 $tpl['LOCATION'] = $this->location;
             }
