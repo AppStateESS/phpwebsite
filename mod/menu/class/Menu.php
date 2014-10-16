@@ -62,7 +62,7 @@ class Menu {
 
         // Default link. Takes user to menu admin screen
         MiniAdmin::add('menu',
-                \PHPWS_Text::secureLink('<span class="fa fa-cog fa-spin"></span> Administrate menus', 'menu',
+                \PHPWS_Text::secureLink('<span class="fa fa-cog"></span> Administrate menus', 'menu',
                         array('command' => 'list')));
 
         $key = \Key::getCurrent();
