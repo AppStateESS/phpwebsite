@@ -209,6 +209,12 @@ function access_update(&$content, $version)
                 $content[] = '<pre>1.2.2 changes
 --------------
 + Fixed autoforwarding</pre>';
+            case version_compare($version, '1.3.0', '<'):
+                $content[] = '<pre>1.3.0 changes
+--------------
++ Bootstrap changes, use of modal
++ Various bug fixes
+</pre>';
     }
 
     return true;
