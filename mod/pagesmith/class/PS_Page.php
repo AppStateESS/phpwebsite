@@ -276,7 +276,7 @@ class PS_Page {
         if ($this->front_page) {
             $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith', 'Remove from front');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', $label);
+                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', dgettext('pagesmith', 'Remove from front'));
             }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
@@ -284,7 +284,7 @@ class PS_Page {
             $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith', 'Add to front');
             if ($icon) {
                 $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
-                        $label);
+                        dgettext('pagesmith', 'Add to front'));
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;
