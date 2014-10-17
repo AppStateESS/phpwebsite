@@ -4,6 +4,10 @@ img.property-thumb {
     margin-right: 10px;
 }
 
+.accordion-heading button {
+    min-width : 180px;
+}
+
 div.property-listing {
     border-bottom: 2px dotted #e3e3e3;
     padding: 4px;
@@ -28,18 +32,18 @@ h2.property-name {
 }
 
 #message {
-   font-size : 110%;
-   font-weight : bold;
-   background-color : #e3e3e3;
-   color : black;
-   width : 98%;
-   padding : 3px;
-   margin : 3px auto;
-   text-align : center;
+    font-size : 110%;
+    font-weight : bold;
+    background-color : #e3e3e3;
+    color : black;
+    width : 98%;
+    padding : 3px;
+    margin : 3px auto;
+    text-align : center;
 }
 
 div#property-tabs {
-height : 28px;
+    height : 28px;
 }
 
 div#body-content #property-tabs ul {

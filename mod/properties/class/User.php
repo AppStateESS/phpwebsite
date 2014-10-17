@@ -198,7 +198,7 @@ class User {
         $form->setSize('property_name', 15);
         $form->addSubmit('property_name_submit', 'Add');
         $tpl = $form->getTemplate();
-        javascriptMod('properties', 'search');
+        //javascriptMod('properties', 'search');
 
         $vars['uop'] = 'search';
         $vars['d'] = 'any';
@@ -354,7 +354,7 @@ class User {
 
         unset($vars['amen']);
         $vars['clear'] = 1;
-        $tpl['CLEAR'] = \PHPWS_Text::moduleLink('Clear all', 'properties', $vars);
+        $tpl['CLEAR'] = \PHPWS_Text::moduleLink('Clear all criteria', 'properties', $vars, null, 'Clear all criteria', 'btn btn-danger');
 
         $content = \PHPWS_Template::process($tpl, 'properties', 'search.tpl');
         \Layout::add($content, 'properties', 'search_settings');
@@ -439,7 +439,7 @@ class User {
             }
         }
         if (!empty($criteria)) {
-            return implode("<br />", $criteria);
+            return implode("</li><li>", $criteria);
         }
     }
 
@@ -669,7 +669,7 @@ class User {
 
     private function getCancel($s)
     {
-        $img = ' <i  style="color : red" class="fa fa-times-circle"></i>';
+        $img = ' <i style="color : red" class="fa fa-times-circle"></i>';
         $vars['uop'] = 'remove';
         $vars['s'] = $s;
         return \PHPWS_Text::moduleLink($img, 'properties', $vars);
