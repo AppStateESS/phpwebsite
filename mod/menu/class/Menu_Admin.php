@@ -679,7 +679,7 @@ class Menu_Admin {
             $link = new Menu_Link;
             $link->setMenuId($menu_id);
         }
-        if ($key_id !== '0') {
+        if (isset($key_id) && $key_id !== '0') {
             $key = new Key($key_id);
             $link->setKeyId($key_id);
             $url = $key->url;
