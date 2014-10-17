@@ -180,11 +180,27 @@ function signup_update(&$content, $currentVersion)
                 $dt3 = \Database\Datatype::factory($sp, 'extra3', 'varchar');
                 $dt3->add();
             }
-            $content[] = '<pre>1.3.4 changes
+            $content[] = '<pre>1.3.5 changes
 ----------------
 + Installation did not include the extra columns.
 </pre>';
-            break;
+
+        case version_compare($currentVersion, '1.3.6', '<'):
+            $db = \Database::newDB();
+            $dbtype = $db->getDatabaseType();
+            if ($dbtype == 'mysql') {
+                $db->query('ALTER TABLE `signup_peeps` MODIFY extra1 VARCHAR(255) DEFAULT NULL');
+                $db->query('ALTER TABLE `signup_peeps` MODIFY extra2 VARCHAR(255) DEFAULT NULL');
+                $db->query('ALTER TABLE `signup_peeps` MODIFY extra3 VARCHAR(255) DEFAULT NULL');
+            } else {
+                $db->query('ALTER TABLE signup_peeps ALTER COLUMN extra1 DROP NOT NULL');
+                $db->query('ALTER TABLE signup_peeps ALTER COLUMN extra2 DROP NOT NULL');
+                $db->query('ALTER TABLE signup_peeps ALTER COLUMN extra3 DROP NOT NULL');
+            }
+            $content[] = '<pre>1.3.6 changes
+----------------
++ Extra peer columns need to be null
+</pre>';
     }
     return true;
 }

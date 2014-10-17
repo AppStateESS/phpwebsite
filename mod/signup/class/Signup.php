@@ -532,9 +532,9 @@ class Signup {
     public function saveUnregistered()
     {
         /* @var $peep Signup_Peep Current signup person */
-        $peep = & $this->peep;
+        $peep = $this->peep;
         /* @var $slot Signup_Slot Current slot peep is requesting */
-        $slot = & $this->slot;
+        $slot = $this->slot;
 
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('slot_id', $peep->slot_id);
