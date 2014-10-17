@@ -373,6 +373,9 @@ class Contact {
 
     public function save()
     {
+        if (empty($this->last_log)) {
+            $this->last_log = time();
+        }
         $db = new \PHPWS_DB('prop_contacts');
         $result = $db->saveObject($this);
         if (\PEAR::isError($result)) {
