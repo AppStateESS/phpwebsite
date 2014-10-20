@@ -1,124 +1,18 @@
-div#contact {
-    border: 1px solid black;
-    width: 410px;
-    background-color: #e3e3e3;
-    margin-top: 20px;
-}
-
-#contact h3, #contact h3 a {
-    margin: 0px 0px 0px 0px;
-    padding: 3px 3px;
-    background-color: black;
-    color: white;
-    display : block;
-}
-
-#contact p {
-    padding: 4px;
-    text-align: left;
-}
-
-#name {
-    margin-bottom: 0px;
-    border-bottom: 2px dotted #e3e3e3;
-    padding-bottom: 3px;
-}
-
-#property {
-    position: relative;
-}
-
-div#property-info {
-    float: left;
-    width : 420px;
-}
-
-#property-info h3 {
-    border-bottom: 1px solid black;
-}
-
-div#photo-gallery {
-    text-align: center;
-    margin: 0px;
-    width: 430px;
-    float: left;
-}
-
-#gallery {
-    background-color: black;
-}
-
-.pointer {
-    border-color: white;
-}
-
-.frame .img_wrap {
-    margin-right: 4px;
-    border: none;
-}
-
-ul.filmstrip {
-    margin: 1px;
-    padding: 1px;
-}
-
-ul.filmstrip li {
-    background-color: #e3e3e3;
-    margin: 0;
-    padding: 0;
-}
-
-.panel-content {
-    text-align: center;
-}
-
-div.return-link {
-    clear: both;
-    border-top: 1px solid black;
-    vertical-align: middle;
-}
-
-div.return-link a img {
-    float: left;
-}
-
-div.return-link a div {
-    margin-top: 5px;
-}
-
-p#description {
-    border: 1px solid #e3e3e3;
-    padding: 3px;
-}
-
-img.google-map {
-    float: right;
-}
-
-.sublease {
-    background-color : black;
-    color : white;
-    font-weight : bold;
-    padding : 3px;
-    font-variant: small-caps;
-}
-
-div#not-active {
-background-color : red;
-color : white;
-font-size : 110%;
-font-weight : bold;
-margin : 0px auto 10px auto;
-width : 500px;
-padding : 4px;
-text-align : center;
-}
-
-.toggle {
-    background-color : #e3e3e3;
-}
-
-.reported {
-    background-color : #FF5341;
-    text-decoration: line-through;
-}
+#contact h3, #contact h3 a {margin:0px 0px 0px 0px;padding:3px 3px; color:white}
+#contact p {padding:4px;text-align:left;}
+#contact {border:1px solid black;width:410px;margin-top:20px;}
+#gallery {background-color:black;}
+#name {margin:.5em 0em .5em 0em;border-bottom:2px dotted #e3e3e3;padding-bottom:.5em;}
+#not-active {background-color:red;color:white;font-size:110%;font-weight:bold;margin:0px auto 10px auto;width:500px;padding:4px;text-align:center;}
+#photo-gallery {text-align:center;margin:0px;width:430px;}
+#property {position:relative;}
+.filmstrip li {background-color:#e3e3e3;margin:0;padding:0;}
+.filmstrip {margin:1px;padding:1px;}
+.frame .img_wrap {margin-right:4px;border:none;}
+.google-map {float:right;}
+.panel-content {text-align:center;}
+.pointer {border-color:white;}
+.reported {background-color:#FF5341;text-decoration:line-through;}
+.sublease {background-color:black;color:white;font-weight:bold;padding:3px;font-variant:small-caps;}
+.toggle {background-color:#e3e3e3;}
+.location {margin: 0em 0em .5em 0em}

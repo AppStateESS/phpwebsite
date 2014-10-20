@@ -4,10 +4,12 @@
     <a id="top"></a>
     {EMPTY_MESSAGE}
     <!-- BEGIN listrows -->
-    <div class="property-listing">
-        {THUMBNAIL}
-        <div class="property-info">
-            <h2 class="property-name">{NAME}</h2>
+    <div class="row property-listing">
+        <div class="col-md-2">
+            {THUMBNAIL}
+        </div>
+        <div class="col-md-offset-1 col-md-9">
+            <div class="property-name">{NAME}</div>
             <div class="address">{ADDRESS}<br />
                 <i>{CAMPUS_DISTANCE} from campus</i></div>
             <div class="details">Price: ${MONTHLY_RENT} per month<br />

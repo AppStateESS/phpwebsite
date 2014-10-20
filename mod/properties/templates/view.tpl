@@ -1,25 +1,25 @@
 {ACTIVE}
-<div id="property">
-    <div id="photo-gallery">
+<h2 id="name">{NAME}</h2>
+<div class="row">
+    <div class="col-md-6" id="photo-gallery">
         {NO_PHOTO}
         <!-- BEGIN photos -->
         <ul id="gallery">
             {PHOTOS}
         </ul><!-- END photos -->
         <!-- BEGIN admin --><div>{ADD_PHOTO} {EDIT}</div><!-- END admin -->
-        <div id="contact">
-            <h3>{COMPANY_NAME}</h3>
+        <div id="contact" class="bg-info">
+            <h3 class="bg-primary">{COMPANY_NAME}</h3>
             <p class="info"><!-- BEGIN company -->{GOOGLE_COMPANY}{COMPANY_ADDRESS}<br />
                 <!-- END company --> {PHONE}<br />
                 {EMAIL} <!-- BEGIN hours --><br />
                 {HOURS}<!-- END hours --></p>
         </div>
     </div>
-    <div id="property-info">
-        <h2 id="name">{NAME}</h2>
+    <div class="col-md-6">
+        <h3 class="location">Location</h3>
         <p>{ADDRESS} {GOOGLE_MAP}</p>
-        <!-- BEGIN desc --><h4>Description</h4>
-        <p id="description">{DESCRIPTION}</p><!-- END desc -->
+        <h3>Base information</h3>
         <p><strong>Move-in date:</strong> {MOVE_IN_DATE}<br />
             <strong>Student preference:</strong> {STUDENT_TYPE}<br />
             <strong>Distance from campus:</strong> {CAMPUS_DISTANCE}<br />
@@ -28,6 +28,12 @@
             <strong>Windows in unit:</strong> {WINDOWS}
             <!-- BEGIN eff --><br /><span style="font-weight : bold; font-size : larger">{EFFICIENCY}</span><!-- END eff -->
         </p>
+        <!-- BEGIN desc --><h3>Description</h3>
+        <p style="height: 230px;overflow:auto">{DESCRIPTION}</p><!-- END desc -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
         <h3>Contract and Pricing</h3>
         <p><strong>Monthly Rent:</strong> ${MONTHLY_RENT} {LEASE_TYPE}<br />
             <strong>Contract length:</strong> {CONTRACT_LENGTH} {SUBLEASE}<br />
@@ -37,12 +43,16 @@
             <!-- BEGIN clean-fee --><strong>Cleaning fees:</strong> {CLEAN_FEE_AMT} {CLEAN_FEE_REFUND}<br /><!-- END clean-fee -->
             <!-- BEGIN other-fee --><strong>Other fees:</strong> {OTHER_FEES}<br /><!-- END other-fee -->
         </p>
+    </div>
+    <div class="col-md-4">
         <h3>Pets</h3>
         <p><strong>Pets allowed:</strong> {PETS_ALLOWED} <!-- BEGIN pet-info --><br />
             <strong>Pet types:</strong> {PET_TYPES}<br />
             <strong>Pet fee:</strong> {PET_FEE}<br />
             <strong>Pet deposit:</strong> {PET_DEPOSIT}
             <!-- END pet-info --></p>
+    </div>
+    <div class="col-md-4">
         <h3>Amenities and utilities</h3>
         <p>
             <strong>AppalCart:</strong> {APPALCART}<br />
@@ -65,11 +75,7 @@
             <!-- BEGIN internet --><strong>Internet:</strong> ${UTIL_INTERNET}<br /><!-- END internet -->
             <!-- BEGIN phone --><strong>Phone:</strong> ${UTIL_PHONE}<!-- END phone --></p>
         <!-- END utilities -->
-
-
-    </div>
-    <div class="return-link">
-        <a href="index.php">{ARROW} Back to list</a>
     </div>
 </div>
+<a class="btn btn-default" href="index.php"><i class="fa fa-arrow-left"></i> Back to list</a>
 <div id="photo-form" style="display : none"></div>

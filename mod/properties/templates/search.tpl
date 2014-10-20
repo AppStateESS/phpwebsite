@@ -74,33 +74,33 @@
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse6">
+                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse7">
                     Manager
                 </button>
             </div>
-            <div id="pcollapse6" class="accordion-body collapse">
+            <div id="pcollapse7" class="accordion-body collapse">
                 <div class="accordion-inner">{MANAGER} {MANAGER_SUBMIT}
                 </div>
             </div>
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse6">
+                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse8">
                     Property name
                 </button>
             </div>
-            <div id="pcollapse6" class="accordion-body collapse">
+            <div id="pcollapse8" class="accordion-body collapse">
                 <div class="accordion-inner">{PROPERTY_NAME} {PROPERTY_NAME_SUBMIT}
                 </div>
             </div>
         </div>
         <div class="accordion-group">
             <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse6">
+                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse9">
                     Contract
                 </button>
             </div>
-            <div id="pcollapse6" class="accordion-body collapse">
+            <div id="pcollapse9" class="accordion-body collapse">
                 <div class="accordion-inner">{SUBLEASE}<br />{NOSUB}
                 </div>
             </div>

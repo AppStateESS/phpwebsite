@@ -8,16 +8,15 @@
     <tr>
         <th>{NAME_SORT}</th>
         <th>{MONTHLY_RENT_SORT}</th>
-        <th>{SHARE_BEDROOM_SORT}</th>
-        <th>{SHARE_BATHROOM_SORT}</th>
+        <th>Share {SHARE_BEDROOM_SORT} /
+        {SHARE_BATHROOM_SORT}</th>
         <th>{CAMPUS_DISTANCE_SORT}</th>
         <th>{MOVE_IN_DATE_SORT}</th>
         <!-- BEGIN listrows -->
     <tr>
         <td>{NAME}</td>
         <td>${MONTHLY_RENT}</td>
-        <td>{SHARE_BEDROOM}</td>
-        <td>{SHARE_BATHROOM}</td>
+        <td>{SHARE_BEDROOM} / {SHARE_BATHROOM}</td>
         <td>{CAMPUS_DISTANCE}</td>
         <td>{MOVE_IN_DATE}</td>
     </tr>

@@ -386,8 +386,8 @@ class Roommate_User {
         $pager->addRowTags('rowtags');
         $pager->addSortHeader('name', 'Title');
         $pager->addSortHeader('monthly_rent', 'Monthly rent');
-        $pager->addSortHeader('share_bedroom', 'Share bedroom?');
-        $pager->addSortHeader('share_bathroom', 'Share bathroom?');
+        $pager->addSortHeader('share_bedroom', 'bedroom?');
+        $pager->addSortHeader('share_bathroom', 'bathroom?');
         $pager->addSortHeader('campus_distance', 'Campus distance');
         $pager->addSortHeader('move_in_date', 'Move in date');
         $pager->setSearch('name');
@@ -647,8 +647,6 @@ class Roommate_User {
 
     public function searchPanel()
     {
-        javascriptMod('properties', 'search');
-
         $vars['rop'] = 'search';
         $vars['d'] = 'any';
         $distances[] = \PHPWS_Text::moduleLink('Any', 'properties', $vars);

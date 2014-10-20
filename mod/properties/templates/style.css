@@ -1,7 +1,5 @@
 img.property-thumb {
     border: 1px solid black;
-    float: left;
-    margin-right: 10px;
 }
 
 .accordion-heading button {
@@ -12,11 +10,6 @@ div.property-listing {
     border-bottom: 2px dotted #e3e3e3;
     padding: 4px;
     margin-bottom: 10px;
-    overflow : auto;
-
-}
-div.property-info {
-    float : left;
 }
 
 div.open-box {
@@ -27,7 +20,9 @@ div.open-box {
     float: right;
 }
 
-h2.property-name {
+.property-name {
+    font-size : 1.2em;
+    font-weight:bold;
     margin : 0 0 .5em 0;
 }
 

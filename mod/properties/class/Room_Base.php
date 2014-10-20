@@ -475,7 +475,6 @@ abstract class Room_Base {
         $tpl['INTERNET'] = $this->getInternetType();
         $tpl['LAUNDRY'] = $this->getLaundryType();
         $tpl['TV_TYPE'] = $this->getTvType();
-        $tpl['ARROW'] = \Icon::show('previous');
         $tpl['NAME'] = $this->name;
 
         return $tpl;
