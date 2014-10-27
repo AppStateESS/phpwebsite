@@ -62,11 +62,10 @@ class Menu {
 
         // Default link. Takes user to menu admin screen
         MiniAdmin::add('menu',
-                \PHPWS_Text::secureLink('<span class="fa fa-cog"></span> Administrate menus', 'menu',
-                        array('command' => 'list')));
+                \PHPWS_Text::secureLink('<span class="fa fa-cog"></span> Administrate menus',
+                        'menu', array('command' => 'list')));
 
         $key = \Key::getCurrent();
-
         $link_list = self::getLinkList();
 
         if ($key && !$key->isDummy(true)) {
@@ -84,7 +83,7 @@ class Menu {
                         MiniAdmin::add('menu',
                                 '<a href="javascript:void(0)" data-key-id="' . $key->id
                                 . '" data-menu-id="' . $menu_id
-                                . '" id="menu-remove-page">' . t('<span class="fa fa-times"></span> Remove from %s',
+                                . '" id="menu-remove-page"><span class="fa fa-times"></span> ' . t('Remove from %s',
                                         $menu_title) . '</a>');
                         $found = true;
                     }
@@ -193,15 +192,16 @@ class Menu {
     public static function getLinkList()
     {
         $db = \Database::newDB();
-        $t1 = $db->addTable('menu_links');
-        $t2 = $db->addTable('menus');
-        $db->joinResources($t1, $t2,
-                $db->createConditional($t1->getField('menu_id'),
-                        $t2->getField('id'), '='));
-        $t1->addField('id');
-        $t1->addField('key_id');
-        $t1->addField('menu_id');
-        $t2->addField('title', 'menu_title');
+        $menu_links = $db->addTable('menu_links');
+        $menu_links->addFieldConditional('key_id', 0, '!=');
+        $menus = $db->addTable('menus');
+        $db->joinResources($menu_links, $menus,
+                $db->createConditional($menu_links->getField('menu_id'),
+                        $menus->getField('id'), '='));
+        $menu_links->addField('id');
+        $menu_links->addField('key_id');
+        $menu_links->addField('menu_id');
+        $menus->addField('title', 'menu_title');
         $link_list = $db->select();
         return $link_list;
     }

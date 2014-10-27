@@ -226,6 +226,16 @@ class Menu_Link {
         static $current_url = null;
         static $redirect_url = null;
 
+        /**
+         * If the current link's url starts with http and does not match
+         * the current home address, return false because it is an offsite link.
+         */
+        $home = preg_quote(PHPWS_HOME_HTTP);
+        if (preg_match('@^http@i', $this->url) && !preg_match("@$home@i",
+                        $this->url)) {
+            return false;
+        }
+
         if (!$current_url) {
             $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true, false));
         }
@@ -234,13 +244,7 @@ class Menu_Link {
             $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
         }
 
-        $home = preg_quote(PHPWS_HOME_HTTP);
-        if (preg_match('@^http@i', $this->url) && !preg_match("@$home@i",
-                        $this->url)) {
-            return false;
-        }
-        if (preg_match("@$current_url$@", $this->url) || (!empty($redirect_url) &&
-                preg_match("@$redirect_url$@", $this->url))) {
+        if (preg_match("@$redirect_url$@", $this->url)) {
             return true;
         } else {
             return false;
@@ -266,7 +270,7 @@ class Menu_Link {
                 $template['ACTIVE'] = 'active'; // booststrap theme
             }
         }
-        if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl() && $this->url != 'index.php') {
+        if (!isset($template['CURRENT_LINK']) && $this->isCurrentUrl()) {
             $current_link = true;
             $current_parent[] = $this->id;
             $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
