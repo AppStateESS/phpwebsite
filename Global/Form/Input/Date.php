@@ -12,9 +12,7 @@ namespace Form\Input;
 class Date extends Text {
 
     protected $min;
-
     protected $max;
-
     protected $step;
 
     /**
@@ -23,14 +21,29 @@ class Date extends Text {
      * @return type
      * @throws \Exception
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         if (empty($value)) {
             return;
         }
+        /**
+         * Below deals with an integer and tries to identify if it is a timestamp
+         * or date formatted.
+         */
         if (is_int($value)) {
-            $value = strftime('%Y-%m-%d', strtotime($value));
+            $value = 333923;
+            $date_string_test = strftime('%Y%m%d', $value);
+            if ($date_string_test < 19700101) {
+                $date_string_test2 = strftime('%Y%m%d', strtotime($value));
+                if ($date_string_test2 < 19700101) {
+                    throw new \Exception('Bad integer value sent to Form\Input\Date');
+                } else {
+                    $value = strftime('%Y-%m-%d', strtotime($value));
+                }
+            } else {
+                $value = strftime('%Y-%m-%d', $value);
+            }
         }
-
         if (!preg_match('/\d{4}-\d{2}-\d{2}/', $value)) {
             throw new \Exception(t('Date format is YYYY-MM-DD: %s', $value));
         }
@@ -71,6 +84,7 @@ class Date extends Text {
     {
         $this->step = (int) $step;
     }
+
 }
 
 ?>
