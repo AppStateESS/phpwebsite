@@ -1,7 +1,7 @@
 <div id="search-criteria">
     <h3>Search criteria</h3>
     <p><em>Narrow your search by choosing one or more search criteria below.</em></p>
-    <ul><li>{CRITERIA}</li></ul>
+    <!-- BEGIN criteria --><ul><li>{CRITERIA}</li></ul><!-- END criteria -->
 
     <div>{CLEAR}</div>
     <hr />

@@ -1,10 +1,9 @@
 #contact h3, #contact h3 a {margin:0px 0px 0px 0px;padding:3px 3px; color:white}
 #contact p {padding:4px;text-align:left;}
-#contact {border:1px solid black;width:410px;margin-top:20px;}
+#contact {border:1px solid black;margin-top:20px;}
 #gallery {background-color:black;}
 #name {margin:.5em 0em .5em 0em;border-bottom:2px dotted #e3e3e3;padding-bottom:.5em;}
-#not-active {background-color:red;color:white;font-size:110%;font-weight:bold;margin:0px auto 10px auto;width:500px;padding:4px;text-align:center;}
-#photo-gallery {text-align:center;margin:0px;width:430px;}
+#not-active {background-color:red;color:white;font-size:110%;font-weight:bold;margin:0px auto 10px auto;padding:4px;text-align:center;}
 #property {position:relative;}
 .filmstrip li {background-color:#e3e3e3;margin:0;padding:0;}
 .filmstrip {margin:1px;padding:1px;}
