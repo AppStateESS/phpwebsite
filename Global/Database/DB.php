@@ -1668,6 +1668,8 @@ abstract class DB extends \Data {
             }
         } elseif (is_array($value)) {
             return array_map(array('\Database\DB', 'quote'), $value);
+        } elseif (is_null($value)) {
+            return 'NULL';
         } else {
             return $value;
         }
