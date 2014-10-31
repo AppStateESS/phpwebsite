@@ -456,6 +456,16 @@ Core 2.4.2 Changes
             it outside the monitor bounds.
 </pre>
 EOF;
+
+        case version_compare($version, '2.5.0', '<'):
+            $content[] = <<<EOF
+<pre>
+Core 2.5.0 Changes
+------------------
++ Added selectAsCSV to Global Database class.
+
+</pre>
+EOF;
     }
     return true;
 }
