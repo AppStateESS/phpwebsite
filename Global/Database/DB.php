@@ -1778,6 +1778,30 @@ abstract class DB extends \Data {
         }
     }
 
+    public function selectAsCSV()
+    {
+        $result = $this->select();
+        if (empty($result)) {
+            return null;
+        }
+        $headers = null;
+
+        $func = function($value) {
+            return '"' . str_replace('"', '\"', $value) . '"';
+        };
+
+        $headers = false;
+        foreach ($result as $row) {
+            if (!$headers) {
+                $csv[] = implode(',', array_map($func, array_keys($row)));
+                $headers = true;
+            }
+            $csv[] = implode(',', array_map($func, $row));
+        }
+        $csv_content = implode("\n", $csv);
+        return $csv_content;
+    }
+
 }
 
 ?>
