@@ -569,7 +569,10 @@ class Calendar_User {
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
         //$template['VIEW_LINKS'] = $this->viewLinks('grid');
-        $template = array_merge($template, $this->viewLinks('grid'));
+        $view_links = $this->viewLinks('grid');
+        if ($view_links) {
+            $template = array_merge($template, $view_links);
+        }
         $template['SCHEDULE_PICK'] = $this->schedulePick();
         $template['SUGGEST'] = $this->suggestLink();
         $template['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
@@ -704,7 +707,7 @@ class Calendar_User {
 
             $result = $this->event->save();
 
-            $_SESSION['Calendar_Total_Suggestions']++;
+            $_SESSION['Calendar_Total_Suggestions'] ++;
 
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
@@ -804,7 +807,8 @@ class Calendar_User {
                 $view_name = dgettext('calendar', 'Today');
         }
 
-        return PHPWS_Text::moduleLink($view_name, 'calendar', $vars, null, null, 'btn btn-default');
+        return PHPWS_Text::moduleLink($view_name, 'calendar', $vars, null, null,
+                        'btn btn-default');
     }
 
     /**
@@ -1026,7 +1030,8 @@ class Calendar_User {
 
         if (!empty($left_arrow_time)) {
             $vars['date'] = $left_arrow_time;
-            $larrow = new PHPWS_Link('<i class="fa fa-chevron-left"></i>', 'calendar', $vars);
+            $larrow = new PHPWS_Link('<i class="fa fa-chevron-left"></i>',
+                    'calendar', $vars);
             $larrow->addClass('btn btn-default');
             $larrow->setTitle($left_link_title);
             $larrow->setNoFollow($no_follow);
@@ -1035,7 +1040,8 @@ class Calendar_User {
 
         if (!empty($right_arrow_time)) {
             $vars['date'] = $right_arrow_time;
-            $rarrow = new PHPWS_Link('<i class="fa fa-chevron-right"></i>', 'calendar', $vars);
+            $rarrow = new PHPWS_Link('<i class="fa fa-chevron-right"></i>',
+                    'calendar', $vars);
             $rarrow->addClass('btn btn-default');
             $rarrow->setTitle($right_link_title);
             $rarrow->setNoFollow($no_follow);
