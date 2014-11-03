@@ -529,13 +529,26 @@ EOF;
         $page_tags['new'] = \PHPWS_Text::secureLink('<i class="fa fa-plus"></i> Add new contact',
                         'properties', array('aop' => 'edit_contact'), null,
                         null, 'btn btn-success');
-        $page_tags['email'] = \PHPWS_Text::secureLink('<i class="fa fa-minus-square-o"></i> Inactive contacts',
-                        'properties', array('aop' => 'email_contacts'), null,
-                        null, 'btn btn-default');
+
+
 
         $this->title = 'Contact listing';
 
         $pager = new \DBPager('prop_contacts', 'Properties\Contact');
+
+        if (isset($_GET['show']) && $_GET['show'] == 'inactive') {
+            $pager->addWhere('active', 0);
+            $page_tags['inactive'] = \PHPWS_Text::secureLink('<i class="fa fa-plus-square-o"></i> All contacts',
+                            'properties',
+                            array('aop' => 'contacts'),
+                            null, null, 'btn btn-default');
+        } else {
+            $page_tags['inactive'] = \PHPWS_Text::secureLink('<i class="fa fa-minus-square-o"></i> Inactive contacts',
+                            'properties',
+                            array('aop' => 'contacts', 'show' => 'inactive'),
+                            null, null, 'btn btn-default');
+        }
+
         $pager->addSortHeader('company_name', 'Company');
         $pager->addSortHeader('last_name', 'Last, First name');
         $pager->addSortHeader('email_address', 'Email');
@@ -546,6 +559,7 @@ EOF;
         $pager->addPageTags($page_tags);
         $pager->setSearch('company_name', 'first_name', 'last_name',
                 'email_address');
+        $pager->setDefaultLimit(10);
         $pager->setDefaultOrder('company_name');
         $pager->cacheQueries();
         $pager->addToggle(' style="background-color : #e3e3e3"');
