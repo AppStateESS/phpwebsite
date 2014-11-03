@@ -1,16 +1,16 @@
-<div style="margin-bottom : 1em">{new} {email}</div>
+<div style="margin-bottom : 1em">{new} {inactive}</div>
 
 <table class="table table-striped">
     <tr style="vertical-align: top">
-        <th width="25%">{COMPANY_NAME_SORT}</th>
-        <th width="20%">{LAST_NAME_SORT}</th>
-        <th>{LAST_LOG_SORT}</th>
-        <th class="admin-links">{ACTION}</th>
+        <th style="width : 30%">{COMPANY_NAME_SORT}</th>
+        <th style="width : 30%">{LAST_NAME_SORT}</th>
+        <th style="width : 15%">{LAST_LOG_SORT}</th>
+        <th style="width : 15%" class="admin-links">{ACTION}</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr{TOGGLE}>
         <td>{COMPANY_NAME}</td>
-        <td>{LAST_NAME}<br />{PHONE}</td>
+        <td>{LAST_NAME} {PHONE}</td>
         <td>{LAST_LOG}</td>
         <td class="admin-icons">{ACTION}</td>
     </tr>
