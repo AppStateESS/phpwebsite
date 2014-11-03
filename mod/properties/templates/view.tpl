@@ -1,7 +1,7 @@
 {ACTIVE}
 <h2 id="name">{NAME}</h2>
 <div class="row">
-    <div class="col-md-6" id="photo-gallery">
+    <div class="col-md-7" id="photo-gallery">
         {NO_PHOTO}
         <!-- BEGIN photos -->
         <ul id="gallery">
@@ -16,7 +16,7 @@
                 {HOURS}<!-- END hours --></p>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
         <h3 class="location">Location</h3>
         <p>{ADDRESS} {GOOGLE_MAP}</p>
         <h3>Base information</h3>
