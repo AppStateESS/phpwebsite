@@ -56,7 +56,7 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'ShowSettings') {
     // Create the settings view
     $settingsView = new addthis\SettingsView(addthis\Settings::getInstance());
-    \Layout::add($settingsView->show());
+    \Layout::add(\PHPWS_ControlPanel::display($settingsView->show()));
 }
 
 ?>
