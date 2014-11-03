@@ -1,10 +1,10 @@
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
     <?=$MINIADMIN_TITLE_ALT?> <b class="caret"></b>
 </a>
-<ul id="miniadmin" class="dropdown-menu">
+<ul id="miniadmin" class="dropdown-menu" style="max-height:480px;overflow:auto">
     <li class="nav-header">phpWebSite</li>
     <li><a href="index.php?module=controlpanel&command=panel_view">Control panel</a></li>
-    <?php if (!empty($module_links)): foreach($module_links as $module_name=>$mod_links):?>
+    <?php $count=0; if (!empty($module_links)): foreach($module_links as $module_name=>$mod_links):$count++;?>
     <li class="divider"></li>
     <li class="nav-header"><?=$module_name?></li>
     <?php if (!empty($mod_links['links'])) : foreach($mod_links['links'] as $link): ?>
