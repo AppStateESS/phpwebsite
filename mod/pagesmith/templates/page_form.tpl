@@ -4,7 +4,7 @@
 <hr />
 <div class="align-center">{SUBMIT} {SAVE_SO_FAR}</div>
 <hr />
-{PUBLISH_DATE_LABEL} {PUBLISH_DATE}
+<label for="publish-date">{PUBLISH_DATE_LABEL}</label><input type="datetime-local" name="publish_date" value="{PUBLISH_VALUE}" />
 <hr />
 {TEMPLATE_LIST} {CHANGE_TPL} {ORPHAN_LINK}
 {END_FORM}

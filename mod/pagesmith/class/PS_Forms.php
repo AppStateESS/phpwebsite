@@ -118,13 +118,11 @@ EOF;
             $publish_date = time();
         }
 
-        $form->addText('publish_date', strftime('%F %H:%M', $publish_date));
-        $form->setSize('publish_date', 15);
-        $form->setLabel('publish_date', 'Show page after this date and time');
-
         $this->pageTemplateForm($form);
 
         $tpl = $form->getTemplate();
+        $tpl['PUBLISH_DATE_LABEL'] = 'Show page after this date and time';
+        $tpl['PUBLISH_VALUE'] = strftime('%Y-%m-%dT%H:%M:%S', $publish_date);
 
         $tpl['PAGE_TITLE'] = $page->title;
         $jsvars['page_title_input'] = 'pagesmith_title';
