@@ -994,11 +994,6 @@ class Layout {
         }
     }
 
-    public static function cacheOff()
-    {
-        $_SESSION['Layout_Settings']->cache = FALSE;
-    }
-
     public static function getBase()
     {
         return '<base href="' . PHPWS_Core::getBaseURL() . '" />';
@@ -1205,52 +1200,6 @@ class Layout {
     public static function collapse()
     {
         $GLOBALS['Layout_Collapse'] = true;
-    }
-
-    /**
-     * Saves the current layout head information
-     */
-    public static function cacheHeaders($cache_key)
-    {
-        $cache_key = 'layout_header' . $cache_key;
-        if (isset($GLOBALS['Layout_JS'])) {
-            $layout_data['Layout_JS'] = $GLOBALS['Layout_JS'];
-        }
-        if (isset($GLOBALS['Style'])) {
-            $layout_data['Style'] = $GLOBALS['Style'];
-        }
-        if (isset($GLOBALS['Extra_Style'])) {
-            $layout_data['Extra_Style'] = $GLOBALS['Extra_Style'];
-        }
-
-        if (isset($GLOBALS['Layout_Page_Title'])) {
-            $layout_data['Layout_Page_Title_Add'] = $GLOBALS['Layout_Page_Title_Add'];
-        }
-        if (!empty($layout_data)) {
-            PHPWS_Cache::save($cache_key, serialize($layout_data));
-        }
-    }
-
-    /**
-     * Retrieves the layout head information
-     */
-    public static function getCacheHeaders($cache_key)
-    {
-        $cache_key = 'layout_header' . $cache_key;
-
-        $data = PHPWS_Cache::get($cache_key);
-
-        if (empty($data)) {
-            return;
-        }
-
-        $array_data = @unserialize($data);
-
-        if (is_array($array_data)) {
-            foreach ($array_data as $global_key => $value) {
-                $GLOBALS[$global_key] = $value;
-            }
-        }
     }
 
     /**

@@ -274,14 +274,17 @@ class PS_Page {
     public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
-            $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith', 'Remove from front');
+            $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith',
+                            'Remove from front');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', dgettext('pagesmith', 'Remove from front'));
+                $label = sprintf('<i class="fa fa-flag" title="%s"></i>',
+                        dgettext('pagesmith', 'Remove from front'));
             }
             $title = dgettext('pagesmith', 'Click to remove from front page');
             $vars['fp'] = 0;
         } else {
-            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith', 'Add to front');
+            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith',
+                            'Add to front');
             if ($icon) {
                 $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
                         dgettext('pagesmith', 'Add to front'));
@@ -480,21 +483,9 @@ class PS_Page {
                     $this->editLink(dgettext('pagesmith', 'Edit this page')));
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
-        Layout::getCacheHeaders($this->cacheKey());
-        $save_cache = true;
-
-        $cache = PHPWS_Cache::get($this->cacheKey());
-
         $this->loadTemplate();
         $this->_tpl->loadStyle();
         $this->flag();
-
-        // Page always shown when user is an admin
-        if (!Current_User::allow('pagesmith') && !empty($cache)) {
-            // needed for filecabinet
-            javascript('open_window');
-            return $cache;
-        }
 
         $this->loadSections();
         if (!empty($this->title) && !PHPWS_Core::atHome()) {
@@ -508,7 +499,6 @@ class PS_Page {
         if (Current_User::allow('pagesmith') && $this->_key->show_after > time()) {
             $tpl['SHOW_AFTER'] = t('Page hidden until %s',
                     strftime('%F %H:%M', $this->_key->show_after));
-            $save_cache = false;
         }
 
         $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith',
@@ -516,14 +506,11 @@ class PS_Page {
         $this->pageLinks($tpl);
         if (PHPWS_Settings::get('pagesmith', 'back_to_top')) {
             $tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>',
-                    PHPWS_Core::getCurrentUrl(), $anchor_title, '<i class="fa fa-arrow-circle-up"></i> ' .
+                    PHPWS_Core::getCurrentUrl(), $anchor_title,
+                    '<i class="fa fa-arrow-circle-up"></i> ' .
                     dgettext('pagesmith', 'Back to top'));
         }
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
-        if ($save_cache) {
-            Layout::cacheHeaders($this->cacheKey());
-            PHPWS_Cache::save($this->cacheKey(), $content);
-        }
         return $content;
     }
 
