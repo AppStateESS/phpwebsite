@@ -1,5 +1,5 @@
 <!-- BEGIN error -->
-<span class="error">{MESSAGE}</span>
+<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{MESSAGE}</div>
 <!-- END error -->
 <form method="post" class="form-inline" action="index.php" id="edit-blog" autocomplete="on">
 {HIDDEN_FIELDS}
@@ -18,9 +18,9 @@
             {IMAGE_URL}</p>
         <!-- END image -->
         <p>{PUBLISH_DATE_LABEL} <small>{EXAMPLE}</small><br />
-            {PUBLISH_DATE} {PUBLISH_CAL}</p>
+            {PUBLISH_DATE}</p>
         <p>{EXPIRE_DATE_LABEL} <small>{EXAMPLE}</small><br />
-            {EXPIRE_DATE} {EXPIRE_CAL}</p>
+            {EXPIRE_DATE}</p>
     </div>
     <!-- BEGIN captcha --><p>{CAPTCHA_IMAGE}<br />{CAPTCHA} {CAPTCHA_LABEL}<!-- END captcha -->
 </div>

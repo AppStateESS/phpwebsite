@@ -1,3 +1,10 @@
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#event_form_start_date').datetimepicker({timepicker:0,format:'Y/m/d'});
+        $('#event_form_end_date').datetimepicker({timepicker:0,format:'Y/m/d'});
+        $('#event_form_end_repeat_date').datetimepicker({timepicker:0,format:'Y/m/d'});
+    });
+</script>
 <!-- BEGIN hr -->
 <!-- BEGIN event-tab -->
 <div class="event-tabs">
@@ -41,7 +48,7 @@
             <td>{START_DATE_LABEL}<br />
                 <small style="font-weight: normal">YYYY/MM/DD</small>
             </td>
-            <td>{START_DATE} {START_CAL} <span id="start-time"
+            <td>{START_DATE} <span id="start-time"
                                                style="display: inline"
                                                >{START_TIME_HOUR}:{START_TIME_MINUTE}</span> {ALL_DAY}
                 {ALL_DAY_LABEL}</td>
@@ -49,7 +56,7 @@
         <tr>
             <td>{END_DATE_LABEL}<br />
                 <small style="font-weight: normal">YYYY/MM/DD</small></td>
-            <td>{END_DATE} {END_CAL} <span id="end-time"
+            <td>{END_DATE} <span id="end-time"
                                            style="display: inline"
                                            >{END_TIME_HOUR}:{END_TIME_MINUTE}</span> {SHOW_BUSY}
                 {SHOW_BUSY_LABEL}</td>

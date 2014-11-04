@@ -365,18 +365,9 @@ class Calendar_Admin {
 
         $tpl = $form->getTemplate();
 
-        $js_vars['form_name'] = 'event_form';
-        if (javascriptEnabled()) {
-            $js_vars['date_name'] = 'start_date';
-            $tpl['START_CAL'] = javascript('js_calendar', $js_vars);
-
-            $js_vars['date_name'] = 'end_date';
-            $tpl['END_CAL'] = javascript('js_calendar', $js_vars);
-        }
+        javascript('datetimepicker');
 
         if (!$suggest) {
-            $js_vars['date_name'] = 'end_repeat_date';
-            $tpl['END_REPEAT'] = javascript('js_calendar', $js_vars);
             $tpl['EVENT_TAB'] = dgettext('calendar', 'Event');
             $tpl['REPEAT_TAB'] = dgettext('calendar', 'Repeat');
         }
@@ -1442,7 +1433,8 @@ class Calendar_Admin {
 
         $event = new Calendar_Event(0, $schedule);
 
-        $event_modal = new calendar\Modal('event-modal', $this->event_form($event), 'Create event');
+        $event_modal = new calendar\Modal('event-modal',
+                $this->event_form($event), 'Create event');
         $page_tags['EVENT_FORM'] = $event_modal->__toString();
 
         $page_tags['ADMIN_LABEL'] = dgettext('calendar', 'Options');

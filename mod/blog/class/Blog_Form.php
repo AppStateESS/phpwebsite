@@ -93,26 +93,23 @@ class Blog_Form {
         $form->setCols('summary', '60');
         $form->setLabel('summary', dgettext('blog', 'Content'));
 
+
         $form->addText('publish_date', $blog->getPublishDate('%Y/%m/%d %H:%M'));
         $form->setLabel('publish_date', dgettext('blog', 'Publish date/time'));
         $form->setSize('publish_date', 20);
+        $form->setClass('publish_date', 'datetimepicker');
 
         $form->addText('expire_date', $blog->getExpireDate());
         $form->setLabel('expire_date', dgettext('blog', 'Expire date/time'));
         $form->setSize('expire_date', 20);
+        $form->setClass('expire_date', 'datetimepicker');
         $template = $form->getTemplate();
 
-        $jscal['form_name'] = 'edit-blog';
-        $jscal['type'] = 'text_clock';
-
-        $jscal['date_name'] = 'publish_date';
-
-        $template['PUBLISH_CAL'] = javascript('js_calendar', $jscal);
+        javascript('datetimepicker');
 
         $jscal['date_name'] = 'expire_date';
-        $template['EXPIRE_CAL'] = javascript('js_calendar', $jscal);
 
-        $template['EXAMPLE'] = 'YY/MM/DD HH:MM';
+        $template['EXAMPLE'] = 'YYYY/MM/DD HH:MM';
         if ($blog->_error) {
             $template['MESSAGE'] = implode('<br />', $blog->_error);
         }

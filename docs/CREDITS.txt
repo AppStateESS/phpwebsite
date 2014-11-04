@@ -177,6 +177,11 @@ Koen Vendrik, http://kvendrik.com
 Center 2.0
 Andreas Lagerkvist
 
+DateTimePicker
+Chupurnov Valeriy
+XDSoft
+http://xdsoft.net/
+
 --------------------------------------------------------------------------
 To those who translate, we salute you.
 --------------------------------------------------------------------------
