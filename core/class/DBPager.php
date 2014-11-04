@@ -881,6 +881,8 @@ class DBPager {
             return '<ul class="pagination"><li class="active">1</li></ul>';
         }
 
+        $pentultimate = $total_pages - 1;
+
         $values = $this->getLinkValues();
         unset($values['pg']);
 
@@ -892,137 +894,100 @@ class DBPager {
             $values['#'] = $anchor;
         }
 
-        // page one
-        if ($current_page != 1) {
-            if ($total_pages > 500 && $current_page > 50) {
-                $values['pg'] = $current_page - 50;
-                $pageList[] = '<li>' . PHPWS_Text::moduleLink('&lt;&lt;&lt;', $module,
-                                $values, null, _('Back 50 pages')) . '</li>';
-            }
-
-            if ($total_pages > 100 && $current_page > 10) {
-                $values['pg'] = $current_page - 10;
-                $pageList[] = '<li>' . PHPWS_Text::moduleLink('&lt;&lt;', $module,
-                                $values, null, _('Back 10 pages')) . '</li>';
-            }
-            $values['pg'] = $current_page - 1;
-            $pageList[] = '<li>' . PHPWS_Text::moduleLink('&lt;', $module, $values, null,
-                            _('Back one page')) . '</li>';
-            $values['pg'] = 1;
-            $pageList[] = '<li>' . PHPWS_Text::moduleLink('1', $module, $values, null,
-                            _('First page')) . '</li>';
-        } else {
-            $values['pg'] = 1;
-            $pageList[] = '<li class="active">' . PHPWS_Text::moduleLink('1', $module, $values, null,
-                            _('First page')) . '</li>';
-        }
-
+        $content[] = '<ul class="pagination">';
 
         if ($total_pages > DBPAGER_PAGE_LIMIT) {
-            // break up pages
-            $divider = floor(DBPAGER_PAGE_LIMIT / 2);
-            if ($current_page <= $divider) {
-                $divider = DBPAGER_PAGE_LIMIT - 2;
-                if ($current_page != 1) {
-                    $divider--;
-                    for ($i = 2; $i < $current_page; $i++) {
-                        if ($i != $current_page) {
-                            $values['pg'] = 1;
-                            $pageList[] = '<li>' . PHPWS_Text::moduleLink($i, $module,
-                                            $values, null,
-                                            sprintf(_('Go to page %s'), $i)) . '</li>';
-                        } else {
-                            $values['pg'] = $current_page;
-                            $pageList[] = '<li>' . PHPWS_Text::moduleLink($current_page, $module,
-                                            $values, null,
-                                            sprintf(_('Go to page %s'), $current_page)) . '</li>';
-                        }
-                        $divider--;
-                    }
-                }
-                $remaining_pages = $total_pages - $current_page;
-                $skip = floor($remaining_pages / $divider);
-
-                for ($i = 0, $j = $current_page + $skip; $i < $divider; $i++, $j += $skip) {
-                    $values['pg'] = $j;
-                    $pageList[] = '<li>' . PHPWS_Text::moduleLink($j, $module, $values,
-                                    null, sprintf(_('Go to page %s'), $j)) . '</li>';
-                }
-            } else {
-                $beginning_pages = $current_page - 1;
-                $remaining_pages = $total_pages - $current_page;
-
-                if ($remaining_pages < $divider) {
-                    if (!$remaining_pages) {
-                        $divider *= 2;
-                        $front_skip = floor($total_pages / (DBPAGER_PAGE_LIMIT - 1));
-                        $back_skip = 0;
-                    } else {
-                        $divider += $remaining_pages;
-                        $front_skip = floor($beginning_pages / $divider);
-                        $back_skip = 1;
-                    }
-                } else {
-                    $front_skip = round($beginning_pages / $divider);
-                    $back_skip = round($remaining_pages / $divider);
-                }
-                for ($i = 0, $j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++, $j += $front_skip) {
-                    $values['pg'] = $j;
-                    $pageList[] = '<li>' . PHPWS_Text::moduleLink($j, $module, $values,
-                                    null, sprintf(_('Go to page %s'), $j)) . '</li>';
-                }
-
-                $pageList[] = '<li>' . PHPWS_Text::moduleLink($current_page, $module,
-                                $values, null, _('First page')) . '</li>';
-
-                if ($back_skip) {
-                    for ($i = 0, $j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++, $j += $back_skip) {
-                        $values['pg'] = $j;
-                        $pageList[] = '<li>' . PHPWS_Text::moduleLink($j, $module,
-                                        $values, null,
-                                        sprintf(_('Go to page %s'), $j)) . '</li>';
-                    }
-                }
+            $halfway = floor(DBPAGER_PAGE_LIMIT / 2);
+            $left = $this->current_page - $halfway + 2;
+            $right = $this->current_page + $halfway - 2;
+            if ($left < 2) {
+                $right += ($left * -1) + 2;
+                $left = 1;
             }
+
+            if ($right >= $pentultimate) {
+                $left -= $right - $pentultimate;
+                $right = $pentultimate - 1;
+            }
+
+            $left_select = ($this->current_page - $halfway) > 1;
+            $right_select = ($this->current_page + $halfway) <= $pentultimate;
         } else {
-            for ($i = 2; $i < $total_pages; $i++) {
-                    $values['pg'] = $i;
+            $left_select = $right_select = false;
+            $left = 1;
+            $right = $total_pages;
+        }
+
+        if ($current_page > 1) {
+            $count = $current_page - 1;
+            $values['pg'] = $count;
+            $content[] = '<li>' . PHPWS_Text::moduleLink('&lt;', $module,
+                            $values, null, _('Back one page')) . '</li>';
+        }
+
+        $values['pg'] = 1;
+        $current_page_class = $current_page == 1 ? ' class="active"' : null;
+        $content[] = "<li$current_page_class>" . PHPWS_Text::moduleLink('1',
+                        $module, $values) . "</li>";
+
+        if ($total_pages > 1) {
+            $values['pg'] = 2;
+            $current_page_class = $current_page == 2 ? ' class="active"' : null;
+            $content[] = "<li$current_page_class>" . PHPWS_Text::moduleLink('2',
+                            $module, $values) . "</li>";
+        }
+
+
+        if ($total_pages > 2) {
+            // come back to here
+            if ($left_select) {
+                $content[] = "<li><a href='javascript:void(0)' class='btn-disabled disabled'>&hellip;</a></li>";
+            }
+            for ($i = $left; $i <= $right; $i++) {
+                if ($i < 3 || $i >= $pentultimate) {
+                    continue;
+                }
+                $values['pg'] = $i;
                 if ($i == $current_page) {
-                    $pageList[] = '<li class="active">' . PHPWS_Text::moduleLink($i, $module, $values,
-                                    null, sprintf(_('Go to page %s'), $i)) . '</li>';
+                    $content[] = "<li class='active'>" . PHPWS_Text::moduleLink($i,
+                                    $module, $values, null,
+                                    sprintf(_('Go to page %s'), $i)) . "</li>";
                 } else {
-                    $pageList[] = '<li>' . PHPWS_Text::moduleLink($i, $module, $values,
-                                    null, sprintf(_('Go to page %s'), $i)) . '</li>';
+                    $content[] = "<li>" . PHPWS_Text::moduleLink($i, $module,
+                                    $values, null,
+                                    sprintf(_('Go to page %s'), $i)) . "</li>";
                 }
             }
-        }
 
-        if ($total_pages != $current_page) {
+            // come back to here
+            if ($right_select) {
+                $content[] = "<li><a href='javascript:void(0)' class='disabled'>&hellip;</a></li>";
+            }
+
+            if ($pentultimate > 2) {
+                $values['pg'] = $pentultimate;
+                $current_page_class = $current_page == $pentultimate ? ' class="active"' : null;
+                $content[] = "<li$current_page_class>" . PHPWS_Text::moduleLink($pentultimate,
+                                $module, $values, null,
+                                sprintf(_('Go to page %s'), $pentultimate)) . "</li>";
+            }
+
             $values['pg'] = $total_pages;
-            $pageList[] = '<li>' . PHPWS_Text::moduleLink($total_pages, $module, $values,
-                            null, _('Last page')) . '</li>';
-
-            $values['pg'] = $current_page + 1;
-            $pageList[] = '<li>' . PHPWS_Text::moduleLink('&gt;', $module, $values, null,
-                            _('Forward one page')) . '</li>';
-
-            if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
-                $values['pg'] = $current_page + 10;
-                $pageList[] = '<li>' . PHPWS_Text::moduleLink('&gt;&gt;', $module,
-                                $values, null, _('Forward 10 pages')) . '</li>';
-            }
-
-            if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
-                $values['pg'] = $current_page + 50;
-                $pageList[] = '<li>' . PHPWS_Text::moduleLink('&gt;&gt;&gt;', $module,
-                                $values, null, _('Forward 50 pages')) . '</li>';
-            }
-        } else {
-                $pageList[] = '<li class="active">' . PHPWS_Text::moduleLink($current_page, $module,
-                                $values, null, sprintf(_('Go to page %s'), $current_page)) . '</li>';
+            $current_page_class = $current_page == $total_pages ? ' class="active"' : null;
+            $content[] = "<li$current_page_class>" . PHPWS_Text::moduleLink($total_pages,
+                            $module, $values, null,
+                            sprintf(_('Go to page %s'), $total_pages)) . "</li>";
         }
-
-        return '<ul class="pagination">' . implode('', $pageList) . '</ul>';
+        /*         * *************************************** */
+        if ($current_page != $total_pages) {
+            $forward = $current_page + 1;
+            $values['pg'] = $forward;
+            $content[] = "<li>" . PHPWS_Text::moduleLink('&gt;', $module,
+                            $values, null,
+                            sprintf(_('Forward one page'), $forward)) . "</li>";
+        }
+        $content[] = '</ul>';
+        return implode('', $content);
     }
 
     /**
