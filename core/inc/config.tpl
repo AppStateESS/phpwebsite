@@ -186,14 +186,14 @@ define('PHPWS_LIST_TOGGLE_CLASS', ' class="bgcolor1"');
  * phpwebsite, you may enable their use below. You can also
  * choose which editor you want to use as the default.
  *
- * Example: define('DEFAULT_EDITOR_TOOL', 'fckeditor');
+ * Example: define('DEFAULT_EDITOR_TOOL', 'ckeditor');
  *
  * Force editor is true by default to assure all choices. Changing
  * it to false will cause phpws to check your browser against the
  * editors supported.php file.
  */
 define('USE_WYSIWYG_EDITOR', true);
-define('DEFAULT_EDITOR_TOOL', 'fckeditor');
+define('DEFAULT_EDITOR_TOOL', 'ckeditor');
 define('FORCE_EDITOR', true);
 
 /******************* ABSOLUTE LIMIT ***************************/

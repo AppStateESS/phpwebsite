@@ -278,7 +278,7 @@ define('UTF8_MODE', false);
  * phpwebsite, you may enable their use below. You can also
  * choose which editor you want to use as the default.
  *
- * Example: define('DEFAULT_EDITOR_TOOL', 'fckeditor');
+ * Example: define('DEFAULT_EDITOR_TOOL', 'ckeditor');
  *
  * Force editor is true by default to assure all choices. Changing
  * it to false will cause phpws to check your browser against the
