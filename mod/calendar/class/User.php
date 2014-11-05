@@ -167,7 +167,8 @@ class Calendar_User {
             $template['MESSAGE'] = dgettext('calendar', 'No events on this day');
         }
 
-        $template['VIEW_LINKS'] = $this->viewLinks('day');
+        //$template['VIEW_LINKS'] = $this->viewLinks('day');
+        $template = array_merge($template, $this->viewLinks('day'));
         $template['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_HEADER, $startdate);
         $template['SCHEDULE_PICK'] = $this->schedulePick();
@@ -222,7 +223,8 @@ class Calendar_User {
         }
 
         $template['DOWNLOAD'] = $this->eventDownloadLink($this->event->id);
-        $template['VIEW_LINKS'] = $this->viewLinks('event');
+        //$template['VIEW_LINKS'] = $this->viewLinks('event');
+        $template = array_merge($template, $this->viewLinks('event'));
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
     }
 
@@ -653,12 +655,11 @@ class Calendar_User {
                     dgettext('calendar', 'No events this month.'));
         }
 
-        $main_tpl['FULL_MONTH_NAME'] = strftime('%B',
-                mktime(0, 0, 0, $month, $day, $year));
-        $main_tpl['ABRV_MONTH_NAME'] = strftime('%b',
-                mktime(0, 0, 0, $month, $day, $year));
-        $main_tpl['VIEW_LINKS'] = $this->viewLinks('list');
-        $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
+        $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0, 0, 0, $month, $day, $year));
+        $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0, 0, 0, $month, $day, $year));
+        //$main_tpl['VIEW_LINKS'] = $this->viewLinks('list');
+        $main_tpl = array_merge($main_tpl, $this->viewLinks('list'));
+        $main_tpl['TITLE'] = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR'] = strftime('%Y',
                 mktime(0, 0, 0, $month, $day, $year));
         $main_tpl['ABRV_YEAR'] = strftime('%y',
@@ -966,22 +967,28 @@ class Calendar_User {
             $right_link_title = dgettext('calendar', 'Next month');
         }
 
-        if ($current_view == 'grid') {
+/*        if ($current_view == 'grid') {
             $links['GRID'] = dgettext('calendar', 'Grid');
         } else {
             $vars['view'] = 'grid';
-            $glink = new PHPWS_Link(dgettext('calendar', 'Grid'), 'calendar',
+            $glink = new PHPWS_Link(dgettext('calendar', 'Month Grid'), 'calendar',
                     $vars);
-            $glink->setNoFollow($no_follow);
             $glink->addClass('btn btn-default');
+            $glink->setNoFollow($no_follow);
             $links['GRID'] = $glink->get();
         }
-
+*/
         if ($current_view == 'list') {
-            $links['LIST'] = dgettext('calendar', 'Month');
+//          $links['LIST'] = dgettext('calendar', 'Month yada');
+        	 $vars['view'] = 'grid';
+            $glink = new PHPWS_Link(dgettext('calendar', 'Month Grid'), 'calendar',
+                    $vars);
+            $glink->addClass('btn btn-default');
+            $glink->setNoFollow($no_follow);
+            $links['LIST'] = $glink->get();
         } else {
             $vars['view'] = 'list';
-            $glink = new PHPWS_Link(dgettext('calendar', 'Month'), 'calendar',
+            $glink = new PHPWS_Link(dgettext('calendar', 'Month List'), 'calendar',
                     $vars);
             $glink->addClass('btn btn-default');
             $glink->setNoFollow($no_follow);
@@ -996,8 +1003,9 @@ class Calendar_User {
             $right_arrow_time = $oWeek->nextWeek('timestamp');
             $left_link_title = dgettext('calendar', 'Previous week');
             $right_link_title = dgettext('calendar', 'Next week');
+            
 
-            $links['WEEK'] = dgettext('calendar', 'Week');
+//            $links['WEEK'] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
             $wlink = new PHPWS_Link(dgettext('calendar', 'Week'), 'calendar',
@@ -1016,7 +1024,7 @@ class Calendar_User {
             $left_link_title = dgettext('calendar', 'Previous day');
             $right_link_title = dgettext('calendar', 'Next day');
 
-            $links['DAY_LINK'] = dgettext('calendar', 'Day');
+//            $links['DAY_LINK'] = dgettext('calendar', 'Day');
         } else {
             $vars['view'] = 'day';
             $dlink = new PHPWS_Link(dgettext('calendar', 'Day'), 'calendar',
@@ -1117,7 +1125,8 @@ class Calendar_User {
 
         $main_tpl['DAY_RANGE'] = sprintf(dgettext('calendar', 'From %s to %s'),
                 $start_range, $end_range);
-        $main_tpl['VIEW_LINKS'] = $this->viewLinks('week');
+        //$main_tpl['VIEW_LINKS'] = $this->viewLinks('week');
+        $main_tpl = array_merge($main_tpl, $this->viewLinks('week'));
         $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', $this->calendar->current_date);
         $main_tpl['ABRV_YEAR'] = strftime('%y', $this->calendar->current_date);
