@@ -20,12 +20,10 @@ CKEDITOR.dtd.$removeEmpty.span = 0;
 CKEDITOR.editorConfig = function(config)
 {
     config.toolbar = 'MyToolbar';
-    config.extraPlugins = 'filecabinet,autogrow,menubutton,scayt,youtube,floatleft,floatright';
+    config.extraPlugins = 'filecabinet,menubutton,scayt,youtube,floatleft,floatright';
     config.scayt_autoStartup = true;
     config.scayt_sLang = 'en_US';
     config.removePlugins = 'resize';
-    //config.autoGrow_onStartup = true;
-    config.autoGrow_maxHeight = 400;
     config.skin = 'kama';
     config.toolbar_MyToolbar =
             [
