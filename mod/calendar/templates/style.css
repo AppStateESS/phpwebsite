@@ -150,39 +150,6 @@ div.event-tabs {
     text-align: right;
 }
 
-.cal-tab li {
-    padding: 5px 5px 4px 5px;
-    display: inline;
-    list-style-type: none;
-    border: 1px solid black;
-    margin-right: 4px;
-}
-
-.cal-tab li.active {
-    color: white;
-    background-color: #BFBFBF;
-    z-index: 2;
-}
-
-.cal-tab li.active a:link,.cal-tab li.active a:visited {
-    text-decoration: none;
-    color: black;
-}
-
-.cal-tab li.inactive {
-    background-color: #E9E9E9;
-}
-
-.cal-tab li.inactive:hover {
-    background: #F0F0F0;
-    color: white;
-}
-
-.cal-tab li.inactive a:link,.cal-tab li.inactive a:visited {
-    text-decoration: none;
-    color: black;
-}
-
 .overflow {
     overflow: auto;
     max-height: 200px;

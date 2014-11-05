@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    $(window).load(function() {
+    $(window).load(function () {
         $('#event_form_start_date').datetimepicker({timepicker:0,format:'Y/m/d'});
         $('#event_form_end_date').datetimepicker({timepicker:0,format:'Y/m/d'});
         $('#event_form_end_repeat_date').datetimepicker({timepicker:0,format:'Y/m/d'});
@@ -8,64 +8,48 @@
 <!-- BEGIN hr -->
 <!-- BEGIN event-tab -->
 <div class="event-tabs">
-    <ul class="cal-tab">
-        <li id="event-pick" class="active"><a
-                href="javascript:changeTab(0)"
-                >{EVENT_TAB}</a></li>
-        <li id="repeat-pick" class="inactive"><a
-                href="javascript:changeTab(1)"
-                >{REPEAT_TAB}</a></li>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" id="event-pick" class="active"><a href="javascript:changeTab(0)">{EVENT_TAB}</a></li>
+        <li role="presentation" id="repeat-pick" class="inactive"><a href="javascript:changeTab(1)">{REPEAT_TAB}</a></li>
     </ul>
     <!-- BEGIN repeat-warning -->
     <div style="margin: 10px">{REPEAT_WARNING}</div>
     <!-- END repeat-warning --></div>
 <!-- END event-tab -->
-<!-- BEGIN error -->
-<div class="alert alert-danger">{ERROR}</div>
-<!-- END error -->
-<hr />
-<!-- END hr -->
+<div class="alert alert-danger" style="display:none" id="event-error">{ERROR}</div>
 {START_FORM}
 <div id="event-tab" style="display: block">
-    <table class="form-table">
+    <table class="table table-striped">
         <tr>
-            <td>{SUMMARY_LABEL}</td>
-            <td>{SUMMARY}</td>
+            <td>{SUMMARY_LABEL}</td><td>{SUMMARY}</td>
         </tr>
         <tr>
-            <td>{LOCATION_LABEL}</td>
-            <td>{LOCATION}</td>
+            <td>{LOCATION_LABEL}</td><td>{LOCATION}</td>
         </tr>
         <tr>
-            <td>{LOC_LINK_LABEL}</td>
-            <td>{LOC_LINK}</td>
+            <td>{LOC_LINK_LABEL}</td><td>{LOC_LINK}</td>
         </tr>
         <tr>
-            <td>{DESCRIPTION_LABEL}</td>
-            <td>{DESCRIPTION}</td>
+            <td colspan="2">{DESCRIPTION_LABEL}<br />{DESCRIPTION}</td>
         </tr>
         <tr>
-            <td>{START_DATE_LABEL}<br />
-                <small style="font-weight: normal">YYYY/MM/DD</small>
-            </td>
-            <td>{START_DATE} <span id="start-time"
-                                               style="display: inline"
-                                               >{START_TIME_HOUR}:{START_TIME_MINUTE}</span> {ALL_DAY}
-                {ALL_DAY_LABEL}</td>
+            <td>{START_DATE_LABEL} <span style="font-size: .9em">(YYYY/MM/DD)</span>
+            </td><td>{START_DATE} <span id="start-time" style="display: inline">
+                    {START_TIME_HOUR}:{START_TIME_MINUTE}</span></td>
         </tr>
         <tr>
-            <td>{END_DATE_LABEL}<br />
-                <small style="font-weight: normal">YYYY/MM/DD</small></td>
-            <td>{END_DATE} <span id="end-time"
-                                           style="display: inline"
-                                           >{END_TIME_HOUR}:{END_TIME_MINUTE}</span> {SHOW_BUSY}
-                {SHOW_BUSY_LABEL}</td>
+            <td>{END_DATE_LABEL} <span style="font-size: .9em">(YYYY/MM/DD)</span>
+            </td><td>{END_DATE} <span id="end-time" style="display: inline">
+                    {END_TIME_HOUR}:{END_TIME_MINUTE}</span></td>
         </tr>
+        <tr><td> {ALL_DAY}
+                {ALL_DAY_LABEL}</td><td> {SHOW_BUSY}
+                {SHOW_BUSY_LABEL}</td></tr>
     </table>
 </div>
 <div id="repeat-tab" style="display: none">{REPEAT_EVENT}
     {REPEAT_EVENT_LABEL}
-    <table class="form-table">
+    <table class="table table-striped">
         <tr>
             <td>{END_REPEAT_DATE_LABEL}</td>
             <td>{END_REPEAT_DATE} {END_REPEAT}</td>
@@ -100,6 +84,5 @@
         </tr>
     </table>
 </div>
-<div>{SAVE}{SAVE_SOURCE}{SAVE_COPY} {SYNC}</div>
-<div class="align-center">{CLOSE}</div>
+<!-- <div>{SAVE}{SAVE_SOURCE}{SAVE_COPY} {SYNC}</div> -->
 {END_FORM}

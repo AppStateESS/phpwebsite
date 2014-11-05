@@ -440,12 +440,8 @@ class Calendar_Schedule {
     public function rowTags()
     {
         if ($this->checkPermissions()) {
-
-            $links[] = $this->addEventLink(null, true, true);
-            //index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s
-
-            //$links[] = '<i class="add-event fa fa-plus" style="cursor:pointer" title="Add event" data-schedule-id="' . $this->id . '"></i>';
-
+            $links[] = '<i class="fa fa-plus" style="cursor:pointer" id="add-event" data-schedule-id="' . $this->id . '"></i>';
+            //$links[] = $this->addEventLink(null, true, true);
             $links[] = $this->uploadEventsLink(null, true);
             $links[] = $this->downloadEventsLink(null, true);
             $links[] = '<i class="fa fa-edit" id="edit-schedule" data-schedule-id="' .

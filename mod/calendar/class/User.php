@@ -816,12 +816,14 @@ class Calendar_User {
      */
     public function view()
     {
+        require_once PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php';
         $key = new Key($this->calendar->schedule->key_id);
         if (!$key->allowView()) {
             $this->calendar->loadDefaultSchedule();
         }
 
         if ($this->calendar->schedule->checkPermissions()) {
+
             if ($this->calendar->schedule->id) {
                 $allowed = true;
                 MiniAdmin::add('calendar',

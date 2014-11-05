@@ -202,11 +202,6 @@ class Calendar_Admin {
         $form->setExtra('end_date',
                 'onblur="check_end_date()" onfocus="check_start_date()"');
 
-        if (javascriptEnabled()) {
-            $form->addButton('close', dgettext('calendar', 'Cancel'));
-            $form->setExtra('close', 'onclick="window.close()"');
-        }
-
         $event->timeForm('start_time', $event->start_time, $form);
         $event->timeForm('end_time', $event->end_time, $form);
 
@@ -1401,18 +1396,26 @@ class Calendar_Admin {
 
     public function scheduleListing()
     {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('calendar', 'Schedule.php');
         require_once(PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php');
         javascript('jquery');
-        $authkey = \Current_User::getAuthKey();
         $filename = PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/schedule.js';
+        $authkey = \Current_User::getAuthKey();
         $script = "<script type='text/javascript' src='$filename'></script>" .
                 "<script type='text/javascript'>var authkey='$authkey';</script>";
         \Layout::addJSHeader($script, 'cal_sched');
+
+        $schedule = new Calendar_Schedule;
+        $schedule->id = 1;
+        $event = new Calendar_Event(0, $schedule);
+        $event_form = $this->event_form($event);
+        $modal = new \Modal('edit-event', $event_form, 'Edit Event');
+        $modal->addButton('<button class="btn btn-success" id="submit-event">Save</button>');
+
         $this->title = dgettext('calendar', 'Schedules');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
-
+        $page_tags['EVENT_FORM'] = (string)$modal;
         $page_tags['DESCRIPTION_LABEL'] = dgettext('calendar', 'Description');
         $page_tags['PUBLIC_LABEL'] = dgettext('calendar', 'Public');
         $page_tags['DISPLAY_NAME_LABEL'] = dgettext('calendar', 'User');
@@ -1421,22 +1424,10 @@ class Calendar_Admin {
         $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-file-text"></i> ' . dgettext('calendar',
                         'Create schedule') . '</button>';
 
-
         $schedule_form = $this->calendar->schedule->form();
         $schedule_modal = new calendar\Modal('schedule-modal', $schedule_form,
                 'Create schedule');
         $page_tags['SCHEDULE_FORM'] = $schedule_modal->__toString();
-
-        // just a fake schedule to get event to work
-        $schedule = new Calendar_Schedule;
-        $schedule->id = 1;
-
-        $event = new Calendar_Event(0, $schedule);
-
-        $event_modal = new calendar\Modal('event-modal',
-                $this->event_form($event), 'Create event');
-        $page_tags['EVENT_FORM'] = $event_modal->__toString();
-
         $page_tags['ADMIN_LABEL'] = dgettext('calendar', 'Options');
 
         $pager = new DBPager('calendar_schedule', 'Calendar_Schedule');
