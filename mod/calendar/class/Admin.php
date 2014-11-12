@@ -134,7 +134,7 @@ class Calendar_Admin {
             $this->title = dgettext('calendar', 'Create event');
         }
 
-        $this->content = $this->event_form($event);
+        $this->content = self::event_form($event);
     }
 
     public function editSchedule()
@@ -151,7 +151,7 @@ class Calendar_Admin {
     /**
      * Creates the edit form for an event
      */
-    public function event_form(Calendar_Event $event, $suggest = false)
+    public static function event_form(Calendar_Event $event, $suggest = false)
     {
         Layout::addStyle('calendar');
 
@@ -440,6 +440,63 @@ class Calendar_Admin {
         echo json_encode($json);
     }
 
+    private function getEventJson()
+    {
+        require_once PHPWS_SOURCE_DIR . 'mod/calendar/class/Schedule.php';
+        require_once PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php';
+        $event_id = filter_input(INPUT_GET, 'event_id', FILTER_VALIDATE_INT);
+        $schedule_id = filter_input(INPUT_GET, 'schedule_id',
+                FILTER_VALIDATE_INT);
+
+        if (empty($event_id)) {
+            echo json_encode(array('error' => 'No event id'));
+            exit();
+        }
+
+        $schedule = new Calendar_Schedule($schedule_id);
+        $event = new Calendar_Event($event_id, $schedule);
+        $repeat_event = !empty($event->repeat_type) ? 1 : 0;
+
+
+        $repeat_info = explode(':', $event->repeat_type);
+        $repeat_type = $repeat_info[0];
+        if (isset($repeat_info[1])) {
+            $repeat_vars = explode(';', $repeat_info[1]);
+        } else {
+            $repeat_vars = null;
+        }
+
+        if ($event->all_day) {
+            $end_hour = $end_minute = 0;
+        } else {
+            $end_hour = (int) $event->getEndTime('%H');
+            $end_minute = (int) $event->getEndTime('%M');
+        }
+
+        $json = [
+            'event_id' => $event->id,
+            'summary' => $event->summary,
+            'location' => $event->location,
+            'loc_link' => $event->loc_link,
+            'description' => $event->getDescription(),
+            'all_day' => $event->all_day,
+            'start_date' => $event->getStartTime('%Y/%m/%d'),
+            'end_date' => $event->getEndTime('%Y/%m/%d'),
+            'start_hour' => (int) $event->getStartTime('%H'),
+            'start_minute' => (int) $event->getStartTime('%M'),
+            'end_hour' => $end_hour,
+            'end_minute' => $end_minute,
+            'show_busy' => $event->show_busy,
+            'repeat_event' => $repeat_event,
+            'end_repeat_date' => $event->getEndRepeat('%Y/%m/%d'),
+            'repeat_type' => $repeat_type,
+            'repeat_vars' => $repeat_vars
+        ];
+
+        echo json_encode($json);
+        exit();
+    }
+
     /**
      * routes administrative commands
      */
@@ -461,6 +518,10 @@ class Calendar_Admin {
         }
 
         switch ($command) {
+            case 'get_event_json':
+                $this->getEventJson();
+                break;
+
             case 'post_event':
                 if (!$this->calendar->schedule->checkPermissions(true)) {
                     Current_User::disallow();
@@ -554,7 +615,7 @@ class Calendar_Admin {
                 if (Current_User::authorized('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
                     $this->calendar->schedule->delete();
                     $this->sendMessage(dgettext('calendar', 'Schedule deleted.'),
-                            'schedules');
+                            'aop=schedules');
                 } else {
                     Current_User::disallow();
                 }
@@ -848,6 +909,12 @@ class Calendar_Admin {
      */
     public function postEvent()
     {
+        $return_view = filter_input(INPUT_POST, 'return_view');
+
+        if (!empty($return_view)) {
+            $command = 'uop=' . $return_view;
+        }
+
         $event = $this->calendar->schedule->loadEvent();
         $event->loadPrevious();
         if ($event->post()) {
@@ -865,32 +932,27 @@ class Calendar_Admin {
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 if (PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(dgettext('calendar',
-                                    'An error occurred when saving your event.'),
-                            null, false);
-                    javascript('close_refresh');
-                    Layout::nakedDisplay();
+                    Layout::nakedDisplay(dgettext('calendar',
+                                    'An error occurred when saving your event.'));
                     exit();
                 } else {
                     $this->sendMessage(dgettext('calendar',
                                     'An error occurred when saving your event.'),
-                            'schedules');
+                            'aop=schedules');
                 }
             } else {
                 $result = $this->saveRepeat($event);
                 if (PHPWS_Error::isError($result)) {
                     if (PHPWS_Calendar::isJS()) {
                         PHPWS_Error::log($result);
-                        $this->sendMessage(dgettext('calendar',
-                                        'An error occurred when trying to repeat an event.',
-                                        null, false));
-                        javascript('close_refresh');
-                        Layout::nakedDisplay();
+                        Layout::nakedDisplay(dgettext('calendar',
+                                        'An error occurred when trying to repeat an event.'),
+                                'aop=schedules');
                         exit();
                     } else {
                         $this->sendMessage(dgettext('calendar',
                                         'An error occurred when trying to repeat an event.',
-                                        'schedules'));
+                                        'aop=schedules'));
                     }
                 }
 
@@ -904,14 +966,13 @@ class Calendar_Admin {
                                 date('Y', $event->start_time),
                                 $this->calendar->schedule->id));
 
-
-                if (PHPWS_Calendar::isJS()) {
-                    javascript('close_refresh');
-                    Layout::nakedDisplay();
-                    exit();
+                $view = filter_input(INPUT_POST, 'view');
+                if (!empty($view)) {
+                    $this->sendMessage(dgettext('calendar', 'Event saved.'),
+                            'view=' . $view . '&date=' . $event->start_time . '&event_id=' . $event->id . '&sch_id=' . $this->calendar->schedule->id);
                 } else {
                     $this->sendMessage(dgettext('calendar', 'Event saved.'),
-                            'schedules');
+                            'aop=schedules');
                 }
             }
         } else {
@@ -1045,7 +1106,7 @@ class Calendar_Admin {
                 } else {
                     $this->sendMessage(dgettext('calendar',
                                     'An error occurred when saving your schedule.'),
-                            'schedules');
+                            'aop=schedules');
                 }
             } else {
                 if ($this->calendar->schedule->public && ($default_public < 1)) {
@@ -1065,7 +1126,7 @@ class Calendar_Admin {
                     exit();
                 } else {
                     $this->sendMessage(dgettext('calendar', 'Schedule saved.'),
-                            'schedules');
+                            'aop=schedules');
                 }
             }
         } else {
@@ -1394,28 +1455,63 @@ class Calendar_Admin {
         return TRUE;
     }
 
-    public function scheduleListing()
+    public static function eventModal($event)
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
-        require_once(PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php');
+        $event_form = self::event_form($event);
+        $modal = new \Modal('edit-event', $event_form, 'Edit Event');
+        $modal->sizeLarge();
+        $modal->addButton('<button class="btn btn-success" id="submit-event">Save</button>');
+        return $modal->__toString();
+    }
+
+    public static function includeScheduleJS()
+    {
         javascript('jquery');
         $filename = PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/schedule.js';
         $authkey = \Current_User::getAuthKey();
         $script = "<script type='text/javascript' src='$filename'></script>" .
                 "<script type='text/javascript'>var authkey='$authkey';</script>";
         \Layout::addJSHeader($script, 'cal_sched');
+    }
+
+    public static function includeAuthkey()
+    {
+        static $authkey_inserted = false;
+
+        if ($authkey_inserted) {
+            return;
+        } else {
+            $authkey = \Current_User::getAuthKey();
+            $script = "<script type='text/javascript'>var authkey='$authkey';</script>";
+            \Layout::addJSHeader($script, 'authkey');
+            $authkey_inserted = true;
+        }
+    }
+
+    public static function includeEventJS()
+    {
+        javascript('jquery');
+        self::includeAuthkey();
+        $filename = PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/event.js';
+        $script = "<script type='text/javascript' src='$filename'></script>";
+        \Layout::addJSHeader($script, 'cal_event');
+    }
+
+    public function scheduleListing()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('calendar', 'Schedule.php');
+        require_once(PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php');
+        self::includeScheduleJS();
+        self::includeEventJS();
 
         $schedule = new Calendar_Schedule;
         $schedule->id = 1;
-        $event = new Calendar_Event(0, $schedule);
-        $event_form = $this->event_form($event);
-        $modal = new \Modal('edit-event', $event_form, 'Edit Event');
-        $modal->addButton('<button class="btn btn-success" id="submit-event">Save</button>');
 
         $this->title = dgettext('calendar', 'Schedules');
 
-        $page_tags['EVENT_FORM'] = (string)$modal;
+        $event = new Calendar_Event(0, $schedule);
+        $page_tags['EVENT_FORM'] = self::eventModal($event);
         $page_tags['DESCRIPTION_LABEL'] = dgettext('calendar', 'Description');
         $page_tags['PUBLIC_LABEL'] = dgettext('calendar', 'Public');
         $page_tags['DISPLAY_NAME_LABEL'] = dgettext('calendar', 'User');
@@ -1425,8 +1521,9 @@ class Calendar_Admin {
                         'Create schedule') . '</button>';
 
         $schedule_form = $this->calendar->schedule->form();
-        $schedule_modal = new calendar\Modal('schedule-modal', $schedule_form,
+        $schedule_modal = new \Modal('schedule-modal', $schedule_form,
                 'Create schedule');
+        $schedule_modal->sizeLarge();
         $page_tags['SCHEDULE_FORM'] = $schedule_modal->__toString();
         $page_tags['ADMIN_LABEL'] = dgettext('calendar', 'Options');
 
@@ -1453,11 +1550,14 @@ class Calendar_Admin {
         $this->content = $pager->get();
     }
 
-    public function sendMessage($message, $command = null, $route = true)
+    public function sendMessage($message, $location = null)
     {
         $_SESSION['Calendar_Admin_Message'] = $message;
-        if ($route && !empty($command)) {
-            PHPWS_Core::reroute('index.php?module=calendar&aop=' . $command);
+        if (empty($location)) {
+            PHPWS_Core::goBack();
+        } else {
+            PHPWS_Core::reroute('index.php?module=calendar&' . $location);
+            exit();
         }
     }
 

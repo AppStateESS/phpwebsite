@@ -116,7 +116,13 @@ class Calendar_Event {
      */
     public $_previous_settings = null;
 
-    public function __construct($id = 0, $schedule = null)
+    /**
+     *
+     * @param integer $id Event id
+     * @param integer $schedule \Calendar_Schedule
+     * @return type
+     */
+    public function __construct($id = 0, \Calendar_Schedule $schedule = null)
     {
         if (empty($schedule)) {
             return;
@@ -181,14 +187,19 @@ class Calendar_Event {
     public function deleteLink()
     {
         if (javascriptEnabled()) {
-            $vars['QUESTION'] = dgettext('calendar',
+
+            $question = $vars['QUESTION'] = dgettext('calendar',
                     'Are you sure you want to permanently delete this event?');
-            $vars['ADDRESS'] = PHPWS_Text::linkAddress('calendar',
+            $address = $vars['ADDRESS'] = PHPWS_Text::linkAddress('calendar',
                             array('aop' => 'delete_event',
                         'sch_id' => $this->_schedule->id,
                         'event_id' => $this->id), true);
-            $vars['LINK'] = dgettext('calendar', 'Delete');
-            return javascript('confirm', $vars);
+            $link = $vars['LINK'] = dgettext('calendar', 'Delete');
+
+            javascript('confirm');
+            return <<<EOF
+<a style="cursor : pointer" class="btn btn-danger" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i> $link</a>
+EOF;
         } else {
             return PHPWS_Text::secureLink(dgettext('calendar', 'Delete'),
                             'calendar',
@@ -208,34 +219,22 @@ class Calendar_Event {
         $var['js'] = 1;
 
         $js['address'] = PHPWS_Text::linkAddress('calendar', $var, true);
-        $js['label'] = dgettext('calendar', 'Blog this');
+        $js['class'] = 'btn btn-default';
+        $js['label'] = '<i class="fa fa-pencil"></i> ' . dgettext('calendar',
+                        'Blog this');
         $js['width'] = '320';
         $js['height'] = '240';
         return javascript('open_window', $js);
     }
 
-    public function editLink($full = false)
+    public function editLink()
     {
-        $linkvar['aop'] = 'edit_event';
-        $linkvar['sch_id'] = $this->_schedule->id;
-        $linkvar['event_id'] = $this->id;
+        $event_id = $this->id;
+        $schedule_id = $this->_schedule->id;
+        $view = filter_input(INPUT_GET, 'view');
 
-        if ($full) {
-            $link_label = dgettext('calendar', 'Edit event');
-        } else {
-            $link_label = dgettext('calendar', 'Edit');
-        }
-
-        if (javascriptEnabled()) {
-            $linkvar['js'] = 1;
-            $jsvars['address'] = PHPWS_Text::linkAddress('calendar', $linkvar);
-            $jsvars['link_title'] = $jsvars['label'] = $link_label;
-            $jsvars['width'] = CALENDAR_EVENT_WIDTH;
-            $jsvars['height'] = CALENDAR_EVENT_HEIGHT;
-            return javascript('open_window', $jsvars);
-        } else {
-            return PHPWS_Text::moduleLink($link_label, 'calendar', $linkvar);
-        }
+        return "<button class='btn btn-default edit-event' data-event-id='$event_id' data-view='$view' data-schedule-id='$schedule_id'>"
+                . "<i class='fa fa-edit'></i> Edit</button>";
     }
 
     public function flagKey()
@@ -437,6 +436,7 @@ class Calendar_Event {
 
     public function getTpl()
     {
+        javascript('jquery');
         $tpl = $this->tplFormatTime();
 
         if ($this->show_busy && !$this->_schedule->checkPermissions()) {
@@ -455,7 +455,7 @@ class Calendar_Event {
                     $link[] = $this->blogLink();
                 }
             }
-            $tpl['LINKS'] = implode(' | ', $link);
+            $tpl['LINKS'] = implode(' ', $link);
         }
 
 
@@ -530,8 +530,7 @@ class Calendar_Event {
     public function post($suggested = false)
     {
         if (empty($_POST['summary'])) {
-            $errors[] = dgettext('calendar',
-                    'You must give your event a title.');
+            $errors[] = dgettext('calendar', 'You must give your event a title.');
         } else {
             $this->setSummary($_POST['summary']);
         }

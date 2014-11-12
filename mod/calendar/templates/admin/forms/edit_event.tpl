@@ -18,6 +18,7 @@
 <!-- END event-tab -->
 <div class="alert alert-danger" style="display:none" id="event-error">{ERROR}</div>
 {START_FORM}
+<input id="event-view" type="hidden" name="view" value="" />
 <div id="event-tab" style="display: block">
     <table class="table table-striped">
         <tr>

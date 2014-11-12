@@ -1,8 +1,3 @@
-<style>
-    #edit-event .modal-sm, #edit-event .modal-content {
-        width : 700px;
-    }
-</style>
 <div style="margin-bottom:1em">{ADD_CALENDAR}</div>
 <table class="table table-striped table-hover">
     <tr>

@@ -176,6 +176,7 @@ ul.event-listing {
     line-height: 1.2em;
     margin: 0px;
     padding: 0px;
+    list-style-type: none;
 }
 
 ul.event-listing li {

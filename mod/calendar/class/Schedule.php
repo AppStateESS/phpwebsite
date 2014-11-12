@@ -440,7 +440,7 @@ class Calendar_Schedule {
     public function rowTags()
     {
         if ($this->checkPermissions()) {
-            $links[] = '<i class="fa fa-plus" style="cursor:pointer" id="add-event" data-schedule-id="' . $this->id . '"></i>';
+            $links[] = '<i class="fa fa-plus add-event" style="cursor:pointer" data-schedule-id="' . $this->id . '" data-date="' . microtime() . '"></i>';
             //$links[] = $this->addEventLink(null, true, true);
             $links[] = $this->uploadEventsLink(null, true);
             $links[] = $this->downloadEventsLink(null, true);
