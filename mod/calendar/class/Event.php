@@ -184,7 +184,7 @@ class Calendar_Event {
         return $db->delete();
     }
 
-    public function deleteLink()
+    public function deleteLink($type = 'button')
     {
         if (javascriptEnabled()) {
 
@@ -197,9 +197,15 @@ class Calendar_Event {
             $link = $vars['LINK'] = dgettext('calendar', 'Delete');
 
             javascript('confirm');
-            return <<<EOF
-<a style="cursor : pointer" class="btn btn-danger" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i> $link</a>
+            if ($type == 'icon') {
+                return <<<EOF
+<a style="cursor : pointer" data-toggle="tooltip" data-placement="top" title="Delete event" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i></a>
 EOF;
+            } else {
+                return <<<EOF
+<a style="cursor : pointer" class="btn btn-danger btn-sm" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i> $link</a>
+EOF;
+            }
         } else {
             return PHPWS_Text::secureLink(dgettext('calendar', 'Delete'),
                             'calendar',
@@ -211,7 +217,7 @@ EOF;
         }
     }
 
-    public function blogLink()
+    public function blogLink($type = 'button')
     {
         $var['aop'] = 'blog_event';
         $var['sch_id'] = $this->_schedule->id;
@@ -219,22 +225,30 @@ EOF;
         $var['js'] = 1;
 
         $js['address'] = PHPWS_Text::linkAddress('calendar', $var, true);
-        $js['class'] = 'btn btn-default';
-        $js['label'] = '<i class="fa fa-pencil"></i> ' . dgettext('calendar',
-                        'Blog this');
+        if ($type == 'icon') {
+            $js['label'] = '<i data-toggle="tooltip" data-placement="top" class="fa fa-pencil" title="Blog this"></i>';
+        } else {
+            $js['class'] = 'btn btn-default btn-sm';
+            $js['label'] = '<i class="fa fa-pencil"></i> ' . dgettext('calendar',
+                            'Blog this');
+        }
         $js['width'] = '320';
         $js['height'] = '240';
         return javascript('open_window', $js);
     }
 
-    public function editLink()
+    public function editLink($type = 'button')
     {
         $event_id = $this->id;
         $schedule_id = $this->_schedule->id;
         $view = filter_input(INPUT_GET, 'view');
-
-        return "<button class='btn btn-default edit-event' data-event-id='$event_id' data-view='$view' data-schedule-id='$schedule_id'>"
-                . "<i class='fa fa-edit'></i> Edit</button>";
+        if ($type == 'icon') {
+            return "<a style='cursor:pointer' data-toggle='tooltip' data-placement='top' title='Edit' class='edit-event' data-event-id='$event_id' data-view='$view' data-schedule-id='$schedule_id'>"
+                    . "<i class='fa fa-edit'></i></a>";
+        } else {
+            return "<button class='btn btn-default btn-sm edit-event' data-event-id='$event_id' data-view='$view' data-schedule-id='$schedule_id'>"
+                    . "<i class='fa fa-edit'></i> Edit</button>";
+        }
     }
 
     public function flagKey()
@@ -448,11 +462,11 @@ EOF;
         }
 
         if ($this->_schedule->checkPermissions()) {
-            $link[] = $this->editLink();
-            $link[] = $this->deleteLink();
+            $link[] = $this->editLink('icon');
+            $link[] = $this->deleteLink('icon');
             if (PHPWS_Core::moduleExists('blog')) {
                 if (Current_User::allow('blog', 'edit_blog', null, null, true)) {
-                    $link[] = $this->blogLink();
+                    $link[] = $this->blogLink('icon');
                 }
             }
             $tpl['LINKS'] = implode(' ', $link);

@@ -103,7 +103,7 @@ div.cal-events {
     border: 1px black solid;
 }
 
-div.month {
+span.month {
     font-size: 1.6em;
     font-weight: bold;
 }
@@ -192,4 +192,13 @@ ul.event-listing li {
     margin: 0px;
     padding: 0px;
     margin-bottom: 1em;
+}
+
+.calendar-view {
+    padding-top : 1em;
+}
+
+.date-label {
+    font-size : 24px;
+    font-weight : bold;
 }

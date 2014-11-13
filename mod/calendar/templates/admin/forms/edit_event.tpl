@@ -25,15 +25,6 @@
             <td>{SUMMARY_LABEL}</td><td>{SUMMARY}</td>
         </tr>
         <tr>
-            <td>{LOCATION_LABEL}</td><td>{LOCATION}</td>
-        </tr>
-        <tr>
-            <td>{LOC_LINK_LABEL}</td><td>{LOC_LINK}</td>
-        </tr>
-        <tr>
-            <td colspan="2">{DESCRIPTION_LABEL}<br />{DESCRIPTION}</td>
-        </tr>
-        <tr>
             <td>{START_DATE_LABEL} <span style="font-size: .9em">(YYYY/MM/DD)</span>
             </td><td>{START_DATE} <span id="start-time" style="display: inline">
                     {START_TIME_HOUR}:{START_TIME_MINUTE}</span></td>
@@ -43,9 +34,21 @@
             </td><td>{END_DATE} <span id="end-time" style="display: inline">
                     {END_TIME_HOUR}:{END_TIME_MINUTE}</span></td>
         </tr>
-        <tr><td> {ALL_DAY}
-                {ALL_DAY_LABEL}</td><td> {SHOW_BUSY}
-                {SHOW_BUSY_LABEL}</td></tr>
+        <tr>
+            <td>{ALL_DAY}
+                {ALL_DAY_LABEL}</td>
+            <td>{SHOW_BUSY}
+                {SHOW_BUSY_LABEL}</td>
+        </tr>
+        <tr>
+            <td>{LOCATION_LABEL}</td><td>{LOCATION}</td>
+        </tr>
+        <tr>
+            <td>{LOC_LINK_LABEL}</td><td>{LOC_LINK}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{DESCRIPTION_LABEL}<br />{DESCRIPTION}</td>
+        </tr>
     </table>
 </div>
 <div id="repeat-tab" style="display: none">{REPEAT_EVENT}

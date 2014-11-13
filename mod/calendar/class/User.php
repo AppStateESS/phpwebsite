@@ -652,12 +652,11 @@ class Calendar_User {
             $tpl->setVariable('MESSAGE',
                     dgettext('calendar', 'No events this month.'));
         }
-
+        $main_tpl = $this->viewLinks('list');
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B',
                 mktime(0, 0, 0, $month, $day, $year));
         $main_tpl['ABRV_MONTH_NAME'] = strftime('%b',
                 mktime(0, 0, 0, $month, $day, $year));
-        $main_tpl['VIEW_LINKS'] = $this->viewLinks('list');
         $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR'] = strftime('%Y',
                 mktime(0, 0, 0, $month, $day, $year));
@@ -670,8 +669,8 @@ class Calendar_User {
         $main_tpl['SUGGEST'] = $this->suggestLink();
         if ($this->calendar->schedule->checkPermissions()) {
             $main_tpl['ADD_EVENT'] = '<button class="add-event btn btn-success" data-schedule-id="' .
-                        $this->calendar->schedule->id . '" data-date="' . $this->calendar->current_date * 1000 .
-                        '"><i class="fa fa-plus"></i> Add event</button>';
+                    $this->calendar->schedule->id . '" data-date="' . $this->calendar->current_date * 1000 .
+                    '"><i class="fa fa-plus"></i> Add event</button>';
         }
 
         $tpl->setData($main_tpl);
@@ -977,7 +976,7 @@ class Calendar_User {
         }
 
         if ($current_view == 'list') {
-            $links['LIST'] = dgettext('calendar', 'Month');
+            //$links['LIST'] = dgettext('calendar', 'Month');
         } else {
             $vars['view'] = 'list';
             $glink = new PHPWS_Link(dgettext('calendar', 'Month'), 'calendar',
@@ -987,7 +986,6 @@ class Calendar_User {
             $links['LIST'] = $glink->get();
         }
 
-
         if ($current_view == 'week') {
             require_once 'Calendar/Week.php';
             $oWeek = $this->calendar->getWeek();
@@ -995,8 +993,6 @@ class Calendar_User {
             $right_arrow_time = $oWeek->nextWeek('timestamp');
             $left_link_title = dgettext('calendar', 'Previous week');
             $right_link_title = dgettext('calendar', 'Next week');
-
-            $links['WEEK'] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
             $wlink = new PHPWS_Link(dgettext('calendar', 'Week'), 'calendar',
@@ -1051,7 +1047,6 @@ class Calendar_User {
 
     public function week()
     {
-        strftime('%c', $this->calendar->current_date);
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -1113,10 +1108,10 @@ class Calendar_User {
                     dgettext('calendar', 'No events this week.'));
         }
 
+        $main_tpl = $this->viewLinks('week');
         $main_tpl['DAY_RANGE'] = '<a href="index.php?module=calendar&amp;view=grid&amp;date='
                 . $startdate . '">' . sprintf(dgettext('calendar',
                                 'From %s to %s'), $start_range, $end_range) . '</a>';
-        $main_tpl['VIEW_LINKS'] = $this->viewLinks('week');
         $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', $this->calendar->current_date);
         $main_tpl['ABRV_YEAR'] = strftime('%y', $this->calendar->current_date);
