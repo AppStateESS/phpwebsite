@@ -40,8 +40,16 @@ class Modal {
      */
     private $button;
 
+    /**
+     * Indicates a modal was created. Used for a simple error check prior to
+     * assumption of existence.
+     * @var boolean
+     */
+    public static $modal_started = false;
+
     public function __construct($id, $content = null, $title = null)
     {
+        self::$modal_started = true;
         $this->id = new \Variable\Attribute($id, 'id');
         $this->title = new \Variable\TextOnly($title, 'title');
         $this->content = new \Variable\String($content, 'content');
