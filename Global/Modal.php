@@ -41,6 +41,13 @@ class Modal {
     private $button;
 
     /**
+     * Inline style width setting for modal box.
+     * Percentage based.
+     * @var integer
+     */
+    private $width;
+
+    /**
      * Indicates a modal was created. Used for a simple error check prior to
      * assumption of existence.
      * @var boolean
@@ -68,6 +75,19 @@ class Modal {
     public function addButton($button)
     {
         $this->button[] = $button;
+    }
+
+    /**
+     * A percentage width for the modal. Overrules the size setting.
+     * @param integer $width
+     */
+    public function setWidth($width)
+    {
+        $width = (int) $width;
+        if ($width < 0 || $width > 100) {
+            throw new \Exception('Wrong percentage value entered for modal width');
+        }
+        $this->width = $width;
     }
 
     /**
@@ -103,18 +123,24 @@ class Modal {
             $tpl['button'] = implode("\n", $this->button);
         }
 
-        switch ($this->size) {
-            case 0:
-                $tpl['size'] = null;
-                break;
+        if (!empty($this->width)) {
+            $tpl['width'] = 'width:' . $this->width . '%';
+            $tpl['size'] = null;
+        } else {
+            $tpl['width'] = null;
+            switch ($this->size) {
+                case 0:
+                    $tpl['size'] = null;
+                    break;
 
-            case 1:
-                $tpl['size'] = ' modal-sm';
-                break;
+                case 1:
+                    $tpl['size'] = ' modal-sm';
+                    break;
 
-            case 2:
-                $tpl['size'] = ' modal-lg';
-                break;
+                case 2:
+                    $tpl['size'] = ' modal-lg';
+                    break;
+            }
         }
 
         $template = new \Template($tpl,
