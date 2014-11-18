@@ -410,6 +410,26 @@ Fixed bug causing blank editors on edit.</pre>';
 + Bootstrap styling to some UI elements
 + Back to top link pulled right with new icon
 </pre>';
+        case version_compare($currentVersion, '1.7.0', '<'):
+            $content[] = <<<EOF
+<pre>1.7.0 changes
+------------------
++ Removed hardcoded h2 styles on some templates
++ Back to top default setting added
++ Clicking off edit window saves content
+</pre>
+EOF;
+        case version_compare($currentVersion, '1.8.0', '<'):
+            $db = \Database::newDB();
+            $lb = $db->addTable('layout_box');
+            $lb->addFieldConditional('module', 'pagesmith');
+            $db->delete();
+            $content[] = <<<EOF
+<pre>1.8.0 changes
+------------------
++ Removed all PageSmith pages from layout_box table. Was kept only for multiple front pages which no one used.
+</pre>
+EOF;
     } // end switch
 
     return true;
