@@ -3,43 +3,44 @@ var page_id = 0;
 var section_id = 0;
 var current_block;
 var editor = {};
-$(document).ready(function() {
+$(document).ready(function () {
     editor = CKEDITOR.replace('block-edit-textarea',
-    {
-        on :
-          {
-             instanceReady : function( ev )
-             {
-                this.dataProcessor.writer.indentationChars = '  ';
+            {
+                on:
+                        {
+                            instanceReady: function (ev)
+                            {
+                                this.dataProcessor.writer.indentationChars = '  ';
 
-                this.dataProcessor.writer.setRules( 'th',
-                   {
-                      indent : true,
-                      breakBeforeOpen : true,
-                      breakAfterOpen : false,
-                      breakBeforeClose : false,
-                      breakAfterClose : true
-                   });
-                this.dataProcessor.writer.setRules( 'li',
-                   {
-                      indent : true,
-                      breakBeforeOpen : true,
-                      breakAfterOpen : false,
-                      breakBeforeClose : false,
-                      breakAfterClose : true
-                   });
-                this.dataProcessor.writer.setRules( 'p',
-                   {
-                      indent : true,
-                      breakBeforeOpen : true,
-                      breakAfterOpen : true,
-                      breakBeforeClose : true,
-                      breakAfterClose : true
-                   });
-             }
-          }
-    }
-);
+                                this.dataProcessor.writer.setRules('th',
+                                        {
+                                            indent: true,
+                                            breakBeforeOpen: true,
+                                            breakAfterOpen: false,
+                                            breakBeforeClose: false,
+                                            breakAfterClose: true
+                                        });
+                                this.dataProcessor.writer.setRules('li',
+                                        {
+                                            indent: true,
+                                            breakBeforeOpen: true,
+                                            breakAfterOpen: false,
+                                            breakBeforeClose: false,
+                                            breakAfterClose: true
+                                        });
+                                this.dataProcessor.writer.setRules('p',
+                                        {
+                                            indent: true,
+                                            breakBeforeOpen: true,
+                                            breakAfterOpen: true,
+                                            breakBeforeClose: true,
+                                            breakAfterClose: true
+                                        });
+                            }
+                        }
+            }
+    );
+    enforceFocus();
     localStorage.clear();
     initializeDialog(editor);
     initializePageTitleEdit();
@@ -49,14 +50,14 @@ $(document).ready(function() {
 });
 function editBlock(editor)
 {
-    $('.block-edit').click(function() {
+    $('.block-edit').click(function () {
         current_block = $(this);
         block_id = $(this).data('block-id');
         page_id = $(this).data('page-id');
         section_id = $(this).attr('id');
         if (localStorage[block_id] !== undefined) {
-                editor.setData(localStorage[block_id]);
-                openBlockEdit();
+            editor.setData(localStorage[block_id]);
+            openBlockEdit();
         } else {
             $.get('index.php',
                     {'module': 'pagesmith',
@@ -65,7 +66,7 @@ function editBlock(editor)
                         'bid': block_id,
                         'section_id': section_id
                     },
-            function(data) {
+            function (data) {
                 editor.setData(data);
                 openBlockEdit();
             }
@@ -74,10 +75,23 @@ function editBlock(editor)
     });
 }
 
+function enforceFocus()
+{
+    $.fn.modal.Constructor.prototype.enforceFocus = function () {
+        modal_this = this
+        $(document).on('focusin.modal', function (e) {
+            if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                    && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                    && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                modal_this.$element.focus()
+            }
+        })
+    };
+}
+
 function openBlockEdit()
 {
-    $('#block-edit-popup').dialog('open');
-    openOverlay('block-dialog');
+    $('#edit-section').modal('show');
 }
 
 function openTitleEdit()
@@ -95,7 +109,7 @@ function openOverlay(class_name)
 
 function clickOutside()
 {
-    $('.ui-widget-overlay').click(function() {
+    $('.ui-widget-overlay').click(function () {
         ck_data = editor.getData();
         localStorage[block_id] = ck_data;
         closeBlockEdit();
@@ -116,7 +130,7 @@ function closeOverlay()
 
 function initializePageTitleEdit()
 {
-    $('#page-title-edit').click(function() {
+    $('#page-title-edit').click(function () {
         if (!$('#page-title-edit').data('new')) {
             $('#page-title-input').val($('#page-title-edit').html());
         }
@@ -126,41 +140,17 @@ function initializePageTitleEdit()
 
 function initializeDialog(editor)
 {
+    $('#edit-section').on('hide.bs.modal', function (e) {
+        ck_data = editor.getData();
+        localStorage[block_id] = ck_data;
+    });
 
-    $('#block-edit-popup').dialog(
-            {
-                position: {my: 'center', at: 'center', of: this},
-                dialogClass: 'block-dialog',
-                autoOpen: false,
-                resizable: false,
-                width: '90%',
-                height: 690,
-                title: 'Edit text area',
-                dialogClass: 'dlgfixed',
-                position: 'center',
-                buttons: [
-                    {
-                        text: "Save",
-                        click: function() {
-                            updateBlock(editor);
-                            closeBlockEdit();
-                        }
-                    },
-                    {
-                        text: "Cancel",
-                        click: function() {
-                            closeBlockEdit();
-                        }
-                    }
-                ],
-                close: function() {
-                    closeOverlay();
-                },
-                open: function() {
-                    $(".dlgfixed").center(false);
-                }
-            }
-    );
+
+    $('#save-page').click(function () {
+        updateBlock(editor);
+        $('#edit-section').modal('hide');
+    });
+
     $('#title-edit-popup').dialog(
             {
                 position: {my: 'center', at: 'center', of: this},
@@ -169,7 +159,7 @@ function initializeDialog(editor)
                 width: 650,
                 title: 'Edit page title',
                 buttons: [{text: "Save",
-                        click: function() {
+                        click: function () {
                             var title_input = $('#page-title-input').val();
                             title_input = title_input.replace('/[<>]/gi', '');
                             $('#page-title-hidden').val(title_input);
@@ -178,7 +168,7 @@ function initializeDialog(editor)
                             $(this).dialog('close');
                         }
                     }],
-                close: function() {
+                close: function () {
                     closeOverlay();
                 }
             }
@@ -197,7 +187,7 @@ function updateBlock(editor) {
                 'bid': block_id,
                 'content': content,
                 'section_id': section_id
-            }, function(data) {
+            }, function (data) {
         if (content === '') {
             content = '[Click to edit]';
         }
@@ -208,4 +198,12 @@ function updateBlock(editor) {
 /*
  * JQuery center fix by Andreas Lagerkvist
  */
-jQuery.fn.center=function(absolute){return this.each(function(){var t=jQuery(this);t.css({position:absolute?'absolute':'fixed',left:'50%',top:'50%',zIndex:'99'}).css({marginLeft:'-'+(t.outerWidth()/2)+'px',marginTop:'-'+(t.outerHeight()/2)+'px'});if(absolute){t.css({marginTop:parseInt(t.css('marginTop'),10)+jQuery(window).scrollTop(),marginLeft:parseInt(t.css('marginLeft'),10)+jQuery(window).scrollLeft()})}})};
+jQuery.fn.center = function (absolute) {
+    return this.each(function () {
+        var t = jQuery(this);
+        t.css({position: absolute ? 'absolute' : 'fixed', left: '50%', top: '50%', zIndex: '99'}).css({marginLeft: '-' + (t.outerWidth() / 2) + 'px', marginTop: '-' + (t.outerHeight() / 2) + 'px'});
+        if (absolute) {
+            t.css({marginTop: parseInt(t.css('marginTop'), 10) + jQuery(window).scrollTop(), marginLeft: parseInt(t.css('marginLeft'), 10) + jQuery(window).scrollLeft()})
+        }
+    })
+};
