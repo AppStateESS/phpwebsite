@@ -135,6 +135,16 @@ EOF;
                     dgettext('pagesmith', 'Orphans'));
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
+
+        $modal = new \Modal('edit-section',
+                '<textarea id="block-edit-textarea"></textarea>',
+                dgettext('pagesmith', 'Edit text area'));
+        $modal->addButton('<button id="save-page" class="btn btn-success">' . dgettext('pagesmith',
+                        'Save') . '</button>');
+
+        $modal->setWidth(90);
+        $tpl['MODAL'] = $modal->__toString();
+
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
                         'page_form.tpl');
     }
