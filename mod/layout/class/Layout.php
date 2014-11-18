@@ -146,7 +146,7 @@ class Layout {
     }
 
     /**
-     * Path to javascript file you want included. Does not include PHPWS_SOURCE_HTTP
+     * Path to javascript file you want included. PHPWS_SOURCE_HTTP is added automatically.
      * @param string $file
      */
     public static function includeJavascript($file)
@@ -870,30 +870,29 @@ class Layout {
         $vars['action'] = 'admin';
         if (Layout::isMoveBox()) {
             $vars['command'] = 'turn_off_box_move';
-            $links[] = PHPWS_Text::moduleLink(dgettext('layout', '<span class="fa fa-toggle-on"></span> Box move off'),
+            $links[] = PHPWS_Text::moduleLink('<i class="fa fa-toggle-on"></i> ' . dgettext('layout', 'Box move off'),
                             'layout', $vars);
         } else {
             $vars['command'] = 'move_boxes_on';
-            $links[] = PHPWS_Text::secureLink(dgettext('layout', '<span class="fa fa-toggle-off"></span> Box move on'),
+            $links[] = PHPWS_Text::secureLink('<i class="fa fa-toggle-off"></i> ' . dgettext('layout', 'Box move on'),
                             'layout', $vars);
         }
 
         unset($vars['command']);
         $vars['tab'] = 'meta';
-        $links[] = PHPWS_Text::secureLink(dgettext('layout',
-                                '<span class="fa fa-edit"></span> Change Website Title'), 'layout', $vars);
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i> ' . dgettext('layout',
+                                'Change Website Title'), 'layout', $vars);
 
         $key = Key::getCurrent();
         if (javascriptEnabled() && Layout::getExtraStyles() &&
                 Key::checkKey($key)) {
-
 
             $js_vars['width'] = 400;
             $js_vars['height'] = 200;
             $vars['key_id'] = $key->id;
             $vars['action'] = 'admin';
 
-            $js_vars['label'] = dgettext('layout', '<span class="fa fa-paint-brush"></span> Change style');
+            $js_vars['label'] = '<i class="fa fa-paint-brush"></i> ' . dgettext('layout', 'Change style');
             $vars['command'] = 'js_style_change';
 
             $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
