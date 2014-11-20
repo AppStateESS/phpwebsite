@@ -154,6 +154,7 @@ class Cabinet {
         $form->setId('folder_id', 'folder-id');
         $form->setId('ftype', 'ftype');
         $form->addFile('filename');
+        $form->setStyle('filename', 'display:none');
         $form->addSubmit(dgettext('filecabinet', 'Upload'));
         $tpl = $form->getTemplate();
         $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
