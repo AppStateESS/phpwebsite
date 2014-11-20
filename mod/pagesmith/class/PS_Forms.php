@@ -58,21 +58,13 @@ class PS_Forms {
     {
         javascript('jquery');
         javascript('jquery_ui');
-        $source_http = PHPWS_SOURCE_HTTP;
-        $header = <<<EOF
-        <script type="text/javascript">var source_http = '{$source_http}javascript/editors/ckeditor/';var sn = '{session_name}';</script>
-<script type="text/javascript" src="{$source_http}javascript/editors/ckeditor/ckeditor.js"></script>
-<script type="text/javascript">CKEDITOR.config.customConfig = '{$source_http}mod/pagesmith/javascript/pageedit/phpws_config.js';</script>
-EOF;
-
-        Layout::addJSHeader($header, 'psckeditor');
+        javascript('ckeditor');
 
         Layout::addStyle('pagesmith', 'admin.css');
         Layout::addJSHeader('<script type="text/javascript" src="' .
                 PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
                 'pageedit');
 
-        //javascript('editors/ckeditor');
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
 
@@ -143,8 +135,14 @@ EOF;
                         'Save') . '</button>');
 
         $modal->setWidth(90);
-        $tpl['MODAL'] = $modal->__toString();
+        $tpl['CONTENT_MODAL'] = $modal->__toString();
 
+        $title_modal = new \Modal('edit-title',
+                '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />',
+                dgettext('pagesmith', 'Edit page title'));
+        $title_modal->addButton('<button id="save-title" class="btn btn-success">' . dgettext('pagesmith',
+                        'Save') . '</button>');
+        $tpl['TITLE_MODAL'] = $title_modal->__toString();
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
                         'page_form.tpl');
     }
