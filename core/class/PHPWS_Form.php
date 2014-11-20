@@ -29,7 +29,6 @@
  *
  */
 PHPWS_Core::configRequireOnce('core', 'formConfig.php', true);
-PHPWS_Core::initCoreClass('Editor.php');
 
 class PHPWS_Form {
 
@@ -815,17 +814,17 @@ class PHPWS_Form {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core',
                     'PHPWS_Form::setExtra', array($name));
         }
-    
+
         foreach ($this->_elements[$name] as $key => $element) {
             $result = $this->_elements[$name][$key]->addExtraTag($tag);
             if (PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
-    
+
         return true;
     }
-    
+
     /**
      * Lets you enter a width style to a text field or area
      *
@@ -1170,7 +1169,7 @@ class PHPWS_Form {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core',
                     'PHPWS_Form::setClass', array($name));
         }
-    
+
         foreach ($this->_elements[$name] as $key => $element) {
             $result = $this->_elements[$name][$key]->addCssClass($className);
             if (PHPWS_Error::isError($result)) {
@@ -1178,7 +1177,7 @@ class PHPWS_Form {
             }
         }
     }
-    
+
     public function setId($name, $id_name)
     {
         if (!$this->testName($name)) {
@@ -1761,11 +1760,11 @@ class PHPWS_Form {
         }
 
         foreach ($aVal as $name => $element) {
-            
+
             if (!isset($this->types[$name])) {
                 continue;
             }
-            
+
             $element_type = $this->types[$name];
             if (!empty($element_type)) {
                 switch ($element_type) {
@@ -2010,21 +2009,9 @@ class Form_TextArea extends Form_Element {
     {
         $breaker = null;
 
-        if ($this->use_editor && Editor::willWork()) {
+        if ($this->use_editor) {
             $text = PHPWS_Text::decodeText($this->value);
-
-            $editor = new Editor($this->name, $text, $this->id,
-                    $this->_force_name);
-
-            if ($this->_editor_dm) {
-                $editor->width = (int) $this->_editor_dm[0];
-                $editor->height = (int) $this->_editor_dm[1];
-            }
-            $editor->useLimited($this->limit_editor);
-            $result = $editor->get();
-            if (!empty($result)) {
-                return $result;
-            }
+            return javascript('ckeditor', array('ID'=>$this->id, 'NAME'=>$this->name, 'VALUE'=>$text));
         }
 
         $value = preg_replace('/<br\s?\/?>(\r\n)?/', "\n", $this->value);
@@ -2537,7 +2524,7 @@ class Form_Element {
             $this->css_class .= (' ' . $className);
         }
     }
-    
+
     public function getClass($formMode = false)
     {
         if (!$formMode) {
@@ -2585,7 +2572,7 @@ class Form_Element {
     {
         $this->extra = $extra;
     }
-    
+
     /**
      * Adds an extra tag (or any arbitrary string)to the HTML markup
      * for this form element. Will not overwrite any existing extra tags.
