@@ -1220,39 +1220,6 @@ class Layout {
         }
     }
 
-    public static function ckeditor()
-    {
-        if (!Current_User::isLogged()) {
-            PHPWS_Core::errorPage('404');
-            exit();
-        }
-        $ck_image_dir = './images/ckeditor/';
-        $ck_image_http = './images/ckeditor/';
-        $home_dir = './';
-        $ck_fm_http = PHPWS_SOURCE_HTTP . 'javascript/editors/ckeditor/filemanager/';
-        $ck_fm_dir = PHPWS_SOURCE_DIR . 'javascript/editors/ckeditor/filemanager/';
-        if (isset($_REQUEST['sub'])) {
-            $sub = & $_REQUEST['sub'];
-        } else {
-            $sub = null;
-        }
-
-        switch ($sub) {
-            case 'treeconnect':
-                include $ck_fm_dir . 'scripts/jquery.filetree/connectors/pwsjqueryFileTree.php';
-                break;
-
-            case 'fileconnect':
-                include $ck_fm_dir . 'connectors/phpws/filemanager.php';
-                break;
-
-            default:
-                include $ck_fm_dir . 'index.php';
-                break;
-        }
-        exit();
-    }
-
 }
 
 function javascriptEnabled()
