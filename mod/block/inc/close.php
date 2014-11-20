@@ -9,7 +9,6 @@ if (Current_User::allow('block')) {
 
     $key = Key::getCurrent();
     if (Key::checkKey($key) && javascriptEnabled()) {
-        javascript('editors/ckeditor');
         $js_address = PHPWS_SOURCE_HTTP . 'mod/block/javascript/addblock/script.js';
         javascript('jquery');
         javascript('jquery_ui');
