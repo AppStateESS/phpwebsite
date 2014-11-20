@@ -20,6 +20,7 @@
     </head>
     <body>
         <div id="folders">
+            <!--
             <div id="file-type-buttons">
                 <select id="folder-type">
                     <option value="1">Images</option>
@@ -27,22 +28,24 @@
                     <option value="3">Multimedia</option>
                 </select>
             </div>
-            <div style="padding: 5px 0px; height : 25px; border-bottom : 1px solid black">
-            <div style="text-align : center">{NEW_FOLDER}</div>
-            <div id="new-folder-form" style="display : none"><input type="text" id="folder-name" name="folder_name" size="15" /><input id="submit-folder" type="button" value="Add" /></div>
+            -->
+            <div style="padding: 5px 0px; height : 30px; border-bottom : 1px solid black">
+                <div style="text-align : center">{NEW_FOLDER}</div>
+                <div id="new-folder-form" style="display : none"><input type="text" id="folder-name" name="folder_name" size="15" /><input id="submit-folder" type="button" value="Add" />
+                </div>
+            </div>
+            <div id="tools">
+                <div id="current-folder_listing">Current folder: <span style="font-weight:bold" id="current-folder"></span></div>
+                <div id = "folder-form" style = "display : none;">
+                    <iframe id="upload-frame" src="index.php?module=filecabinet&aop=ckuploadform&authkey={AUTHKEY}" frameborder="0" width="170px" height="150px"></iframe>
+                </div>
             </div>
             <div id="folder-listing">
                 {FOLDER_LISTING}
             </div>
         </div>
-        <div id="tools">
-                    <div id="current-folder_listing">Current folder: <span id = "current-folder"></span></div>
-                    <div id = "folder-form" style = "display : none;">
-                        <iframe id="upload-frame" src="index.php?module=filecabinet&aop=ckuploadform&authkey={AUTHKEY}" frameborder="0" width="400px" height="26px"></iframe>
-                    </div>
-                </tr>
-            </table>
+        <div id="files">
+            {FILE_LISTING}
         </div>
-        <div id="files">{FILE_LISTING}</div>
     </body>
 </html>
