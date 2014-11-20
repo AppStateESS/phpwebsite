@@ -11,5 +11,5 @@
 <!-- BEGIN orphans -->
 {ORPHANS}
 <!-- END orphans -->
-<div id="title-edit-popup" style="display:none"><input type="text" id="page-title-input" name="page_title" class="form-control" value="{PAGE_TITLE}" /></div>
-{MODAL}
+{TITLE_MODAL}
+{CONTENT_MODAL}

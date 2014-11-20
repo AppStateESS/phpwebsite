@@ -2,44 +2,10 @@ var block_id = 0;
 var page_id = 0;
 var section_id = 0;
 var current_block;
-var editor = {};
 $(document).ready(function () {
-    editor = CKEDITOR.replace('block-edit-textarea',
-            {
-                on:
-                        {
-                            instanceReady: function (ev)
-                            {
-                                this.dataProcessor.writer.indentationChars = '  ';
-
-                                this.dataProcessor.writer.setRules('th',
-                                        {
-                                            indent: true,
-                                            breakBeforeOpen: true,
-                                            breakAfterOpen: false,
-                                            breakBeforeClose: false,
-                                            breakAfterClose: true
-                                        });
-                                this.dataProcessor.writer.setRules('li',
-                                        {
-                                            indent: true,
-                                            breakBeforeOpen: true,
-                                            breakAfterOpen: false,
-                                            breakBeforeClose: false,
-                                            breakAfterClose: true
-                                        });
-                                this.dataProcessor.writer.setRules('p',
-                                        {
-                                            indent: true,
-                                            breakBeforeOpen: true,
-                                            breakAfterOpen: true,
-                                            breakBeforeClose: true,
-                                            breakAfterClose: true
-                                        });
-                            }
-                        }
-            }
-    );
+    var editor = CKEDITOR.replace('block-edit-textarea', {
+        height: '620'
+    });
     enforceFocus();
     localStorage.clear();
     initializeDialog(editor);
@@ -96,36 +62,7 @@ function openBlockEdit()
 
 function openTitleEdit()
 {
-    $('#title-edit-popup').dialog('open');
-    openOverlay('title-dialog');
-}
-
-function openOverlay(class_name)
-{
-    $('body').attr('style', 'overflow:hidden');
-    $('.' + class_name).before('<div style="position: fixed ;width : 100%; height: 100%;background-color:none" class="ui-widget-overlay dialog-overlay" />');
-    clickOutside();
-}
-
-function clickOutside()
-{
-    $('.ui-widget-overlay').click(function () {
-        ck_data = editor.getData();
-        localStorage[block_id] = ck_data;
-        closeBlockEdit();
-    });
-}
-
-function closeBlockEdit()
-{
-    $('#block-edit-popup').dialog('close');
-    closeOverlay();
-}
-
-function closeOverlay()
-{
-    $('body').attr('style', 'overflow:auto');
-    $('.dialog-overlay').remove();
+    $('#edit-title').modal('show');
 }
 
 function initializePageTitleEdit()
@@ -136,6 +73,15 @@ function initializePageTitleEdit()
         }
         openTitleEdit();
     });
+
+    $('#save-title').click(function () {
+        var title_input = $('#page-title-input').val();
+        title_input = title_input.replace('/[<>]/gi', '');
+        $('#page-title-hidden').val(title_input);
+        $('#page-title-edit').html(title_input);
+        $('#page-title-edit').css('color', 'inherit');
+        $('#edit-title').modal('hide');
+    });
 }
 
 function initializeDialog(editor)
@@ -145,35 +91,10 @@ function initializeDialog(editor)
         localStorage[block_id] = ck_data;
     });
 
-
     $('#save-page').click(function () {
         updateBlock(editor);
         $('#edit-section').modal('hide');
     });
-
-    $('#title-edit-popup').dialog(
-            {
-                position: {my: 'center', at: 'center', of: this},
-                dialogClass: 'title-dialog',
-                autoOpen: false,
-                width: 650,
-                title: 'Edit page title',
-                buttons: [{text: "Save",
-                        click: function () {
-                            var title_input = $('#page-title-input').val();
-                            title_input = title_input.replace('/[<>]/gi', '');
-                            $('#page-title-hidden').val(title_input);
-                            $('#page-title-edit').html(title_input);
-                            $('#page-title-edit').css('color', 'inherit');
-                            $(this).dialog('close');
-                        }
-                    }],
-                close: function () {
-                    closeOverlay();
-                }
-            }
-    );
-
 }
 
 function updateBlock(editor) {
