@@ -430,6 +430,17 @@ EOF;
 + Removed all PageSmith pages from layout_box table. Was kept only for multiple front pages which no one used.
 </pre>
 EOF;
+        case version_compare($currentVersion, '1.9.0', '<'):
+            $db = \Database::newDB();
+            $pp = $db->addTable('ps_page');
+            $st = $pp->addDataType('show_title', 'smallint');
+            $st->add();
+            $content[] = <<<EOF
+<pre>1.9.0 changes
+------------------
++ Ability to hide title
+</pre>
+EOF;
     } // end switch
 
     return true;

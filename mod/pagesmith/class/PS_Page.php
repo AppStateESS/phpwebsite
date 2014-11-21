@@ -16,6 +16,7 @@ class PS_Page {
     public $parent_page = 0;
     public $page_order = 0;
     public $publish_date;
+    public $hide_title = 0;
     public $_tpl = null;
     public $_sections = array();
 
@@ -492,7 +493,9 @@ class PS_Page {
             Layout::addPageTitle($this->title);
         }
 
-        $this->_content['page_title'] = & $this->title;
+        if (!$this->hide_title) {
+            $this->_content['page_title'] = & $this->title;
+        }
 
         $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
 

@@ -350,6 +350,8 @@ class PageSmith {
             $this->page->loadTemplate();
         }
 
+        $this->page->hide_title = isset($_POST['hide_title']) ? 1 : 0;
+
         $post_title = strip_tags($_POST['title']);
         if ($post_title != $this->page->title) {
             $this->page->_title_change = true;

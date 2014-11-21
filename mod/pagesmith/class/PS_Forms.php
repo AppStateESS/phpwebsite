@@ -103,7 +103,6 @@ class PS_Forms {
 
         $page->loadKey();
 
-
         if ($page->_key->id && $page->_key->show_after) {
             $publish_date = $page->_key->show_after;
         } else {
@@ -120,6 +119,8 @@ class PS_Forms {
         $jsvars['page_title_input'] = 'pagesmith_title';
         $jsvars['page_title_id'] = sprintf('%s-page-title', $pg_tpl_name);
         javascriptMod('pagesmith', 'pagetitle', $jsvars);
+
+        $tpl['HIDE_CHECK'] = $page->hide_title ? 'checked="checked"' : null;
 
         if (!empty($page->_orphans)) {
             $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>',
