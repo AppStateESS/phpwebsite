@@ -1,6 +1,6 @@
 /* Original source: http://www.codeproject.com/Articles/711196/Session-Time-Out-Warning-Message-Using-jQuery-in-A */
 //How frequently to check for session expiration in milliseconds
-var sess_pollInterval = 60000;
+var sess_pollInterval = 30000;
 var sess_interval_id;
 
 // uncomment for testing
