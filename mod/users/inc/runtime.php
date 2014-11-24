@@ -19,7 +19,17 @@ if ((isset($_REQUEST['module']) && $_REQUEST['module'] == 'users') && (isset($_R
         }
     }
 }
-
 Current_User::loadAuthorization($_SESSION['User']);
 Current_User::getLogin();
+
+if (Current_User::isLogged()) {
+    $lifetime = ini_get('session.gc_maxlifetime');
+
+    $path = PHPWS_SOURCE_HTTP . 'mod/users/javascript/session_check/script.js';
+    $timeout = floor($lifetime / 60);
+    $warning_minutes = $timeout - 5;
+    javascript('jquery');
+    \Layout::addJSHeader("<script type='text/javascript'>var sess_expirationMinutes = $timeout;var sess_warningMinutes = $warning_minutes;</script>"
+            . "<script type='text/javascript' src='$path'></script>");
+}
 ?>
