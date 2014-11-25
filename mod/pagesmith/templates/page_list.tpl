@@ -7,7 +7,7 @@
         <th width="15%">{ACTION_LABEL}</th>
         <th width="8%">{ID_SORT} {ID_LABEL}</th>
         <th>{TITLE_SORT}</th>
-        <th width="25%">{LAST_UPDATED_SORT}</th>
+        <th width="30%">{LAST_UPDATED_SORT}</th>
     </tr>
     <!-- BEGIN listrows -->
     <tr>
@@ -16,7 +16,7 @@
         <td>{TITLE} <!-- BEGIN subpages -->
         <div class="subpage">{SUBPAGES}</div>
         <!-- END subpages --></td>
-        <td>{LAST_UPDATED}</td>
+        <td>{LAST_UPDATED} by {UPDATER}</td>
     </tr>
     <!-- END listrows -->
 </table>

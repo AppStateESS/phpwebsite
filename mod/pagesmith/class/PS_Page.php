@@ -19,6 +19,7 @@ class PS_Page {
     public $hide_title = 0;
     public $_tpl = null;
     public $_sections = array();
+    public $_updater = null;
 
     /**
      * Contains content left over after change the template
@@ -215,6 +216,7 @@ class PS_Page {
         }
         $tpl['CREATE_DATE'] = strftime('%d %b %y, %H:%M', $this->create_date);
         $tpl['LAST_UPDATED'] = strftime('%d %b %y, %H:%M', $this->last_updated);
+        $tpl['UPDATER'] = $this->_updater;
 
         if ($subpage) {
             $tpl['PAGE_NO'] = $this->page_order + 1;

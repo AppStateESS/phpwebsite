@@ -242,7 +242,28 @@ class PS_Forms {
         $pager->addSortHeader('last_updated', dgettext('pagesmith', 'Updated'));
         $pager->addWhere('parent_page', 0);
         $this->ps->title = dgettext('pagesmith', 'Pages');
+        $pager->initialize();
+        $this->pullUpdated($pager);
         $this->ps->content = $pager->get();
+    }
+
+    private function pullUpdated($pager)
+    {
+        if (empty($pager->display_rows)) {
+            return null;
+        }
+        foreach ($pager->display_rows as $page) {
+            $keys[] = $page->key_id;
+        }
+        $db = \Database::newDB();
+        $t = $db->addTable('phpws_key');
+        $t->addField('updater');
+        $t->addFieldConditional('id', $keys, 'in');
+        $count = 0;
+        while ($result = $db->selectColumn()) {
+            $pager->display_rows[$count]->_updater = $result;
+            $count++;
+        }
     }
 
     public function pageTemplateForm(PHPWS_Form $form)
