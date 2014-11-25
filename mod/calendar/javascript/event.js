@@ -18,7 +18,6 @@ errorCheckEventForm = function () {
     var end_date = $('#event_form_end_date').val();
     var error_message = new Array();
 
-
     if ($('#event_form_summary').val().length == 0) {
         error = true;
         error_message.push('Summary is empty');
@@ -118,7 +117,6 @@ $(document).ready(function () {
 
 function fillEventForm(data)
 {
-    console.log(data);
     $('#event_form_event_id').val(data.event_id);
     $('#event_form_summary').val(data.summary);
     $('#event_form_location').val(data.location);

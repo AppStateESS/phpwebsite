@@ -184,7 +184,7 @@ class Calendar_Admin {
 
         $form->addTextArea('description', $event->description);
 
-        if (!Editor::willWork() || $suggest) {
+        if ($suggest) {
             $form->setRows('description', 8);
             $form->setCols('description', 55);
         } else {

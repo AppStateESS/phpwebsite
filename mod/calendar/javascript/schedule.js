@@ -34,45 +34,7 @@ plugScheduleForm = function (schedule_id) {
             }, 'json');
 };
 
-
 $(document).ready(function () {
-    editor = CKEDITOR.replace('schedule_form_summary',
-            {
-                on:
-                        {
-                            instanceReady: function (ev)
-                            {
-                                this.dataProcessor.writer.indentationChars = '  ';
-
-                                this.dataProcessor.writer.setRules('th',
-                                        {
-                                            indent: true,
-                                            breakBeforeOpen: true,
-                                            breakAfterOpen: false,
-                                            breakBeforeClose: false,
-                                            breakAfterClose: true
-                                        });
-                                this.dataProcessor.writer.setRules('li',
-                                        {
-                                            indent: true,
-                                            breakBeforeOpen: true,
-                                            breakAfterOpen: false,
-                                            breakBeforeClose: false,
-                                            breakAfterClose: true
-                                        });
-                                this.dataProcessor.writer.setRules('p',
-                                        {
-                                            indent: true,
-                                            breakBeforeOpen: true,
-                                            breakAfterOpen: true,
-                                            breakBeforeClose: true,
-                                            breakAfterClose: true
-                                        });
-                            }
-                        }
-            }
-    );
-
     $('#create-schedule').click(function () {
         resetScheduleForm();
         $('#schedule-modal').modal('show');
