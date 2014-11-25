@@ -1176,6 +1176,8 @@ class User_Action {
                 $settings['new_user_method'] = (int) $_POST['user_signup'];
             }
 
+            $settings['session_warning'] = (int) isset($_POST['session_warning']);
+
             if (isset($_POST['show_login'])) {
                 $settings['show_login'] = 1;
             } else {

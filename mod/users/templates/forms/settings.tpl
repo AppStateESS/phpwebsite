@@ -1,6 +1,10 @@
 {START_FORM}
 <table class="table table-striped">
     <tr>
+        <td>{SESSION_WARNING_LABEL}</td>
+        <td>{SESSION_WARNING} Yes</td>
+    </tr>
+    <tr>
         <td>{FORBIDDEN_USERNAMES_LABEL}</td>
         <td>{FORBIDDEN_USERNAMES}</td>
     </tr>

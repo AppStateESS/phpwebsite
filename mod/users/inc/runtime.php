@@ -22,10 +22,10 @@ if ((isset($_REQUEST['module']) && $_REQUEST['module'] == 'users') && (isset($_R
 Current_User::loadAuthorization($_SESSION['User']);
 Current_User::getLogin();
 
-if (Current_User::isLogged()) {
+if (Current_User::isLogged() && PHPWS_Settings::get('users', 'session_warning')) {
     $lifetime = ini_get('session.gc_maxlifetime');
 
-    $path = PHPWS_SOURCE_HTTP . 'mod/users/javascript/session_check/script.js';
+    $path = PHPWS_SOURCE_HTTP . 'mod/users/javascript/session_check/script.min.js';
     $timeout = floor($lifetime / 60);
     $warning_minutes = $timeout - 5;
     javascript('jquery');

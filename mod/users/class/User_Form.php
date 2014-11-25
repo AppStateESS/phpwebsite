@@ -1027,6 +1027,9 @@ class User_Form {
         $form->setLabel('forbidden_usernames',
                 dgettext('users', 'Forbidden usernames (one per line)'));
 
+        $form->addCheckbox('session_warning', 1);
+        $form->setMatch('session_warning', PHPWS_Settings::get('users', 'session_warning'));
+        $form->setlabel('session_warning', 'Show session warning');
 
         $template = $form->getTemplate();
 
