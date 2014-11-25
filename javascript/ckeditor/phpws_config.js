@@ -7,15 +7,19 @@ CKEDITOR.editorConfig = function (config)
     config.resize = true;
     config.toolbar = 'MyToolbar';
     config.skin = 'moono';
-    config.extraPlugins = 'fontawesome,maximize,glyphicons,filecabinet';
+    config.extraPlugins = 'filecabinet';
     config.allowedContent = true;
     config.toolbar_MyToolbar =
             [
-                ['Source', 'Maximize'], ['Cut', 'Copy', 'PasteText', 'PasteFromWord'],
+                ['Sourcedialog', 'Maximize'], ['PasteText', 'PasteFromWord'],
                 ['Undo', 'Redo', '-', 'RemoveFormat'],
                 ['Link', 'Unlink', 'Anchor'], ['Filecabinet', 'FontAwesome', 'Glyphicons', 'Youtube', 'Table'],
                 ['HorizontalRule', 'SpecialChar'], ['Bold', 'Italic', '-', 'Subscript', 'Superscript', 'Format'],
+                { name: 'texttransform', items: [ 'TransformTextToUppercase', 'TransformTextToLowercase', 'TransformTextCapitalize', 'TransformTextSwitcher' ] },
                 ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
-                ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+                ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
             ];
 };
+
+CKEDITOR.dtd.$removeEmpty.span = 0;
+CKEDITOR.dtd.$removeEmpty.i = 0;
