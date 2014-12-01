@@ -172,6 +172,9 @@ class PageSmith {
                 break;
 
             case 'front_page_toggle':
+                $db = \Database::newDB();
+                $db->addTable('ps_page')->addValue('front_page', 0);
+                $db->update();
                 $this->loadPage();
                 $this->page->front_page = (bool) $_GET['fp'];
                 $this->page->save();

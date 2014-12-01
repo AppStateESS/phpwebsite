@@ -278,19 +278,19 @@ class PS_Page {
     {
         if ($this->front_page) {
             $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith',
-                            'Remove from front');
+                            'Remove as front page');
             if ($icon) {
                 $label = sprintf('<i class="fa fa-flag" title="%s"></i>',
-                        dgettext('pagesmith', 'Remove from front'));
+                        dgettext('pagesmith', 'Remove as front page'));
             }
-            $title = dgettext('pagesmith', 'Click to remove from front page');
+            $title = dgettext('pagesmith', 'Click to remove as front page');
             $vars['fp'] = 0;
         } else {
             $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith',
-                            'Add to front');
+                            'Show as home page');
             if ($icon) {
                 $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
-                        dgettext('pagesmith', 'Add to front'));
+                        dgettext('pagesmith', 'Show as home page'));
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;

@@ -18,7 +18,7 @@ function pagesmith_install(&$content)
 	, which can be found in the &lt;a href=&quot;index.php?module=controlpanel&amp;amp;command=panel_view&quot;&gt;Control Panel&lt;/a&gt; under the Content Tab.&lt;/p&gt;&lt;p&gt;
 	PageSmith has many default templates to get you started. If you are comfortable with HTML, you may wish to just use the &quot;Text Only&quot;
 	 template under the &quot;No image&quot; category.&lt;/p&gt;&lt;p&gt;This particular page was added to the home page by using the &quot;
-	 Add to front page&quot; option found in the MiniAdmin or the &quot;List&quot; tab under the PageSmith administrative options. You may edit this page or remove it from the List view as well.&lt;/p&gt;';
+	 Show as home page&quot; option found in the MiniAdmin or the &quot;List&quot; tab under the PageSmith administrative options. You may edit this page or remove it from the List view as well.&lt;/p&gt;';
 	$section->secname = 'text1';
 	$section->sectype = 'text';
 	$section->save($page->key_id);
