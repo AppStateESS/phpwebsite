@@ -9,7 +9,8 @@ CKEDITOR.plugins.add('filecabinet',
             {
                label : "Filecabinet",
                command : 'filecabinet.cmd',
-               icon : mypath + 'images/filecabinet.jpg'
+               icon : mypath + 'images/filecabinet.jpg',
+               toolbar : 'insert'
             }
          );
          var cmd = editor.addCommand('filecabinet.cmd', {exec:showDialogPlugin});

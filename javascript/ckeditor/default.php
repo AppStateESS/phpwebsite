@@ -25,36 +25,6 @@ $header = <<<EOF
 var source_http = '{$source_http}';
 var sn = '{$session_name}';
 CKEDITOR.config.customConfig = '{$source_http}javascript/ckeditor/phpws_config.js';
-
-CKEDITOR.on('instanceReady', function (ev)
-{
-    ev.editor.dataProcessor.writer.indentationChars = '  ';
-
-    ev.editor.dataProcessor.writer.setRules('th',
-            {
-                indent: true,
-                breakBeforeOpen: true,
-                breakAfterOpen: false,
-                breakBeforeClose: false,
-                breakAfterClose: true
-            });
-    ev.editor.dataProcessor.writer.setRules('li',
-            {
-                indent: true,
-                breakBeforeOpen: true,
-                breakAfterOpen: false,
-                breakBeforeClose: false,
-                breakAfterClose: true
-            });
-    ev.editor.dataProcessor.writer.setRules('p',
-            {
-                indent: true,
-                breakBeforeOpen: true,
-                breakAfterOpen: true,
-                breakBeforeClose: true,
-                breakAfterClose: true
-            });
-});
 </script>
 EOF;
 Layout::addJSHeader($header, 'ckeditor-head');
