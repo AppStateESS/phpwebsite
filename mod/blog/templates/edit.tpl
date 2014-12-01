@@ -24,4 +24,5 @@
     </div>
     <!-- BEGIN captcha --><p>{CAPTCHA_IMAGE}<br />{CAPTCHA} {CAPTCHA_LABEL}<!-- END captcha -->
 </div>
-<div style="text-align : center; clear : both; padding-top : 5px; border-top : 1px solid black">{SUBMIT}</div> {END_FORM}
+<div style="text-align : center; clear : both; padding-top : 5px; border-top : 1px solid black">{SUBMIT}</div>
+</form>
