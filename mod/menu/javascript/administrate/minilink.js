@@ -12,6 +12,10 @@ $(window).load(function(){
         });
     });
 
+    $('#menu-add-page').click(function(e){
+        e.stopPropagation();
+    });
+
     $('#menu-pin-page').change(function(){
         key_id = $(this).data('keyId');
         menu_id = $(this).val();
@@ -23,6 +27,9 @@ $(window).load(function(){
         }).always(function(){
             window.location.reload();
         });
+    });
+    $('#menu-pin-page').click(function(e){
+        e.stopPropagation();
     });
 
     $('#menu-unpin-page').change(function(){
@@ -38,6 +45,9 @@ $(window).load(function(){
         }).always(function(){
             window.location.reload();
         });
+    });
+    $('#menu-unpin-page').click(function(e){
+        e.stopPropagation();
     });
 
     $('#menu-remove-page').click(function(){
