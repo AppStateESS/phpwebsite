@@ -4,7 +4,7 @@ var section_id = 0;
 var current_block;
 $(document).ready(function () {
     var editor = CKEDITOR.replace('block-edit-textarea', {
-        height: '620'
+        height: '550'
     });
     enforceFocus();
     localStorage.clear();

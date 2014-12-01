@@ -135,7 +135,7 @@ class PS_Forms {
         $modal->addButton('<button id="save-page" class="btn btn-success">' . dgettext('pagesmith',
                         'Save') . '</button>');
 
-        $modal->setWidth(90);
+        $modal->setWidthPercentage(90);
         $tpl['CONTENT_MODAL'] = $modal->__toString();
 
         $title_modal = new \Modal('edit-title',
