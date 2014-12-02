@@ -415,6 +415,7 @@ class Form extends Tag {
         if (empty($this->id)) {
             $this->loadId();
         }
+
         if (!empty($this->inputs)) {
             $value = array();
             foreach ($this->inputs as $input_list) {
@@ -442,6 +443,23 @@ class Form extends Tag {
         }
 
         return $result;
+    }
+
+    /**
+     * Returns an array of all the hidden inputs in the form object
+     * @return array
+     */
+    public function getHiddens()
+    {
+        $hiddens = null;
+        foreach ($this->inputs as $input_list) {
+            foreach ($input_list as $input) {
+                if ($input->getType() == 'hidden') {
+                    $hiddens[] = $input->__toString();
+                }
+            }
+        }
+        return $hiddens;
     }
 
     /**
@@ -503,7 +521,6 @@ class Form extends Tag {
         }
 
         $value['form_start'] = str_replace('</form>', '', parent::__toString());
-        $value['form_end'] = '</form>';
         if (!empty($this->inputs)) {
             foreach ($this->inputs as $input_name => $input_list) {
                 $multiple = count($input_list) > 1;
@@ -514,7 +531,7 @@ class Form extends Tag {
                         if ($choice_as_array) {
                             $value[$input_name] = $choice_array;
                         } else {
-                            foreach ($choice_array as $k=>$cval) {
+                            foreach ($choice_array as $k => $cval) {
                                 $iname = $input_name . '_' . $k;
                                 $value[$iname] = $cval;
                             }
@@ -559,6 +576,7 @@ class Form extends Tag {
         if (isset($value['hidden'])) {
             $value['form_start'] .= "\n" . implode("\n", $value['hidden']);
         }
+        $value['form_end'] = '</form>';
         return $value;
     }
 
@@ -750,7 +768,7 @@ class Form extends Tag {
     public function addInputClass($class_name)
     {
         static $allowed = array('text', 'textarea', 'email', 'color', 'date',
-    'datetime', 'file', 'password', 'search', 'telephone', 'url', 'select');
+            'datetime', 'file', 'password', 'search', 'telephone', 'url', 'select');
         $this->pushAllowedClass($allowed, $class_name);
     }
 
