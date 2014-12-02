@@ -870,11 +870,11 @@ class Layout {
         $vars['action'] = 'admin';
         if (Layout::isMoveBox()) {
             $vars['command'] = 'turn_off_box_move';
-            $links[] = PHPWS_Text::moduleLink('<i class="fa fa-toggle-on"></i> ' . dgettext('layout', 'Box move off'),
+            $links[] = PHPWS_Text::moduleLink('<i class="fa fa-toggle-on"></i> ' . dgettext('layout', 'Turn box move off'),
                             'layout', $vars);
         } else {
             $vars['command'] = 'move_boxes_on';
-            $links[] = PHPWS_Text::secureLink('<i class="fa fa-toggle-off"></i> ' . dgettext('layout', 'Box move on'),
+            $links[] = PHPWS_Text::secureLink('<i class="fa fa-toggle-off"></i> ' . dgettext('layout', 'Turn box move on'),
                             'layout', $vars);
         }
 
