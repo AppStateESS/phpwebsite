@@ -218,9 +218,9 @@ class Tag extends Data {
 
         $tag_parameters = array_diff_key(get_object_vars($this),
                 array_flip($this->ignore_variables));
+        unset($tag_parameters['miscellaneous']);
         $tag_parameters['class'] = $this->getClass();
         $tag_parameters['style'] = $this->getStyle();
-
         if (!empty($tag_parameters)) {
             foreach ($tag_parameters as $pname => $param) {
                 if (is_null($param)) {
@@ -259,13 +259,18 @@ class Tag extends Data {
      */
     public function __toString()
     {
+        return $this->printTag();
+    }
+
+    public function printTag()
+    {
         $data = $this->buildTag();
 
         $result = implode(' ', $data);
         if ($this->open) {
             $result .= ">{$this->text}</{$this->tag_type}>";
         } else {
-            $result .= '>';
+            $result .= '/>';
         }
         return $result;
     }
@@ -354,7 +359,7 @@ class Tag extends Data {
      * @see Tag::$open
      * @param boolean $open
      */
-    protected function setOpen($open)
+    public function setOpen($open)
     {
         $this->open = (bool) $open;
     }
