@@ -463,7 +463,22 @@ EOF;
 Core 2.5.0 Changes
 ------------------
 + Added selectAsCSV to Global Database class.
+</pre>
+EOF;
 
+        case version_compare($version, '2.6.0', '<'):
+            $content[] = <<<EOF
+<pre>
+Core 2.6.0 Changes
+------------------
++ Improved DBPager Search bar and pagination
++ Updated CKEditor from 3 to 4.
++ Removed Editor class.
++ Added PHPWS_File stub file to work with autoload.
++ Added method to set width and height on Modal.
++ Added method to pull hidden variables.
++ Removed Simple and Tinymce editors
++ Updated datetimepicker script
 </pre>
 EOF;
     }
