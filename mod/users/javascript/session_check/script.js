@@ -4,7 +4,7 @@ var sess_pollInterval = 30000;
 var sess_interval_id;
 
 // uncomment for testing
-//sess_pollInterval = 10000;
+//sess_pollInterval = 3000;
 //sess_expirationMinutes = 3;
 //sess_warningMinutes = 1;
 
@@ -26,9 +26,9 @@ function checkSession() {
     this.warning_shown = false;
 
     this.initSession = function () {
+        this.warning_shown = false;
         this.last_activity = new Date();
         this.SetInterval();
-        this.InitializeDecisionButtons();
         $(document).bind('keypress.session', function (ed, e) {
             t.KeyPressed(ed, e);
         });
@@ -38,7 +38,6 @@ function checkSession() {
     {
         $('#stay-logged-in').click(function () {
             t.StayLoggedIn();
-            t.RemoveAlert();
         });
 
         $('#logged-it-out').click(function () {
@@ -76,11 +75,10 @@ function checkSession() {
 
     this.StayLoggedIn = function ()
     {
-        $('#stay-logged-in').click(function () {
-            $.get('index.php');
-            t.ResetDiffTime();
-            t.RemoveAlert();
-        });
+        $.get('index.php');
+        t.ClearInterval();
+        t.initSession();
+        t.RemoveAlert();
     };
 
     this.InsertWarning = function () {
@@ -93,10 +91,7 @@ function checkSession() {
 
     this.CheckInterval = function () {
         this.ResetDiffTime();
-
         if (this.diff_mins >= this.minutes_until_warning) {
-            //stop the timer
-            //t.ClearInterval();
             if (t.warning_shown) {
                 var countdown = t.expiration_minutes - t.diff_mins;
                 if (countdown > 1) {
@@ -113,6 +108,7 @@ function checkSession() {
             } else {
                 t.warning_shown = true;
                 t.InsertWarning();
+                t.InitializeDecisionButtons();
             }
         }
     };
