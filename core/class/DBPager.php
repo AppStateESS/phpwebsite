@@ -1356,39 +1356,45 @@ class DBPager {
             $id_count++;
         }
 
-        $form = new PHPWS_Form($id);
-        $form->setMethod('get');
         $values = $this->getLinkValues();
         unset($values['pager_search']);
         unset($values['go']);
-        $form->addHidden($values);
-        $form->addText('pager_c_search', $this->search);
-        $form->setSize('pager_c_search', 20);
-        if ($this->search_label) {
-            $form->setLabel('pager_c_search', _('Search'));
-        }
 
-        if ($this->clear_button) {
-            $form->addButton('clear', _('Clear'));
-            $form->setExtra('clear',
-                    'onclick="this.form.search_list_pager_c_search.value=\'\'"');
-        }
 
+        $form = new \Form($id);
+        $form->useGetMethod();
+        $form->addClass('form-inline');
+        $form->setAction('index.php');
+        //$form->appendCSS('bootstrap');
+        foreach ($values as $k => $v) {
+            $form->addHidden($k, $v);
+        }
+        $input_array[] = '<div style="width: 300px">';
+        $form->setOpen(false);
+        $input_array[] = $form->printTag();
+        $input_array[] = implode("\n", $form->getHiddens());
+
+        $si = $form->addTextField('pager_c_search', $this->search);
+        $si->addClass('pager_c_search');
+        $si->addClass('form-control');
+        $si->setPlaceholder(_('Search'));
+        $input_array[] = '<div class="input-group">';
+        $input_array[] = (string) $si;
+
+        $input_array[] = '<span class="input-group-btn">';
         if ($this->search_button) {
-            $form->addSubmit('go', _('Search'));
+            $sub = $form->addSubmit('submit', 'Go')->addClass('btn btn-success');
+            $input_array[] = (string) $sub;
         }
 
-        $template = $form->getTemplate();
-        if (PHPWS_Error::isError($template)) {
-            PHPWS_Error::log($template);
-            return null;
-        }
+        $input_array[] = <<<EOF
+<input type="submit" onclick="$(this).parents('form').find('input.pager_c_search').val('');" class="btn btn-info" value="Clear" />
+EOF;
+        $input_array[] = '</span>';
+        $input_array[] = '</div>';
 
-        return $template['START_FORM'] . "\n" .
-                $template['PAGER_C_SEARCH_LABEL'] . "\n" .
-                $template['PAGER_C_SEARCH'] . "\n" .
-                $template['GO'] . "\n" .
-                $template['END_FORM'];
+        $input_array[] = '</form></div>';
+        return implode("\n", $input_array);
     }
 
     protected function getNavigation(&$template)
