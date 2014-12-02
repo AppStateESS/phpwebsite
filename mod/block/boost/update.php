@@ -150,6 +150,12 @@ Please download version 1.1.2.</pre>';
 ---------------
 + Removed viewPinnedBlocks code
 </pre>';
+        case version_compare($currentVersion, '1.3.10', '<'):
+            $content[] = '<pre>1.3.10 changes
+---------------
++ Added font-awesome icons.
++ Updated to work with ckeditor 4.
+</pre>';
     }
     return TRUE;
 }

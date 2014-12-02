@@ -4,8 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
-
 function users_update(&$content, $currentVersion)
 {
     $home_dir = PHPWS_Boost::getHomeDir();
@@ -81,8 +79,8 @@ timeout INT NOT NULL default 0,
                 }
             }
             $files = array('templates/forms/reset_password.tpl', 'templates/forms/forgot.tpl',
-                       'conf/config.php', 'templates/usermenus/top.tpl', 'templates/forms/settings.tpl',
-                       'templates/my_page/user_setting.tpl');
+                'conf/config.php', 'templates/usermenus/top.tpl', 'templates/forms/settings.tpl',
+                'templates/my_page/user_setting.tpl');
             $content[] = '<pre>';
             userUpdatefiles($files, $content);
 
@@ -128,7 +126,7 @@ timeout INT NOT NULL default 0,
             $content[] = '<pre>';
 
             $source_dir = PHPWS_SOURCE_DIR . 'mod/users/javascript/';
-            $dest_dir   = $home_dir . 'javascript/modules/users/';
+            $dest_dir = $home_dir . 'javascript/modules/users/';
 
             if (PHPWS_File::copy_directory($source_dir, $dest_dir, true)) {
                 $content[] = "--- Successfully copied $source_dir to $dest_dir";
@@ -148,7 +146,7 @@ timeout INT NOT NULL default 0,
             $content[] = '<pre>';
 
             $files = array('conf/error.php', 'conf/languages.php', 'templates/forms/settings.tpl',
-                       'templates/manager/groups.tpl');
+                'templates/manager/groups.tpl');
             userUpdateFiles($files, $content);
 
             if (!PHPWS_Boost::inBranch()) {
@@ -193,7 +191,7 @@ timeout INT NOT NULL default 0,
 
                 if (!empty($user_ids) && !PHPWS_Error::logIfError($user_ids)) {
                     $group_db = new PHPWS_DB('users_groups');
-                    foreach ($user_ids as $id=>$username) {
+                    foreach ($user_ids as $id => $username) {
                         $group_db->addWhere('user_id', $id);
                         $result = $group_db->select('row');
                         if (!$result) {
@@ -225,8 +223,8 @@ timeout INT NOT NULL default 0,
         case version_compare($currentVersion, '2.5.0', '<'):
             $content[] = '<pre>';
             $files = array('templates/forms/memberlist.tpl', 'templates/forms/userForm.tpl',
-                       'javascript/generate/head.js', 'templates/manager/groups.tpl',
-                       'templates/manager/users.tpl');
+                'javascript/generate/head.js', 'templates/manager/groups.tpl',
+                'templates/manager/users.tpl');
             userUpdateFiles($files, $content);
 
             $content[] = '2.5.0 changes
@@ -257,7 +255,7 @@ timeout INT NOT NULL default 0,
             PHPWS_Settings::set('users', 'local_script', $auth_id);
             PHPWS_Settings::save('users');
             $files = array('conf/languages.php', 'templates/my_page/user_setting.tpl',
-                       'templates/usermenus/css.tpl', 'img/permission.png', 'templates/forms/userForm.tpl');
+                'templates/usermenus/css.tpl', 'img/permission.png', 'templates/forms/userForm.tpl');
             userUpdateFiles($files, $content);
             if (!PHPWS_Boost::inBranch()) {
                 $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_6_0.txt');
@@ -294,17 +292,18 @@ timeout INT NOT NULL default 0,
         case version_compare($currentVersion, '2.6.3', '<'):
             $content[] = '<pre>';
             $files = array('img/deity.gif',
-                       'img/delete.png',
-                       'img/edit.png',
-                       'img/man.gif',
-                       'img/key.png',
-                       'img/members.png',
-                       'templates/forms/authorization.tpl',
-                       'templates/forms/settings.tpl',
-                       'templates/manager/users.tpl');
+                'img/delete.png',
+                'img/edit.png',
+                'img/man.gif',
+                'img/key.png',
+                'img/members.png',
+                'templates/forms/authorization.tpl',
+                'templates/forms/settings.tpl',
+                'templates/manager/users.tpl');
             userUpdateFiles($files, $content);
             $db = new PHPWS_DB('users_auth_scripts');
-            PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
+            PHPWS_Error::logIfError($db->addTableColumn('default_group',
+                            'int not null default 0'));
             $content[] = '2.6.3 changes
 ------------------
 + Added icons for admin options under manage users and groups
@@ -323,7 +322,8 @@ timeout INT NOT NULL default 0,
 
         case version_compare($currentVersion, '2.6.4', '<'):
             $db = new PHPWS_DB('users_auth_scripts');
-            PHPWS_Error::logIfError($db->addTableColumn('default_group', 'int not null default 0'));
+            PHPWS_Error::logIfError($db->addTableColumn('default_group',
+                            'int not null default 0'));
             $content[] = '<pre>2.6.4 changes
 -------------------------
 + Added missing column to install.sql</pre>';
@@ -388,20 +388,20 @@ timeout INT NOT NULL default 0,
 + Update permissions
 </pre>';
 
-            case version_compare($currentVersion, '2.7.4', '<'):
+        case version_compare($currentVersion, '2.7.4', '<'):
             $content[] = '<pre>2.7.4 changes
 ------------------------
 + Fixed 500 error on My Page
 </pre>';
 
-                case version_compare($currentVersion, '2.7.5', '<'):
+        case version_compare($currentVersion, '2.7.5', '<'):
             $content[] = '<pre>2.7.5 changes
 ------------------------
 + Loosened group name restrictions
 + User edit page shows group membership
 </pre>';
 
-                    case version_compare($currentVersion, '2.7.6', '<'):
+        case version_compare($currentVersion, '2.7.6', '<'):
             $content[] = '<pre>2.7.6 changes
 ------------------------
 + Updated icons to Font Awesome
@@ -413,12 +413,21 @@ timeout INT NOT NULL default 0,
     - drop down no longer contains Home or Control Panel. Account link added - takes
         user to their account page to change their password.
 </pre>';
-
-
+        case version_compare($currentVersion, '2.8.0', '<'):
+            $content[] = <<<EOF
+<pre>2.8.0 changes
+-----------------
++ Added suggested bootstrap classes from TRF
++ Removed call to nonexistent method.
++ Moved icons to left and set admin-icons class to column.
++ Added FA icon here for mini admin
++ Changed to ensure users_auth_scripts table was created properly
++ Session timeouts are now tracked. Warning to user given before failure.
+</pre>
+EOF;
     } // End of switch statement
 
     return TRUE;
-
 }
 
 function userUpdateFiles($files, &$content)

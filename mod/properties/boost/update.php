@@ -98,6 +98,23 @@ function properties_update(&$content, $currentVersion)
 ---------------
 + Added gas heat and fiber internet/tv.
 </pre>';
+            case (version_compare($currentVersion, '1.3.0', '<')):
+            $content[] = <<<EOF
+<pre>1.3.0 updates
+-----------------
++ Changed login box for IE users
++ Added ability to view properties by contact.
++ Contacts list compacted. Email links to contact name.
++ Fixed bad function call on error page.
++ Added error checks in case 1) the property does not exists or not active or
+  2) the image files are not present.
++ Test for incactive properties preventing error.
++ Added Bootstrap styling and overhauled to work on mobile devices.
++ Last logged defaults to creation date.
++ Fixed Shared Bedroom and Bathroom settings on roommates page.
++ Fixed active/inactive buttons.
+</pre>
+EOF;
     }
     return true;
 }

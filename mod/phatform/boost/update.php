@@ -129,6 +129,17 @@ function phatform_update(&$content, $version)
 -------------
 + Added .htaccess to files/phatform to prevent direct accecss
 </pre>';
+        case version_compare($version, '3.1.10', '<'):
+            $content[] = <<<EOF
+3.1.10 changes
+---------------
++ Changed: H1 tags to H2
++ Changed: Removed call to Help class.
++ Changed: Export serves the file instead of offering direct access to the file.
++ Changed: Moved Pager and Manager classes out of core and into Phatform
++ Fixed: deprecated function ereg
++ Fixed: regexp check on multiple entries so they appear in single item report view
+EOF;
     }
     return true;
 }

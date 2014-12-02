@@ -19,7 +19,7 @@
  */
 
 $proper_name  = 'AddThis';
-$version      = '1.0.1';
+$version      = '1.0.2';
 $register     = false;
 $unregister   = true;
 $import_sql   = false;

@@ -438,7 +438,10 @@ EOF;
             $content[] = <<<EOF
 <pre>1.9.0 changes
 ------------------
-+ Ability to hide title
++ Added: Ability to hide title
++ Changed: Pagesmith editing works within Bootstrap modals.
++ Changed: Adapted to work with CKEditor 4.
++ Changed: Front page is now Highlander style.
 </pre>
 EOF;
     } // end switch

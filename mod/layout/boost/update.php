@@ -205,6 +205,19 @@ function layout_update(&$content, $currentVersion)
 ---------------------
 + Unregister My Page
 </pre>';
+        case version_compare($currentVersion, '2.6.0', '<'):
+            $content[] = <<<EOF
+<pre>2.6.0 changes
+--------------------
++ Removed Layout\'s caching code.
++ Fixed layout's problem with locked content variables.
++ Fixed: Content without a content_var was overwriting previously unlabeled content.
++ Added Layout method includeJavascript. Shortcut for script inclusion over addJSHeader.
++ Added Font Awesome icons.
++ Reworded box move command in miniadmin.
++ Removed deprecated ckeditor function.
+</pre>
+EOF;
     }
     return true;
 }

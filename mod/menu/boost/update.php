@@ -372,6 +372,27 @@ Please download 1.2.1.</pre>';
 + Reset menu button now sorts all links as well
 + Menu images not loaded if tablet width or below
 </pre>";
+        case version_compare($currentVersion, '2.1.0', '<'):
+            $content[] = <<<EOF
+<pre>2.1.0 changes
+-----------------
++ Created settings icon for display type and character limit.
++ If PageSmith creates a menu link, an access shortcut will be used if it exists.
++ Removed old icons.
++ Menu assoc_url will pull shortcut if it exists for page.
++ Added button to shortcut all links.
++ Menu can copy carousel images.
++ Added ability for menu links to have external and pdf icons.
++ Fixed: local links changes into bad http urls.
++ Fixed: Menu images will work on classic menus.
++ Fixed: Theme template style sheets not working.
++ Fixed: isDummy check was not set for home page.
++ Added Bootstrap icons
++ Fixed: Menu link no getting saved if PageSmith pages are not available.
++ Fixed: Home link highlighted with other links.
++ Fixed: Drop down options not working in MiniAdmin
+</pre>           
+EOF;
     }
     return true;
 }

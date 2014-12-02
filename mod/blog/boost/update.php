@@ -342,6 +342,13 @@ function blog_update(&$content, $currentVersion)
 ---------------------
 + Removed Version code
 </pre>';
+        case version_compare($currentVersion, '1.10.5', '<'):
+            $content[] = <<<EOF
+<pre>1.10.5
+------------
++ Added new datetimepicker for date fields.
+</pre>
+EOF;
     } // end of switch
     return true;
 }

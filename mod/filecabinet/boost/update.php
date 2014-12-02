@@ -17,7 +17,8 @@ Please download version 1.0.2.</pre>';
             $content[] = '<pre>';
             $db = new PHPWS_DB('folders');
             if (!$db->isTableColumn('key_id')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int NOT NULL default 0'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('key_id',
+                                        'int NOT NULL default 0'))) {
                     $content[] = '--- An error occurred when trying to add key_id as a column to the folders table.</pre>';
                     return false;
                 }
@@ -87,14 +88,16 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
             $db = new PHPWS_DB('images');
             if (!$db->isTableColumn('parent_id')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('parent_id', 'int NOT NULL default 0'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('parent_id',
+                                        'int NOT NULL default 0'))) {
                     $content[] = 'Could not create parent_id column in images table.</pre>';
                     return false;
                 }
             }
 
             if (!$db->isTableColumn('url')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('url', 'varchar(255) NULL'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('url',
+                                        'varchar(255) NULL'))) {
                     $content[] = 'Could not create url column in images table.</pre>';
                     return false;
                 }
@@ -188,7 +191,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
             $db = new PHPWS_DB('folders');
             if (!$db->isTableColumn('module_created')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('module_created',
+                                        'varchar(40) default null'))) {
                     $content[] = '--- Could not create column module_created on folders table.</pre>';
                     return false;
                 } else {
@@ -259,7 +263,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             $content[] = '<pre>';
             $db = new PHPWS_DB('folders');
             if (!$db->isTableColumn('module_created')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('module_created',
+                                        'varchar(40) default null'))) {
                     $content[] = '--- Could not create column module_created on folders table.</pre>';
                     return false;
                 } else {
@@ -282,25 +287,29 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '2.0.0', '<'):
             $content[] = '<pre>';
 
-            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/', $home_dir . 'templates/filecabinet/')) {
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/',
+                            $home_dir . 'templates/filecabinet/')) {
                 $content[] = '--- Copied complete templates directory.';
             } else {
                 $content[] = '--- Could not copy complete templates directory. Use revert or copy manually.';
             }
 
-            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/', $home_dir . 'images/mod/filecabinet/')) {
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/img/',
+                            $home_dir . 'images/mod/filecabinet/')) {
                 $content[] = '--- Copied complete images directory.';
             } else {
                 $content[] = '--- Could not copy complete images directory. Use revert or copy manually.';
             }
 
-            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/conf/', $home_dir . 'config/filecabinet/')) {
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/conf/',
+                            $home_dir . 'config/filecabinet/')) {
                 $content[] = '--- Copied complete configuration directory.';
             } else {
                 $content[] = '--- Could not copy complete configuration directory. Use revert or copy manually.';
             }
 
-            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/javascript/', $home_dir . 'javascript/modules/filecabinet/')) {
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/filecabinet/javascript/',
+                            $home_dir . 'javascript/modules/filecabinet/')) {
                 $content[] = '--- Copied complete javascript directory.';
             } else {
                 $content[] = '--- Could not copy complete javascript directory. Use revert or copy manually.';
@@ -328,7 +337,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
             $db = new PHPWS_DB('multimedia');
             if (!$db->isTableColumn('duration')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('duration', 'int not null default 0'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('duration',
+                                        'int not null default 0'))) {
                     $content[] = '--- Failed to create duration column on multimedia table.</pre>';
                     return false;
                 } else {
@@ -337,7 +347,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
 
             if (!$db->isTableColumn('embedded')) {
-                if (PHPWS_Error::logIfError($db->addTableColumn('embedded', 'smallint not null default 0'))) {
+                if (PHPWS_Error::logIfError($db->addTableColumn('embedded',
+                                        'smallint not null default 0'))) {
                     $content[] = 'Failed to create embedded column on multimedia table.</pre>';
                     return false;
                 } else {
@@ -387,7 +398,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
             $db = new PHPWS_DB('folders');
             $db->begin();
-            if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension', 'smallint  not null default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('max_image_dimension',
+                                    'smallint  not null default 0'))) {
                 $content[] = '--- Unable to add max_image_dimension column to folders table.';
                 $db->rollback();
                 return false;
@@ -396,7 +408,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
 
             $db = new PHPWS_DB('fc_file_assoc');
-            if (PHPWS_Error::logIfError($db->addTableColumn('width', 'smallint NOT NULL default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('width',
+                                    'smallint NOT NULL default 0'))) {
                 $content[] = '--- Unable to add width column to fc_file_assoc.';
                 $db->rollback();
                 return false;
@@ -404,7 +417,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 $content[] = '--- Added width column to fc_file_assoc table';
             }
 
-            if (PHPWS_Error::logIfError($db->addTableColumn('height', 'smallint NOT NULL default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('height',
+                                    'smallint NOT NULL default 0'))) {
                 $content[] = '--- Unable to add height column to fc_file_assoc.';
                 $db->rollback();
                 return false;
@@ -412,7 +426,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                 $content[] = '--- Added height column to fc_file_assoc table';
             }
 
-            if (PHPWS_Error::logIfError($db->addTableColumn('cropped', 'smallint NOT NULL default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('cropped',
+                                    'smallint NOT NULL default 0'))) {
                 $content[] = '--- Unable to add cropped column to fc_file_assoc.';
                 $db->rollback();
                 return false;
@@ -429,12 +444,14 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         case version_compare($version, '2.2.0', '<'):
             $content[] = '<pre>';
             $db = new PHPWS_DB('fc_file_assoc');
-            if (PHPWS_Error::logIfError($db->addTableColumn('vertical', 'smallint not null default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('vertical',
+                                    'smallint not null default 0'))) {
                 $content[] = 'Unable to create vertical column in fc_file_assoc table.';
                 return false;
             }
 
-            if (PHPWS_Error::logIfError($db->addTableColumn('num_visible', 'smallint not null default 3'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('num_visible',
+                                    'smallint not null default 3'))) {
                 $content[] = 'Unable to create num_visible column in fc_file_assoc table.';
                 return false;
             }
@@ -614,7 +631,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Bootstrap icons and styles added.
 </pre>';
 
-            case version_compare($version, '2.5.0', '<'):
+        case version_compare($version, '2.5.0', '<'):
             $content[] = '<pre>2.5.0 changes
 -----------------------
 + img-responsive added to inserted images to work with Bootstrap
@@ -623,6 +640,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Manager made larger.
 + Manager upload header fixed position
 </pre>';
+        case version_compare($version, '2.6.0', '<'):
+            $content[] = <<<EOF
+<pre>2.6.0 changes
+----------------
++ Removed call to updateTag as it does not work.
++ Removed calls to Layout Cache (which was removed)
++ Updated filecabinet to work with ckeditor 4.
++ Updated ckeditor 4 filecabinet pop up layout.
++ Thumbnails of uploaded images are not shown.
+</pre>
+EOF;
             return true;
     }
 }

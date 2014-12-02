@@ -291,6 +291,16 @@ function calendar_update(&$content, $version)
 + Fixed schedule select with last Form updates
 + Fixed users not seeing public calendars
 </pre>';
+        case version_compare($version, '1.8.0', '<'):
+            $content[] = <<<EOF
+<pre>1.8.0
+-------------
++ Added END_TIME_HOUR, END_TIME_MONTH, and END_TIME_YEAR
+  template tags to the event view.
++ Added Bootstrap icons and navigation buttons.
++ Administrative forms switched over to modal windows.
++ Using new datetimepicker javascript.</pre>
+EOF;
     } // end of switch
 
     return true;

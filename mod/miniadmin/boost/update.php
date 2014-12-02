@@ -79,6 +79,17 @@ function miniadmin_update(&$content, $version)
 ------------------
 + Bootstrap compatibility changes
 </pre>';
+        case version_compare($version, '1.2.5', '<'):
+            $content[] = <<<EOF
+<pre>
+1.2.5 changes
+------------------
++ MiniAdmin with Control Panel link now shows up even if there aren't
+  any active modules for the current page.
++ Administrative link only shows if user is logged in.
++ MiniAdmin list prevented from running off page. Using overflow control.
+</pre>
+EOF;
     }
     return true;
 }
