@@ -223,7 +223,7 @@ class PS_Forms {
 
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $createText = dgettext('pagesmith', 'New Page');
-        $pgtags['NEW'] = "<a href=\"index.php?module=pagesmith&amp;aop=menu&amp;tab=new\" class=\"button\">$createText/a>";
+        $pgtags['NEW'] = "<a href='index.php?module=pagesmith&amp;aop=menu&amp;tab=new' class='button'>$createText/a>";
         $pgtags['NEW_PAGE_LINK_URI'] = "index.php?module=pagesmith&amp;aop=menu&amp;tab=new";
         $pgtags['NEW_PAGE_LINK_TEXT'] = $createText;
 
@@ -235,12 +235,14 @@ class PS_Forms {
         $pager->addRowTags('row_tags');
         $pager->setEmptyMessage(dgettext('pagesmith',
                         'No pages have been created.'));
-        $pager->setSearch('title');
+        $pager->setSearch('title','id');
         $pager->addSortHeader('id', dgettext('pagesmith', 'Id'));
         $pager->addSortHeader('title', dgettext('pagesmith', 'Title'));
         $pager->addSortHeader('create_date', dgettext('pagesmith', 'Created'));
         $pager->addSortHeader('last_updated', dgettext('pagesmith', 'Updated'));
         $pager->addWhere('parent_page', 0);
+        $pager->setDefaultLimit(10);
+        $pager->setDefaultOrder('last_updated', 'desc');
         $this->ps->title = dgettext('pagesmith', 'Pages');
         $pager->initialize();
         $this->pullUpdated($pager);
