@@ -79,6 +79,7 @@ function checkSession() {
         $('#stay-logged-in').click(function () {
             $.get('index.php');
             t.ResetDiffTime();
+            t.RemoveAlert();
         });
     };
 
