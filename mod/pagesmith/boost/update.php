@@ -444,6 +444,19 @@ EOF;
 + Changed: Front page is now Highlander style.
 </pre>
 EOF;
+        case version_compare($currentVersion, '1.9.1', '<'):
+            $db = \Database::newDB();
+            $pp = $db->addTable('ps_page');
+            if (!$pp->columnExists('hide_title') && $pp->columnExists('show_title')) {
+                $dt = $pp->getDatatype('show_title');
+                $dt->change('hide_title');
+            }
+            $content[] = <<<EOF
+<pre>1.9.1 changes
+------------------
++ Fixed: Code uses hide_title. Column name was show_title.
+</pre>
+EOF;
     } // end switch
 
     return true;

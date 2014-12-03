@@ -21,6 +21,7 @@ CREATE TABLE ps_page (
   front_page smallint NOT NULL default 0,
   parent_page int NOT NULL default 0,
   page_order smallint NOT NULL default 0,
+  hide_title smallint NOT NULL default 0
   PRIMARY KEY  (id)
 );
 
