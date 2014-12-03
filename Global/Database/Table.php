@@ -151,7 +151,7 @@ abstract class Table extends Resource {
 
     /**
      * Return the type of database column the current column is.
-     * @return string
+     * @return DB/Datatype
      */
     abstract public function getDataType($column_name);
 

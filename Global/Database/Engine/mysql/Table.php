@@ -150,6 +150,9 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
             throw new \Exception(t('Cannot get data type, table does not exist'));
         }
         $schema = $this->getSchema($column_name);
+        if (empty($schema)) {
+            throw new \Exception(t('Unable to retrieve information about column %s', $column_name));
+        }
         $column_type = $schema['DATA_TYPE'];
         $dt = \Database\Datatype::factory($this, $column_name, $column_type);
 
