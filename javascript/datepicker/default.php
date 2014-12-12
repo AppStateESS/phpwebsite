@@ -4,8 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-loadDatepicker();
-function loadDatepicker() {
+
     javascript('jquery');
     $source_http = PHPWS_SOURCE_HTTP;
     $script = <<<EOF
@@ -21,5 +20,5 @@ $(window).load(function() {
 </script>
 EOF;
 \Layout::addJSHeader($script);
-}
+
 ?>
