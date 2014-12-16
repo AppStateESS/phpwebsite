@@ -13,6 +13,6 @@ $settings = array('default_authorization' => 1,
     'local_script' => 1,
     'allow_new_users' => 1,
     'show_login' => 1,
-    'session_warning' => 1
+    'session_warning' => 0
 );
 ?>

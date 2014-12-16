@@ -425,6 +425,15 @@ timeout INT NOT NULL default 0,
 + Session timeouts are now tracked. Warning to user given before failure.
 </pre>
 EOF;
+        case version_compare($currentVersion, '2.8.1', '<'):
+            \PHPWS_Settings::set('users', 'session_warning', 0);
+            \PHPWS_Settings::save('users');
+            $content[] = <<<EOF
+<pre>2.8.1 changes
+-----------------
++ Changing default on user session to false. If you want it enabled, do so in settings.
+</pre>
+EOF;
     } // End of switch statement
 
     return TRUE;
