@@ -6,18 +6,18 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 class mysql_PHPWS_SQL {
+
     public $portability = null;
 
     public function export(&$info)
     {
-        switch ($info['type']){
+        switch ($info['type']) {
             case 'int':
                 if (!isset($info['len']) || $info['len'] > 6)
-                $setting = 'INT';
+                    $setting = 'INT';
                 else
-                $setting = 'SMALLINT';
+                    $setting = 'SMALLINT';
                 break;
 
             case 'blob':
@@ -46,18 +46,15 @@ class mysql_PHPWS_SQL {
                 $setting = 'TIMESTAMP';
                 $info['flags'] = NULL;
                 break;
-
         }
 
         return $setting;
     }
 
-
     public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = PHPWS_DB::addPrefix($table);
-        $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
-        $table, $column_name, $new_name, $specs['parameters']);
+        $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s', $table, $column_name, $new_name, $specs['parameters']);
         return $sql;
     }
 
@@ -95,7 +92,6 @@ class mysql_PHPWS_SQL {
         return TRUE;
     }
 
-
     public function dropTableIndex($name, $table)
     {
         $table = PHPWS_DB::addPrefix($table);
@@ -117,7 +113,7 @@ class mysql_PHPWS_SQL {
         return 'NOT REGEXP';
     }
 
-    public function addColumn($table, $column, $parameter, $after=null)
+    public function addColumn($table, $column, $parameter, $after = null)
     {
         if (!empty($after)) {
             if (strtolower($after) == 'first') {
@@ -146,12 +142,17 @@ class mysql_PHPWS_SQL {
         return 'UNLOCK TABLES;';
     }
 
-
     public function alterTableColumn($table, $column, $parameter)
     {
         $sql = "ALTER TABLE $table CHANGE $column $column $parameter";
         return array($sql);
     }
+
+    public function using($tables)
+    {
+        return $tables[0] . ' using ' . implode(', ', $tables);
+    }
+
 }
 
 ?>

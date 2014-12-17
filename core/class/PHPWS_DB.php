@@ -578,6 +578,7 @@ class PHPWS_DB {
      * if format is true, all tables in the array are returned. This
      * is used for select queries. If false, the first table is popped
      * off and returned
+     * @param boolean format
      */
     public function getTable($format = true)
     {
@@ -606,7 +607,6 @@ class PHPWS_DB {
             return implode(',', $table_list);
         } else {
             $table = $this->tables[0];
-            //foreach ($this->tables as $table);
             return $table;
         }
     }
@@ -1748,6 +1748,13 @@ class PHPWS_DB {
     public function delete($return_affected = false)
     {
         $table = $this->getTable(false);
+        
+        if (count($this->tables) > 1) {
+            $table = $GLOBALS['PHPWS_DB']['lib']->using($this->tables);
+        } else {
+            $table = $this->tables[0];
+        }
+        
         if (!$table) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core',
                             'PHPWS_DB::delete');
@@ -1761,6 +1768,7 @@ class PHPWS_DB {
             $where = 'WHERE ' . $where;
         }
         $sql = "DELETE FROM $table $where $order $limit";
+        var_dump($sql);exit();
         $result = PHPWS_DB::exec($sql);
 
         if (PEAR::isError($result)) {
