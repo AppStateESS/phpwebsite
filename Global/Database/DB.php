@@ -15,17 +15,19 @@ if (!defined('DB_PERSISTENT_CONNECTION')) {
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 abstract class DB extends \Data {
+
     /**
      * Type of module data to pull.
      * @see DB::pullResourceData()
      */
-
     const SELECT = 1;
+
     /**
      * Type of module data to pull.
      * @see DB::pullResourceData()
      */
     const UPDATE = 2;
+
     /**
      * Type of module data to pull.
      * @see DB::pullResourceData()
@@ -330,8 +332,7 @@ abstract class DB extends \Data {
         if (empty($this->conditional)) {
             $this->setConditional($conditional);
         } else {
-            $new_conditional = new \Database\Conditional($this, $this->conditional,
-                    $conditional, 'AND');
+            $new_conditional = new \Database\Conditional($this, $this->conditional, $conditional, 'AND');
             $this->setConditional($new_conditional);
         }
     }
@@ -368,8 +369,7 @@ abstract class DB extends \Data {
             if (empty($current_conditional)) {
                 $current_conditional = $conditional;
             } else {
-                $current_conditional = new \Database\Conditional($this, $current_conditional,
-                        $conditional, 'AND');
+                $current_conditional = new \Database\Conditional($this, $current_conditional, $conditional, 'AND');
             }
         }
         $this->setConditional($current_conditional);
@@ -453,9 +453,8 @@ abstract class DB extends \Data {
     {
         $hash = md5($this->dsn->getPDOString());
         if (!isset(self::$pdo_stack[$hash])) {
-            self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(),
-                    $this->dsn->getUsername(), $this->dsn->getPassword(),
-                    array(\PDO::ATTR_PERSISTENT => DB_PERSISTENT_CONNECTION, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+            self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(), $this->dsn->getUsername(), $this->dsn->getPassword(), array(
+                \PDO::ATTR_PERSISTENT => DB_PERSISTENT_CONNECTION, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         }
         self::$PDO = self::$pdo_stack[$hash];
     }
@@ -584,38 +583,38 @@ abstract class DB extends \Data {
      */
     public static function allowedIdentifier($name)
     {
-        static $reserved = array('add', 'all', 'alter', 'analyze', 'and', 'any', 'array', 'as', 'asc', 'asensitive',
-    'asymmetric', 'authorization', 'before', 'between', 'bigint', 'binary', 'blob', 'both',
-    'by', 'call', 'cascade', 'case', 'change', 'char', 'character', 'check', 'collate',
-    'column', 'condition', 'connection', 'constraint', 'continue', 'convert', 'create',
-    'cross', 'current_date', 'current_role', 'current_time', 'current_timestamp',
-    'current_user', 'cursor', 'database', 'databases', 'day_hour', 'day_microsecond',
-    'day_minute', 'day_second', 'dec', 'decimal', 'declare', 'default', 'delayed', 'delete',
-    'desc', 'describe', 'deterministic', 'distinct', 'distinctrow', 'div', 'do', 'double',
-    'drop', 'dual', 'each', 'else', 'elseif', 'enclosed', 'end', 'escaped', 'except',
-    'exists', 'exit', 'explain', 'false', 'fetch', 'float', 'float4', 'float8', 'for',
-    'force', 'foreign', 'freeze', 'from', 'fulltext', 'function', 'goto', 'grant', 'group',
-    'having', 'high_priority', 'hour_microsecond', 'hour_minute', 'hour_second', 'if',
-    'ignore', 'ilike', 'in', 'index', 'infile', 'initially', 'inner', 'inout', 'insensitive',
-    'insert', 'int', 'int1', 'int2', 'int3', 'int4', 'int8', 'integer', 'intersect',
-    'interval', 'into', 'is', 'isnull', 'iterate', 'join', 'key', 'keys', 'kill', 'label',
-    'leading', 'leave', 'left', 'like', 'limit', 'lines', 'load', 'localtime',
-    'localtimestamp', 'lock', 'long', 'longblob', 'longtext', 'loop', 'low_priority', 'match',
-    'mediumblob', 'mediumint', 'mediumtext', 'middleint', 'minute_microsecond',
-    'minute_second', 'mod', 'modifies', 'natural', 'new', 'no_write_to_binlog', 'not', 'null',
-    'numeric', 'off', 'offset', 'old', 'on', 'only', 'optimize', 'option', 'optionally', 'or',
-    'order', 'out', 'outer', 'outfile', 'overlaps', 'placing', 'precision', 'primary',
-    'procedure', 'purge', 'read', 'reads', 'real', 'references', 'regexp', 'release',
-    'rename', 'repeat', 'replace', 'require', 'restrict', 'return', 'returning', 'revoke',
-    'right', 'rlike', 'schema', 'schemas', 'second_microsecond', 'select', 'sensitive',
-    'separator', 'session_user', 'set', 'show', 'similiar', 'smallint', 'some', 'soname',
-    'spatial', 'specific', 'sql', 'sql_big_result', 'sql_calc_found_rows', 'sql_small_result',
-    'sqlexception', 'sqlstate', 'sqlwarning', 'ssl', 'starting', 'straight_join', 'symmetric',
-    'table', 'terminated', 'then', 'tinyblob', 'tinyint', 'tinytext', 'to', 'trailing',
-    'trigger', 'true', 'undo', 'union', 'unique', 'unlock', 'unsigned', 'update', 'upgrade',
-    'usage', 'use', 'user', 'using', 'utc_date', 'utc_time', 'utc_timestamp', 'values',
-    'varbinary', 'varchar', 'varcharacter', 'varying', 'verbose', 'when', 'where', 'while',
-    'with', 'write', 'xor', 'year_month', 'zerofill');
+        static $reserved = array('add', 'all', 'alter', 'analyze', 'and', 'any',
+            'array', 'as', 'asc', 'asensitive', 'asymmetric', 'authorization', 'before', 'between', 'bigint', 'binary',
+            'blob', 'both', 'by', 'call', 'cascade', 'case', 'change', 'char', 'character', 'check',
+            'collate', 'column', 'condition', 'connection', 'constraint', 'continue', 'convert',
+            'create', 'cross', 'current_date', 'current_role', 'current_time', 'current_timestamp',
+            'current_user', 'cursor', 'database', 'databases', 'day_hour', 'day_microsecond',
+            'day_minute', 'day_second', 'dec', 'decimal', 'declare', 'default', 'delayed',
+            'delete', 'desc', 'describe', 'deterministic', 'distinct', 'distinctrow', 'div',
+            'do', 'double', 'drop', 'dual', 'each', 'else', 'elseif', 'enclosed', 'end', 'escaped',
+            'except', 'exists', 'exit', 'explain', 'false', 'fetch', 'float', 'float4', 'float8',
+            'for', 'force', 'foreign', 'freeze', 'from', 'fulltext', 'function', 'goto',
+            'grant', 'group', 'having', 'high_priority', 'hour_microsecond', 'hour_minute', 'hour_second',
+            'if', 'ignore', 'ilike', 'in', 'index', 'infile', 'initially', 'inner', 'inout',
+            'insensitive', 'insert', 'int', 'int1', 'int2', 'int3', 'int4', 'int8', 'integer', 'intersect',
+            'interval', 'into', 'is', 'isnull', 'iterate', 'join', 'key', 'keys',
+            'kill', 'label', 'leading', 'leave', 'left', 'like', 'limit', 'lines', 'load', 'localtime',
+            'localtimestamp', 'lock', 'long', 'longblob', 'longtext', 'loop', 'low_priority',
+            'match', 'mediumblob', 'mediumint', 'mediumtext', 'middleint', 'minute_microsecond',
+            'minute_second', 'mod', 'modifies', 'natural', 'new', 'no_write_to_binlog',
+            'not', 'null', 'numeric', 'off', 'offset', 'old', 'on', 'only', 'optimize', 'option',
+            'optionally', 'or', 'order', 'out', 'outer', 'outfile', 'overlaps', 'placing', 'precision',
+            'primary', 'procedure', 'purge', 'read', 'reads', 'real', 'references', 'regexp',
+            'release', 'rename', 'repeat', 'replace', 'require', 'restrict', 'return', 'returning',
+            'revoke', 'right', 'rlike', 'schema', 'schemas', 'second_microsecond', 'select',
+            'sensitive', 'separator', 'session_user', 'set', 'show', 'similiar', 'smallint', 'some',
+            'soname', 'spatial', 'specific', 'sql', 'sql_big_result', 'sql_calc_found_rows',
+            'sql_small_result', 'sqlexception', 'sqlstate', 'sqlwarning', 'ssl', 'starting', 'straight_join',
+            'symmetric', 'table', 'terminated', 'then', 'tinyblob', 'tinyint', 'tinytext', 'to',
+            'trailing', 'trigger', 'true', 'undo', 'union', 'unique', 'unlock', 'unsigned', 'update',
+            'upgrade', 'usage', 'use', 'user', 'using', 'utc_date', 'utc_time', 'utc_timestamp',
+            'values', 'varbinary', 'varchar', 'varcharacter', 'varying', 'verbose', 'when',
+            'where', 'while', 'with', 'write', 'xor', 'year_month', 'zerofill');
         return !in_array(strtolower($name), $reserved);
     }
 
@@ -904,8 +903,7 @@ abstract class DB extends \Data {
     {
         $operator = $operator ? $operator : '=';
         $conditional = $this->createConditional($left, $right, $operator);
-        return $this->joinResources($left->getResource(), $right->getResource(),
-                        $conditional, $type);
+        return $this->joinResources($left->getResource(), $right->getResource(), $conditional, $type);
     }
 
     /**
@@ -916,7 +914,8 @@ abstract class DB extends \Data {
      * @param string $type
      * @return \Database\JoinTable
      */
-    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
+    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional
+    = null, $type = null)
     {
         $jt = new Join($left_resource, $right_resource, $type, $conditional);
         $this->joined_resources[] = $jt;
@@ -1038,6 +1037,7 @@ abstract class DB extends \Data {
         $data = $this->pullResourceData(self::DELETE);
         extract($data);
 
+
         if (!empty($include_on_join)) {
             foreach ($include_on_join as $module) {
                 if (is_subclass_of($module, 'Resource')) {
@@ -1049,6 +1049,9 @@ abstract class DB extends \Data {
 
         $query[] = 'FROM';
         // from tables, joins, and subselects
+        if (!empty($included)) {
+            $query[] = $included . ' USING ';
+        }
         $query[] = $modules;
 
         if (!empty($where)) {
@@ -1392,7 +1395,16 @@ abstract class DB extends \Data {
                     $data['columns'][] = $value_list;
                 }
 
-                if (!$module->isJoined()) {
+                if ($mode == DB::DELETE) {
+                    if ($module->getIncludeInDelete()) {
+                        $delete_included[] = $module->getResourceQuery();
+                        if ($module->isIncludedWithUsing() && !$module->isJoined()) {
+                            $sources[] = $module->getResourceQuery();
+                        }
+                    } elseif (!$module->isJoined()) {
+                        $sources[] = $module->getResourceQuery();
+                    }
+                } elseif (!$module->isJoined()) {
                     $sources[] = $module->getResourceQuery();
                 }
 
@@ -1414,6 +1426,13 @@ abstract class DB extends \Data {
                 }
             }
         }
+
+        if (!empty($delete_included)) {
+            $data['included'] = implode(', ', $delete_included);
+        } elseif ($mode == DB::DELETE && count($sources) > 1) {
+            throw new \Exception('Multiple table delete requires "using" flags set on at least one table');
+        }
+
         $data['modules'] = implode(', ', $sources);
         if (!empty($this->conditional)) {
             $data['where'] = 'WHERE ' . $this->conditional->__toString();
@@ -1583,7 +1602,8 @@ abstract class DB extends \Data {
      */
     public static function isOperator($operator)
     {
-        static $operator_types = array('=', '<', '>', '>=', '<=', '<>', '!=', '!<', '!>');
+        static $operator_types = array('=', '<', '>', '>=', '<=', '<>', '!=', '!<',
+            '!>');
         return in_array($operator, $operator_types);
     }
 
@@ -1651,8 +1671,7 @@ abstract class DB extends \Data {
             if (method_exists($value, '__toString')) {
                 $value = (string) $value;
             } else {
-                trigger_error(t('Database quoting failed on %s object, missing __toString',
-                                get_class($value)), E_USER_ERROR);
+                trigger_error(t('Database quoting failed on %s object, missing __toString', get_class($value)), E_USER_ERROR);
             }
         }
 
@@ -1711,11 +1730,9 @@ abstract class DB extends \Data {
     {
         self::disconnect();
         if (self::$transaction_count > 0) {
-            trigger_error(t('%s uncommitted database transactions',
-                            self::$transaction_count), E_USER_ERROR);
+            trigger_error(t('%s uncommitted database transactions', self::$transaction_count), E_USER_ERROR);
         } elseif (self::$transaction_count < 0) {
-            trigger_error(t('Database transaction commits and/or rollbacks are not in sync'),
-                    E_USER_ERROR);
+            trigger_error(t('Database transaction commits and/or rollbacks are not in sync'), E_USER_ERROR);
         }
     }
 

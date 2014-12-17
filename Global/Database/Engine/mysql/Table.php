@@ -11,6 +11,12 @@ class Table extends \Database\Table {
 
     private $storage_engine = 'InnoDB';
 
+    /**
+     * Table name is included after "using" in a delete query
+     * @var boolean
+     */
+    protected $included_with_using = true;
+
     //DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 
     /**

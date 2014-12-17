@@ -113,6 +113,19 @@ abstract class Table extends Resource {
      */
     protected $values = array();
     protected $constraints = array();
+    
+    /**
+     * If set to true, then this table will be flagged as one of the tables
+     * to delete from in a multiple table query.
+     * @var boolean
+     */
+    protected $include_in_delete;
+    
+    /**
+     * If true, the table name is included after "using" in a delete query
+     * @var boolean
+     */
+    protected $included_with_using = true;
 
     /**
      * Extended class should add a primary index to the current table.
@@ -818,6 +831,21 @@ abstract class Table extends Resource {
             $this->use_in_query = (bool) $use;
         }
         return $this->use_in_query;
+    }
+    
+    public function setIncludeInDelete($delete)
+    {
+        $this->include_in_delete = (bool) $delete;
+    }
+    
+    public function getIncludeInDelete()
+    {
+        return $this->include_in_delete;
+    }
+    
+    public function isIncludedWithUsing()
+    {
+        return $this->included_with_using;
     }
 }
 

@@ -86,8 +86,7 @@ class DB extends \Database\DB {
         $sql = 'SELECT SCHEMA_NAME AS `Database` FROM INFORMATION_SCHEMA.SCHEMATA ORDER BY `Database`';
         $this->loadStatement($sql);
         while ($row = $this->fetch()) {
-            if (in_array($row['Database'],
-                            array('information_schema', 'performance_schema', 'mysql'))) {
+            if (in_array($row['Database'], array('information_schema', 'performance_schema', 'mysql'))) {
                 continue;
             }
             $databases[] = $row['Database'];

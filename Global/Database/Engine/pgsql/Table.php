@@ -10,6 +10,12 @@ namespace Database\Engine\pgsql;
 class Table extends \Database\Table {
 
     /**
+     * Table name is NOT included after "using" in a delete query
+     * @var boolean
+     */
+    protected $included_with_using = false;
+
+    /**
      * Postgresql puts constraint type after the name.
      * @return boolean
      */
