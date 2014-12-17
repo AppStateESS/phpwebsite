@@ -1768,7 +1768,6 @@ class PHPWS_DB {
             $where = 'WHERE ' . $where;
         }
         $sql = "DELETE FROM $table $where $order $limit";
-        var_dump($sql);exit();
         $result = PHPWS_DB::exec($sql);
 
         if (PEAR::isError($result)) {
