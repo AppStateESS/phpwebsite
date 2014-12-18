@@ -752,6 +752,7 @@ class Cabinet {
 
     public function viewMultimedia($id)
     {
+        javascript('mediaelement');
         Layout::addStyle('filecabinet');
         PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         $multimedia = new PHPWS_Multimedia($id);
@@ -763,7 +764,6 @@ class Cabinet {
             Layout::add($content);
             return;
         }
-
 
         $tpl['TITLE'] = $multimedia->title;
         $tpl['MULTIMEDIA'] = $multimedia->getTag();
