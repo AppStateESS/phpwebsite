@@ -1,2 +1,0 @@
-  <a href="{video}" style="display:block;width:{width}px;height:{height}px;" id="{id}"></a>
-  <script type="text/javascript">flowplayer("{id}", "{source_http}mod/filecabinet/javascript/flowplayer/flowplayer-3.2.11.swf",{clip :{autoPlay:false,autoBuffering:true}});</script>

@@ -1,2 +1,0 @@
-  <a href="{video}" style="display:block;width:400px;height:30px;" id="{id}"></a>
-  <script type="text/javascript">$f("{id}", "{source_http}mod/filecabinet/javascript/flowplayer/flowplayer-3.2.11.swf", {plugins: {controls: {fullscreen: false,height: 30,autoHide: false}},clip:{autoPlay: false,onBeforeBegin: function() {$f("player").close();}}});</script>

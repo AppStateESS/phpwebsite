@@ -84,18 +84,9 @@ http://www.puremango.co.uk/
 Corz (BB decoder)
 http://corz.org/
 
-Jeroen Wijering
-Media Player
-http://www.jeroenwijering.com/
-
 Geoff Stearns
 SWFObject
 http://blog.deconcept.com/swfobject/
-
-Anssi Piirainen
-FlowPlayer
-http://flowplayer.sourceforge.net/
-(no longer in use but still appreciated)
 
 James Heinrich
 getID3
@@ -132,10 +123,6 @@ Jan Sorgalla
 jCarousel
 http://sorgalla.com/jcarousel/
 
-Yusuke Kamiyamane
-Fugue icons
-http://code.google.com/p/fugue-icons/
-
 Tango Desktop Project
 http://tango-project.org/
 
@@ -149,10 +136,6 @@ http://code.google.com/p/jsmin-php/
 
 phpqrcode
 Dominik Dzienia
-
-PowerTip
-Steven Benner
-http://stevenbenner.github.io/jquery-powertip/
 
 Bootstrap
 http://getbootstrap.com
@@ -168,9 +151,6 @@ Select2
 Igor Vaynberg
 http://ivaynberg.github.io/select2/
 
-Aspell CKeditor 3.0 plugin
-Christian Boisjoli
-
 Responsive Image Javascript
 Koen Vendrik, http://kvendrik.com
 
@@ -181,6 +161,10 @@ DateTimePicker
 Chupurnov Valeriy
 XDSoft
 http://xdsoft.net/
+
+MediaElement Media player
+John Dyer
+http://mediaelementjs.com/
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.
@@ -193,9 +177,6 @@ Anders Haugarvoll (Norwegian)
 Olivier Sannier (French)
 Han Velthuis (Dutch)
 
-
-*Special thanks to Mike Noyes, Hilmar Runge and Tommy De Jesus for lurking in IRC
-and sticking with us.*
 
 --------------------------------------------------------------------------
 The phpWebSite team would like to thank the following people in
@@ -233,7 +214,6 @@ Paul Van Voorst
 Pete Wachs
 Cindy Wallace - Vice Chancellor of Student Development @ AppState
 Kevin Wilcox
-
 
 And all those who have contributed to phpWebSite. Thanks for your
 support.
