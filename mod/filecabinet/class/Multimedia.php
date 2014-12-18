@@ -266,15 +266,23 @@ class PHPWS_Multimedia extends File_Common {
         $thumbnail = $this->thumbnailPath();
 
         $tpl['FILE_DIRECTORY'] = $this->file_directory;
-        $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
+        $path = $this->getPath();
+        if (!preg_match('/^(https?|rtmp):/', $path)) {
+            $path = PHPWS_Core::getHomeHttp() . $path;
+        }
+        $tpl['FILE_PATH'] = $path;
         $tpl['FILE_NAME'] = $this->file_name;
+        //$tpl['SRT_PATH'] = str_replace($this->file_name, '', $path) . preg_replace('/\.\w+$/', '.srt', $this->file_name);
         $tpl['ID'] = 'media' . $this->id;
         $tpl['source_http'] = $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
         // check for filter file
         if ($this->embedded) {
+            if ($filter == 'rtmp') {
+                include PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/media/filter.php";
+            }
             $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl', PHPWS_SOURCE_DIR, $filter);
         } else {
-            $filter_exe = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/$filter/filter.php";
+            $filter_exe = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/media/filter.php";
             $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/$filter.tpl";
             if ($embed) {
                 if ($filter == 'media') {
@@ -299,26 +307,17 @@ class PHPWS_Multimedia extends File_Common {
         switch ($this->_ext) {
             case 'mp3':
             case 'wav':
-                return 'flowplayer_audio';
-                break;
-
             case 'flv':
-                return 'flowplayer';
-                break;
-
             case 'qt':
             case 'mov':
             case 'mp4':
             case 'm4v':
-                return 'quicktime';
-                break;
-
             case 'mpeg':
             case 'mpe':
             case 'mpg':
             case 'wmv':
             case 'avi':
-                return 'windows';
+                return 'media';
                 break;
 
             case 'swf':
@@ -372,8 +371,7 @@ class PHPWS_Multimedia extends File_Common {
         }
 
         $raw_file_name = $this->dropExtension();
-        if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') ||
-                $this->file_type == 'application/x-shockwave-flash') {
+        if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg') || $this->file_type == 'application/x-shockwave-flash') {
             $this->genericTN($raw_file_name);
             return;
         } else {
@@ -494,10 +492,12 @@ class PHPWS_Multimedia extends File_Common {
             }
         }
 
-        if ($this->embedded) {
+        if (!$this->embedded) {
             $filename = $this->thumbnailDirectory() . $this->file_name . '.jpg';
-            if (!@unlink($filename)) {
-                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
+            if (!preg_match('/^(https?|rtmp):/', $filename)) {
+                if (!unlink($filename)) {
+                    PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
+                }
             }
         }
 
