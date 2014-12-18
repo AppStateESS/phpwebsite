@@ -234,7 +234,7 @@ class FC_File_Manager {
             return '<em>' . dgettext('filecabinet',
                             'Sorry, you do not have File Cabinet rights.') . '</em>';
         }
-        javascriptMod('filecabinet', 'flowplayer');
+        javascript('mediaelement');
         Layout::addStyle('filecabinet', 'file_view.css');
         Layout::addStyle('filecabinet');
         $this->file_assoc->loadCarousel(3);
