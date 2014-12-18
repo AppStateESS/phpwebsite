@@ -113,7 +113,8 @@ class File_Common {
      * Called from Image_Manager's postImageUpload function and Cabinet_Action's
      * postDocument function.
      */
-    public function importPost($var_name, $use_folder = true, $ignore_missing_file = false, $file_prefix = null)
+    public function importPost($var_name, $use_folder = true, $ignore_missing_file
+    = false, $file_prefix = null)
     {
         require 'HTTP/Upload.php';
 
@@ -376,9 +377,7 @@ class File_Common {
 
     public function loadFileSize()
     {
-        if (empty($this->file_directory) ||
-                empty($this->file_name) ||
-                !is_file($this->getPath())) {
+        if (empty($this->file_directory) || empty($this->file_name) || !is_file($this->getPath())) {
             return false;
         }
 
@@ -464,9 +463,10 @@ class File_Common {
         }
 
         $path = $this->getPath();
-
-        if (!@unlink($path)) {
-            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'File_Common::commonDelete', $path);
+        if (!preg_match('/^(https?|rtmp):/', $path)) {
+            if (!unlink($path)) {
+                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'File_Common::commonDelete', $path);
+            }
         }
 
         PHPWS_Error::logIfError($this->deleteAssoc());
