@@ -34,7 +34,6 @@ function my_page()
 
         case 'postUser':
             User_Settings::setTZ();
-            User_Settings::setEditor();
             User_Settings::rememberMe();
             User_Settings::setCP();
             $result = User_Action::postUser($user, FALSE);
@@ -187,24 +186,6 @@ class User_Settings {
             }
         }
 
-        $editor_list = Editor::getEditorList();
-        $all_editors['none'] = dgettext('users', 'None');
-        foreach ($editor_list as $value) {
-            if (Editor::willWork($value)) {
-                $all_editors[$value] = $value;
-            }
-        }
-
-        $user_type = Editor::getUserType();
-        if (!$user_type) {
-            $user_type = 'none';
-        }
-
-        $form->addSelect('editor', $all_editors);
-        $form->setLabel('editor', dgettext('users', 'Preferred editor'));
-        $form->setMatch('editor', $user_type);
-        $form->setClass('editor', 'form-control');
-
         $template = $form->getTemplate();
 
         if (isset($message)) {
@@ -250,13 +231,6 @@ class User_Settings {
             PHPWS_Cookie::write('user_cp', 1);
         } else {
             PHPWS_Cookie::delete('user_cp');
-        }
-    }
-
-    public static function setEditor()
-    {
-        if (!preg_match('/\W/', $_POST['editor'])) {
-            PHPWS_Cookie::write('phpws_editor', $_POST['editor']);
         }
     }
 

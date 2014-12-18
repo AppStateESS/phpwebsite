@@ -27,30 +27,8 @@
         <!-- END email-error -->
       </div>
     </div>
-    <div class="control-group">
-      <div class="controls">
-        {SUBMIT}
-      </div>
-    </div>
   </fieldset>
-  <fieldset>
-    <legend>{PREF}</legend>
-    <div class="control-group {EDITOR_ERROR_CLASS}">
-      <label class="control-label" for="{EDITOR_ID}">{EDITOR_LABEL_TEXT}</label>
-      <div class="controls">
-        {EDITOR}
-        <!-- BEGIN editor-error -->
-        <span class="help-inline">{EDITOR_ERROR}</span>
-        <!-- END editor-error -->
-      </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        {SUBMIT}
-      </div>
-    </div>
-  </fieldset>
-  <fieldset>
+  <fieldset style="margin-top:1em">
     <legend>{LOCAL_INFO}</legend>
     <div class="control-group {LANGUAGE_ERROR_CLASS}">
       <label class="control-label" for="{LANGUAGE_ID}">{LANGUAGE_LABEL_TEXT}</label>
