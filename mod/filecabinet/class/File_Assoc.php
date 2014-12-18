@@ -317,6 +317,7 @@ class FC_File_Assoc {
                 $this->setMediaDimensions();
             case FC_DOCUMENT:
             case FC_MEDIA:
+                javascript('mediaelement');
                 if ($this->_source->id) {
                     return $this->_source->getTag($embed);
                 } else {
@@ -549,7 +550,7 @@ class FC_File_Assoc {
       }
       }
      */
-    
+
     public function imageFolderView()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
