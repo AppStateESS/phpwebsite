@@ -88,6 +88,10 @@ Geoff Stearns
 SWFObject
 http://blog.deconcept.com/swfobject/
 
+Anssi Piirainen
+FlowPlayer
+https://flowplayer.org/
+
 James Heinrich
 getID3
 http://www.getid3.org
@@ -162,9 +166,6 @@ Chupurnov Valeriy
 XDSoft
 http://xdsoft.net/
 
-MediaElement Media player
-John Dyer
-http://mediaelementjs.com/
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.

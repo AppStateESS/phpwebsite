@@ -159,6 +159,11 @@ class Modal {
         $this->size = 0;
     }
 
+    public function get()
+    {
+        return $this->__toString();
+    }
+
     public function __toString()
     {
         $tpl['id'] = $this->id;
@@ -203,8 +208,7 @@ class Modal {
             }
         }
 
-        $template = new \Template($tpl,
-                PHPWS_SOURCE_DIR . 'Global/Templates/Modal/modal.html');
+        $template = new \Template($tpl, PHPWS_SOURCE_DIR . 'Global/Templates/Modal/modal.html');
         return $template->render();
     }
 

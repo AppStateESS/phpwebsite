@@ -1,7 +1,7 @@
+<!-- BEGIN message -->
+<div class="alert alert-danger">{MESSAGE}</div>
+<!-- END message -->
 <div class="panel-title">
 <h2>{TITLE}</h2>
 </div>
-<!-- BEGIN message -->
-<h3>{MESSAGE}</h3>
-<!-- END message -->
 <div class="panel-content">{CONTENT}</div>

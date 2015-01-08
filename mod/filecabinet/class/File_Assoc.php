@@ -6,8 +6,8 @@
  */
 PHPWS_Core::requireInc('filecabinet', 'defines.php');
 
-class FC_File_Assoc {
-
+class FC_File_Assoc
+{
     public $id = 0;
     public $file_type = 0;
     public $file_id = 0;
@@ -151,8 +151,7 @@ class FC_File_Assoc {
     public function isImage($include_resize = true)
     {
         if ($include_resize) {
-            return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE ||
-                    $this->file_type == FC_IMAGE_CROP);
+            return ($this->file_type == FC_IMAGE || $this->file_type == FC_IMAGE_RESIZE || $this->file_type == FC_IMAGE_CROP);
         } else {
             return ($this->file_type == FC_IMAGE);
         }
@@ -235,8 +234,7 @@ class FC_File_Assoc {
 
             case FC_IMAGE_RESIZE:
             case FC_IMAGE_CROP:
-                return $this->_resize_parent->getThumbnail(null,
-                                $this->_link_image);
+                return $this->_resize_parent->getThumbnail(null, $this->_link_image);
 
             case FC_DOCUMENT:
                 return $this->_source->getIconView();
@@ -281,11 +279,9 @@ class FC_File_Assoc {
             case FC_IMAGE_RANDOM:
                 if (is_object($this->_source) && $this->_source->id) {
                     if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                        return $this->_source->captioned(null,
-                                        $this->_link_image, $base);
+                        return $this->_source->captioned(null, $this->_link_image, $base);
                     } else {
-                        return $this->_source->getTag(null, $this->_link_image,
-                                        $base);
+                        return $this->_source->getTag(null, $this->_link_image, $base);
                     }
                 } else {
                     $this->deadAssoc();
@@ -296,11 +292,9 @@ class FC_File_Assoc {
             case FC_IMAGE_CROP:
                 if (isset($this->_source->id) && $this->_source->id) {
                     if (PHPWS_Settings::get('filecabinet', 'caption_images') && $this->_allow_caption) {
-                        return $this->_source->captioned(null,
-                                        $this->_link_image, $base);
+                        return $this->_source->captioned(null, $this->_link_image, $base);
                     } else {
-                        return $this->_source->getTag(null, $this->_link_image,
-                                        $base);
+                        return $this->_source->getTag(null, $this->_link_image, $base);
                     }
                 } else {
                     $this->deadAssoc();
@@ -317,7 +311,7 @@ class FC_File_Assoc {
                 $this->setMediaDimensions();
             case FC_DOCUMENT:
             case FC_MEDIA:
-                javascript('mediaelement');
+                javascript('flowplayer');
                 if ($this->_source->id) {
                     return $this->_source->getTag($embed);
                 } else {
@@ -339,10 +333,8 @@ class FC_File_Assoc {
             $tpl['files'][] = $document->getTag(true, true);
         }
 
-        $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'),
-                $folder->title);
-        return PHPWS_Template::process($tpl, 'filecabinet',
-                        'multi_doc_download.tpl');
+        $tpl['DOWNLOAD'] = sprintf(dgettext('filecabinet', 'Download from %s'), $folder->title);
+        return PHPWS_Template::process($tpl, 'filecabinet', 'multi_doc_download.tpl');
     }
 
     public function randomImage()
@@ -374,8 +366,7 @@ class FC_File_Assoc {
             if (!Current_User::allow('filecabinet')) {
                 return null;
             } else {
-                $message = dgettext('filecabinet',
-                        'Folder is private. Slideshow not available');
+                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
             }
         }
         $db = new PHPWS_DB('images');
@@ -386,9 +377,7 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a title="%s" href="%s">%s</a>',
-                            $image->getTitle(), $image->getPath(),
-                            $image->getThumbnail()));
+                $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail()));
             }
 
             $this->loadCarousel($count);
@@ -442,8 +431,7 @@ class FC_File_Assoc {
             if (!Current_User::allow('filecabinet')) {
                 return null;
             } else {
-                $message = dgettext('filecabinet',
-                        'Folder is private. Slideshow not available');
+                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
             }
         }
         $db = new PHPWS_DB('images');
@@ -458,9 +446,7 @@ class FC_File_Assoc {
             return dgettext('filecabinet', 'Folder missing image files.');
         } else {
             foreach ($result as $image) {
-                $img = sprintf('<a title="%s" href="%s">%s</a>',
-                        $image->getTitle(), $image->getPath(),
-                        $image->getThumbnail());
+                $img = sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail());
                 $tpl['thumbnails'][] = array('IMAGE' => $img);
             }
             if ($this->vertical) {

@@ -24,10 +24,6 @@ These directories should always be writable and executable by Apache:
 * images/
 * logs/
 
-These directories should be writable and executable by Apache only during module or core installs, updates, and uninstalls:
-* javascript/
-* templates/
-
 Additional permission suggestions:
 * logs/     should NOT be world readable
 * setup/    should be moved or made unreadable AFTER an installation
@@ -53,3 +49,8 @@ phpWebSite can now be run in a Vagrant Box!
    on Linux or Mac, this is done like so:
    ```vagrant box add centos64 http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box```
 3. ```vagrant up```!
+
+Flowplayer
+==========
+phpWebSite includes the free version of Flowplayer. Commercial web sites are required to purchase a contract from Flowplayer.
+Please read more at https://flowplayer.org/pricing/

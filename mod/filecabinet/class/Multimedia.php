@@ -10,8 +10,8 @@ PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 define('GENERIC_VIDEO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg');
 define('GENERIC_AUDIO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/audio.png');
 
-class PHPWS_Multimedia extends File_Common {
-
+class PHPWS_Multimedia extends File_Common
+{
     public $width = 0;
     public $height = 0;
     public $thumbnail = null;
@@ -119,9 +119,23 @@ class PHPWS_Multimedia extends File_Common {
     public function rowTags()
     {
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $clip = Icon::show('clip', dgettext('filecabinet', 'Clip media'));
-            $links[] = $this->editLink(true);
-            $links[] = $this->deleteLink(true);
+            if ($this->embedded) {
+                $command = 'edit_rtmp';
+            } else {
+                $command = 'upload_multimedia_form';
+            }
+            $authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('mop'=>$command,'file_id'=>$this->id)));
+            $links[] = <<<EOF
+<i style='cursor:pointer' class='fa fa-edit edit-file' data-id='$this->id' data-type='mop' data-command='$command' data-authkey='$authkey'></i>
+EOF;
+            //$authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('mop'=>'delete_multimedia','file_id'=>$this->id)));
+            
+            $authkey = \Current_User::getAuthKey();
+            $links[] = <<<EOF
+<i style='cursor:pointer' class='fa fa-trash-o delete-file' data-folder-id='$this->folder_id' data-id='$this->id' data-type='mop' data-command='delete_multimedia' data-authkey='$authkey'></i>
+EOF;
+            //$links[] = $this->editLink(true);
+            //$links[] = $this->deleteLink(true);
         }
 
         if (isset($links)) {
@@ -214,6 +228,11 @@ class PHPWS_Multimedia extends File_Common {
         return Layout::getJavascript('open_window', $values);
     }
 
+    /**
+     * @deprecated
+     * @param type $icon
+     * @return type
+     */
     public function editLink($icon = false)
     {
         $vars['mop'] = 'upload_multimedia_form';
@@ -237,6 +256,11 @@ class PHPWS_Multimedia extends File_Common {
         return javascript('open_window', $jsvars);
     }
 
+    /**
+     * @deprecated
+     * @param type $icon
+     * @return type
+     */
     public function deleteLink($icon = false)
     {
         $vars['mop'] = 'delete_multimedia';
@@ -272,25 +296,14 @@ class PHPWS_Multimedia extends File_Common {
         }
         $tpl['FILE_PATH'] = $path;
         $tpl['FILE_NAME'] = $this->file_name;
-        //$tpl['SRT_PATH'] = str_replace($this->file_name, '', $path) . preg_replace('/\.\w+$/', '.srt', $this->file_name);
         $tpl['ID'] = 'media' . $this->id;
         $tpl['source_http'] = $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
         // check for filter file
         if ($this->embedded) {
-            if ($filter == 'rtmp') {
-                include PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/media/filter.php";
-            }
-            $filter_tpl = sprintf('%smod/filecabinet/inc/embed/%s/embed.tpl', PHPWS_SOURCE_DIR, $filter);
+            $filter_tpl = sprintf('%smod/filecabinet/inc/embed/rtmp/embed.tpl', PHPWS_SOURCE_DIR);
         } else {
             $filter_exe = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/media/filter.php";
             $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/$filter.tpl";
-            if ($embed) {
-                if ($filter == 'media') {
-                    $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/media_embed.tpl";
-                } elseif ($filter == 'shockwave') {
-                    $filter_tpl = PHPWS_SOURCE_DIR . "mod/filecabinet/templates/filters/shockwave_embed.tpl";
-                }
-            }
             if (is_file($filter_exe)) {
                 include $filter_exe;
             }
@@ -301,7 +314,7 @@ class PHPWS_Multimedia extends File_Common {
     public function getFilter()
     {
         if ($this->embedded) {
-            return $this->file_type;
+            return 'rtmp';
         }
         $this->getExtension();
         switch ($this->_ext) {
@@ -495,7 +508,7 @@ class PHPWS_Multimedia extends File_Common {
         if (!$this->embedded) {
             $filename = $this->thumbnailDirectory() . $this->file_name . '.jpg';
             if (!preg_match('/^(https?|rtmp):/', $filename)) {
-                if (!unlink($filename)) {
+                if (!is_file($filename) || !unlink($filename)) {
                     PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
                 }
             }
@@ -601,6 +614,10 @@ class PHPWS_Multimedia extends File_Common {
         return $db->delete();
     }
 
+    /**
+     * @deprecated
+     * @return boolean
+     */
     public function importExternalMedia()
     {
         $this->embedded = 1;

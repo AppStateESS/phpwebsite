@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class Folder {
-
+class Folder
+{
     public $id = 0;
     public $key_id = 0;
     public $title = null;
@@ -45,8 +45,7 @@ class Folder {
 
     public function setFtype($ftype)
     {
-        if (!in_array($ftype,
-                        array(IMAGE_FOLDER, DOCUMENT_FOLDER, MULTIMEDIA_FOLDER))) {
+        if (!in_array($ftype, array(IMAGE_FOLDER, DOCUMENT_FOLDER, MULTIMEDIA_FOLDER))) {
             return false;
         }
         $this->ftype = $ftype;
@@ -63,15 +62,11 @@ class Folder {
 
     public function deleteLink($mode = 'link')
     {
-        $vars['QUESTION'] = dgettext('filecabinet',
-                'Are you certain you want to delete this folder and all its contents?');
-        $vars['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet',
-                        array('aop' => 'delete_folder', 'folder_id' => $this->id),
-                        true);
+        $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
+        $vars['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', array('aop' => 'delete_folder', 'folder_id' => $this->id), true);
         $label = dgettext('filecabinet', 'Delete');
         if ($mode == 'image') {
-            $vars['LINK'] = Icon::show('delete', dgettext('filecabinet',
-                            'Delete'));
+            $vars['LINK'] = Icon::show('delete', dgettext('filecabinet', 'Delete'));
         } else {
             $vars['LINK'] = $label;
         }
@@ -97,7 +92,7 @@ class Folder {
         }
 
         if ($mode == 'image') {
-            $js['label'] = '<i class="fa fa-edit" title="'.dgettext('filecabinet', 'Edit').'"></i>';
+            $js['label'] = '<i class="fa fa-edit" title="' . dgettext('filecabinet', 'Edit') . '"></i>';
         } else {
             $js['label'] = & $label;
         }
@@ -121,8 +116,7 @@ class Folder {
     {
         $vars['action'] = 'delete_image';
         $vars['image_id'] = $this->id;
-        $js['QUESTION'] = dgettext('filecabinet',
-                'Are you sure you want to delete this image?');
+        $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
         $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         $js['LINK'] = dgettext('filecabinet', 'Delete');
         $links[] = javascript('confirm', $js);
@@ -142,8 +136,7 @@ class Folder {
     public function loadDirectory()
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
-            $this->_base_directory = PHPWS_Settings::get('filecabinet',
-                            'base_doc_directory');
+            $this->_base_directory = PHPWS_Settings::get('filecabinet', 'base_doc_directory');
         } elseif ($this->ftype == IMAGE_FOLDER) {
             $this->_base_directory = 'images/filecabinet/';
         } else {
@@ -151,6 +144,13 @@ class Folder {
         }
     }
 
+    /**
+     * @deprecated
+     * @param type $mode
+     * @param type $force_width
+     * @param type $force_height
+     * @return type
+     */
     public function uploadLink($mode = null, $force_width = null, $force_height = null)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
@@ -162,6 +162,9 @@ class Folder {
         }
     }
 
+    /**
+     * @deprecated
+     */
     private function addLink($type, $mode = null, $force_width = 0, $force_height = 0)
     {
         $vars['width'] = 600;
@@ -200,7 +203,7 @@ class Folder {
                 break;
 
             case 'icon':
-                $vars['label'] = '<i class="fa fa-upload" title="'.dgettext('filecabient', 'Upload').'"></i>';
+                $vars['label'] = '<i class="fa fa-upload" title="' . dgettext('filecabient', 'Upload') . '"></i>';
                 break;
 
             default:
@@ -209,11 +212,15 @@ class Folder {
 
         return javascript('open_window', $vars);
     }
-
+    
+    /**
+     * @deprecated
+     * @param type $button
+     * @return type
+     */
     public function embedLink($button = false)
     {
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet',
-                        array('mop' => 'edit_embed',
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', array('mop' => 'edit_embed',
                     'folder_id' => $this->id), true);
         $vars['width'] = 400;
         $vars['height'] = 200;
@@ -236,14 +243,12 @@ class Folder {
 
     public function viewLink($formatted = true)
     {
-        $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s',
-                $this->id);
+        $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->id);
 
         if (!$formatted) {
             return $link;
         } else {
-            return sprintf('<a href="%s" title="%s">%s</a>', $link,
-                    dgettext('filecabinet', 'View folder'), $this->title);
+            return sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View folder'), $this->title);
         }
     }
 
@@ -255,8 +260,7 @@ class Folder {
     public function post()
     {
         if (empty($_POST['title'])) {
-            $this->_error = dgettext('filecabinet',
-                    'You must entitle your folder.');
+            $this->_error = dgettext('filecabinet', 'You must entitle your folder.');
             return false;
         } else {
             $this->setTitle($_POST['title']);
@@ -314,14 +318,12 @@ class Folder {
                             @rmdir($full_dir);
                             return false;
                         } else {
-                            file_put_contents($thumb_dir . '.htaccess',
-                                    'Allow from all');
+                            file_put_contents($thumb_dir . '.htaccess', 'Allow from all');
                         }
                     }
                 }
             } else {
-                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'Folder:save',
-                        $full_dir);
+                PHPWS_Error::log(FC_BAD_DIRECTORY, 'filecabinet', 'Folder:save', $full_dir);
                 $this->delete();
                 return false;
             }
@@ -469,26 +471,21 @@ class Folder {
         $vars['aop'] = 'view_folder';
         $vars['folder_id'] = $this->id;
 
-        $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet',
-                        $vars);
+        $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->id,
-                        'folder')) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder')) {
             $links[] = $this->editLink('image');
             $links[] = $this->uploadLink('icon');
         }
 
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->id,
-                        'folder', true)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder', true)) {
             if ($this->key_id) {
-                $links[] = Current_User::popupPermission($this->key_id, null,
-                                $mode);
+                $links[] = Current_User::popupPermission($this->key_id, null, $mode);
             }
         }
 
-        if (Current_User::allow('filecabinet', 'delete_folders', null, null,
-                        true)) {
+        if (Current_User::allow('filecabinet', 'delete_folders', null, null, true)) {
             $links[] = $this->deleteLink('image');
         }
 
