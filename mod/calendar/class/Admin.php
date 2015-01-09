@@ -473,7 +473,7 @@ class Calendar_Admin {
             $end_minute = (int) $event->getEndTime('%M');
         }
 
-        $json = [
+        $json = array(
             'event_id' => $event->id,
             'summary' => $event->summary,
             'location' => $event->location,
@@ -491,7 +491,7 @@ class Calendar_Admin {
             'end_repeat_date' => $event->getEndRepeat('%Y/%m/%d'),
             'repeat_type' => $repeat_type,
             'repeat_vars' => $repeat_vars
-        ];
+        );
 
         echo json_encode($json);
         exit();
