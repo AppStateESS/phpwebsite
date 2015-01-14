@@ -466,7 +466,7 @@ class User_Action {
             PHPWS_Error::log(USER_BAD_KEY, 'users',
                     'User_Action::popupPermission', "Key : " . $_GET['key_id']);
             echo dgettext('users', 'Unable to set permissions. Bad key data.');
-            Layout::nakedDisplay();
+            Layout::nakedDisplay(null, null, true);
         }
 
         if (Current_User::isRestricted($key->module) ||
@@ -477,7 +477,7 @@ class User_Action {
         }
 
         $content = User_Action::getPermissionForm($key);
-        Layout::nakedDisplay($content);
+        Layout::nakedDisplay($content, null, true);
     }
 
     public static function getPermissionForm(Key $key)
