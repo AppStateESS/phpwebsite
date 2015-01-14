@@ -1079,6 +1079,8 @@ class Layout {
      */
     public static function wrap($content, $title = NULL, $use_blank = false)
     {
+        $theme = self::getCurrentTheme();
+        $template['THEME_HTTP'] = Layout::getThemeHttpRoot() . $theme . '/';
         $template['CONTENT'] = $content;
         Layout::loadHeaderTags($template);
 
