@@ -20,7 +20,6 @@
     </head>
     <body>
         <div id="folders">
-            <!--
             <div id="file-type-buttons">
                 <select id="folder-type">
                     <option value="1">Images</option>
@@ -28,7 +27,6 @@
                     <option value="3">Multimedia</option>
                 </select>
             </div>
-            -->
             <div style="padding: 5px 0px; height : 30px; border-bottom : 1px solid black">
                 <div style="text-align : center">{NEW_FOLDER}</div>
                 <div id="new-folder-form" style="display : none"><input type="text" id="folder-name" name="folder_name" size="15" /><input id="submit-folder" type="button" value="Add" />
