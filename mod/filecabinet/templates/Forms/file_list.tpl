@@ -31,3 +31,4 @@
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}</div>
 <div class="align-right">{SEARCH}</div>
+{MODAL}

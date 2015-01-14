@@ -48,6 +48,9 @@ class FC_Multimedia_Manager
                 }
 
                 $this->loadMultimedia(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
+                if (!$this->multimedia->id) {
+                    $this->multimedia->folder_id = filter_input(INPUT_GET, 'folder_id', FILTER_VALIDATE_INT);
+                }
                 $this->edit();
                 echo json_encode(array('title' => $this->title, 'content' => $this->content));
                 exit();
@@ -163,10 +166,15 @@ class FC_Multimedia_Manager
 
     public function edit()
     {
+        static $folder;
+
         if (empty($this->multimedia)) {
             $this->loadMultimedia();
         }
 
+        if (empty($folder)) {
+            $folder = new Folder($this->multimedia->folder_id);
+        }
         PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
@@ -174,7 +182,7 @@ class FC_Multimedia_Manager
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('mop', 'post_multimedia_upload');
         $form->addHidden('ms', $this->max_size);
-        $form->addHidden('folder_id', $this->folder->id);
+        $form->addHidden('folder_id', $this->multimedia->folder_id);
 
         $form->addFile('file_name');
         $form->setLabel('file_name', dgettext('filecabinet', 'Multimedia location'));
@@ -200,8 +208,8 @@ class FC_Multimedia_Manager
             $this->title = 'Upload multimedia';
         }
 
-        if ($this->multimedia->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
-            Cabinet::moveToForm($form, $this->folder);
+        if ($this->multimedia->id && Current_User::allow('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder', true)) {
+            Cabinet::moveToForm($form, $folder);
         }
 
         $template = $form->getTemplate();
@@ -256,7 +264,6 @@ class FC_Multimedia_Manager
     {
         $this->loadMultimedia();
 
-        // importPost in File_Common
         $result = $this->multimedia->importPost('file_name');
 
         if (PHPWS_Error::isError($result)) {
@@ -284,7 +291,6 @@ class FC_Multimedia_Manager
             javascript('close_refresh');
         } else {
             Cabinet::setMessage($this->multimedia->printErrors());
-            //$this->message = $this->multimedia->printErrors();
             return;
         }
     }

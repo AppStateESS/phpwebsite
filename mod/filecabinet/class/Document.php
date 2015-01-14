@@ -177,7 +177,7 @@ class PHPWS_Document extends File_Common {
         $tpl['ICON'] = $this->getViewLink(true, 'small_icon');
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id,
                         'folder')) {
-            $links[] = $this->editLink(true);
+            $links[] = $folder->uploadLink('icon', $this->id);
             $links[] = $this->deleteLink(true);
             $links[] = $this->accessLink();
         }
@@ -292,8 +292,17 @@ EOF;
         return javascript('confirm', $js);
     }
 
+    /**
+     * @deprecated
+     * @param type $icon
+     * @return type
+     */
     public function editLink($icon = false)
     {
+        return <<<EOF
+        
+EOF;
+        /*
         $vars['document_id'] = $this->id;
         $vars['folder_id'] = $this->folder_id;
         $vars['dop'] = 'upload_document_form';
@@ -311,6 +320,8 @@ EOF;
             $js['label'] = dgettext('filecabinet', 'Edit');
         }
         return javascript('open_window', $js);
+         * 
+         */
     }
 
     public function getManagerIcon($fmanager)

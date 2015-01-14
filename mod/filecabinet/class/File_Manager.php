@@ -467,7 +467,6 @@ class FC_File_Manager
         if (Current_User::allow('filecabinet', 'edit_folders') && Current_User::isUnrestricted('filecabinet')) {
             $folder = new Folder;
             $folder->ftype = $this->folder_type;
-
             if ($this->mod_limit) {
                 $tpl['ADD_FOLDER'] = $folder->editLink('button', $this->module);
             } else {

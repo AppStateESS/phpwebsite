@@ -5,7 +5,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 $settings = array('base_doc_directory' => PHPWS_HOME_DIR . 'files/filecabinet/',
-    'max_image_dimension' => 1400,
+    'max_image_dimension' => 2048,
     'max_image_size' => 1000000,
     'max_document_size' => 5000000,
     'max_multimedia_size' => 10000000,

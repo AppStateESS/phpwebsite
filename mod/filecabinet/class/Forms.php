@@ -11,12 +11,26 @@ class Cabinet_Form
 {
     public $cabinet = null;
 
+    private function getModal()
+    {
+        $modal = new \Modal('folder-form');
+        $modal->setWidthPercentage(30);
+        $modal->addButton('<button class="btn btn-success save-element">' . _('Save') . '</button>');
+        return $modal->get();
+    }
+
     public function getFolders($type)
     {
+        javascript('jquery');
+        $src = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/folder_options/folders.js';
+        \Layout::addJSHeader("<script type='text/javascript' src='$src'></script>", 'folder-options');
+
         PHPWS_Core::initCoreClass('DBPager.php');
         $folder = new Folder;
         $folder->ftype = $type;
         $folder->loadDirectory();
+
+        $pagetags['MODAL'] = $this->getModal();
 
         if (Current_User::allow('filecabinet')) {
             if (!is_dir($folder->_base_directory)) {
@@ -38,7 +52,9 @@ class Cabinet_Form
                     }
                 } else {
                     if (Current_User::allow('filecabinet', 'edit_folders')) {
-                        $pagetags['ADMIN_LINKS'] = $folder->editLink();
+                        $authkey = \Current_User::getAuthKey();
+                        $pagetags['ADMIN_LINKS'] = "<button class='btn btn-success show-modal' data-operation='aop' data-command='add_folder' data-folder_id='0' data-ftype='$folder->ftype'><i class='fa fa-plus'></i> Add Folder</button>";
+                        //$pagetags['ADMIN_LINKS'] = $folder->editLink();
                     }
                 }
             }
@@ -86,8 +102,6 @@ class Cabinet_Form
             }
         }
 
-        $pager->addSortHeader('module_created', dgettext('filecabinet', 'Created in'));
-
         $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
         $pager->addSortHeader('public_folder', dgettext('filecabinet', 'Public'));
         $pager->setModule('filecabinet');
@@ -96,6 +110,7 @@ class Cabinet_Form
         $pager->addRowTags('rowTags');
         $pager->setEmptyMessage(dgettext('filecabinet', 'No folders found.'));
         $pager->addWhere('ftype', $type);
+        $pager->setDefaultOrder('title');
         $pager->setAutoSort(false);
         $this->cabinet->content = $pager->get();
     }
@@ -213,49 +228,27 @@ class Cabinet_Form
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'Forms/classify_list.tpl');
     }
 
-    public function editFolder($folder, $select_module = true)
+    public function editFolder($folder)
     {
-        $form = new PHPWS_Form('folder');
+        $form = new PHPWS_Form('file-form');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'post_folder');
         $form->addHidden('ftype', $folder->ftype);
 
         if ($folder->id) {
             $form->addHidden('folder_id', $folder->id);
-            $form->addSubmit('submit', dgettext('filecabinet', 'Update folder'));
-        } else {
-            $form->addSubmit('submit', dgettext('filecabinet', 'Create folder'));
-        }
-
-        if ($select_module) {
-            $modules = PHPWS_Core::getModuleNames();
-            $modlist[0] = dgettext('filecabinet', '-- General --');
-            foreach ($modules as $key => $mod) {
-                $modlist[$key] = $mod;
-            }
-            $form->addSelect('module_created', $modlist);
-            if (!empty($folder->module_created)) {
-                $form->setMatch('module_created', $folder->module_created);
-            }
-
-            $form->setLabel('module_created', dgettext('filecabinet', 'Module reservation'));
-        } else {
-            $form->addHidden('module_created', $folder->module_created);
         }
 
         $form->addTextField('title', $folder->title);
         $form->setSize('title', 40, 255);
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
-
-        $form->addTextArea('description', $folder->description);
-        $form->setCols('description', 40);
-        $form->setRows('description', 8);
-        $form->setLabel('description', dgettext('filecabinet', 'Description'));
-
-        $form->addRadio('public_folder', array(0, 1));
-        $form->setLabel('public_folder', array(dgettext('filecabinet', 'Private'), dgettext('filecabinet', 'Public')));
+        
+        if ($folder->ftype == DOCUMENT_FOLDER) {
+            $form->addRadio('public_folder', array(0, 1));
+            $form->setLabel('public_folder', array(dgettext('filecabinet', 'Indirect links'),
+                dgettext('filecabinet', 'Direct links')));
+        }
         $form->setMatch('public_folder', $folder->public_folder);
-
         if ($folder->ftype == IMAGE_FOLDER) {
             $resizes = Cabinet::getResizes(0, true);
             $form->addSelect('max_image_dimension', $resizes);
@@ -263,13 +256,8 @@ class Cabinet_Form
             $form->setMatch('max_image_dimension', $folder->max_image_dimension);
         }
 
-        /**
-         * Need to add icon selection. For now, images will use last uploaded
-         * image. Documents and empty image folders will use default icon
-         */
         $tpl = $form->getTemplate();
 
-        $tpl['CLOSE'] = javascript('close_window');
         return PHPWS_Template::process($tpl, 'filecabinet', 'Forms/edit_folder.tpl');
     }
 
@@ -281,9 +269,8 @@ class Cabinet_Form
     public function folderContents($folder)
     {
         javascript('jquery');
-        $src = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/folder_options/script.js';
+        $src = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/folder_options/contents.js';
         \Layout::addJSHeader("<script type='text/javascript' src='$src'></script>", 'folder-options');
-        PHPWS_Core::bookmark();
         Layout::addStyle('filecabinet');
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -329,13 +316,7 @@ class Cabinet_Form
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
             if ($dir_write) {
-                //$links[] = $folder->uploadLink();
-                $salt = array($operation => $command, 'folder_id' => $folder->id);
-                $authkey = \Current_User::getAuthKey(PHPWS_Text::saltArray($salt));
-                $links[] = <<<EOF
-<button class="btn btn-primary show-modal" data-authkey="$authkey" data-command="$command" data-operation="$operation" data-folder-id="$folder->id">
-    <i class="fa fa-plus"></i> $label</button>
-EOF;
+                $links[] = $folder->uploadLink('button');
             }
             if ($folder->ftype == MULTIMEDIA_FOLDER) {
                 //$links[] = $folder->rtmpLink();
@@ -361,11 +342,8 @@ EOF;
         if (@$links) {
             $pagetags['ADMIN_LINKS'] = implode(' ', $links);
         }
-        $modal = new \Modal('folder-form');
-        $modal->setWidthPercentage(30);
-        $modal->addButton('<button class="btn btn-success save-element">' . _('Save') . '</button>');
 
-        $pagetags['MODAL'] = (string) $modal;
+        $pagetags['MODAL'] = $this->getModal();
 
         $pagetags['ACTION_LABEL'] = dgettext('filecabinet', 'Action');
 

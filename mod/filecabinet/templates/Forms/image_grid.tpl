@@ -13,3 +13,4 @@
 <div align="center">{SEARCH} <b>{PAGE_LABEL}</b><br />
 {PAGES}<br />
 {LIMITS}</div>
+{MODAL}

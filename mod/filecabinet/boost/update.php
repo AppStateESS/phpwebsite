@@ -651,6 +651,20 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 + Thumbnails of uploaded images are not shown.
 </pre>
 EOF;
+        case version_compare($version, '2.7.0', '<'):
+            $db = \Database::newDB();
+            $t1 = $db->addTable('folders');
+            $t1->addValue('module_created', null);
+            $db->update();
+            $content[] = <<<EOF
+<pre>2.7.0 changes
+----------------
++ Javascript windows replaced with Bootstrap modal dropdowns.
++ Fixed thumbnail form.
+</pre>
+EOF;
+            
+            
             return true;
     }
 }

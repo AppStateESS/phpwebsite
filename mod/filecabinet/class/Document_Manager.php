@@ -6,11 +6,13 @@
  */
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
-class FC_Document_Manager {
-
+class FC_Document_Manager
+{
     public $folder = null;
     public $document = null;
     public $max_size = 0;
+    public $content;
+    public $title;
 
     public function __construct($document_id = 0)
     {
@@ -37,14 +39,18 @@ class FC_Document_Manager {
                 if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                     Current_User::disallow();
                 }
-                return $this->postDocumentUpload();
-                break;
+                $this->postDocumentUpload();
+                \PHPWS_Core::goBack();
+                exit();
+
             case 'upload_document_form':
                 if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
                     Current_User::disallow();
                 }
-
-                return $this->edit();
+                $this->loadDocument(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
+                $this->edit();
+                echo json_encode(array('title' => $this->title, 'content' => $this->content));
+                exit();
                 break;
 
             case 'add_access':
@@ -107,35 +113,25 @@ class FC_Document_Manager {
         PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
+        $form->setFormId('file-form');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('dop', 'post_document_upload');
         $form->addHidden('ms', $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
 
         $form->addFile('file_name');
-        $form->setSize('file_name', 30);
         $form->setLabel('file_name', dgettext('filecabinet', 'Document location'));
 
         $form->addText('title', $this->document->title);
-        $form->setSize('title', 40);
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
-
-        $form->addTextArea('description', $this->document->description);
-        $form->setLabel('description', dgettext('filecabinet', 'Description'));
+        $form->setClass('title', 'form-control');
 
         if ($this->document->id) {
-            $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Update file'));
+            $this->title = dgettext('filecabinet', 'Update file');
             $form->addHidden('document_id', $this->document->id);
-            $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
         } else {
-            $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Upload new file'));
-            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
+            $this->title = dgettext('filecabinet', 'Upload new file');
         }
-
-        $form->addButton('cancel', dgettext('filecabinet', 'Cancel'));
-        $form->setExtra('cancel', 'onclick="window.close()"');
-
-        $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
 
         if ($this->document->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
             Cabinet::moveToForm($form, $this->folder);
@@ -160,11 +156,7 @@ class FC_Document_Manager {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $this->max_size);
         }
 
-        if ($this->document->_errors) {
-            $template['ERROR'] = $this->document->printErrors();
-        }
-
-        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+        $this->content = PHPWS_Template::process($template, 'filecabinet', 'Forms/document_edit.tpl');
     }
 
     public function loadDocument($document_id = 0)
@@ -213,7 +205,10 @@ class FC_Document_Manager {
                 javascriptMod('filecabinet', 'refresh_manager', array('document_id' => $this->document->id));
             }
         } else {
-            return $this->edit();
+            foreach ($this->document->_errors as $err) {
+                $message[] = $err->getMessage();
+            }
+            Cabinet::setMessage($this->document->printErrors());
         }
     }
 

@@ -32,7 +32,7 @@ class Cabinet
             unset($_SESSION['Filecabinet_Message']);
         }
     }
-    
+
     /**
      * File manager administrative options.
      */
@@ -72,8 +72,7 @@ class Cabinet
             Current_User::disallow();
         }
         $this->loadImageManager();
-        echo $this->image_mgr->admin();
-        exit();
+        $this->image_mgr->admin();
     }
 
     /**
@@ -381,22 +380,19 @@ class Cabinet
                 break;
 
             case 'post_folder':
-                $this->loadFolder();
-
                 if (!Current_User::authorized('filecabinet', 'edit_folders')) {
                     Current_User::disallow();
                 }
+                $this->loadFolder();
 
                 if ($this->folder->post()) {
                     if (!$this->folder->save()) {
-                        Layout::nakedDisplay(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
-                    } else {
-                        Layout::nakedDisplay(javascript('close_refresh'));
+                        self::setMessage(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
                     }
                 } else {
-                    $this->message = $this->folder->_error;
-                    $this->addFolder();
+                    self::setMessage(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
                 }
+                PHPWS_Core::goBack();
                 break;
 
             case 'post_allowed_files':
@@ -780,6 +776,8 @@ class Cabinet
         } else {
             $this->content = $this->forms->editFolder($this->folder, true);
         }
+        echo json_encode(array('title' => $this->title, 'content' => $this->content));
+        exit();
     }
 
     public function editFolder()
@@ -796,11 +794,9 @@ class Cabinet
         } else {
             $this->title = dgettext('filecabinet', 'Update multimedia folder');
         }
-        if (isset($_GET['module_created'])) {
-            $this->content = $this->forms->editFolder($this->folder, false);
-        } else {
-            $this->content = $this->forms->editFolder($this->folder, true);
-        }
+        $this->content = $this->forms->editFolder($this->folder, true);
+        echo json_encode(array('title' => $this->title, 'content' => $this->content));
+        exit;
     }
 
     public function loadImageManager()
@@ -1120,10 +1116,10 @@ class Cabinet
         }
 
         $image->write();
-        $image->resize($image->file_directory . $image->file_name, $this->max_width, $this->max_height, true);
+        $image->resize($image->file_directory . $image->file_name, $image->getMaxWidth(), $image->getMaxHeight(), true);
 
         if ($obj->_classtype == 'multimedia') {
-            $obj->thumbnail = $image->file_directory . $image->file_name;
+            $obj->thumbnail = $image->file_name;
             $obj->save(false, false);
         }
         return true;
@@ -1332,20 +1328,26 @@ class Cabinet
         }
 
         switch (1) {
-            case $max_width >= 2000:
-                $resizes[2000] = '2000px';
+            case $max_width >= 3840:
+                $resizes[3840] = '3840px';
 
-            case $max_width >= 1750:
-                $resizes[1750] = '1750px';
+            case $max_width >= 2560:
+                $resizes[2560] = '2560px';
 
-            case $max_width >= 1500:
-                $resizes[1500] = '1500px';
+            case $max_width >= 2048:
+                $resizes[2048] = '2048px';
 
-            case $max_width >= 1250:
-                $resizes[1250] = '1250px';
+            case $max_width >= 1600:
+                $resizes[1600] = '1600px';
 
-            case $max_width >= 1000:
-                $resizes[1000] = '1000px';
+            case $max_width >= 1440:
+                $resizes[1440] = '1440px';
+
+            case $max_width >= 1280:
+                $resizes[1280] = '1280px';
+
+            case $max_width >= 1024:
+                $resizes[1024] = '1024px';
 
             case $max_width >= 800:
                 $resizes[800] = '800px';
@@ -1379,7 +1381,6 @@ class Cabinet
         $db->addColumn('title');
         $db->setIndexBy('id');
         $folders = $db->select('col');
-
         if (!empty($folders)) {
             $folders = array(0 => '') + $folders;
             $form->addSelect('move_to_folder', $folders);
@@ -1593,7 +1594,7 @@ class Cabinet
     {
         $_SESSION['Filecabinet_Message'] = $message;
     }
-    
+
 }
 
 ?>

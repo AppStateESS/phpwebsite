@@ -18,15 +18,16 @@ function FolderElements() {
     {
         var type;
         var file_id;
+        var folder_id;
         var command;
         var authkey;
         
         $('.delete-file').click(function() {
             type = $(this).data('type');
+            folder_id = $(this).data('folderId');
             file_id = $(this).data('id');
             command = $(this).data('command');
             authkey = $(this).data('authkey');
-            folder_id = $(this).data('folderId');
             if (confirm('Are you sure you want to delete this file?')) {
                 var href = 'index.php?module=filecabinet&' + type + '=' + command + '&file_id=' + file_id +
                         '&folder_id=' + folder_id + '&authkey=' + authkey;
@@ -36,18 +37,20 @@ function FolderElements() {
 
         $('.edit-file').click(function() {
             type = $(this).data('type');
+            folder_id = $(this).data('folderId');
             file_id = $(this).data('id');
             command = $(this).data('command');
             authkey = $(this).data('authkey');
-            t.pullFileForm(file_id, type, command, authkey);
+            t.pullFileForm(file_id, type, command, folder_id, authkey);
         });
     };
 
-    this.pullFileForm = function(file_id, operation, command, authkey)
+    this.pullFileForm = function(file_id, operation, command, folder_id, authkey)
     {
         var destination = 'index.php?' + operation + '=' + command
         $.get(destination, {
             module: 'filecabinet',
+            folder_id: folder_id,
             file_id: file_id,
             authkey: authkey
         }, function(data) {
@@ -62,7 +65,6 @@ function FolderElements() {
 
 }
 
-
 function FolderModal() {
     var t = this;
 
@@ -72,17 +74,19 @@ function FolderModal() {
             var operation = $(this).data('operation');
             var command = $(this).data('command');
             var folder_id = $(this).data('folderId');
+            var file_id = $(this).data('id');
             var authkey = $(this).data('authkey');
-            t.pullFolderForm(authkey, operation, command, folder_id);
+            t.pullFolderForm(file_id, operation, command, folder_id, authkey);
         });
     };
 
-    this.pullFolderForm = function(authkey, operation, command, folder_id)
+    this.pullFolderForm = function(file_id, operation, command, folder_id, authkey)
     {
         var dest = 'index.php?' + operation + '=' + command;
         $.get(dest, {
             module: 'filecabinet',
             folder_id: folder_id,
+            file_id: file_id,
             authkey: authkey
         }, function(data) {
             //console.log(data);

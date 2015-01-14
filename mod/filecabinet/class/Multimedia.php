@@ -118,18 +118,20 @@ class PHPWS_Multimedia extends File_Common
 
     public function rowTags()
     {
+        static $folder = null;
+
+        if (empty($folder)) {
+            $folder = new Folder($this->folder_id);
+        }
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             if ($this->embedded) {
                 $command = 'edit_rtmp';
             } else {
                 $command = 'upload_multimedia_form';
             }
-            $authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('mop'=>$command,'file_id'=>$this->id)));
-            $links[] = <<<EOF
-<i style='cursor:pointer' class='fa fa-edit edit-file' data-id='$this->id' data-type='mop' data-command='$command' data-authkey='$authkey'></i>
-EOF;
+            $links[] = $folder->uploadLink('icon', $this->id);
             //$authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('mop'=>'delete_multimedia','file_id'=>$this->id)));
-            
+
             $authkey = \Current_User::getAuthKey();
             $links[] = <<<EOF
 <i style='cursor:pointer' class='fa fa-trash-o delete-file' data-folder-id='$this->folder_id' data-id='$this->id' data-type='mop' data-command='delete_multimedia' data-authkey='$authkey'></i>
