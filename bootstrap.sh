@@ -17,6 +17,8 @@ CONFIG=/var/phpws/config
 FILES=/var/phpws/files
 IMAGES=/var/phpws/images
 LOGS=/var/phpws/logs
+# Need this because phpws images directory is no longer in the repository so we need to create it in the vagrant box
+PHPWS_IMAGES=/vagrant/images
 
 echo "================"
 echo "PHPWEBSITE 1.9.x"
@@ -862,7 +864,7 @@ iptables -I INPUT 7 -p tcp -m state --state=NEW --dport 5432 -j ACCEPT
 echo "============================"
 echo "Establishing Writable Mounts"
 echo "============================"
-mkdir -p "$CONFIG/core" "$FILES" "$IMAGES" "$LOGS"
+mkdir -p "$CONFIG/core" "$FILES" "$IMAGES" "$PHPWS_IMAGES" $LOGS"
 chown -R apache:apache "$CONFIG" "$FILES" "$IMAGES" "$LOGS"
 mount --bind "$CONFIG" /vagrant/config
 mount --bind "$FILES" /vagrant/files
