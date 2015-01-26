@@ -864,7 +864,7 @@ iptables -I INPUT 7 -p tcp -m state --state=NEW --dport 5432 -j ACCEPT
 echo "============================"
 echo "Establishing Writable Mounts"
 echo "============================"
-mkdir -p "$CONFIG/core" "$FILES" "$IMAGES" "$PHPWS_IMAGES" $LOGS"
+mkdir -p "$CONFIG/core" "$FILES" "$IMAGES" "$PHPWS_IMAGES" "$LOGS"
 chown -R apache:apache "$CONFIG" "$FILES" "$IMAGES" "$LOGS"
 mount --bind "$CONFIG" /vagrant/config
 mount --bind "$FILES" /vagrant/files
