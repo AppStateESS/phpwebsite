@@ -6,8 +6,8 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Pager {
-
+class Pager
+{
     /**
      * Total rows
      * @var integer
@@ -63,7 +63,17 @@ class Pager {
     protected $template;
     protected $sort_column;
     protected $sort_direction;
+
+    /**
+     * The string requested to search for a specific row
+     * @var string
+     */
     protected $search_phrase;
+
+    /**
+     * User requested column used with search_phrase to find matching rows.
+     * @var string
+     */
     protected $search_column;
 
     /**
@@ -92,6 +102,13 @@ class Pager {
      * @var array
      */
     protected $json_data;
+
+    /**
+     * Column user can search on
+     * Defaults to headers.
+     * @var array
+     */
+    protected $search_columns = array();
 
     public function __construct()
     {
@@ -136,8 +153,7 @@ class Pager {
 
     public function setSearchPhrase($phrase)
     {
-        $this->search_phrase = preg_replace('/\s{2,}/', ' ',
-                trim(rawurldecode($phrase)));
+        $this->search_phrase = preg_replace('/\s{2,}/', ' ', trim(rawurldecode($phrase)));
     }
 
     public function setSearchColumn($column)
@@ -148,8 +164,7 @@ class Pager {
     public function setTemplate(\Template $template)
     {
         if (!is_file($template->getFile())) {
-            throw new \Exception(t('Could not find template file: %t',
-                    $template->getFile()));
+            throw new \Exception(t('Could not find template file: %t', $template->getFile()));
         }
         $this->template = $template;
     }
@@ -265,10 +280,36 @@ class Pager {
     public function setHeaders(array $headers)
     {
         if (is_assoc($headers)) {
+            $this->addSearchColumn($headers);
             $this->headers = $headers;
         } else {
             foreach ($headers as $header) {
                 $this->headers[$header] = ucwords(str_replace('_', ' ', $header));
+                $this->addSearchColumn($header);
+            }
+        }
+    }
+
+    public function removeSearchColumn($column)
+    {
+        unset($this->search_columns[$column]);
+    }
+
+    public function addSearchColumn($column, $full_name = null)
+    {
+        if (is_array($column)) {
+            if (is_array(current($column))) {
+                throw new \Exception('Multidimensional array parameter not allowed');
+            }
+            foreach ($column as $key => $value) {
+                $this->addSearchColumn($key, $value);
+            }
+        } else {
+            if (!isset($this->search_columns[$column])) {
+                if (empty($full_name)) {
+                    $full_name = ucwords(str_replace('_', ' ', $column));
+                }
+                $this->search_columns[$column] = $full_name;
             }
         }
     }
@@ -294,17 +335,13 @@ class Pager {
             throw new \Exception(t('No rows to set'));
         }
         if (!isset($this->headers[$this->sort_column])) {
-            throw new \Exception(t('Column name "%s" is not known',
-                    $this->sort_column));
+            throw new \Exception(t('Column name "%s" is not known', $this->sort_column));
         }
 
         if (isset($function_call) && !function_exists($function_call)) {
-            throw new \Exception(t('Function "%s" does not exist',
-                    $function_call));
+            throw new \Exception(t('Function "%s" does not exist', $function_call));
         }
-        usort($this->rows,
-                call_user_func_array(array('self', 'make_comparer'),
-                        array(array($this->sort_column, $this->sort_direction, $function_call))));
+        usort($this->rows, call_user_func_array(array('self', 'make_comparer'), array(array($this->sort_column, $this->sort_direction, $function_call))));
     }
 
     /**
@@ -329,35 +366,34 @@ class Pager {
         // Normalize criteria up front so that the comparer finds everything tidy
         $criteria = func_get_args();
         foreach ($criteria as $index => $criterion) {
-            $criteria[$index] = is_array($criterion) ? array_pad($criterion, 3,
-                            null) : array($criterion, SORT_ASC, null);
+            $criteria[$index] = is_array($criterion) ? array_pad($criterion, 3, null) : array($criterion, SORT_ASC, null);
         }
 
         return function($first, $second) use ($criteria) {
-                    foreach ($criteria as $criterion) {
-                        // How will we compare this round?
-                        list($column, $checkOrder, $projection) = $criterion;
-                        $sortOrder = $checkOrder == SORT_DESC ? -1 : 1;
+            foreach ($criteria as $criterion) {
+                // How will we compare this round?
+                list($column, $checkOrder, $projection) = $criterion;
+                $sortOrder = $checkOrder == SORT_DESC ? -1 : 1;
 
-                        // If a projection was defined project the values now
-                        if ($projection) {
-                            $lhs = call_user_func($projection, $first[$column]);
-                            $rhs = call_user_func($projection, $second[$column]);
-                        } else {
-                            $lhs = $first[$column];
-                            $rhs = $second[$column];
-                        }
+                // If a projection was defined project the values now
+                if ($projection) {
+                    $lhs = call_user_func($projection, $first[$column]);
+                    $rhs = call_user_func($projection, $second[$column]);
+                } else {
+                    $lhs = $first[$column];
+                    $rhs = $second[$column];
+                }
 
-                        // Do the actual comparison; do not return if equal
-                        if ($lhs < $rhs) {
-                            return -1 * $sortOrder;
-                        } else if ($lhs > $rhs) {
-                            return 1 * $sortOrder;
-                        }
-                    }
+                // Do the actual comparison; do not return if equal
+                if ($lhs < $rhs) {
+                    return -1 * $sortOrder;
+                } else if ($lhs > $rhs) {
+                    return 1 * $sortOrder;
+                }
+            }
 
-                    return 0; // tiebreakers exhausted, so $first == $second
-                };
+            return 0; // tiebreakers exhausted, so $first == $second
+        };
     }
 
     public function getHeaders()
@@ -461,8 +497,7 @@ class Pager {
             $this->sortCurrentRows();
         }
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
-        $this->rows = array_slice($this->rows, $start_count,
-                $this->rows_per_page);
+        $this->rows = array_slice($this->rows, $start_count, $this->rows_per_page);
 
         $this->executeCallback();
     }
@@ -508,12 +543,16 @@ class Pager {
         $this->next_page_marker = $marker;
     }
 
+    /**
+     * Returns the search input field
+     * @return string
+     */
     public function getPageSearch()
     {
         $search = t('Search');
 
         if ($this->search_column) {
-            $search .= ' : ' . $this->headers[$this->search_column];
+            $search .= ' : ' . $this->search_columns[$this->search_column];
         }
 
         if (!empty($this->search_phrase)) {
@@ -522,8 +561,10 @@ class Pager {
             $icon = null;
         }
         $columns = '';
-        foreach ($this->headers as $key => $value) {
-            $columns .= "<li><a data-search-column='$key' class='pager-search-column' href='javascript:void(0)'>$value</a></li>";
+
+        //foreach ($this->headers as $key => $value) {
+        foreach ($this->search_columns as $key => $value) {
+            $columns .= "<li><a data-search-column='$key' class='pager-search-column' href='javascript:void(0)'>$value</a></li>\n";
         }
         $content = <<<EOF
 <div class="pull-right input-group" style="max-width:400px">

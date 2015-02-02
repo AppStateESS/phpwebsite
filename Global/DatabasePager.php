@@ -51,7 +51,6 @@ class DatabasePager extends Pager {
             $this->setRowOrder();
         }
 
-
         $this->processLimit();
 
         if ($this->show_query) {
@@ -69,7 +68,7 @@ class DatabasePager extends Pager {
     {
         $this->show_query = (bool) $show;
     }
-
+    
     private function loadSearchConditionals()
     {
         foreach ($this->table_headers as $field) {
