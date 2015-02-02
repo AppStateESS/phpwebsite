@@ -111,8 +111,7 @@ class DatabasePager extends Pager {
     }
 
     /**
-     * An associate array of Database\Field objects. The key of the array is
-     * the cooresponding header title.
+     * An associate array of Database\Field objects cooresponding to columns used in searching and sorting.
      * @param array $table_headers
      */
     public function setTableHeaders(array $table_headers)
