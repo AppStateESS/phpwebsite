@@ -517,7 +517,7 @@ class Pager {
         }
 
         if (!empty($this->search_phrase)) {
-            $icon = '<span class="input-group-addon"><a href=""><a href="javascript:void(0)" class="search-clear"><i class="glyphicon glyphfa fa-remove"></i></a></span>';
+            $icon = '<span class="input-group-addon"><a href=""><a href="javascript:void(0)" class="search-clear"><i class="fa fa-remove"></i></a></span>';
         } else {
             $icon = null;
         }
