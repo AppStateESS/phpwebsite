@@ -41,8 +41,8 @@
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Tag extends Data {
-
+class Tag extends Data
+{
     /**
      * Tag type (e.g. p, b, div, etc.)
      * @var string
@@ -211,13 +211,11 @@ class Tag extends Data {
         $data[] = '<' . $this->tag_type;
         if (empty($this->ignore_variables)) {
             // not an exception to allow debugging from the __toString
-            trigger_error(t('The Tag parent class "%s" failed to call __construct',
-                            get_parent_class($this)), E_USER_ERROR);
+            trigger_error(t('The Tag parent class "%s" failed to call __construct', get_parent_class($this)), E_USER_ERROR);
             exit();
         }
 
-        $tag_parameters = array_diff_key(get_object_vars($this),
-                array_flip($this->ignore_variables));
+        $tag_parameters = array_diff_key(get_object_vars($this), array_flip($this->ignore_variables));
         unset($tag_parameters['miscellaneous']);
         $tag_parameters['class'] = $this->getClass();
         $tag_parameters['style'] = $this->getStyle();
@@ -235,8 +233,7 @@ class Tag extends Data {
                         $data[] = $pname;
                     }
                 } else {
-                    throw new \Exception(t('Unaccepted tag parameter "%s" is of type (%s)',
-                            $pname, gettype($param)));
+                    throw new \Exception(t('Unaccepted tag parameter "%s" is of type (%s)', $pname, gettype($param)));
                 }
             }
         }
@@ -286,6 +283,17 @@ class Tag extends Data {
         }
         $this->class[] = $class;
         return $this;
+    }
+
+    /**
+     * Removes class name from tag
+     * @param string $class
+     */
+    public function removeClass($class)
+    {
+        if (is_array($this->class)) {
+            unset($this->class[array_search($class, $this->class)]);
+        }
     }
 
     /**
