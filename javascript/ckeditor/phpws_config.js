@@ -6,7 +6,7 @@ CKEDITOR.editorConfig = function (config)
 {
     config.resize = true;
     config.skin = 'moono';
-    config.extraPlugins = 'filecabinet';
+    config.extraPlugins = 'filecabinet,fc_document';
     config.allowedContent = true;
     config.removeButtons = 'Underline,Cut,Copy,Iframe,About,Styles,Paste,Image';
     config.removePlugins = 'maxheight';
@@ -72,8 +72,6 @@ CKEDITOR.editorConfig = function (config)
 
     };
 };
-
-
 
 CKEDITOR.dtd.$removeEmpty.span = 0;
 CKEDITOR.dtd.$removeEmpty.i = 0;

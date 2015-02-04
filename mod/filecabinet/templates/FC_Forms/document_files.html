@@ -1,0 +1,23 @@
+<table class="table table-striped file-list table-hover">
+    <tbody>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Name <i class="fa fa-caret-down"></i></th>
+            <th>&nbsp;</th>
+        </tr>
+        <?php if($files): foreach($files as $f): extract($f);?>
+        <tr>
+            <td>
+                <i class="fa fa-edit fa-lg"></i> 
+            </td>
+            <td>
+                <?=$title?>
+            </td>
+            <td>
+                <i class="fa fa-trash-o fa-lg"></i>
+            </td>
+        </tr>
+        <?php endforeach; endif;?>
+    </tbody>
+</table>
+<em><?=$empty?></em>

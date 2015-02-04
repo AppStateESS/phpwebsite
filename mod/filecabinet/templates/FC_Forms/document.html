@@ -1,0 +1,32 @@
+<div id="file-cabinet">
+    <div class="row header">
+        <div class="col-sm-3">
+            <button class="btn btn-primary upload-file"><i class="fa fa-arrow-up"></i> Upload</button>
+        </div>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="folder-list" class="col-sm-3">
+            <ul class="list-unstyled">
+                <?=$folder_list?>
+            </ul>
+        </div>
+        <div id="files" class="col-sm-9">
+        </div>
+    </div>
+</div>
+<div id="dropzone-background">
+    <form class="dropzone dz-clickable" id="dropzone-area" class="pointer" method="post" action="index.php">
+        <input type="hidden" name="module" value="filecabinet" />
+        <input type="hidden" name="ckop" value="save_file" />
+        <input id="dz-folder-id" type="hidden" name="folder_id" value="" />
+    </form>
+    <div id="close-dropzone"><button type="button" class="btn btn-danger">Finished uploading</button></div>
+</div>

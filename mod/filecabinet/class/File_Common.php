@@ -98,6 +98,11 @@ class File_Common {
         $this->_max_size = (int) $max_size;
     }
 
+    public function setFolderId($id)
+    {
+        $this->folder_id = $id;
+    }
+    
     public function getSize($format = false)
     {
         if ($format) {

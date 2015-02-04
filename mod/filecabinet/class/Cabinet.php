@@ -49,6 +49,15 @@ class Cabinet
         }
     }
 
+    public function ckAdmin()
+    {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+        $fc_forms = new FC_Forms();
+        $fc_forms->handle();
+    }
+    
     /**
      * Document manager administrative options.
      */

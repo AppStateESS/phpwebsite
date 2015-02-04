@@ -13,6 +13,8 @@ $cabinet = new Cabinet;
 
 if (isset($_REQUEST['uop'])) {
     $cabinet->user();
+} elseif (isset($_REQUEST['ckop'])) {
+    $cabinet->ckAdmin();
 } elseif (isset($_REQUEST['fop'])) {
     $cabinet->fmAdmin();
 } elseif (isset($_REQUEST['dop'])) {
