@@ -34,11 +34,26 @@ class FC_Documents extends FC_Folder_Factory
         $template = new \Template;
         $template->setModuleTemplate('filecabinet', 'FC_Forms/document_files.html');
         if (empty($files)) {
-            $template->add('empty', 'No files found');
-            $template->add('files', null);
+            return null;
         } else {
             $template->addVariables(array('files' => $files, 'empty'=>null));
         }
+        return $template->get();
+    }
+    
+    public function printFile($id)
+    {
+        $db = \Database::newDB();
+        $t = $db->addTable('documents');
+        $t->addFieldConditional('id', (int)$id);
+        $row = $db->selectOneRow();
+        if (empty($row)) {
+            return null;
+        }
+        $template = new \Template;
+        $template->setModuleTemplate('filecabinet', 'FC_Forms/document_view.html');
+        $template->add('title', $row['title']);
+        $template->add('filepath', './filecabinet/' . $row['id']);
         return $template->get();
     }
 

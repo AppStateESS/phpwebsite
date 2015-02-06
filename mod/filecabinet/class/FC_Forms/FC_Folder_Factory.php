@@ -65,6 +65,7 @@ abstract class FC_Folder_Factory
     {
         javascript('jquery');
         javascript('dropzone');
+        javascript('authkey', null, null, true);
         $accepted_files = $this->getAllowedFileTypes();
         $included_script = "<script type='text/javascript'>Dropzone.autoDiscover = false;</script>"
                 . "<script type='text/javascript'>var accepted_files='$accepted_files';</script>";

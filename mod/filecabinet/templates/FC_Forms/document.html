@@ -18,7 +18,18 @@
                 <?=$folder_list?>
             </ul>
         </div>
-        <div id="files" class="col-sm-9">
+        <div class="col-sm-9">
+            <table class="table table-striped file-list table-hover">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Name <i class="fa fa-caret-down"></i></th>
+                        <th><i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i></th>
+                    </tr>
+                </thead>
+                <tbody id="files">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

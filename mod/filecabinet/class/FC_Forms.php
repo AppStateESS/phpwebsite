@@ -32,7 +32,12 @@ class FC_Forms
 
     private function printFolderFiles()
     {
-        echo $this->factory->printFolderFiles();
+        $content = $this->factory->printFolderFiles();
+        if (empty($content)) {
+            echo 'No files found';
+        } else {
+            echo $content;
+        }
     }
 
     /**
@@ -87,8 +92,16 @@ class FC_Forms
                 $this->saveFile($request);
                 exit();
 
+            case 'delete_file':
+                $this->deleteFile($request);
+                exit();
+
             case 'list_folder_files':
                 $this->printFolderFiles();
+                exit();
+
+            case 'get_file':
+                $this->printFile($request);
                 exit();
 
             default:
@@ -97,6 +110,42 @@ class FC_Forms
 
         echo \Layout::wrap($this->getContent(), $this->getTitle(), true);
         exit();
+    }
+
+    private function printFile(\Request $request)
+    {
+        echo $this->factory->printFile($request->getVar('id'));
+    }
+
+    private function deleteFile(\Request $request)
+    {
+        if (!Current_User::authorized('filecabinet')) {
+            $this->sendErrorHeader('No permissions to delete files');
+        }
+
+        $db = \Database::newDB();
+
+        switch ($request->getVar('ftype')) {
+            case DOCUMENT_FOLDER:
+                $table = $db->addTable('documents');
+                break;
+
+            case IMAGE_FOLDER:
+                $table = $db->addTable('images');
+                break;
+
+            case MULTIMEDIA_FOLDER:
+                $table = $db->addTable('multimedia');
+                break;
+        }
+
+        $table->addFieldConditional('id', $request->getVar('id'));
+        $row = $db->selectOneRow();
+        $filepath = $row['file_directory'] . $row['file_name'];
+        if (is_file($filepath)) {
+            unlink($filepath);
+        }
+        $db->delete();
     }
 
     public function saveFile(\Request $request)
@@ -220,7 +269,7 @@ class FC_Forms
 
             $file = new PHPWS_Document();
             $file->setFilename($uploaded_file_name);
-            
+
             $new_file_name = $file->file_name;
             $destination_path = $destination_directory . $new_file_name;
 

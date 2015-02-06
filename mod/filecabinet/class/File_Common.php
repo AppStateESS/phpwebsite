@@ -10,8 +10,8 @@ PHPWS_Core::initCoreClass('File.php');
 
 define('FILE_TITLE_CUTOFF', 24);
 
-class File_Common {
-
+class File_Common
+{
     public $id = 0;
     public $file_name = null;
     public $file_directory = null;
@@ -102,7 +102,7 @@ class File_Common {
     {
         $this->folder_id = $id;
     }
-    
+
     public function getSize($format = false)
     {
         if ($format) {
@@ -118,8 +118,7 @@ class File_Common {
      * Called from Image_Manager's postImageUpload function and Cabinet_Action's
      * postDocument function.
      */
-    public function importPost($var_name, $use_folder = true, $ignore_missing_file
-    = false, $file_prefix = null)
+    public function importPost($var_name, $use_folder = true, $ignore_missing_file = false, $file_prefix = null)
     {
         require 'HTTP/Upload.php';
 
@@ -469,8 +468,8 @@ class File_Common {
 
         $path = $this->getPath();
         if (!preg_match('/^(https?|rtmp):/', $path)) {
-            if (!unlink($path)) {
-                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'File_Common::commonDelete', $path);
+            if (is_file($path)) {
+                unlink($path);
             }
         }
 

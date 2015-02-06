@@ -89,3 +89,11 @@ span.admin {
     text-align:center;
     width: 100%;
 }
+
+.locked {
+    color : #e3e3e3;
+}
+
+.unlocked {
+    color : inherit;
+}
