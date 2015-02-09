@@ -1,5 +1,6 @@
 var FolderList = new FolderList;
 var CKEDITOR = window.parent.CKEDITOR;
+CKEDITOR.config.allowedContent = true;
 
 var okListener = function(ev) {
     //this._.editor.insertHtml(FolderList.getContent());
