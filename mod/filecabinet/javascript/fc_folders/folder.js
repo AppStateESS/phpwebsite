@@ -33,11 +33,10 @@ function FolderList() {
 
     this.init = function() {
         // pull folder listing
+        this.loadModal();
         this.loadFolderList(0);
-
         this.loadUploadButton();
         this.loadNewFolderButton();
-        this.loadModal();
     };
 
     /**
@@ -62,17 +61,26 @@ function FolderList() {
     };
 
     this.loadNewFolderButton = function() {
-        $('#edit-file-form').on('hidden.bs.modal', function(e) {
+        this.modal.self_node.on('hidden.bs.modal', function(e) {
+            t.modal.clearBody();
+            t.modal.clearTitle();
             $('#create-folder-submit').remove();
         });
         $('#create-folder').click(function() {
-            var create_form = '<input type="textfield" id="folder-name" name="folder_name" class="form-control" placeholder="Enter folder name" />';
+            t.addFolderFormToBody();
             t.modal.title('Create folder');
-            t.modal.body(create_form);
             t.modal.footer('<button class="btn btn-success" id="create-folder-submit">Save</button>');
             t.modal.show();
             t.loadFolderSaveButton();
         });
+    };
+
+    this.addFolderFormToBody = function() {
+        var create_form = '<input type="textfield" id="folder-name" name="folder_name" class="form-control" placeholder="Enter folder name" />';
+        t.modal.body(create_form);
+        t.modal.self_node.on('shown.bs.modal', function() {
+            $('#folder-name').focus();
+        })
     };
 
     this.loadFolderSaveButton = function() {
@@ -88,6 +96,10 @@ function FolderList() {
                     t.active_folder = data;
                     t.modal.hide();
                     t.loadFolderList();
+                }).fail(function(e) {
+                    t.modal.clearBody();
+                    t.modal.body(e.responseText);
+                    t.addFolderFormToBody();
                 });
             } else {
                 t.modal.hide();
@@ -161,10 +173,11 @@ function FolderList() {
 }
 
 function myModal() {
+    // the modal itself
+    var self_node;
     var title_node;
     var body_node;
     var footer_node;
-    var self_node;
 
     this.boot = function() {
         this.self_node = $('#edit-file-form');
@@ -177,8 +190,16 @@ function myModal() {
         this.title_node.text(title);
     };
 
+    this.clearBody = function() {
+        this.body_node.text('');
+    };
+
+    this.clearTitle = function() {
+        this.title_node.text('');
+    };
+
     this.body = function(body) {
-        this.body_node.html(body);
+        this.body_node.append(body);
     };
 
     this.footer = function(footer) {
@@ -191,6 +212,8 @@ function myModal() {
 
     this.hide = function() {
         this.self_node.modal('hide');
+        this.clearBody();
+        this.clearTitle();
     };
 
 

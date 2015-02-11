@@ -137,9 +137,17 @@ class FC_Forms
     private function saveFolder(\Request $request)
     {
         $folder = new Folder();
-
         $folder->setTitle($request->getVar('title'));
         $folder->setFtype($request->getVar('ftype'));
+        
+        $db = \Database::newDB();
+        $db->addTable('folders')->addFieldConditional('title', $folder->title);
+        $result = $db->selectOneRow();
+        if (!empty($result)) {
+            $this->sendErrorHeader('<div class="alert alert-danger"><i class="fa fa-times fa-lg"></i> A folder with this name already exists</div>');
+            exit();
+        }
+        
         $folder->save();
         echo $folder->id;
     }
