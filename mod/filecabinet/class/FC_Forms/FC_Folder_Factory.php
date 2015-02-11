@@ -14,15 +14,21 @@ abstract class FC_Folder_Factory
     protected $ftype;
     protected $current_folder_id;
 
-    abstract protected function loadTemplate();
-
     abstract public function getForm();
 
     public function __construct($folder_id)
     {
         $this->setCurrentFolderId($folder_id);
     }
-    
+
+    protected function loadTemplate()
+    {
+        $modal = new \Modal('edit-file-form');
+        $this->template = new \Template();
+        $this->template->setModuleTemplate('filecabinet', 'FC_Forms/folders.html');
+        $this->template->add('modal', $modal->get());
+    }
+
     protected function getFolderFileList($table)
     {
         $db = \Database::newDB();
@@ -35,14 +41,14 @@ abstract class FC_Folder_Factory
 
     protected function setCurrentFolderId($id)
     {
-        $this->current_folder_id = (int)$id;
+        $this->current_folder_id = (int) $id;
     }
-    
+
     protected function getCurrentFolderId()
     {
         return $this->current_folder_id;
     }
-    
+
     /**
      * Pulls folders from the database according to folder type
      * @param integer $ftype Folder type (image, document, multimedia)
@@ -70,7 +76,7 @@ abstract class FC_Folder_Factory
         $included_script = "<script type='text/javascript'>Dropzone.autoDiscover = false;</script>"
                 . "<script type='text/javascript'>var accepted_files='$accepted_files';</script>";
         \Layout::addJSHeader($included_script, 'fc_accepted_files');
-                
+
         $source = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/fc_folders/folder.js';
         $script = "<script type='text/javascript' src='$source'></script>";
         \Layout::addJSHeader($script, 'fc_folder');
@@ -89,14 +95,14 @@ abstract class FC_Folder_Factory
                 $type_list = \PHPWS_Settings::get('filecabinet', 'media_files');
                 break;
         }
-        $allowed  = explode(',',$type_list);
-        array_walk($allowed, function(&$value,$key){
+        $allowed = explode(',', $type_list);
+        array_walk($allowed, function(&$value, $key) {
             $value = '.' . $value;
         });
         $allowed_string = implode(',', $allowed);
         return $allowed_string;
     }
-    
+
     /**
      * 
      * @return type
@@ -122,7 +128,7 @@ abstract class FC_Folder_Factory
         }
         return implode("\n", $lines);
     }
-    
+
     public function getTitle()
     {
         return $this->title;

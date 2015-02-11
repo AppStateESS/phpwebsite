@@ -103,6 +103,10 @@ class FC_Forms
             case 'get_file':
                 $this->printFile($request);
                 exit();
+                
+            case 'file_form':
+                $this->fileForm($request);
+                exit();
 
             default:
                 throw new \Http\MethodNotAllowedException('Unknown request');
@@ -110,6 +114,13 @@ class FC_Forms
 
         echo \Layout::wrap($this->getContent(), $this->getTitle(), true);
         exit();
+    }
+    
+    private function fileForm(\Request $request)
+    {
+        $data['title'] = 'Form title';
+        $data['content'] = '<p>Stuff</p>';
+        echo json_encode($data);
     }
 
     private function printFile(\Request $request)
@@ -171,12 +182,92 @@ class FC_Forms
         }
     }
 
-    private function uploadImageToFolder($folder, $filename)
+    private function uploadFileToFolder($folder, $filename, $ftype)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        $file = new PHPWS_Image($id);
-        $file->setDirectory($folder->getFullDirectory());
-        $file->save();
+        switch ($ftype) {
+            case DOCUMENT_FOLDER:
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $file_class = 'PHPWS_Document';
+                break;
+
+            case IMAGE_FOLDER:
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $file_class = 'PHPWS_Image';
+                break;
+
+            case MEDIA_FOLDER:
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $file_class = 'PHPWS_Multimedia';
+                break;
+        }
+        $upload = $_FILES[$filename];
+        $destination_directory = $folder->getFullDirectory();
+
+        if (!isset($_FILES[$filename])) {
+            throw new \Exception('File upload could not be found');
+        }
+
+        $total_files = count($_FILES[$filename]['name']);
+        for ($i = 0; $i < $total_files; $i++) {
+            $source_directory = $upload['tmp_name'][$i];
+            $uploaded_file_name = $upload['name'][$i];
+            $type = $upload['type'][$i];
+            $error = $upload['error'][$i];
+            $size = $upload['size'][$i];
+
+            $file = new $file_class;
+            $file->setFilename($uploaded_file_name);
+
+            $new_file_name = $file->file_name;
+            $destination_path = $destination_directory . $new_file_name;
+
+            $this->checkDuplicate($destination_path);
+            $this->checkMimeType($source_directory, $uploaded_file_name, $folder->ftype);
+            $this->checkSize($source_directory, $size, $folder->ftype);
+
+            move_uploaded_file($source_directory, $destination_path);
+            //$file->setDirectory($folder->getFullDirectory());
+            $file->setDirectory($destination_directory);
+            $file->setSize($size);
+            $file->file_type = $type;
+            $file->setFolderId($folder->id);
+            $title = preg_replace('/\.\w+$/', '', str_replace('_', ' ', $new_file_name));
+            $file->setTitle(ucfirst($title));
+            // save is false because the file is already written
+            $this->saveUploadedFile($file);
+        }
+    }
+
+    /**
+     * Saves the $file object to the database depending on the file type. This is because Image, Document and Multimedia
+     * have different save() parameters. 
+     * @param mixed $file
+     */
+    private function saveUploadedFile($file)
+    {
+        $thumb = false;
+        
+        if (is_a($file, 'PHPWS_Image')) {
+            $thumb = true;
+            list($width, $height) = getimagesize($file->getPath());
+            $file->width = (int)$width;
+            $file->height = (int)$height;
+            $result = $file->save(true, false, true);
+        } elseif (is_a($file, 'PHPWS_Document')) {
+            $result = $file->save(false);
+        } elseif (is_a($file, 'PHPWS_Multimedia')) {
+            $thumb = true;
+            $result = $file->save(false, true);
+        } else {
+            throw new \Exception('Unknown upload file type');
+        }
+        if (PEAR::isError($result)) {
+            $file->deleteFile();
+            if ($thumb) {
+                $file->deleteThumbnail();
+            }
+            $this->sendErrorHeader('An error occurred when trying to save this file');
+        }
     }
 
     private function checkDuplicate($path)
@@ -248,53 +339,19 @@ class FC_Forms
         }
     }
 
+    private function uploadImageToFolder($folder, $filename)
+    {
+        $this->uploadFileToFolder($folder, $filename, IMAGE_FOLDER);
+    }
+
     private function uploadDocumentToFolder(Folder $folder, $filename)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
-
-        $upload = $_FILES[$filename];
-        $destination_directory = $folder->getFullDirectory();
-
-        if (!isset($_FILES[$filename])) {
-            throw new \Exception('File upload could not be found');
-        }
-
-        $total_files = count($_FILES[$filename]['name']);
-        for ($i = 0; $i < $total_files; $i++) {
-            $source_directory = $upload['tmp_name'][$i];
-            $uploaded_file_name = $upload['name'][$i];
-            $type = $upload['type'][$i];
-            $error = $upload['error'][$i];
-            $size = $upload['size'][$i];
-
-            $file = new PHPWS_Document();
-            $file->setFilename($uploaded_file_name);
-
-            $new_file_name = $file->file_name;
-            $destination_path = $destination_directory . $new_file_name;
-
-            $this->checkDuplicate($destination_path);
-            $this->checkMimeType($source_directory, $uploaded_file_name, $folder->ftype);
-            $this->checkSize($source_directory, $size, $folder->ftype);
-
-            move_uploaded_file($source_directory, $destination_path);
-            $file->setDirectory($folder->getFullDirectory());
-            $file->setSize($size);
-            $file->file_type = $type;
-            $file->setFolderId($folder->id);
-            $title = preg_replace('/\.\w+$/', '', str_replace('_', ' ', $new_file_name));
-            $file->setTitle(ucfirst($title));
-            // save is false because the file is already written
-            $file->save(false);
-        }
+        $this->uploadFileToFolder($folder, $filename, DOCUMENT_FOLDER);
     }
 
     private function uploadMediaToFolder($folder, $filename)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-        $file = new PHPWS_Multimedia($id);
-        $file->setDirectory($folder->getFullDirectory());
-        $file->save();
+        $this->uploadFileToFolder($folder, $filename, MULTIMEDIA_FOLDER);
     }
 
 }

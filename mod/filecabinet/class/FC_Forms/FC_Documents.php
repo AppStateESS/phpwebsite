@@ -10,12 +10,6 @@ class FC_Documents extends FC_Folder_Factory
 {
     protected $ftype = DOCUMENT_FOLDER;
 
-    protected function loadTemplate()
-    {
-        $this->template = new \Template();
-        $this->template->setModuleTemplate('filecabinet', 'FC_Forms/document.html');
-    }
-
     public function getForm()
     {
         \Layout::addStyle('filecabinet', 'FC_Forms/form_style.css');

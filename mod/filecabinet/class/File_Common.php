@@ -466,15 +466,28 @@ class File_Common
             return $result;
         }
 
+        $this->deleteFile();
+
+        PHPWS_Error::logIfError($this->deleteAssoc());
+        return true;
+    }
+
+    public function deleteFile()
+    {
         $path = $this->getPath();
         if (!preg_match('/^(https?|rtmp):/', $path)) {
             if (is_file($path)) {
                 unlink($path);
             }
         }
+    }
 
-        PHPWS_Error::logIfError($this->deleteAssoc());
-        return true;
+    public function deleteThumbnail()
+    {
+        $tn = $this->thumbnailPath();
+        if (is_file($tn) && !unlink($tn)) {
+            throw new \Exception('Could not delete thumbnail: ' . $tn);
+        }
     }
 
     public function moveToFolder()

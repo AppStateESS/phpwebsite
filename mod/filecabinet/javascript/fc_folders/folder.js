@@ -23,13 +23,43 @@ $(window).load(function() {
 });
 
 function FolderList() {
-    var t = this;
     this.current_folder;
     this.dropzone;
+    this.modal;
+    var t = this;
+    /*
+    this.modal_node;
+    this.modal_title;
+    this.modal_body;
+    this.modal_footer;
+    */
 
     this.init = function() {
         this.loadFolderSelect();
         this.loadUploadButton();
+        this.loadNewFolderButton();
+        this.loadModal();
+    };
+
+    this.loadModal = function() {
+        this.modal = new myModal();
+        this.modal.boot();
+    };
+
+    this.loadNewFolderButton = function() {
+        $('#edit-file-form').on('hidden.bs.modal', function(e) {
+            $('#create-folder-submit').remove();
+        });
+        $('#create-folder').click(function() {
+            var create_form = '<input type="textfield" name="folder_name" class="form-control" placeholder="Enter folder name" />';
+            t.modal.title('Create folder');
+            t.modal.body(create_form);
+            t.modal.footer('<button class="btn btn-success" id="create-folder-submit">Save</button>');
+            $('#create-folder-submit').click(function(){
+                console.log('i am working');
+            });
+            t.modal.show();
+        });
     };
 
     this.loadFolderSelect = function() {
@@ -42,7 +72,7 @@ function FolderList() {
 
     this.setCurrentFolder = function(folder)
     {
-        t.current_folder = new Folder(folder);
+        t.current_folder = new Folder(folder, this);
         t.current_folder.init();
         //console.log(t.current_folder);
         //t.current_folder.setActive();
@@ -59,7 +89,7 @@ function FolderList() {
                         ftype: t.current_folder.ftype,
                         id: value
                     }).
-                    success(function(data) {
+                    done(function(data) {
                         editor.insertHtml(data);
                     });
         });
@@ -78,7 +108,7 @@ function FolderList() {
 
     this.loadUploadButton = function()
     {
-        $('.upload-file').click(function() {
+        $('#upload-file').click(function() {
             $('#dropzone-background').show({
                 complete: function() {
                     $('#dz-folder-id').val(t.current_folder.id);
@@ -99,8 +129,41 @@ function FolderList() {
     };
 }
 
-function Folder(folder) {
+function myModal() {
+    var title_node;
+    var body_node;
+    var footer_node;
+    var self_node;
+
+    this.boot = function() {
+        this.self_node = $('#edit-file-form');
+        this.title_node = $('#edit-file-form .modal-title');
+        this.body_node = $('#edit-file-form .modal-body');
+        this.footer_node = $('#edit-file-form .modal-footer');
+    };
+
+    this.title = function(title) {
+        this.title_node.text(title);
+    };
+
+    this.body = function(body) {
+        this.body_node.html(body);
+    };
+
+    this.footer = function(footer) {
+        this.footer_node.append(footer);
+    };
+
+    this.show = function() {
+        this.self_node.modal('show');
+    };
+
+
+}
+
+function Folder(folder, parent) {
     var t = this;
+    this.parent = parent;
     this.folder = $(folder);
     this.id = this.folder.data('folderId');
     this.ftype = this.folder.data('ftype');
@@ -158,6 +221,35 @@ function Folder(folder) {
         this.loadRowSelection();
         this.resetSelectedRows();
         this.initializeDelete();
+        this.initializeZoom();
+        this.initializeEdit();
+    };
+
+    this.initializeEdit = function() {
+        $('.edit-file').click(function() {
+            var file_id = $(this).data('id');
+            $.getJSON('index.php', {
+                module: 'filecabinet',
+                ckop: 'file_form',
+                ftype: this.ftype,
+                file_id: file_id
+            })
+                    .done(function(data) {
+                        t.parent.modal.title(data.title);
+                        t.parent.modal.body(data.content);
+                        t.parent.modal.show();
+                    });
+        });
+    };
+
+    this.initializeZoom = function() {
+        $('.view-file').popover({
+            content: function() {
+                return '<img src="' + $(this).data('url') + '" />';
+            },
+            html: true,
+            trigger: 'hover'
+        });
     };
 
     this.initializeDelete = function() {
@@ -219,7 +311,7 @@ function Folder(folder) {
             t.selected_rows.push(row_id);
             $(selected).addClass('success');
         }
-    }
+    };
 
     this.removeSelectedRow = function(row_id) {
         t.selected_rows.splice($.inArray(row_id, t.selected_rows), 1);
@@ -243,7 +335,7 @@ function Folder(folder) {
                         ftype: t.ftype,
                         id: file_id
                     }).
-                    success(function()
+                    done(function()
                     {
                         file_row.hide();
                         t.loadFiles();

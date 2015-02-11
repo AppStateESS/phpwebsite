@@ -1,7 +1,8 @@
 <?php if($files): foreach($files as $f): extract($f);?>
 <tr class="file-row" data-id="<?=$id?>">
     <td>
-        <i class="fa fa-edit fa-lg edit-file pointer" data-id="<?=$id?>"></i> 
+        <a data-url="<?=$filepath?>" data-id="<?=$id?>" class="view-file pointer" style="color : inherit"><i class="fa fa-search fa-lg"></i></a>
+        <i class="fa fa-edit fa-lg edit-file pointer" data-id="<?=$id?>"></i>
     </td>
     <td class="file-title pointer">
         <?=$title?>
