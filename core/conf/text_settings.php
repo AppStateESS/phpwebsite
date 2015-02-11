@@ -16,7 +16,7 @@
  */
 
 define('PHPWS_ALLOWED_TAGS', '<pre>
-<strong><b><a><i><u><ul><ol><li>
+<strong><s><b><a><i><u><ul><ol><li>
 <table><tr><td><tbody><dd><dt><dl>
 <p><br><div><span><blockquote><map><area>
 <th><tt><img><pre><hr><h1><h2><h3><h4><h5><h6>
