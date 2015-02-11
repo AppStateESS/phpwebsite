@@ -74,7 +74,7 @@ abstract class FC_Folder_Factory
         javascript('authkey', null, null, true);
         $accepted_files = $this->getAllowedFileTypes();
         $included_script = "<script type='text/javascript'>Dropzone.autoDiscover = false;</script>"
-                . "<script type='text/javascript'>var accepted_files='$accepted_files';</script>";
+                . "<script type='text/javascript'>var accepted_files='$accepted_files';var ftype=$this->ftype;</script>";
         \Layout::addJSHeader($included_script, 'fc_accepted_files');
 
         $source = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/fc_folders/folder.js';
@@ -107,7 +107,7 @@ abstract class FC_Folder_Factory
      * 
      * @return type
      */
-    protected function printFolderList()
+    public function printFolderList($active_id=0)
     {
         $this->folders = $this->pullFolderRows($this->ftype);
         if (empty($this->folders)) {
@@ -115,12 +115,13 @@ abstract class FC_Folder_Factory
         }
         $id = $title = null;
 
-        $active_set = false;
         foreach ($this->folders as $folder) {
             extract($folder);
-            if (!$active_set) {
+            if (!$active_id) {
                 $active_class = 'active';
-                $active_set = true;
+                $active_id = $folder['id'];
+            } elseif($active_id == $folder['id']) {
+                $active_class = 'active';
             } else {
                 $active_class = null;
             }

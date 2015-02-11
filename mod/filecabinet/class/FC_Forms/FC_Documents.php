@@ -16,9 +16,9 @@ class FC_Documents extends FC_Folder_Factory
         $this->loadJavascript();
         $this->loadTemplate();
 
-        $tpl['folder_list'] = $this->printFolderList();
-
-        $this->template->addVariables($tpl);
+        //$tpl['folder_list'] = $this->printFolderList();
+        //$this->template->addVariables($tpl);
+        
         return $this->template->get();
     }
 

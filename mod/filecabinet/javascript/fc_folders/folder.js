@@ -1,6 +1,7 @@
 var FolderList = new FolderList;
 var CKEDITOR = window.parent.CKEDITOR;
 CKEDITOR.config.allowedContent = true;
+// ftype and accepted_files are loaded before this script
 
 var okListener = function(ev) {
     //this._.editor.insertHtml(FolderList.getContent());
@@ -26,19 +27,33 @@ function FolderList() {
     this.current_folder;
     this.dropzone;
     this.modal;
+    this.active_folder = 0;
     var t = this;
-    /*
-    this.modal_node;
-    this.modal_title;
-    this.modal_body;
-    this.modal_footer;
-    */
+
 
     this.init = function() {
-        this.loadFolderSelect();
+        // pull folder listing
+        this.loadFolderList(0);
+
         this.loadUploadButton();
         this.loadNewFolderButton();
         this.loadModal();
+    };
+
+    /**
+     * Pulls folder listing
+     * @returns void
+     */
+    this.loadFolderList = function() {
+        $.get('index.php', {
+            module: 'filecabinet',
+            ckop: 'list_folders',
+            ftype: ftype,
+            active_folder: this.active_folder
+        }).done(function(data) {
+            $('#folder-list ul').html(data);
+            t.loadFolderSelect();
+        });
     };
 
     this.loadModal = function() {
@@ -51,14 +66,32 @@ function FolderList() {
             $('#create-folder-submit').remove();
         });
         $('#create-folder').click(function() {
-            var create_form = '<input type="textfield" name="folder_name" class="form-control" placeholder="Enter folder name" />';
+            var create_form = '<input type="textfield" id="folder-name" name="folder_name" class="form-control" placeholder="Enter folder name" />';
             t.modal.title('Create folder');
             t.modal.body(create_form);
             t.modal.footer('<button class="btn btn-success" id="create-folder-submit">Save</button>');
-            $('#create-folder-submit').click(function(){
-                console.log('i am working');
-            });
             t.modal.show();
+            t.loadFolderSaveButton();
+        });
+    };
+
+    this.loadFolderSaveButton = function() {
+        $('#create-folder-submit').click(function() {
+            var title = $('#folder-name').val();
+            if (title.length > 0) {
+                $.post('index.php', {
+                    module: 'filecabinet',
+                    ckop: 'save_folder',
+                    title: title,
+                    ftype: ftype
+                }).done(function(data) {
+                    t.active_folder = data;
+                    t.modal.hide();
+                    t.loadFolderList();
+                });
+            } else {
+                t.modal.hide();
+            }
         });
     };
 
@@ -74,8 +107,6 @@ function FolderList() {
     {
         t.current_folder = new Folder(folder, this);
         t.current_folder.init();
-        //console.log(t.current_folder);
-        //t.current_folder.setActive();
     };
 
     this.loadContent = function(editor)
@@ -86,7 +117,7 @@ function FolderList() {
                     {
                         module: 'filecabinet',
                         ckop: 'get_file',
-                        ftype: t.current_folder.ftype,
+                        ftype: ftype,
                         id: value
                     }).
                     done(function(data) {
@@ -158,6 +189,10 @@ function myModal() {
         this.self_node.modal('show');
     };
 
+    this.hide = function() {
+        this.self_node.modal('hide');
+    };
+
 
 }
 
@@ -166,7 +201,6 @@ function Folder(folder, parent) {
     this.parent = parent;
     this.folder = $(folder);
     this.id = this.folder.data('folderId');
-    this.ftype = this.folder.data('ftype');
     this.order = 1; // 0 descend (z-a), 1 ascend (a-z)
     this.selected_rows = [];
     this.lock_deletion = true;
@@ -189,9 +223,10 @@ function Folder(folder, parent) {
                 {
                     module: 'filecabinet',
                     ckop: 'list_folder_files',
-                    ftype: this.ftype,
+                    ftype: ftype,
                     folder_id: this.id,
-                    order: this.order
+                    order: this.order,
+                    active: this.parent.active_folder
                 }, function(data) {
             $('#files').html(data);
         }).success(function() {
@@ -231,7 +266,7 @@ function Folder(folder, parent) {
             $.getJSON('index.php', {
                 module: 'filecabinet',
                 ckop: 'file_form',
-                ftype: this.ftype,
+                ftype: ftype,
                 file_id: file_id
             })
                     .done(function(data) {
@@ -332,7 +367,7 @@ function Folder(folder, parent) {
                         module: 'filecabinet',
                         ckop: 'delete_file',
                         authkey: authkey,
-                        ftype: t.ftype,
+                        ftype: ftype,
                         id: file_id
                     }).
                     done(function()

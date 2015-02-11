@@ -83,39 +83,67 @@ class FC_Forms
     public function handle()
     {
         $request = \Server::getCurrentRequest();
-        switch ($request->getVar('ckop')) {
-            case 'form':
-                $this->form();
-                break;
+        try {
+            switch ($request->getVar('ckop')) {
+                case 'form':
+                    $this->form();
+                    break;
 
-            case 'save_file':
-                $this->saveFile($request);
-                exit();
+                case 'save_file':
+                    $this->saveFile($request);
+                    exit();
 
-            case 'delete_file':
-                $this->deleteFile($request);
-                exit();
+                case 'delete_file':
+                    $this->deleteFile($request);
+                    exit();
 
-            case 'list_folder_files':
-                $this->printFolderFiles();
-                exit();
+                case 'list_folder_files':
+                    $this->printFolderFiles();
+                    exit();
 
-            case 'get_file':
-                $this->printFile($request);
-                exit();
-                
-            case 'file_form':
-                $this->fileForm($request);
-                exit();
+                case 'get_file':
+                    $this->printFile($request);
+                    exit();
 
-            default:
-                throw new \Http\MethodNotAllowedException('Unknown request');
+                case 'file_form':
+                    $this->fileForm($request);
+                    exit();
+
+                case 'save_folder':
+                    $this->saveFolder($request);
+                    exit();
+
+                case 'list_folders':
+                    $this->printFolderList($request);
+                    exit();
+
+                default:
+                    throw new \Http\MethodNotAllowedException('Unknown request');
+            }
+
+            echo \Layout::wrap($this->getContent(), $this->getTitle(), true);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
-
-        echo \Layout::wrap($this->getContent(), $this->getTitle(), true);
         exit();
     }
-    
+
+    private function printFolderList(\Request $request)
+    {
+        $active_folder = $request->getVar('active_folder');
+        echo $this->factory->printFolderList($active_folder);
+    }
+
+    private function saveFolder(\Request $request)
+    {
+        $folder = new Folder();
+
+        $folder->setTitle($request->getVar('title'));
+        $folder->setFtype($request->getVar('ftype'));
+        $folder->save();
+        echo $folder->id;
+    }
+
     private function fileForm(\Request $request)
     {
         $data['title'] = 'Form title';
@@ -246,12 +274,12 @@ class FC_Forms
     private function saveUploadedFile($file)
     {
         $thumb = false;
-        
+
         if (is_a($file, 'PHPWS_Image')) {
             $thumb = true;
             list($width, $height) = getimagesize($file->getPath());
-            $file->width = (int)$width;
-            $file->height = (int)$height;
+            $file->width = (int) $width;
+            $file->height = (int) $height;
             $result = $file->save(true, false, true);
         } elseif (is_a($file, 'PHPWS_Document')) {
             $result = $file->save(false);

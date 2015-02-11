@@ -16,9 +16,9 @@ class FC_Images extends FC_Folder_Factory
         $this->loadJavascript();
         $this->loadTemplate();
 
-        $tpl['folder_list'] = $this->printFolderList();
+        //$tpl['folder_list'] = $this->printFolderList();
+        //$this->template->addVariables($tpl);
 
-        $this->template->addVariables($tpl);
         return $this->template->get();
     }
 

@@ -16,7 +16,6 @@
     <div class="row">
         <div id="folder-list" class="col-sm-3">
             <ul class="list-unstyled">
-                <?=$folder_list?>
             </ul>
         </div>
         <div class="col-sm-9">
@@ -25,7 +24,9 @@
                     <tr>
                         <th>&nbsp;</th>
                         <th>Name <i class="fa fa-caret-down"></i></th>
-                        <th><i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i></th>
+                        <th>
+                            <i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="files">
