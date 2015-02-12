@@ -34,7 +34,7 @@ class FC_Forms
     {
         $content = $this->factory->printFolderFiles();
         if (empty($content)) {
-            echo 'No files found';
+            echo '<tr><td colspan="3">No files found</td></tr>';
         } else {
             echo $content;
         }
@@ -89,8 +89,8 @@ class FC_Forms
                     $this->form();
                     break;
 
-                case 'save_file':
-                    $this->saveFile($request);
+                case 'upload_file':
+                    $this->uploadFile($request);
                     exit();
 
                 case 'delete_file':
@@ -117,6 +117,10 @@ class FC_Forms
                     $this->printFolderList($request);
                     exit();
 
+                case 'save_file':
+                    $this->saveFile($request);
+                    exit();
+
                 default:
                     throw new \Http\MethodNotAllowedException('Unknown request');
             }
@@ -126,6 +130,32 @@ class FC_Forms
             echo $e->getMessage();
         }
         exit();
+    }
+
+    private function saveFile(\Request $request)
+    {
+        switch ($request->getVar('ftype')) {
+            case DOCUMENT_FOLDER:
+                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                $doc = new PHPWS_Document($request->getVar('file_id'));
+                $doc->setTitle($request->getVar('title'));
+                $doc->save(false);
+                break;
+
+            case IMAGE_FOLDER:
+                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                $img = new PHPWS_Image($request->getVar('file_id'));
+                $img->setTitle($request->getVar('title'));
+                $img->save(false, false, false);
+                break;
+
+            case MULTIMEDIA_FOLDER:
+                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                $mm = new PHPWS_Multimedia($request->getVar('file_id'));
+                $mm->setTitle($request->getVar('title'));
+                $mm->save(false, false);
+                break;
+        }
     }
 
     private function printFolderList(\Request $request)
@@ -146,6 +176,11 @@ class FC_Forms
         }
         $folder->setTitle($request->getVar('title'));
 
+        if (empty($folder->title)) {
+            $this->sendErrorHeader('<div class="alert alert-danger"><i class="fa fa-times fa-lg"></i> May not use an empty folder name.</div>');
+            return;
+        }
+
         $db = \Database::newDB();
         $db->addTable('folders')->addFieldConditional('title', $folder->title);
 
@@ -157,13 +192,6 @@ class FC_Forms
             $folder->save();
             echo $folder->id;
         }
-    }
-
-    private function fileForm(\Request $request)
-    {
-        $data['title'] = 'Form title';
-        $data['content'] = '<p>Stuff</p>';
-        echo json_encode($data);
     }
 
     private function printFile(\Request $request)
@@ -202,7 +230,7 @@ class FC_Forms
         $db->delete();
     }
 
-    public function saveFile(\Request $request)
+    public function uploadFile(\Request $request)
     {
         if (Current_User::authorized('filecabinet')) {
             return;

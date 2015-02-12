@@ -103,6 +103,7 @@ function FolderList() {
             t.modal.clearBody();
             t.modal.clearTitle();
             $('#save-folder-submit').remove();
+            $('#save-file-submit').remove();
         });
     }
 
@@ -334,22 +335,54 @@ function Folder(folder, parent) {
         this.copyFileRows();
     };
 
-    this.initializeEdit = function() {
-        $('.edit-file').click(function() {
-            var file_id = $(this).data('id');
-            $.getJSON('index.php', {
-                module: 'filecabinet',
-                ckop: 'file_form',
-                ftype: ftype,
-                file_id: file_id
-            })
-                    .done(function(data) {
-                        t.parent.modal.title(data.title);
-                        t.parent.modal.body(data.content);
-                        t.parent.modal.show();
-                    });
+
+    this.addFileFormToBody = function() {
+        var create_form = '<input maxlength="30" type="text" id="file-name" name="file_name" class="form-control" placeholder="Enter file title" value="" />';
+        t.parent.modal.body(create_form);
+        t.parent.modal.self_node.on('shown.bs.modal', function() {
+            $('#file-name').focus();
         });
     };
+
+    this.initializeEdit = function() {
+        $('.edit-file').click(function() {
+            t.parent.modal.title('Update file');
+            t.addFileFormToBody();
+            var file_id = $(this).data('id');
+            var file_title = $(this).parents('td').siblings('td.file-title').text();
+            file_title = file_title.replace(/^\s+([^\s])/, '\$1');
+            file_title = file_title.replace(/([^\s])\s+$/, '\$1');
+            $('#file-name').val(file_title);
+            t.loadFileSaveButton(file_id);
+            t.parent.modal.show();
+        });
+    };
+    
+    this.loadFileSaveButton = function(file_id) {
+        t.parent.modal.footer('<button class="btn btn-success" id="save-file-submit">Save</button>');
+        $('#save-file-submit').click(function() {
+            var title = $('#file-name').val();
+            if (title.length > 0) {
+                $.post('index.php', {
+                    module: 'filecabinet',
+                    ckop: 'save_file',
+                    title: title,
+                    ftype: ftype,
+                    file_id: file_id
+                }).done(function(data) {
+                    t.parent.modal.hide();
+                    t.loadFiles();
+                }).fail(function(e) {
+                    t.parent.modal.clearBody();
+                    t.parent.modal.body(e.responseText);
+                    t.addFileFormToBody();
+                });
+            } else {
+                t.modal.hide();
+            }
+        });
+    };
+
     this.initializeZoom = function() {
         $('.view-file').popover({
             content: function() {

@@ -23,9 +23,9 @@
             <table class="table table-striped file-list table-hover">
                 <thead>
                     <tr>
-                        <th>&nbsp;</th>
-                        <th>Name <i class="fa fa-caret-down"></i></th>
-                        <th>
+                        <th class="col-md-1">&nbsp;</th>
+                        <th class="col-md-10">Name</th>
+                        <th class="col-md-1">
                             <i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i>
                         </th>
                     </tr>
@@ -39,7 +39,7 @@
 <div id="dropzone-background">
     <form class="dropzone dz-clickable" id="dropzone-area" class="pointer" method="post" action="index.php">
         <input type="hidden" name="module" value="filecabinet" />
-        <input type="hidden" name="ckop" value="save_file" />
+        <input type="hidden" name="ckop" value="upload_file" />
         <input id="dz-folder-id" type="hidden" name="folder_id" value="" />
     </form>
     <div id="close-dropzone"><button type="button" class="btn btn-danger">Finished uploading</button></div>
