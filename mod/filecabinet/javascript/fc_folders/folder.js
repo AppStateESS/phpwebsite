@@ -29,16 +29,17 @@ function FolderList() {
     this.modal;
     this.active_folder = 0;
     var t = this;
-
-
     this.init = function() {
         // pull folder listing
         this.loadModal();
         this.loadFolderList(0);
         this.loadUploadButton();
         this.loadNewFolderButton();
+        this.loadSearch();
     };
+    this.loadSearch = function() {
 
+    };
     /**
      * Pulls folder listing
      * @returns void
@@ -52,6 +53,27 @@ function FolderList() {
         }).done(function(data) {
             $('#folder-list ul').html(data);
             t.loadFolderSelect();
+            t.loadFolderEdit();
+        });
+    };
+
+    this.clearModalOnHide = function() {
+        this.modal.self_node.on('hidden.bs.modal', function(e) {
+            t.modal.clearBody();
+            t.modal.clearTitle();
+            $('#save-folder-submit').remove();
+        });
+    }
+
+
+    this.loadFolderEdit = function() {
+        this.clearModalOnHide();
+        $('.edit-folder').click(function() {
+            t.modal.title('Update folder');
+            t.addFolderFormToBody();
+            $('#folder-name').val(t.current_folder.title);
+            t.loadFolderSaveButton(t.current_folder.id);
+            t.modal.show();
         });
     };
 
@@ -61,37 +83,33 @@ function FolderList() {
     };
 
     this.loadNewFolderButton = function() {
-        this.modal.self_node.on('hidden.bs.modal', function(e) {
-            t.modal.clearBody();
-            t.modal.clearTitle();
-            $('#create-folder-submit').remove();
-        });
+        this.clearModalOnHide();
         $('#create-folder').click(function() {
-            t.addFolderFormToBody();
             t.modal.title('Create folder');
-            t.modal.footer('<button class="btn btn-success" id="create-folder-submit">Save</button>');
+            t.addFolderFormToBody();
+            t.loadFolderSaveButton(0);
             t.modal.show();
-            t.loadFolderSaveButton();
         });
     };
-
     this.addFolderFormToBody = function() {
-        var create_form = '<input type="textfield" id="folder-name" name="folder_name" class="form-control" placeholder="Enter folder name" />';
+        var create_form = '<input maxlength="30" type="text" id="folder-name" name="folder_name" class="form-control" placeholder="Enter folder name" value="" />';
         t.modal.body(create_form);
         t.modal.self_node.on('shown.bs.modal', function() {
             $('#folder-name').focus();
-        })
+        });
     };
-
-    this.loadFolderSaveButton = function() {
-        $('#create-folder-submit').click(function() {
+    
+    this.loadFolderSaveButton = function(folder_id) {
+        t.modal.footer('<button class="btn btn-success" id="save-folder-submit">Save</button>');
+        $('#save-folder-submit').click(function() {
             var title = $('#folder-name').val();
             if (title.length > 0) {
                 $.post('index.php', {
                     module: 'filecabinet',
                     ckop: 'save_folder',
                     title: title,
-                    ftype: ftype
+                    ftype: ftype,
+                    folder_id: folder_id
                 }).done(function(data) {
                     t.active_folder = data;
                     t.modal.hide();
@@ -106,21 +124,17 @@ function FolderList() {
             }
         });
     };
-
     this.loadFolderSelect = function() {
         this.setCurrentFolder($('#folder-list li.folder.active'));
-
         $('#folder-list li.folder').click(function() {
             t.setCurrentFolder(this);
         });
     };
-
     this.setCurrentFolder = function(folder)
     {
         t.current_folder = new Folder(folder, this);
         t.current_folder.init();
     };
-
     this.loadContent = function(editor)
     {
         var content = '';
@@ -137,7 +151,6 @@ function FolderList() {
                     });
         });
     };
-
     this.loadDropzone = function()
     {
         this.dropzone = new Dropzone('#dropzone-area', {
@@ -148,7 +161,6 @@ function FolderList() {
             acceptedFiles: accepted_files
         });
     };
-
     this.loadUploadButton = function()
     {
         $('#upload-file').click(function() {
@@ -169,54 +181,45 @@ function FolderList() {
                 });
             });
         });
-    };
+    }
+    ;
 }
 
 function myModal() {
-    // the modal itself
+// the modal itself
     var self_node;
     var title_node;
     var body_node;
     var footer_node;
-
     this.boot = function() {
         this.self_node = $('#edit-file-form');
         this.title_node = $('#edit-file-form .modal-title');
         this.body_node = $('#edit-file-form .modal-body');
         this.footer_node = $('#edit-file-form .modal-footer');
     };
-
     this.title = function(title) {
         this.title_node.text(title);
     };
-
     this.clearBody = function() {
         this.body_node.text('');
     };
-
     this.clearTitle = function() {
         this.title_node.text('');
     };
-
     this.body = function(body) {
         this.body_node.append(body);
     };
-
     this.footer = function(footer) {
         this.footer_node.append(footer);
     };
-
     this.show = function() {
         this.self_node.modal('show');
     };
-
     this.hide = function() {
         this.self_node.modal('hide');
         this.clearBody();
         this.clearTitle();
     };
-
-
 }
 
 function Folder(folder, parent) {
@@ -227,20 +230,18 @@ function Folder(folder, parent) {
     this.order = 1; // 0 descend (z-a), 1 ascend (a-z)
     this.selected_rows = [];
     this.lock_deletion = true;
-
+    this.title = this.folder.text();
     this.init = function()
     {
         this.setActive();
         this.loadFiles();
         this.loadLockIcon();
     };
-
     this.setActive = function()
     {
         $('.folder').removeClass('active');
         this.folder.addClass('active');
     };
-
     this.loadFiles = function() {
         $.get('index.php',
                 {
@@ -256,11 +257,9 @@ function Folder(folder, parent) {
             t.fileLoadComplete();
         });
     };
-
     this.setOrder = function(order) {
         this.order = order;
     };
-
     this.resetSelectedRows = function() {
         var file_rows = $('.file-list .file-row');
         file_rows.each(function(index, value) {
@@ -270,7 +269,6 @@ function Folder(folder, parent) {
             }
         });
     };
-
     /**
      * Run at completion of all folder rows displayed by loadFiles
      * @returns
@@ -282,7 +280,6 @@ function Folder(folder, parent) {
         this.initializeZoom();
         this.initializeEdit();
     };
-
     this.initializeEdit = function() {
         $('.edit-file').click(function() {
             var file_id = $(this).data('id');
@@ -299,7 +296,6 @@ function Folder(folder, parent) {
                     });
         });
     };
-
     this.initializeZoom = function() {
         $('.view-file').popover({
             content: function() {
@@ -309,7 +305,6 @@ function Folder(folder, parent) {
             trigger: 'hover'
         });
     };
-
     this.initializeDelete = function() {
         if (t.lock_deletion) {
             this.lockDelete();
@@ -317,7 +312,6 @@ function Folder(folder, parent) {
             this.unlockDelete();
         }
     };
-
     /**
      * Can delete, it is unlocked
      * @returns void
@@ -330,7 +324,6 @@ function Folder(folder, parent) {
         $('.delete-file').removeClass('locked');
         this.loadDeleteButton();
     };
-
     /**
      * Cannot delete, it is locked
      * @returns void
@@ -343,7 +336,6 @@ function Folder(folder, parent) {
         $('.delete-file').addClass('locked');
         this.unloadDeleteButton();
     };
-
     this.loadLockIcon = function() {
         $('#delete-lock').click(function() {
             if (t.lock_deletion) {
@@ -353,13 +345,11 @@ function Folder(folder, parent) {
             }
         });
     };
-
     this.loadRowSelection = function() {
         $('.file-row').click(function() {
             t.selectRow(this);
         });
     };
-
     this.selectRow = function(selected) {
         var row_id = $(selected).data('id');
         if ($(selected).hasClass('success')) {
@@ -370,16 +360,12 @@ function Folder(folder, parent) {
             $(selected).addClass('success');
         }
     };
-
     this.removeSelectedRow = function(row_id) {
         t.selected_rows.splice($.inArray(row_id, t.selected_rows), 1);
     };
-
     this.unloadDeleteButton = function() {
         $('.delete-file').unbind('click');
     };
-
-
     this.loadDeleteButton = function() {
         $('.delete-file').click(function() {
             var file_row = $(this).parents('tr');
@@ -396,9 +382,7 @@ function Folder(folder, parent) {
                     done(function()
                     {
                         file_row.hide();
-                        t.loadFiles();
                     });
         });
     };
-
 }

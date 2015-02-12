@@ -136,20 +136,27 @@ class FC_Forms
 
     private function saveFolder(\Request $request)
     {
-        $folder = new Folder();
+        $folder_id = $request->getVar('folder_id');
+
+        if ($folder_id) {
+            $folder = new Folder($folder_id);
+        } else {
+            $folder = new Folder();
+            $folder->setFtype($request->getVar('ftype'));
+        }
         $folder->setTitle($request->getVar('title'));
-        $folder->setFtype($request->getVar('ftype'));
-        
+
         $db = \Database::newDB();
         $db->addTable('folders')->addFieldConditional('title', $folder->title);
+
         $result = $db->selectOneRow();
-        if (!empty($result)) {
+        // if a duplicate row is found (with a different id) then force an error
+        if (!empty($result) && $result['id'] != $folder_id) {
             $this->sendErrorHeader('<div class="alert alert-danger"><i class="fa fa-times fa-lg"></i> A folder with this name already exists</div>');
-            exit();
+        } else {
+            $folder->save();
+            echo $folder->id;
         }
-        
-        $folder->save();
-        echo $folder->id;
     }
 
     private function fileForm(\Request $request)
