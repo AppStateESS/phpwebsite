@@ -28,7 +28,9 @@ function FolderList() {
     this.dropzone;
     this.modal;
     this.active_folder = 0;
+
     var t = this;
+
     this.init = function() {
         // pull folder listing
         this.loadModal();
@@ -37,8 +39,36 @@ function FolderList() {
         this.loadNewFolderButton();
         this.loadSearch();
     };
-    this.loadSearch = function() {
 
+    this.searchRows = function(query) {
+        query = query.replace(/[^\w\s]/i, '');
+        if (query.length > 0) {
+            var exp = new RegExp(query, 'gi');
+            $.each(this.current_folder.file_rows, function(index, value) {
+                var title = $('td.file-title', value).text();
+                if (title.match(exp)) {
+                    $(value).show();
+                } else {
+                    $(value).hide();
+                }
+            });
+        } else {
+            $.each(this.current_folder.file_rows, function(index, value) {
+                $(value).show();
+            });
+        }
+    };
+
+    this.loadSearch = function() {
+        var search = null;
+
+        $('#search-field').keyup(function() {
+            _this = $(this);
+            clearTimeout(search);
+            search = setTimeout(function() {
+                t.searchRows(_this.val());
+            }, 1000);
+        });
     };
     /**
      * Pulls folder listing
@@ -98,7 +128,7 @@ function FolderList() {
             $('#folder-name').focus();
         });
     };
-    
+
     this.loadFolderSaveButton = function(folder_id) {
         t.modal.footer('<button class="btn btn-success" id="save-folder-submit">Save</button>');
         $('#save-folder-submit').click(function() {
@@ -231,17 +261,27 @@ function Folder(folder, parent) {
     this.selected_rows = [];
     this.lock_deletion = true;
     this.title = this.folder.text();
+    this.file_rows;
+
+
     this.init = function()
     {
         this.setActive();
         this.loadFiles();
         this.loadLockIcon();
     };
+
+
+    this.copyFileRows = function() {
+        this.file_rows = $('.file-row');
+    };
+
     this.setActive = function()
     {
         $('.folder').removeClass('active');
         this.folder.addClass('active');
     };
+
     this.loadFiles = function() {
         $.get('index.php',
                 {
@@ -255,6 +295,7 @@ function Folder(folder, parent) {
             $('#files').html(data);
         }).success(function() {
             t.fileLoadComplete();
+            t.copyFileRows();
         });
     };
     this.setOrder = function(order) {
