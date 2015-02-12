@@ -59,6 +59,8 @@ function FolderList() {
         }
     };
 
+
+
     this.loadSearch = function() {
         var search = null;
 
@@ -68,6 +70,15 @@ function FolderList() {
             search = setTimeout(function() {
                 t.searchRows(_this.val());
             }, 1000);
+        });
+
+        $('#clear-search').click(function() {
+            $('#search-field').val('');
+            t.searchRows('');
+        });
+
+        $('#save-search').click(function() {
+            t.searchRows($('#search-field').val());
         });
     };
     /**
@@ -295,7 +306,7 @@ function Folder(folder, parent) {
             $('#files').html(data);
         }).success(function() {
             t.fileLoadComplete();
-            t.copyFileRows();
+            t.parent.searchRows($('#search-field').val());
         });
     };
     this.setOrder = function(order) {
@@ -320,7 +331,9 @@ function Folder(folder, parent) {
         this.initializeDelete();
         this.initializeZoom();
         this.initializeEdit();
+        this.copyFileRows();
     };
+
     this.initializeEdit = function() {
         $('.edit-file').click(function() {
             var file_id = $(this).data('id');
