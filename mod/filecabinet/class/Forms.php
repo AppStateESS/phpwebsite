@@ -242,7 +242,7 @@ class Cabinet_Form
         $form->addTextField('title', $folder->title);
         $form->setSize('title', 40, 255);
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
-        
+
         if ($folder->ftype == DOCUMENT_FOLDER) {
             $form->addRadio('public_folder', array(0, 1));
             $form->setLabel('public_folder', array(dgettext('filecabinet', 'Indirect links'),
@@ -504,9 +504,6 @@ EOF;
         $tpl['FORM_LABEL'] = dgettext('filecabinet', 'Form upload limit');
         $tpl['ABSOLUTE_LABEL'] = dgettext('filecabinet', 'Absolute upload limit');
 
-        //$tpl['MAX_SYSTEM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['system']);
-        //$tpl['MAX_FORM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['form']);
-        //$tpl['ABSOLUTE_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['absolute']);
         $tpl['MAX_SYSTEM_SIZE'] = File_Common::humanReadable($sizes['system']);
         $tpl['MAX_FORM_SIZE'] = File_Common::humanReadable($sizes['form']);
         $tpl['ABSOLUTE_SIZE'] = File_Common::humanReadable($sizes['absolute']);
@@ -660,7 +657,11 @@ If you are sure, type Y-E-S below.'),
     public function sortType($known, &$all_file_types)
     {
         foreach ($known as $type) {
-            @$file_info = $all_file_types[$type];
+            if (isset($all_file_types[$type])) {
+                $file_info = $all_file_types[$type];
+            } else {
+                $file_info = null;
+            }
 
             if (empty($file_info) || (isset($file_info['base']) && @$file_info['base'] != $type)) {
                 continue;

@@ -1,0 +1,47 @@
+<div id="file-cabinet">
+    <div class="row header">
+        <div class="col-sm-3">
+            <button id="upload-file" class="btn btn-primary"><i class="fa fa-arrow-up"></i> Upload</button>
+            <button id="create-folder" class="btn btn-default"><i class="fa fa-folder-o"></i> New folder</button>
+        </div>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <input type="text" id="search-field" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button class="btn btn-danger" id="clear-search" type="button"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-success" id="save-search" type="button"><i class="fa fa-check"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="folder-list" class="col-sm-3">
+            <ul class="list-unstyled">
+            </ul>
+        </div>
+        <div class="col-sm-9">
+            <table class="table table-striped file-list table-hover">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Name <i class="fa fa-caret-down"></i></th>
+                        <th>
+                            <i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="files">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="dropzone-background">
+    <form class="dropzone dz-clickable" id="dropzone-area" class="pointer" method="post" action="index.php">
+        <input type="hidden" name="module" value="filecabinet" />
+        <input type="hidden" name="ckop" value="save_file" />
+        <input id="dz-folder-id" type="hidden" name="folder_id" value="" />
+    </form>
+    <div id="close-dropzone"><button type="button" class="btn btn-danger">Finished uploading</button></div>
+</div>
+<?=$modal?>

@@ -10,7 +10,7 @@ th {
 }
 
 
-div#folders {
+div#folder-list {
     width : 170px;
     height : 590px;
     background-color : white;
@@ -47,7 +47,7 @@ div#file-type-buttons {
 
 }
 
-div#folders ul, div#file-type-buttons ul {
+div#folder-list ul, div#file-type-buttons ul {
     list-style-type: none;
     margin : 0px;
     padding : 0px;
@@ -58,30 +58,30 @@ div#file-type-buttons ul li {
     padding : 0px 10px;
 }
 
-div#folders ul.file-listing {
+div#folder-list ul.file-listing {
     list-style-type: none;
     margin-left : 10px;
     padding : 0px;
 }
 
-div#folders li.folder {
+div#folder-list li.folder {
     padding : 3px 3px;
     cursor : pointer;
 }
-div#folders li.folder div.folder-file-listing {
+div#folder-list li.folder div.folder-file-listing {
     display : none;
 }
 
-div#folders li img {
+div#folder-list li img {
     vertical-align: bottom;
 }
 
-div#folders div.pick-image, div.pick-document, div.pick-multimedia {
+div#folder-list div.pick-image, div.pick-document, div.pick-multimedia {
     cursor : pointer;
     padding : 2px;
 }
 
-div#folders div.pick-image:hover, div.pick-document:hover {
+div#folder-list div.pick-image:hover, div.pick-document:hover {
     background-color : #ebebeb;
 }
 

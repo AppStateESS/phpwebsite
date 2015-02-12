@@ -342,10 +342,7 @@ class PHPWS_Image extends File_Common
             return $result;
         }
 
-        $tn = $this->thumbnailPath();
-        if (is_file($tn) && !unlink($tn)) {
-            throw new \Exception('Could not delete thumbnail: ' . $tn);
-        }
+        $this->deleteThumbnail();
 
         $path = $this->getResizePath();
         if ($path) {

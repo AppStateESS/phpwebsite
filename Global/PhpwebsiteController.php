@@ -10,8 +10,8 @@
  * @package
  */
 
-class PhpwebsiteController implements Controller {
-
+class PhpwebsiteController implements Controller
+{
     private $module_array_all;
     private $module_array_active;
     private $module_stack;
@@ -58,8 +58,7 @@ class PhpwebsiteController implements Controller {
         } catch (Http\Exception $e) {
             $this->renderResponse($request, $e->getResponse());
         } catch (Exception $e) {
-            $this->renderResponse($request,
-                    new Http\InternalServerErrorResponse(null, $e));
+            $this->renderResponse($request, new Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
@@ -132,12 +131,16 @@ class PhpwebsiteController implements Controller {
 
         // @todo an interface to get at request headers in the Request object...
         // lol oops
-        $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) &&
-                $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+        $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 
         if ($view->getContentType() == 'text/html' && !$ajax) {
-            Layout::add($rendered);
-            $this->skipLayout = false;
+            if (class_exists('Layout')) {
+                Layout::add($rendered);
+                $this->skipLayout = false;
+            } else {
+                echo $rendered;
+                $this->skipLayout = true;
+            }
         } else {
             echo $rendered;
             $this->skipLayout = true;

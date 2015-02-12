@@ -1,0 +1,99 @@
+#folder-list {
+    background-color : #eee;
+    padding:0px;
+}
+#folder-list ul li {
+    padding : .8em;
+    cursor : pointer;
+}
+#folder-list ul li i.admin {
+    display : none;
+}
+#folder-list ul li.active i.admin{
+    display : inline;
+}
+
+#folder-list ul li:hover {
+    background-color : #e3e3e3;
+}
+
+#folder-list ul li.active {
+    border-left : 3px solid #444;
+    padding-left : 8px;
+    font-weight : bold;
+}
+
+#files {
+    overflow : auto;
+}
+
+#files table.file-list tr {
+    cursor : pointer;
+}
+
+#files table.file-list td:nth-child(1) {
+    width : 12%;
+}
+
+#files table.file-list td:nth-child(3) {
+    width : 10%;
+}
+#files table.file-list td:nth-child(4) {
+    width : 10%;
+}
+
+#file-cabinet {
+    position : relative;
+}
+
+#file-cabinet .header {
+    margin-bottom : 8px;
+}
+
+span.admin {
+    float:right;
+}
+
+#dropzone-background {
+    background: rgba(255,255,255,.8);
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:999;
+    display:none;
+}
+
+#dropzone-area {
+    background-color:rgba(255,255,255,1);
+    padding:10px;
+    border:3px #0381FF dashed;
+    width:80%;
+    height:80%;
+    position:absolute;
+    left:10%;
+    top:10%;
+    border-radius: 25px;
+}
+
+#dropzone-area .message {
+    position:absolute;
+    left:40%;
+    color : black;
+}
+
+#close-dropzone {
+    position:absolute;
+    bottom : 0px;
+    text-align:center;
+    width: 100%;
+}
+
+.locked {
+    color : #e3e3e3;
+}
+
+.unlocked {
+    color : inherit;
+}

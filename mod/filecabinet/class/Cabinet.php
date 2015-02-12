@@ -49,6 +49,15 @@ class Cabinet
         }
     }
 
+    public function ckAdmin()
+    {
+        if (!$this->authenticate()) {
+            Current_User::disallow();
+        }
+        $fc_forms = new FC_Forms();
+        $fc_forms->handle();
+    }
+    
     /**
      * Document manager administrative options.
      */
@@ -140,38 +149,6 @@ class Cabinet
         return true;
     }
 
-    private function ckUploadForm($reboot = false)
-    {
-        if (!Current_User::allow('filecabinet')) {
-            echo dgettext('filecabinet', 'Permission not granted');
-            exit();
-        }
-        $ftype = $folder_id = null;
-        if (isset($_POST['ftype'])) {
-            $ftype = $_POST['ftype'];
-        }
-        if (isset($_POST['folder_id'])) {
-            $folder_id = $_POST['folder_id'];
-        }
-        $form = new PHPWS_Form('upload');
-        $form->addHidden('module', 'filecabinet');
-        $form->addHidden('aop', 'ckupload');
-        $form->addHidden('folder_id', $folder_id);
-        $form->addHidden('ftype', $ftype);
-        $form->setId('folder_id', 'folder-id');
-        $form->setId('ftype', 'ftype');
-        $form->addFile('filename');
-        $form->setStyle('filename', 'display:none');
-        $form->addSubmit(dgettext('filecabinet', 'Upload'));
-        $tpl = $form->getTemplate();
-        $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
-        if ($reboot) {
-            $tpl['FOLDER_ID'] = $folder_id;
-        }
-        echo PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/upload.tpl');
-        exit();
-    }
-
     /**
      * Handles admin functions outside of file manager.
      * Expects an 'aop' command.
@@ -206,43 +183,6 @@ class Cabinet
         }
 
         switch ($aop) {
-            case 'ck_add_folder':
-                $this->ckAddFolder();
-                break;
-
-            case 'ckuploadform':
-                $this->ckUploadForm();
-                break;
-
-            case 'ck_edit_file':
-                $this->ckEditFile();
-                break;
-
-            case 'ck_delete_file':
-                $this->ckDeleteFile();
-                break;
-
-            case 'ckupload':
-                $this->ckUpload();
-                break;
-
-            case 'ckeditor':
-                $this->ckEditor();
-                break;
-
-            case 'ck_folder_contents':
-                $this->ckFolderContents();
-                break;
-
-            case 'ck_file_info':
-                $this->ckFileInfo();
-                break;
-
-            case 'ck_folder_listing':
-                echo $this->ckFolderListing($_GET['ftype']);
-                exit();
-                break;
-
             case 'image':
                 $this->panel->setCurrentTab('image');
                 $this->title = dgettext('filecabinet', 'Image folders');
@@ -469,121 +409,6 @@ class Cabinet
         }
     }
 
-    private function ckAddFolder()
-    {
-        $folder = new Folder;
-        $folder->setTitle($_GET['fname']);
-        $folder->setFtype($_GET['ftype']);
-        if ($folder->ftype == DOCUMENT_FOLDER) {
-            $folder->public_folder = 0;
-        }
-        $folder->save();
-        echo json_encode(array('success' => true));
-        exit();
-    }
-
-    private function ckEditFile()
-    {
-        if (Current_User::authorized('filecabinet')) {
-            $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
-            $file->setTitle($_GET['title']);
-            $file->save();
-        }
-        exit();
-    }
-
-    private function ckDeleteFile()
-    {
-        if (Current_User::authorized('filecabinet')) {
-            $file = $this->ckGetFileType($_GET['ftype'], $_GET['file_id']);
-            $file->delete();
-        }
-        exit();
-    }
-
-    private function ckGetFileType($ftype, $id = 0)
-    {
-        switch ($ftype) {
-            case '1':
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
-                $file = new PHPWS_Image($id);
-                break;
-
-            case '2':
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
-                $file = new PHPWS_Document($id);
-                break;
-
-            case '3':
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-                $file = new PHPWS_Multimedia($id);
-                break;
-        }
-        return $file;
-    }
-
-    private function ckUpload()
-    {
-        if (Current_User::authorized('filecabinet')) {
-            $error = null;
-            $file = $this->ckGetFileType($_POST['ftype']);
-            $result = $file->importPost('filename');
-            $folder = new Folder($file->folder_id);
-            if ($result) {
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
-                } else {
-                    $file->setDirectory($folder->getFullDirectory());
-                    $file->save();
-                }
-            }
-        }
-
-        $this->ckUploadForm(true);
-    }
-
-    private function ckFileInfo()
-    {
-        switch ($_GET['ftype']) {
-            case '1':
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
-                $file = new PHPWS_Image($_GET['file_id']);
-                break;
-            case '2':
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
-                $file = new PHPWS_Document($_GET['file_id']);
-                break;
-            case '3':
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-                $file = new PHPWS_Multimedia($_GET['file_id']);
-                break;
-        }
-        echo $file->ckFileInfo();
-        exit();
-    }
-
-    private function ckFolderContents()
-    {
-        $this->loadFolder();
-        $data['file_listing'] = $data['folders'] = 'test';
-
-        $this->folder->loadFiles();
-        if (empty($this->folder->_files)) {
-            $data['file_listing'] = '<p style="text-align:center;margin-top:20%"><em>Empty folder</em></p>';
-            $data['folders'] = ' ';
-            echo json_encode($data);
-            exit();
-        }
-        foreach ($this->folder->_files as $file) {
-            $file_list[] = $file->getCKCell();
-            $row[] = $file->getCKRow();
-        }
-
-        $data['file_listing'] = implode(' ', $file_list);
-        $data['folders'] = '<ul class="file-listing"><li>' . implode('</li><li>', $row) . '</li></ul>';
-        echo json_encode($data);
-        exit();
-    }
 
     public function download($document_id)
     {
@@ -1477,72 +1302,6 @@ class Cabinet
         }
     }
 
-    public function ckEditor()
-    {
-        $this->loadfolder();
-
-        if ($this->folder->id) {
-            $ftype = $this->folder->ftype;
-            $tpl['CURRENT_FOLDER'] = $this->folder->id;
-        } else {
-            $tpl['CURRENT_FOLDER'] = 0;
-            $ftype = IMAGE_FOLDER;
-        }
-        $tpl['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
-        $tpl['FOLDER_TYPE'] = $ftype;
-        $tpl['FOLDER_LISTING'] = $this->ckFolderListing();
-        $tpl['AUTHKEY'] = Current_User::getAuthKey();
-        $tpl['NEW_FOLDER'] = '<input type="button" id="create-folder" name="create-folder" value="' . dgettext('filecabinet', 'Add folder') . '" />';
-        $tpl['AUTOFLOAT'] = PHPWS_Settings::get('filecabinet', 'autofloat');
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckeditor/ckeditor.tpl');
-
-        echo $content;
-        exit();
-    }
-
-    private function ckFolderListing()
-    {
-        $this->loadfolder();
-        $ftype = $this->folder->ftype;
-
-        $db = new PHPWS_DB('folders');
-        $db->addWhere('ftype', $ftype);
-        $db->addColumn('id');
-        $db->addColumn('title');
-        $db->addColumn('public_folder');
-        $db->addOrder('title');
-        $result = $db->select();
-        if (PHPWS_Error::logIfError($result)) {
-            if ($ftype == IMAGE_FOLDER) {
-                return dgettext('filecabinet', 'Could not pull image folders.');
-            } elseif ($ftype == DOCUMENT_FOLDER) {
-                return dgettext('filecabinet', 'Could not pull document folders.');
-            } else {
-                return dgettext('filecabinet', 'Could not pull multimedia folders.');
-            }
-        }
-
-        if (empty($result)) {
-            return dgettext('filecabinet', 'No folders found.');
-        }
-
-        foreach ($result as $fldr) {
-            if ($this->folder->id == $fldr['id']) {
-                $img = '<img class="folder-image" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/folder_open.png" />';
-            } else {
-                $img = '<img class="folder-image" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/templates/ckeditor/images/directory.png" />';
-            }
-            $sub['FOLDER_NAME'] = sprintf('<li class="folder" rel="%s"><span>%s %s</span><div class="folder-file-listing"></div></li>', $fldr['id'], $img, $fldr['title']);
-            /* if ($ftype == DOCUMENT_FOLDER) {
-              $sub['PUBLIC'] = $fldr['public_folder'] ? dgettext('filecabinet', 'Public') : dgettext('filecabinet', 'Private');
-              } */
-            $sub['ID'] = $fldr['id'];
-            $tpl['folders'][] = $sub;
-        }
-
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'ckfolders.tpl');
-        return $content;
-    }
 
     public function getResizeIds($image)
     {
