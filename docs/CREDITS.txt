@@ -60,6 +60,12 @@ http://www.phpmyadmin.net/home_page/
 phpPgAdmin
 http://phppgadmin.sourceforge.net/
 
+Bootstrap
+http://getbootstrap.com
+
+Font Awesome Icons
+http://fortawesome.github.io/Font-Awesome/
+
 Horde
 http://horde.org
 
@@ -69,20 +75,11 @@ http://pear.php.net
 Apache
 http://www.apache.org
 
-SourceForge
-http://sourceforge.net
-
 CKeditor
 http://ckeditor.com/
 
-TinyMCE
-http://tinymce.moxiecode.com/
-
 Howard Yeend
 http://www.puremango.co.uk/
-
-Corz (BB decoder)
-http://corz.org/
 
 Geoff Stearns
 SWFObject
@@ -119,16 +116,9 @@ Stefan Petre
 datepicker for Bootstrap
 http://www.eyecon.ro/bootstrap-datepicker/
 
-Marc Grabanski
-Keith Wood
-datepicker - jquery plugin (note: no longer in use)
-
 Jan Sorgalla
 jCarousel
 http://sorgalla.com/jcarousel/
-
-Tango Desktop Project
-http://tango-project.org/
 
 Lightbox2
 Lokesh Dhakar
@@ -141,12 +131,6 @@ http://code.google.com/p/jsmin-php/
 phpqrcode
 Dominik Dzienia
 
-Bootstrap
-http://getbootstrap.com
-
-Fort Awesome Icons
-http://fortawesome.github.io/Font-Awesome/
-
 Swiftmail
 Chris Corbyn
 http://swiftmailer.org/
@@ -154,6 +138,9 @@ http://swiftmailer.org/
 Select2
 Igor Vaynberg
 http://ivaynberg.github.io/select2/
+
+Dropzone.js
+Matias Meno <m@tias.me>, www.colorglare.com
 
 Responsive Image Javascript
 Koen Vendrik, http://kvendrik.com
@@ -216,5 +203,4 @@ Pete Wachs
 Cindy Wallace - Vice Chancellor of Student Development @ AppState
 Kevin Wilcox
 
-And all those who have contributed to phpWebSite. Thanks for your
-support.
+And to all those who have contributed to phpWebSite, thanks for your support.

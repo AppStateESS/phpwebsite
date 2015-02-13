@@ -434,6 +434,13 @@ EOF;
 + Changing default on user session to false. If you want it enabled, do so in settings.
 </pre>
 EOF;
+        case version_compare($currentVersion, '2.8.2', '<'):
+            $content[] = <<<EOF
+<pre>2.8.2 changes
+-----------------
++ Bug Fix: Unstyled permission pop up.
+</pre>
+EOF;
     } // End of switch statement
 
     return TRUE;

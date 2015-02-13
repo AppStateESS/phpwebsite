@@ -5,7 +5,7 @@
  */
 
 $proper_name  = 'Users';
-$version      = '2.8.1';
+$version      = '2.8.2';
 $register     = TRUE;
 $unregister   = TRUE;
 $import_sql   = TRUE;

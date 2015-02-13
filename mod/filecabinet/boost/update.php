@@ -661,6 +661,15 @@ EOF;
 ----------------
 + Javascript windows replaced with Bootstrap modal dropdowns.
 + Fixed thumbnail form.
++ Removed module_created for all folders.
+</pre>
+EOF;
+        case version_compare($version, '2.8.0', '<'):
+            $content[] = <<<EOF
+<pre>2.8.0 changes
+----------------
++ Rewrote CKEditor interaction with Filecabinet. Images and documents functional,
+  multimedia uploads not complete.
 </pre>
 EOF;
             

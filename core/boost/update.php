@@ -481,6 +481,30 @@ Core 2.6.0 Changes
 + Updated datetimepicker script
 </pre>
 EOF;
+            
+        case version_compare($version, '2.7.0', '<'):
+            $content[] = <<<EOF
+<pre>
++ Bug Fix: CKEditor images folder returned.
++ Bug Fix: Database - Blank schema error check added to mysql Table class.
++ Bug Fix: Database - Mislabeled return on getDateType.
++ Change: datepicker - script tags put into head.js
++ Update: Bootstrap and Font Awesome version
++ Feature: Database - added "using" ability. Helps with multi-table deletions.
++ Update: Flowplayer version upped. Captioning ability added.
++ Removed: javascript/editor/ directory and all wysiwyg editors outside of ckeditor
++ Removed: Unsupported modules: phpwsbb, podcaster, and profiler
++ Bug Fix: core/class/DBPager - setDefaultOrder was ignored
++ Bug Fix: Removed @ error suppressors throughout code. Should be fun right?
++ Feature: Added exception messages to JsonErrorView.
+           Previously info had to be dug out of an html encoded exception object.
++ Bug Fix: Global/Pager Search icon with bad class name
++ Feature: Global/Pager Search columns can now be set manually instead of depending on the headers.
++ Feature: Global/Tag - removeClass method - removes a class previously added to the class variable stack
++ Feature: Added authkey javascript for insertion of the authkey value for use in other js scripts.
++ Added: <s> as allowed tag.
+</pre>
+EOF;
     }
     return true;
 }

@@ -218,6 +218,13 @@ function layout_update(&$content, $currentVersion)
 + Removed deprecated ckeditor function.
 </pre>
 EOF;
+        case version_compare($currentVersion, '2.6.1', '<'):
+            $content[] = <<<EOF
+<pre>2.6.1 changes
+--------------------
++ Added THEME_HTTP to the Layout wrap function.
+</pre>
+EOF;
     }
     return true;
 }

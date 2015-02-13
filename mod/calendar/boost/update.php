@@ -301,6 +301,14 @@ function calendar_update(&$content, $version)
 + Administrative forms switched over to modal windows.
 + Using new datetimepicker javascript.</pre>
 EOF;
+        case version_compare($version, '1.8.1', '<'):
+            $content[] = <<<EOF
+<pre>1.8.1
+-------------
++ Rolled back array call specific to PHP 5.4.
++ Increased specificity of .date-label CSS class.
+</pre>
+EOF;
     } // end of switch
 
     return true;

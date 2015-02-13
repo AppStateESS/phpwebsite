@@ -457,6 +457,14 @@ EOF;
 + Fixed: Code uses hide_title. Column name was show_title.
 </pre>
 EOF;
+        case version_compare($currentVersion, '1.9.2', '<'):
+            $content[] = <<<EOF
+<pre>1.9.2 changes
+------------------
++ Fixed: hide_title was not properly formated in install.sql
++ Fixed: Reduced edit popup window height.
+</pre>
+EOF;
     } // end switch
 
     return true;
