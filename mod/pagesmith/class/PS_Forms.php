@@ -226,7 +226,7 @@ class PS_Forms {
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $createText = dgettext('pagesmith', 'New Page');
         $pgtags['NEW'] = "<a href='index.php?module=pagesmith&amp;aop=menu&amp;tab=new' class='button'>$createText/a>";
-        $pgtags['NEW_PAGE_LINK_URI'] = "index.php?module=pagesmith&amp;aop=menu&amp;tab=new";
+        $pgtags['NEW_PAGE_LINK_URI'] = 'index.php?module=pagesmith&aop=pick_template&tpl=text_only&pid=0&authkey=' . \Current_User::getAuthKey();
         $pgtags['NEW_PAGE_LINK_TEXT'] = $createText;
 
         $pager = new DBPager('ps_page', 'PS_Page');

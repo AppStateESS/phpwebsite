@@ -466,6 +466,7 @@ EOF;
 + Feature: Added save button to CKEditor that works in maximize.
 + Feature: Added page update check to page submission.
 + Change: Save button is styled and larger.
++ Change: New page defaults to Text Only template.
 </pre>
 EOF;
     } // end switch
