@@ -6,7 +6,7 @@ CKEDITOR.editorConfig = function (config)
 {
     config.resize = true;
     config.skin = 'moono';
-    config.extraPlugins = 'fc_document,fc_image';
+    config.extraPlugins = 'fc_document,fc_image,save';
     config.allowedContent = true;
     config.removeButtons = 'Underline,Cut,Copy,Iframe,About,Styles,Paste,Image';
     config.removePlugins = 'maxheight';
