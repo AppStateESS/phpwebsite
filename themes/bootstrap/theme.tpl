@@ -14,6 +14,8 @@
         <link href="{THEME_HTTP}css/local.css" rel="stylesheet" media="screen">
         <link href="{THEME_HTTP}css/header.css" rel="stylesheet" media="screen">
         <link rel="stylesheet" href="{THEME_HTTP}font-awesome/css/font-awesome.min.css">
+        {JAVASCRIPT}
+        <script src="{THEME_HTTP}js/bootstrap.min.js"></script>
         {STYLE}
     </head>
     <body id="bootstrap-theme">
@@ -61,6 +63,5 @@
         <footer>
             {LAYOUT_FOOTER}
         </footer>
-        {JAVASCRIPT}
     </body>
 </html>
