@@ -503,7 +503,7 @@ EOF;
 + Feature: Global/Tag - removeClass method - removes a class previously added to the class variable stack
 + Feature: Added authkey javascript for insertion of the authkey value for use in other js scripts.
 + Added: <s> as allowed tag.
-+ Feature: CKEditor Save button added for use with some modules (not PageSmith yet)
++ Feature: CKEditor Save button added for use with some modules.
 </pre>
 EOF;
     }
