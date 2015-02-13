@@ -272,9 +272,8 @@ function Folder(folder, parent) {
     this.order = 1; // 0 descend (z-a), 1 ascend (a-z)
     this.selected_rows = [];
     this.lock_deletion = true;
-    this.title = this.folder.text();
+    this.title = this.folder.text().trim();
     this.file_rows;
-
 
     this.init = function()
     {
@@ -349,15 +348,13 @@ function Folder(folder, parent) {
             t.parent.modal.title('Update file');
             t.addFileFormToBody();
             var file_id = $(this).data('id');
-            var file_title = $(this).parents('td').siblings('td.file-title').text();
-            file_title = file_title.replace(/^\s+([^\s])/, '\$1');
-            file_title = file_title.replace(/([^\s])\s+$/, '\$1');
+            var file_title = $(this).parents('td').siblings('td.file-title').text().trim();
             $('#file-name').val(file_title);
             t.loadFileSaveButton(file_id);
             t.parent.modal.show();
         });
     };
-    
+
     this.loadFileSaveButton = function(file_id) {
         t.parent.modal.footer('<button class="btn btn-success" id="save-file-submit">Save</button>');
         $('#save-file-submit').click(function() {
