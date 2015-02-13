@@ -156,6 +156,11 @@ Please download version 1.1.2.</pre>';
 + Added font-awesome icons.
 + Updated to work with ckeditor 4.
 </pre>';
+        case version_compare($currentVersion, '1.3.11', '<'):
+            $content[] = '<pre>1.3.10 changes
+---------------
++ Added error check in admin for blank titles.
+</pre>';
     }
     return TRUE;
 }

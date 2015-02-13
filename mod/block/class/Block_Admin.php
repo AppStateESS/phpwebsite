@@ -8,7 +8,8 @@
  */
 PHPWS_Core::requireConfig('block');
 
-class Block_Admin {
+class Block_Admin
+{
 
     public static function action()
     {
@@ -69,8 +70,7 @@ class Block_Admin {
                 break;
 
             case 'delete':
-                if (!Current_User::authorized('block', 'delete_block',
-                                $_REQUEST['block_id'])) {
+                if (!Current_User::authorized('block', 'delete_block', $_REQUEST['block_id'])) {
                     Current_User::disallow();
                 }
 
@@ -80,8 +80,7 @@ class Block_Admin {
                 break;
 
             case 'edit':
-                if (!Current_User::authorized('block', 'edit_block',
-                                $_REQUEST['block_id'])) {
+                if (!Current_User::authorized('block', 'edit_block', $_REQUEST['block_id'])) {
                     Current_User::disallow();
                 }
                 $title = ('Edit Block');
@@ -89,19 +88,16 @@ class Block_Admin {
                 break;
 
             case 'pin_all':
-                if (!Current_User::authorized('block', 'delete_block',
-                                $_REQUEST['block_id'])) {
+                if (!Current_User::authorized('block', 'delete_block', $_REQUEST['block_id'])) {
                     Current_User::disallow();
                 }
 
                 Block_Admin::pinBlockAll($block);
-                Block_Admin::sendMessage(dgettext('block', 'Block pinned'),
-                        'list');
+                Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
                 break;
 
             case 'remove':
-                if (!Current_User::authorized('block', 'edit_block',
-                                $_REQUEST['block_id'])) {
+                if (!Current_User::authorized('block', 'edit_block', $_REQUEST['block_id'])) {
                     Current_User::disallow();
                 }
                 Block_Admin::removeBlock();
@@ -111,11 +107,9 @@ class Block_Admin {
             case 'postBlock':
                 if (Block_Admin::postBlock($block)) {
                     $result = $block->save();
-                    Block_Admin::sendMessage(dgettext('block', 'Block saved'),
-                            'list');
+                    Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
                 } else {
-                    $message = dgettext('block',
-                            'Block must have a title, some content, or a file attachment.');
+                    $message = dgettext('block', 'Block must have a title, some content, or a file attachment.');
                     $title = ('Edit Block');
                     $content = Block_Admin::edit($block);
                 }
@@ -133,8 +127,7 @@ class Block_Admin {
                     $title = dgettext('block', 'Settings');
                     $content = Block_Admin::settings();
                 } else {
-                    Block_Admin::sendMessage(dgettext('block', 'Settings saved'),
-                            'settings');
+                    Block_Admin::sendMessage(dgettext('block', 'Settings saved'), 'settings');
                 }
                 break;
 
@@ -150,17 +143,14 @@ class Block_Admin {
                 } else {
                     $template['TITLE'] = dgettext('block', 'New Block');
                     $template['CONTENT'] = Block_Admin::edit($block, TRUE);
-                    $template['MESSAGE'] = dgettext('block',
-                            'Block must have a title, some content, or a file attachment.');
-                    $content = PHPWS_Template::process($template, 'block',
-                                    'admin.tpl');
+                    $template['MESSAGE'] = dgettext('block', 'Block must have a title, some content, or a file attachment.');
+                    $content = PHPWS_Template::process($template, 'block', 'admin.tpl');
                     Layout::nakedDisplay($content);
                 }
                 break;
 
             case 'lock':
-                $result = Block_Admin::lockBlock($_GET['block_id'],
-                                $_GET['key_id']);
+                $result = Block_Admin::lockBlock($_GET['block_id'], $_GET['key_id']);
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                 }
@@ -191,8 +181,7 @@ class Block_Admin {
     {
         $_SESSION['block_message'] = $message;
         if (isset($command)) {
-            PHPWS_Core::reroute(PHPWS_Text::linkAddress('block',
-                            array('action' => $command), TRUE));
+            PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action' => $command), TRUE));
         }
     }
 
@@ -281,8 +270,7 @@ class Block_Admin {
                  */
                 if (!empty($pinned_keys)) {
                     if (isset($pinned_keys[$b['id']])) {
-                        if (in_array($key_id, $pinned_keys[$b['id']]) ||
-                                in_array('-1', $pinned_keys[$b['id']])) {
+                        if (in_array($key_id, $pinned_keys[$b['id']]) || in_array('-1', $pinned_keys[$b['id']])) {
                             continue;
                         }
                     }
@@ -300,8 +288,7 @@ class Block_Admin {
                 $form->addSubmit('submit', dgettext('block', 'Save New Block'));
             } else {
                 $form->addHidden('block_id', $block->getId());
-                $form->addSubmit('submit',
-                        dgettext('block', 'Update Current Block'));
+                $form->addSubmit('submit', dgettext('block', 'Update Current Block'));
             }
         }
 
@@ -348,9 +335,27 @@ class Block_Admin {
         if (empty($block->title)) {
             $content = trim(strip_tags($_POST['block_content']));
             if (!empty($content)) {
-                $title_sub = ucfirst(substr($content, 0,
-                                strpos($content, ' ', 10)));
+                try {
+                    $offset = strpos($content, ' ', 10);
+                    $title_sub = ucfirst(substr($content, 0, $offset));
+                } catch (\Exception $e) {
+                    /**
+                     * strpos will throw a warning which, depending on error settings,
+                     * is changed into an exception.
+                     * The fastest way to check for a character in a string is strpos, so
+                     * error checking cannot be done.
+                     * 
+                     */
+                    if ($e->getCode() == 0) {
+                        $title_sub = substr($content, 0, 15);
+                    } else {
+                        throw $e;
+                    }
+                }
                 $block->setTitle($title_sub);
+                $block->hide_title = 1;
+            } else {
+                $block->setTitle(t('Untitled'));
                 $block->hide_title = 1;
             }
         }
@@ -366,12 +371,8 @@ class Block_Admin {
     {
         Layout::addStyle('block');
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pageTags['NEW_BLOCK'] = PHPWS_Text::secureLink(dgettext('block',
-                                'Create new block'), 'block',
-                        array('action' => 'new'), null,
-                        dgettext('block', 'Create new block'), 'button');
-        $pageTags['NEW_BLOCK_URI'] = PHPWS_Text::linkAddress('block',
-                        array('action' => 'new'), true);
+        $pageTags['NEW_BLOCK'] = PHPWS_Text::secureLink(dgettext('block', 'Create new block'), 'block', array('action' => 'new'), null, dgettext('block', 'Create new block'), 'button');
+        $pageTags['NEW_BLOCK_URI'] = PHPWS_Text::linkAddress('block', array('action' => 'new'), true);
         $pageTags['CONTENT'] = dgettext('block', 'Content');
         $pageTags['ACTION'] = dgettext('block', 'Action');
         $pager = new DBPager('block', 'Block_Item');
@@ -423,16 +424,12 @@ class Block_Admin {
         $form->addHidden('module', 'block');
         $form->addHidden('action', 'post_settings');
 
-        $form->addText('max_image_width',
-                PHPWS_Settings::get('block', 'max_image_width'));
-        $form->setLabel('max_image_width',
-                dgettext('block', 'Max image width (50 - 1024)'));
+        $form->addText('max_image_width', PHPWS_Settings::get('block', 'max_image_width'));
+        $form->setLabel('max_image_width', dgettext('block', 'Max image width (50 - 1024)'));
         $form->setSize('max_image_width', 4, 4);
 
-        $form->addText('max_image_height',
-                PHPWS_Settings::get('block', 'max_image_height'));
-        $form->setLabel('max_image_height',
-                dgettext('block', 'Max image height (50 - 3000)'));
+        $form->addText('max_image_height', PHPWS_Settings::get('block', 'max_image_height'));
+        $form->setLabel('max_image_height', dgettext('block', 'Max image height (50 - 3000)'));
         $form->setSize('max_image_height', 4, 4);
 
         $form->addSubmit(dgettext('block', 'Save settings'));
@@ -445,25 +442,19 @@ class Block_Admin {
     public static function postSettings()
     {
         if (empty($_POST['max_image_width']) || $_POST['max_image_width'] < 50) {
-            $error[] = dgettext('block',
-                    'Max image width must be greater than 50px');
+            $error[] = dgettext('block', 'Max image width must be greater than 50px');
         } elseif ($_POST['max_image_width'] > 1024) {
-            $error[] = dgettext('block',
-                    'Max image width must be smaller than 1024px');
+            $error[] = dgettext('block', 'Max image width must be smaller than 1024px');
         } else {
-            PHPWS_Settings::set('block', 'max_image_width',
-                    (int) $_POST['max_image_width']);
+            PHPWS_Settings::set('block', 'max_image_width', (int) $_POST['max_image_width']);
         }
 
         if (empty($_POST['max_image_height']) || $_POST['max_image_height'] < 50) {
-            $error[] = dgettext('block',
-                    'Max image height must be greater than 50px');
+            $error[] = dgettext('block', 'Max image height must be greater than 50px');
         } elseif ($_POST['max_image_height'] > 3000) {
-            $error[] = dgettext('block',
-                    'Max image height must be smaller than 3000px');
+            $error[] = dgettext('block', 'Max image height must be smaller than 3000px');
         } else {
-            PHPWS_Settings::set('block', 'max_image_height',
-                    (int) $_POST['max_image_height']);
+            PHPWS_Settings::set('block', 'max_image_height', (int) $_POST['max_image_height']);
         }
 
         PHPWS_Settings::save('block');

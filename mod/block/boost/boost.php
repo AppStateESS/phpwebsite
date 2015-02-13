@@ -6,7 +6,7 @@
  */
 
 $proper_name  = 'Block';
-$version      = '1.3.10';
+$version      = '1.3.11';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
