@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PS_Forms {
-
+class PS_Forms
+{
     public $template = null;
     public $ps = null;
     public $tpl_list = null;
@@ -37,8 +37,7 @@ class PS_Forms {
         $templates = PHPWS_File::listDirectories($tpl_dir);
 
         if (empty($templates)) {
-            PHPWS_Error::log(PS_TPL_DIR, 'pagesmith', 'PS_Forms::loadTemplates',
-                    $tpl_dir);
+            PHPWS_Error::log(PS_TPL_DIR, 'pagesmith', 'PS_Forms::loadTemplates', $tpl_dir);
             return false;
         }
 
@@ -62,8 +61,7 @@ class PS_Forms {
 
         Layout::addStyle('pagesmith', 'admin.css');
         Layout::addJSHeader('<script type="text/javascript" src="' .
-                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>',
-                'pageedit');
+                PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/pageedit/script.js"></script>', 'pageedit');
 
         Layout::addStyle('pagesmith');
         $page = $this->ps->page;
@@ -95,8 +93,7 @@ class PS_Forms {
         }
 
         if (empty($page->_tpl) || $page->_tpl->error) {
-            $this->ps->content = dgettext('pagesmith',
-                    'Unable to load page template.');
+            $this->ps->content = dgettext('pagesmith', 'Unable to load page template.');
             return;
         }
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
@@ -124,30 +121,21 @@ class PS_Forms {
         $tpl['HIDE_CHECK'] = $page->hide_title ? 'checked="checked"' : null;
 
         if (!empty($page->_orphans)) {
-            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>',
-                    PHPWS_Core::getCurrentUrl(),
-                    dgettext('pagesmith', 'Orphans'));
+            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', PHPWS_Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
 
         // We wrap the textarea in a form just so ckeditor will allow use of the "Save" button.
-        $modal = new \Modal('edit-section',
-                '<form><textarea id="block-edit-textarea"></textarea></form>',
-                dgettext('pagesmith', 'Edit text area'));
-        $modal->addButton('<button id="save-page" class="btn btn-success">' . dgettext('pagesmith',
-                        'Save') . '</button>');
+        $modal = new \Modal('edit-section', '<form><textarea id="block-edit-textarea"></textarea></form>', dgettext('pagesmith', 'Edit text area'));
+        $modal->addButton('<button id="save-page" class="btn btn-success">' . dgettext('pagesmith', 'Save') . '</button>');
 
         $modal->setWidthPercentage(90);
         $tpl['CONTENT_MODAL'] = $modal->__toString();
 
-        $title_modal = new \Modal('edit-title',
-                '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />',
-                dgettext('pagesmith', 'Edit page title'));
-        $title_modal->addButton('<button id="save-title" class="btn btn-success">' . dgettext('pagesmith',
-                        'Save') . '</button>');
+        $title_modal = new \Modal('edit-title', '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />', dgettext('pagesmith', 'Edit page title'));
+        $title_modal->addButton('<button id="save-title" class="btn btn-success">' . dgettext('pagesmith', 'Save') . '</button>');
         $tpl['TITLE_MODAL'] = $title_modal->__toString();
-        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
-                        'page_form.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'page_form.tpl');
     }
 
     private function listOrphans($orphans)
@@ -178,15 +166,12 @@ class PS_Forms {
             PHPWS_Core::plugObject($sec, $orf);
 
             if ($empty_content) {
-                $row['CONTENT'] = sprintf('<em>%s</em>',
-                        dgettext('pagesmith',
-                                'Empty content. Consider deletion.'));
+                $row['CONTENT'] = sprintf('<em>%s</em>', dgettext('pagesmith', 'Empty content. Consider deletion.'));
             } else {
                 $row['CONTENT'] = $sec->getContent();
             }
 
-            $row['OPTIONS'] = sprintf('<a href="#" onclick="delete_orphan(\'%s\'); return false">%s</a>',
-                    $row['ID'], dgettext('pagesmith', 'Delete orphan'));
+            $row['OPTIONS'] = sprintf('<a href="#" onclick="delete_orphan(\'%s\'); return false">%s</a>', $row['ID'], dgettext('pagesmith', 'Delete orphan'));
             $tpl['orphan-list'][] = $row;
         }
 
@@ -213,8 +198,7 @@ class PS_Forms {
 
         $tpl['CANCEL'] = javascript('close_window');
         $this->ps->title = dgettext('pagesmith', 'Edit header');
-        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
-                        'edit_header.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'edit_header.tpl');
     }
 
     public function pageList()
@@ -226,7 +210,11 @@ class PS_Forms {
         $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
         $createText = dgettext('pagesmith', 'New Page');
         $pgtags['NEW'] = "<a href='index.php?module=pagesmith&amp;aop=menu&amp;tab=new' class='button'>$createText/a>";
-        $pgtags['NEW_PAGE_LINK_URI'] = 'index.php?module=pagesmith&aop=pick_template&tpl=text_only&pid=0&authkey=' . \Current_User::getAuthKey();
+        if (PHPWS_Settings::get('pagesmith', 'text_only_default')) {
+            $pgtags['NEW_PAGE_LINK_URI'] = 'index.php?module=pagesmith&aop=pick_template&tpl=text_only&pid=0&authkey=' . \Current_User::getAuthKey();
+        } else {
+            $pgtags['NEW_PAGE_LINK_URI'] = "index.php?module=pagesmith&amp;aop=menu&amp;tab=new";
+        }
         $pgtags['NEW_PAGE_LINK_TEXT'] = $createText;
 
         $pager = new DBPager('ps_page', 'PS_Page');
@@ -235,9 +223,8 @@ class PS_Forms {
         $pager->setModule('pagesmith');
         $pager->setTemplate('page_list.tpl');
         $pager->addRowTags('row_tags');
-        $pager->setEmptyMessage(dgettext('pagesmith',
-                        'No pages have been created.'));
-        $pager->setSearch('title','id');
+        $pager->setEmptyMessage(dgettext('pagesmith', 'No pages have been created.'));
+        $pager->setSearch('title', 'id');
         $pager->addSortHeader('id', dgettext('pagesmith', 'Id'));
         $pager->addSortHeader('title', dgettext('pagesmith', 'Title'));
         $pager->addSortHeader('create_date', dgettext('pagesmith', 'Created'));
@@ -310,8 +297,7 @@ class PS_Forms {
         $template_file = $page->_tpl->page_path . 'page.tpl';
 
         if (empty($page->title)) {
-            $tpl['page_title'] = '<span id="page-title-edit" data-new="true" style="cursor:pointer;color : #969696">' . dgettext('pagesmith',
-                            'Page Title (click to edit)') . '</span>';
+            $tpl['page_title'] = '<span id="page-title-edit" data-new="true" style="cursor:pointer;color : #969696">' . dgettext('pagesmith', 'Page Title (click to edit)') . '</span>';
         } else {
             $tpl['page_title'] = '<span id="page-title-edit" style="cursor:pointer;">' . $page->title . '</span>';
         }
@@ -327,25 +313,20 @@ class PS_Forms {
         $this->loadTemplates();
 
         if (empty($this->tpl_list)) {
-            $this->ps->content = dgettext('pagesmith',
-                    'Could not find any page templates. Please check your error log.');
+            $this->ps->content = dgettext('pagesmith', 'Could not find any page templates. Please check your error log.');
         }
 
         @$fname = $_GET['fname'];
 
         foreach ($this->tpl_list as $pgtpl) {
-            if ($fname && !empty($pgtpl->folders) && !in_array($fname,
-                            $pgtpl->folders)) {
+            if ($fname && !empty($pgtpl->folders) && !in_array($fname, $pgtpl->folders)) {
                 continue;
             }
             $tpl['page-templates'][] = $pgtpl->pickTpl($this->ps->page->parent_page);
         }
 
-        $tpl['BACK'] = PHPWS_Text::secureLink(dgettext('pagesmith',
-                                'Back to style selection'), 'pagesmith',
-                        array('aop' => 'menu', 'tab' => 'new'));
-        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
-                        'pick_template.tpl');
+        $tpl['BACK'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Back to style selection'), 'pagesmith', array('aop' => 'menu', 'tab' => 'new'));
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_template.tpl');
     }
 
     public function pickFolder()
@@ -377,17 +358,13 @@ class PS_Forms {
             }
             $vars['tab'] = 'new';
             $link = PHPWS_Text::linkAddress('pagesmith', $vars, true);
-            $tpl['folders'][] = array('TITLE' => ucwords(str_replace('-',
-                                '&nbsp;', $name)),
-                'IMAGE' => sprintf('<a href="%s"><img src="%smod/pagesmith/img/folder_icons/%s" /></a>',
-                        $link, PHPWS_SOURCE_HTTP, $image),
-                'COUNT' => sprintf(dngettext('pagesmith', '%s template',
-                                '%s templates', $count), $count));
+            $tpl['folders'][] = array('TITLE' => ucwords(str_replace('-', '&nbsp;', $name)),
+                'IMAGE' => sprintf('<a href="%s"><img src="%smod/pagesmith/img/folder_icons/%s" /></a>', $link, PHPWS_SOURCE_HTTP, $image),
+                'COUNT' => sprintf(dngettext('pagesmith', '%s template', '%s templates', $count), $count));
         }
 
         $this->ps->title = dgettext('pagesmith', 'Choose a style');
-        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith',
-                        'pick_folder.tpl');
+        $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_folder.tpl');
     }
 
     public function settings()
@@ -398,46 +375,32 @@ class PS_Forms {
         $form->addSubmit(dgettext('pagesmith', 'Save'));
 
         $form->addCheck('auto_link', 1);
-        $form->setMatch('auto_link',
-                PHPWS_Settings::get('pagesmith', 'auto_link'));
-        $form->setLabel('auto_link',
-                dgettext('pagesmith', 'Add menu link for new pages.'));
+        $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
+        $form->setLabel('auto_link', dgettext('pagesmith', 'Add menu link for new pages.'));
 
         $form->addCheck('back_to_top', 1);
-        $form->setMatch('back_to_top',
-                PHPWS_Settings::get('pagesmith', 'back_to_top'));
-        $form->setLabel('back_to_top',
-                dgettext('pagesmith', 'Add "Back to top" links at page bottom.'));
+        $form->setMatch('back_to_top', PHPWS_Settings::get('pagesmith', 'back_to_top'));
+        $form->setLabel('back_to_top', dgettext('pagesmith', 'Add "Back to top" links at page bottom.'));
 
         $form->addCheck('create_shortcuts', 1);
-        $form->setMatch('create_shortcuts',
-                PHPWS_Settings::get('pagesmith', 'create_shortcuts'));
-        $form->setLabel('create_shortcuts',
-                dgettext('pagesmith', 'Create Access shortcuts automatically'));
+        $form->setMatch('create_shortcuts', PHPWS_Settings::get('pagesmith', 'create_shortcuts'));
+        $form->setLabel('create_shortcuts', dgettext('pagesmith', 'Create Access shortcuts automatically'));
 
 
-        $form->addTplTag('LENGTH_EXAMPLE',
-                'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');
+        $form->addTplTag('LENGTH_EXAMPLE', 'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');
 
 
         $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
 
-        $tpl['SHORTEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith',
-                                'Shorten all menu links'), 'pagesmith',
-                        array('aop' => 'shorten_links'));
-        $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith',
-                        array('aop' => 'shorten_links'), true);
+        $tpl['SHORTEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', array('aop' => 'shorten_links'));
+        $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop' => 'shorten_links'), true);
 
-        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith',
-                                'Lengthen all menu links'), 'pagesmith',
-                        array('aop' => 'lengthen_links'));
-        $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith',
-                        array('aop' => 'lengthen_links'), true);
+        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', array('aop' => 'lengthen_links'));
+        $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop' => 'lengthen_links'), true);
 
         $form->mergeTemplate($tpl);
 
-        $this->ps->content = PHPWS_Template::process($form->getTemplate(),
-                        'pagesmith', 'settings.tpl');
+        $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
     }
 
 }
