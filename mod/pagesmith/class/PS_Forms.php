@@ -100,6 +100,7 @@ class PS_Forms {
             return;
         }
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
+        $form->setClass('submit', 'btn btn-success');
 
         $page->loadKey();
 
@@ -129,8 +130,9 @@ class PS_Forms {
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
 
+        // We wrap the textarea in a form just so ckeditor will allow use of the "Save" button.
         $modal = new \Modal('edit-section',
-                '<textarea id="block-edit-textarea"></textarea>',
+                '<form><textarea id="block-edit-textarea"></textarea></form>',
                 dgettext('pagesmith', 'Edit text area'));
         $modal->addButton('<button id="save-page" class="btn btn-success">' . dgettext('pagesmith',
                         'Save') . '</button>');

@@ -2,10 +2,30 @@ var block_id = 0;
 var page_id = 0;
 var section_id = 0;
 var current_block;
-$(document).ready(function () {
+var formSubmitting = true;
+$(document).ready(function() {
+    checkUpdateBeforeSubmit();
     var editor = CKEDITOR.replace('block-edit-textarea', {
         height: '450'
     });
+
+    /**
+     * This serves two purposes.
+     * 1) Makes the save button appear as it normally 
+     */
+    editor.on('instanceReady', function() {
+        editor.addCommand('save', {
+            modes: {wysiwyg: 1, source: 1},
+            exec: function() {
+                updateBlock(editor);
+                if (editor.commands.maximize.state == 1) {
+                    editor.execCommand('maximize');
+                }
+                $('#edit-section').modal('hide');
+            }
+        });
+    });
+
     enforceFocus();
     localStorage.clear();
     initializeDialog(editor);
@@ -13,10 +33,11 @@ $(document).ready(function () {
     editBlock(editor);
     $('#page-title-edit').popover({html: true, placement: 'auto', trigger: 'hover', content: '<span style="margin:0px;padding:0px;font-size:16px;font-weight:bold">Click on title to edit</span>'});
     $('.block-edit').popover({html: true, placement: 'auto', trigger: 'hover', content: '<span style="font-size:16px;font-weight:bold">Click on text to edit</span>'});
+
 });
 function editBlock(editor)
 {
-    $('.block-edit').click(function () {
+    $('.block-edit').click(function() {
         current_block = $(this);
         block_id = $(this).data('block-id');
         page_id = $(this).data('page-id');
@@ -32,7 +53,7 @@ function editBlock(editor)
                         'bid': block_id,
                         'section_id': section_id
                     },
-            function (data) {
+            function(data) {
                 editor.setData(data);
                 openBlockEdit();
             }
@@ -43,9 +64,9 @@ function editBlock(editor)
 
 function enforceFocus()
 {
-    $.fn.modal.Constructor.prototype.enforceFocus = function () {
+    $.fn.modal.Constructor.prototype.enforceFocus = function() {
         modal_this = this
-        $(document).on('focusin.modal', function (e) {
+        $(document).on('focusin.modal', function(e) {
             if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
                     && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
                     && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
@@ -67,14 +88,14 @@ function openTitleEdit()
 
 function initializePageTitleEdit()
 {
-    $('#page-title-edit').click(function () {
+    $('#page-title-edit').click(function() {
         if (!$('#page-title-edit').data('new')) {
             $('#page-title-input').val($('#page-title-edit').html());
         }
         openTitleEdit();
     });
 
-    $('#save-title').click(function () {
+    $('#save-title').click(function() {
         var title_input = $('#page-title-input').val();
         title_input = title_input.replace('/[<>]/gi', '');
         $('#page-title-hidden').val(title_input);
@@ -86,18 +107,19 @@ function initializePageTitleEdit()
 
 function initializeDialog(editor)
 {
-    $('#edit-section').on('hide.bs.modal', function (e) {
+    $('#edit-section').on('hide.bs.modal', function(e) {
         ck_data = editor.getData();
         localStorage[block_id] = ck_data;
     });
 
-    $('#save-page').click(function () {
+    $('#save-page').click(function() {
         updateBlock(editor);
         $('#edit-section').modal('hide');
     });
 }
 
 function updateBlock(editor) {
+    formSubmitting = false;
     localStorage.removeItem(block_id);
     content = editor.getData();
     $.post('index.php',
@@ -108,7 +130,7 @@ function updateBlock(editor) {
                 'bid': block_id,
                 'content': content,
                 'section_id': section_id
-            }, function (data) {
+            }, function(data) {
         if (content === '') {
             content = '[Click to edit]';
         }
@@ -116,11 +138,29 @@ function updateBlock(editor) {
     });
 }
 
+function submittingForm(e)
+{
+    formSubmitting = true;
+    e.form.submit();
+}
+
+function checkUpdateBeforeSubmit() {
+    window.addEventListener("beforeunload", function(e) {
+        if (formSubmitting) {
+            return undefined;
+        }
+        var confirmationMessage = 'If you leave before saving, your changes will be lost.';
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+}
+
 /*
  * JQuery center fix by Andreas Lagerkvist
  */
-jQuery.fn.center = function (absolute) {
-    return this.each(function () {
+jQuery.fn.center = function(absolute) {
+    return this.each(function() {
         var t = jQuery(this);
         t.css({position: absolute ? 'absolute' : 'fixed', left: '50%', top: '50%', zIndex: '99'}).css({marginLeft: '-' + (t.outerWidth() / 2) + 'px', marginTop: '-' + (t.outerHeight() / 2) + 'px'});
         if (absolute) {

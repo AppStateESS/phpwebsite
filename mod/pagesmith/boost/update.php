@@ -463,6 +463,9 @@ EOF;
 ------------------
 + Fixed: hide_title was not properly formated in install.sql
 + Fixed: Reduced edit popup window height.
++ Feature: Added save button to CKEditor that works in maximize.
++ Feature: Added page update check to page submission.
++ Change: Save button is styled and larger.
 </pre>
 EOF;
     } // end switch

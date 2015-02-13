@@ -15,8 +15,8 @@ if (!defined('PS_CHECK_CHAR_LENGTH')) {
     define('PS_CHECK_CHAR_LENGTH', true);
 }
 
-class PageSmith {
-
+class PageSmith
+{
     public $forms = null;
     public $panel = null;
     public $title = null;
@@ -34,19 +34,16 @@ class PageSmith {
         $javascript = false;
         switch ($_REQUEST['aop']) {
             case 'block_info':
-                $this->getTextBlockData($_GET['bid'], $_GET['pid'],
-                        $_GET['section_id']);
+                $this->getTextBlockData($_GET['bid'], $_GET['pid'], $_GET['section_id']);
                 exit();
 
             case 'save_block':
-                $this->saveBlockData($_POST['pid'], $_POST['bid'],
-                        $_POST['section_id'], $_POST['content']);
+                $this->saveBlockData($_POST['pid'], $_POST['bid'], $_POST['section_id'], $_POST['content']);
                 PHPWS_Cache::clearCache();
                 exit();
 
             case 'get_undo':
-                $this->getLastUndo($_GET['pid'], $_GET['bid'],
-                        $_GET['section_id']);
+                $this->getLastUndo($_GET['pid'], $_GET['bid'], $_GET['section_id']);
                 exit();
 
 
@@ -71,8 +68,7 @@ class PageSmith {
                         break;
 
                     case 'settings':
-                        if (!Current_User::allow('pagesmith', null, null, null,
-                                        true)) {
+                        if (!Current_User::allow('pagesmith', null, null, null, true)) {
                             Current_User::disallow();
                         }
                         $this->forms->settings();
@@ -90,8 +86,7 @@ class PageSmith {
                 }
                 $this->loadForms();
 
-                if (!Current_User::allow('pagesmith', 'edit_page',
-                                $this->page->id)) {
+                if (!Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
                     Current_User::disallow();
                 }
                 $this->page->loadSections(true);
@@ -150,8 +145,7 @@ class PageSmith {
                         break;
 
                     case 0:
-                        $this->message = dgettext('pagesmith',
-                                'Not enough content to create a page.');
+                        $this->message = dgettext('pagesmith', 'Not enough content to create a page.');
                         $this->loadForms();
                         $this->page->loadSections(true);
                         $this->forms->editPage();
@@ -160,13 +154,7 @@ class PageSmith {
                     case 1:
                         $this->killSaved($this->page->id);
                         PHPWS_Cache::clearCache();
-                        if (isset($_POST['save_so_far'])) {
-                            PHPWS_Core::reroute(PHPWS_Text::linkAddress('pagesmith',
-                                            array('id' => $this->page->id, 'aop' => 'edit_page'),
-                                            true));
-                        } else {
-                            PHPWS_Core::reroute($this->page->url());
-                        }
+                        PHPWS_Core::reroute($this->page->url());
                         break;
                 }
                 break;
@@ -184,8 +172,7 @@ class PageSmith {
                 break;
 
             case 'shorten_links':
-                if (!Current_User::authorized('pagesmith', 'settings', null,
-                                null, true)) {
+                if (!Current_User::authorized('pagesmith', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->shortenLinks();
@@ -193,8 +180,7 @@ class PageSmith {
                 break;
 
             case 'lengthen_links':
-                if (!Current_User::authorized('pagesmith', 'settings', null,
-                                null, true)) {
+                if (!Current_User::authorized('pagesmith', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->lengthenLinks();
@@ -202,8 +188,7 @@ class PageSmith {
                 break;
 
             case 'post_settings':
-                if (!Current_User::authorized('pagesmith', 'settings', null,
-                                null, true)) {
+                if (!Current_User::authorized('pagesmith', 'settings', null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->postSettings();
@@ -221,11 +206,9 @@ class PageSmith {
             $tpl['TITLE'] = $this->title;
             $tpl['CONTENT'] = $this->content;
             $tpl['MESSAGE'] = $this->message;
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'pagesmith',
-                            'admin_main.tpl'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl'));
         } else {
-            Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content,
-                                    $this->title, $this->message)));
+            Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
         }
     }
 
@@ -323,10 +306,8 @@ class PageSmith {
 
         $link = 'index.php?module=pagesmith&amp;aop=menu';
         $tabs['list'] = array('title' => dgettext('pagesmith', 'List'), 'link' => $link);
-        if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith',
-                        'settings')) {
-            $tabs['settings'] = array('title' => dgettext('pagesmith',
-                        'Settings'), 'link' => $link);
+        if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'settings')) {
+            $tabs['settings'] = array('title' => dgettext('pagesmith', 'Settings'), 'link' => $link);
         }
 
         $this->panel->quickSetTabs($tabs);
@@ -371,8 +352,7 @@ class PageSmith {
             $unsaved_sections = $this->getUndoSession(0);
             if (!empty($unsaved_sections)) {
                 foreach ($unsaved_sections as $secname => $sec_content) {
-                    $secname = preg_replace('/[\w\-]+(text\d+)$/', '\\1',
-                            $secname);
+                    $secname = preg_replace('/[\w\-]+(text\d+)$/', '\\1', $secname);
                     $some_content = true;
                     $this->page->_sections[$secname]->setContent(array_pop($sec_content));
                 }
@@ -399,14 +379,12 @@ class PageSmith {
         // If this page is an update, or the section has some content
         // put it in the section list.
 
-        if ($this->page->id || (!empty($section->content) && !(in_array($section->content,
-                        array('image', 'document', 'media', 'block')) && !$section->type_id))) {
+        if ($this->page->id || (!empty($section->content) && !(in_array($section->content, array('image', 'document', 'media', 'block')) && !$section->type_id))) {
             $sections[$section_name] = & $section;
         }
 
 
-        if (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith',
-                        'auto_link')) {
+        if (!$this->page->id && !$this->page->parent_page && PHPWS_Settings::get('pagesmith', 'auto_link')) {
             $menu_link = true;
         } else {
             $menu_link = false;
@@ -469,10 +447,8 @@ class PageSmith {
             $this->page->loadKey();
             if ($this->page->_key->allowView()) {
                 $content = $this->page->view();
-                if (Current_User::allow('pagesmith', 'edit_page',
-                                $this->page->id)) {
-                    $content .= sprintf('<p class="pagesmith-edit">%s</p>',
-                            $this->page->editLink());
+                if (Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
+                    $content .= sprintf('<p class="pagesmith-edit">%s</p>', $this->page->editLink());
                 }
             } else {
                 if (!Current_User::requireLogin()) {
@@ -482,8 +458,7 @@ class PageSmith {
             Layout::add($content);
         } else {
             header('HTTP/1.0 404 Not Found');
-            Layout::add(dgettext('pagesmith',
-                            'Sorry, but your page could not be found. You may wish to search for it.'));
+            Layout::add(dgettext('pagesmith', 'Sorry, but your page could not be found. You may wish to search for it.'));
         }
     }
 
@@ -512,10 +487,8 @@ class PageSmith {
     public function postSettings()
     {
         PHPWS_Settings::set('pagesmith', 'auto_link', isset($_POST['auto_link']));
-        PHPWS_Settings::set('pagesmith', 'create_shortcuts',
-                isset($_POST['create_shortcuts']));
-        PHPWS_Settings::set('pagesmith', 'back_to_top',
-                isset($_POST['back_to_top']));
+        PHPWS_Settings::set('pagesmith', 'create_shortcuts', isset($_POST['create_shortcuts']));
+        PHPWS_Settings::set('pagesmith', 'back_to_top', isset($_POST['back_to_top']));
 
         PHPWS_Settings::save('pagesmith');
         PHPWS_Cache::clearCache();
@@ -552,8 +525,7 @@ class PageSmith {
         $db->addColumn('id');
         $db->addColumn('url');
         $db->addColumn('key_id');
-        $db->addWhere('url', '%index.php?module=pagesmith&uop=view_page%',
-                'like');
+        $db->addWhere('url', '%index.php?module=pagesmith&uop=view_page%', 'like');
         $db->addWhere('url', '%index.php?module=pagesmith&id=%', 'like', 'or');
         $result = $db->select();
 
@@ -568,8 +540,7 @@ class PageSmith {
         $db2 = new PHPWS_DB('phpws_key');
 
         foreach ($result as $link) {
-            $link['url'] = preg_replace('@index.php\?module=pagesmith(&uop=view_page)?&id=(\d+)$@',
-                    'pagesmith/\\2', $link['url']);
+            $link['url'] = preg_replace('@index.php\?module=pagesmith(&uop=view_page)?&id=(\d+)$@', 'pagesmith/\\2', $link['url']);
             $db->addValue($link);
             $db->addWhere('id', $link['id']);
             if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
@@ -601,9 +572,7 @@ class PageSmith {
         $db2 = new PHPWS_DB('phpws_key');
 
         foreach ($result as $link) {
-            $link['url'] = preg_replace('@pagesmith/(\d+)$@',
-                    'index.php?module=pagesmith&uop=view_page&id=\\1',
-                    $link['url']);
+            $link['url'] = preg_replace('@pagesmith/(\d+)$@', 'index.php?module=pagesmith&uop=view_page&id=\\1', $link['url']);
             $db->addValue($link);
             $db->addWhere('id', $link['id']);
             if (!PHPWS_Error::logIfError($db->update()) && $link['key_id']) {
