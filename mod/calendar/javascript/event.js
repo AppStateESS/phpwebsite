@@ -89,10 +89,8 @@ $(document).ready(function () {
         var schedule_id = $(this).data('scheduleId');
         var view = $(this).data('view');
         if (typeof view !== 'undefined') {
-            console.log(1);
             $('#event-view').val(view);
         } else {
-            console.log(2);
             $('#event-view').val('');
         }
 
