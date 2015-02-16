@@ -1069,7 +1069,7 @@ class Layout
         }
 
         if ($use_blank) {
-            $empty_tpl = sprintf('themes/%s/blank.tpl', Layout::getCurrentTheme());
+            $empty_tpl = sprintf('%sthemes/%s/blank.tpl', PHPWS_SOURCE_DIR, Layout::getCurrentTheme());
 
             if (is_file($empty_tpl)) {
                 $result = PHPWS_Template::process($template, 'layout', $empty_tpl, TRUE);
