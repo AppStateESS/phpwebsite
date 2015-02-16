@@ -154,7 +154,7 @@ class Calendar_Admin {
     public static function event_form(Calendar_Event $event, $suggest = false)
     {
         Layout::addStyle('calendar');
-
+        javascript('datetimepicker');
         // the form id is linked to the check_date javascript
         $form = new PHPWS_Form('event_form');
         if (isset($_REQUEST['js'])) {
@@ -359,8 +359,6 @@ class Calendar_Admin {
         }
 
         $tpl = $form->getTemplate();
-
-        javascript('datetimepicker');
 
         if (!$suggest) {
             $tpl['EVENT_TAB'] = dgettext('calendar', 'Event');

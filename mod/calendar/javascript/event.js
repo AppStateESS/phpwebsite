@@ -1,6 +1,5 @@
 getDate = function (d) {
-    var sd = new Date();
-    sd.setTime(d);
+    var sd = new Date(d * 1000);
     var sd_d = sd.getDate();
     if (sd_d < 10) {
         sd_d = '0' + sd_d;

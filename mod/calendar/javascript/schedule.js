@@ -23,7 +23,6 @@ plugScheduleForm = function (schedule_id) {
                 setCKEDITOR(summary);
                 $('#schedule_form_show_upcoming').val(data.show_upcoming);
                 $('#schedule_form_sch_id').val(schedule_id);
-                console.log(data.public);
                 if (data.public == 1) {
                     $('#schedule_form_public_1').prop('checked', true);
                     $('#schedule_form_public_0').prop('checked', false);
