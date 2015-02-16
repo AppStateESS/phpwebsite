@@ -63,6 +63,7 @@ span.admin {
     top:0;
     z-index:999;
     display:none;
+    position : fixed;
 }
 
 #dropzone-area {
@@ -96,4 +97,18 @@ span.admin {
 
 .unlocked {
     color : inherit;
+}
+
+#header-options {
+    height : 50px;
+    position : fixed;
+    top : 0px;
+    left : 0px;
+    background-color : white;
+    border-bottom : 2px dotted #e3e3e3;
+    z-index : 100;
+}
+
+#folder-file-listing {
+    margin-top : 60px;
 }
