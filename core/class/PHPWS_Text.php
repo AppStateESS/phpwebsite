@@ -93,6 +93,11 @@ class PHPWS_Text {
     {
         $this->use_breaker = (bool) $use;
     }
+    
+    public function useAnchor($use = true)
+    {
+        $this->fix_anchors = (bool)$use;
+    }
 
     public function useStripTags($use = true)
     {
@@ -346,11 +351,12 @@ class PHPWS_Text {
      *                               run against the output text. (deprecated)
      * @return  string  text         Stripped text
      */
-    public static function parseOutput($text, $decode = ENCODE_PARSED_TEXT, $use_filters = false, $use_breaker = USE_BREAKER)
+    public static function parseOutput($text, $decode = ENCODE_PARSED_TEXT, $use_filters = false, $use_breaker = USE_BREAKER, $fix_anchors = FIX_ANCHORS)
     {
         $t = new PHPWS_Text;
         $t->setText($text, $decode);
         $t->useBreaker($use_breaker);
+        $t->useAnchor($fix_anchors);
         $text = $t->getPrint();
         $text = filter_var($text, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
         return $text;
