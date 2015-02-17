@@ -243,17 +243,16 @@ class PS_Forms
         if (empty($pager->display_rows)) {
             return null;
         }
-        foreach ($pager->display_rows as $page) {
-            $keys[] = $page->key_id;
+        foreach ($pager->display_rows as $row_id=>$page) {
+            $keys[$page->key_id] = $row_id;
         }
         $db = \Database::newDB();
         $t = $db->addTable('phpws_key');
-        $t->addField('updater');
-        $t->addFieldConditional('id', $keys, 'in');
-        $count = 0;
-        while ($result = $db->selectColumn()) {
-            $pager->display_rows[$count]->_updater = $result;
-            $count++;
+        $t->addFieldConditional('id', array_keys($keys), 'in');
+        $result = $db->select();
+        foreach ($result as $row) {
+            $id = $keys[$row['id']];
+            $pager->display_rows[$id]->_updater = $row['updater'];
         }
     }
 
