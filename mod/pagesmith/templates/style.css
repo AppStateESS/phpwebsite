@@ -83,3 +83,7 @@ div.show-after {
     top : 0px;
     left : 0px;
 }
+
+.pagesmith-edit {
+    clear:both;
+}
