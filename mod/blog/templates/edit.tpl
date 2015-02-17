@@ -7,16 +7,8 @@
     <p>{TITLE_LABEL}<br />
         {TITLE}</p>
     <p>{SUMMARY_LABEL}<br /><span style="font-style : italic; font-size : 90%">({REMINDER})</span><br />
-        {SUMMARY}
-    <!-- BEGIN image -->
-    <div style="float : left">{FILE_MANAGER}</div>
+        {SUMMARY}</p>
     <div>
-        <p>{THUMBNAIL} {THUMBNAIL_LABEL}</p>
-        <p>{IMAGE_LINK_LABEL}<br />
-            {IMAGE_LINK}</p>
-        <p id="image-url">{IMAGE_URL_LABEL}<br />
-            {IMAGE_URL}</p>
-        <!-- END image -->
         <p>{PUBLISH_DATE_LABEL} <small>{EXAMPLE}</small><br />
             {PUBLISH_DATE}</p>
         <p>{EXPIRE_DATE_LABEL} <small>{EXAMPLE}</small><br />
@@ -24,5 +16,5 @@
     </div>
     <!-- BEGIN captcha --><p>{CAPTCHA_IMAGE}<br />{CAPTCHA} {CAPTCHA_LABEL}<!-- END captcha -->
 </div>
-<div style="text-align : center; clear : both; padding-top : 5px; border-top : 1px solid black">{SUBMIT}</div>
+<div style="text-align : center; clear : both; padding-top : 5px; border-top : 1px solid black"><button class="btn btn-success" onclick="this.form.submit()"><i class="fa fa-save"></i> Save entry</button></div>
 </form>

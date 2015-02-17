@@ -164,13 +164,19 @@ class Blog {
         }
     }
 
-    public function getSummaryAndEntry()
+    public function getSummaryAndEntry($fix_anchors = true)
     {
         if (!empty($this->entry)) {
-            return PHPWS_Text::parseOutput($this->summary) . '<hr />' . PHPWS_Text::parseOutput($this->entry);
+            $content = $this->summary . '<hr />' . $this->entry;
+            //return PHPWS_Text::parseOutput($this->summary) . '<hr />' . PHPWS_Text::parseOutput($this->entry);
         } else {
-            return PHPWS_Text::parseOutput($this->summary);
+            $content = $this->summary;
+            //return PHPWS_Text::parseOutput($this->summary);
         }
+        
+        $text = new PHPWS_Text($content);
+        $text->useAnchor($fix_anchors);
+        return filter_var($text->getPrint(), FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
     }
 
     public function setTitle($title)
