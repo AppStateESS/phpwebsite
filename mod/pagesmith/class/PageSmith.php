@@ -218,7 +218,7 @@ class PageSmith
         $content = null;
         if (!empty($block_id)) {
             $ps_block = new PS_Text($block_id);
-            $content = $ps_block->getContent();
+            $content = $ps_block->getContent(true, false);
             $this->setUndoSession($page_id, $block_id, $content);
         } elseif (isset($_SESSION['page_undo'][$page_id][$section_id])) {
             echo end($_SESSION['page_undo'][$page_id][$section_id]);
