@@ -55,14 +55,14 @@ class PS_Text extends PS_Section {
     }
 
 
-    public function getContent($view_mode = true)
+    public function getContent($view_mode = true, $fix_anchor=true)
     {
         if (empty($this->content)) {
             return null;
         }
 
         if ($view_mode) {
-            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
+            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content, ENCODE_PARSED_TEXT, false, false, $fix_anchor));
         } else {
             return PHPWS_Text::decodeText($this->content);
         }
