@@ -8,13 +8,13 @@
  * @author Matt McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
-class PHPWS_Settings {
+class PHPWS_Settings
+{
 
     /**
      * Returns the value of a setting or false if not set
      */
-    public static function get($module, $setting=null)
+    public static function get($module, $setting = null)
     {
         if (empty($setting) && PHPWS_Settings::is_set($module)) {
             return $GLOBALS['PHPWS_Settings'][$module];
@@ -31,7 +31,7 @@ class PHPWS_Settings {
      * checking against default settings. If all were pulled at once,
      * newly added settings would get ignored.
      */
-    public static function is_set($module, $setting=null)
+    public static function is_set($module, $setting = null)
     {
         if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
             $result = PHPWS_Settings::load($module);
@@ -65,7 +65,7 @@ class PHPWS_Settings {
     /**
      * Sets the module setting value
      */
-    public static function set($module, $setting, $value=null)
+    public static function set($module, $setting, $value = null)
     {
         if (empty($setting)) {
             return;
@@ -86,6 +86,7 @@ class PHPWS_Settings {
      * Not in use and probably not usable. Removing notes on it but keeping it just
      * in case someone is using it.
      */
+
     public static function append($module, $setting, $value)
     {
         if (is_array($setting)) {
@@ -96,15 +97,13 @@ class PHPWS_Settings {
                 }
             }
             return true;
-        } elseif ( isset($GLOBALS['PHPWS_Settings'][$module][$setting]) &&
-        !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
+        } elseif (isset($GLOBALS['PHPWS_Settings'][$module][$setting]) && !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
             return false;
         }
 
         $GLOBALS['PHPWS_Settings'][$module][$setting][] = $value;
         return true;
     }
-
 
     /**
      * updates the settings table
@@ -113,6 +112,10 @@ class PHPWS_Settings {
     {
         if (!PHPWS_Settings::is_set($module)) {
             return false;
+        }
+
+        if ($module == 'users') {
+            \PHPWS_Core::trackAuthentication('PHPWS_Settings::save was run on users');
         }
 
         $db = new PHPWS_DB('mod_settings');
@@ -132,12 +135,12 @@ class PHPWS_Settings {
             $db->addValue('setting_name', $key);
             $db->addValue('setting_type', $type);
 
-            switch( $type ) {
+            switch ($type) {
                 case 1:
-                    $db->addValue('small_num', (int)$value);
+                    $db->addValue('small_num', (int) $value);
                     break;
                 case 2:
-                    $db->addValue('large_num', (int)$value);
+                    $db->addValue('large_num', (int) $value);
                     break;
 
                 case 3:
@@ -244,7 +247,7 @@ class PHPWS_Settings {
 
             case 'boolean':
             case 'integer':
-                if ((int)$value < 32700) {
+                if ((int) $value < 32700) {
                     return 1;
                 } else {
                     return 2;
@@ -254,7 +257,7 @@ class PHPWS_Settings {
             case 'double':
             case 'string':
                 if (strpos($value, '.') === false && is_numeric($value)) {
-                    return PHPWS_Settings::getType((int)$value);
+                    return PHPWS_Settings::getType((int) $value);
                 }
                 if (strlen($value) < 100) {
                     return 3;

@@ -23,7 +23,8 @@ if (!defined('LOG_DIRECTORY')) {
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
 PHPWS_Core::initCoreClass('PHPWS_Error.php');
 
-class PHPWS_Core {
+class PHPWS_Core
+{
 
     /**
      * Gets all the modules from the module table
@@ -134,7 +135,7 @@ class PHPWS_Core {
             }
         } elseif (isset($_SESSION['PHPWS_Post_Count'][$key])) {
             if (isset($_SESSION['PHPWS_Post_Count'][$key])) {
-                $_SESSION['PHPWS_Post_Count'][$key]++;
+                $_SESSION['PHPWS_Post_Count'][$key] ++;
             } else {
                 $_SESSION['PHPWS_Post_Count'][$key] = 1;
             }
@@ -376,11 +377,9 @@ class PHPWS_Core {
         }
 
         if (!is_file($inc_file)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc',
-                    $inc_file);
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
             if ($exitOnError) {
-                throw new Exception(t('Could not find inc file to require: %s',
-                        $inc_file));
+                throw new Exception(t('Could not find inc file to require: %s', $inc_file));
             } else {
                 return false;
             }
@@ -403,11 +402,9 @@ class PHPWS_Core {
         $config_file = PHPWS_Core::getConfigFile($module, $file);
 
         if (empty($config_file) || !$config_file) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce',
-                    $file);
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
             if ($exitOnError) {
-                throw new Exception(t('Could not find config file to require: %s',
-                        $inc_file));
+                throw new Exception(t('Could not find config file to require: %s', $inc_file));
             } else {
                 return $config_file;
             }
@@ -481,8 +478,7 @@ class PHPWS_Core {
      */
     public static function isWindows()
     {
-        if (isset($_SERVER['WINDIR']) ||
-                preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
+        if (isset($_SERVER['WINDIR']) || preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
             return true;
         } else {
             return false;
@@ -545,8 +541,7 @@ class PHPWS_Core {
         $var_array = NULL;
 
         if (!is_array($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core',
-                            'PHPWS_Core::stripObjValues', $className);
+            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::stripObjValues', $className);
         }
 
         foreach ($classVars as $key => $value) {
@@ -576,13 +571,11 @@ class PHPWS_Core {
         $classVars = get_class_vars($className);
 
         if (!is_array($classVars) || empty($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core',
-                            'PHPWS_Core::plugObject', $className);
+            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::plugObject', $className);
         }
 
         if (isset($variables) && !is_array($variables)) {
-            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core',
-                            __CLASS__ . '::' . __FUNCTION__, gettype($variables));
+            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
         }
 
         foreach ($classVars as $key => $value) {
@@ -685,16 +678,14 @@ class PHPWS_Core {
             return true;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core',
-                        'Cannot load Branch class');
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
                 return false;
             }
             if (Branch::checkCurrentBranch()) {
                 $GLOBALS['Is_Branch'] = true;
                 return true;
             } else {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core',
-                        'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
                 return false;
             }
         }
@@ -744,6 +735,42 @@ class PHPWS_Core {
         }
 
         PHPWS_Core::reroute(array_pop($_SESSION['PHPWS_UrlHistory']));
+    }
+
+    /**
+     * Trying to find out why Users changes authentication script. If cause
+     * is found, this will be removed.
+     */
+    public static function trackAuthentication($message)
+    {
+        $url = \Server::getCurrentUrl(false, false);
+        $request = \Server::getCurrentRequest();
+        if ($request->isPost()) {
+            $type = 'POST';
+        } else {
+            $type = 'GET';
+        }
+        $vars = $request->getVars();
+        if (empty($vars)) {
+            $variables = 'No variables';
+        } else {
+            foreach ($vars['vars'] as $k => $v) {
+                if (is_array($v)) {
+                    $v = serialize($v);
+                }
+                $varlist[] = "$k: $v";
+            }
+            $variables = implode("\n", $varlist);
+        }
+        $content = <<<EOF
+
+MESSAGE: $message
+REQUEST TYPE: $type
+VARIABLES:
+$variables
+----
+EOF;
+        \PHPWS_Core::log($content, 'default_authorization.log');
     }
 
 }
