@@ -60,14 +60,14 @@ class Blog_User {
                 break;
 
             case 'view':
-                if (@$_GET['y']) {
+                if (isset($_GET['y'])) {
                     $day = 1;
                     $month = 1;
                     $year = $_GET['y'];
-                    if (@$_GET['m']) {
+                    if (isset($_GET['m'])) {
                         $month = $_GET['m'];
 
-                        if (@$_GET['d']) {
+                        if (isset($_GET['d'])) {
                             $day = $_GET['d'];
                             $start_date = mktime(0, 0, 0, $month, $day, $year);
                             $end_date = mktime(23, 59, 59, $month, $day, $year);
