@@ -1,6 +1,8 @@
 #folder-list {
     background-color : #eee;
     padding:0px;
+    overflow:auto;
+    height: 540px;
 }
 #folder-list ul li {
     padding : .8em;
