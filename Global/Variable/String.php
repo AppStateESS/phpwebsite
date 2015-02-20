@@ -101,7 +101,7 @@ class String extends \Variable {
             $test = $this->value;
         }
 
-        if (@preg_match($match, $test) === false) {
+        if (preg_match($match, $test) === false) {
             throw new \Exception(t('Regular expression error: %s',
                     preg_error_msg(preg_last_error())));
         }
