@@ -517,7 +517,7 @@ class File_Common
         if ($this->_classtype == 'multimedia' && $this->embedded) {
             $this->folder_id = $new_folder->id;
             $this->file_directory = $dest_dir;
-            if (@copy($stn, $dtn)) {
+            if (copy($stn, $dtn)) {
                 if (!PHPWS_Error::logIfError($this->save(false, false))) {
                     // no error occurs, unlink the source file and thumbnail
                     unlink($stn);
@@ -536,13 +536,13 @@ class File_Common
         }
 
         // copy the source file to the new destination
-        if (@copy($source, $dest)) {
+        if (copy($source, $dest)) {
             $this->folder_id = $new_folder->id;
             $this->file_directory = $dest_dir;
             switch ($this->_classtype) {
                 case 'image':
                     // copy the thumbnail
-                    if (@copy($stn, $dtn)) {
+                    if (copy($stn, $dtn)) {
                         if (!PHPWS_Error::logIfError($this->save(false, false, false))) {
                             // no error occurs, unlink the source file and thumbnail
                             unlink($source);
@@ -574,7 +574,7 @@ class File_Common
 
                 case 'multimedia':
                     // copy the thumbnail
-                    if (@copy($stn, $dtn)) {
+                    if (copy($stn, $dtn)) {
                         if (!PHPWS_Error::logIfError($this->save(false, false))) {
                             // no error occurs, unlink the source file and thumbnail
                             unlink($source);

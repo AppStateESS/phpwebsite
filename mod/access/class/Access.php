@@ -16,7 +16,8 @@ define('ACCESS_HTACCESS_MISSING', 7);
 
 PHPWS_Core::requireConfig('access');
 
-class Access {
+class Access
+{
 
     public static function main()
     {
@@ -42,41 +43,31 @@ class Access {
         // In this case, an admin with full rights needs to log in
         if (empty($command)) {
             $title = dgettext('access', 'Sorry');
-            $content = dgettext('access',
-                    'Access needs a higher administrator\'s attention before you may use it.');
+            $content = dgettext('access', 'Access needs a higher administrator\'s attention before you may use it.');
         } else {
             switch ($command) {
                 case 'post_admin':
                     Access::saveAdmin();
-                    Access::sendMessage(dgettext('access', 'Settings saved.'),
-                            'admin');
+                    Access::sendMessage(dgettext('access', 'Settings saved.'), 'admin');
                     break;
 
                 case 'restore_default':
                     $source = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
                     $dest = PHPWS_HOME_DIR . '.htaccess';
-                    if (@copy($source, $dest)) {
-                        Access::sendMessage(dgettext('access',
-                                        'Default .htaccess file restored.'),
-                                'update');
+                    if (copy($source, $dest)) {
+                        Access::sendMessage(dgettext('access', 'Default .htaccess file restored.'), 'update');
                     } else {
-                        Access::sendMessage(dgettext('access',
-                                        'Unable to restore default .htaccess file.'),
-                                'update');
+                        Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
                     }
                     break;
 
                 case 'post_deny_allow':
                     $result = Access::postDenyAllow();
                     if ($result == false) {
-                        Access::sendMessage(dgettext('access',
-                                        'IP address was not formatted correctly or not allowed.'),
-                                'deny_allow');
+                        Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
                     } elseif (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
-                        Access::sendMessage(dgettext('access',
-                                        'An error occurred.') . ' ' . dgettext('access',
-                                        'Please check your logs.'), 'deny_allow');
+                        Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
                     }
                     Access::sendMessage(NULL, 'deny_allow');
                     break;
@@ -85,8 +76,7 @@ class Access {
                     PHPWS_Core::initModClass('access', 'Allow_Deny.php');
                     $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                     $allow_deny->delete();
-                    Access::sendMessage(dgettext('access', 'IP address deleted.'),
-                            'deny_allow');
+                    Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
                     break;
                 case 'deny_allow':
                     PHPWS_Core::initModClass('access', 'Forms.php');
@@ -100,13 +90,10 @@ class Access {
                     if (empty($shortcut->_error) && $shortcut->id) {
                         $result = $shortcut->delete();
                         if (PHPWS_Error::isError($result)) {
-                            Access::sendMessage(dgettext('access',
-                                            'An error occurred when deleting your shortcut.'),
-                                    'shortcuts');
+                            Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
                         }
                     }
-                    Access::sendMessage(dgettext('access', 'Shortcut deleted'),
-                            'shortcuts');
+                    Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
                     break;
 
                 case 'shortcuts':
@@ -120,8 +107,7 @@ class Access {
                     $message = NULL;
                     $result = Access::postShortcutList();
                     if (PHPWS_Error::isError($result)) {
-                        $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access',
-                                        'Please check your logs.');
+                        $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
                     }
                     Access::sendMessage($message, 'shortcuts');
                     break;
@@ -296,20 +282,16 @@ class Access {
         $result = $shortcut->save();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = dgettext('access',
-                    'A serious error occurred. Please check your error.log.');
-            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />',
-                    dgettext('access', 'Close window'));
+            $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
         } else {
             $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
-            $content[] = dgettext('access',
-                    'You can access this item with the following link:');
+            $content[] = dgettext('access', 'You can access this item with the following link:');
             $url = $shortcut->getRewrite(true, false);
             $content[] = $url;
             $js['location'] = $url;
             javascript('close_refresh', $js);
-            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" return false" />',
-                    dgettext('access', 'Close window'));
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" return false" />', dgettext('access', 'Close window'));
         }
         $tpl['CONTENT'] = implode('<br />', $content);
 
@@ -407,8 +389,7 @@ class Access {
 
     public static function shortcut(Key $key)
     {
-        $modal = new Modal('access-shortcut', null,
-                dgettext('access', 'Shortcuts'));
+        $modal = new Modal('access-shortcut', null, dgettext('access', 'Shortcuts'));
         $modal->sizeSmall();
         $button = '<button class="btn btn-success" id="save-shortcut">Save</button>';
         $modal->addButton($button);
@@ -418,8 +399,7 @@ class Access {
         \Layout::includeJavascript('mod/access/javascript/access.min.js');
 
         $link = '<a href="javascript:void(0)" data-authkey="' . \Current_User::getAuthKey() .
-                '" data-key="' . $key->id . '" id="add-shortcut">' . dgettext('access',
-                        'Shortcut') . '</a>';
+                '" data-key="' . $key->id . '" id="add-shortcut">' . dgettext('access', 'Shortcut') . '</a>';
         MiniAdmin::add('access', $link);
     }
 
@@ -475,8 +455,7 @@ class Access {
     public static function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
-        PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s',
-                        $command, Current_User::getAuthKey()));
+        PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
@@ -642,7 +621,8 @@ class Access {
         $db->addWhere('keyword', $GLOBALS['Forward']);
         $db->setLimit(1);
         $scl = $db->getObjects('Access_Shortcut');
-        if (@$sc = $scl[0]) {
+        if (isset($scl[0])) {
+            $sc = $scl[0];
             $sc->loadGet();
         }
     }
@@ -666,13 +646,11 @@ class Access {
         $db->setIndexBy('allow_or_deny');
         $perms = $db->select('col');
 
-        if (isset($perms[1]) && ($allow_all || (!empty($perms[1]) && Access::comparePermissions($perms[1],
-                        $address)))) {
+        if (isset($perms[1]) && ($allow_all || (!empty($perms[1]) && Access::comparePermissions($perms[1], $address)))) {
             $_SESSION['Access_Allow_Deny'] = true;
         }
 
-        if (isset($perms[0]) && ($deny_all || (!empty($perms[0]) && Access::comparePermissions($perms[0],
-                        $address)))) {
+        if (isset($perms[0]) && ($deny_all || (!empty($perms[0]) && Access::comparePermissions($perms[0], $address)))) {
             $_SESSION['Access_Allow_Deny'] = false;
             return;
         }
@@ -788,8 +766,7 @@ class Access {
         $base_needed = false;
 
         if (!is_file('.htaccess')) {
-            $tpl['CURRENT_HTACCESS'] = dgettext('access',
-                    'Your .htaccess file does not exist or is not readable.');
+            $tpl['CURRENT_HTACCESS'] = dgettext('access', 'Your .htaccess file does not exist or is not readable.');
         } else {
             $htaccess_contents = file('.htaccess');
             $tpl['CURRENT_HTACCESS'] = implode('', $htaccess_contents);
@@ -803,35 +780,28 @@ class Access {
 
                 if (!$base) {
                     if ($current_directory == '' || $current_directory == '/') {
-                        $tpl['BASE_FOUND'] = dgettext('access',
-                                'RewriteBase is not set or needed.');
+                        $tpl['BASE_FOUND'] = dgettext('access', 'RewriteBase is not set or needed.');
                     } else {
                         $base_needed = true;
-                        $tpl['BASE_FOUND'] = dgettext('access',
-                                'Your RewriteBase is not set but may be needed.');
+                        $tpl['BASE_FOUND'] = dgettext('access', 'Your RewriteBase is not set but may be needed.');
                     }
                 } elseif ($base == $current_directory) {
-                    $tpl['BASE_FOUND'] = dgettext('access',
-                            'Current RewriteBase matches installation directory.');
+                    $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase matches installation directory.');
                 } else {
                     $base_needed = true;
-                    $tpl['BASE_FOUND'] = dgettext('access',
-                            'Current RewriteBase does not match the installation directory.');
+                    $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase does not match the installation directory.');
                 }
             } else {
-                $tpl['BASE_FOUND'] = dgettext('access',
-                        'Your .htaccess file is not writable.');
+                $tpl['BASE_FOUND'] = dgettext('access', 'Your .htaccess file is not writable.');
             }
         }
 
         if ($base_needed) {
             if (is_writable('.htaccess')) {
                 $vars['command'] = 'add_rewritebase';
-                $tpl['OPTION'] = PHPWS_Text::secureLink(dgettext('access',
-                                        'Add RewriteBase'), 'access', $vars);
+                $tpl['OPTION'] = PHPWS_Text::secureLink(dgettext('access', 'Add RewriteBase'), 'access', $vars);
             } else {
-                $tpl['OPTION'] = dgettext('access',
-                        'Your .htaccess file is not writable. A RewriteBase cannot be added.');
+                $tpl['OPTION'] = dgettext('access', 'Your .htaccess file is not writable. A RewriteBase cannot be added.');
             }
         }
 
@@ -848,8 +818,7 @@ class Access {
             }
             foreach ($htaccess as $key => $val) {
                 if (preg_match('/^rewriteengine/i', trim($val))) {
-                    $htaccess[$key] = sprintf("RewriteEngine On\nRewriteRule ^js/(.*)$ %s$1 [L,R=301,NC]",
-                            PHPWS_SOURCE_HTTP);
+                    $htaccess[$key] = sprintf("RewriteEngine On\nRewriteRule ^js/(.*)$ %s$1 [L,R=301,NC]", PHPWS_SOURCE_HTTP);
                     break;
                 }
             }

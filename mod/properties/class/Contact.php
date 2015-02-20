@@ -67,7 +67,7 @@ class Contact {
 
         $form = new \PHPWS_Form('contact');
         $form->addHidden('module', 'properties');
-        if (@$this->id) {
+        if (!empty($this->id)) {
             $form->addHidden('cid', $this->id);
             $form->addSubmit('Update contact');
         } else {

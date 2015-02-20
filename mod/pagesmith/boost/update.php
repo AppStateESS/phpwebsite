@@ -159,7 +159,7 @@ function pagesmith_update(&$content, $currentVersion)
                 return false;
             }
 
-            if (@PHPWS_File::copy_directory($source_tpl, $local_tpl)) {
+            if (PHPWS_File::copy_directory($source_tpl, $local_tpl)) {
                 $content[] = '--- Local page templates updated.';
             } else {
                 $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>',
@@ -167,7 +167,7 @@ function pagesmith_update(&$content, $currentVersion)
                 return false;
             }
 
-            if (@PHPWS_File::copy_directory($source_img, $local_img)) {
+            if (PHPWS_File::copy_directory($source_img, $local_img)) {
                 $content[] = '--- New page template icons copied locally.';
             } else {
                 $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>',

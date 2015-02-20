@@ -1042,7 +1042,8 @@ class Cabinet
         foreach ($item as $id => $item_id) {
             $db->reset();
 
-            if (@$file_assoc_id = $item_converted[$item_id]) {
+            if (isset($item_converted[$item_id])) {
+                $file_assoc_id = $item_converted[$item_id];
                 $db->addValue($column, $file_assoc_id);
                 $db->addWhere('id', $id);
                 PHPWS_Error::logIfError($db->update());

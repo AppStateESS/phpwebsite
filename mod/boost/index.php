@@ -79,7 +79,7 @@ switch ($_REQUEST['action']) {
         $content[] = $backToBoost . '<br />';
         $content[] = '<br />';
 
-        if (@$_REQUEST['confirm'] == $_REQUEST['opmod']) {
+        if (isset($_REQUEST['confirm']) && isset($_REQUEST['opmod']) && $_REQUEST['confirm'] == $_REQUEST['opmod']) {
             $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
         } else {
             PHPWS_Core::goBack();

@@ -157,7 +157,7 @@ function blog_update(&$content, $currentVersion)
             $image_dir = $home_directory . 'images/blog/';
 
             if (!is_dir($image_dir)) {
-                if (@mkdir($image_dir)) {
+                if (mkdir($image_dir)) {
                     $content[] = '--- Created Blog image directory for xmlrpc.';
                 } else {
                     $content[] = '--- Unable to created Blog image directory for xmlrpc.';

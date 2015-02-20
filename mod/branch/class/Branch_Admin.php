@@ -225,7 +225,7 @@ class Branch_Admin {
         if (is_file(PHPWS_SOURCE_DIR . 'core/inc/htaccess')) {
             $this->content[] = dgettext('branch',
                     '.htaccess detected on hub. Attempting to create default file on branch.');
-            if (@copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess',
+            if (copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess',
                             $this->branch->directory . '.htaccess')) {
                 $this->content[] = dgettext('branch', 'Copied successfully.');
             } else {
@@ -365,7 +365,7 @@ class Branch_Admin {
             // only writes directory on new branches
             if (!$this->branch->id) {
                 if (is_writable($write_dir)) {
-                    if (@mkdir($this->branch->directory)) {
+                    if (mkdir($this->branch->directory)) {
                         $this->message[] = dgettext('branch',
                                 'Directory creation successful.');
                     } else {

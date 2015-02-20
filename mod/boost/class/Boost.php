@@ -1006,7 +1006,7 @@ class PHPWS_Boost {
             }
         }
 
-        if (@mkdir($local_root)) {
+        if (mkdir($local_root)) {
             return true;
         } else {
             return false;

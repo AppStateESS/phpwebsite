@@ -47,7 +47,7 @@ abstract class Base {
 
     protected function editProperty($contact_id=null)
     {
-        if (@$this->property->id) {
+        if (!empty($this->property->id)) {
             $this->title = 'Update property';
         } else {
             $this->title = 'Post new property';

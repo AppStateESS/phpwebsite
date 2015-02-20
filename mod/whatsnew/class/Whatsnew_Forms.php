@@ -105,7 +105,7 @@ class Whatsnew_Forms {
     {
 
         $filename = 'mod/whatsnew/docs/README';
-        if (@fopen($filename, "rb")) {
+        if (fopen($filename, "rb")) {
             $handle = fopen($filename, "rb");
             $readme = fread($handle, filesize($filename));
             fclose($handle);

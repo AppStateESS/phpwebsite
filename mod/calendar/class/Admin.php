@@ -1184,7 +1184,7 @@ class Calendar_Admin {
 
         $this->title = sprintf(dgettext('calendar', 'Repeat event - %s'),
                 $event->summary);
-        if (@$_REQUEST['js']) {
+        if (isset($_REQUEST['js']) && $_REQUEST['js']) {
             $js = true;
         } else {
             $js = false;

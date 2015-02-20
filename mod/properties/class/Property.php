@@ -1021,7 +1021,7 @@ class Property extends Room_Base {
             if (!$this->active) {
                 $tpl['ACTIVE'] = '<div id="not-active">This property is currently NOT ACTIVE</div>';
             }
-        } elseif (@$_SESSION['Contact_User']->id == $this->contact_id) {
+        } elseif (isset($_SESSION['Contact_User']->id) && ($_SESSION['Contact_User']->id == $this->contact_id)) {
             if (!$this->active) {
                 $tpl['ACTIVE'] = '<div id="not-active">This property is currently NOT ACTIVE</div>';
             }

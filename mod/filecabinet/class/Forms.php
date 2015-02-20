@@ -268,6 +268,7 @@ class Cabinet_Form
      */
     public function folderContents($folder)
     {
+        $links = array();
         javascript('jquery');
         $src = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/folder_options/contents.js';
         \Layout::addJSHeader("<script type='text/javascript' src='$src'></script>", 'folder-options');
@@ -339,7 +340,7 @@ EOF;
                             dgettext('filecabinet', 'Back to folder list'), 'filecabinet', array('tab' => $this->cabinet->panel->getCurrentTab()), null, null, 'btn btn-default');
         }
 
-        if (@$links) {
+        if (!empty($links)) {
             $pagetags['ADMIN_LINKS'] = implode(' ', $links);
         }
 

@@ -1168,8 +1168,8 @@ class Layout
         if (!Key::checkKey($key)) {
             return NULL;
         }
-
-        if (@$style = Layout::getKeyStyle($key->id)) {
+        $style = Layout::getKeyStyle($key->id);
+        if (!empty($style)) {
             Layout::extraStyle($style);
         }
     }
