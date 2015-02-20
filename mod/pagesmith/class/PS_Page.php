@@ -37,7 +37,7 @@ class PS_Page {
 
     public function __construct($id = 0)
     {
-        if ($id) {
+        if (is_numeric($id) && !empty($id)) {
             $this->id = (int) $id;
             $this->init();
         }
