@@ -1,7 +1,7 @@
 <div id="blog-past-view">
     <div class="box">
         <div class="box-title">
-            <h1>{PAST_TITLE}</h1>
+            <h3>{PAST_TITLE}</h3>
         </div>
         <div class="box-content">
             <ul>
