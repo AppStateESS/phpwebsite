@@ -762,8 +762,7 @@ class DBPager
         }
         $count = $this->getTotalRows();
         if (PHPWS_Error::isError($count)) {
-            PHPWS_Error::log($count);
-            return $count;
+            throw new \Exception($count->getMessage());
         }
 
         $this->db->setDistinct(true);
@@ -822,6 +821,7 @@ class DBPager
         } elseif (isset($this->default_order)) {
             $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
             $this->orderby = $this->default_order;
+            $this->orderby_dir = $this->default_order_dir;
         }
 
         if (!$load_rows) {
