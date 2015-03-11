@@ -22,6 +22,8 @@ class Deprecate {
 
     public static function moduleWarning($module)
     {
+        // disabling as it is broken
+        return;
         if (!LOG_DEPRECATIONS) {
             return;
         }
