@@ -10,8 +10,8 @@ if (!defined('UTF8_MODE')) {
     define('UTF8_MODE', false);
 }
 
-class Search {
-
+class Search
+{
     public $key_id = 0;
     public $module = NULL;
     public $keywords = NULL;
@@ -144,15 +144,14 @@ class Search {
 
         $text = $this->filterWords($text, false);
 
-/*
-        $language = str_ireplace('.utf-8', '',
-                Settings::get('Global', 'language'));
-        $file_name = strtolower($language . '_wordlist.txt');
-*/
+        /*
+          $language = str_ireplace('.utf-8', '',
+          Settings::get('Global', 'language'));
+          $file_name = strtolower($language . '_wordlist.txt');
+         */
         $file_name = 'en_us_wordlist.txt';
         // Removes trademark/registered, contractions, and website suffix
-        $text = preg_replace('/(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/',
-                '', $text);
+        $text = preg_replace('/(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
         $config_file = PHPWS_Core::getConfigFile('search', $file_name);
         if (!$config_file) {
             $config_file = PHPWS_Core::getConfigFile('search', 'wordlist.txt');
@@ -168,8 +167,7 @@ class Search {
             $text = preg_replace("/^$word\s|\s$word\s|\s$word$/", ' ', $text);
 
             // This line removes repeats AND English language suffixes.
-            $text = preg_replace("/ $word(es|s|ing|ed|d|ly|ings|ful|er|est)? /",
-                    ' ', $text);
+            $text = preg_replace("/ $word(es|s|ing|ed|d|ly|ings|ful|er|est)? /", ' ', $text);
         }
 
         return $text;
