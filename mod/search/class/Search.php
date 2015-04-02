@@ -144,11 +144,12 @@ class Search {
 
         $text = $this->filterWords($text, false);
 
-
+/*
         $language = str_ireplace('.utf-8', '',
                 Settings::get('Global', 'language'));
         $file_name = strtolower($language . '_wordlist.txt');
-
+*/
+        $file_name = 'en_us_wordlist.txt';
         // Removes trademark/registered, contractions, and website suffix
         $text = preg_replace('/(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/',
                 '', $text);
