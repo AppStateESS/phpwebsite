@@ -67,6 +67,7 @@
                 <div class="form-group">{PURGE_DATE_LABEL} {PURGE_DATE}</div>
 
                 <button class="btn btn-danger pull-right" id="{PURGE_CONFIRM_ID}">{PURGE_CONFIRM_VALUE}</button>
+                {date_script}
             </fieldset>
             <!-- END purge -->
 

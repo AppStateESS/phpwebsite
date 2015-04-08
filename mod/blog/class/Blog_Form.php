@@ -155,20 +155,21 @@ class Blog_Form
         $form->setLabel('comment_script', dgettext('blog', 'Paste in your comment code here (e.g. Disqus, Livefyre, Facebook, etc.)'));
         $form->addCssClass('comment_script', 'form-control');
 
-
         $form->addSubmit(dgettext('blog', 'Save settings'));
 
         if (Current_User::isDeity()) {
-            javascript('datepicker');
+            $date_script = javascript('datetimepicker', array('timepicker'=>false, 'id'=>'phpws_form_purge_date'), false, true, true);
             $form->addText('purge_date', date('m/d/Y', time() - 31536000));
             $form->setLabel('purge_date', dgettext('blog', 'Purge all entries before this date'));
-            $form->addCssClass('purge_date', 'datepicker');
             $form->addCssClass('purge_date', 'form-control');
-
             $form->addSubmit('purge_confirm', dgettext('blog', 'Confirm purge'));
+        } else {
+            $date_script = null;
         }
+        
 
         $template = $form->getTemplate();
+        $template['date_script'] = $date_script;
 
         if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog', array('action' => 'admin', 'command' => 'menu_submit_link'));
