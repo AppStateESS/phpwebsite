@@ -28,6 +28,7 @@ function FolderList() {
     this.dropzone;
     this.modal;
     this.active_folder = 0;
+    this.show_thumbnail = 0;
 
     var t = this;
 
@@ -37,6 +38,7 @@ function FolderList() {
         this.loadFolderList(0);
         this.loadUploadButton();
         this.loadNewFolderButton();
+        this.loadThumbnailSwitch();
         this.loadSearch();
     };
 
@@ -59,7 +61,22 @@ function FolderList() {
         }
     };
 
-
+    this.loadThumbnailSwitch = function() {
+        if (ftype === 1) {
+            // image folder
+            $('.show-thumbs, .hide-thumbs').click(function(){
+                t.show_thumbnail = Math.abs(t.show_thumbnail - 1);
+                if (t.show_thumbnail) {
+                    $('.show-thumbs').hide();
+                    $('.hide-thumbs').show();
+                } else {
+                    $('.show-thumbs').show();
+                    $('.hide-thumbs').hide();
+                }
+                t.current_folder.loadFiles();
+            });
+        }
+    };
 
     this.loadSearch = function() {
         var search = null;
@@ -301,6 +318,7 @@ function Folder(folder, parent) {
                     ftype: ftype,
                     folder_id: this.id,
                     order: this.order,
+                    thumbnail: this.parent.show_thumbnail,
                     active: this.parent.active_folder
                 }, function(data) {
             $('#files').html(data);

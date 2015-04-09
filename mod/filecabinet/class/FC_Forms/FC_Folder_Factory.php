@@ -8,6 +8,10 @@ namespace filecabinet\FC_Forms;
  */
 abstract class FC_Folder_Factory
 {
+    /**
+     *
+     * @var \Template
+     */
     protected $template;
     protected $folders;
     protected $title;

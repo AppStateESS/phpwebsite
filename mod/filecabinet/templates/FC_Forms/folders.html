@@ -23,7 +23,7 @@
             <table class="table table-striped file-list table-hover">
                 <thead>
                     <tr>
-                        <th class="col-md-1">&nbsp;</th>
+                        <th class="col-md-1"><?php echo (isset($admin_option)) ? $admin_option : '&nbsp;';?></th>
                         <th class="col-md-10">Name</th>
                         <th class="col-md-1">
                             <i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i>
