@@ -10,7 +10,8 @@ CKEDITOR.editorConfig = function (config)
     config.allowedContent = true;
     config.removeButtons = 'Underline,Cut,Copy,Iframe,About,Styles,Paste,Image';
     config.removePlugins = 'maxheight';
-
+    config.height = '400';
+    config.format_tags = 'p;h3;h4;h5;h6';
 
     config.toolbarGroups = [
         {name: 'document', groups: ['mode', 'document', 'doctools']},
@@ -20,7 +21,6 @@ CKEDITOR.editorConfig = function (config)
         {name: 'links'},
         {name: 'insert'},
         {name: 'others'},
-        '/',
         {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
         {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi']},
         {name: 'styles'}
