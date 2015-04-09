@@ -428,40 +428,46 @@ class User_Form
         $col_limit = 30;
         $content = NULL;
 
-        $result = $group->getMembers();
+        $members = $group->getMembers();
 
-        if ($result) {
-            $db = new PHPWS_DB('users_groups');
-            $db->addColumn('name');
-            $db->addColumn('id');
-            $db->addWhere('id', $result, '=', 'or');
-            $db->addOrder('name');
+        if ($members) {
+            $db = \Database::newDB();
+            $ug = $db->addTable('users_groups');
+            $ug->addField('id');
+            $ug->addField('name');
+            $ug->addField('user_id');
+            $u = $db->addTable('users');
+            $u->addField('display_name');
+            $ug->addFieldConditional('id', $members, 'in');
+            $cond = $db->createConditional($ug->getField('user_id'), $u->getField('id'));
+            $db->joinResources($ug, $u, $cond, 'outer');
+            $result = $db->select();
 
-            $groupResult = $db->select();
-
-            $count = 0;
-
+            $rows = array();
             $vars['action'] = 'admin';
             $vars['command'] = 'dropMember';
             $vars['group_id'] = $group->getId();
 
-            foreach ($groupResult as $item) {
-                $count++;
-                $vars['member'] = $item['id'];
-                $action = PHPWS_Text::secureLink(dgettext('users', 'Drop'), 'users', $vars, NULL, dgettext('users', 'Drop this member from the group.'), 'btn btn-xs btn-danger');
-                $names[] = sprintf('%s&#160;%s<br />', $action, $item['name']);
-
-                if ($count >= $col_limit) {
-                    $template['NAMES'] = implode("\n", $names);
-                    $rows['rows'][] = $template;
-                    $count = 0;
-                    $names = array();
+            foreach ($result as $row) {
+                extract($row);
+                $vars['member'] = $id;
+                $drop_button = PHPWS_Text::secureLink(dgettext('users', 'Drop'), 'users', $vars, NULL, dgettext('users', 'Drop this member from the group.'), 'btn btn-xs btn-danger');
+                if ($user_id) {
+                    $name = "$name&nbsp;($display_name)";
                 }
+                $rows[] = $drop_button . '&nbsp;' . $name;
             }
-            $template['NAMES'] = implode("\n", $names);
-            $rows['rows'][] = $template;
+            $template['NAMES'] = implode("<br />", $rows);
+            $content = PHPWS_Template::process($template, 'users', 'forms/memberlist.tpl');
+            if (!isset($content)) {
+                $content = dgettext('users', 'No members.');
+            }
 
-            $content = PHPWS_Template::process($rows, 'users', 'forms/memberlist.tpl');
+            if (PHPWS_Error::isError($content)) {
+                PHPWS_Error::log($content);
+                return $content->getMessage();
+            }
+            return $content;
         }
 
         if (!isset($content)) {
@@ -705,28 +711,23 @@ class User_Form
 
     public static function getLikeGroups($name, PHPWS_Group $group)
     {
-        $db = new PHPWS_DB('users_groups');
         $name = preg_replace('/[^\w]/', '', $name);
-        $db->addWhere('name', "%$name%", 'LIKE');
-
-        if (!is_null($group->getName())) {
-            $db->addWhere('name', $group->getName(), '!=');
-        }
+        $db = \Database::newDB();
+        $ug = $db->addTable('users_groups');
+        $ug->addField('id');
+        $ug->addField('name');
+        $ug->addField('user_id');
+        $u = $db->addTable('users', null, false);
+        $u->addField('display_name');
+        $cond = $db->createConditional($ug->getField('user_id'), $u->getField('id'));
+        $db->joinResources($ug, $u, $cond, 'outer');
+        $ug->addFieldConditional('name', "%$name%", 'LIKE');
 
         $members = $group->getMembers();
         if (isset($members)) {
-            foreach ($members as $id)
-                $db->addWhere('id', $id, '!=');
+            $ug->addFieldConditional('id', $members, 'not in');
         }
-        $db->setIndexBy('id');
-        $result = $db->getObjects('PHPWS_Group');
-
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-            return NULL;
-        } elseif (!isset($result)) {
-            return NULL;
-        }
+        $groups = $db->select();
 
         $tpl = new PHPWS_Template('users');
         $tpl->setFile('forms/likeGroups.tpl');
@@ -736,21 +737,21 @@ class User_Form
         $vars['command'] = 'addMember';
         $vars['group_id'] = $group->getId();
 
-        foreach ($result as $member) {
+        foreach ($groups as $member) {
             if (isset($members)) {
-                if (in_array($member->getId(), $members)) {
+                if (in_array($member['id'], $members)) {
                     continue;
                 }
             }
 
-            $vars['member'] = $member->getId();
-            $link = PHPWS_Text::secureLink(dgettext('users', 'Add'), 'users', $vars, NULL, dgettext('users', 'Add this user to this group.'));
+            $vars['member'] = $member['id'];
+            $link = PHPWS_Text::secureLink('<i class="fa fa-plus"></i> ' . dgettext('users', 'Add'), 'users', $vars, NULL, dgettext('users', 'Add this user to this group.'), 'btn btn-sm btn-success');
 
-            $count++;
             $tpl->setCurrentBlock('row');
-            $tpl->setData(array('NAME' => $member->getName(), 'ADD' => $link));
-            if ($count % 2) {
-                $tpl->setData(array('STYLE' => 'class="bg-light"'));
+            if (!empty($member['display_name'])) {
+                $tpl->setData(array('NAME' => $member['name'] . ' (' . $member['display_name'] . ')', 'ADD' => $link));
+            } else {
+                $tpl->setData(array('NAME' => $member['name'], 'ADD' => $link));
             }
             $tpl->parseCurrentBlock();
         }
