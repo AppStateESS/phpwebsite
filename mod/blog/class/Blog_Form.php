@@ -50,6 +50,8 @@ class Blog_Form
         $form->setCols('summary', '60');
         $form->setLabel('summary', dgettext('blog', 'Content'));
 
+        javascript('datetimepicker', null, false, true, true);
+        
         $form->addText('publish_date', $blog->getPublishDate('%Y/%m/%d %H:%M'));
         $form->setLabel('publish_date', dgettext('blog', 'Publish date/time'));
         $form->setSize('publish_date', 20);
@@ -60,8 +62,6 @@ class Blog_Form
         $form->setSize('expire_date', 20);
         $form->setClass('expire_date', 'datetimepicker');
         $template = $form->getTemplate();
-
-        javascript('datetimepicker');
 
         $jscal['date_name'] = 'expire_date';
 
@@ -156,17 +156,17 @@ class Blog_Form
         $form->addCssClass('comment_script', 'form-control');
 
         $form->addSubmit(dgettext('blog', 'Save settings'));
-
         if (Current_User::isDeity()) {
-            $date_script = javascript('datetimepicker', array('timepicker'=>false, 'id'=>'phpws_form_purge_date'), false, true, true);
-            $form->addText('purge_date', date('m/d/Y', time() - 31536000));
+            $date_script = javascript('datetimepicker', array('format' => 'Y/m/d', 'timepicker' => false, 'id' => 'phpws_form_purge_date'), false, true, true);
+            $form->addText('purge_date', date('Y/m/d', time() - 31536000));
             $form->setLabel('purge_date', dgettext('blog', 'Purge all entries before this date'));
-            $form->addCssClass('purge_date', 'form-control');
+            $form->addCssClass('purge_date', 'form-control datetimepicker');
             $form->addSubmit('purge_confirm', dgettext('blog', 'Confirm purge'));
+            $form->setClass('purge_confirm', 'btn btn-danger');
         } else {
             $date_script = null;
         }
-        
+
 
         $template = $form->getTemplate();
         $template['date_script'] = $date_script;

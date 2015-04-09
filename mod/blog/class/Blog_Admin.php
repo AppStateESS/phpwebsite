@@ -395,7 +395,7 @@ class Blog_Admin {
         }
     }
 
-    public function confirmPurge($purge_date)
+    public static function confirmPurge($purge_date)
     {
         $unix_purge_date = strtotime($purge_date);
         $purge_date = strftime('%c', $unix_purge_date);
@@ -412,7 +412,7 @@ class Blog_Admin {
         return PHPWS_Template::process($tpl, 'blog', 'purge_confirm.tpl');
     }
 
-    public function purgeEntries($date)
+    public static function purgeEntries($date)
     {
         PHPWS_Core::initModClass('blog', 'Blog.php');
         if (empty($date)) {
@@ -420,7 +420,7 @@ class Blog_Admin {
         }
 
         $db = new PHPWS_DB('blog_entries');
-        $db->addWhere('create_date', $date, '<');
+        $db->addWhere('create_date', (int)$date, '<');
         $entries = $db->getObjects('Blog');
 
         if (empty($entries) || PHPWS_Error::logIfError($entries)) {
