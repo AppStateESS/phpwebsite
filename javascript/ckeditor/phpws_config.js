@@ -6,11 +6,10 @@ CKEDITOR.editorConfig = function (config)
 {
     config.resize = true;
     config.skin = 'moono';
-    config.extraPlugins = 'fc_document,fc_image,save';
+    config.extraPlugins = 'fc_document,fc_image,fc_multimedia,save';
     config.allowedContent = true;
     config.removeButtons = 'Underline,Cut,Copy,Iframe,About,Styles,Paste,Image';
     config.removePlugins = 'maxheight';
-    config.height = '400';
     config.format_tags = 'p;h3;h4;h5;h6';
 
     config.toolbarGroups = [
@@ -75,3 +74,4 @@ CKEDITOR.editorConfig = function (config)
 
 CKEDITOR.dtd.$removeEmpty.span = 0;
 CKEDITOR.dtd.$removeEmpty.i = 0;
+CKEDITOR.dtd.$removeEmpty.a = 0;
