@@ -41,8 +41,14 @@ class FC_Multimedia extends FC_Folder_Factory
         if (empty($row)) {
             return null;
         }
+        $ext = \PHPWS_File::getFileExtension($row['file_name']);
+        if ($ext == 'mp3') {
+            $template = 'filters/audio.tpl';
+        } else {
+            $template = 'filters/media.tpl';
+        }
 
-        return \PHPWS_Template::process(array('FILE_PATH' => $row['file_directory'] . $row['file_name']), 'filecabinet', 'filters/media.tpl');
+        return \PHPWS_Template::process(array('FILE_PATH' => $row['file_directory'] . $row['file_name']), 'filecabinet', $template);
     }
 
 }
