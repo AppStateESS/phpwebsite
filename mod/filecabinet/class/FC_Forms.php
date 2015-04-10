@@ -247,7 +247,7 @@ class FC_Forms
                 $this->uploadImageToFolder($folder, 'file');
                 break;
 
-            case MEDIA_FOLDER:
+            case MULTIMEDIA_FOLDER:
                 $this->uploadMediaToFolder($folder, 'file');
                 break;
         }
@@ -266,7 +266,7 @@ class FC_Forms
                 $file_class = 'PHPWS_Image';
                 break;
 
-            case MEDIA_FOLDER:
+            case MULTIMEDIA_FOLDER:
                 PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $file_class = 'PHPWS_Multimedia';
                 break;
@@ -399,8 +399,8 @@ class FC_Forms
                 $folder_max = $sizes['image'];
                 break;
 
-            case MEDIA_FOLDER:
-                $folder_max = $sizes['media'];
+            case MULTIMEDIA_FOLDER:
+                $folder_max = $sizes['multimedia'];
                 break;
         }
 
