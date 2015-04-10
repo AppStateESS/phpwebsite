@@ -55,13 +55,6 @@ $all_file_types['docx']['mct'][] = 'application/vnd.openxmlformats';
 $all_file_types['docx']['fi'][]  = 'zip archive data';
 $all_file_types['docx']['vb']    = 'Microsoft Word 2007 Document';
 
-$all_file_types['flv']['mct'][] = 'text/plain';
-$all_file_types['flv']['mct'][] = 'application/x-flash-video';
-$all_file_types['flv']['mct'][] = 'application/x-extension-flv';
-$all_file_types['flv']['mct'][] = 'video/x-flv';
-$all_file_types['flv']['fi'][]  = 'macromedia flash video';
-$all_file_types['flv']['vb']    = 'Macromedia Flash Video';
-
 $all_file_types['gif']['mct'][] = 'image/gif';
 $all_file_types['gif']['fi'][]  = 'gif image data';
 $all_file_types['gif']['vb']    = 'GIF Image';
