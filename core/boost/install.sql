@@ -86,10 +86,6 @@ CREATE TABLE phpws_key_register (
   module varchar(40) NOT NULL
 );
 
-CREATE TABLE converted (
-  convert_name varchar(30) NOT NULL
-);
-
 CREATE TABLE core_version (
   version varchar(10) NOT NULL
 );
