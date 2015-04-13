@@ -240,8 +240,8 @@ class Cabinet_Form
         }
 
         $form->addTextField('title', $folder->title);
-        $form->setSize('title', 40, 255);
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
+        $form->setClass('title', 'form-control');
 
         if ($folder->ftype == DOCUMENT_FOLDER) {
             $form->addRadio('public_folder', array(0, 1));
@@ -254,6 +254,7 @@ class Cabinet_Form
             $form->addSelect('max_image_dimension', $resizes);
             $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image upload dimension'));
             $form->setMatch('max_image_dimension', $folder->max_image_dimension);
+            $form->setClass('max_image_dimension', 'form-control');
         }
 
         $tpl = $form->getTemplate();
