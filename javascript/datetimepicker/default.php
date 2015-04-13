@@ -8,6 +8,8 @@
  */
 javascript('jquery');
 
+$wrap_header = $wrap_body = true;
+
 $style = '<link rel="stylesheet" type="text/css" href="' . PHPWS_SOURCE_HTTP . 'javascript/datetimepicker/jquery.datetimepicker.css" / >';
 \Layout::addJSHeader($style);
 \Layout::addJSHeader('<script src="' . PHPWS_SOURCE_HTTP . 'javascript/datetimepicker/jquery.datetimepicker.js"></script>');
