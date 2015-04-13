@@ -1,8 +1,0 @@
-The Breadcrumb module only has one theme tag.
-
-Name: view
-Tag : BREADCRUMB_VIEW
----------------------
-Normally, the breadcrumb view is styled horizontally. It might be best
-to place it at the top of your theme.
-
