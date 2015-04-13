@@ -8,12 +8,16 @@
  */
 function javascriptEnabled()
 {
-    return @$_SESSION['javascript_enabled'];
+    if (isset($_SESSION['javascript_enabled'])) {
+        return $_SESSION['javascript_enabled'];
+    } else {
+        return false;
+    }
 }
 
-function javascript($directory, $data = NULL, $base = null)
+function javascript($directory, $data = NULL, $base = null, $wrap_header = false, $wrap_body = false)
 {
-    return Layout::getJavascript($directory, $data, $base);
+    return Layout::getJavascript($directory, $data, $base, $wrap_header, $wrap_body);
 }
 
 function check_cookie()
@@ -24,8 +28,7 @@ function check_cookie()
             PHPWS_Cookie::write('cookie_enabled', 'y');
             PHPWS_Core::reroute('index.php?cc=1');
         } else {
-            $tpl['MESSAGE'] = dgettext('layout',
-                    'This site requires you to enable cookies on your browser.');
+            $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
             $message = PHPWS_Template::process($tpl, 'layout', 'no_cookie.tpl');
             Layout::nakedDisplay($message);
         }
