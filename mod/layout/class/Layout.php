@@ -8,6 +8,7 @@
  * @package Core
  */
 PHPWS_Core::requireConfig('layout');
+require_once PHPWS_SOURCE_DIR . 'mod/layout/class/Functions.php';
 
 if (!defined('LAYOUT_IGNORE_JS_CHECK')) {
     define('LAYOUT_IGNORE_JS_CHECK', false);
@@ -516,10 +517,10 @@ class Layout
      * @param string $directory
      * @param array $data
      * @param string $base
-     * @param boolean $wrap_contents If true, wrap the contents of head.js with <script> tags
+     * @param boolean $wrap_header If true, wrap the contents of head.js with <script> tags
      * @return unknown_type
      */
-    public static function getJavascript($directory, array $data = NULL, $base = NULL, $wrap_contents = false)
+    public static function getJavascript($directory, array $data = NULL, $base = NULL, $wrap_header = false, $wrap_body = false)
     {
         // previously a choice, now mandated. Leaving this in for backwards
         // compatibility
@@ -561,16 +562,24 @@ class Layout
         $data['home_dir'] = PHPWS_HOME_DIR;
 
         try {
-            Layout::loadJavascriptFile($headfile, $directory, $data, $wrap_contents);
+            Layout::loadJavascriptFile($headfile, $directory, $data, $wrap_header);
         } catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_ERROR);
         }
 
         if (is_file($bodyfile)) {
             if (!empty($data)) {
-                return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
+                if ($wrap_body) {
+                    return '<script type="text/javascript">' . PHPWS_Template::process($data, 'layout', $bodyfile, TRUE) . '</script>';
+                } else {
+                    return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
+                }
             } else {
-                return file_get_contents($bodyfile);
+                if ($wrap_body) {
+                    return '<script type="text/javascript">' . file_get_contents($bodyfile) . '</script>';
+                } else {
+                    return file_get_contents($bodyfile);
+                }
             }
         }
     }
@@ -1198,52 +1207,6 @@ class Layout
         }
     }
 
-}
-
-function javascriptEnabled()
-{
-    if (isset($_SESSION['javascript_enabled'])) {
-        return $_SESSION['javascript_enabled'];
-    } else {
-        return false;
-    }
-}
-
-function javascript($directory, $data = NULL, $base = null, $wrap_contents = false)
-{
-    return Layout::getJavascript($directory, $data, $base, $wrap_contents);
-}
-
-function check_cookie()
-{
-    $cookie = PHPWS_Cookie::read('cookie_enabled');
-    if (!$cookie) {
-        if (!isset($_GET['cc'])) {
-            PHPWS_Cookie::write('cookie_enabled', 'y');
-            PHPWS_Core::reroute('index.php?cc=1');
-        } else {
-            $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
-            $message = PHPWS_Template::process($tpl, 'layout', 'no_cookie.tpl');
-            Layout::nakedDisplay($message);
-        }
-    }
-}
-
-/**
- * Works like javascript function but uses a module directory instead
- * @see Layout::getJavascript
- * @param string $module
- * @param string $directory
- * @param array $data
- * @return string
- */
-function javascriptMod($module, $directory, $data = null)
-{
-    if (preg_match('/\W/', $module)) {
-        return false;
-    }
-    $root_directory = "mod/$module/";
-    return Layout::getJavascript($directory, $data, $root_directory);
 }
 
 ?>
