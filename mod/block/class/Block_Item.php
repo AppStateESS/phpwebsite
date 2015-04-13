@@ -199,7 +199,7 @@ class Block_Item {
         if ($this->hide_narrow) {
             $template['HIDDEN'] = ' hidden-xs';
         }
-        return PHPWS_Template::process($template, 'block', 'sample.tpl');
+        return PHPWS_Template::process($template, 'block', 'default.tpl');
     }
 
     public function allPinned()
