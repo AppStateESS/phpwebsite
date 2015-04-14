@@ -187,6 +187,7 @@ function FolderList() {
         this.setCurrentFolder($('#folder-list li.folder.active'));
         $('#folder-list li.folder').click(function() {
             t.setCurrentFolder(this);
+            t.active_folder = $(this).data('folderId');
         });
     };
     this.setCurrentFolder = function(folder)

@@ -160,8 +160,7 @@ class FC_Forms
 
     private function printFolderList(\Request $request)
     {
-        $active_folder = $request->getVar('active_folder');
-        echo $this->factory->printFolderList($active_folder);
+        echo $this->factory->printFolderList();
     }
 
     private function saveFolder(\Request $request)

@@ -22,6 +22,9 @@ abstract class FC_Folder_Factory
 
     public function __construct($folder_id)
     {
+        if ($folder_id == 0) {
+            $folder_id = $this->getLastActiveFolder();
+        }
         $this->setCurrentFolderId($folder_id);
     }
 
@@ -46,6 +49,7 @@ abstract class FC_Folder_Factory
     protected function setCurrentFolderId($id)
     {
         $this->current_folder_id = (int) $id;
+        $this->setLastActiveFolder($this->current_folder_id);
     }
 
     protected function getCurrentFolderId()
@@ -111,7 +115,7 @@ abstract class FC_Folder_Factory
      * 
      * @return type
      */
-    public function printFolderList($active_id=0)
+    public function printFolderList()
     {
         $this->folders = $this->pullFolderRows($this->ftype);
         if (empty($this->folders)) {
@@ -119,12 +123,13 @@ abstract class FC_Folder_Factory
         }
         $id = $title = null;
 
+        $active_id = $this->getLastActiveFolder();
         foreach ($this->folders as $folder) {
             extract($folder);
             if (!$active_id) {
                 $active_class = 'active';
                 $active_id = $folder['id'];
-            } elseif($active_id == $folder['id']) {
+            } elseif ($active_id == $folder['id']) {
                 $active_class = 'active';
             } else {
                 $active_class = null;
@@ -132,6 +137,20 @@ abstract class FC_Folder_Factory
             $lines[] = "<li class='folder $active_class' data-ftype='$this->ftype' data-folder-id='$id'><i class='pull-right fa fa-edit fa-lg edit-folder admin'></i> $title</li>";
         }
         return implode("\n", $lines);
+    }
+
+    private function setLastActiveFolder($id)
+    {
+        $_SESSION['last_fc_folder_id'][$this->ftype] = $id;
+    }
+
+    private function getLastActiveFolder()
+    {
+        if (!isset($_SESSION['last_fc_folder_id'][$this->ftype])) {
+            return 0;
+        } else {
+            return $_SESSION['last_fc_folder_id'][$this->ftype];
+        }
     }
 
     public function getTitle()
