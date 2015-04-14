@@ -563,22 +563,51 @@ class User_Form
             }
         }
 
-        $group_ids = $user->getGroups();
-        if ($group_ids) {
-            $db = Database::newDB();
-            $t1 = $db->addTable('users_groups');
-            $f1 = $t1->addField('name');
-            $c1 = $t1->getFieldConditional('id', $group_ids, 'in');
-            $c2 = $t1->getFieldConditional('user_id', 0);
-            $db->stackConditionals($c1, $c2);
-            while ($group = $db->selectColumn()) {
-                $template['members'][] = array('NAME' => $group);
+        if (!$user->id) {
+            $template['JOIN_GROUPS'] = self::getJoinGroups();
+        } else {
+            $group_ids = $user->getGroups();
+            if ($group_ids) {
+                $db = Database::newDB();
+                $t1 = $db->addTable('users_groups');
+                $f1 = $t1->addField('name');
+                $c1 = $t1->getFieldConditional('id', $group_ids, 'in');
+                $c2 = $t1->getFieldConditional('user_id', 0);
+                $db->stackConditionals($c1, $c2);
+                while ($group = $db->selectColumn()) {
+                    $template['members'][] = array('NAME' => $group);
+                }
+            }
+            if (!isset($template['members'])) {
+                $template['EMPTY_GROUP'] = dgettext('user', 'User not a member of any group');
             }
         }
-        if (!isset($template['members'])) {
-            $template['EMPTY_GROUP'] = dgettext('user', 'User not a member of any group');
-        }
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
+    }
+
+    private static function getJoinGroups()
+    {
+        $groups = User_Action::getGroups('group');
+
+        if (empty($groups)) {
+            return null;
+        }
+        
+        $gmatch = array();
+        if (isset($_POST['group_add'])) {
+            foreach ($_POST['group_add'] as $gid) {
+                $gmatch[] = (int)$gid;
+            }
+        }
+        
+        $cb_count = 0;
+        foreach ($groups as $gid => $gname) {
+            $checked = in_array($gid, $gmatch) ? 'checked="checked"' : null;
+            $rows[] = "<li><input id='join-group-$cb_count' type='checkbox' name='group_add[]' value='$gid' $checked />&nbsp;<label for='join-group-$cb_count'>$gname</label></li>";
+            $cb_count++;
+        }
+        $content = '<ul style="list-style-type : none">' . implode("\n", $rows) . '</ul>';
+        return $content;
     }
 
     public function deify(PHPWS_User $user)

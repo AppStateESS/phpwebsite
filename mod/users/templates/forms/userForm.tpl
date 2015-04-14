@@ -58,9 +58,16 @@
         </tr>
         <!-- END email-error -->
     </table>
-    <div class="text-center">{GO}</div>
-    {END_FORM}
+    <!-- BEGIN join-groups -->
+    <fieldset>
+        <legend>Add to group(s)</legend>
+        {JOIN_GROUPS}
+        <!-- END join-groups -->
+        <div class="text-center">{GO}</div>
+        {END_FORM}
+    </fieldset>
 </div>
+<!-- BEGIN member-groups -->
 <fieldset>
     <legend>Group member</legend>
     {EMPTY_GROUP}
@@ -70,3 +77,4 @@
         <!-- END members -->
     </ul>
 </fieldset>
+<!-- END member-groups -->
