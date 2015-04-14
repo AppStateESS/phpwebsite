@@ -52,7 +52,6 @@
                     {LIKEBOX_DEFAULT}
                 </div>
                 <div class="col-md-9 col-sm-9">
-                    {LAYOUT_HEADER}
                     {CYCLE_CYCLE}
                     {BODY}
                 </div>
@@ -61,7 +60,6 @@
         <hr>
         {JAVASCRIPT}
         <footer>
-            {LAYOUT_FOOTER}
         </footer>
     </body>
 </html>
