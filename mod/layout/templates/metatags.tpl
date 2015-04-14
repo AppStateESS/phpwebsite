@@ -29,10 +29,8 @@
     </label>
   </div>
 </div>
-
-
-<label>{ROBOT_LABEL}</label>
-
+<hr />
+<fieldset><legend>{ROBOT_LABEL}</legend>
 <div class="control-group">
   <div class="controls">
     <label class="checkbox">
@@ -51,5 +49,5 @@
     <button type="submit" id="{SUBMIT_ID}" class="btn btn-primary" name="{SUBMIT_NAME}">{SUBMIT_VALUE}</button>
   </div>
 </div>
-
+</fieldset>
 {END_FORM}

@@ -1,6 +1,0 @@
-{START_FORM} {HEADER_FP_ONLY} {HEADER_FP_ONLY_LABEL}
-<br />
-{HEADER}
-<br />
-<br />
-{SUBMIT} {END_FORM}

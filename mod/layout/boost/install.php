@@ -6,7 +6,7 @@
 
 function layout_install(&$content, $branchInstall=FALSE)
 {
-    $page_title = 'My phpWebSite';
+    $page_title = 'Change this Site Name in Layout Meta Tags';
     $default_theme = 'bootstrap';
 
     if (!isset($error)) {

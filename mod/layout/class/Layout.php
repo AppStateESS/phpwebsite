@@ -356,16 +356,6 @@ class Layout
         Layout::processHeld();
         $themeVarList = array();
 
-        $header = Layout::getHeader();
-        if (!empty($header)) {
-            Layout::add($header, 'layout', 'header', FALSE);
-        }
-
-        $footer = Layout::getFooter();
-        if (!empty($footer)) {
-            Layout::add($footer, 'layout', 'footer', FALSE);
-        }
-
         $contentList = Layout::getBoxContent();
         // if content list is blank
         // 404 error?
@@ -492,24 +482,6 @@ class Layout
     public static function getDefaultTheme()
     {
         return $_SESSION['Layout_Settings']->default_theme;
-    }
-
-    public static function getFooter()
-    {
-        if (PHPWS_Settings::get('layout', 'footer_fp_only') && isset($_REQUEST['module'])) {
-            return null;
-        }
-
-        return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->footer);
-    }
-
-    public static function getHeader()
-    {
-        if (PHPWS_Settings::get('layout', 'header_fp_only') && isset($_REQUEST['module'])) {
-            return null;
-        }
-
-        return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 
     /**
@@ -955,7 +927,6 @@ class Layout
                 define('CURRENT_LANGUAGE', 'en_US');
             }
         }
-
 
         if (XML_MODE == TRUE && stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml')) {
             header('Content-Type: application/xhtml+xml; charset=UTF-8');

@@ -10,7 +10,8 @@
  */
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
-class Layout_Admin {
+class Layout_Admin
+{
 
     public static function admin()
     {
@@ -18,7 +19,7 @@ class Layout_Admin {
             Current_User::disallow();
         }
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        $content = null;
+        $title=$content = null;
         $panel = Layout_Admin::adminPanel();
 
         if (isset($_REQUEST['command'])) {
@@ -84,49 +85,6 @@ class Layout_Admin {
                 $content[] = Layout_Admin::adminThemes();
                 break;
 
-            case 'edit_footer':
-                if (!Current_User::authorized('layout')) {
-                    Current_User::disallow();
-                }
-                $result = Layout_Admin::postFooter();
-                if (PHPWS_Error::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $title = dgettext('layout', 'Error');
-                    $content[] = dgettext('layout',
-                            'There was a problem updating the settings.');
-                } else {
-                    $title = dgettext('layout', 'Footer updated.');
-                    $content[] = Layout_Admin::editFooter();
-                }
-                break;
-
-
-            case 'edit_header':
-                if (!Current_User::authorized('layout')) {
-                    Current_User::disallow();
-                }
-                $result = Layout_Admin::postHeader();
-                if (PHPWS_Error::isError($result)) {
-                    $title = dgettext('layout', 'Error');
-                    $content[] = dgettext('layout',
-                            'There was a problem updating the settings.');
-                } else {
-                    $title = dgettext('layout', 'Header updated.');
-                    $content[] = Layout_Admin::editHeader();
-                }
-                break;
-
-
-            case 'footer':
-                $title = dgettext('layout', 'Edit Footer');
-                $content[] = Layout_Admin::editFooter();
-                break;
-
-            case 'header':
-                $title = dgettext('layout', 'Edit Header');
-                $content[] = Layout_Admin::editHeader();
-                break;
-
             case 'meta':
                 $title = dgettext('layout', 'Edit Meta Tags');
                 $content[] = Layout_Admin::metaForm();
@@ -136,8 +94,7 @@ class Layout_Admin {
                 if (!Current_User::authorized('layout')) {
                     Current_User::disallow();
                 }
-                $files = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'templates/cache',
-                                false, true);
+                $files = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'templates/cache', false, true);
                 if (!empty($files) && is_array($files)) {
                     foreach ($files as $fn) {
                         $delete_cache_path = "templates/cache/$fn";
@@ -188,10 +145,8 @@ class Layout_Admin {
 
             case 'demo_theme':
                 $title = dgettext('layout', 'Confirm Theme Change');
-                $content[] = dgettext('layout',
-                        'If you are happy with the change, click the appropiate button.');
-                $content[] = dgettext('layout',
-                        'Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
+                $content[] = dgettext('layout', 'If you are happy with the change, click the appropiate button.');
+                $content[] = dgettext('layout', 'Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
                 $content[] = Layout_Admin::confirmThemeChange();
                 break;
 
@@ -203,8 +158,7 @@ class Layout_Admin {
                     Layout::reset($_POST['default_theme']);
                     PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
                 } else {
-                    PHPWS_Settings::set('layout', 'include_css_order',
-                            (int) $_POST['include_css_order']);
+                    PHPWS_Settings::set('layout', 'include_css_order', (int) $_POST['include_css_order']);
                     PHPWS_Settings::save('layout');
 
                     $title = dgettext('layout', 'Themes');
@@ -230,8 +184,7 @@ class Layout_Admin {
                 if (empty($content)) {
                     javascript('close_refresh');
                 }
-                Layout::nakedDisplay($content,
-                        dgettext('layout', 'Set meta tags'));
+                Layout::nakedDisplay($content, dgettext('layout', 'Set meta tags'));
                 break;
 
             case 'move_popup':
@@ -300,8 +253,6 @@ class Layout_Admin {
         $tabs['arrange'] = array('title' => dgettext('layout', 'Arrange'), 'link' => $link);
         $tabs['meta'] = array('title' => dgettext('layout', 'Meta Tags'), 'link' => $link);
         $tabs['theme'] = array('title' => dgettext('layout', 'Themes'), 'link' => $link);
-        $tabs['header'] = array('title' => dgettext('layout', 'Header'), 'link' => $link);
-        $tabs['footer'] = array('title' => dgettext('layout', 'Footer'), 'link' => $link);
 
         $panel = new PHPWS_Panel('layout');
         $panel->quickSetTabs($tabs);
@@ -319,8 +270,7 @@ class Layout_Admin {
         $themeList = Layout_Admin::getThemeList();
         if (PHPWS_Error::isError($themeList)) {
             PHPWS_Error::log($themeList);
-            return dgettext('layout',
-                    'There was a problem reading the theme directories.');
+            return dgettext('layout', 'There was a problem reading the theme directories.');
         }
 
         $form->addSelect('default_theme', $themeList);
@@ -328,16 +278,13 @@ class Layout_Admin {
         $form->setMatch('default_theme', Layout::getDefaultTheme());
         $form->setLabel('default_theme', dgettext('layout', 'Default Theme'));
 
-        $include_order[0] = dgettext('layout',
-                'Do not include module style sheets');
+        $include_order[0] = dgettext('layout', 'Do not include module style sheets');
         $include_order[1] = dgettext('layout', 'Modules before theme');
         $include_order[2] = dgettext('layout', 'Theme before modules');
 
         $form->addSelect('include_css_order', $include_order);
-        $form->setMatch('include_css_order',
-                PHPWS_Settings::get('layout', 'include_css_order'));
-        $form->setLabel('include_css_order',
-                dgettext('layout', 'CSS inclusion order'));
+        $form->setMatch('include_css_order', PHPWS_Settings::get('layout', 'include_css_order'));
+        $form->setLabel('include_css_order', dgettext('layout', 'CSS inclusion order'));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');
@@ -347,8 +294,7 @@ class Layout_Admin {
     {
         $vars['action'] = 'admin';
         $vars['command'] = 'reset_boxes';
-        $template['RESET_BOXES'] = PHPWS_Text::secureLink(dgettext('layout',
-                                'Reset boxes'), 'layout', $vars);
+        $template['RESET_BOXES'] = PHPWS_Text::secureLink(dgettext('layout', 'Reset boxes'), 'layout', $vars, null, null, 'btn btn-primary');
 
         if (Layout::isMoveBox()) {
             $vars['command'] = 'move_boxes_off';
@@ -358,23 +304,17 @@ class Layout_Admin {
             $label = dgettext('layout', 'Enable box move');
         }
 
-        $template['MOVE_BOXES'] = PHPWS_Text::secureLink($label, 'layout', $vars);
-        $template['MOVE_BOXES_DESC'] = dgettext('layout',
-                'When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme.');
-        $template['RESET_DESC'] = dgettext('layout',
-                'Resets all content back to its original location. Use if problems with Box Move occurred.');
+        $template['MOVE_BOXES'] = PHPWS_Text::secureLink($label, 'layout', $vars, null, null, 'btn btn-primary');
+        $template['MOVE_BOXES_DESC'] = dgettext('layout', 'When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme.');
+        $template['RESET_DESC'] = dgettext('layout', 'Resets all content back to its original location. Use if problems with Box Move occurred.');
 
         $vars['command'] = 'clear_templates';
-        $template['CLEAR_TEMPLATES'] = PHPWS_Text::secureLink(dgettext('layout',
-                                'Clear templates'), 'layout', $vars);
-        $template['CLEAR_TEMPLATES_DESC'] = dgettext('layout',
-                'Removes all files from the current template cache directory. Good to try if your theme is not displaying properly.');
+        $template['CLEAR_TEMPLATES'] = PHPWS_Text::secureLink(dgettext('layout', 'Clear templates'), 'layout', $vars, null, null, 'btn btn-primary');
+        $template['CLEAR_TEMPLATES_DESC'] = dgettext('layout', 'Removes all files from the current template cache directory. Good to try if your theme is not displaying properly.');
 
         $vars['command'] = 'clear_cache';
-        $template['CLEAR_CACHE'] = PHPWS_Text::secureLink(dgettext('layout',
-                                'Clear cache'), 'layout', $vars);
-        $template['CLEAR_CACHE_DESC'] = dgettext('layout',
-                'Clears all Cache Lite files. Good to try if module updates do not display.');
+        $template['CLEAR_CACHE'] = PHPWS_Text::secureLink(dgettext('layout', 'Clear cache'), 'layout', $vars, null, null, 'btn btn-primary');
+        $template['CLEAR_CACHE_DESC'] = dgettext('layout', 'Clears all Cache Lite files. Good to try if module updates do not display.');
 
         return PHPWS_Template::process($template, 'layout', 'arrange.tpl');
     }
@@ -391,66 +331,12 @@ class Layout_Admin {
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'confirmThemeChange');
-        $form->addSubmit('confirm',
-                dgettext('layout', 'Complete the theme change'));
-        $form->addSubmit('decline',
-                dgettext('layout', 'Restore the default theme'));
+        $form->addSubmit('confirm', dgettext('layout', 'Complete the theme change'));
+        $form->addSubmit('decline', dgettext('layout', 'Restore the default theme'));
         $address = 'index.php?module=layout&amp;action=admin&amp;command=demo_fail';
         Layout::metaRoute($address, 10);
         $tpl = $form->getTemplate();
         return $tpl['START_FORM'] . $tpl['CONFIRM'] . $tpl['DECLINE'] . $tpl['END_FORM'];
-    }
-
-    public static function editFooter()
-    {
-        $form = new PHPWS_Form('edit_footer');
-        $form->addHidden('module', 'layout');
-        $form->addHidden('action', 'admin');
-        $form->addHidden('command', 'edit_footer');
-
-        $form->addCheck('footer_fp_only', 1);
-        $form->setMatch('footer_fp_only',
-                PHPWS_Settings::get('layout', 'footer_fp_only'));
-        $form->setLabel('footer_fp_only',
-                dgettext('layout', 'Only show footer on front page'));
-
-        $footer = $_SESSION['Layout_Settings']->footer;
-
-        $form->addTextArea('footer', $footer);
-        $form->useEditor('footer');
-        $form->setRows('footer', 10);
-        $form->setWidth('footer', '80%');
-
-        $form->addSubmit('submit', dgettext('layout', 'Update Footer'));
-
-        $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'layout', 'edit_footer.tpl');
-    }
-
-    public static function editHeader()
-    {
-        $form = new PHPWS_Form('edit_header');
-        $form->addHidden('module', 'layout');
-        $form->addHidden('action', 'admin');
-        $form->addHidden('command', 'edit_header');
-
-        $form->addCheck('header_fp_only', 1);
-        $form->setMatch('header_fp_only',
-                PHPWS_Settings::get('layout', 'header_fp_only'));
-        $form->setLabel('header_fp_only',
-                dgettext('layout', 'Only show header on front page'));
-
-        $header = $_SESSION['Layout_Settings']->header;
-
-        $form->addTextArea('header', $header);
-        $form->useEditor('header');
-        $form->setRows('header', 10);
-        $form->setWidth('header', '80%');
-
-        $form->addSubmit('submit', dgettext('layout', 'Update Header'));
-
-        $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'layout', 'edit_header.tpl');
     }
 
     public static function getThemeList()
@@ -495,12 +381,14 @@ class Layout_Admin {
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postMeta');
         $form->addText('page_title', $page_title);
-        $form->setSize('page_title', 40);
+        $form->setClass('page_title', 'form-control');
         $form->setLabel('page_title', dgettext('layout', 'Site Name'));
         $form->addTextArea('meta_keywords', $meta_keywords);
         $form->setLabel('meta_keywords', dgettext('layout', 'Keywords'));
+        $form->setClass('meta_keywords', 'form-control');
         $form->addTextArea('meta_description', $meta_description);
         $form->setLabel('meta_description', dgettext('layout', 'Description'));
+        $form->setClass('meta_description', 'form-control');
         $form->addCheckBox('index', 1);
         $form->setMatch('index', $index);
         $form->setLabel('index', dgettext('layout', 'Allow indexing'));
@@ -509,10 +397,8 @@ class Layout_Admin {
         $form->setLabel('follow', dgettext('layout', 'Allow link following'));
 
         $form->addCheckBox('use_key_summaries', 1);
-        $form->setMatch('use_key_summaries',
-                PHPWS_Settings::get('layout', 'use_key_summaries'));
-        $form->setLabel('use_key_summaries',
-                dgettext('layout', 'Use Key summaries for meta description'));
+        $form->setMatch('use_key_summaries', PHPWS_Settings::get('layout', 'use_key_summaries'));
+        $form->setLabel('use_key_summaries', dgettext('layout', 'Use Key summaries for meta description'));
 
         $form->addSubmit('submit', dgettext('layout', 'Update'));
 
@@ -559,33 +445,6 @@ class Layout_Admin {
         }
     }
 
-    public static function postHeader()
-    {
-        if (isset($_POST['header_fp_only'])) {
-            PHPWS_Settings::set('layout', 'header_fp_only', 1);
-        } else {
-            PHPWS_Settings::set('layout', 'header_fp_only', 0);
-        }
-
-        PHPWS_Settings::save('layout');
-        $_SESSION['Layout_Settings']->header = PHPWS_Text::parseInput($_POST['header']);
-        return $_SESSION['Layout_Settings']->saveSettings();
-    }
-
-    public static function postFooter()
-    {
-        if (isset($_POST['footer_fp_only'])) {
-            PHPWS_Settings::set('layout', 'footer_fp_only', 1);
-        } else {
-            PHPWS_Settings::set('layout', 'footer_fp_only', 0);
-        }
-
-        PHPWS_Settings::save('layout');
-
-        $_SESSION['Layout_Settings']->footer = PHPWS_Text::parseInput($_POST['footer']);
-        return $_SESSION['Layout_Settings']->saveSettings();
-    }
-
     public static function postMeta()
     {
         extract($_POST);
@@ -606,8 +465,7 @@ class Layout_Admin {
             $follow = 0;
         }
 
-        PHPWS_Settings::set('layout', 'use_key_summaries',
-                (int) isset($_POST['use_key_summaries']));
+        PHPWS_Settings::set('layout', 'use_key_summaries', (int) isset($_POST['use_key_summaries']));
         PHPWS_Settings::save('layout');
 
         $values['meta_robots'] = $index . $follow;
@@ -644,20 +502,16 @@ class Layout_Admin {
         $vars['box_source'] = $box->id;
 
         $vars['box_dest'] = 'move_box_top';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to top'),
-                        'layout', $vars);
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to top'), 'layout', $vars);
 
         $vars['box_dest'] = 'move_box_up';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move up'),
-                        'layout', $vars);
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move up'), 'layout', $vars);
 
         $vars['box_dest'] = 'move_box_down';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move down'),
-                        'layout', $vars);
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move down'), 'layout', $vars);
 
         $vars['box_dest'] = 'move_box_bottom';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout',
-                                'Move to bottom'), 'layout', $vars);
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to bottom'), 'layout', $vars);
 
         if (Current_User::isDeity() && !$_SESSION['Layout_Settings']->deity_reload) {
             $_SESSION['Layout_Settings']->loadSettings();
@@ -670,24 +524,18 @@ class Layout_Admin {
                 continue;
             }
             $vars['box_dest'] = $var;
-            $theme_links[] = PHPWS_Text::secureLink(sprintf(dgettext('layout',
-                                            'Send to %s'), $var), 'layout',
-                            $vars);
+            $theme_links[] = PHPWS_Text::secureLink(sprintf(dgettext('layout', 'Send to %s'), $var), 'layout', $vars);
         }
 
         $vars['box_dest'] = 'restore';
-        $template['RESTORE'] = PHPWS_Text::secureLink(dgettext('layout',
-                                'Restore to default'), 'layout', $vars);
+        $template['RESTORE'] = PHPWS_Text::secureLink(dgettext('layout', 'Restore to default'), 'layout', $vars);
 
         $template['STEP_LINKS'] = implode('<br>', $step_links);
         $template['THEME_LINKS'] = implode('<br>', $theme_links);
-        $template['CANCEL'] = sprintf('<a href="." onclick="window.close()">%s</a>',
-                dgettext('layout', 'Cancel'));
-        $template['TITLE'] = sprintf(dgettext('layout', 'Move box: %s'),
-                $box->content_var);
+        $template['CANCEL'] = sprintf('<a href="." onclick="window.close()">%s</a>', dgettext('layout', 'Cancel'));
+        $template['TITLE'] = sprintf(dgettext('layout', 'Move box: %s'), $box->content_var);
 
-        $content = PHPWS_Template::process($template, 'layout',
-                        'move_box_select.tpl');
+        $content = PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
         Layout::nakedDisplay($content);
     }
 

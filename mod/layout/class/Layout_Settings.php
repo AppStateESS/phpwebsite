@@ -19,8 +19,6 @@ class Layout_Settings {
     public $meta_owner       = null;
     public $meta_author      = null;
     public $meta_content     = null;
-    public $header           = null;
-    public $footer           = null;
     public $cache            = true;
     public $deity_reload     = false;
 

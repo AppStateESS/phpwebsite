@@ -17,8 +17,7 @@ function layout_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '2.3.0', '<'):
             $content[] = '<pre>';
-            if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'),
-                            'layout')) {
+            if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'), 'layout')) {
                 $content[] = 'Updated conf/config.php and conf/error.php file.';
             } else {
                 $content[] = 'Unable to update conf/config.php and conf/error.php file.';
@@ -119,16 +118,14 @@ function layout_update(&$content, $currentVersion)
         case version_compare($currentVersion, '2.4.5', '<'):
             $content[] = '<pre>';
             $db = new PHPWS_DB('layout_config');
-            if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload',
-                                    'smallint not null default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('deity_reload', 'smallint not null default 0'))) {
                 $content[] = 'Could not create layout_config.deity_reload column.';
                 return false;
             } else {
                 $content[] = 'Added layout_config.deity_reload column.';
             }
 
-            layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'),
-                    $content);
+            layoutUpdateFiles(array('templates/metatags.tpl', 'conf/config.php'), $content);
             $content[] = '2.4.5 changes
 --------------------
 + Added option to use a Key\'s summary or title to fill in the meta
@@ -223,6 +220,38 @@ EOF;
 <pre>2.6.1 changes
 --------------------
 + Added THEME_HTTP to the Layout wrap function.
+</pre>
+EOF;
+        case version_compare($currentVersion, '2.7.0', '<'):
+            if (PHPWS_Core::moduleExists('block')) {
+                $db = Database::newDB();
+                $t = $db->addTable('layout_config');
+                $t->addField('header');
+                $t->addField('footer');
+                $config_result = $db->selectOneRow();
+                
+                if (!empty($config_result['header'])) {
+                    $header_block = new Block_Item;
+                    $header_block->title = 'Layout header';
+                    $header_block->content = $_SESSION['Layout_Settings']->header;
+                    $header_block->hide_title = true;
+                    $header_block->save();
+                }
+
+                if (!empty($config_result['footer'])) {
+                    $footer_block = new Block_Item;
+                    $footer_block->title = 'Layout footer';
+                    $footer_block->content = $_SESSION['Layout_Settings']->footer;
+                    $footer_block->hide_title = true;
+                    $footer_block->save();
+                }
+            }
+
+            $content[] = <<<EOF
+<pre>2.7.0 changes
+--------------------
++ Removed header and footer. Moved data to Blocks.
++ Fixed some admin forms
 </pre>
 EOF;
     }

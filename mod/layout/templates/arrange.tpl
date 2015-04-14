@@ -1,5 +1,5 @@
-<table cellpadding="4" cellspacing="0">
-    <tr class="bgcolor1">
+<table class="table table-striped">
+    <tr>
         <td width="20%">{RESET_BOXES}</td>
         <td>{RESET_DESC}</td>
     </tr>
@@ -7,7 +7,7 @@
         <td>{MOVE_BOXES}</td>
         <td>{MOVE_BOXES_DESC}</td>
     </tr>
-    <tr class="bgcolor1">
+    <tr>
         <td>{CLEAR_TEMPLATES}</td>
         <td>{CLEAR_TEMPLATES_DESC}</td>
     </tr>
