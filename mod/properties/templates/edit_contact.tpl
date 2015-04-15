@@ -1,87 +1,70 @@
 {START_FORM}
 {CONTACT_CONTACT} {CONTACT_CONTACT_LABEL}
-<table class="table table-striped">
-    <!-- BEGIN username --><tr>
-        <td style="width : 35%">{USERNAME_LABEL}</td>
-        <td>{USERNAME}<!--  BEGIN error1 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{USERNAME_ERROR}</div>
-        </div>
-        <!-- END error1 --></td>
-    </tr><!-- END username -->
-    <tr>
-        <td>{PASSWORD_LABEL}</td>
-        <td>{PASSWORD}<br />
-        {PW_CHECK_LABEL}<br />
-        {PW_CHECK}<!--  BEGIN error2 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{PASSWORD_ERROR}</div>
-        </div>
-        <!-- END error2 -->{MAKE_PASSWORD}<div id="password-created"></div></td>
-    </tr>
-    <tr>
-        <td>{COMPANY_NAME_LABEL}<br /><span style="font-size: .9em">(first and last name if single landlord)</span></td>
-        <td>{COMPANY_NAME}<!--  BEGIN error3 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{COMPANY_NAME_ERROR}</div>
-        </div>
-        <!-- END error3 --></td>
-    </tr>
-    <tr>
-        <td>{COMPANY_URL_LABEL}<br /><span style="font-size: .9em">(Format: http://address.com)</span></td>
-        <td>{COMPANY_URL}<!--  BEGIN error8 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{COMPANY_URL_ERROR}</div>
-        </div>
-        <!-- END error8 --></td>
-    </tr>
-    <tr>
-        <td>{FIRST_NAME_LABEL}</td>
-        <td>{FIRST_NAME}<!--  BEGIN error4 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{FIRST_NAME_ERROR}</div>
-        </div>
-        <!-- END error4 --></td>
-    </tr>
-    <tr>
-        <td>{LAST_NAME_LABEL}</td>
-        <td>{LAST_NAME}<!--  BEGIN error5 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{LAST_NAME_ERROR}</div>
-        </div>
-        <!-- END error5 --></td>
-    </tr>
-    <tr>
-        <td>{PHONE_LABEL}</td>
-        <td>{PHONE} (10-digit)<!--  BEGIN error6 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{PHONE_ERROR}</div>
-        </div>
-        <!-- END error6 --></td>
-    </tr>
-    <tr>
-        <td>{EMAIL_ADDRESS_LABEL}</td>
-        <td>{EMAIL_ADDRESS}<!--  BEGIN error7 -->
-        <div class="error">
-        <div class="arrow-left"></div>
-        <div class="error-message">{EMAIL_ADDRESS_ERROR}</div>
-        </div>
-        <!-- END error7 --></td>
-    </tr>
-    <tr>
-        <td>{COMPANY_ADDRESS_LABEL}</td>
-        <td>{COMPANY_ADDRESS}</td>
-    </tr>
-    <tr>
-        <td>{TIMES_AVAILABLE_LABEL}<br /><span style="font-size: .9em">(leaving this blank indicates you may be contacted at any time)</span></td>
-        <td>{TIMES_AVAILABLE}</td>
-    </tr>
-</table>
+
+<!-- BEGIN username -->
+<div class="form-group">
+    {USERNAME_LABEL}
+    <!-- BEGIN error1 --><span class="label label-danger">{USERNAME_ERROR}</span><!-- END error1 -->
+    {USERNAME}
+</div>
+<!-- END username -->
+
+<div class="form-group">
+    {PASSWORD_LABEL}
+     <!-- BEGIN error2 --><span class="label label-danger">{PASSWORD_ERROR}</span><!-- END error2 -->
+    {PASSWORD}<br />
+    {PW_CHECK_LABEL}<br />
+    {PW_CHECK}
+    {MAKE_PASSWORD}
+</div>
+<div id="password-created"></div>
+
+<div class="form-group">
+    {COMPANY_NAME_LABEL} (first and last name if single landlord)
+    <!-- BEGIN error3 --><span class="label label-danger">{COMPANY_NAME_ERROR}</span><!-- END error3 -->
+    {COMPANY_NAME}
+</div>
+
+<div class="form-group">
+    {COMPANY_URL_LABEL} (Format: http://address.com)
+    <!-- BEGIN error4 --><span class="label label-danger">{COMPANY_URL_ERROR}</span><!-- END error4 -->
+    {COMPANY_URL}
+</div>
+
+<div class="form-group">
+    {FIRST_NAME_LABEL}
+    <!-- BEGIN error5 --><span class="label label-danger">{FIRST_NAME_ERROR}</span><!-- END error5 -->
+    {FIRST_NAME}
+</div>
+
+<div class="form-group">
+    {LAST_NAME_LABEL}
+    <!-- BEGIN error6 --><span class="label label-danger">{LAST_NAME_ERROR}</span><!-- END error6 -->
+    {LAST_NAME}
+</div>
+
+<div class="form-group">
+    {PHONE_LABEL}
+    <!-- BEGIN error7 --><span class="label label-danger">{PHONE_ERROR}</span><!-- END error7 -->
+    {PHONE}
+</div>
+
+<div class="form-group">
+    {EMAIL_ADDRESS_LABEL}
+    <!-- BEGIN error8 --><span class="label label-danger">{EMAIL_ADDRESS_ERROR}</span><!-- END error8 -->
+    {EMAIL_ADDRESS}
+</div>
+
+<div class="form-group">
+    {COMPANY_ADDRESS_LABEL}
+    <!-- BEGIN error9 --><span class="label label-danger">{COMPANY_ADDRESS_ERROR}</span><!-- END error9 -->
+    {COMPANY_ADDRESS}
+</div>
+
+<div class="form-group">
+    {TIMES_AVAILABLE_LABEL} (leaving this blank indicates you may be contacted at any time)
+    <!-- BEGIN error10 --><span class="label label-danger">{TIMES_AVAILABLE_ERROR}</span><!-- END error10 -->
+    {TIMES_AVAILABLE}
+</div>
+
 {SUBMIT} {END_FORM}

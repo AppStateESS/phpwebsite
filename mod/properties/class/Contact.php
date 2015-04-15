@@ -21,8 +21,8 @@ namespace Properties;
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-class Contact {
-
+class Contact
+{
     public $id;
     public $username;
     public $password;
@@ -80,12 +80,15 @@ class Contact {
         } else {
             $form->addHidden('aop', 'save_contact');
             $form->addText('username', $this->username);
+            $form->setClass('username', 'form-control');
             $form->setLabel('username', 'User name');
             $form->setSize('username', '20', '20');
             $form->setRequired('username');
 
             $form->addButton('make_password', 'Create');
             $form->setId('make_password', 'make-password');
+            $form->setClass('make_password', 'btn btn-default');
+            
             $form->addCheck('contact_contact', 1);
             $form->setLabel('contact_contact', 'Send contact email');
             if (!$this->id) {
@@ -95,46 +98,53 @@ class Contact {
 
         $form->addPassword('password');
         $form->setLabel('password', 'Password');
+        $form->setClass('password', 'form-control');
 
         $form->addPassword('pw_check');
-        $form->setLabel('pw_check', 'Match');
+        $form->setLabel('pw_check', 'Retype password below');
+        $form->setClass('pw_check', 'form-control');
 
         $form->addText('first_name', $this->first_name);
         $form->setLabel('first_name', 'Contact first name');
         $form->setRequired('first_name');
+        $form->setClass('first_name', 'form-control');
 
         $form->addText('last_name', $this->last_name);
         $form->setLabel('last_name', 'Contact last name');
         $form->setRequired('last_name');
+        $form->setClass('last_name', 'form-control');
 
         $form->addText('phone', $this->getPhone());
         $form->setLabel('phone', 'Phone number');
         $form->setRequired('phone');
+        $form->setClass('phone', 'form-control');
 
         $form->addText('email_address', $this->email_address);
         $form->setLabel('email_address', 'Email address');
         $form->setRequired('email_address');
         $form->setSize('email_address', 40);
+        $form->setClass('email_address', 'form-control');
 
         $form->addText('company_name', $this->company_name);
         $form->setLabel('company_name', 'Company name');
         $form->setRequired('company_name');
         $form->setSize('company_name', 40);
+        $form->setClass('company_name', 'form-control');
 
         $form->addText('company_url', $this->company_url);
         $form->setLabel('company_url', 'Company url');
         $form->setSize('company_url', 40);
+        $form->setClass('company_url', 'form-control');
 
-        $form->addTextArea('company_address', $this->company_address);
+        $form->addText('company_address', $this->company_address);
         $form->setLabel('company_address', 'Company (or renter) address');
-        $form->setRows('company_address', 4);
-        $form->setCols('company_address', 20);
+        $form->setClass('company_address', 'form-control');
 
         $form->addTextArea('times_available', $this->times_available);
-        $form->setLabel('times_available',
-                'Days and hours available for contact');
+        $form->setLabel('times_available', 'Days and hours available for contact');
         $form->setRows('times_available', 4);
         $form->setCols('times_available', 20);
+        $form->setClass('times_available', 'form-control');
 
 
         $tpl = $form->getTemplate();
@@ -176,8 +186,7 @@ class Contact {
             }
 
             if (in_array($key, $vars)) {
-                $func = 'set' . str_replace(' ', '',
-                                ucwords(str_replace('_', ' ', $key)));
+                $func = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
                 try {
                     $this->$func($value);
                 } catch (\Exception $e) {
@@ -333,15 +342,13 @@ class Contact {
             return null;
         }
 
-        return sprintf('(%s) %s-%s', substr($this->phone, 0, 3),
-                substr($this->phone, 3, 3), substr($this->phone, 6));
+        return sprintf('(%s) %s-%s', substr($this->phone, 0, 3), substr($this->phone, 3, 3), substr($this->phone, 6));
     }
 
     public function getEmailAddress($html = false)
     {
         if ($html) {
-            return sprintf('<a href="mailto:%s">%s</a>', $this->email_address,
-                    $this->email_address);
+            return sprintf('<a href="mailto:%s">%s</a>', $this->email_address, $this->email_address);
         } else {
             return $this->email_address;
         }
@@ -387,26 +394,19 @@ class Contact {
 
     public function row_tags()
     {
-        $tpl['LAST_NAME'] = sprintf('<a href="mailto:%s">%s, %s <i class="fa fa-envelope-o"></i></a>',
-                $this->email_address, $this->last_name, $this->first_name);
+        $tpl['LAST_NAME'] = sprintf('<a href="mailto:%s">%s, %s <i class="fa fa-envelope-o"></i></a>', $this->email_address, $this->last_name, $this->first_name);
         $tpl['PHONE'] = $this->getPhone();
 
         $tpl['COMPANY_NAME'] = $this->getCompanyUrl();
 
         if ($this->active) {
-            $admin[] = \PHPWS_Text::secureLink(\Icon::show('active',
-                                    'Click to deactivate'), 'properties',
-                            array('aop' => 'deactivate_contact', 'cid' => $this->id));
+            $admin[] = \PHPWS_Text::secureLink(\Icon::show('active', 'Click to deactivate'), 'properties', array('aop' => 'deactivate_contact', 'cid' => $this->id));
         } else {
-            $admin[] = \PHPWS_Text::secureLink(\Icon::show('inactive',
-                                    'Click to activate'), 'properties',
-                            array('aop' => 'activate_contact', 'cid' => $this->id));
+            $admin[] = \PHPWS_Text::secureLink(\Icon::show('inactive', 'Click to activate'), 'properties', array('aop' => 'activate_contact', 'cid' => $this->id));
         }
 
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('add'), 'properties',
-                        array('aop' => 'edit_property', 'cid' => $this->id));
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('edit'), 'properties',
-                        array('aop' => 'edit_contact', 'cid' => $this->id));
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('add'), 'properties', array('aop' => 'edit_property', 'cid' => $this->id));
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('edit'), 'properties', array('aop' => 'edit_contact', 'cid' => $this->id));
 
         $js['LINK'] = \Icon::show('delete');
         $js['QUESTION'] = 'Are you sure you want to delete this contact and all their properties?';
@@ -414,9 +414,7 @@ class Contact {
 
         $admin[] = javascript('confirm', $js);
 
-        $admin[] = \PHPWS_Text::secureLink(\Icon::show('home', 'Show properties'),
-                        'properties',
-                        array('aop' => 'show_properties', 'cid' => $this->id));
+        $admin[] = \PHPWS_Text::secureLink(\Icon::show('home', 'Show properties'), 'properties', array('aop' => 'show_properties', 'cid' => $this->id));
 
         if ($this->last_log) {
             $tpl['LAST_LOG'] = strftime('%x', $this->last_log);
@@ -471,18 +469,14 @@ class Contact {
     {
         $vars['k'] = $this->key;
         $vars['cop'] = 'edit_property';
-        $tpl['CREATE'] = \PHPWS_Text::moduleLink('Create property',
-                        'properties', $vars);
+        $tpl['CREATE'] = \PHPWS_Text::moduleLink('Create property', 'properties', $vars);
         $vars['cop'] = 'view_properties';
-        $tpl['VIEW'] = \PHPWS_Text::moduleLink('View properties', 'properties',
-                        $vars);
+        $tpl['VIEW'] = \PHPWS_Text::moduleLink('View properties', 'properties', $vars);
         $vars['cop'] = 'edit_contact';
-        $tpl['EDIT'] = \PHPWS_Text::moduleLink('Edit my information',
-                        'properties', $vars);
+        $tpl['EDIT'] = \PHPWS_Text::moduleLink('Edit my information', 'properties', $vars);
         $vars['cop'] = 'logout';
         $tpl['LOGOUT'] = \PHPWS_Text::moduleLink('Logout', 'properties', $vars);
-        $content = \PHPWS_Template::process($tpl, 'properties',
-                        'mini_contact.tpl');
+        $content = \PHPWS_Template::process($tpl, 'properties', 'mini_contact.tpl');
         \Layout::add($content, 'properties', 'contact_login');
     }
 
