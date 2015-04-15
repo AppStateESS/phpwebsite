@@ -455,8 +455,8 @@ class Contact
         }
 
         $dir = 'images/properties/c' . $this->id;
-        @rmdir($dir);
-
+        \PHPWS_File::rmdir($dir);
+        
         return true;
     }
 
