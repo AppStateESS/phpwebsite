@@ -182,6 +182,7 @@ ul.event-listing {
 ul.event-listing li {
     margin: 0px;
     padding: 0px;
+    margin-bottom : 1em;
 }
 
 .vevent h1.summary {

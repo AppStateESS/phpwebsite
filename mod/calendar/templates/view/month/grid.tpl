@@ -38,7 +38,7 @@
         <div class="cal-events">{COUNT} <!-- BEGIN show-events -->
         <ul class="event-listing">
             <!-- BEGIN event-list -->
-            <li>{EVENT}<br><br></li>
+            <li><small>{EVENT}</small></li>
             <!-- END event-list -->
         </ul>
         <!-- END show-events --></div>
