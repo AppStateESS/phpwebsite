@@ -432,6 +432,7 @@ class Calendar_User
             $data = array();
             $data['COUNT'] = null;
             $no_of_events = 0;
+            $events = null;
 
             if (isset($this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events'])) {
                 $events = & $this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events'];
