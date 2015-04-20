@@ -6,8 +6,8 @@
  */
 PHPWS_Core::requireConfig('access');
 
-class Access_Shortcut {
-
+class Access_Shortcut
+{
     public $id = 0;
     public $keyword = null;
     public $url = null;
@@ -86,6 +86,13 @@ class Access_Shortcut {
 
         $key_id = filter_input(INPUT_POST, 'key_id', FILTER_SANITIZE_NUMBER_INT);
 
+        $this->plugShortcut($keyword, $key_id);
+
+        return TRUE;
+    }
+
+    public function plugShortcut($keyword, $key_id)
+    {
         if (!$this->id) {
             if ($key_id === false) {
                 throw new \Exception('Access shortcut missing a key id', 2);
@@ -105,8 +112,6 @@ class Access_Shortcut {
         }
 
         $this->setKeyword($keyword, false);
-
-        return TRUE;
     }
 
     public function shortenKeyword($keyword)
@@ -149,17 +154,13 @@ class Access_Shortcut {
 
     public function rowTags()
     {
-        $js['QUESTION'] = dgettext('access',
-                'Are you sure you want to delete this shortcut?');
-        $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
-                $this->id, Current_User::getAuthKey());
-        $js['LINK'] = '<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> ' . dgettext('access',
-                        'Delete') . '</button>';
+        $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
+        $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s', $this->id, Current_User::getAuthKey());
+        $js['LINK'] = '<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> ' . dgettext('access', 'Delete') . '</button>';
         $tags[] = javascript('confirm', $js);
 
         $tags[] = '<a class="btn btn-success btn-sm edit-shortcut" data-authkey="' . \Current_User::getAuthKey() .
-                '" data-schid="' . $this->id . '"><i class="fa fa-edit"></i> ' . dgettext('access',
-                        'Edit') . '</a>';
+                '" data-schid="' . $this->id . '"><i class="fa fa-edit"></i> ' . dgettext('access', 'Edit') . '</a>';
 
         $template['URL'] = $this->getUrl();
 
@@ -170,8 +171,7 @@ class Access_Shortcut {
         }
 
         $template['ACTION'] = implode(' ', $tags);
-        $template['CHECKBOX'] = sprintf('<input type="checkbox" name="shortcut[]" value="%s" />',
-                $this->id);
+        $template['CHECKBOX'] = sprintf('<input type="checkbox" name="shortcut[]" value="%s" />', $this->id);
 
         return $template;
     }
@@ -179,13 +179,11 @@ class Access_Shortcut {
     public function save()
     {
         if (empty($this->keyword)) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access',
-                            'Shortcut::save');
+            return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::save');
         }
 
         if (empty($this->url)) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access',
-                            'Shortcut::save');
+            return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
         }
 
         $db = new PHPWS_DB('access_shortcuts');

@@ -138,31 +138,6 @@ class Access
                         $json['message'] = $e->getMessage();
                         $json['error'] = 1;
                     }
-                    /*
-                      if (PHPWS_Error::isError($result)) {
-                      PHPWS_Core::initModClass('access', 'Forms.php');
-                      echo json_encode(array('message' => $result->getMessage()));
-                      exit();
-                      } elseif ($result == false) {
-                      $tpl['TITLE'] = dgettext('access',
-                      'A serious error occurred. Please check your error.log.') . '<br />';
-                      $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>',
-                      $_SERVER['HTTP_REFERER'],
-                      dgettext('access', 'Return to previous page.'));
-                      $content = PHPWS_Template::process($tpl, 'access',
-                      'box.tpl');
-                      } else {
-                      $content = Access::saveShortcut($shortcut);
-                      }
-
-                      $tpl['MESSAGE'] = $message;
-                      $tpl['CONTENT'] = $content;
-
-                      $content = PHPWS_Template::process($tpl, 'access',
-                      'main.tpl');
-                      echo $content;
-                     *
-                     */
                     echo json_encode($json);
                     exit();
                     break;
