@@ -360,13 +360,13 @@ class User_Form
 
     public static function manageMembers(PHPWS_Group $group)
     {
+        javascript('member_complete', null, 'mod/users/', true, true);
         $form = new PHPWS_Form('memberList');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postMembers');
         $form->addHidden('group_id', $group->getId());
         $form->addText('search_member');
-
         $form->setLabel('search_member', dgettext('users', 'Add Member'));
         $form->addSubmit('search', dgettext('users', 'Add'));
 

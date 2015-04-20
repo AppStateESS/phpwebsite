@@ -64,6 +64,11 @@ class User_Action
                 }
                 break;
 
+            case 'search_members':
+                self::searchMembers();
+                exit();
+                break;
+
             case 'manage_users':
                 $title = dgettext('users', 'Manage Users');
                 $content = User_Form::manageUsers();
@@ -1556,6 +1561,26 @@ class User_Action
         $group->addMember($user->_user_group);
         $group->save();
         return true;
+    }
+
+    private static function searchMembers()
+    {
+        if (!Current_User::isLogged()) {
+            exit();
+        }
+        $db = new PHPWS_DB('users_groups');
+        if (empty($_GET['term'])) {
+            exit();
+        }
+
+        $name = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $_GET['term']);
+        $db->addWhere('name', "$name%", 'like');
+        $db->addColumn('name');
+        $result = $db->select('col');
+        if (!empty($result) && !PHPWS_Error::logIfError($result)) {
+            echo json_encode($result);
+        }
+        exit();
     }
 
 }
