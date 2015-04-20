@@ -30,6 +30,7 @@
                         <label for="form-title"><?=t('Title');?></label>
                         <input type="text" name="title" value="" id="form-title" class="form-control" />
                     </div>
+                    <div class="current-association"><strong>Current url:</strong> <a target="_blank" href=""></a></div>
                     <div class="form-group form-url-group">
                         <label for="form-url"><?=t('Url');?></label>
                         <input type="text" name="url" value="" id="form-url" class="form-control" placeholder="http://address.com" />
@@ -81,12 +82,12 @@
                             <label for="menu-associated-page"><?=t('Page');?></label>
                             <select name="assoc_key" id="menu-associated-page" class="form-control">
                             </select>
-                            <p style="font-style:italic">* <?=t('Pages already associated to a menu may not be selected.');?></p>
+                            <p style="font-style:italic"><small>* <?=t('Pages already associated to a menu may not be selected.');?></small></p>
                         </div>
                         <div class="form-group">
                             <label for="menu-associated-url"><?=t('URL');?></label>
                             <input type="text" name="assoc_url" id="menu-associated-url" class="form-control" placeholder="http://address.com" />
-                            <p style="font-style:italic">* <?=t('Using a URL prevents display of drop down and side menu.');?></p>
+                            <p style="font-style:italic"><small>* <?=t('Using a URL prevents display of drop down and side menu.');?></small></p>
                         </div>
                         <div class="form-group">
                             <h4><?=t('Image');?></h4>

@@ -502,11 +502,16 @@ function MenuAdmin() {
             t.url = link.attr('href');
             t.loadMoveLinkOptions();
             t.initFormButtons();
+            console.log(t.url);
+            $('.current-association a').text(t.url);
+            $('.current-association a').attr('href', t.url);
             if (t.key_id > 0) {
                 $('.form-url-group').hide();
+                $('.current-association').show();
                 $('.form-key-group').hide();
             } else {
                 t.input.url.val(t.url);
+                $('.current-association').hide();
                 t.input.select(t.key_id);
                 $('.form-url-group').show();
                 $('.form-key-group').hide();
@@ -522,8 +527,7 @@ function MenuAdmin() {
             menu_id: t.menu_id
         }, function(data) {
             $('#move-to-menu').html(data);
-        }
-        );
+        });
 
         $('#move-to-menu').change(function() {
             var menu_id = $('option:selected', this).val();
