@@ -2,15 +2,16 @@
 var basePath = CKEDITOR.basePath;
 basePath = basePath.substr(0, basePath.indexOf("ckeditor/"));
 
-CKEDITOR.editorConfig = function (config)
+CKEDITOR.editorConfig = function(config)
 {
     config.resize = true;
     config.skin = 'moono';
-    config.extraPlugins = 'fc_document,fc_image,fc_multimedia,save';
+    config.extraPlugins = 'fc_document,fc_image,fc_multimedia,save,dialog,dialogadvtab';
     config.allowedContent = true;
-    config.removeButtons = 'Underline,Cut,Copy,Iframe,About,Styles,Paste,Image';
+    config.removeButtons = 'Underline,Cut,Copy,Iframe,About,Paste,Image';
     config.removePlugins = 'maxheight';
     config.format_tags = 'p;h3;h4;h5;h6';
+    config.stylesSet = 'phpws:' + basePath + 'ckeditor/phpws_styles.js';
 
     config.toolbarGroups = [
         {name: 'document', groups: ['mode', 'document', 'doctools']},
@@ -75,3 +76,25 @@ CKEDITOR.editorConfig = function (config)
 CKEDITOR.dtd.$removeEmpty.span = 0;
 CKEDITOR.dtd.$removeEmpty.i = 0;
 CKEDITOR.dtd.$removeEmpty.a = 0;
+
+// Table settings
+CKEDITOR.on('dialogDefinition', function(ev) {
+    var dialogName = ev.data.name;
+    var dialogDefinition = ev.data.definition;
+
+    if (dialogName === 'table') {
+        var infoTab = dialogDefinition.getContents('info');
+        var cellSpacing = infoTab.get('txtCellSpace');
+        cellSpacing['default'] = "";
+        var cellPadding = infoTab.get('txtCellPad');
+        cellPadding['default'] = "";
+        var border = infoTab.get('txtBorder');
+        border['default'] = "";
+        var width = infoTab.get('txtWidth');
+        width['default'] = "";
+
+        var advTab = dialogDefinition.getContents('advanced');
+        var styleClassesField = advTab.get('advCSSClasses');
+        styleClassesField ['default'] = 'table';
+    }
+});
