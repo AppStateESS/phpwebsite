@@ -1,39 +1,32 @@
 <?php
+
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 if (Current_User::isLogged()) {
     $key = Key::getCurrent(true);
     if ($key) {
-        $links = array();
-        $vars  = array();
-        $windowVars = array();
-        $vars['id'] = $key->id;
 
-        $windowVars['width']  = 500;
-        $windowVars['height'] = 500;
+        $qr_func = function($key_id, $size) {
+            $qr = new QR($key_id);
+            $qr->setSize($size);
+            $image = $qr->get();
+            return '<a download="QR-image.png" href="' . $qr->image. '">' . $qr->get() . '</a>';
+        };
+        
+        $tpl_vars['small'] = $qr_func($key->id, 5);
+        $tpl_vars['medium'] = $qr_func($key->id, 6);
+        $tpl_vars['large'] = $qr_func($key->id, 8);
+        $tpl_vars['xlarge'] = $qr_func($key->id, 12);
 
-        $vars['size'] = 5;
-        $windowVars['label'] = dgettext('qr', 'Small');
-        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
-        $links[] = javascript('open_window', $windowVars);
+        $tpl = new \Template($tpl_vars);
+        $tpl->setModuleTemplate('qr', 'modal.html');
+        $content = $tpl->get();
+        $modal = new Modal('qr-modal', $content, 'QR Codes (click to download)');
+        $modal->sizeLarge();
+        Layout::add($modal->get());
 
-        $vars['size'] = 6;
-        $windowVars['label'] = dgettext('qr', 'Medium');
-        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
-        $links[] = javascript('open_window', $windowVars);
-
-        $vars['size'] = 8;
-        $windowVars['label'] = dgettext('qr', 'Large');
-        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
-        $links[] = javascript('open_window', $windowVars);
-
-        $vars['size'] = 12;
-        $windowVars['label'] = dgettext('qr', 'X-Large');
-        $windowVars['address'] = PHPWS_Text::linkAddress('qr', $vars);
-        $links[] = javascript('open_window', $windowVars);
-
-        MiniAdmin::add('qr', $links);
+        MiniAdmin::add('qr', '<a data-toggle="modal" data-target="#qr-modal" class="pointer">Show QR codes</a>');
     }
 }
 ?>
