@@ -388,7 +388,7 @@ class RSS_Admin {
         $pager->addPageTags($template);
         $pager->addRowTags('pagerTags');
         $content = $pager->get();
-
+        
         $tpl['TITLE'] = dgettext('rss', 'Import RSS Feeds');
         $tpl['CONTENT'] = $content;
         if (!defined('ALLOW_CACHE_LITE') || !ALLOW_CACHE_LITE) {

@@ -279,10 +279,10 @@ class RSS_Feed {
             $image = & $this->mapped['IMAGE'];
 
             if (isset($image['LINK'])) {
-                $tpl['IMAGE'] = sprintf('<a href="%s"><img src="%s" title="%s" border="0" /></a>',
+                $tpl['IMAGE'] = sprintf('<a  href="%s"><img class="img-responsive" src="%s" title="%s" /></a>',
                         $image['LINK'], $image['URL'], $image['TITLE']);
             } else {
-                $tpl['IMAGE'] = sprintf('<img src="%s" title="%s" border="0" />',
+                $tpl['IMAGE'] = sprintf('<img class="img-responsive" src="%s" title="%s" />',
                         $image['URL'], $image['TITLE']);
             }
         } else {

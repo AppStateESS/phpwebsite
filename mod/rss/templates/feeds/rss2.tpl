@@ -1,16 +1,11 @@
 <div class="rss">
-<div class="box">
-<div class="box-title">{IMAGE}
-<h2><a href="{FEED_LINK}">{FEED_TITLE}</a></h2>
-</div>
-<div class="box-content"><!-- BEGIN message -->{MESSAGE}<!-- END message -->
-<ul class="no-bullet">
-    <!-- BEGIN item_list -->
-    <li><a href="{LINK}">{TITLE}</a>
-    <p><small>{SHORT_DESCRIPTION}</small></p>
-    </li>
-    <!-- END item_list -->
-</ul>
-</div>
-</div>
+    <h3><a href="{FEED_LINK}">{FEED_TITLE}</a></h3>
+    <!-- BEGIN message -->{MESSAGE}<!-- END message -->
+    <ul style="list-style-type: none;margin-left:0;padding-left:0">
+        <!-- BEGIN item_list -->
+        <li style="margin-bottom:1em"><a href="{LINK}">{TITLE}</a>
+            <p><small>{SHORT_DESCRIPTION}</small></p>
+        </li>
+        <!-- END item_list -->
+    </ul>
 </div>
