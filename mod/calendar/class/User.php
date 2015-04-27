@@ -909,10 +909,10 @@ class Calendar_User
         }
 
         if ($current_view == 'grid') {
-            $links['GRID'] = dgettext('calendar', 'Grid');
+            //$links['GRID'] = dgettext('calendar', 'Grid');
         } else {
             $vars['view'] = 'grid';
-            $glink = new PHPWS_Link(dgettext('calendar', 'Grid'), 'calendar', $vars);
+            $glink = new PHPWS_Link(dgettext('calendar', 'Month Grid'), 'calendar', $vars);
             $glink->setNoFollow($no_follow);
             $glink->addClass('btn btn-default');
             $links['GRID'] = $glink->get();
@@ -922,7 +922,7 @@ class Calendar_User
             //$links['LIST'] = dgettext('calendar', 'Month');
         } else {
             $vars['view'] = 'list';
-            $glink = new PHPWS_Link(dgettext('calendar', 'Month'), 'calendar', $vars);
+            $glink = new PHPWS_Link(dgettext('calendar', 'Month list'), 'calendar', $vars);
             $glink->addClass('btn btn-default');
             $glink->setNoFollow($no_follow);
             $links['LIST'] = $glink->get();

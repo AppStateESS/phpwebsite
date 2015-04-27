@@ -1,8 +1,3 @@
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    });
-</script>
 <div class="calendar-view calendar-view-month-list">
     <div class="view-links btn-group pull-right" role="group">{LEFT_ARROW}{today}{RIGHT_ARROW}</div>
     <div class="btn-group" role="group">
