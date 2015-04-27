@@ -1,26 +1,16 @@
-<div class="pull-right">
-{DOWNLOAD}
-</div>
-
-<h2 class="text-center"><!-- BEGIN title -->{TITLE} -<!-- END title -->
-    {FULL_MONTH_NAME}, {FULL_YEAR}
-</h2>
-
-<div class="pull-right">
-{LIST} {WEEK} {DAY_LINK}
-</div>
-
-<div class="view-links btn-group">
-    {LEFT_ARROW}{RIGHT_ARROW}
-</div>
-
-{SUGGEST}
-
-
-<div class="align-center smaller">
-    {SCHEDULE_PICK}
-</div>
-
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+<div class="calendar-view calendar-view-month-list">
+    <div class="view-links btn-group pull-right" role="group">{LEFT_ARROW}{today}{RIGHT_ARROW}</div>
+    <div class="btn-group" role="group">
+        {GRID}{LIST}{WEEK}
+    </div>
+    <h2 class="text-center">{TITLE} - {FULL_MONTH_NAME}, {FULL_YEAR} {DOWNLOAD}</h2>
+    <div>{SCHEDULE_PICK}</div>
+    <p>{ADD_EVENT}</p>
 <div class="month-view-full">
 <table>
     <tr>
