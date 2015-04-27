@@ -878,9 +878,9 @@ class Calendar_User
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
 
-        if ($current_view == 'grid') {
-            $vars['date'] = $this->calendar->today;
-        }
+//        if ($current_view == 'grid') {
+//            $vars['date'] = $this->calendar->today;
+//        }
 
         if (isset($_REQUEST['m']) && isset($_REQUEST['y']) && isset($_REQUEST['d'])) {
             $vars['date'] = mktime(0, 0, 0, $_REQUEST['m'], $_REQUEST['d'], $_REQUEST['y']);
