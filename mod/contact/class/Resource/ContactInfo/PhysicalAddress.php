@@ -1,12 +1,12 @@
 <?php
 
-namespace contact\Resource\Contact_Info;
+namespace contact\Resource\ContactInfo;
 
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class Physical_Address
+class PhysicalAddress
 {
     /**
      * Room nummber in building
