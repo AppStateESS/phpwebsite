@@ -6,7 +6,7 @@ namespace contact\Resource\ContactInfo;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PhysicalAddress
+class PhysicalAddress extends \Data
 {
     /**
      * Room nummber in building
@@ -56,6 +56,53 @@ class PhysicalAddress
         $this->city = new \Variable\TextOnly(null, 'city');
         $this->state = new \Variable\TextOnly(null, 'state');
         $this->zip = new \Variable\Integer(null, 'zip');
+    }
+
+    public function getRoomNumber()
+    {
+        return $this->room_number->get();
+    }
+
+    public function getBuilding()
+    {
+        return $this->building->get();
+    }
+
+    public function getStreet()
+    {
+        return $this->street->get();
+    }
+
+    public function getPostBox()
+    {
+        return $this->post_box->get();
+    }
+
+    public function getCity()
+    {
+        return $this->city->get();
+    }
+
+    public function getState()
+    {
+        return $this->state->get();
+    }
+
+    public function getZip()
+    {
+        return $this->zip->get();
+    }
+
+    public function getValues()
+    {
+        $values['room_number'] = $this->getRoomNumber();
+        $values['building'] = $this->getBuilding();
+        $values['street'] = $this->getStreet();
+        $values['post_box'] = $this->getPostBox();
+        $values['city'] = $this->getCity();
+        $values['state'] = $this->getState();
+        $values['zip'] = $this->getZip();
+        return $values;
     }
 
 }

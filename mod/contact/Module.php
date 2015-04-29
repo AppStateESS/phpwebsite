@@ -25,6 +25,8 @@ class Module extends \Module implements \SettingDefaults
         if ($cmd == 'admin' && \Current_User::allow('contact')) {
             $admin = new \contact\Controller\Admin($this);
             return $admin;
+        } else {
+            \Current_User::requireLogin();
         }
     }
 
@@ -34,13 +36,22 @@ class Module extends \Module implements \SettingDefaults
 
     public function getSettingDefaults()
     {
-        $settings['room_number'] = null;
-        $settings['building'] = null;
-        $settings['street'] = null;
-        $settings['post_box'] = null;
-        $settings['city'] = null;
-        $settings['state'] = null;
-        $settings['zip'] = null;
+        // ContactInfo
+        $settings['room_number'] = '';
+        $settings['building'] = '';
+        $settings['street'] = '';
+        $settings['post_box'] = '';
+        $settings['city'] = '';
+        $settings['state'] = '';
+        $settings['zip'] = '';
+        
+        // Offsite
+        $settings['links'] = '';
+        
+        // Map
+        $settings['image'] = '';
+        $settings['map_link'] = '';
+        
         return $settings;
     }
 

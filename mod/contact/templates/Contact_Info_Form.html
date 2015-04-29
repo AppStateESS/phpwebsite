@@ -1,0 +1,57 @@
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active contact-tab"><a style="cursor:pointer">Contact information</a></li>
+    <li role="presentation" class="map-tab"><a style="cursor:pointer">Mapping</a></li>
+    <li role="presentation" class="social-tab"><a style="cursor:pointer">Social icons</a></li>
+</ul>
+<div class="contact-info-section">
+    <form action="./contact/admin/post" method="post">
+        <div class="row">
+            <div class="col-sm-6">
+                <fieldset>
+                    <legend>On Campus</legend>
+                    <div class="form-group">
+                        <label for="building">Building</label>
+                        <input id="building" type="text" class="form-control" placeholder="" value="<?=$building?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="room-number">Room number</label>
+                        <input id="room-number" type="text" class="form-control" placeholder="" value="<?=$room_number?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="street">Street</label>
+                        <input id="street" type="text" class="form-control" placeholder="" value="<?=$street?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Voice phone number</label>
+                        <input id="phone-number" type="text" class="form-control" placeholder="" value="<?=$phone_number?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="fax-number">Fax number</label>
+                        <input id="fax-number" type="text" class="form-control" placeholder="" value="<?=$fax_number?>" />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <legend>Mailing address</legend>
+                    <div class="form-group">
+                        <label for="post_box">Post box</label>
+                        <input id="post_box" type="text" class="form-control" placeholder="" value="<?=$post_box?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input id="city" type="text" class="form-control" placeholder="" value="<?=$city?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input id="state" type="text" class="form-control" placeholder="" value="<?=$state?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">Zip</label>
+                        <input id="zip" type="text" class="form-control" placeholder="" value="<?=$zip?>" />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>

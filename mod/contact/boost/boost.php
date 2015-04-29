@@ -10,3 +10,4 @@ $version_http = null;
 $import_sql   = false;
 $about        = false;
 $dependency   = false;
+$image_dir    = true;

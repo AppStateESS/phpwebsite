@@ -29,10 +29,9 @@ class Admin extends \Http\Controller
         return $view;
     }
     
-    private function form(\Request $request)
+    private function form()
     {
-        $contact_info = Factory::loadContactInfo();
-        return 'loaded';
+        return Factory::form();
     }
     
     private function fooBar(\Request $request)
