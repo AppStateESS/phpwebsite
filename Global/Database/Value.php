@@ -91,7 +91,7 @@ class Value extends Column {
         } elseif (is_a($this->value, 'Database\Expression')) {
             return $this->getFullName() . '=' . $this->getValue();
         } else {
-            return $this->getFullName() . '=' . $this->resource->db->quote($this->getValue());
+            return $this->getName(true) . '=' . $this->resource->db->quote($this->getValue());
         }
     }
 
