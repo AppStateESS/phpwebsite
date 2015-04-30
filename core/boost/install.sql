@@ -10,13 +10,12 @@ CREATE TABLE modules (
 );
 
 CREATE TABLE settings (
+  id int NOT NULL default 0,
   module_name varchar(255) NOT NULL,
   variable_name varchar(255) NOT NULL,
-  setting varchar(255) DEFAULT NULL
+  setting varchar(255) DEFAULT NULL,
+  primary key (id)
 );
-
-CREATE INDEX settings_idx ON settings (module_name, variable_name);
-
 
 CREATE TABLE registered (
  module CHAR(40) NOT NULL,
