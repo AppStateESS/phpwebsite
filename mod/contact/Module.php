@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
@@ -32,26 +33,34 @@ class Module extends \Module implements \SettingDefaults
 
     public function runTime(\Request $request)
     {
+        $content = Factory\ContactInfo::display();
+        if (!empty($content)) {
+            \Layout::add($content, 'contact', 'box');
+        }
     }
 
     public function getSettingDefaults()
     {
         // ContactInfo
-        $settings['room_number'] = '';
         $settings['building'] = '';
+        $settings['room_number'] = '';
+        $settings['phone_number'] = '';
+        $settings['fax_number'] = '';
+        $settings['email'] = '';
+
+        // Physical Address
         $settings['street'] = '';
         $settings['post_box'] = '';
         $settings['city'] = '';
         $settings['state'] = '';
         $settings['zip'] = '';
-        
         // Offsite
         $settings['links'] = '';
-        
+
         // Map
         $settings['image'] = '';
         $settings['map_link'] = '';
-        
+
         return $settings;
     }
 

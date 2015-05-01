@@ -46,18 +46,25 @@ class PhysicalAddress extends \Data
      * @var \Variable\Integer
      */
     private $zip;
-
+    
     public function __construct()
     {
         $this->room_number = new \Variable\Integer(null, 'room_number');
+        $this->room_number->allowNull(true);
         $this->building = new \Variable\TextOnly(null, 'building');
+        $this->building->allowEmpty();
         $this->street = new \Variable\TextOnly(null, 'street');
+        $this->street->allowEmpty();
         $this->post_box = new \Variable\Integer(null, 'post_box');
+        $this->post_box->allowNull(true);
         $this->city = new \Variable\TextOnly(null, 'city');
+        $this->city->allowEmpty();
         $this->state = new \Variable\TextOnly(null, 'state');
-        $this->zip = new \Variable\Integer(null, 'zip');
+        $this->state->allowEmpty();
+        $this->zip = new \Variable\NumberString(null, 'zip');
+        $this->zip->allowEmpty();
     }
-
+    
     public function getRoomNumber()
     {
         return $this->room_number->get();
@@ -103,6 +110,44 @@ class PhysicalAddress extends \Data
         $values['state'] = $this->getState();
         $values['zip'] = $this->getZip();
         return $values;
+    }
+    
+    public function setBuilding($building)
+    {
+        $this->building->set($building);
+    }
+    
+    public function setRoomNumber($room_number)
+    {
+        $this->room_number->set($room_number);
+    }
+    
+    public function setPostBox($post_box)
+    {
+        if (empty($post_box)) {
+            $post_box = null;
+        }
+        $this->post_box->set($post_box);
+    }
+    
+    public function setStreet($street)
+    {
+        $this->street->set($street);
+    }
+    
+    public function setCity($city)
+    {
+        $this->city->set($city);
+    }
+    
+    public function setState($state)
+    {
+        $this->state->set($state);
+    }
+    
+    public function setZip($zip)
+    {
+        $this->zip->set($zip);
     }
 
 }

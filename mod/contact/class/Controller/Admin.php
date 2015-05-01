@@ -1,7 +1,9 @@
 <?php
 
 namespace contact\Controller;
+
 use contact\Factory\ContactInfo as Factory;
+use contact\Resource;
 
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
@@ -9,6 +11,7 @@ use contact\Factory\ContactInfo as Factory;
  */
 class Admin extends \Http\Controller
 {
+
     public function get(\Request $request)
     {
         $data = array();
@@ -16,7 +19,7 @@ class Admin extends \Http\Controller
         $response = new \Response($view);
         return $response;
     }
-    
+
     public function getHtmlView($data, \Request $request)
     {
         $command = $request->shiftCommand();
@@ -25,18 +28,24 @@ class Admin extends \Http\Controller
         } else {
             $content = $this->form($request);
         }
+        \Form::requiredScript();
         $view = new \View\HtmlView(\PHPWS_ControlPanel::display($content));
         return $view;
     }
-    
+
+    public function post(\Request $request)
+    {
+        $values = $request->getVars();
+        $contact_info = new Resource\ContactInfo();
+
+        Factory::postContactInfo($contact_info, $values['vars']);
+        $response = new \Http\SeeOtherResponse(\Server::getCurrentUrl(false));
+        return $response;
+    }
+
     private function form()
     {
         return Factory::form();
-    }
-    
-    private function fooBar(\Request $request)
-    {
-        return 'in foobar';
     }
 
 }

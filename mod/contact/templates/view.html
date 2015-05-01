@@ -1,0 +1,17 @@
+<h3>Contact Us</h3>
+<p>
+    <?php if(!empty($room_number)){echo "Rm. $room_number, ";}?><?=$building?><br />
+    <?php if (!empty($post_box)){echo "P.O. Box $post_box<br />";}?>
+    <?php if (!empty($street)){echo $street . '<br />';}?>
+    <?php if (!empty($city) && !empty($state) && !empty($zip)){echo "$city, $state $zip<br />";}?>
+</p>
+
+<p><strong>Phone:</strong> <a href="tel:+1<?=$phone_number?>"><?=$formatted_phone_number?></a>
+    <?php if (!empty($formatted_fax_number)): ?>
+    <br />
+    <strong>Fax:</strong> <?=$formatted_fax_number?>
+    <?php endif; ?>
+</p>
+<p>
+    <strong>Email:</strong> <a href="mailto:<?=$email?>"><?=$email?></a>
+</p>
