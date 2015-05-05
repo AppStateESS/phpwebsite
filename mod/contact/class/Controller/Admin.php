@@ -20,20 +20,73 @@ class Admin extends \Http\Controller
         return $response;
     }
 
-    public function getHtmlView($data, \Request $request)
+    protected function getHtmlView($data, \Request $request)
     {
-        $command = $request->shiftCommand();
-        if (method_exists($this, $command)) {
-            $content = $this->$command($request);
-        } else {
-            $content = $this->form($request);
-        }
-        \Form::requiredScript();
+        $content = $this->form($request);
         $view = new \View\HtmlView(\PHPWS_ControlPanel::display($content));
         return $view;
     }
 
+    protected function getJsonView($data, \Request $request)
+    {
+        $command = $request->shiftCommand();
+        switch ($command) {
+            case 'locationString':
+                return $this->locationString();
+                break;
+        }
+    }
+
+    private function locationString()
+    {
+        $contact_info = Factory::fetchContactInfo();
+        $physical_address = $contact_info->getPhysicalAddress();
+
+        $address_array = Factory\Map::getGoogleSearchString($physical_address);
+
+        $json = $address_array;
+        $response = new \View\JsonView($json);
+        return $response;
+
+        return $thumbnail;
+    }
+
     public function post(\Request $request)
+    {
+        $command = $request->shiftCommand();
+
+        switch ($command) {
+            case 'contactinfo':
+                return $this->postContactInfo($request);
+                break;
+
+            case 'saveThumbnail':
+                return $this->saveThumbnail($request);
+                break;
+        }
+    }
+
+    private function saveThumbnail(\Request $request)
+    {
+        $google_lat_long = $request->getVar('google_lat_long');
+        $google_url = \contact\Factory\ContactInfo\Map::getImageUrl($google_lat_long);
+        $curl = \curl_init($google_url);
+
+        $filename = PHPWS_HOME_DIR . 'images/contact/googlemap_' . time() . '.png';
+        $fp = fopen($filename, "w");
+        \curl_setopt($curl, CURLOPT_FILE, $fp);
+        \curl_setopt($curl, CURLOPT_HEADER, 0);
+
+        \curl_exec($curl);
+        \curl_close($curl);
+        fclose($fp);
+        \Settings::set('thumbnail_map', $filename);
+        \Settings::set('lat_long', $google_lat_long);
+        $response = new \Http\TemporaryRedirectResponse('contact/admin/map');
+        return $response;
+    }
+
+    private function postContactInfo(\Request $request)
     {
         $values = $request->getVars();
         $contact_info = new Resource\ContactInfo();
@@ -43,9 +96,9 @@ class Admin extends \Http\Controller
         return $response;
     }
 
-    private function form()
+    private function form(\Request $request)
     {
-        return Factory::form();
+        return Factory::form($request);
     }
 
 }

@@ -1,10 +1,11 @@
+<script>var active_tab = '<?=$active_tab?>';</script>
 <ul class="nav nav-tabs" style="margin-top:1em">
-    <li role="presentation" class="active contact-tab"><a style="cursor:pointer">Contact information</a></li>
-    <li role="presentation" class="map-tab"><a style="cursor:pointer">Mapping</a></li>
-    <li role="presentation" class="social-tab"><a style="cursor:pointer">Social icons</a></li>
+    <li role="presentation" class="contact-info-tab contact-tab"><a style="cursor:pointer">Contact information</a></li>
+    <li role="presentation" class="map-tab contact-tab"><a style="cursor:pointer">Mapping</a></li>
+    <li role="presentation" class="social-tab contact-tab"><a style="cursor:pointer">Social icons</a></li>
 </ul>
-<div class="contact-info-section">
-    <form action="./contact/admin/" method="post" class="phpws-form">
+<div class="contact-info-section contact-section">
+    <form action="./contact/admin/contactinfo" method="post" class="phpws-form">
         <div class="row">
             <div class="col-sm-6">
                 <fieldset>
@@ -61,6 +62,18 @@
                 </fieldset>
             </div>
         </div>
-        <input class="btn btn-primary" type="submit" value="Save settings" />
+        <input class="btn btn-primary" type="submit" value="Save Contact Info" />
     </form>
+</div>
+<div class="map-section contact-section">
+    <div class="map-image">
+    </div>
+    <button class="btn btn-primary grab-thumbnail">Create new thumbnail</button>
+    <form method="post" action="contact/admin/saveThumbnail">
+        <input id="google-lat-long" type="hidden" name="google_lat_long" value="" />
+        <input type="submit" class="btn btn-success save-thumbnail" value="Save thumbnail" />
+    </form>
+</div>
+<div class="social-section contact-section">
+    SOCIAL!
 </div>

@@ -58,8 +58,8 @@ class Module extends \Module implements \SettingDefaults
         $settings['links'] = '';
 
         // Map
-        $settings['image'] = '';
-        $settings['map_link'] = '';
+        $settings['thumbnail_map'] = '';
+        $settings['lat_long'] = '';
 
         return $settings;
     }
