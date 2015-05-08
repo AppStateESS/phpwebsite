@@ -129,7 +129,7 @@ final class ModuleRepository
         }
 
         // @todo better exceptions
-        throw new \Exception("No module registered with title $title");
+        throw new \Exception("No module registered with title '$title'");
     }
 
     public function hasModule($title)
