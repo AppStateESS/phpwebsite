@@ -28,7 +28,7 @@ class Settings extends Data {
         $module = ModuleRepository::getInstance()->getModule($module_name);
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
-            if (!isset($settings[$variable_name])) {
+            if (!array_key_exists($variable_name, $settings)) {
                 throw new \Exception(t('Unknown setting "%s:%s"', $module_name,
                         $variable_name));
             }
