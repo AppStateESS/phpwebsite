@@ -47,6 +47,11 @@ class Value extends Column {
                 return true;
                 break;
 
+            case 'double':
+                $this->value = new \Variable\Double($value, $this->name);
+                return true;
+                break;
+            
             case 'object':
                 switch (\get_class($value)) {
                     case 'Expression':
