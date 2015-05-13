@@ -45,6 +45,7 @@ class ContactInfo extends \Resource
         $this->offsite = new ContactInfo\Offsite;
         $this->map = new ContactInfo\Map;
         $this->email = new \Variable\Email(null, 'email');
+        $this->email->allowNull(true);
     }
 
     /**
@@ -113,6 +114,16 @@ class ContactInfo extends \Resource
     {
         $email = $this->email->get();
         return $email;
+    }
+    
+    public function setPhysicalAddress(ContactInfo\PhysicalAddress $physical_address)
+    {
+        $this->physical_address = $physical_address;
+    }
+    
+    public function setMap(ContactInfo\Map $map)
+    {
+        $this->map = $map;
     }
 
 }

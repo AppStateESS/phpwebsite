@@ -45,26 +45,20 @@ function ContactTab() {
 }
 
 function ContactMap() {
-    this.google_url = null;
-    this.lat_long_string = null;
-
     var $this = this;
     this.start = function() {
         $('button.grab-thumbnail').click(this.getGoogleImage);
         $('button.save-thumbnail').click(this.saveImage);
-    };
-
-    this.saveImage = function() {
-        var map_image = document.getElementById('google-map-image');
-        console.log(map_image);
-        var img_data = JSON.stringify(getBase64Image(map_image));
-        console.log(img_data);
+        if (thumbnail_map.length > 0) {
+            $('button.save-thumbnail').hide();
+        }
     };
 
     this.getGoogleImage = function() {
         $.getJSON('contact/admin/locationString')
                 .done(function(data) {
                     if (data.error !== undefined) {
+                        $('#map-error span').html(data.error);
                         $('#map-error').show();
                     } else {
                         $this.makeGoogleMap(data.address);
@@ -72,38 +66,79 @@ function ContactMap() {
                 });
     };
 
+    this.saveImage = function() {
+        $.getJSON('contact/admin/saveThumbnail',
+                {
+                    latitude: $('#latitude').val(),
+                    longitude: $('#longitude').val()
+                }).done(function(data) {
+            if (data.result === undefined) {
+                alert('Failed to save Google thumbnail');
+            } else {
+                $this.imageSuccessMessage();
+            }
+        }).fail(function() {
+            alert('Failed to save Google thumbnail');
+        });
+    };
+
+    this.imageSuccessMessage = function() {
+        $('.map-section').prepend('<div class="alert alert-success alert-dismissible" role="alert">\
+            <button type = "button" class = "close" data-dismiss="alert" aria-label="Close">\
+            <span aria-hidden="true">&times;</span></button>\
+            Map image saved.</div>');
+    };
+
+    this.imageFailureMessage = function() {
+        $('.map-section').prepend('<div class="alert alert-danger alert-dismissible" role="alert">\
+            <button type = "button" class = "close" data-dismiss="alert" aria-label="Close">\
+            <span aria-hidden="true">&times;</span></button>\
+            <strong>Error:</strong> Map image could not be saved successfully.</div>');
+    };
+
     this.makeGoogleMap = function(address) {
         var geocoder;
-        var google_string;
-        var lat_long;
-        
+        var latitude;
+        var longitude;
+
         // get latitude and longitude
         geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': address}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                lat_long = [results[0].geometry.location.A, results[0].geometry.location.F];
-                $this.lat_long_string = lat_long[0] + ',' + lat_long[1];
-                $this.google_url = $this.createGoogleLink(lat_long);
-                $this.pushImageToPage();
-                $this.fillHiddenVars();
+                latitude = results[0].geometry.location.lat();
+                longitude = results[0].geometry.location.lng();
+                $this.createGoogleLink(latitude, longitude);
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
         });
     };
 
-    this.createGoogleLink = function(lat_long) {
-        return 'https://maps.googleapis.com/maps/api/staticmap?center=' + this.lat_long_string + '&size=300x300&maptype=roadmap&zoom=17&markers=color:red%7Clabel:A%7C' + this.lat_long_string;
+    this.createGoogleLink = function(latitude, longitude) {
+        $.getJSON('contact/admin/getGoogleLink', {
+            'latitude': latitude,
+            'longitude': longitude
+        }).done(function(data) {
+            if (data.error !== undefined) {
+                // check this
+                $('#map-error').show();
+            } else {
+                $('button.save-thumbnail').show();
+                $this.pushImageToPage(data.url);
+                $this.fillHiddenVars(latitude, longitude);
+            }
+        });
     };
 
-    this.fillHiddenVars = function() {
-        $('#google-lat-long').val(this.lat_long_string);
+    this.fillHiddenVars = function(latitude, longitude) {
+        $('#latitude').val(latitude);
+        $('#longitude').val(longitude);
     };
 
-    this.pushImageToPage = function()
+    this.pushImageToPage = function(url)
     {
         var image_tag;
-        image_tag = '<img id="google-map-image" src="' + this.google_url + '" />';
+        image_tag = '<img id="google-map-image" src="' + url + '" />';
         $('.map-image').html(image_tag);
     }
 }

@@ -42,24 +42,31 @@ class Module extends \Module implements \SettingDefaults
     public function getSettingDefaults()
     {
         // ContactInfo
-        $settings['building'] = '';
-        $settings['room_number'] = '';
-        $settings['phone_number'] = '';
-        $settings['fax_number'] = '';
-        $settings['email'] = '';
+        $settings['building'] = null;
+        $settings['room_number'] = null;
+        $settings['phone_number'] = null;
+        $settings['fax_number'] = null;
+        $settings['email'] = null;
 
         // Physical Address
-        $settings['street'] = '';
-        $settings['post_box'] = '';
-        $settings['city'] = '';
-        $settings['state'] = '';
-        $settings['zip'] = '';
+        $settings['street'] = null;
+        $settings['post_box'] = null;
+        $settings['city'] = null;
+        $settings['state'] = 'NC';
+        $settings['zip'] = null;
+        
         // Offsite
-        $settings['links'] = '';
+        $settings['links'] = null;
 
         // Map
-        $settings['thumbnail_map'] = '';
-        $settings['lat_long'] = '';
+        $settings['thumbnail_map'] = null;
+        $settings['latitude'] = null;
+        $settings['longitude'] = null;
+        $settings['full_map_link'] = null;
+        
+        $settings['zoom'] = 17;
+        $settings['dimension_x'] = '300';
+        $settings['dimension_y'] = '300';
 
         return $settings;
     }

@@ -52,17 +52,17 @@ class PhysicalAddress extends \Data
         $this->room_number = new \Variable\Integer(null, 'room_number');
         $this->room_number->allowNull(true);
         $this->building = new \Variable\TextOnly(null, 'building');
-        $this->building->allowEmpty();
+        $this->building->allowNull(true);
         $this->street = new \Variable\TextOnly(null, 'street');
-        $this->street->allowEmpty();
+        $this->street->allowNull(true);
         $this->post_box = new \Variable\Integer(null, 'post_box');
         $this->post_box->allowNull(true);
         $this->city = new \Variable\TextOnly(null, 'city');
-        $this->city->allowEmpty();
+        $this->city->allowNull(true);
         $this->state = new \Variable\TextOnly(null, 'state');
-        $this->state->allowEmpty();
+        $this->state->allowNull(true);
         $this->zip = new \Variable\NumberString(null, 'zip');
-        $this->zip->allowEmpty();
+        $this->zip->allowNull(true);
     }
     
     public function getRoomNumber()
@@ -100,18 +100,6 @@ class PhysicalAddress extends \Data
         return $this->zip->get();
     }
 
-    public function getValues()
-    {
-        $values['room_number'] = $this->getRoomNumber();
-        $values['building'] = $this->getBuilding();
-        $values['street'] = $this->getStreet();
-        $values['post_box'] = $this->getPostBox();
-        $values['city'] = $this->getCity();
-        $values['state'] = $this->getState();
-        $values['zip'] = $this->getZip();
-        return $values;
-    }
-    
     public function setBuilding($building)
     {
         $this->building->set($building);

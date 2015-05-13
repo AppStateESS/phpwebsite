@@ -34,21 +34,40 @@ class Admin extends \Http\Controller
             case 'locationString':
                 return $this->locationString();
                 break;
+
+            case 'getGoogleLink':
+                return $this->getGoogleLink($request);
+                break;
+
+            case 'saveThumbnail':
+                return $this->saveThumbnail($request);
+                break;
         }
+    }
+
+    private function getGoogleLink(\Request $request)
+    {
+        $latitude = $request->getVar('latitude');
+        $longitude = $request->getVar('longitude');
+        $json['url'] = Factory\Map::getImageUrl($latitude, $longitude);
+        $response = new \View\JsonView($json);
+        return $response;
     }
 
     private function locationString()
     {
-        $contact_info = Factory::fetchContactInfo();
+        $json = array();
+        $contact_info = Factory::load();
         $physical_address = $contact_info->getPhysicalAddress();
 
-        $address_array = Factory\Map::getGoogleSearchString($physical_address);
+        try {
+            $json['address'] = Factory\Map::getGoogleSearchString($physical_address);
+        } catch (\Exception $e) {
+            $json['error'] = $e->getMessage();
+        }
 
-        $json = $address_array;
         $response = new \View\JsonView($json);
         return $response;
-
-        return $thumbnail;
     }
 
     public function post(\Request $request)
@@ -59,39 +78,25 @@ class Admin extends \Http\Controller
             case 'contactinfo':
                 return $this->postContactInfo($request);
                 break;
-
-            case 'saveThumbnail':
-                return $this->saveThumbnail($request);
-                break;
         }
     }
 
     private function saveThumbnail(\Request $request)
     {
-        $google_lat_long = $request->getVar('google_lat_long');
-        $google_url = \contact\Factory\ContactInfo\Map::getImageUrl($google_lat_long);
-        $curl = \curl_init($google_url);
+        $latitude = $request->getVar('latitude');
+        $longitude = $request->getVar('longitude');
 
-        $filename = PHPWS_HOME_DIR . 'images/contact/googlemap_' . time() . '.png';
-        $fp = fopen($filename, "w");
-        \curl_setopt($curl, CURLOPT_FILE, $fp);
-        \curl_setopt($curl, CURLOPT_HEADER, 0);
-
-        \curl_exec($curl);
-        \curl_close($curl);
-        fclose($fp);
-        \Settings::set('thumbnail_map', $filename);
-        \Settings::set('lat_long', $google_lat_long);
-        $response = new \Http\TemporaryRedirectResponse('contact/admin/map');
+        Factory\Map::createMapThumbnail($latitude, $longitude);
+        
+        $json['result'] = 'true';
+        $response = new \View\JsonView($json);
         return $response;
     }
 
     private function postContactInfo(\Request $request)
     {
         $values = $request->getVars();
-        $contact_info = new Resource\ContactInfo();
-
-        Factory::postContactInfo($contact_info, $values['vars']);
+        Factory::post(Factory::load(), $values['vars']);
         $response = new \Http\SeeOtherResponse(\Server::getCurrentUrl(false));
         return $response;
     }
