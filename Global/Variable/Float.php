@@ -1,5 +1,7 @@
 <?php
+
 namespace Variable;
+
 /**
  * A class to assist with float variables.
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -7,7 +9,9 @@ namespace Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Float extends \Variable {
+class Float extends \Variable
+{
+
     /**
      * Checks to see if value is a float.
      * @param float $value
@@ -20,5 +24,16 @@ class Float extends \Variable {
         }
         return true;
     }
+
+    /**
+     * Returns the float as a string.
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->get();
+    }
+
 }
+
 ?>
