@@ -62,6 +62,12 @@ function Required() {
 
             case 'email':
                 return this.checkEmail(input);
+
+            case 'tel':
+                return this.checkTelephone(input);
+
+            default:
+                console.log('Could not check required input "' + input.attr('name') + '" of type "' + input.attr('type') + '"');
         }
     };
 
@@ -82,6 +88,17 @@ function Required() {
             }
         });
     };
+
+
+    this.checkTelephone = function(input) {
+        if (input.val().length < 1) {
+            this.addEmptyError(input);
+            return false;
+        } else {
+            this.removeError(input);
+            return true;
+        }
+    }
 
     this.checkText = function(input) {
         if (input.val().length < 1) {
