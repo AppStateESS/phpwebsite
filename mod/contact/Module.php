@@ -24,8 +24,22 @@ class Module extends \Module implements \SettingDefaults
     {
         $cmd = $request->shiftCommand();
         if ($cmd == 'admin' && \Current_User::allow('contact')) {
-            $admin = new \contact\Controller\Admin($this);
-            return $admin;
+            $controller = $request->shiftCommand();
+            
+            switch ($controller) {
+                case 'map':
+                    $map = new \contact\Controller\Map($this);
+                    return $map;
+                    
+                case 'social':
+                    $social = new \contact\Controller\Social($this);
+                    return $social;
+                    
+                case 'contactinfo':
+                default:
+                    $contact_info = new \contact\Controller\ContactInfo($this);
+                    return $contact_info;
+            }
         } else {
             \Current_User::requireLogin();
         }
@@ -54,7 +68,7 @@ class Module extends \Module implements \SettingDefaults
         $settings['city'] = null;
         $settings['state'] = 'NC';
         $settings['zip'] = null;
-        
+
         // Offsite
         $settings['links'] = null;
 
@@ -63,7 +77,7 @@ class Module extends \Module implements \SettingDefaults
         $settings['latitude'] = null;
         $settings['longitude'] = null;
         $settings['full_map_link'] = null;
-        
+
         $settings['zoom'] = 17;
         $settings['dimension_x'] = '300';
         $settings['dimension_y'] = '300';

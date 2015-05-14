@@ -1,8 +1,10 @@
 var contact_tab = new ContactTab;
 var contact_map = new ContactMap;
+var contact_social = new ContactSocial;
 $(window).load(function() {
     contact_tab.start();
     contact_map.start();
+    contact_social.start();
 });
 
 function ContactTab() {
@@ -55,7 +57,7 @@ function ContactMap() {
     };
 
     this.getGoogleImage = function() {
-        $.getJSON('contact/admin/locationString')
+        $.getJSON('contact/admin/map/locationString')
                 .done(function(data) {
                     if (data.error !== undefined) {
                         $('#map-error span').html(data.error);
@@ -67,7 +69,7 @@ function ContactMap() {
     };
 
     this.saveImage = function() {
-        $.getJSON('contact/admin/saveThumbnail',
+        $.getJSON('contact/admin/map/saveThumbnail',
                 {
                     latitude: $('#latitude').val(),
                     longitude: $('#longitude').val()
@@ -115,7 +117,7 @@ function ContactMap() {
     };
 
     this.createGoogleLink = function(latitude, longitude) {
-        $.getJSON('contact/admin/getGoogleLink', {
+        $.getJSON('contact/admin/map/getGoogleLink', {
             'latitude': latitude,
             'longitude': longitude
         }).done(function(data) {
@@ -141,4 +143,40 @@ function ContactMap() {
         image_tag = '<img id="google-map-image" src="' + url + '" />';
         $('.map-image').html(image_tag);
     }
+}
+
+function ContactSocial() {
+    var $this = this;
+    var all_tabs;
+    var current_tab;
+
+    this.start = function() {
+        var first_tab;
+        this.all_tabs = $('.social-pick-tab');
+        first_tab = $(this.all_tabs[0]);
+        first_tab.addClass('active');
+        this.current_tab = first_tab.data('icon');
+        this.readyTabs();
+        this.populateForm();
+    };
+    
+    this.populateForm = function() {
+        $('#social-icon').html('<i class="fa fa-5x fa-' + this.current_tab + '"></i>');
+    };
+    
+    this.readyTabs = function() {
+        $('.social-pick-tab').click(function() {
+            console.log($(this).data('icon'));
+            $this.current_tab = $(this).data('icon');
+            $this.setActiveTab(this);
+            $this.populateForm();
+            
+        });
+    };
+    
+    this.setActiveTab = function(selected) {
+        $('.social-pick-tab').removeClass('active');
+        $(selected).addClass('active');
+    };
+    
 }

@@ -22,9 +22,9 @@ class ContactInfo extends \Resource
     private $fax_number;
 
     /**
-     * @var ContactInfo\Offsite
+     * @var ContactInfo\Social
      */
-    private $offsite;
+    private $social;
 
     /**
      * @var ContactInfo\Map
@@ -42,7 +42,7 @@ class ContactInfo extends \Resource
         $this->phone_number = new \Variable\String(null, 'phone_number');
         $this->fax_number = new \Variable\String(null, 'phone_number');
         $this->fax_number->allowEmpty(true);
-        $this->offsite = new ContactInfo\Offsite;
+        $this->social = new ContactInfo\Social;
         $this->map = new ContactInfo\Map;
         $this->email = new \Variable\Email(null, 'email');
         $this->email->allowNull(true);
@@ -59,11 +59,11 @@ class ContactInfo extends \Resource
 
     /**
      * 
-     * @return contact\Resource\ContactInfo\Offsite
+     * @return contact\Resource\ContactInfo\Social
      */
-    public function getOffsite()
+    public function getSocial()
     {
-        return $this->offsite;
+        return $this->social;
     }
 
     /**
@@ -124,6 +124,11 @@ class ContactInfo extends \Resource
     public function setMap(ContactInfo\Map $map)
     {
         $this->map = $map;
+    }
+    
+    public function setSocial(ContactInfo\Social $social)
+    {
+        $this->social = $social;
     }
 
 }

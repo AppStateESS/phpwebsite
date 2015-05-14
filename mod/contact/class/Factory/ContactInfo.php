@@ -12,26 +12,16 @@ use contact\Factory;
 class ContactInfo
 {
 
-    public static function form(\Request $request)
+    public static function form(\Request $request, $active_tab)
     {
         javascript('jquery');
         \Form::requiredScript();
-        $active_tab = $request->shiftCommand();
 
         if (!in_array($active_tab, array('contact-info', 'map', 'social'))) {
             $active_tab = 'contact-info';
         }
 
         $thumbnail_map = \Settings::get('contact', 'thumbnail_map');
-
-        $js_string = <<<EOF
-<script type='text/javascript'>var active_tab = '$active_tab';var thumbnail_map = '$thumbnail_map';</script>
-EOF;
-
-        \Layout::addJSHeader($js_string);
-        $script = PHPWS_SOURCE_HTTP . 'mod/contact/javascript/contact.js';
-        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
-        \Layout::addJSHeader('<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>');
 
         $contact_info = self::load();
         $values = self::getValues($contact_info);
@@ -42,7 +32,18 @@ EOF;
         } else {
             $values['thumbnail_map'] = null;
         }
+        
+        $js_social_links = ContactInfo\Social::getLinksAsJavascriptObject($values['social_links']);
+        
+        $js_string = <<<EOF
+<script type='text/javascript'>var active_tab = '$active_tab';var thumbnail_map = '$thumbnail_map';var social_urls = $js_social_links;</script>
+EOF;
 
+        \Layout::addJSHeader($js_string);
+        $script = PHPWS_SOURCE_HTTP . 'mod/contact/javascript/contact.js';
+        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
+        \Layout::addJSHeader('<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>');
+        
         $template = new \Template($values);
         $template->setModuleTemplate('contact', 'Contact_Info_Form.html');
         return $template->get();
@@ -57,6 +58,7 @@ EOF;
 
         $contact_info->setPhysicalAddress(ContactInfo\PhysicalAddress::load());
         $contact_info->setMap(Factory\ContactInfo\Map::load());
+        $contact_info->setSocial(Factory\ContactInfo\Social::load());
         return $contact_info;
     }
 
@@ -70,20 +72,12 @@ EOF;
 
         $physical_address = $contact_info->getPhysicalAddress();
         $map = $contact_info->getMap();
+        $social = $contact_info->getSocial();
 
-        $values = array_merge ($values, ContactInfo\PhysicalAddress::getValues($physical_address));
-        $values = array_merge ($values, ContactInfo\Map::getValues($map));
-        
-        $offsite = $contact_info->getOffsite();
-        $links = $offsite->getLinks();
+        $values = array_merge($values, ContactInfo\PhysicalAddress::getValues($physical_address));
+        $values = array_merge($values, ContactInfo\Map::getValues($map));
+        $values = array_merge($values, ContactInfo\Social::getValues($social));
 
-        if (!empty($links)) {
-            foreach ($links as $l) {
-                $values['offline'][] = array('icon' => $l->getIcon(), 'title' => $l->getTitle(),
-                    'url' => $l->getUrl());
-            }
-        }
-        
         return $values;
     }
 
