@@ -865,7 +865,7 @@ class DBPager
         }
 
         if ($total_pages == 1) {
-            return '<ul class="pagination"><li class="active">1</li></ul>';
+            return '<ul class="pagination"><li class="active"><a>1</a></li></ul>';
         }
 
         $pentultimate = $total_pages - 1;
@@ -1138,7 +1138,7 @@ class DBPager
         unset($values['module']);
 
         $values['dbprt'] = 'csva';
-        return PHPWS_Text::moduleLink(_('Export to Spreadsheet'), $module, $values, null, _('Export to Spreadsheet'));
+        return PHPWS_Text::moduleLink('<button class="btn btn-default">' . _('Export to Spreadsheet') . '</button>', $module, $values, null, _('Export to Spreadsheet'));
     }
 
     /**
