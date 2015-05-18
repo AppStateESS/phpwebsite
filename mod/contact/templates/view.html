@@ -1,4 +1,12 @@
 <h3>Contact Us</h3>
+<div class="contact-social-icons">
+<?php if (!empty($social)) { 
+    foreach($social as $label=>$link) {
+        extract($link);
+?>
+<a href="<?=$prefix,$url?>"><i class="fa fa-2x fa-<?=$icon?>" title="<?=$title?>"></i></a>
+<?php } } ?>
+</div>
 <p>
     <?php if(!empty($room_number)){echo "Rm. $room_number, ";}?><?=$building?><br />
     <?php if (!empty($post_box)){echo "P.O. Box $post_box<br />";}?>
@@ -12,9 +20,11 @@
     <strong>Fax:</strong> <?=$formatted_fax_number?>
     <?php endif; ?>
 </p>
+<?php if (!empty($email)): ?>
 <p>
     <strong>Email:</strong> <a href="mailto:<?=$email?>"><?=$email?></a>
 </p>
+<?php endif; ?>
 <div class="contact-map">
     <a href='<?=$full_map_link?>' target='_blank'><img src='<?=$thumbnail_map?>' class='img-responsive' /></a>
 </div>

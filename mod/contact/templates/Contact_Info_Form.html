@@ -26,8 +26,8 @@
                         <input id="fax-number" name="fax_number" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="<?=$fax_number?>" />
                     </div>
                     <div class="form-group">
-                        <label for="email">Email address <i title="Required input" class="required fa fa-asterisk"></i></label>
-                        <input required id="email-address" name="email" type="email" class="form-control" value="<?=$email?>" />
+                        <label for="email">Email address <small>(note: you may use a social icon as well/instead)</small></label>
+                        <input id="email-address" name="email" type="email" class="form-control" value="<?=$email?>" />
                     </div>
                 </fieldset>
             </div>
@@ -77,10 +77,10 @@
 <div class="social-section contact-section">
     <div class="row">
         <div class="col-sm-4" style="border-right : 1px solid #e3e3e3">
-            <?php if (is_array($social_links)) { ?>
+            <?php if (is_array($social)) { ?>
             <ul class="nav nav-pills nav-stacked" style="margin-top:1em">
-                <?php foreach ($social_links as $social_row):extract($social_row);?>
-                <li role="presentation" data-icon="<?=$icon?>" class="social-pick-tab">
+                <?php foreach ($social as $label=>$social_row):extract($social_row);?>
+                <li role="presentation" data-label="<?=$label?>" class="social-pick-tab">
                     <a style="cursor:pointer"><?=$title?></a>
                 </li>
                 <?php endforeach;?>
@@ -88,12 +88,21 @@
             <?php } else { echo 'Error: No social links found.'; } ?>
         </div>
         <div class="col-sm-8" >
+            <div class="social-success alert alert-success alert-dismissible" role="alert" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                Social link saved!
+            </div>
+            <div class="alert alert-success" style="display:none"></div>
             <div id="social-icon"></div>
             <div class="form-group">
                 <label for="social-url">Address</label>
                 <input id="social-title" type="hidden" value="" />
-                <input id="social-url" type="text" class="form-control" name="social_url" value="" placeholder="Type or paste in web address, phone number, email address, etc." />
-                <button class="btn btn-primary"><i class='fa fa-save'></i> Save social link</button>
+                <div class="input-group">
+                    <div id="social-prefix" class="input-group-addon"></div>
+                    <input id="social-url" type="text" class="form-control" name="social_url" value="" placeholder="Type or paste in web address, phone number, email address, etc." />
+                </div>
+                <button style="margin-top:1em" class="btn btn-primary" id="save-social-link"><i class='fa fa-save'></i> Save social link</button>
+
             </div>
         </div>
     </div>

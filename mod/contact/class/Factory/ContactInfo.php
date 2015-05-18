@@ -32,9 +32,8 @@ class ContactInfo
         } else {
             $values['thumbnail_map'] = null;
         }
-        
-        $js_social_links = ContactInfo\Social::getLinksAsJavascriptObject($values['social_links']);
-        
+        $js_social_links = ContactInfo\Social::getLinksAsJavascriptObject($values['social']);
+
         $js_string = <<<EOF
 <script type='text/javascript'>var active_tab = '$active_tab';var thumbnail_map = '$thumbnail_map';var social_urls = $js_social_links;</script>
 EOF;
@@ -43,7 +42,6 @@ EOF;
         $script = PHPWS_SOURCE_HTTP . 'mod/contact/javascript/contact.js';
         \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
         \Layout::addJSHeader('<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>');
-        
         $template = new \Template($values);
         $template->setModuleTemplate('contact', 'Contact_Info_Form.html');
         return $template->get();
@@ -62,22 +60,35 @@ EOF;
         return $contact_info;
     }
 
-    private static function getValues(\contact\Resource\ContactInfo $contact_info)
+    private static function getValues(\contact\Resource\ContactInfo $contact_info, $sort_social = false)
     {
         $values['phone_number'] = $contact_info->getPhoneNumber();
         $values['fax_number'] = $contact_info->getFaxNumber();
         $values['email'] = $contact_info->getEmail();
         $values['formatted_phone_number'] = $contact_info->getPhoneNumber(true);
-        $values['formatted_fax_number'] = $contact_info->getFaxNumber(true);
+        if ($values['fax_number']) {
+            $values['formatted_fax_number'] = $contact_info->getFaxNumber(true);
+        }
 
         $physical_address = $contact_info->getPhysicalAddress();
         $map = $contact_info->getMap();
-        $social = $contact_info->getSocial();
 
         $values = array_merge($values, ContactInfo\PhysicalAddress::getValues($physical_address));
         $values = array_merge($values, ContactInfo\Map::getValues($map));
-        $values = array_merge($values, ContactInfo\Social::getValues($social));
 
+        if ($sort_social) {
+            $social = ContactInfo\Social::getLinks();
+            foreach ($social as $label => $link) {
+                if (isset($link['url'])) {
+                    $social_icons[$label] = $link;
+                }
+            }
+            if (!empty($social_icons)) {
+                $values = array_merge($values, array('social' => $social_icons));
+            }
+        } else {
+            $values = array_merge($values, array('social' => ContactInfo\Social::getLinks()));
+        }
         return $values;
     }
 
@@ -107,7 +118,7 @@ EOF;
             return;
         }
         $contact_info = self::load();
-        $values = self::getValues($contact_info);
+        $values = self::getValues($contact_info, true);
 
         $template = new \Template($values);
         $template->setModuleTemplate('contact', 'view.html');

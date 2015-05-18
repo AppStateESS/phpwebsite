@@ -11,6 +11,7 @@ use contact\Resource;
  */
 class ContactInfo extends \Http\Controller
 {
+
     public function get(\Request $request)
     {
         $data = array();
@@ -26,41 +27,10 @@ class ContactInfo extends \Http\Controller
         return $view;
     }
 
-    /*
-    protected function getJsonView($data, \Request $request)
-    {
-        $command = $request->shiftCommand();
-        switch ($command) {
-            case 'locationString':
-                return $this->locationString();
-                break;
-
-            case 'getGoogleLink':
-                return $this->getGoogleLink($request);
-                break;
-
-            case 'saveThumbnail':
-                return $this->saveThumbnail($request);
-                break;
-        }
-    }
-     * 
-     */
-
-    
-
     public function post(\Request $request)
     {
-        $command = $request->shiftCommand();
-
-        switch ($command) {
-            case 'contactinfo':
-                return $this->postContactInfo($request);
-                break;
-        }
+        return $this->postContactInfo($request);
     }
-
-    
 
     private function postContactInfo(\Request $request)
     {
@@ -69,4 +39,5 @@ class ContactInfo extends \Http\Controller
         $response = new \Http\SeeOtherResponse(\Server::getCurrentUrl(false));
         return $response;
     }
+
 }

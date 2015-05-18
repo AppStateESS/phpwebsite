@@ -142,41 +142,80 @@ function ContactMap() {
         var image_tag;
         image_tag = '<img id="google-map-image" src="' + url + '" />';
         $('.map-image').html(image_tag);
-    }
+    };
 }
 
 function ContactSocial() {
     var $this = this;
     var all_tabs;
-    var current_tab;
+    var current_label;
+    var current_icon;
+    var current_url;
+    var current_prefix;
 
     this.start = function() {
         var first_tab;
         this.all_tabs = $('.social-pick-tab');
         first_tab = $(this.all_tabs[0]);
         first_tab.addClass('active');
-        this.current_tab = first_tab.data('icon');
+        this.loadCurrentLink(first_tab.data('label'));
         this.readyTabs();
         this.populateForm();
+        this.readySaveButton();
+        this.readyUrl();
     };
-    
-    this.populateForm = function() {
-        $('#social-icon').html('<i class="fa fa-5x fa-' + this.current_tab + '"></i>');
-    };
-    
-    this.readyTabs = function() {
-        $('.social-pick-tab').click(function() {
-            console.log($(this).data('icon'));
-            $this.current_tab = $(this).data('icon');
-            $this.setActiveTab(this);
-            $this.populateForm();
-            
+
+    this.readyUrl = function() {
+        $('#social-url').focusout(function() {
+            $this.current_url = $(this).val();
         });
     };
-    
+
+    /**
+     * social_urls is a variable declared in Contact_Info php controller class.
+     * @param string tab
+     * @returns void
+     */
+    this.loadCurrentLink = function(label) {
+        this.current_label = label;
+        this.current_icon = social_urls[label].icon;
+        this.current_url = social_urls[label].url;
+        this.current_prefix = social_urls[label].prefix;
+    };
+
+    this.populateForm = function() {
+        $('#social-icon').html('<i class="fa fa-5x fa-' + this.current_icon + '"></i>');
+        $('#social-url').val(this.current_url);
+        $('#social-prefix').html(this.current_prefix);
+    };
+
+    this.readyTabs = function() {
+        var icon;
+        $('.social-pick-tab').click(function() {
+            $('.social-success').hide();
+            icon = $(this).data('label');
+            $this.loadCurrentLink(icon);
+            $this.setActiveTab(this);
+            $this.populateForm();
+        });
+    };
+
+    this.readySaveButton = function() {
+        $('#save-social-link').click(function() {
+            $.post('contact/admin/social/save_url',
+                    {
+                        label: $this.current_label,
+                        url: $this.current_url
+                    }).done(function(data) {
+                social_urls[$this.current_label].url = $this.current_url;
+                $('.social-success').show();
+            });
+        });
+    };
+
     this.setActiveTab = function(selected) {
         $('.social-pick-tab').removeClass('active');
         $(selected).addClass('active');
     };
-    
+
 }

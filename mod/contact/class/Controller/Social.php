@@ -23,5 +23,16 @@ class Social extends \Http\Controller
         $view = new \View\HtmlView(\PHPWS_ControlPanel::display($content));
         return $view;
     }
+    
+    public function post(\Request $request)
+    {
+        $social_links = \contact\Factory\ContactInfo\Social::pullSavedLinks();
+        $label = $request->getVar('label');
+        $url = $request->getVar('url');
+        $social_links[$label] = $url;
+        \contact\Factory\ContactInfo\Social::saveLinks($social_links);
+        echo 'post successful';
+        exit;
+    }
 
 }

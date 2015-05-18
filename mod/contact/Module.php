@@ -70,7 +70,7 @@ class Module extends \Module implements \SettingDefaults
         $settings['zip'] = null;
 
         // Offsite
-        $settings['links'] = null;
+        $settings['social'] = null;
 
         // Map
         $settings['thumbnail_map'] = null;

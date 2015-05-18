@@ -11,59 +11,43 @@ use contact\Resource\ContactInfo\Social as SocialResource;
 class Social
 {
 
-    public static function getValues(SocialResource $social)
-    {
-        $values = null;
-        $links = $social->getLinks();
-        if (!empty($links)) {
-            foreach ($links as $l) {
-                $values['social_links'][] = array('icon' => $l->getIcon(), 'title' => $l->getTitle(),
-                    'url' => $l->getUrl());
-            }
-        }
-        return $values;
-    }
-
     public static function load()
     {
         $social = new SocialResource;
-        self::loadLinks($social);
+        self::getLinks($social);
         return $social;
     }
 
     /**
      * Fills in offsite links to the link variable
      */
-    private static function loadLinks(SocialResource $social)
+    public static function getLinks()
     {
-        $new_links = self::createNewLinks($social);
+        $new_links = self::getDefaultLinks();
         if (empty($new_links)) {
             throw new \Exception('Problem loading link objects using current social configuration file.');
         }
 
-        $saved_links = self::fillLinks($social);
-        if (empty($saved_links)) {
-            $social->setLinks($new_links);
-        } else {
-            exit('need to join saved with new links');
-        }
+        $filled_links = self::fillLinks($new_links);
+        return $filled_links;
     }
 
-    private static function fillLinks(SocialResource $social)
+    private static function fillLinks($current_links)
     {
         $link_array = self::pullSavedLinks();
-        if (empty($link_array)) {
-            return;
+        if (!empty($link_array)) {
+            foreach ($link_array as $label => $url) {
+                $current_links[$label]['url'] = $url;
+            }
         }
-        exit('need to fill in saved information here class/Factory/ContactInfo/Social.php');
-        $current_links = $social->getLinks();
+        return $current_links;
     }
 
     /**
      * Creates empty links based on config/social_links.php array
      * @throws \Exception
      */
-    private static function createNewLinks()
+    private static function getDefaultLinks()
     {
         $social_links = null;
         // included file contains a social_links array
@@ -72,13 +56,7 @@ class Social
         if (empty($social_links)) {
             throw new \Exception('Social links are missing from config/social_links.php');
         } else {
-            foreach ($social_links as $title => $icon) {
-                $link = new SocialResource\Link;
-                $link->setTitle($title);
-                $link->setIcon($icon);
-                $link_array[] = $link;
-            }
-            return $link_array;
+            return $social_links;
         }
     }
 
@@ -86,30 +64,37 @@ class Social
      * Pulls link arrays from settings
      * @return array
      */
-    private static function pullSavedLinks()
+    public static function pullSavedLinks()
     {
-        $link_array = \Settings::get('contact', 'links');
+        $link_array = \Settings::get('contact', 'social');
         if (!empty($link_array)) {
-            $link_array = unserialize($link_array);
+            return unserialize($link_array);
         }
         return $link_array;
     }
 
+    public static function saveLinks(array $links)
+    {
+        $serial_links = serialize($links);
+        \Settings::set('contact', 'social', $serial_links);
+    }
+
     public static function getLinksAsJavascriptObject(array $links)
     {
-        $social_prefix = null;
-        include PHPWS_SOURCE_DIR . 'mod/contact/config/social_links.php';
         $stdObj = new \stdClass();
-        foreach ($links as $link) {
-            $icon = new \stdClass();
-            $icon->url = $link['url'];
-            
-            if (isset($social_prefix[$link['title']])) {
-                $icon->prefix = $social_prefix[$link['title']];
+        foreach ($links as $label => $link) {
+            $obj1 = new \stdClass();
+            // $link[url] will be blank if nothing has been saved
+            if (isset($link['url'])) {
+                $obj1->url = $link['url'];
             } else {
-                $icon->prefix = 'href://';
+                $obj1->url = '';
             }
-            $stdObj->$link['title'] = $icon;
+            $obj1->title = $link['title'];
+            $obj1->icon = $link['icon'];
+            $obj1->prefix = $link['prefix'];
+
+            $stdObj->$label = $obj1;
         }
         return json_encode($stdObj);
     }
