@@ -13,6 +13,7 @@ define('CONFIRM_SIGNUP', 2);
 //define('APPROVE_SIGNUP', 3);
 
 PHPWS_Core::initCoreClass('Form.php');
+PHPWS_Core::initCoreClass('Template.php');
 
 class User_Form
 {
