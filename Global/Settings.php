@@ -112,6 +112,19 @@ class Settings extends Data {
         }
         return self::$settings;
     }
+    
+    public static function reset($module)
+    {
+        if (preg_match('/\W/', $module)) {
+            throw \Exception('Bad string format for module parameter');
+        }
+        $db = \Database::newDB();
+        $t1 = $db->addTable('settings');
+        $t1->addFieldConditional('module_name', $module);
+        $db->delete();
+        // reset the setting singleton
+        self::singleton(true);
+    }
 
 }
 
