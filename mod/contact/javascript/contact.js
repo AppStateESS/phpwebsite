@@ -162,6 +162,7 @@ function ContactSocial() {
         this.readyTabs();
         this.populateForm();
         this.readySaveButton();
+        this.readyClearButton();
         this.readyUrl();
     };
 
@@ -202,14 +203,31 @@ function ContactSocial() {
 
     this.readySaveButton = function() {
         $('#save-social-link').click(function() {
-            $.post('contact/admin/social/save_url',
-                    {
-                        label: $this.current_label,
-                        url: $this.current_url
-                    }).done(function(data) {
-                social_urls[$this.current_label].url = $this.current_url;
-                $('.social-success').show();
-            });
+            if ($this.current_url.length < 1) {
+                return;
+            }
+            $this.postUrl();
+        });
+    };
+
+    this.postUrl = function() {
+        $.post('contact/admin/social/save_url',
+                {
+                    label: $this.current_label,
+                    url: $this.current_url
+                }).
+                done(function(data) {
+                    social_urls[$this.current_label].url = $this.current_url;
+                    $('.social-success').show();
+                });
+    };
+
+    this.readyClearButton = function() {
+        $('#clear-social-link').click(function() {
+            $this.current_url = '';
+            $this.populateForm();
+            social_urls[$this.current_label].url = '';
+            $this.postUrl();
         });
     };
 
