@@ -6,7 +6,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-class Menu_Admin {
+class Menu_Admin
+{
 
     public function main()
     {
@@ -16,8 +17,7 @@ class Menu_Admin {
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
         if (!Current_User::allow('menu')) {
-            Current_User::disallow(dgettext('menu',
-                            'User attempted access to Menu administration.'));
+            Current_User::disallow(dgettext('menu', 'User attempted access to Menu administration.'));
             return;
         }
 
@@ -156,8 +156,7 @@ class Menu_Admin {
 
     private function updateCharacterLimit(\Request $request)
     {
-        \PHPWS_Settings::set('menu', 'max_link_characters',
-                $request->getVar('limit'));
+        \PHPWS_Settings::set('menu', 'max_link_characters', $request->getVar('limit'));
         \PHPWS_Settings::save('menu');
     }
 
@@ -174,6 +173,11 @@ class Menu_Admin {
 
     private function updateLinkShortcut($row)
     {
+        require_once PHPWS_SOURCE_DIR . 'mod/access/class/Shortcut.php';
+        // off site links ignored
+        if (!preg_match('@^pagesmith/\d+@', $row['url'])) {
+            return;
+        }
         $url = str_replace('/', ':', $row['url']);
 
         $db = \Database::newDB();
@@ -182,6 +186,12 @@ class Menu_Admin {
         $t1->addFieldConditional('url', $url);
         $keyword = $db->selectColumn();
         $menu_link = new Menu_Link($row['id']);
+        if (empty($keyword)) {
+            $as = new Access_Shortcut;
+            $as->plugShortcut($row['title'], $row['key_id']);
+            $as->save();
+            $keyword = $as->keyword;
+        }
         $menu_link->url = './' . $keyword;
         $menu_link->save();
     }
@@ -228,6 +238,7 @@ class Menu_Admin {
         \PHPWS_Settings::set('menu', 'home_link', $menu_link);
         \PHPWS_Settings::save('menu');
     }
+
     private function updateLinkIcons(\Request $request)
     {
         $link_icons = $request->getVar('check') == 'true' ? 1 : 0;
@@ -322,8 +333,7 @@ class Menu_Admin {
 
     private function changeDisplayType($request)
     {
-        \PHPWS_Settings::set('menu', 'display_type',
-                (int) $request->getVar('display_type'));
+        \PHPWS_Settings::set('menu', 'display_type', (int) $request->getVar('display_type'));
         \PHPWS_Settings::save('menu');
     }
 
@@ -414,24 +424,18 @@ class Menu_Admin {
             $menu->deleteImage();
 
             $file = $request->getUploadedFileArray('assoc_image');
-            $file_name = randomString(12) . '.' . str_replace('image/', '',
-                            $file['type']);
+            $file_name = randomString(12) . '.' . str_replace('image/', '', $file['type']);
 
-            \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name,
-                    false, true);
-            \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
-                    'images/menu/', 200);
+            \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name, false, true);
+            \PHPWS_File::makeThumbnail($file_name, 'images/menu/', 'images/menu/', 200);
             $menu->setAssocImage('images/menu/' . $file_name);
         } elseif (!empty($carousel)) {
             $menu->deleteImage();
             $ext = \PHPWS_File::getFileExtension($carousel);
-            $file_name = randomString(12) . '.' . str_replace('image/', '',
-                            $ext);
+            $file_name = randomString(12) . '.' . str_replace('image/', '', $ext);
 
-            \PHPWS_File::fileCopy($carousel, 'images/menu/', $file_name,
-                    false, true);
-            \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
-                    'images/menu/', 200);
+            \PHPWS_File::fileCopy($carousel, 'images/menu/', $file_name, false, true);
+            \PHPWS_File::makeThumbnail($file_name, 'images/menu/', 'images/menu/', 200);
             $menu->setAssocImage('images/menu/' . $file_name);
         }
         $menu->save();
@@ -535,8 +539,7 @@ class Menu_Admin {
                     // the link was moved BEFORE another link
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order',
-                            $db->addExpression($lorder . ' + 1'));
+                    $ml->addValue('link_order', $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional($lorder, $next_link_order, '>=');
                     $ml->addFieldConditional($lorder, $move_link_order, '<');
                     $ml->addFieldConditional('parent', $next_parent);
@@ -546,8 +549,7 @@ class Menu_Admin {
                     // the link was moved AFTER another link
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order',
-                            $db->addExpression($lorder . ' - 1'));
+                    $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
                     $ml->addFieldConditional($lorder, $next_link_order, '<');
                     $ml->addFieldConditional($lorder, $move_link_order, '>');
                     $ml->addFieldConditional('parent', $next_parent);
@@ -561,8 +563,7 @@ class Menu_Admin {
                     // moved to top of list
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order',
-                            $db->addExpression($lorder . ' + 1'));
+                    $ml->addValue('link_order', $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
                     $move_link->link_order = 1;
@@ -570,8 +571,7 @@ class Menu_Admin {
                     // there is a previous link so we number from there
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order',
-                            $db->addExpression($lorder . ' + 1'));
+                    $ml->addValue('link_order', $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional($lorder, $prev_link_order, '>');
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
@@ -858,8 +858,7 @@ EOF;
         }
 
         if (\Current_User::isDeity()) {
-            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu',
-                            array('command' => 'reset_menu'), true);
+            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu', array('command' => 'reset_menu'), true);
         } else {
             $tpl['reset_menu_link'] = '#';
         }
