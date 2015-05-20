@@ -61,7 +61,7 @@ class PhysicalAddress extends \Data
         $this->city->allowNull(true);
         $this->state = new \Variable\TextOnly(null, 'state');
         $this->state->allowNull(true);
-        $this->zip = new \Variable\NumberString(null, 'zip');
+        $this->zip = new \Variable\String(null, 'zip');
         $this->zip->allowNull(true);
     }
     

@@ -2,8 +2,6 @@
 
 namespace contact\Factory\ContactInfo;
 
-use contact\Resource\ContactInfo\PhysicalAddress;
-
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -11,7 +9,7 @@ use contact\Resource\ContactInfo\PhysicalAddress;
 class Map
 {
 
-    public static function getGoogleSearchString(PhysicalAddress $physical_address)
+    public static function getGoogleSearchString(\contact\Resource\ContactInfo\PhysicalAddress $physical_address)
     {
         $building = $physical_address->getBuilding();
         $street = $physical_address->getStreet();
@@ -70,7 +68,7 @@ class Map
     public static function save(\contact\Resource\ContactInfo\Map $map)
     {
         $values = self::getValues($map);
-        foreach ($values as $key=>$val) {
+        foreach ($values as $key => $val) {
             \Settings::set('contact', $key, $val);
         }
     }

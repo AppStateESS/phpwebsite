@@ -114,7 +114,8 @@ EOF;
     public static function display()
     {
         // no city data (required) no output
-        if (empty(\Settings::get('contact', 'city'))) {
+        $city = \Settings::get('contact', 'city');
+        if (empty($city)) {
             return;
         }
         $contact_info = self::load();
