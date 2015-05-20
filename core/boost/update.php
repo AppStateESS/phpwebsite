@@ -428,7 +428,7 @@ EOF;
         case version_compare($version, '2.4.2', '<'):
             $db = \Database::newDB();
             $t1 = $db->addTable('settings');
-            $t1->dropIndex('settings_idx');
+            //$t1->dropIndex('settings_idx');
             $t1->createPrimaryIndexId();
             $content[] = <<<EOF
 <pre>
