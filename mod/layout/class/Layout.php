@@ -488,7 +488,8 @@ class Layout
      * Loads a javascript file into memory
      * @param string $directory
      * @param array $data
-     * @param string $base
+     * @param string $base  Base directory of Javascript. Defaults to null, looking in the main javascript directory.
+     *                      For a module, base would be 'mod/modulename/'
      * @param boolean $wrap_header If true, wrap the contents of head.js with <script> tags
      * @return unknown_type
      */
