@@ -155,67 +155,17 @@ class Editor {
         $this->limited = (bool)$value;
     }
 
-
+    /**
+     * This method used to check whether a particular wysiwyg would work in a particular browser. Not going to 
+     * check this anymore as we only use one wysiwyg.
+     * @param type $type
+     * @deprecated
+     * @return boolean
+     */
     public static function willWork($type=null)
     {
-        if (empty($type)) {
-            $type = Editor::getUserType();
-        }
-
-        // if type is null, user doesn't want an editor
-        if (empty($type)) {
-            return false;
-        }
-
-
-        if (FORCE_EDITOR) {
-            return true;
-        }
-
-        if (USE_WYSIWYG_EDITOR == false) {
-            return false;
-        }
-
-        if (!javascriptEnabled()) {
-            return false;
-        }
-
-
-        if (isset($_SESSION['Editor_Works'][$type])) {
-            return $_SESSION['Editor_Works'][$type];
-        }
-        $browser = strtolower($GLOBALS['browser']);
-        $support_file = sprintf(PHPWS_SOURCE_DIR . 'javascript/editors/%s/supported.php', $type);
-        if (is_file($support_file)) {
-            include $support_file;
-            if (isset($supported)) {
-                foreach ($supported as $spt) {
-                    /**
-                     * This used to check three variables for compatibility. We don't pull them all anymore
-                     * because browsers don't have a standard identifier.
-                     */
-
-                    if (!isset($spt['browser'])) {
-                        continue;
-                    }
-
-                    if ( $browser == $spt['browser'] ) {
-                        $_SESSION['Editor_Works'][$type] = true;
-                        return true;
-                    }
-                }
-                $_SESSION['Editor_Works'][$type] = false;
-                return false;
-            } else {
-                $_SESSION['Editor_Works'][$type] = true;
-                return true;
-            }
-        } else {
-            $_SESSION['Editor_Works'][$type] = true;
-            return true;
-        }
+        return true;
     }
-
 }
 
 ?>
