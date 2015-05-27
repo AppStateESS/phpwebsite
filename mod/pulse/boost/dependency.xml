@@ -6,4 +6,10 @@
 		<version>2.1.0</version>
 		<url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
 	</module>
+	<module>
+		<title>pulse</title>
+		<properName>Pulse</properName>
+		<version>1.9.1</version>
+		<url></url>
+	</module>
 </dependency>
