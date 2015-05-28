@@ -154,7 +154,7 @@ class Boost_Action {
         return implode('<br />', $content);
     }
 
-    public function showDependedUpon($base_mod)
+    public static function showDependedUpon($base_mod)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_mod);
