@@ -33,6 +33,17 @@ class Database
     }
 
     /**
+     * Alias for newDB
+     * @param \Database\DSN $dsn
+     * @return Database\DB
+     */
+    public static function getDB(\Database\DSN $dsn = null)
+    {
+        return self::newDB($dsn);
+    }
+    
+    
+    /**
      * Creates a new DB object based on the dsn parameter OR the default
      * dsn.
      * @param \Database\DSN $dsn
