@@ -83,6 +83,12 @@ class ResourceFactory {
         return $id;
     }
 
+    /**
+     * Removes a resource from its table.
+     * @param \Resource $resource
+     * @param string $table_name Not required if in Resource->table
+     * @return integer Number of rows deleted.
+     */
     public static function deleteResource(\Resource $resource, $table_name = null)
     {
         if (empty($table_name)) {
@@ -91,7 +97,7 @@ class ResourceFactory {
         $db = \Database::newDB();
         $tbl = $db->addTable($table_name);
         $db->addConditional($tbl->getFieldConditional('id', self::pullId($resource) ));
-        $db->delete();
+        return $db->delete();
     }
 
 }
