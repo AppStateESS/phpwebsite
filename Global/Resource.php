@@ -61,6 +61,12 @@ abstract class Resource extends Data {
         return $this->id->get();
     }
 
+    /**
+     * Returns true if this resource has been saved (i.e. has a positive id)
+     * and false otherwise.
+     * @return boolean
+     */
+    
     public function isSaved()
     {
         return !$this->id->isEmpty();
