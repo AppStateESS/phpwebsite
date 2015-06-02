@@ -128,12 +128,14 @@ class PulseFactory extends \ResourceFactory
 
     public static function walkSchedules(array $schedules)
     {
+        $schedules_completed = null;
         $error_occurred = false;
         foreach ($schedules as $job) {
             $schedule = new PulseSchedule;
             $schedule->setVars($job);
             try {
                 PulseFactory::executeSchedule($schedule);
+                $schedules_completed[] = $schedule->getId();
             } catch (\Exception $e) {
                 self::logError($e->getMessage());
                 $error_occurred = true;
@@ -141,6 +143,8 @@ class PulseFactory extends \ResourceFactory
         }
         if ($error_occurred) {
             throw new Exception\PulseException('One or more errors occurred during schedule execution.');
+        } else {
+            return $schedules_completed;
         }
     }
 
@@ -207,11 +211,13 @@ EOF;
         self::save($schedule);
 
         $result = call_user_func(array($class_name, $class_method));
+        
         // Execution is finished. Set end time and return to awake status.
         $schedule->stampEnd();
         $schedule->wakeUp();
         self::loadNextRun($schedule);
         self::save($schedule);
+        
         self::logScheduleCompletion($schedule, $result);
     }
 
@@ -239,6 +245,8 @@ EOF;
         $interim .= $minutes . ' mins.';
         $row['interim'] = $interim;
 
+        $row['runtime'] = gmdate('H:i:s', $row['end_time'] - $row['execute_time']);
+        
         switch ($row['status']) {
             case PULSE_STATUS_AWAKE:
                 $row['status'] = '<span class="label label-success">Awake</span>';
