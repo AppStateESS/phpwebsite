@@ -1,7 +1,6 @@
 <?php
 
 namespace pulse;
-
 /**
  * Description
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
@@ -35,7 +34,7 @@ class PulseController
         }
 
         if (empty($schedules)) {
-            exit('Nothing scheduled');
+            exit('No schedules run.');
         }
 
         PulseFactory::walkSchedules($schedules);

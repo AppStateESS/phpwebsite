@@ -173,39 +173,39 @@ class PulseFactory extends \ResourceFactory
         $id = $schedule->getId();
         $execute_time = $schedule->getExecuteTime('%c');
         $end_time = $schedule->getEndTime('%c');
-        
+
         $log = <<<EOF
 Schedule #$id was executed at $execute_time and completed at $end_time.
 Returned result: $result
 EOF;
-        
+
         \PHPWS_Core::log($log, 'pulse.log');
     }
-    
+
     private static function loadNextRun(PulseSchedule $schedule)
     {
         $next_time = time() + ($schedule->getInterim() * 60);
         $schedule->setStartTime($next_time);
     }
-    
+
     public static function executeSchedule(PulseSchedule $schedule)
     {
         self::checkIfScheduleisRunable($schedule);
-        
+
         $schedule->stampExecute();
         self::save($schedule);
 
         $class_name = $schedule->getClassName();
         $class_method = $schedule->getClassMethod();
         $required_file = $schedule->getRequiredFile();
-        
+
         require_once $required_file;
-        
+
         // Execution has begun. Set execute time and processing status.
         $schedule->stampExecute();
         $schedule->processing();
         self::save($schedule);
-        
+
         $result = call_user_func(array($class_name, $class_method));
         // Execution is finished. Set end time and return to awake status.
         $schedule->stampEnd();
@@ -213,6 +213,47 @@ EOF;
         self::loadNextRun($schedule);
         self::save($schedule);
         self::logScheduleCompletion($schedule, $result);
+    }
+
+    public static function pagerRows($row)
+    {
+        $row['start_time'] = strftime('%Y%m%d %H:%M', $row['start_time']);
+        if (empty($row['end_time'])) {
+            $row['end_time'] = 'Not complete';
+        } else {
+            $row['end_time'] = strftime('%Y%m%d %H:%M', $row['end_time']);
+        }
+
+        if (empty($row['execute_time'])) {
+            $row['execute_time'] = 'Not yet executed';
+        } else {
+            $row['execute_time'] = strftime('%Y%m%d %H:%M', $row['execute_time']);
+        }
+
+        $interim = '';
+        $hours = floor($row['interim'] / 60);
+        $minutes = $row['interim'] % 60;
+        if (!empty($hours)) {
+            $interim .= $hours . ' hrs., ';
+        }
+        $interim .= $minutes . ' mins.';
+        $row['interim'] = $interim;
+
+        switch ($row['status']) {
+            case PULSE_STATUS_AWAKE:
+                $row['status'] = '<span class="label label-success">Awake</span>';
+                break;
+            case PULSE_STATUS_ASLEEP:
+                $row['status'] = '<span class="label label-warning">Asleep</span>';
+                break;
+            case PULSE_STATUS_PROCESSING:
+                $row['status'] = '<span class="label label-info">Processing...</span>';
+                break;
+            case PULSE_STATUS_HOLDING:
+                $row['status'] = '<span class="label label-danger">Holding</span>';
+                break;
+        }
+        return $row;
     }
 
 }
