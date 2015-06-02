@@ -49,4 +49,5 @@ class PulseController
 
         exit;
     }
+
 }

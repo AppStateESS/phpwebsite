@@ -128,20 +128,12 @@ class PulseFactory extends \ResourceFactory
 
     public static function walkSchedules(array $schedules)
     {
-<<<<<<< HEAD
-        $schedules_completed = null;
-=======
->>>>>>> Rewrite of pulse module.
         $error_occurred = false;
         foreach ($schedules as $job) {
             $schedule = new PulseSchedule;
             $schedule->setVars($job);
             try {
                 PulseFactory::executeSchedule($schedule);
-<<<<<<< HEAD
-                $schedules_completed[] = $schedule->getId();
-=======
->>>>>>> Rewrite of pulse module.
             } catch (\Exception $e) {
                 self::logError($e->getMessage());
                 $error_occurred = true;
@@ -149,11 +141,6 @@ class PulseFactory extends \ResourceFactory
         }
         if ($error_occurred) {
             throw new Exception\PulseException('One or more errors occurred during schedule execution.');
-<<<<<<< HEAD
-        } else {
-            return $schedules_completed;
-=======
->>>>>>> Rewrite of pulse module.
         }
     }
 
@@ -186,78 +173,45 @@ class PulseFactory extends \ResourceFactory
         $id = $schedule->getId();
         $execute_time = $schedule->getExecuteTime('%c');
         $end_time = $schedule->getEndTime('%c');
-<<<<<<< HEAD
-
-=======
         
->>>>>>> Rewrite of pulse module.
         $log = <<<EOF
 Schedule #$id was executed at $execute_time and completed at $end_time.
 Returned result: $result
 EOF;
-<<<<<<< HEAD
-
-        \PHPWS_Core::log($log, 'pulse.log');
-    }
-
-=======
         
         \PHPWS_Core::log($log, 'pulse.log');
     }
     
->>>>>>> Rewrite of pulse module.
     private static function loadNextRun(PulseSchedule $schedule)
     {
         $next_time = time() + ($schedule->getInterim() * 60);
         $schedule->setStartTime($next_time);
     }
-<<<<<<< HEAD
-
-    public static function executeSchedule(PulseSchedule $schedule)
-    {
-        self::checkIfScheduleisRunable($schedule);
-
-=======
     
     public static function executeSchedule(PulseSchedule $schedule)
     {
         self::checkIfScheduleisRunable($schedule);
         
->>>>>>> Rewrite of pulse module.
         $schedule->stampExecute();
         self::save($schedule);
 
         $class_name = $schedule->getClassName();
         $class_method = $schedule->getClassMethod();
         $required_file = $schedule->getRequiredFile();
-<<<<<<< HEAD
-
-        require_once $required_file;
-
-=======
         
         require_once $required_file;
         
->>>>>>> Rewrite of pulse module.
         // Execution has begun. Set execute time and processing status.
         $schedule->stampExecute();
         $schedule->processing();
         self::save($schedule);
-<<<<<<< HEAD
-
-        $result = call_user_func(array($class_name, $class_method));
-        
-=======
         
         $result = call_user_func(array($class_name, $class_method));
->>>>>>> Rewrite of pulse module.
         // Execution is finished. Set end time and return to awake status.
         $schedule->stampEnd();
         $schedule->wakeUp();
         self::loadNextRun($schedule);
         self::save($schedule);
-<<<<<<< HEAD
-        
         self::logScheduleCompletion($schedule, $result);
     }
 
