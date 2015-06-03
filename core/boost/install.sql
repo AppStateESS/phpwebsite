@@ -13,7 +13,7 @@ CREATE TABLE settings (
   id int NOT NULL default 0,
   module_name varchar(255) NOT NULL,
   variable_name varchar(255) NOT NULL,
-  setting varchar(255) DEFAULT NULL,
+  setting text,
   primary key (id)
 );
 
