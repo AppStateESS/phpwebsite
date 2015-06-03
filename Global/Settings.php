@@ -78,7 +78,7 @@ class Settings extends Data {
         $settings = $db->addTable('settings');
         $idx[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
         $idx[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
-        $settings->addDataType('setting', 'varchar')->setIsNull(true);
+        $settings->addDataType('setting', 'text');
         $settings->create();
         $index = new \Database\Index($idx, 'settings_idx');
         $index->create();
