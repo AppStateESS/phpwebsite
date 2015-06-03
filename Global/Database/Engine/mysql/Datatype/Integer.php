@@ -139,7 +139,7 @@ class Integer extends \Database\Datatype {
      * Checks some conditionals for the default value.
      * @return string
      */
-    public function getDefault()
+    public function getDefaultString()
     {
         if ($this->auto_increment) {
             return null;
