@@ -33,7 +33,7 @@ class Integer extends \Database\Datatype {
      * Checks some conditionals for the default value.
      * @return string
      */
-    public function getDefault()
+    public function getDefaultString()
     {
         if (is_null($this->default)) {
             return null;
