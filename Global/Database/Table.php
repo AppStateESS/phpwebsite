@@ -21,8 +21,8 @@ define('VERIFY_COLUMNS', true);
  * Many functions used in Table are contained in Resource. Please see
  * the functions and comments there for more information.
  */
-abstract class Table extends Resource {
-
+abstract class Table extends Resource
+{
     const default_foreign_key_name = 'default_foreign_key';
 
     /**
@@ -59,7 +59,6 @@ abstract class Table extends Resource {
      * @var array
      */
     protected $incremented_ids = null;
-
 
     /**
      * May contain a DB object used for insertion.
@@ -113,14 +112,14 @@ abstract class Table extends Resource {
      */
     protected $values = array();
     protected $constraints = array();
-    
+
     /**
      * If set to true, then this table will be flagged as one of the tables
      * to delete from in a multiple table query.
      * @var boolean
      */
     protected $include_in_delete;
-    
+
     /**
      * If true, the table name is included after "using" in a delete query
      * @var boolean
@@ -140,6 +139,8 @@ abstract class Table extends Resource {
     abstract public function columnExists($column_name);
 
     abstract public function constraintTypeAfterName();
+
+    abstract public function alter(\Database\Datatype $old, \Database\Datatype $new);
 
     /**
      * Serializes the primary key in the current table. This is a one time method
@@ -257,8 +258,7 @@ abstract class Table extends Resource {
     {
         $source_table_name = $constraint->getSourceTable()->getFullName();
         if ($source_table_name != $this->getFullName()) {
-            throw new \Exception(t('Source column table %s does not match current table %s',
-                    $source_table_name, $this->getFullName()));
+            throw new \Exception(t('Source column table %s does not match current table %s', $source_table_name, $this->getFullName()));
         }
     }
 
@@ -376,7 +376,6 @@ abstract class Table extends Resource {
         $this->incremented_ids = null;
     }
 
-
     /**
      * Constructs an insertQuery.
      * @param boolean $use_bind_vars If TRUE, bind variable format will be followed
@@ -391,18 +390,14 @@ abstract class Table extends Resource {
          */
         if ($this->insert_select) {
             if (empty($this->insert_select_columns)) {
-                return sprintf('insert into %s %s;', $this->getFullName(),
-                        $this->insert_select);
+                return sprintf('insert into %s %s;', $this->getFullName(), $this->insert_select);
             } else {
-                return sprintf('insert into %s (%s) %s;', $this->getFullName(),
-                        implode(', ', $this->insert_select_columns),
-                        $this->insert_select);
+                return sprintf('insert into %s (%s) %s;', $this->getFullName(), implode(', ', $this->insert_select_columns), $this->insert_select);
             }
         }
 
         if (empty($this->values)) {
-            throw new \Exception(sprintf(t('No columns to insert in table: %s'),
-                    $this->getFullName()));
+            throw new \Exception(sprintf(t('No columns to insert in table: %s'), $this->getFullName()));
         }
 
         foreach ($this->values as $val_listing) {
@@ -418,10 +413,9 @@ abstract class Table extends Resource {
             # If we are using bind vars, they will be supplied in the DB::insert method
             if ($use_bind_vars) {
                 $column_values = $set_names;
-                array_walk($column_values,
-                        function(&$value) {
-                            $value = ':' . $value;
-                        });
+                array_walk($column_values, function(&$value) {
+                    $value = ':' . $value;
+                });
             } else {
                 foreach ($val_listing as $value) {
                     if ($value->getName() == $this->primary_key) {
@@ -434,8 +428,7 @@ abstract class Table extends Resource {
         }
         reset($this->values);
 
-        return sprintf('insert into %s (%s) values (%s);', $this->getFullName(),
-                implode(', ', $set_names), implode(', ', $column_values));
+        return sprintf('insert into %s (%s) values (%s);', $this->getFullName(), implode(', ', $set_names), implode(', ', $column_values));
     }
 
     /**
@@ -487,8 +480,7 @@ abstract class Table extends Resource {
                 call_user_func_array(array('self', 'setPrimaryKey'), $col);
                 $recursion = false;
             } elseif (is_string($col)) {
-                $this->primary_key[] = new \Database\Field($this, $col, null,
-                        false);
+                $this->primary_key[] = new \Database\Field($this, $col, null, false);
             } else {
                 throw new \Exception(\t('Could not use supplied parameters'));
             }
@@ -554,7 +546,6 @@ abstract class Table extends Resource {
             return $name;
         }
     }
-
 
     public function hasAlias()
     {
@@ -644,7 +635,6 @@ abstract class Table extends Resource {
         }
     }
 
-
     /**
      * Sets a SQL table option prior to creation.
      * @link http://dev.mysql.com/doc/refman/5.0/en/create-table.html
@@ -660,9 +650,11 @@ abstract class Table extends Resource {
      * Drops the current table from the database.
      * @return mixed True on success, exception on error
      */
-    public function drop()
+    public function drop($if_exists = false)
     {
-        return $this->db->exec('DROP TABLE ' . $this->full_name);
+
+        $exists = $if_exists ? 'IF EXISTS ' : null;
+        return $this->db->exec("DROP TABLE $exists" . $this->full_name);
     }
 
     /**
@@ -759,7 +751,6 @@ abstract class Table extends Resource {
         }
     }
 
-
     /**
      * Returns an array of standard SQL data types. Different engine table
      * classes can use this as a foundation for their data type list.
@@ -832,21 +823,22 @@ abstract class Table extends Resource {
         }
         return $this->use_in_query;
     }
-    
+
     public function setIncludeInDelete($delete)
     {
         $this->include_in_delete = (bool) $delete;
     }
-    
+
     public function getIncludeInDelete()
     {
         return $this->include_in_delete;
     }
-    
+
     public function isIncludedWithUsing()
     {
         return $this->included_with_using;
     }
+
 }
 
 ?>
