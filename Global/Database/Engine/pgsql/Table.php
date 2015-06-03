@@ -7,8 +7,8 @@ namespace Database\Engine\pgsql;
  *
  * @author matt
  */
-class Table extends \Database\Table {
-
+class Table extends \Database\Table
+{
     /**
      * Table name is NOT included after "using" in a delete query
      * @var boolean
@@ -164,22 +164,23 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $dt = \Database\Datatype::factory($this, $column_name, $column_type);
 
         $indexes = $this->getIndexes();
-        foreach ($indexes as $index_name => $indices) {
-            foreach ($indices as $idx) {
-                if ($idx['column_name'] == $column_name) {
-                    if ($idx['primary_key']) {
-                        $dt->setIsPrimaryKey(1);
-                    }
-                    if ($idx['unique']) {
-                        $dt->setIsUnique(1);
+        if (!empty($indexes)) {
+            foreach ($indexes as $index_name => $indices) {
+                foreach ($indices as $idx) {
+                    if ($idx['column_name'] == $column_name) {
+                        if ($idx['primary_key']) {
+                            $dt->setIsPrimaryKey(1);
+                        }
+                        if ($idx['unique']) {
+                            $dt->setIsUnique(1);
+                        }
                     }
                 }
             }
         }
 
-        $dt->setIsNull($schema['is_nullable']);
-
-        $default = $schema['column_default'];
+        $dt->setIsNull($schema['is_nullable'] != 'NO');
+        $default = preg_replace("/::\w[\w\s]+/", '', $schema['column_default']);
 
         switch ($column_type) {
             case 'int':
@@ -261,6 +262,78 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $this->db->exec($sql3);
     }
 
+    /**
+     * Modifys the parameters of a datatype column.
+     * @param \Database\Datatype $old
+     * @param \Database\Datatype $new
+     */
+    public function alter(\Database\Datatype $old, \Database\Datatype $new)
+    {
+        $this->alterColumnParameters($new);
+        $this->alterNullStatus($old, $new);
+        $this->alterDefaultStatus($old, $new);
+    }
+
+    /**
+     * Works with self::alter to change the null status of a column if needed.
+     * @param \Database\Datatype $old
+     * @param \Database\Datatype $new
+     */
+    private function alterNullStatus(\Database\Datatype $old, \Database\Datatype $new)
+    {
+        $table_name = $this->getFullName();
+        $column_name = $new->getName();
+        if ($old->getIsNull() && !$new->getIsNull()) {
+            $setnull = ' SET NOT NULL';
+        } elseif (!$old->getIsNull() && $new->getIsNull()) {
+            $setnull = ' DROP NOT NULL';
+        } else {
+            $setnull = null;
+        }
+        
+        if ($setnull) {
+            $query = <<<EOF
+ALTER TABLE $table_name ALTER COLUMN $column_name $setnull;
+EOF;
+            $this->db->exec($query);
+        }
+    }
+
+    /**
+     * Works with self:alter to change teh default setting of a column.
+     * @param \Database\Datatype $old
+     * @param \Database\Datatype $new
+     */
+    private function alterDefaultStatus(\Database\Datatype $old, \Database\Datatype $new)
+    {
+        if ($old->getDefault() != $new->getDefault()) {
+            $default = $new->getDefaultString();
+            $table_name = $this->getFullName();
+            $column_name = $new->getName();
+            $query = <<<EOF
+ALTER TABLE $table_name ALTER COLUMN $column_name SET $default;
+EOF;
+            $this->db->exec($query);
+        }
+    }
+
+    private function alterColumnParameters(\Database\Datatype $new)
+    {
+        $table_name = $this->getFullName();
+        $column_name = $new->getName();
+        $datatype = $new->getDatatype();
+        $q[] = $datatype;
+        if (!empty($new->getSize())) {
+            $q[] = '(' . $new->getSize() . ')';
+        }
+        $q[] = $new->getExtraInfo();
+
+        $new_column_parameters = implode(' ', $q);
+        $query = <<<EOF
+ALTER TABLE $table_name ALTER COLUMN $column_name TYPE $new_column_parameters
+EOF;
+        $this->db->exec($query);
+    }
+
 }
 
-?>
