@@ -7,8 +7,8 @@ namespace Database\Engine\mysql;
  *
  * @author matt
  */
-class Table extends \Database\Table {
-
+class Table extends \Database\Table
+{
     private $storage_engine = 'InnoDB';
 
     /**
@@ -163,15 +163,16 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         $dt = \Database\Datatype::factory($this, $column_name, $column_type);
 
         $indexes = $this->getIndexes();
-
-        foreach ($indexes as $index_name => $indices) {
-            foreach ($indices as $idx) {
-                if ($idx['column_name'] == $column_name) {
-                    if ($idx['primary_key']) {
-                        $dt->setIsPrimaryKey(1);
-                    }
-                    if ($idx['unique']) {
-                        $dt->setIsUnique(1);
+        if (!empty($indexes)) {
+            foreach ($indexes as $index_name => $indices) {
+                foreach ($indices as $idx) {
+                    if ($idx['column_name'] == $column_name) {
+                        if ($idx['primary_key']) {
+                            $dt->setIsPrimaryKey(1);
+                        }
+                        if ($idx['unique']) {
+                            $dt->setIsUnique(1);
+                        }
                     }
                 }
             }
@@ -271,6 +272,22 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         $this->db->exec($sql);
     }
 
-}
+    /**
+     * Modifys the parameters of a datatype column.
+     * @param \Database\Datatype $old
+     * @param \Database\Datatype $new
+     */
+    public function alter(\Database\Datatype $old, \Database\Datatype $new)
+    {
+        $table_name = $this->getFullName();
+        $old_column_name = $old->getName();
+        $new_column_parameters = $new->getParameterString() . ' ' . $new->getIsNullString();
 
-?>
+        $query = <<<EOF
+ALTER TABLE $table_name MODIFY $old_column_name $new_column_parameters
+EOF;
+        echo $query;
+        $this->db->exec($query);
+    }
+
+}
