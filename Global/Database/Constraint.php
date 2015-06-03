@@ -65,7 +65,7 @@ abstract class Constraint {
     protected function checkDatatype(\Database\Datatype $datatype)
     {
         $type = $datatype->getDatatype();
-        if ($type == 'BLOB' || $type == 'TEXT') {
+        if ($type == 'blob' || $type == 'text') {
             throw new \Exception(t('Constraint column may not be a blob'));
         }
 
