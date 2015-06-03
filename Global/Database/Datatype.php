@@ -9,8 +9,8 @@ namespace Database;
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Datatype extends \Data {
-
+abstract class Datatype extends \Data
+{
     /**
      * The name of the datatype/column name
      * @var string
@@ -99,13 +99,22 @@ abstract class Datatype extends \Data {
      * Returns NULL or NOT NULL based on is_null parameter
      * @return string
      */
-    public function getIsNull()
+    public function getIsNullString()
     {
         if ($this->is_null) {
             return 'null';
         } else {
             return 'not null';
         }
+    }
+    
+    /**
+     * 
+     * @return boolean
+     */
+    public function getIsNull()
+    {
+        return $this->is_null;
     }
 
     /**
@@ -136,14 +145,25 @@ abstract class Datatype extends \Data {
     public function __toString()
     {
         $q[] = (string) $this->getName();
-        $q[] = $this->getDatatype();
+        $q[] = $this->getParameterString();
+        return implode(' ', $q);
+    }
+
+    /**
+     * Returns datatype's column parameters, i.e. the column type, size, default, etc.
+     * @return string
+     */
+    public function getParameterString()
+    {
+        $datatype = $this->getDatatype();
+        $q[] = $datatype;
         if (!is_null($this->size)) {
             $q[] = '(' . $this->getSize() . ')';
         }
         $q[] = $this->getExtraInfo();
-        $q[] = $this->getDefault();
+        $q[] = $this->getDefaultString();
         // this MUST be next after getDefault
-        $q[] = $this->getIsNull();
+        $q[] = $this->getIsNullString();
 
         return implode(' ', $q);
     }
@@ -159,7 +179,7 @@ abstract class Datatype extends \Data {
      */
     public function getDatatype()
     {
-        return strtoupper($this->popClass());
+        return strtolower($this->popClass());
     }
 
     /**
@@ -169,7 +189,7 @@ abstract class Datatype extends \Data {
      *
      * @return string
      */
-    public function getDefault()
+    public function getDefaultString()
     {
         /**
          * Text cannot have a default value. loadDefault should prevent data
@@ -180,11 +200,16 @@ abstract class Datatype extends \Data {
         }
 
         if ($this->default->isNull() && $this->is_null) {
-            return 'default';
+            return 'default null';
         }
         return "default " . $this->table->db->quote($this->default);
     }
 
+    public function getDefault()
+    {
+        return $this->default;
+    }
+    
     /**
      *
      * The default may be set to NULL (Text datatype does this) in case default
@@ -271,5 +296,3 @@ abstract class Datatype extends \Data {
     }
 
 }
-
-?>
