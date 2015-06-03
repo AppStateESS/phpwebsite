@@ -140,7 +140,7 @@ final class Current_User {
         $auth = Current_User::getAuthorization();
 
         if (empty($auth)) {
-            throw new Exception(t('Failed to retrive the current authorization: %s',
+            throw new Exception(t('Failed to retrieve the current authorization: %s',
                     $_SESSION['User']->auth_script));
         }
 
