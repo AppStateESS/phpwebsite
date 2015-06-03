@@ -54,6 +54,9 @@ class ResourceFactory {
         $db = \Database::newDB();
         $tbl = $db->addTable($table_name);
         $vars = $resource->getVars();
+        
+        // Need to unset the id or the primary key will not increment
+        unset($vars['id']);
 
         $tbl->addValueArray($vars);
         if (empty($id)) {
