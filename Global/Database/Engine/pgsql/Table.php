@@ -155,6 +155,9 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      */
     public function getDataType($column_name)
     {
+        $find_default = true;
+        $default = null;
+
         if (!$this->exists()) {
             throw new \Exception(t('Cannot get data type, table does not exist'));
         }
@@ -169,10 +172,11 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
                 foreach ($indices as $idx) {
                     if ($idx['column_name'] == $column_name) {
                         if ($idx['primary_key']) {
-                            $dt->setIsPrimaryKey(1);
+                            $find_default = false;
+                            $dt->nullDefault();
                         }
                         if ($idx['unique']) {
-                            $dt->setIsUnique(1);
+                            // previously there was an unique flag on the Datatype.
                         }
                     }
                 }
@@ -180,33 +184,17 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         }
 
         $dt->setIsNull($schema['is_nullable'] != 'NO');
-        $default = preg_replace("/::\w[\w\s]+/", '', $schema['column_default']);
 
-        switch ($column_type) {
-            case 'int':
-            case 'smallint':
-            case 'mediumint':
-            case 'bigint':
-                if (is_numeric($default)) {
-                    $default = intval($default);
-                }
-                break;
+        if ($find_default) {
+            $default = preg_replace("/::\w[\w\s]+/", '', $schema['column_default']);
 
-            case 'float':
-            case 'double':
-            case 'decimal':
-            case 'bool':
-            case 'text':
-            case 'blob':
-            case 'longtext':
-            case 'date':
-            case 'datetime':
-            case 'timestamp':
-            case 'time':
-            case 'varchar':
-            case 'char':
+            if (strtolower($default) == 'null') {
+                $default = null;
+            } elseif (is_numeric($default) && preg_match('/int/', $column_type)) {
+                $default = intval($default);
+            }
+            $dt->setDefault($default);
         }
-        $dt->setDefault($default);
         return $dt;
     }
 
@@ -290,7 +278,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         } else {
             $setnull = null;
         }
-        
+
         if ($setnull) {
             $query = <<<EOF
 ALTER TABLE $table_name ALTER COLUMN $column_name $setnull;
@@ -306,7 +294,12 @@ EOF;
      */
     private function alterDefaultStatus(\Database\Datatype $old, \Database\Datatype $new)
     {
-        if ($old->getDefault() != $new->getDefault()) {
+        $old_default = $old->getDefault();
+        $new_default = $new->getDefault();
+
+        // if new_default is null, we don't try and update
+        // A new default of 'NULL' is handled differently.
+        if (!is_null($new_default) && $old_default != $new_default) {
             $default = $new->getDefaultString();
             $table_name = $this->getFullName();
             $column_name = $new->getName();
@@ -336,4 +329,3 @@ EOF;
     }
 
 }
-
