@@ -231,6 +231,14 @@ abstract class Datatype extends \Data
         }
         return $this;
     }
+    
+    /**
+     * Removes a default status. 
+     */
+    public function nullDefault()
+    {
+        $this->default = null;
+    }
 
     /**
      * Adds the current datatype to the associated table.
