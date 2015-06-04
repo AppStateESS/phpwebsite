@@ -28,8 +28,7 @@ function core_update(&$content, $version)
                     return false;
                 }
 
-                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>",
-                        PHPWS_CORE::getHomeHttp());
+                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", PHPWS_CORE::getHomeHttp());
                 if (!file_put_contents($config_dir . 'source.php', $source_http)) {
                     $content[] = '<p>Could not create config/core/source.php file.</p>';
                     return false;
@@ -65,16 +64,13 @@ You can delete all settings <strong>except</strong> the following:</p>
 <li>SITE_HASH</li>
 <li>PHPWS_DSN</li>
 <li>PHPWS_TABLE_PREFIX</li></ul>
-
+</pre>
 EOT;
             }
             if ($branch = PHPWS_Boost::inBranch(true)) {
-                if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/',
-                                $branch->directory . 'javascript/editors/fckeditor',
-                                true)) {
+                if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $branch->directory . 'javascript/editors/fckeditor', true)) {
                     mkdir($branch->directory . 'images/ckeditor/');
-                    $this->content[] = dgettext('branch',
-                            'Failed to copy FCKeditor to branch.');
+                    $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
                 } else {
                     $content[] = 'FCKeditor not copied to branch. Check directory permissions.';
                 }
@@ -216,13 +212,11 @@ UPDATES;
 
         case version_compare($version, '2.3.1', '<'):
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('modules')->getFieldConditional('title',
-                            'comments'));
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'comments'));
             $db->delete();
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
-                            'comments'));
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'comments'));
             $db->delete();
 
             $db = \Database::newDB();
@@ -278,13 +272,11 @@ UPDATES;
             }
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('modules')->getFieldConditional('title',
-                            'categories'));
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'categories'));
             $db->delete();
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
-                            'categories'));
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'categories'));
             $db->delete();
 
             $content[] = '<pre>Core 2.3.1 Changes
@@ -422,7 +414,6 @@ EOF;
     - imports images with img-responsive class added
 + Javascript added to avoid image loading on small screens
 + Fixed createConfig function in setup script
-</pre>
 EOF;
 
         case version_compare($version, '2.4.2', '<'):
@@ -481,7 +472,7 @@ Core 2.6.0 Changes
 + Updated datetimepicker script
 </pre>
 EOF;
-            
+
         case version_compare($version, '2.7.0', '<'):
             $content[] = <<<EOF
 <pre>
@@ -505,6 +496,19 @@ EOF;
 + Added: <s> as allowed tag.
 + Feature: CKEditor Save button added for use with some modules.
 </pre>
+EOF;
+
+        case version_compare($version, '2.8.0', '<'):
+            $db = \Database::newDB();
+            $t = $db->addTable('settings');
+            $dt_old = $t->getDataType('setting');
+            $dt_update = new \Database\Datatype\Text($t, 'setting');
+            $t->alter($dt_old, $dt_update);
+            $content[] = <<<EOF
+<pre>2.8.0 changes
+--------------------
++ Settings table setting column is now TEXT not VARCHAR.
+</pre>               
 EOF;
     }
     return true;
