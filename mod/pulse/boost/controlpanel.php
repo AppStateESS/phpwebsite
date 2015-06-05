@@ -7,7 +7,7 @@
 
 $link[] = array('label'       => 'Pulse',
 		'restricted'  => TRUE,
-		'url'         => 'index.php?module=pulse&amp;aop=main',
+		'url'         => 'pulse/admin/',
 		'description' => dgettext('pulse', 'Used by other modules to schedule processes.'),
 		'image'       => 'pulse.png',
 		'tab'         => 'admin'
