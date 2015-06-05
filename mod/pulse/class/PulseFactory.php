@@ -22,6 +22,26 @@ class PulseFactory extends \ResourceFactory
     }
 
     /**
+     * Returns a PulseSchedule from the database based on the name parameter.
+     * Returns null if not found in the database.
+     * @param string $name
+     * @return \pulse\PulseSchedule
+     */
+    public static function getByName($name)
+    {
+        $db = \Database::getDB();
+        $ps_tbl = $db->addTable('pulse_schedule');
+        $ps_tbl->addFieldConditional('name', $name);
+        $row = $db->selectOneRow();
+        if (empty($row)) {
+            return null;
+        }
+        $schedule = new PulseSchedule;
+        $schedule->setVars($row);
+        return $schedule;
+    }
+    
+    /**
      * Save the Pulse Schedule
      * @param \pulse\PulseSchedule $schedule
      */
