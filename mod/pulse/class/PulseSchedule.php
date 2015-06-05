@@ -96,14 +96,19 @@ class PulseSchedule extends \Resource
     {
         $this->active = new \Variable\Bool(true, 'active');
         $this->class_method = new \Variable\Alphanumeric(null, 'class_method');
+        $this->class_method->setLimit(100);
         $this->class_name = new \Variable\Alphanumeric(null, 'class_name');
+        $this->class_name->setLimit(100);
         $this->end_time = new \Variable\Integer(0, 'end_time');
         $this->hash = new \Variable\Hash(null, 'hash');
         $this->hash->allowNull(true);
+        $this->hash->setLimit(64);
         $this->hold_on_error = new \Variable\Bool(0, 'hold_on_error');
         $this->interim = new \Variable\Integer(60, 'interim');
         $this->module = new \Variable\Alphanumeric(null, 'module');
+        $this->module->setLimit(50);
         $this->name = new \Variable\Alphanumeric(null, 'name');
+        $this->name->setLimit(100);
         $this->required_file = new \Variable\File(null, 'required_file');
         $this->execute_after = new \Variable\Integer(0, 'execute_after');
         $this->start_time = new \Variable\Integer(0, 'start_time');
