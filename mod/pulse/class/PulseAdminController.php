@@ -75,8 +75,8 @@ class PulseAdminController extends \Http\Controller
             'id' => 'ID',
             'name' => 'Name',
             'interim' => 'Interim',
+            'execute_after' => 'Execute after',
             'start_time' => 'Start time',
-            'execute_time' => 'Execute time',
             'end_time' => 'End time'
         );
         $pager->setHeaders($headers);
@@ -85,8 +85,8 @@ class PulseAdminController extends \Http\Controller
         $table_headers['id'] = $schedule_table->getField('id');
         $table_headers['name'] = $schedule_table->getField('name');
         $table_headers['interim'] = $schedule_table->getField('interim');
+        $table_headers['execute_after'] = $schedule_table->getField('execute_after');
         $table_headers['start_time'] = $schedule_table->getField('start_time');
-        $table_headers['execute_time'] = $schedule_table->getField('execute_time');
         $table_headers['end_time'] = $schedule_table->getField('end_time');
         $pager->setTableHeaders($table_headers);
         $pager->setRowIdColumn('id');

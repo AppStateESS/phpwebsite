@@ -61,10 +61,10 @@ class PulseFactory extends \ResourceFactory
 
     private static function startTimer($schedule)
     {
-        $start_time = $schedule->getStartTime();
-        if (empty($start_time)) {
+        $execute_after = $schedule->getExecuteAfter();
+        if (empty($execute_after)) {
             $start = time();
-            $schedule->setStartTime($start);
+            $schedule->setExecuteAfter($start);
         }
     }
 
@@ -78,32 +78,32 @@ class PulseFactory extends \ResourceFactory
         return $schedule;
     }
 
-    public static function delete($id)
+    public static function deleteById($id)
     {
         $schedule = self::load($id);
         self::deleteResource($schedule);
     }
 
-    public static function pullScheduleByName($name)
+    public static function pullReadyScheduleByName($name)
     {
         $db = \Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('name', $name);
         $tbl->addFieldConditional('active', 1);
         $tbl->addFieldConditional('status', PULSE_STATUS_AWAKE);
-        $tbl->addFieldConditional('start_time', time(), '<');
+        $tbl->addFieldConditional('execute_after', time(), '<');
         $row = $db->selectOneRow();
         return $row;
     }
 
-    public static function pullScheduleByHash($hash)
+    public static function pullReadyScheduleByHash($hash)
     {
         $db = \Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('hash', $hash);
         $tbl->addFieldConditional('active', 1);
         $tbl->addFieldConditional('status', PULSE_STATUS_AWAKE);
-        $tbl->addFieldConditional('start_time', time(), '<');
+        $tbl->addFieldConditional('execute_after', time(), '<');
         $row = $db->selectOneRow();
         return $row;
     }
@@ -114,7 +114,7 @@ class PulseFactory extends \ResourceFactory
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('active', 1);
         $tbl->addFieldConditional('status', PULSE_STATUS_AWAKE);
-        $tbl->addFieldConditional('start_time', time(), '<');
+        $tbl->addFieldConditional('execute_after', time(), '<');
         $tbl->addFieldConditional('hash', null, 'is');
         $schedules = $db->select();
         return $schedules;
@@ -138,6 +138,7 @@ class PulseFactory extends \ResourceFactory
                 $schedules_completed[] = $schedule->getId();
             } catch (\Exception $e) {
                 self::logError($e->getMessage());
+                PulseFactory::errorConditionSet($schedule);
                 $error_occurred = true;
             }
         }
@@ -148,14 +149,29 @@ class PulseFactory extends \ResourceFactory
         }
     }
 
+    /**
+     * Resets the schedule should an error occur.
+     * @param \PulseSchedule $schedule
+     */
+    private static function errorConditionSet(PulseSchedule $schedule)
+    {
+            if ($schedule->getHoldOnError()) {
+                $schedule->hold();
+            } else {
+                $schedule->wakeUp();
+            }
+    }
+    
     private static function checkIfScheduleisRunable(PulseSchedule $schedule)
     {
-        $required_file = $schedule->getRequiredFile();
+        $required_file = PHPWS_SOURCE_DIR . $schedule->getRequiredFile();
         $id = $schedule->getId();
 
         if (!is_file($required_file)) {
             $error = "Schedule #$id could not could not find required file: $required_file";
             throw new \Exception($error);
+        } else {
+            require_once $required_file;
         }
 
         $class_name = $schedule->getClassName();
@@ -175,41 +191,37 @@ class PulseFactory extends \ResourceFactory
     private static function logScheduleCompletion(PulseSchedule $schedule, $result)
     {
         $id = $schedule->getId();
-        $execute_time = $schedule->getExecuteTime('%c');
+        $start_time = $schedule->getStartTime('%c');
         $end_time = $schedule->getEndTime('%c');
-        
+
         $log = <<<EOF
-Schedule #$id was executed at $execute_time and completed at $end_time.
+Schedule #$id was executed at $start_time and completed at $end_time.
 Returned result: $result
 EOF;
-        
+
         \PHPWS_Core::log($log, 'pulse.log');
     }
-    
+
     private static function loadNextRun(PulseSchedule $schedule)
     {
         $next_time = time() + ($schedule->getInterim() * 60);
-        $schedule->setStartTime($next_time);
+        $schedule->setExecuteAfter($next_time);
     }
-    
+
     public static function executeSchedule(PulseSchedule $schedule)
     {
         self::checkIfScheduleisRunable($schedule);
-        
+
         $schedule->stampExecute();
         self::save($schedule);
 
         $class_name = $schedule->getClassName();
         $class_method = $schedule->getClassMethod();
-        $required_file = $schedule->getRequiredFile();
-        
-        require_once $required_file;
-        
         // Execution has begun. Set execute time and processing status.
         $schedule->stampExecute();
         $schedule->processing();
         self::save($schedule);
-        
+
         $result = call_user_func(array($class_name, $class_method));
         
         // Execution is finished. Set end time and return to awake status.
@@ -223,17 +235,17 @@ EOF;
 
     public static function pagerRows($row)
     {
-        $row['start_time'] = strftime('%Y%m%d %H:%M', $row['start_time']);
+        $row['execute_after'] = strftime('%Y%m%d %H:%M', $row['execute_after']);
         if (empty($row['end_time'])) {
             $row['end_time'] = 'Not complete';
         } else {
             $row['end_time'] = strftime('%Y%m%d %H:%M', $row['end_time']);
         }
 
-        if (empty($row['execute_time'])) {
-            $row['execute_time'] = 'Not yet executed';
+        if (empty($row['start_time'])) {
+            $row['start_time'] = 'Not yet executed';
         } else {
-            $row['execute_time'] = strftime('%Y%m%d %H:%M', $row['execute_time']);
+            $row['start_time'] = strftime('%Y%m%d %H:%M', $row['start_time']);
         }
 
         $interim = '';
@@ -245,7 +257,7 @@ EOF;
         $interim .= $minutes . ' mins.';
         $row['interim'] = $interim;
 
-        $row['runtime'] = gmdate('H:i:s', $row['end_time'] - $row['execute_time']);
+        $row['runtime'] = gmdate('H:i:s', $row['end_time'] - $row['start_time']);
         
         switch ($row['status']) {
             case PULSE_STATUS_AWAKE:
@@ -264,9 +276,4 @@ EOF;
         return $row;
     }
 
-=======
-        self::logScheduleCompletion($schedule, $result);
-    }
-
->>>>>>> Rewrite of pulse module.
 }

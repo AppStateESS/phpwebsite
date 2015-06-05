@@ -16,7 +16,7 @@ class PulseController
             if (preg_match('/\W/', $schedule_hash)) {
                 throw new Exception\PulseException('Improper schedule hash');
             }
-            $schedule = PulseFactory::pullScheduleByHash($schedule_hash);
+            $schedule = PulseFactory::pullReadyScheduleByHash($schedule_hash);
             if (empty($schedule)) {
                 throw new Exception\PulseException('Schedule not found: ' . $schedule_hash);
             } else {
@@ -24,7 +24,7 @@ class PulseController
             }
         } elseif ($request->isVar('name')) {
             $schedule_name = $request->getVar('name');
-            $schedule = PulseFactory::pullScheduleByName($schedule_name);
+            $schedule = PulseFactory::pullReadyScheduleByName($schedule_name);
             if (empty($schedule)) {
                 throw new Exception\PulseException('Schedule not found: ' . $schedule_name);
             } else {

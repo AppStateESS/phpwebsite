@@ -21,7 +21,7 @@ define('PULSE_STATUS_AWAKE', 1);
 define('PULSE_STATUS_PROCESSING', 2);
 
 /**
- * A condtion occurred that put the schedule into holding. Like asleep,
+ * A condition occurred that put the schedule into holding. Like asleep,
  * but indicates something bad happened and it will need to be adminstratively
  * reset.
  */

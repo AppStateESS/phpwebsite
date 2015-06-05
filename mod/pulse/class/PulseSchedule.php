@@ -16,7 +16,7 @@ class PulseSchedule extends \Resource
      * Time the procedure started.
      * @var integer
      */
-    protected $execute_time;
+    protected $start_time;
 
     /**
      * Name of process
@@ -54,7 +54,7 @@ class PulseSchedule extends \Resource
      * Time after which the process should begin
      * @var integer
      */
-    protected $start_time;
+    protected $execute_after;
 
     /**
      * Timestamp of process completion
@@ -79,6 +79,12 @@ class PulseSchedule extends \Resource
      * @var string
      */
     protected $hash;
+    
+    /**
+     * If true, a schedule will be set to a HOLD status after an error.
+     * @var boolen
+     */
+    protected $hold_on_error;
 
     /**
      * Table the schedule is saved to.
@@ -94,12 +100,13 @@ class PulseSchedule extends \Resource
         $this->end_time = new \Variable\Integer(0, 'end_time');
         $this->hash = new \Variable\Hash(null, 'hash');
         $this->hash->allowNull(true);
+        $this->hold_on_error = new \Variable\Bool(0, 'hold_on_error');
         $this->interim = new \Variable\Integer(60, 'interim');
         $this->module = new \Variable\Alphanumeric(null, 'module');
         $this->name = new \Variable\Alphanumeric(null, 'name');
         $this->required_file = new \Variable\File(null, 'required_file');
+        $this->execute_after = new \Variable\Integer(0, 'execute_after');
         $this->start_time = new \Variable\Integer(0, 'start_time');
-        $this->execute_time = new \Variable\Integer(0, 'execute_time');
         $this->status = new \Variable\Integer(PULSE_STATUS_AWAKE, 'status');
         parent::__construct();
     }
@@ -128,18 +135,23 @@ class PulseSchedule extends \Resource
         }
     }
 
-    public function getExecuteTime($format = null)
+    public function getStartTime($format = null)
     {
         if (empty($format)) {
-            return $this->execute_time->get();
+            return $this->start_time->get();
         } else {
-            return strftime($format, $this->execute_time->get());
+            return strftime($format, $this->start_time->get());
         }
     }
 
     public function getHash()
     {
         return $this->hash->get();
+    }
+    
+    public function getHoldOnError()
+    {
+        return $this->hold_on_error->get();
     }
 
     public function getInterim()
@@ -162,12 +174,12 @@ class PulseSchedule extends \Resource
         return $this->required_file->get();
     }
 
-    public function getStartTime($format = null)
+    public function getExecuteAfter($format = null)
     {
         if (empty($format)) {
-            return $this->start_time->get();
+            return $this->execute_after->get();
         } else {
-            return strftime($format, $this->start_time->get());
+            return strftime($format, $this->execute_after->get());
         }
     }
     
@@ -220,9 +232,9 @@ class PulseSchedule extends \Resource
         $this->end_time->set($end_time);
     }
 
-    protected function setExecuteTime($execute_time)
+    protected function setStartTime($start_time)
     {
-        $this->execute_time->set($execute_time);
+        $this->start_time->set($start_time);
     }
 
     public function buildHash()
@@ -236,6 +248,11 @@ class PulseSchedule extends \Resource
         $this->hash->set($hash);
     }
 
+    public function setHoldOnError($hold)
+    {
+        $this->hold_on_error->set($hold);
+    }
+    
     /**
      * Number of minutes between each scheduled operation
      * @param integer $interim
@@ -257,17 +274,18 @@ class PulseSchedule extends \Resource
 
     public function setRequiredFile($file)
     {
+        $file = str_replace(PHPWS_SOURCE_DIR, '', $file);
         $this->required_file->set($file);
     }
 
     /**
      * When the next scheduled event will begin. 
      * 
-     * @param integer $start_time
+     * @param integer $execute_after
      */
-    public function setStartTime($start_time)
+    public function setExecuteAfter($execute_after)
     {
-        $this->start_time->set($start_time);
+        $this->execute_after->set($execute_after);
     }
 
     public function setStatus($status)
@@ -275,9 +293,9 @@ class PulseSchedule extends \Resource
         $this->status->set($status);
     }
 
-    public function stampExecute()
+    public function stampStart()
     {
-        $this->setExecuteTime(time());
+        $this->setStartTime(time());
     }
 
     public function stampEnd()
@@ -285,14 +303,14 @@ class PulseSchedule extends \Resource
         $this->setEndTime(time());
     }
 
-    public function stampStart()
+    public function stampExecuteAfter()
     {
-        $this->setStartTime(time());
+        $this->setExecuteAfter(time());
     }
 
     /**
      * Returns the number of minutes it took to complete an event. This method
-     * must be run prior to the start_time reset.
+     * must be run prior to the execute_after reset.
      * 
      * @return integer
      * @throws \Exception
