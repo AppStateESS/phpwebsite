@@ -316,7 +316,8 @@ EOF;
         $column_name = $new->getName();
         $datatype = $new->getDatatype();
         $q[] = $datatype;
-        if (!empty($new->getSize())) {
+        $size = $new->getSize();
+        if (!empty($size)) {
             $q[] = '(' . $new->getSize() . ')';
         }
         $q[] = $new->getExtraInfo();
