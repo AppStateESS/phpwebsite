@@ -1,13 +1,12 @@
 <?php
-
 // Detect phpWebSite
-if(file_exists('../config/core/config.php')) {
+if (file_exists('../config/core/config.php')) {
     define('PHPWEBSITE', true);
 
     require_once('../config/core/config.php');
     require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
 
-    if(isset($_SERVER['PHP_AUTH_USER'])) {
+    if (isset($_SERVER['PHP_AUTH_USER'])) {
         require_once(PHPWS_SOURCE_DIR . 'mod/users/class/Current_User.php');
         Current_User::loginUser(preg_replace(PHPWS_SHIBB_USER_AUTH, '', $_SERVER['PHP_AUTH_USER']));
     }
@@ -16,10 +15,8 @@ if(file_exists('../config/core/config.php')) {
 }
 
 // Build new URL
-$parts = explode('/',$_SERVER['SCRIPT_URL']);
-while(array_pop($parts) != 'secure');
-$redirect = 'https://' . $_SERVER['HTTP_HOST'] . implode('/', $parts) .
-    (defined('PHPWEBSITE') ? '/index.php?module=users&action=user&command=return_bookmark' : '');
+require_once PHPWS_SOURCE_DIR . 'Global/Server.php';
+$redirect = preg_replace('/secure\/?$/', '', \Server::getSiteUrl());
 ?>
 <html>
     <head>
