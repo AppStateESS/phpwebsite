@@ -108,7 +108,22 @@ class PulseFactory extends \ResourceFactory
         self::deleteResource($schedule);
     }
 
-    public static function pullReadyScheduleByName($name)
+    public static function pullReadySchedulesByModule($module, $name = null)
+    {
+        $db = \Database::newDB();
+        $tbl = $db->addTable('pulse_schedule');
+        $tbl->addFieldConditional('module', $module);
+        if (!empty($name)) {
+            $tbl->addFieldConditional('name', $name);
+        }
+        $tbl->addFieldConditional('active', 1);
+        $tbl->addFieldConditional('status', PULSE_STATUS_AWAKE);
+        $tbl->addFieldConditional('execute_after', time(), '<');
+        $rows = $db->select();
+        return $rows;
+    }
+
+    public static function pullReadySchedulesByName($name)
     {
         $db = \Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
@@ -116,8 +131,8 @@ class PulseFactory extends \ResourceFactory
         $tbl->addFieldConditional('active', 1);
         $tbl->addFieldConditional('status', PULSE_STATUS_AWAKE);
         $tbl->addFieldConditional('execute_after', time(), '<');
-        $row = $db->selectOneRow();
-        return $row;
+        $rows = $db->select();
+        return $rows;
     }
 
     public static function pullReadyScheduleByHash($hash)
@@ -258,7 +273,7 @@ EOF;
     {
         $row['execute_after'] = strftime('%Y/%m/%d %H:%M', $row['execute_after']);
         $row['runtime'] = gmdate('H:i:s', $row['end_time'] - $row['start_time']);
-        
+
         if (empty($row['end_time'])) {
             $row['end_time'] = 'Not complete';
         } else {

@@ -49,7 +49,7 @@ class PulseSchedule extends \Resource
      * @var string
      */
     protected $class_method;
-
+    
     /**
      * Time after which the process should begin
      * @var integer
