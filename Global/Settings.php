@@ -76,12 +76,11 @@ class Settings extends Data {
             return;
         }
         $settings = $db->addTable('settings');
+        $settings->addPrimaryIndexId();
         $idx[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
         $idx[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
         $settings->addDataType('setting', 'text');
         $settings->create();
-        $index = new \Database\Index($idx, 'settings_idx');
-        $index->create();
     }
 
     private static function singleton($reload = false)
