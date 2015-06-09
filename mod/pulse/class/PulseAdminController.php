@@ -39,6 +39,20 @@ class PulseAdminController extends \Http\Controller
         return $view;
     }
 
+    public function post(\Request $request)
+    {
+        $cmd = $request->shiftCommand();
+
+        switch ($cmd) {
+            case 'toggleAllow':
+                \Settings::set('pulse', 'allow_web_access', (\Settings::get('pulse', 'allow_web_access') - 1) * -1);
+                $response = new \Http\SeeOtherResponse(\Server::getSiteUrl() . 'pulse/admin/');
+                break;
+        }
+        return $response;
+        exit;
+    }
+
     public function getJsonView($data, \Request $request)
     {
         $cmd = $request->shiftCommand();
@@ -59,6 +73,17 @@ class PulseAdminController extends \Http\Controller
         \Pager::prepare();
         $template = new \Template;
         $template->setModuleTemplate('pulse', 'pager.html');
+        if (\Settings::get('pulse', 'allow_web_access')) {
+            $template->add('button_class', 'btn-success');
+            $template->add('button_status', 'Web Access Allowed');
+            $template->add('button_icon', 'fa-check');
+            $template->add('button_title', 'Pulse will process schedules via the web.');
+        } else {
+            $template->add('button_class', 'btn-danger');
+            $template->add('button_status', 'Web Access Denied');
+            $template->add('button_icon', 'fa-ban');
+            $template->add('button_title', 'Pulse will not allow access via the web.');
+        }
         return $template;
     }
 

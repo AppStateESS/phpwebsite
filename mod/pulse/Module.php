@@ -6,7 +6,7 @@ namespace pulse;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class Module extends \Module
+class Module extends \Module implements \SettingDefaults
 {
 
     public function __construct()
@@ -23,6 +23,9 @@ class Module extends \Module
             $admin = new \pulse\PulseAdminController($this);
             return $admin;
         } else {
+            if (!\Settings::get('pulse', 'allow_web_access')) {
+                exit('Web access to pulse is not allowed.');
+            }
             try {
                 PulseController::runSchedules($request);
             } catch (Exception\PulseException $e) {
@@ -34,6 +37,11 @@ class Module extends \Module
             }
             exit;
         }
+    }
+    
+    public function getSettingDefaults()
+    {
+        return array('allow_web_access'=>1);
     }
 
 }
