@@ -465,6 +465,9 @@ abstract class DB extends \Data {
      */
     public function getPDO()
     {
+        if (!isset(self::$PDO)) {
+            $this->loadPDO();
+        }
         return self::$PDO;
     }
 

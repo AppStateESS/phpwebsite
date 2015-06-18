@@ -198,16 +198,25 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         return $dt;
     }
 
+    /**
+     * Returns true is current table has a sequence schema
+     * @return boolean
+     */
     public function hasPearSequenceTable()
     {
         $sequence_table = $this->getFullName(false) . '_seq';
-
-        $db = \Database::newDB();
-        $db->loadStatement("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S' AND c.relname = '$sequence_table'");
-        $result = $db->fetchOneRow();
+        $q = DB::$PDO->query("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S' AND c.relname = '$sequence_table'");
+        $result = $q->fetchColumn();
         return (bool) $result;
     }
 
+    public function getLastPearSequence()
+    {
+        $seq_table = $this->getPearSequenceName();
+        $result = DB::$PDO->query("select nextval('$seq_table')");
+        return $result->fetchColumn();
+    }
+    
     /**
      * Changes id in the Postgresql to serial coupled to its sequence table.
      */

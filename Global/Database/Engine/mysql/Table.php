@@ -217,7 +217,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
      *
      * @return integer|false
      */
-    private function getLastPearSequenceTableId()
+    public function getLastPearSequence()
     {
         $seq_table_name = $this->getFullName(false) . '_seq';
         $db = \Database::newDB();
@@ -228,11 +228,20 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         return empty($result) ? false : $result['id'];
     }
 
+    public function insert()
+    {
+        $row_count = parent::insert();
+        if ($this->hasPearSequenceTable()) {
+            $tname = $this->getPearSequenceName();
+            $this->db->query("update $tname set id = id + 1");
+        }
+        return $row_count;
+    }
+    
     public function hasPearSequenceTable()
     {
         $seq_table_name = $this->getFullName(false) . '_seq';
-        $db = \Database::newDB();
-        return $db->tableExists($seq_table_name);
+        return $this->db->tableExists($seq_table_name);
     }
 
     /**
@@ -245,7 +254,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
             throw new \Exception('There is not a PEAR::DB sequence for this table');
         }
 
-        $id = $this->getLastPearSequenceTableId();
+        $id = $this->getLastPearSequence();
         $table_name = $this->getFullName();
         $sql = "ALTER TABLE $table_name MODIFY id INTEGER NOT NULL AUTO_INCREMENT";
         $this->db->exec($sql);
@@ -289,5 +298,4 @@ EOF;
         echo $query;
         $this->db->exec($query);
     }
-
 }

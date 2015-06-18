@@ -127,6 +127,14 @@ abstract class Table extends Resource
     protected $included_with_using = true;
 
     /**
+     * If true, use the PEAR sequence table for inserts. If false, do not.
+     * If the default null is present and a sequence table is found, the insert
+     * will not continue.
+     * @var mixed
+     */
+    private $use_pear_sequence;
+
+    /**
      * Extended class should add a primary index to the current table.
      */
     abstract public function addPrimaryIndexId();
@@ -206,6 +214,8 @@ abstract class Table extends Resource
      * Creates a new primary key index with column name id
      */
     abstract public function createPrimaryIndexId();
+
+    abstract public function getLastPearSequence();
 
     /**
      * @param string $name Name of the table
@@ -377,13 +387,39 @@ abstract class Table extends Resource
     }
 
     /**
+     * Sets and returns the current use_pear_sequence setting.
+     * @param mixed $use Set to use_pear_sequence if present. If not set, return current
+     * setting.
+     * @return mixed Boolean if set, null otherwise.
+     */
+    public function usePearSequence($use = null)
+    {
+        if (!is_null($use)) {
+            $this->use_pear_sequence = (bool) $use;
+        }
+        return $this->use_pear_sequence;
+    }
+
+    /**
      * Constructs an insertQuery.
+     * 
+     * If a PEAR sequence table is found, and the usePearSequence boolean has not be set,
+     * an Exception will be thrown.
+     * 
      * @param boolean $use_bind_vars If TRUE, bind variable format will be followed
      * in the query's construction
      * @return string
+     * @throws Exception
      */
     public function insertQuery($use_bind_vars = true)
     {
+        $use_pear = false;
+        if ($this->hasPearSequenceTable()) {
+            $use_pear = $this->usePearSequence();
+            if (is_null($use_pear)) {
+                throw new \Exception('This table uses a PEAR sequence table. Cannot insert until usePearSequence is set.');
+            }
+        }
         $column_values = array();
         /**
          * If insert select is present, we run with it and stop. The columns are ignored below.
@@ -399,7 +435,6 @@ abstract class Table extends Resource
         if (empty($this->values)) {
             throw new \Exception(sprintf(t('No columns to insert in table: %s'), $this->getFullName()));
         }
-
         foreach ($this->values as $val_listing) {
             $columns = array();
 
@@ -427,6 +462,11 @@ abstract class Table extends Resource
             }
         }
         reset($this->values);
+
+        if ($use_pear) {
+            $set_names[] = 'id';
+            $column_values[] = ':id';
+        }
 
         return sprintf('insert into %s (%s) values (%s);', $this->getFullName(), implode(', ', $set_names), implode(', ', $column_values));
     }
@@ -729,10 +769,12 @@ abstract class Table extends Resource
         $this->row_count = 0;
         $query = $this->insertQuery();
         $prep = DB::$PDO->prepare($query);
-
         foreach ($this->values as $line) {
             foreach ($line as $key => $val) {
                 $data[$key] = $val->getValue();
+            }
+            if ($this->usePearSequence()) {
+                $data['id'] = $this->getLastPearSequence() + 1;
             }
             $prep->execute($data);
             $this->incremented_ids[] = DB::$PDO->lastInsertId();
@@ -749,6 +791,11 @@ abstract class Table extends Resource
         } else {
             return end($this->incremented_ids);
         }
+    }
+
+    public function getPearSequenceName()
+    {
+        return $this->getFullName(false) . '_seq';
     }
 
     /**
