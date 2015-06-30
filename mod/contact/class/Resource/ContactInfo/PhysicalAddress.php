@@ -46,7 +46,7 @@ class PhysicalAddress extends \Data
      * @var \Variable\Integer
      */
     private $zip;
-    
+
     public function __construct()
     {
         $this->room_number = new \Variable\Integer(null, 'room_number');
@@ -64,7 +64,7 @@ class PhysicalAddress extends \Data
         $this->zip = new \Variable\String(null, 'zip');
         $this->zip->allowNull(true);
     }
-    
+
     public function getRoomNumber()
     {
         return $this->room_number->get();
@@ -104,12 +104,16 @@ class PhysicalAddress extends \Data
     {
         $this->building->set($building);
     }
-    
+
     public function setRoomNumber($room_number)
     {
-        $this->room_number->set($room_number);
+        if (empty($room_number)) {
+            $this->room_number->set(null);
+        } else {
+            $this->room_number->set($room_number);
+        }
     }
-    
+
     public function setPostBox($post_box)
     {
         if (empty($post_box)) {
@@ -117,22 +121,22 @@ class PhysicalAddress extends \Data
         }
         $this->post_box->set($post_box);
     }
-    
+
     public function setStreet($street)
     {
         $this->street->set($street);
     }
-    
+
     public function setCity($city)
     {
         $this->city->set($city);
     }
-    
+
     public function setState($state)
     {
         $this->state->set($state);
     }
-    
+
     public function setZip($zip)
     {
         $this->zip->set($zip);
