@@ -48,6 +48,7 @@ class Table extends \Database\Table
         $datatypes['boolean'] = 'boolean';
         $datatypes['datetime'] = 'datetime';
         $datatypes['mediumtext'] = 'mediumtext';
+        $datatypes['longtext'] = 'mediumtext';
         $datatypes['tinyint'] = 'tinyint';
         $datatypes['tinytext'] = 'tinytext';
 

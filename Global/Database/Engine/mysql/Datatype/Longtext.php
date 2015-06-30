@@ -17,6 +17,6 @@ namespace Database\Engine\mysql\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Mediumtext extends \Database\Datatype\Text {}
+class Longtext extends \Database\Datatype\Text {}
 
 ?>
