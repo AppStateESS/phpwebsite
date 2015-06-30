@@ -464,6 +464,10 @@ class FC_File_Manager
 
         $tpl['CLOSE'] = javascript('close_window');
 
+        /**
+         * This needs a rewrite. It is getting split in two directions functionality wise.
+         */
+        /*
         if (Current_User::allow('filecabinet', 'edit_folders') && Current_User::isUnrestricted('filecabinet')) {
             $folder = new Folder;
             $folder->ftype = $this->folder_type;
@@ -473,7 +477,8 @@ class FC_File_Manager
                 $tpl['ADD_FOLDER'] = $folder->editLink('button');
             }
         }
-
+        */
+        
         $db = new PHPWS_DB('folders');
         $db->addWhere('module_created', $this->module, null, null, 'mod_limit');
 
