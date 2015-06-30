@@ -1,41 +1,42 @@
 <?php
+
 /**
  * Handles the user interaction with checkin
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
-class Checkin_User extends Checkin {
+class Checkin_User extends Checkin
+{
 
-    public function checkinForm() {
+    public function checkinForm()
+    {
         $form = new PHPWS_Form('checkin');
         $form->turnOffAutoComplete();
         $form->setProtected(false);
         $form->addHidden('module', 'checkin');
         $form->addHidden('uop', 'post_checkin');
 
-        $form->addText('first_name', @trim($_POST['first_name']));
+        $form->addText('first_name', isset($_POST['first_name']) ? trim($_POST['first_name']) : null);
         $form->setLabel('first_name', dgettext('checkin', 'First name'));
         $form->setRequired('first_name');
 
-        $form->addText('last_name', @trim($_POST['last_name']));
+        $form->addText('last_name', isset($_POST['last_name']) ? trim($_POST['last_name']) : null);
         $form->setLabel('last_name', dgettext('checkin', 'Last name'));
         $form->setRequired('last_name');
 
         if (PHPWS_Settings::get('checkin', 'email')) {
-            $form->addText('email', @trim($_POST['email']));
+            $form->addText('email', isset($_POST['email']) ? trim($_POST['email']) : null);
             $form->setLabel('email', dgettext('checkin', 'Email address'));
             $form->setRequired('email');
         }
-        
+
         // If gender is requested
         if (PHPWS_Settings::get('checkin', 'gender')) {
-            $sex = array('male'=>'Male', 'female'=>'Female');
+            $sex = array('male' => 'Male', 'female' => 'Female');
             $form->addRadioAssoc('gender', $sex);
             $form->addTplTag('GENDER_LABEL', dgettext('checkin', 'Gender'));
-
         }
 
         // If birthdate is requested
@@ -63,7 +64,7 @@ class Checkin_User extends Checkin {
         $form->addSubmit(dgettext('checkin', 'Check in'));
 
         $tpl = $form->getTemplate();
-        $this->title =  dgettext('checkin', 'Please check in using the form below');
+        $this->title = dgettext('checkin', 'Please check in using the form below');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'signin.tpl');
         if (!Current_User::isLogged() && PHPWS_Settings::get('checkin', 'collapse_signin')) {
             Layout::collapse();
@@ -84,7 +85,7 @@ class Checkin_User extends Checkin {
         return PHPWS_Template::process($tpl, 'checkin', 'main.tpl');
     }
 
-    public function process($command=null)
+    public function process($command = null)
     {
         if (empty($command)) {
             @$command = $_REQUEST['uop'];
@@ -131,8 +132,8 @@ class Checkin_User extends Checkin {
         $this->loadVisitor();
 
         $this->visitor->firstname = ucwords(trim($_POST['first_name']));
-        $this->visitor->lastname  = ucwords(trim($_POST['last_name']));
-        
+        $this->visitor->lastname = ucwords(trim($_POST['last_name']));
+
         // If set to ask for birthdate, save visitor's birthdate
         if (PHPWS_Settings::get('checkin', 'birthdate')) {
             if (PHPWS_Form::testDate('birthdate')) {
@@ -141,7 +142,7 @@ class Checkin_User extends Checkin {
                 $this->message[] = dgettext('checkin', 'Please enter a valid birthdate');
             }
         }
-        
+
         // If set to ask for gender, save visitor's gender
         if (PHPWS_Settings::get('checkin', 'gender')) {
             if (isset($_POST['gender'])) {
@@ -155,7 +156,7 @@ class Checkin_User extends Checkin {
             if ($_POST['reason_id'] == 0) {
                 $this->message[] = dgettext('checkin', 'Please enter the reason for your visit.');
             }
-            $this->visitor->reason    = (int)$_POST['reason_id'];
+            $this->visitor->reason = (int) $_POST['reason_id'];
         }
 
         if (empty($this->visitor->firstname)) {
@@ -174,6 +175,7 @@ class Checkin_User extends Checkin {
 
         return empty($this->message);
     }
+
 }
 
 ?>
