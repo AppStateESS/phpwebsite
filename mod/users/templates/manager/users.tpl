@@ -2,7 +2,7 @@
 <div style="margin-bottom: 10px">
   <a href="{NEW_USER_URI}" class="btn btn-success"><i class="fa fa-user"></i> Add user</a>
 </div>
-<table class="table table-striped table-hover" id="user-manager">
+<table class="table table-striped table-hover sans" id="user-manager">
   <tr>
     <th>{ACTIONS_LABEL}</th>
     <th>{DISPLAY_NAME_SORT}</th>
@@ -16,7 +16,7 @@
     <td class="admin-icons">{ACTIONS}</td>
     <td>{DISPLAY_NAME}</td>
     <td>{USERNAME}</td>
-    <td>{EMAIL}</td>
+    <td><small>{EMAIL}</small></td>
     <td style="font-size: .8em;">{LAST_LOGGED}</td>
     <td align="left">{ACTIVE}</td>
   </tr>
