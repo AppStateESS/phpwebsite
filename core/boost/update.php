@@ -510,6 +510,20 @@ EOF;
 + Settings table setting column is now TEXT not VARCHAR.
 </pre>               
 EOF;
+
+        case version_compare($version, '2.8.1', '<'):
+            $db = \Database::newDB();
+            $t = $db->addTable('settings');
+            $dt_old = $t->getDataType('setting');
+            $t->buildDatatype('mediumtext', 'setting');
+            $dt_update = new \Database\Datatype\Text($t, 'setting');
+            $t->alter($dt_old, $dt_update);
+            $content[] = <<<EOF
+<pre>2.8.1 changes
+--------------------
++ Settings table setting column is now MEDIUMTEXT not TEXT.
+</pre>               
+EOF;
     }
     return true;
 }
