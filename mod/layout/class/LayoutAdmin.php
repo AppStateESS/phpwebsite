@@ -447,11 +447,9 @@ class Layout_Admin
 
     public static function postMeta()
     {
-        extract($_POST);
-
-        $values['page_title'] = strip_tags($page_title);
-        $values['meta_keywords'] = strip_tags($meta_keywords);
-        $values['meta_description'] = strip_tags($meta_description);
+        $values['page_title'] = strip_tags($_POST['page_title']);
+        $values['meta_keywords'] = strip_tags($_POST['meta_keywords']);
+        $values['meta_description'] = strip_tags($_POST['meta_description']);
 
         if (isset($_POST['index'])) {
             $index = 1;
@@ -470,6 +468,10 @@ class Layout_Admin
 
         $values['meta_robots'] = $index . $follow;
 
+        if (isset($_POST['key_id'])) {
+            $key_id = (int)$_POST['key_id'];
+        }
+        
         if (isset($key_id)) {
             $values['key_id'] = $key_id;
             $db = new PHPWS_DB('layout_metatags');
