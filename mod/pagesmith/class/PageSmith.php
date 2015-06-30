@@ -167,6 +167,7 @@ class PageSmith
                 $this->page->front_page = (bool) $_GET['fp'];
                 $this->page->save();
                 PHPWS_Cache::clearCache();
+                $this->removeFromMenu();
                 $this->loadForms();
                 $this->forms->pageList();
                 break;
@@ -226,6 +227,22 @@ class PageSmith
         echo $content;
     }
 
+    private function removeFromMenu()
+    {
+        $key_id = $this->page->key_id;
+        
+        $link = new Menu_Link;
+        $db = Database::getDB();
+        $t1 = $db->addTable('menu_links');
+        $t1->addFieldConditional('key_id', $key_id);
+        $link_result = $db->selectOneRow();
+        if (empty($link_result)) {
+            return;
+        }
+        PHPWS_Core::plugObject($link, $link_result);
+        $link->delete();
+    }
+    
     private function setUndoSession($page_id, $block_id, $content)
     {
         $_SESSION['page_undo'][$page_id][$block_id][] = $content;
