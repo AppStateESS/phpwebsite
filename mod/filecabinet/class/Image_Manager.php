@@ -56,7 +56,8 @@ class FC_Image_Manager
                 if (!$this->postImageUpload()) {
                     \Cabinet::setMessage('Failed to upload image. Check directory permissions.');
                 }
-                \PHPWS_Core::goBack();
+                Layout::nakedDisplay();
+                //\PHPWS_Core::goBack();
                 exit;
 
             case 'upload_image_form':
@@ -65,9 +66,9 @@ class FC_Image_Manager
                 }
                 $this->loadImage(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
                 $this->edit();
-                echo json_encode(array('title' => $this->title, 'content' => $this->content));
+                echo $this->content;
+                //echo json_encode(array('title' => $this->title, 'content' => $this->content));
                 exit();
-                break;
         }
         return $this->content;
     }

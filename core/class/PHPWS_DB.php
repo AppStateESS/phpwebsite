@@ -2063,7 +2063,6 @@ class PHPWS_DB
                 $sqlCommand = array();
 
                 PHPWS_DB::homogenize($query);
-
                 $result = PHPWS_DB::query($query);
 
                 if (PEAR::isError($result)) {

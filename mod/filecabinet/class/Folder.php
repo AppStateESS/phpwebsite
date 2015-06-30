@@ -74,7 +74,6 @@ class Folder
     }
 
     /**
-     * @deprecated
      * Creates javascript pop up for creating a new folder
      */
     public function editLink($mode = null, $module_created = null)
@@ -95,8 +94,7 @@ class Folder
         if ($mode == 'image') {
             $js['label'] = '<i class="fa fa-edit" title="' . dgettext('filecabinet', 'Edit') . '"></i>';
         } else {
-            return "<button class='btn btn-success '><i class='fa fa-plus'></i> Add folder</button>";
-            //$js['label'] = & $label;
+            $js['label'] = & $label;
         }
 
         $vars['ftype'] = $this->ftype;
@@ -146,6 +144,74 @@ class Folder
         }
     }
 
+    /**
+     * @deprecated
+     * @param type $mode
+     * @param type $force_width
+     * @param type $force_height
+     * @return type
+     */
+    public function uploadLink($mode = null, $force_width = null, $force_height = null)
+    {
+        if ($this->ftype == DOCUMENT_FOLDER) {
+            return $this->addLink('document', $mode);
+        } elseif ($this->ftype == IMAGE_FOLDER) {
+            return $this->addLink('image', $mode, $force_width, $force_height);
+        } else {
+            return $this->addLink('media', $mode);
+        }
+    }
+
+    /**
+     * @deprecated
+     */
+    private function addLink($type, $mode = null, $force_width = 0, $force_height = 0)
+    {
+        $vars['width'] = 400;
+        $vars['height'] = 400;
+
+        $link_var['folder_id'] = $this->id;
+        switch ($type) {
+            case 'image':
+                $link_var['iop'] = 'upload_image_form';
+                $link_var['fw'] = $force_width;
+                $link_var['fh'] = $force_height;
+                $label = dgettext('filecabinet', 'Add image');
+                break;
+
+            case 'document':
+                $link_var['dop'] = 'upload_document_form';
+                $label = dgettext('filecabinet', 'Add document');
+                break;
+
+            case 'media':
+                $link_var['mop'] = 'upload_multimedia_form';
+                $label = dgettext('filecabinet', 'Add media');
+                break;
+        }
+
+        $link = new PHPWS_Link(null, 'filecabinet', $link_var, true);
+        $link->convertAmp(false);
+        $link->setSalted();
+        $vars['address'] = $link->getAddress();
+        $vars['title'] = & $label;
+
+        switch ($mode) {
+            case 'button':
+                $vars['label'] = $label;
+                $vars['type'] = 'button';
+                break;
+
+            case 'icon':
+                $vars['label'] = '<i class="fa fa-upload" title="' . dgettext('filecabient', 'Upload') . '"></i>';
+                break;
+
+            default:
+                $vars['label'] = $label;
+        }
+        return javascript('open_window', $vars);
+    }
+    
     /**
      * @deprecated
      * @param type $button
@@ -199,13 +265,19 @@ class Folder
             $this->setTitle($_POST['title']);
         }
 
+        $this->setDescription($_POST['description']);
+
+        if (!empty($_POST['module_created'])) {
+            $this->module_created = $_POST['module_created'];
+        } else {
+            $this->module_created = null;
+        }
+
         $this->ftype = $_POST['ftype'];
         if (isset($_POST['max_image_dimension'])) {
             $this->max_image_dimension = (int) $_POST['max_image_dimension'];
         }
-        if (isset($_POST['public_folder'])) {
-            $this->public_folder = $_POST['public_folder'];
-        }
+        $this->public_folder = $_POST['public_folder'];
         return true;
     }
 
@@ -393,7 +465,7 @@ class Folder
             $mode = null;
             $spacer = ' | ';
         }
-        $authkey = \Current_User::getAuthKey();
+
         //$icon = sprintf('<img src="%s" />', $this->icon);
         $vars['aop'] = 'view_folder';
         $vars['folder_id'] = $this->id;
@@ -401,10 +473,8 @@ class Folder
         $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
-
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder')) {
-            $links[] = "<i title='Edit folder' style='cursor:pointer' class='fa fa-edit show-modal' data-operation='aop' data-command='edit_folder' data-folder-id='$this->id' data-ftype='$this->ftype'></i>";
-            //$links[] = $this->editLink('image');
+            $links[] = $this->editLink('image');
             $links[] = $this->uploadLink('icon');
         }
 
@@ -415,57 +485,23 @@ class Folder
         }
 
         if (Current_User::allow('filecabinet', 'delete_folders', null, null, true)) {
-            $authkey = \Current_User::getAuthKey();
-            $links[] = "<i title='Delete folder' style='cursor:pointer' class='fa fa-trash-o delete-folder' data-folder-id='$this->id' data-authkey='$authkey'></i>";
-            //$links[] = $this->deleteLink('image');
+            $links[] = $this->deleteLink('image');
+        }
+
+        $mods = PHPWS_Core::getModuleNames();
+        if ($this->module_created && isset($mods[$this->module_created])) {
+            $tpl['MODULE_CREATED'] = $mods[$this->module_created];
+        } else {
+            $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
         }
 
         $tpl['PUBLIC'] = $this->getPublic();
 
-        if (!empty($links)) {
+        if (@$links) {
             $tpl['LINKS'] = implode($spacer, $links);
         }
 
         return $tpl;
-    }
-
-    public function uploadLink($type, $file_id = 0)
-    {
-        $file_id = (int)$file_id;
-        switch ($this->ftype) {
-            case MULTIMEDIA_FOLDER:
-                $operation = 'mop';
-                $command = 'upload_multimedia_form';
-                $label = 'Upload media';
-                break;
-            case IMAGE_FOLDER:
-                $operation = 'iop';
-                $command = 'upload_image_form';
-                $label = 'Upload image';
-                break;
-            case DOCUMENT_FOLDER:
-                $operation = 'dop';
-                $command = 'upload_document_form';
-                $label = 'Upload document';
-                break;
-        }
-
-        $salt = array($operation => $command, 'folder_id' => $this->id, 'file_id'=>$file_id);
-        $authkey = \Current_User::getAuthKey(PHPWS_Text::saltArray($salt));
-
-        if ($type == 'icon') {
-            if ($file_id) {
-                $icon = 'fa-edit';
-            } else {
-                $icon = 'fa-upload';
-            }
-            return "<i title='$label' class='fa $icon show-modal pointer' data-authkey='$authkey' data-command='$command' data-operation='$operation' data-folder-id='$this->id' data-id='$file_id'></i>";
-        } elseif ($type == 'button') {
-            return <<<EOF
-<button class="btn btn-primary show-modal" data-authkey="$authkey" data-command="$command" data-operation="$operation" data-folder-id="$this->id" data-id="$file_id">
-    <i class="fa fa-plus"></i> $label</button>
-EOF;
-        }
     }
 
     /**

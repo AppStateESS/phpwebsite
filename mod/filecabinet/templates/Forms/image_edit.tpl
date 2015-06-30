@@ -26,6 +26,7 @@
     {MOVE_TO_FOLDER}
 </p>
 <!-- END move -->
+{SUBMIT} {CANCEL}
 {END_FORM}
 <br />
 {MAX_SIZE_LABEL}: {MAX_SIZE}
