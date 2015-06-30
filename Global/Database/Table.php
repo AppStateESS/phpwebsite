@@ -173,7 +173,7 @@ abstract class Table extends Resource
 
     /**
      * Return the type of database column the current column is.
-     * @return DB/Datatype
+     * @return \Database\Datatype
      */
     abstract public function getDataType($column_name);
 
@@ -884,6 +884,10 @@ abstract class Table extends Resource
     public function isIncludedWithUsing()
     {
         return $this->included_with_using;
+    }
+    
+    public function buildDatatype($type, $name)
+    {
     }
 
 }
