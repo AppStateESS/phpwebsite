@@ -291,12 +291,10 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
     {
         $table_name = $this->getFullName();
         $old_column_name = $old->getName();
-        $new_column_parameters = $new->getParameterString() . ' ' . $new->getIsNullString();
-
+        $new_column_parameters = $new->getParameterString();
         $query = <<<EOF
 ALTER TABLE $table_name MODIFY $old_column_name $new_column_parameters
 EOF;
-        echo $query;
         $this->db->exec($query);
     }
 }
