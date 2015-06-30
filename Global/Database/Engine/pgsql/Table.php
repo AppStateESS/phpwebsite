@@ -41,6 +41,8 @@ class Table extends \Database\Table
     {
         $list = parent::getDatatypeList();
         $list['serial'] = 'serial';
+        $list['longtext'] = 'text';
+        $list['mediumtext'] = 'text';
         return $list;
     }
 
