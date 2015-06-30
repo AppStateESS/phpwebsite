@@ -258,7 +258,7 @@ class Menu_Item {
             $this->saveKey();
         }
 
-        if ($new_menu && PHPWS_Settings::get('menu', 'home_link')) {
+        if ($new_menu && \PHPWS_Settings::get('menu', 'display_type') == 0 && PHPWS_Settings::get('menu', 'home_link')) {
             $link = new Menu_Link;
             $link->menu_id = $this->id;
             $link->title = dgettext('menu', 'Home');
