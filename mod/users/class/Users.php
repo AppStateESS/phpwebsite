@@ -881,7 +881,7 @@ class PHPWS_User {
         }
 
 
-        $logged = $this->getLastLogged('%c');
+        $logged = $this->getLastLogged('%Y/%m/%d %H:%M');
 
         if (empty($logged)) {
             $template['LAST_LOGGED'] = dgettext('users', 'Never');
