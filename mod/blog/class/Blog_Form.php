@@ -82,11 +82,11 @@ class Blog_Form
 
         $form->addText('blog_limit', PHPWS_Settings::get('blog', 'blog_limit'));
         $form->setSize('blog_limit', 2, 2);
-        $form->setLabel('blog_limit', dgettext('blog', 'Blog view limit'));
+        $form->setLabel('blog_limit', dgettext('blog', 'Entries shown per page'));
         $form->addCssClass('blog_limit', 'form-control');
 
         $form->addText('past_entries', PHPWS_Settings::get('blog', 'past_entries'));
-        $form->setLabel('past_entries', dgettext('blog', 'Number of past entries'));
+        $form->setLabel('past_entries', dgettext('blog', 'Previous entries shown'));
         $form->setSize('past_entries', 2, 2);
         $form->addCssClass('past_entries', 'form-control');
         // Show/hide posted on date
