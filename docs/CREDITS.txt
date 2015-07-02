@@ -136,8 +136,8 @@ Chris Corbyn
 http://swiftmailer.org/
 
 Select2
-Igor Vaynberg
-http://ivaynberg.github.io/select2/
+Igor Vaynberg and Kevin Brown
+https://select2.github.io/
 
 Dropzone.js
 Matias Meno <m@tias.me>, www.colorglare.com
