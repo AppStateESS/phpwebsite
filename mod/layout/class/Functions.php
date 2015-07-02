@@ -43,13 +43,13 @@ function check_cookie()
  * @param array $data
  * @return string
  */
-function javascriptMod($module, $directory, $data = null)
+function javascriptMod($module, $directory, $data = null, $wrap_header = false, $wrap_body = false)
 {
     if (preg_match('/\W/', $module)) {
         return false;
     }
     $root_directory = "mod/$module/";
-    return Layout::getJavascript($directory, $data, $root_directory);
+    return Layout::getJavascript($directory, $data, $root_directory, $wrap_header, $wrap_body);
 }
 
 ?>
