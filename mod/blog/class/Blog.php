@@ -396,9 +396,8 @@ class Blog {
                 $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
             } else {
                 if (!empty($entry)) {
-                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog',
-                                            'Read more'), 'blog',
-                                    array('id' => $this->id));
+                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(Icon::get('chevron-circle-down') . '&nbsp;' . dgettext('blog', 'Read more'), 'blog',
+                                    array('id' => $this->id), null, 'Read more of this entry', 'btn btn-default');
                 }
                 $template['SUMMARY'] = PHPWS_Text::parseTag($summary);
             }
