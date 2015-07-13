@@ -129,26 +129,12 @@ class PhpwebsiteController implements Controller
 
         $rendered = $view->render();
 
-        // @todo an interface to get at request headers in the Request object...
-        // lol oops
         $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 
-        if ($view->getContentType() == 'text/html' && !$ajax) {
-            if (class_exists('Layout')) {
-                Layout::add($rendered);
-                $this->skipLayout = false;
-            } else {
-                echo $rendered;
-                $this->skipLayout = true;
-            }
-        } else {
-            echo $rendered;
-            $this->skipLayout = true;
-        }
-
-        // TODO: Response headers
+        echo $rendered;
+        $this->skipLayout = true;
     }
-
+    
     private function destructModules()
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
