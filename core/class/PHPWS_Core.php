@@ -673,9 +673,8 @@ class PHPWS_Core
      */
     public static function checkBranch()
     {
-        //if (substr(php_sapi_name(), 0, 3) != 'cli' && PHPWS_SOURCE_DIR == getcwd() . '/') {
         if (isset($GLOBALS['Is_Branch'])) {
-            return !$GLOBALS['Is_Branch'];
+            return $GLOBALS['Is_Branch'];
         } elseif (PHPWS_SOURCE_DIR == PHPWS_HOME_DIR) {
             $GLOBALS['Is_Branch'] = false;
             return true;
