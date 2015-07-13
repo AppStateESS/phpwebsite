@@ -669,14 +669,14 @@ class PHPWS_Core
     /**
      * Returns true if the site is a hub or if the site is
      * an allowed branch. If false is returned, the index file
-     * drops the user to an error page. Also sets the Is_Branch GLOBAL
+     * drops the user to an error page. Also sets the Allow_Entry GLOBAL.
      */
     public static function checkBranch()
     {
-        if (isset($GLOBALS['Is_Branch'])) {
-            return $GLOBALS['Is_Branch'];
+        if (isset($GLOBALS['Allow_Entry'])) {
+            return $GLOBALS['Allow_Entry'];
         } elseif (PHPWS_SOURCE_DIR == PHPWS_HOME_DIR) {
-            $GLOBALS['Is_Branch'] = false;
+            $GLOBALS['Allow_Entry'] = true;
             return true;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
@@ -684,7 +684,7 @@ class PHPWS_Core
                 return false;
             }
             if (Branch::checkCurrentBranch()) {
-                $GLOBALS['Is_Branch'] = true;
+                $GLOBALS['Allow_Entry'] = true;
                 return true;
             } else {
                 PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
