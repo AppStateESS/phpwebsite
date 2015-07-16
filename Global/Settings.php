@@ -79,7 +79,7 @@ class Settings extends Data {
         $settings->addPrimaryIndexId();
         $idx[] = $settings->addDataType('module_name', 'varchar')->setIsNull(false);
         $idx[] = $settings->addDataType('variable_name', 'varchar')->setIsNull(false);
-        $settings->addDataType('setting', 'text');
+        $settings->addDataType('setting', 'mediumtext')->setIsNull(true);
         $settings->create();
     }
 

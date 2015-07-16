@@ -382,8 +382,10 @@ UPDATES;
 
             $db->clearTables();
 
-            $tbl = $db->addTable('demographics');
-            $tbl->drop();
+            if ($db->tableExists('demographics')) {
+                $tbl = $db->addTable('demographics');
+                $tbl->drop();
+            }
 
             $content[] = <<<EOF
 <pre>Core 2.4.0 Changes
@@ -419,8 +421,10 @@ EOF;
         case version_compare($version, '2.4.2', '<'):
             $db = \Database::newDB();
             $t1 = $db->addTable('settings');
-            //$t1->dropIndex('settings_idx');
-            $t1->createPrimaryIndexId();
+            $indexes = $t1->getIndexes();
+            if (empty($indexes)) {
+                $t1->createPrimaryIndexId();
+            }
             $content[] = <<<EOF
 <pre>
 Core 2.4.2 Changes
@@ -493,7 +497,7 @@ EOF;
 + Feature: Global/Pager Search columns can now be set manually instead of depending on the headers.
 + Feature: Global/Tag - removeClass method - removes a class previously added to the class variable stack
 + Feature: Added authkey javascript for insertion of the authkey value for use in other js scripts.
-+ Added: <s> as allowed tag.
++ Added:  &lt;s&gt; as allowed tag.
 + Feature: CKEditor Save button added for use with some modules.
 </pre>
 EOF;
@@ -503,6 +507,7 @@ EOF;
             $t = $db->addTable('settings');
             $dt_old = $t->getDataType('setting');
             $dt_update = new \Database\Datatype\Text($t, 'setting');
+            $dt_update->setIsNull(true);
             $t->alter($dt_old, $dt_update);
             $content[] = <<<EOF
 <pre>2.8.0 changes
@@ -517,6 +522,7 @@ EOF;
             $dt_old = $t->getDataType('setting');
             $t->buildDatatype('mediumtext', 'setting');
             $dt_update = new \Database\Datatype\Text($t, 'setting');
+            $dt_update->setIsNull(true);
             $t->alter($dt_old, $dt_update);
             $content[] = <<<EOF
 <pre>2.8.1 changes
