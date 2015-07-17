@@ -155,6 +155,7 @@ $all_file_types['xls']['fi'][]  = 'microsoft office document';
 $all_file_types['xls']['vb']    = 'Microsoft Excel Spreadsheet';
 
 $all_file_types['xlsx']['mct'][] = 'application/x-zip';
+$all_file_types['xlsx']['mct'][] = 'application/zip';
 $all_file_types['xlsx']['mct'][] = 'application/vnd.openxmlformats';
 $all_file_types['xlsx']['fi'][]  = 'zip archive data';
 $all_file_types['xlsx']['vb']    = 'Microsoft Excel 2007 Spreadsheet';
