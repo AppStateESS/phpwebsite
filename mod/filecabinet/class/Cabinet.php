@@ -57,7 +57,7 @@ class Cabinet
         $fc_forms = new FC_Forms();
         $fc_forms->handle();
     }
-    
+
     /**
      * Document manager administrative options.
      */
@@ -297,11 +297,18 @@ class Cabinet
                 $this->forms->getFolders(DOCUMENT_FOLDER);
                 break;
 
+            case 'edit_folder_modal':
+                $javascript = true;
+                $this->loadFolder();
+// permission check in function below
+                $this->editFolder(false);
+                break;
+
             case 'edit_folder':
                 $javascript = true;
                 $this->loadFolder();
 // permission check in function below
-                $this->editFolder();
+                $this->editFolder(true);
                 break;
 
             case 'change_tn':
@@ -332,7 +339,11 @@ class Cabinet
                 } else {
                     self::setMessage(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
                 }
-                PHPWS_Core::goBack();
+                if (filter_input(INPUT_POST, 'js') == 1) {
+                    javascript('close_refresh');
+                } else {
+                    PHPWS_Core::goBack();
+                }
                 break;
 
             case 'post_allowed_files':
@@ -408,7 +419,6 @@ class Cabinet
             Layout::add(PHPWS_ControlPanel::display($finalPanel));
         }
     }
-
 
     public function download($document_id)
     {
@@ -596,16 +606,12 @@ class Cabinet
             $this->title = dgettext('filecabinet', 'Create multimedia folder');
         }
 
-        if (isset($_GET['module_created'])) {
-            $this->content = $this->forms->editFolder($this->folder, false);
-        } else {
-            $this->content = $this->forms->editFolder($this->folder, true);
-        }
+        $this->content = $this->forms->editFolder($this->folder);
         echo json_encode(array('title' => $this->title, 'content' => $this->content));
         exit();
     }
 
-    public function editFolder()
+    public function editFolder($js)
     {
         if (!Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
             Current_User::disallow();
@@ -619,8 +625,14 @@ class Cabinet
         } else {
             $this->title = dgettext('filecabinet', 'Update multimedia folder');
         }
-        $this->content = $this->forms->editFolder($this->folder, true);
-        echo json_encode(array('title' => $this->title, 'content' => $this->content));
+
+
+        $this->content = $this->forms->editFolder($this->folder, $js);
+        if ($js) {
+            echo \Layout::wrap($this->content, $this->title, true);
+        } else {
+            echo json_encode(array('title' => $this->title, 'content' => $this->content));
+        }
         exit;
     }
 
@@ -1302,7 +1314,6 @@ class Cabinet
             }
         }
     }
-
 
     public function getResizeIds($image)
     {

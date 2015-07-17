@@ -415,7 +415,7 @@ class PHPWS_Image extends File_Common
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
-            $links[] = $folder->uploadLink('icon', $this->id);
+            //$links[] = $folder->uploadLink('icon', $this->id);
             $authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('iop' => 'delete_image', 'file_id' => $this->id, 'folder_id' => $this->folder_id)));
             $links[] = <<<EOF
 <i style='cursor:pointer' class='fa fa-trash-o delete-file' data-folder-id='$this->folder_id' data-id='$this->id' data-type='iop' data-command='delete_image' data-authkey='$authkey'></i>

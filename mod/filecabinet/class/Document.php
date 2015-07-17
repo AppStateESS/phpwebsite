@@ -177,7 +177,7 @@ class PHPWS_Document extends File_Common {
         $tpl['ICON'] = $this->getViewLink(true, 'small_icon');
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id,
                         'folder')) {
-            $links[] = $folder->uploadLink('icon', $this->id);
+            //$links[] = $folder->uploadLink('icon', $this->id);
             $links[] = $this->deleteLink(true);
             $links[] = $this->accessLink();
         }

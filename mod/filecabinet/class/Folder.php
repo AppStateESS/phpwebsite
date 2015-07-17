@@ -200,6 +200,7 @@ class Folder
             case 'button':
                 $vars['label'] = $label;
                 $vars['type'] = 'button';
+                $vars['class'] = 'btn btn-success';
                 break;
 
             case 'icon':
@@ -265,8 +266,6 @@ class Folder
             $this->setTitle($_POST['title']);
         }
 
-        $this->setDescription($_POST['description']);
-
         if (!empty($_POST['module_created'])) {
             $this->module_created = $_POST['module_created'];
         } else {
@@ -277,7 +276,7 @@ class Folder
         if (isset($_POST['max_image_dimension'])) {
             $this->max_image_dimension = (int) $_POST['max_image_dimension'];
         }
-        $this->public_folder = $_POST['public_folder'];
+        //$this->public_folder = $_POST['public_folder'];
         return true;
     }
 

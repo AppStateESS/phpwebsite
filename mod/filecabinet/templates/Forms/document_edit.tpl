@@ -11,7 +11,7 @@
 <p>{MOVE_TO_FOLDER_LABEL}<br />
     {MOVE_TO_FOLDER}</p>
 <!-- END move -->
-</table>
+{UPLOAD} <button class="btn btn-danger" onClick="window.close()">Cancel</button>
 {END_FORM}
 
 <p>{MAX_SIZE_LABEL}: {MAX_SIZE}</p>

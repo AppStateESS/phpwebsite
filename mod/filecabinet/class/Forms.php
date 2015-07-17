@@ -228,12 +228,15 @@ class Cabinet_Form
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'Forms/classify_list.tpl');
     }
 
-    public function editFolder($folder)
+    public function editFolder($folder, $js=false)
     {
         $form = new PHPWS_Form('file-form');
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'post_folder');
         $form->addHidden('ftype', $folder->ftype);
+        if ($js) {
+            $form->addHidden('js', 1);
+        }
 
         if ($folder->id) {
             $form->addHidden('folder_id', $folder->id);
@@ -256,7 +259,8 @@ class Cabinet_Form
             $form->setMatch('max_image_dimension', $folder->max_image_dimension);
             $form->setClass('max_image_dimension', 'form-control');
         }
-
+        $form->addSubmit('submit', 'Save folder');
+        $form->setClass('submit', 'btn btn-primary');
         $tpl = $form->getTemplate();
 
         return PHPWS_Template::process($tpl, 'filecabinet', 'Forms/edit_folder.tpl');
@@ -332,7 +336,7 @@ EOF;
             $salt = array($operation => 'edit_folder', 'folder_id' => $folder->id);
             $authkey = \Current_User::getAuthKey(PHPWS_Text::saltArray($salt));
             $links[] = <<<EOF
-<button class="btn btn-default show-modal" data-authkey="$authkey" data-command="edit_folder" data-operation="aop" data-folder-id="$folder->id"><i class="fa fa-edit"></i> Edit</button>
+<button class="btn btn-default show-modal" data-authkey="$authkey" data-command="edit_folder_modal" data-operation="aop" data-folder-id="$folder->id"><i class="fa fa-edit"></i> Edit</button>
 EOF;
         }
 
@@ -346,7 +350,6 @@ EOF;
         }
 
         $pagetags['MODAL'] = $this->getModal();
-
         $pagetags['ACTION_LABEL'] = dgettext('filecabinet', 'Action');
 
         $pager->setLimitList($limits);

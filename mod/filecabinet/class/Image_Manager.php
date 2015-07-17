@@ -58,7 +58,7 @@ class FC_Image_Manager
                 }
                 Layout::nakedDisplay();
                 //\PHPWS_Core::goBack();
-                exit;
+                break;
 
             case 'upload_image_form':
                 if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
@@ -66,11 +66,9 @@ class FC_Image_Manager
                 }
                 $this->loadImage(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
                 $this->edit();
-                echo $this->content;
-                //echo json_encode(array('title' => $this->title, 'content' => $this->content));
-                exit();
+                echo Layout::wrap($this->content, 'Image Upload', true);
+                exit;
         }
-        return $this->content;
     }
 
     public function setMaxSize($size)
@@ -121,6 +119,7 @@ class FC_Image_Manager
         }
 
         $form->addFile('file_name');
+        $form->setClass('file_name', 'form-control');
         $form->setSize('file_name', 30);
         $form->setMaxFileSize($this->max_size);
         $form->setLabel('file_name', dgettext('filecabinet', 'Image location'));
@@ -186,10 +185,11 @@ class FC_Image_Manager
         }
 
         if (!empty($this->image->id)) {
-            $form->addSubmit(dgettext('filecabinet', 'Update'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
         } else {
-            $form->addSubmit(dgettext('filecabinet', 'Upload'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }
+        $form->setClass('submit', 'btn btn-primary');
 
         $template = $form->getTemplate();
 

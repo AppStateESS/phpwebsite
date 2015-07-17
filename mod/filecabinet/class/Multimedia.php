@@ -129,7 +129,7 @@ class PHPWS_Multimedia extends File_Common
             } else {
                 $command = 'upload_multimedia_form';
             }
-            $links[] = $folder->uploadLink('icon', $this->id);
+            //$links[] = $folder->uploadLink('icon', $this->id);
             //$authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('mop'=>'delete_multimedia','file_id'=>$this->id)));
 
             $authkey = \Current_User::getAuthKey();

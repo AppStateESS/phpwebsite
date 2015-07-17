@@ -40,8 +40,10 @@ class FC_Document_Manager
                     Current_User::disallow();
                 }
                 $this->postDocumentUpload();
-                \PHPWS_Core::goBack();
-                exit();
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                //\PHPWS_Core::goBack();
+                break;
 
             case 'upload_document_form':
                 if (!$this->folder->id || !Current_User::secured('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
@@ -49,9 +51,8 @@ class FC_Document_Manager
                 }
                 $this->loadDocument(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
                 $this->edit();
-                echo json_encode(array('title' => $this->title, 'content' => $this->content));
-                exit();
-                break;
+                echo Layout::wrap($this->content, 'Document Upload', true);
+                exit;
 
             case 'add_access':
                 if (!Current_User::authorized('filecabinet')) {
@@ -126,6 +127,9 @@ class FC_Document_Manager
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
         $form->setClass('title', 'form-control');
 
+        $form->addSubmit('upload', 'Upload document');
+        $form->setClass('upload', 'btn btn-primary');
+        
         if ($this->document->id) {
             $this->title = dgettext('filecabinet', 'Update file');
             $form->addHidden('document_id', $this->document->id);
