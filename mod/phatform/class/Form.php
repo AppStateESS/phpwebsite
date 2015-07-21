@@ -1625,7 +1625,8 @@ class PHAT_Form extends PHPWS_Item {
             $this->loadUserData();
 
             $mime    = new Mail_mime();
-            $headers = array('From' => "forms@{$_SERVER['SERVER_NAME']}", 'Subject' => $this->getLabel() .' (Form Submission)');
+            
+            $headers = array('From' => DEFAULT_REPLY_ADDRESS, 'Subject' => $this->getLabel() .' (Form Submission)');
 
             if (PHAT_MAIL_CONTENT_TYPE == 'text/html') {
                 $message = $this->emailBodyHtml($this->_userData);
