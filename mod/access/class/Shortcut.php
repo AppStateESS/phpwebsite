@@ -117,7 +117,8 @@ class Access_Shortcut
     public function shortenKeyword($keyword)
     {
         $keyword = preg_replace('/[^\w\s\-]|amp;/', '', strtolower(trim($keyword)));
-        return preg_replace('/[\s\-]+/', '-', $keyword);
+        $keyword = preg_replace('/[\s\-]+|-$/', '-', $keyword);
+        return preg_replace('/^-|-$/', '', $keyword);
     }
 
     public function setUrl($module, $url)
