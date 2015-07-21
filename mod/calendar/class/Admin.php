@@ -388,8 +388,8 @@ class Calendar_Admin {
                 dgettext('calendar', 'Sync dates'));
 
         if (javascriptEnabled()) {
-            javascriptMod('calendar', 'edit_event');
-            javascriptMod('calendar', 'check_date');
+            Layout::addJSHeader('<script src="'. PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/edit_event/head.js"></script>');
+            Layout::addJSHeader('<script src="'. PHPWS_SOURCE_HTTP . 'mod/calendar/javascript/check_date/head.js"></script>');
         }
 
         return PHPWS_Template::process($tpl, 'calendar',
