@@ -1028,6 +1028,10 @@ class User_Action
 
         $module_permission = $_POST['module_permission'];
         
+        if(isset($_POST['sub_permission'])) {
+            $sub_permission = $_POST['sub_permission'];
+        }
+
         foreach ($module_permission as $mod_title => $permission) {
             $subpermission = isset($sub_permission[$mod_title]) ? $sub_permission[$mod_title] : null;
             Users_Permission::setPermissions($group_id, $mod_title, $permission, $subpermission);
