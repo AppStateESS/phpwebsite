@@ -130,11 +130,21 @@ class PhpwebsiteController implements Controller
         $rendered = $view->render();
 
         $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-
-        echo $rendered;
-        $this->skipLayout = true;
+        
+        if ($view->getContentType() == 'text/html' && !$ajax) {
+            if (class_exists('Layout')) {
+                Layout::add($rendered);
+                $this->skipLayout = false;
+            } else {
+                echo $rendered;
+                $this->skipLayout = true;
+            }
+        } else {
+            echo $rendered;
+            $this->skipLayout = true;
+        }
     }
-    
+
     private function destructModules()
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
