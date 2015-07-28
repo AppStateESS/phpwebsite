@@ -63,16 +63,12 @@ class PHAT_Radiobutton extends PHAT_Element {
         $optionText = $this->getOptionText();
         $optionValues = $this->getOptionValues();
 
-
         for ($i = 0; $i < sizeof($optionText); $i++) {
             $option_value = $optionValues[$i];
             $element = new Form_RadioButton('PHAT_' . $label, $option_value);
             $element->setMatch($this->getValue());
             $id = preg_replace('/\W/', '', $option_value) . $i;
-            $element->setId($id);
-            $label_text = "<label for='$id'>" . $optionText[$i] . "</label>";
-
-            $viewTags['RADIO_BUTTONS'] .=  $element->get() . " $label_text<br />\n";
+            $viewTags['RADIO_BUTTONS'] .=  '<div class="radio"><label>' . $element->get() . ' ' . $optionText[$i] . "</label></div>\n";
         }
 
         return PHPWS_Template::processTemplate($viewTags, 'phatform',
