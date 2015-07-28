@@ -41,6 +41,8 @@ function check_cookie()
  * @param string $module
  * @param string $directory
  * @param array $data
+ * @param boolean $wrap_header If true, wrap the contents of head.js with <script> tags
+ * @param boolean $wrap_body If true, wrap the contents of body.js with <script> tags
  * @return string
  */
 function javascriptMod($module, $directory, $data = null, $wrap_header = false, $wrap_body = false)
