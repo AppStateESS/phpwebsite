@@ -491,6 +491,7 @@ class Layout
      * @param string $base  Base directory of Javascript. Defaults to null, looking in the main javascript directory.
      *                      For a module, base would be 'mod/modulename/'
      * @param boolean $wrap_header If true, wrap the contents of head.js with <script> tags
+     * @param boolean $wrap_body If true, wrap the contents of body.js with <script> tags
      * @return unknown_type
      */
     public static function getJavascript($directory, array $data = NULL, $base = NULL, $wrap_header = false, $wrap_body = false)
