@@ -1289,14 +1289,6 @@ class PHPWS_DB
             $set[] = PHPWS_DB::dbReady($entry);
         }
 
-        if ($this->tables[0] == 'mod_settings' && $this->values['setting_name'] == 'default_authorization') {
-            $message = "Inserting into mod_settings\nINSERT VALUES:\n";
-            foreach ($this->values as $k=>$v) {
-                $message .= "$k: $v\n";
-            }
-            PHPWS_Core::trackAuthentication($message);
-        }
-
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
         $result = PHPWS_DB::exec($query);
 
@@ -1334,10 +1326,6 @@ class PHPWS_DB
 
         $limit = $this->getLimit(true);
         $order = $this->getOrder(true);
-
-        if ($this->tables[0] == 'mod_settings' && $this->values['setting_name'] == 'default_authorization') {
-            PHPWS_Core::trackAuthentication('Updating mod_settings');
-        }
 
         $query = "UPDATE $table SET " . implode(', ', $columns) . " $where $order $limit";
         $result = PHPWS_DB::exec($query);
@@ -1733,11 +1721,6 @@ class PHPWS_DB
         if (!empty($where)) {
             $where = 'WHERE ' . $where;
         }
-
-        if ($this->tables[0] == 'mod_settings') {
-            PHPWS_Core::trackAuthentication('Deleting mod_settings');
-        }
-
 
         $sql = "DELETE FROM $table $where $order $limit";
         $result = PHPWS_DB::exec($sql);
