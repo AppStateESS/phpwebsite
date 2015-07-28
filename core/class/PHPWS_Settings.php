@@ -114,10 +114,6 @@ class PHPWS_Settings
             return false;
         }
 
-        if ($module == 'users') {
-            \PHPWS_Core::trackAuthentication('PHPWS_Settings::save was run on users');
-        }
-
         $db = new PHPWS_DB('mod_settings');
 
         $db->addWhere('module', $module);
