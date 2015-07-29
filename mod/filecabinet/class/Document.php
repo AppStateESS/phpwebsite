@@ -12,8 +12,8 @@
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
-class PHPWS_Document extends File_Common {
-
+class PHPWS_Document extends File_Common
+{
     public $downloaded = 0;
     public $_classtype = 'document';
 
@@ -37,8 +37,7 @@ class PHPWS_Document extends File_Common {
             } else {
                 $info = 'id=' . $this->id;
             }
-            $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_NOT_FOUND,
-                            'filecabinet', 'PHPWS_Document', $info);
+            $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'PHPWS_Document', $info);
             $this->id = 0;
         }
         $this->loadExtension();
@@ -61,9 +60,7 @@ class PHPWS_Document extends File_Common {
         if (empty($icon_list)) {
             $file = PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
             if (!$file) {
-                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />',
-                        htmlspecialchars($this->title, ENT_QUOTES),
-                        htmlspecialchars($this->title, ENT_QUOTES));
+                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {
                 include $file;
             }
@@ -74,18 +71,12 @@ class PHPWS_Document extends File_Common {
             if ($mode == 'small_icon') {
                 $graphic = 's_' . $graphic;
             }
-            return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/%s" title="%s" alt="%s" />',
-                    $graphic, htmlspecialchars($this->title, ENT_QUOTES),
-                    htmlspecialchars($this->title, ENT_QUOTES));
+            return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/%s" title="%s" alt="%s" />', $graphic, htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
         } else {
             if ($mode == 'small_icon') {
-                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/s_text.png" title="%s" alt="%s" />',
-                        htmlspecialchars($this->title, ENT_QUOTES),
-                        htmlspecialchars($this->title, ENT_QUOTES));
+                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/s_text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {
-                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />',
-                        htmlspecialchars($this->title, ENT_QUOTES),
-                        htmlspecialchars($this->title, ENT_QUOTES));
+                return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             }
         }
     }
@@ -123,18 +114,15 @@ class PHPWS_Document extends File_Common {
             switch ($type) {
                 case 'small_icon':
                 case 'icon':
-                    return sprintf('<a href="%s">%s</a>', $link,
-                            $this->getIconView($type));
+                    return sprintf('<a href="%s">%s</a>', $link, $this->getIconView($type));
 
                 case 'download':
                 case 'filename':
-                    return sprintf('<a href="%s">%s</a>', $link,
-                            $this->file_name);
+                    return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
 
                 default:
                 case 'title':
-                    return sprintf('<a href="%s">%s</a>', $link,
-                            htmlspecialchars($this->title, ENT_QUOTES));
+                    return sprintf('<a href="%s">%s</a>', $link, htmlspecialchars($this->title, ENT_QUOTES));
             }
         } else {
             return $link;
@@ -143,8 +131,7 @@ class PHPWS_Document extends File_Common {
 
     public function loadAllowedTypes()
     {
-        $this->_allowed_types = explode(',',
-                PHPWS_Settings::get('filecabinet', 'document_files'));
+        $this->_allowed_types = explode(',', PHPWS_Settings::get('filecabinet', 'document_files'));
     }
 
     public function allowDocumentType($type)
@@ -167,17 +154,15 @@ class PHPWS_Document extends File_Common {
         if (PHPWS_Settings::get('filecabinet', 'allow_direct_links') && $folder->public_folder) {
             $dpath = $this->getDownloadPath();
             if ($dpath) {
-                $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath,
-                        $this->file_name);
+                $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath, $this->file_name);
             } else {
                 $tpl['FILE_NAME'] = $this->file_name;
             }
         }
 
         $tpl['ICON'] = $this->getViewLink(true, 'small_icon');
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id,
-                        'folder')) {
-            //$links[] = $folder->uploadLink('icon', $this->id);
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
+            $links[] = $folder->uploadLink('icon', null, null, $this->id);
             $links[] = $this->deleteLink(true);
             $links[] = $this->accessLink();
         }
@@ -212,18 +197,15 @@ EOF;
                 if ($folder->id) {
                     $this->setDirectory($folder->getFullDirectory());
                 } else {
-                    return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet',
-                                    'PHPWS_Document::save');
+                    return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Document::save');
                 }
             } else {
-                return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet',
-                                'PHPWS_Document::save');
+                return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'PHPWS_Document::save');
             }
         }
 
         if (!is_writable($this->file_directory)) {
-            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet',
-                            'PHPWS_Document::save', $this->file_directory);
+            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Document::save', $this->file_directory);
         }
 
         if (empty($this->title)) {
@@ -254,15 +236,13 @@ EOF;
         $filename_len = strlen($this->file_name);
 
         if ($filename_len > 20) {
-            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name,
-                    PHPWS_Text::shortenUrl($this->file_name, 20));
+            $file_name = sprintf('<abbr title="%s">%s</abbr>', $this->file_name, PHPWS_Text::shortenUrl($this->file_name, 20));
         } else {
             $file_name = & $this->file_name;
         }
 
         $tpl['INFO'] = sprintf('%s<br>%s', $file_name, $this->getSize(true));
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id,
-                        'folder')) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink(true);
             $links[] = $this->deleteLink(true);
             $tpl['LINKS'] = implode(' ', $links);
@@ -277,14 +257,12 @@ EOF;
         $vars['dop'] = 'delete_document';
         $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
         $link->setSalted(1);
-        $js['QUESTION'] = dgettext('filecabinet',
-                'Are you sure you want to delete this document?');
+        $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
 
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('filecabinet',
-                            'Delete document') . '"></i>';
+            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('filecabinet', 'Delete document') . '"></i>';
         } else {
             $js['LINK'] = dgettext('filecabinet', 'Delete');
         }
@@ -299,10 +277,6 @@ EOF;
      */
     public function editLink($icon = false)
     {
-        return <<<EOF
-        
-EOF;
-        /*
         $vars['document_id'] = $this->id;
         $vars['folder_id'] = $this->folder_id;
         $vars['dop'] = 'upload_document_form';
@@ -314,14 +288,11 @@ EOF;
         $js['height'] = 500;
 
         if ($icon) {
-            $js['label'] = Icon::show('edit',
-                            dgettext('filecabinet', 'Edit document'));
+            $js['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit document'));
         } else {
             $js['label'] = dgettext('filecabinet', 'Edit');
         }
         return javascript('open_window', $js);
-         * 
-         */
     }
 
     public function getManagerIcon($fmanager)
@@ -349,8 +320,7 @@ EOF;
         if ($return_tpl) {
             return $tpl;
         } else {
-            return PHPWS_Template::process($tpl, 'filecabinet',
-                            'document_download.tpl');
+            return PHPWS_Template::process($tpl, 'filecabinet', 'document_download.tpl');
         }
     }
 
@@ -383,8 +353,7 @@ EOF;
 
     public function getCKRow()
     {
-        return sprintf('<div class="pick-document" id="%s">%s%s</div>',
-                $this->id, $this->getIconView('small_icon'), $this->title);
+        return sprintf('<div class="pick-document" id="%s">%s%s</div>', $this->id, $this->getIconView('small_icon'), $this->title);
     }
 
     public function getCKCell()

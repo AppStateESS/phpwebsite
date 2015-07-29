@@ -151,26 +151,29 @@ class Folder
      * @param type $force_height
      * @return type
      */
-    public function uploadLink($mode = null, $force_width = null, $force_height = null)
+    public function uploadLink($mode = null, $force_width = null, $force_height = null, $id = 0)
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
-            return $this->addLink('document', $mode);
+            return $this->addLink('document', $mode, null, null, $id);
         } elseif ($this->ftype == IMAGE_FOLDER) {
-            return $this->addLink('image', $mode, $force_width, $force_height);
+            return $this->addLink('image', $mode, $force_width, $force_height, $id);
         } else {
-            return $this->addLink('media', $mode);
+            return $this->addLink('media', $mode, null, null, $id);
         }
     }
 
     /**
      * @deprecated
      */
-    private function addLink($type, $mode = null, $force_width = 0, $force_height = 0)
+    private function addLink($type, $mode = null, $force_width = 0, $force_height = 0, $id = 0)
     {
         $vars['width'] = 400;
         $vars['height'] = 400;
 
         $link_var['folder_id'] = $this->id;
+        if ($id) {
+            $link_var['file_id'] = $id;
+        }
         switch ($type) {
             case 'image':
                 $link_var['iop'] = 'upload_image_form';
@@ -212,7 +215,7 @@ class Folder
         }
         return javascript('open_window', $vars);
     }
-    
+
     /**
      * @deprecated
      * @param type $button
