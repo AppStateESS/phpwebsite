@@ -69,7 +69,8 @@ company_url varchar(255) NULL ,
 times_available TEXT NULL,
 last_log INT NOT NULL ,
 active SMALLINT NOT NULL,
-default_active smallint not null default 0
+private smallint not null default 0,
+approved smallint not null default 0
 );
 
 CREATE TABLE prop_photo (

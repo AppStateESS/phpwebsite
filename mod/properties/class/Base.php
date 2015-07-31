@@ -113,7 +113,6 @@ abstract class Base {
         $pager->joinResult('contact_id', 'prop_contacts', 'id', 'company_name', null, true);
         $pager->addPageTags($page_tags);
         $pager->cacheQueries();
-        $pager->addToggle(' style="background-color : #e3e3e3"');
         $this->content = $pager->get();
     }
 

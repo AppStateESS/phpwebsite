@@ -11,8 +11,7 @@ function properties_update(&$content, $currentVersion)
     switch ($currentVersion) {
         case (version_compare($currentVersion, '1.1.0', '<')):
             $db = new PHPWS_DB('properties');
-            $result = $db->addTableColumn('efficiency',
-                    'smallint not null default 0');
+            $result = $db->addTableColumn('efficiency', 'smallint not null default 0');
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'ERROR - could not add efficiency column';
@@ -71,8 +70,7 @@ function properties_update(&$content, $currentVersion)
             }
 
             $db->reset();
-            $result = $db->addTableColumn('airconditioning',
-                    'smallint not null default 0');
+            $result = $db->addTableColumn('airconditioning', 'smallint not null default 0');
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'ERROR - could not add airconditioning column';
@@ -80,8 +78,7 @@ function properties_update(&$content, $currentVersion)
             }
 
             $db->reset();
-            $result = $db->addTableColumn('heat_type',
-                    'varchar(255) default null');
+            $result = $db->addTableColumn('heat_type', 'varchar(255) default null');
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = 'ERROR - could not add heat_type column';
@@ -93,12 +90,12 @@ function properties_update(&$content, $currentVersion)
 ---------------
 - Improved look with Bootstrapping.</pre>';
 
-            case (version_compare($currentVersion, '1.2.2', '<')):
+        case (version_compare($currentVersion, '1.2.2', '<')):
             $content[] = '<pre>1.2.2 updates
 ---------------
 + Added gas heat and fiber internet/tv.
 </pre>';
-            case (version_compare($currentVersion, '1.3.0', '<')):
+        case (version_compare($currentVersion, '1.3.0', '<')):
             $content[] = <<<EOF
 <pre>1.3.0 updates
 -----------------
@@ -113,6 +110,29 @@ function properties_update(&$content, $currentVersion)
 + Last logged defaults to creation date.
 + Fixed Shared Bedroom and Bathroom settings on roommates page.
 + Fixed active/inactive buttons.
+</pre>
+EOF;
+        case (version_compare($currentVersion, '1.4.0', '<')):
+            $db = \Database::getDB();
+            $t1 = $db->addTable('prop_contacts');
+            $dt = $t1->addDataType('private', 'smallint');
+            $dt->setDefault(0);
+            $dt->add();
+            $dt2 = $t1->addDataType('approved', 'smallint');
+            $dt2->setDefault(1);
+            $dt2->add();
+            $t1->addFieldConditional('company_name', 'private%', 'like');
+            $t1->addValue('private', 1);
+            $db->update();
+            $old = $t1->getDataType('company_name');
+            $new = clone $old;
+            $new->setIsNull(true);
+            $t1->alter($old, $new);
+            $content[] = <<<EOF
+<pre>1.4.0 updates
+-----------------
++ Added Private Renter designation.
++ Added new manager signup.
 </pre>
 EOF;
     }

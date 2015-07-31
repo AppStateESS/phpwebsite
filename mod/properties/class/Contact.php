@@ -38,6 +38,8 @@ class Contact
     public $active = 1;
     private $key = null;
     public $errors = null;
+    public $private =false;
+    public $approved = true;
 
     public function __construct($id = null)
     {
@@ -59,6 +61,16 @@ class Contact
         return $this->key;
     }
 
+    public function setApproved($approved)
+    {
+        $this->approved = (bool)$approved;
+    }
+    
+    public function getApproved()
+    {
+        return $this->approved;
+    }
+    
     public function form()
     {
         javascript('jquery');
@@ -287,6 +299,11 @@ class Contact
 
         $this->phone = $phone;
     }
+    
+    public function setPrivate($private)
+    {
+        $this->private = (bool)$private;
+    }
 
     public function setEmailAddress($email_address)
     {
@@ -343,6 +360,11 @@ class Contact
         }
 
         return sprintf('(%s) %s-%s', substr($this->phone, 0, 3), substr($this->phone, 3, 3), substr($this->phone, 6));
+    }
+    
+    public function getPrivate()
+    {
+        return $this->private;
     }
 
     public function getEmailAddress($html = false)

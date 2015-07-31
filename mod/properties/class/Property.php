@@ -745,7 +745,9 @@ class Property extends Room_Base {
 
     public function row_tags($contact_command = false)
     {
-        $tpl['NAME'] = $this->viewLink($this->name);
+        //$tpl['NAME'] = $this->viewLink($this->name);
+        $name = (strlen($this->name) > 30) ? substr($this->name, 0, 30) . '...' : $this->name;
+        $tpl['NAME'] = $this->viewLink($name);
         if ($contact_command) {
             $cmd = 'cop';
             $cmd_array['k'] = $_SESSION['Contact_User']->getKey();

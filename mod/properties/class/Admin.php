@@ -23,8 +23,8 @@ namespace Properties;
  */
 \PHPWS_Core::initModClass('properties', 'Base.php');
 
-class Admin extends Base {
-
+class Admin extends Base
+{
     private $panel;
     protected $contact;
 
@@ -40,8 +40,7 @@ class Admin extends Base {
         $tpl['TITLE'] = $this->title;
         $tpl['CONTENT'] = $this->content;
         $tpl['MESSAGE'] = $this->message;
-        $final_content = \PHPWS_Template::process($tpl, 'properties',
-                        'admin.tpl');
+        $final_content = \PHPWS_Template::process($tpl, 'properties', 'admin.tpl');
         \Layout::add(\PHPWS_ControlPanel::display($this->panel->display($final_content)));
     }
 
@@ -203,6 +202,22 @@ class Admin extends Base {
                 \PHPWS_Core::goBack();
                 break;
 
+            case 'approve':
+                $this->viewContactApprovals();
+                break;
+
+            case 'approvalList':
+                $this->approvalList();
+                break;
+
+            case 'approveContact':
+                $this->approveContact($_GET['contactId']);
+                exit();
+
+            case 'disapproveContact':
+                $this->disapproveContact($_GET['contactId']);
+                exit();
+
             case 'properties':
             default:
                 $this->panel->setCurrentTab('properties');
@@ -211,6 +226,49 @@ class Admin extends Base {
                 break;
         }
         $this->display();
+    }
+
+    private function approvalList()
+    {
+        $db = \Database::newDB();
+        $tbl = $db->addTable('prop_contacts');
+        $tbl->addFieldConditional('approved', 0);
+        $tbl->addOrderBy('last_log', 'desc');
+        $result = $db->select();
+        if (empty($result)) {
+            echo '[]';
+        } else {
+            echo json_encode($result);
+        }
+        exit;
+    }
+
+    private function viewContactApprovals()
+    {
+        $development = false;
+
+        if ($development) {
+            $script_file = 'src/Approval.jsx';
+            $type = 'text/jsx';
+        } else {
+            $script_file = 'build/Approval.js';
+            $type = 'text/javascript';
+        }
+
+        $data['development'] = $development;
+        $data['addons'] = false;
+        javascript('react', $data);
+
+        $script = '<script type="' . $type . '" src="' . PHPWS_SOURCE_HTTP .
+                'mod/properties/javascript/ContactApproval/' . $script_file . '"></script>'
+                . '<script type="text/javascript">var authkey="' . \Current_User::getAuthkey() . '";</script>';
+        \Layout::addJSHeader($script);
+
+        $vars['authkey'] = \Current_User::getAuthKey();
+        $template = new \Template($vars);
+        $template->setModuleTemplate('properties', 'ManagerSignUp.html');
+        $this->title = 'Contact Approval';
+        $this->content = '<div id="ContactApproval"></div>';
     }
 
     private function contactPropertiesList($contact_id)
@@ -222,9 +280,7 @@ class Admin extends Base {
         $pager = new \DBPager('properties', 'Properties\Property');
         $pager->addWhere('contact_id', $contact_id);
         $data['is_contact'] = 1;
-        $page_tags['new'] = \PHPWS_Text::moduleLink('Add new property',
-                        'properties',
-                        array('aop' => 'edit_property', 'cid' => $contact_id));
+        $page_tags['new'] = \PHPWS_Text::moduleLink('Add new property', 'properties', array('aop' => 'edit_property', 'cid' => $contact_id));
 
         $pager->setSearch('name', 'company_name');
         $pager->addSortHeader('name', 'Name of property');
@@ -233,11 +289,9 @@ class Admin extends Base {
         $pager->setModule('properties');
         $pager->setTemplate('properties_list.tpl');
         $pager->addRowTags('row_tags');
-        $pager->joinResult('contact_id', 'prop_contacts', 'id', 'company_name',
-                null, true);
+        $pager->joinResult('contact_id', 'prop_contacts', 'id', 'company_name', null, true);
         $pager->addPageTags($page_tags);
         $pager->cacheQueries();
-        $pager->addToggle(' style="background-color : #e3e3e3"');
         $this->content = $pager->get();
     }
 
@@ -256,8 +310,7 @@ class Admin extends Base {
         $db->setGroupBy($id_pc);
 
         $properties = $db->addTable('properties');
-        $exp = new \Database\Expression('count(' . $properties->getField('id') . ')',
-                'properties');
+        $exp = new \Database\Expression('count(' . $properties->getField('id') . ')', 'properties');
         $properties->addField($exp);
         $c2 = $properties->getFieldConditional('contact_id', $id_pc);
         $c3 = $properties->getFieldConditional('active', 0);
@@ -300,8 +353,7 @@ class Admin extends Base {
 
         $tpl = $form->getTemplate();
 
-        $this->content = \PHPWS_Template::process($tpl, 'properties',
-                        'block.tpl');
+        $this->content = \PHPWS_Template::process($tpl, 'properties', 'block.tpl');
     }
 
     private function blockPost()
@@ -357,6 +409,56 @@ class Admin extends Base {
         }
     }
 
+    private function approveContact($id)
+    {
+        $id = (int) $id;
+
+        $db = \Database::newDB();
+        $tbl = $db->addTable('prop_contacts');
+        $tbl->addFieldConditional('id', $id);
+        $tbl->addValue('approved', 1);
+        $db->update();
+
+        $contact = new Contact($id);
+        $vars = array(
+            'username' => $contact->getUsername(),
+            'first_name' => $contact->getFirstName(),
+            'last_name' => $contact->getLastName(),
+            'site_title' => \Layout::getPageTitle(true),
+            'site_address' => \PHPWS_Core::getHomeHttp(true),
+            'email_address' => \PHPWS_Settings::get('properties', 'email')
+        );
+
+        $template = new \Template($vars);
+        $template->setModuleTemplate('properties', 'approvalLetter.html');
+        $content = $template->get();
+        $this->emailInfo('Manager account approved', $content, $contact->getEmailAddress());
+    }
+
+    private function disapproveContact($id)
+    {
+        $id = (int) $id;
+        $contact = new Contact($id);
+
+        $db = \Database::newDB();
+        $tbl = $db->addTable('prop_contacts');
+        $tbl->addFieldConditional('id', $id);
+        $db->delete();
+
+        $vars = array(
+            'first_name' => $contact->getFirstName(),
+            'last_name' => $contact->getLastName(),
+            'site_title' => \Layout::getPageTitle(true),
+            'site_address' => \PHPWS_Core::getHomeHttp(true),
+            'email_address' => \PHPWS_Settings::get('properties', 'email')
+        );
+
+        $template = new \Template($vars);
+        $template->setModuleTemplate('properties', 'disapprovalLetter.html');
+        $content = $template->get();
+        $this->emailInfo('Manager account not approved', $content, $contact->getEmailAddress());
+    }
+
     public function post()
     {
         switch ($_POST['aop']) {
@@ -387,8 +489,7 @@ class Admin extends Base {
                     try {
                         $this->contact->save();
                         if (isset($_POST['contact_contact'])) {
-                            $this->emailContact($this->contact->username,
-                                    $_POST['password'], $_POST['email_address']);
+                            $this->emailContact($this->contact->username, $_POST['password'], $_POST['email_address']);
                         }
                         $this->setCarryMessage('Contact saved successfully.');
                         \PHPWS_Core::reroute('index.php?module=properties&aop=contacts');
@@ -436,6 +537,34 @@ class Admin extends Base {
         $this->display();
     }
 
+    private function emailInfo($subject, $content, $to)
+    {
+        require_once PHPWS_SOURCE_DIR . 'lib/vendor/autoload.php';
+        switch (SWIFT_MAIL_TRANSPORT_TYPE) {
+            case 1:
+                $transport = \Swift_SmtpTransport::newInstance(SWIFT_MAIL_TRANSPORT_PARAMETER);
+                break;
+            case 2:
+                $transport = \Swift_SendmailTransport::newInstance(SWIFT_MAIL_TRANSPORT_PARAMETER);
+                break;
+            case 3:
+                $transport = \Swift_MailTransport::newInstance();
+                break;
+
+            default:
+                throw new \Exception('Wrong Swift Mail transport type');
+        }
+
+        $message = \Swift_Message::newInstance();
+        $message->setSubject($subject);
+        $message->setFrom(\PHPWS_Settings::get('properties', 'email'));
+        $message->setTo($to);
+        $message->setBody($content, 'text/html');
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+        $mailer->send($message);
+    }
+
     private function emailContact($username, $password, $email)
     {
         $subject = 'Property Manager Account';
@@ -461,19 +590,26 @@ EOF;
         $form->addHidden('module', 'properties');
         $form->addHidden('aop', 'post_settings');
 
-        $form->addText('login_link',
-                \PHPWS_Settings::get('properties', 'login_link'));
+        $form->addText('login_link', \PHPWS_Settings::get('properties', 'login_link'));
         $form->setLabel('login_link', 'Alternate authentication link');
+        $form->setClass('login_link', 'form-control');
         $form->setSize('login_link', 30);
 
         $form->addText('email', \PHPWS_Settings::get('properties', 'email'));
         $form->setLabel('email', 'Site email');
-        $form->setSize('email', 30);
+        $form->setClass('email', 'form-control');
+
+        $form->addText('approver_email', \PHPWS_Settings::get('properties', 'approver_email'));
+        $form->setLabel('approver_email', 'Approver email');
+        $form->setClass('approver_email', 'form-control');
 
         $form->addCheck('roommate_only');
-        $form->setMatch('roommate_only',
-                \PHPWS_Settings::get('properties', 'roommate_only'));
+        $form->setMatch('roommate_only', \PHPWS_Settings::get('properties', 'roommate_only'));
         $form->setLabel('roommate_only', 'Only use the roommate functionality');
+
+        $form->addCheckbox('new_user_signup', 1);
+        $form->setMatch('new_user_signup', \PHPWS_Settings::get('properties', 'roommate_only'));
+        $form->setLabel('new_user_signup', 'Allow new manager signup');
 
         $form->addSubmit('Save settings');
 
@@ -487,18 +623,15 @@ EOF;
         }
 
         $this->title = 'Settings';
-        $this->content = \PHPWS_Template::process($tpl, 'properties',
-                        'settings.tpl');
+        $this->content = \PHPWS_Template::process($tpl, 'properties', 'settings.tpl');
     }
 
     private function postSettings()
     {
-        if (!empty($_POST['login_link']) && preg_match('/[^\w\-\?&=:+\/]/',
-                        $_POST['login_link'])) {
+        if (!empty($_POST['login_link']) && preg_match('/[^\w\-\?&=:+\/]/', $_POST['login_link'])) {
             $this->errors['login_link'] = 'Login link had non-url characters';
         } else {
-            \PHPWS_Settings::set('properties', 'login_link',
-                    $_POST['login_link']);
+            \PHPWS_Settings::set('properties', 'login_link', $_POST['login_link']);
         }
 
         if (!\PHPWS_Text::isValidInput($_POST['email'], 'email')) {
@@ -506,9 +639,14 @@ EOF;
         } else {
             \PHPWS_Settings::set('properties', 'email', $_POST['email']);
         }
+        if (!\PHPWS_Text::isValidInput($_POST['approver_email'], 'om'
+                        . 'email')) {
+            $this->errors['approver_email'] = 'Approver email address is empty or malformed.';
+        } else {
+            \PHPWS_Settings::set('properties', 'approver_email', $_POST['approver_email']);
+        }
 
-        \PHPWS_Settings::set('properties', 'roommate_only',
-                (int) isset($_POST['roommate_only']));
+        \PHPWS_Settings::set('properties', 'roommate_only', (int) isset($_POST['roommate_only']));
 
         if (!isset($this->errors)) {
             \PHPWS_Settings::save('properties');
@@ -526,11 +664,7 @@ EOF;
             return;
         }
         \PHPWS_Core::initModClass('properties', 'Contact.php');
-        $page_tags['new'] = \PHPWS_Text::secureLink('<i class="fa fa-plus"></i> Add new contact',
-                        'properties', array('aop' => 'edit_contact'), null,
-                        null, 'btn btn-success');
-
-
+        $page_tags['new'] = \PHPWS_Text::secureLink('<i class="fa fa-plus"></i> Add new contact', 'properties', array('aop' => 'edit_contact'), null, null, 'btn btn-success');
 
         $this->title = 'Contact listing';
 
@@ -538,17 +672,19 @@ EOF;
 
         if (isset($_GET['show']) && $_GET['show'] == 'inactive') {
             $pager->addWhere('active', 0);
-            $page_tags['inactive'] = \PHPWS_Text::secureLink('<i class="fa fa-plus-square-o"></i> All contacts',
-                            'properties',
-                            array('aop' => 'contacts'),
-                            null, null, 'btn btn-default');
+            $page_tags['inactive'] = \PHPWS_Text::secureLink('<i class="fa fa-plus-square-o"></i> All contacts', 'properties', array('aop' => 'contacts'), null, null, 'btn btn-default');
         } else {
-            $page_tags['inactive'] = \PHPWS_Text::secureLink('<i class="fa fa-minus-square-o"></i> Inactive contacts',
-                            'properties',
-                            array('aop' => 'contacts', 'show' => 'inactive'),
-                            null, null, 'btn btn-default');
+            $page_tags['inactive'] = \PHPWS_Text::secureLink('<i class="fa fa-minus-square-o"></i> Inactive contacts', 'properties', array('aop' => 'contacts', 'show' => 'inactive'), null, null, 'btn btn-default');
         }
 
+        if (isset($_GET['private']) && $_GET['private'] == '1') {
+            $pager->addWhere('private', 1);
+            $page_tags['private'] = \PHPWS_Text::secureLink('<i class="fa fa-users"></i> Show all', 'properties', array('aop' => 'contacts'), null, null, 'btn btn-default');
+        } else {
+            $page_tags['private'] = \PHPWS_Text::secureLink('<i class="fa fa-user"></i> Show private only', 'properties', array('aop' => 'contacts', 'private' => '1'), null, null, 'btn btn-default');
+        }
+
+        $pager->addWhere('approved', 1);
         $pager->addSortHeader('company_name', 'Company');
         $pager->addSortHeader('last_name', 'Last, First name');
         $pager->addSortHeader('email_address', 'Email');
@@ -557,12 +693,10 @@ EOF;
         $pager->setTemplate('contact_list.tpl');
         $pager->addRowTags('row_tags');
         $pager->addPageTags($page_tags);
-        $pager->setSearch('company_name', 'first_name', 'last_name',
-                'email_address');
+        $pager->setSearch('company_name', 'first_name', 'last_name', 'email_address');
         $pager->setDefaultLimit(10);
         $pager->setDefaultOrder('company_name');
         $pager->cacheQueries();
-        $pager->addToggle(' style="background-color : #e3e3e3"');
         $this->content = $pager->get();
     }
 
@@ -576,21 +710,17 @@ EOF;
 
         if (!isset($_SESSION['prop_show_blocked'])) {
             $vars['aop'] = 'show_blocked';
-            $tags['BLOCKED'] = \PHPWS_Text::secureLink('Show blocked',
-                            'properties', $vars, null, null, 'btn btn-default');
+            $tags['BLOCKED'] = \PHPWS_Text::secureLink('Show blocked', 'properties', $vars, null, null, 'btn btn-default');
             $pager->db->addWhere('prop_report.block', 0);
         } else {
             $vars['aop'] = 'hide_blocked';
-            $tags['BLOCKED'] = \PHPWS_Text::secureLink('Hide blocked',
-                            'properties', $vars, null, null, 'btn btn-default');
+            $tags['BLOCKED'] = \PHPWS_Text::secureLink('Hide blocked', 'properties', $vars, null, null, 'btn btn-default');
         }
         $pager->addPageTags($tags);
 
         $pager->addSortHeader('date_sent', 'Date reported');
-        $pager->joinResult('message_id', 'prop_messages', 'id', 'body',
-                'message');
-        $pager->db->addJoin('left', 'prop_report', 'prop_messages',
-                'message_id', 'id');
+        $pager->joinResult('message_id', 'prop_messages', 'id', 'body', 'message');
+        $pager->db->addJoin('left', 'prop_report', 'prop_messages', 'message_id', 'id');
 
         $pager->setModule('properties');
         $pager->setTemplate('reported_list.tpl');
@@ -607,6 +737,9 @@ EOF;
 
         $link = array('title' => 'Contacts', 'link' => 'index.php?module=properties&amp;aop=contacts');
         $tabs['contacts'] = $link;
+
+        $link = array('title' => 'Approval', 'link' => 'index.php?module=properties&amp;aop=approve');
+        $tabs['approve'] = $link;
 
         $link = array('title' => 'Reported', 'link' => 'index.php?module=properties&amp;aop=reported');
         $tabs['reported'] = $link;

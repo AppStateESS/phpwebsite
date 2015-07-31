@@ -33,6 +33,9 @@ if (!PHPWS_Settings::get('properties', 'roommate_only')) {
         require_once PHPWS_SOURCE_DIR . 'mod/properties/class/Contact_User.php';
         $form = \Properties\Contact_User::contactForm();
         $tpl = $form->getTemplate();
+        if (\PHPWS_Settings::get('properties', 'new_user_signup')) {
+            $tpl['SIGNUP_LINK'] = '<a href="index.php?module=properties&amp;cop=manager_sign_up">Sign-up for a Manager Account</a>';
+        }
         $content = PHPWS_Template::process($tpl, 'properties', 'clogin.tpl');
         Layout::add($content, 'properties', 'contact_login');
     }
