@@ -62,7 +62,7 @@ class PHPWS_Multimedia extends File_Common
 
     public function getID3()
     {
-        require_once PHPWS_SOURCE_DIR . 'lib/getid3/getid3/getid3.php';
+        require_once PHPWS_SOURCE_DIR . 'lib/vendor/autoload.php';
         $getID3 = new getID3;
 
         // File to get info from
