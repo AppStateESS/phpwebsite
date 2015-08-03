@@ -113,6 +113,10 @@ function properties_update(&$content, $currentVersion)
 </pre>
 EOF;
         case (version_compare($currentVersion, '1.4.0', '<')):
+            if (!is_file(PHPWS_SOURCE_DIR . 'lib/vendor/autoload.php')) {
+                $content[] = 'Composer is not installed. Be sure to run `composer install` in your installation\'s lib directory.';
+                return false;
+            }
             $db = \Database::getDB();
             $t1 = $db->addTable('prop_contacts');
             $dt = $t1->addDataType('private', 'smallint');
