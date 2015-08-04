@@ -31,6 +31,12 @@ function menu_unregister_key(Key $key)
     if (PHPWS_Error::isError($result)) {
         PHPWS_Error::log($result);
     }
+    
+    $db3 = new PHPWS_DB('menus');
+    $db3->addWhere('assoc_key', $key->id);
+    $db3->addValue('assoc_key', 0);
+    $db3->addValue('assoc_url', null);
+    $db3->update();
 
     return true;
 }
