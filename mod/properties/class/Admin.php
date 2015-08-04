@@ -639,8 +639,7 @@ EOF;
         } else {
             \PHPWS_Settings::set('properties', 'email', $_POST['email']);
         }
-        if (!\PHPWS_Text::isValidInput($_POST['approver_email'], 'om'
-                        . 'email')) {
+        if (!\PHPWS_Text::isValidInput($_POST['approver_email'], 'email')) {
             $this->errors['approver_email'] = 'Approver email address is empty or malformed.';
         } else {
             \PHPWS_Settings::set('properties', 'approver_email', $_POST['approver_email']);
