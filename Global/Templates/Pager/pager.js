@@ -105,7 +105,7 @@ function PagerList() {
 
     this.triggerCallback = function()
     {
-        if (this.callback !== undefined && typeof(this.callback) === "function") {
+        if (this.callback !== undefined && typeof (this.callback) === "function") {
             this.callback();
         }
     };
@@ -119,10 +119,8 @@ function PagerList() {
         $('.pager-listing').each(function() {
             var pager = new Pager($(this));
             pager.initialize();
-            if (pager.rows !== undefined) {
-                $this.pagers[pager.id] = pager;
-                $this.pager_ids.push(pager.id);
-            }
+            $this.pagers[pager.id] = pager;
+            $this.pager_ids.push(pager.id);
         });
     };
 
@@ -339,7 +337,7 @@ function Pager(page) {
         $.ajax({
             'url': this.data_url,
             'dataType': 'json',
-            'async': false,
+            //'async': false,
             'data': {
                 'pager_id': $this.id,
                 'sort_by': this.sort_by,
@@ -354,7 +352,7 @@ function Pager(page) {
                  if (data.error !== undefined) {
                  $('body').append('<table>' + data.error.exception.xdebug_message + '</table>');
                  }
-                */
+                 */
                 $this.importContent(data);
                 if ($this.rows !== undefined) {
                     $this.insertContent();
