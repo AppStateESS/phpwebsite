@@ -79,3 +79,19 @@ div#body-content #property-tabs ul {
     margin-top : 6px;
     display:block;
 }
+
+.panel-heading {
+    cursor: pointer;
+}
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family:'FontAwesome';
+    content:"\f056";
+    float: right;
+    color: inherit;
+}
+.panel-heading.collapsed .accordion-toggle:after {
+    /* symbol for "collapsed" panels */
+    content:"\f055";
+}
