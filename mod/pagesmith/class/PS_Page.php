@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PS_Page {
-
+class PS_Page
+{
     public $id = 0;
     public $key_id = 0;
     public $title = null;
@@ -17,6 +17,7 @@ class PS_Page {
     public $page_order = 0;
     public $publish_date;
     public $hide_title = 0;
+    public $deleted = 0;
     public $_tpl = null;
     public $_sections = array();
     public $_updater = null;
@@ -77,8 +78,7 @@ class PS_Page {
         }
 
         if (empty($this->_tpl->structure)) {
-            PHPWS_Error::log(PS_PG_TPL_ERROR, 'pagesmith',
-                    'PS_Page::loadSections', $this->_tpl->file);
+            PHPWS_Error::log(PS_PG_TPL_ERROR, 'pagesmith', 'PS_Page::loadSections', $this->_tpl->file);
             PHPWS_Core::errorPage();
         }
 
@@ -124,16 +124,14 @@ class PS_Page {
             if (!empty($text_sections)) {
                 foreach ($text_sections as $secname => $section) {
                     if (isset($this->_sections[$secname])) {
-                        PHPWS_Core::plugObject($this->_sections[$secname],
-                                $section);
+                        PHPWS_Core::plugObject($this->_sections[$secname], $section);
                         // we don't want smarttags parsed
                         $this->_content[$secname] = $this->_sections[$secname]->getContent(!$form_mode);
                     } elseif (!empty($section['content'])) {
                         $this->_orphans[$secname] = $section;
                     } else {
                         $db = \Database::newDB();
-                        $db->setConditional($db->addTable('ps_text')->getFieldConditional('id',
-                                        $section['id']));
+                        $db->setConditional($db->addTable('ps_text')->getFieldConditional('id', $section['id']));
                         $db->delete();
                     }
                 }
@@ -148,8 +146,7 @@ class PS_Page {
                             $default_h = $this->_sections[$secname]->height;
                         }
 
-                        PHPWS_Core::plugObject($this->_sections[$secname],
-                                $section);
+                        PHPWS_Core::plugObject($this->_sections[$secname], $section);
 
                         if ($this->_sections[$secname]->width && !empty($default_w)) {
                             $this->_sections[$secname]->width = $default_w;
@@ -166,8 +163,7 @@ class PS_Page {
                         $this->_orphans[$secname] = $section;
                     } else {
                         $db = \Database::newDB();
-                        $db->setConditional($db->addTable('ps_block')->getFieldConditional('id',
-                                        $section['id']));
+                        $db->setConditional($db->addTable('ps_block')->getFieldConditional('id', $section['id']));
                         $db->delete();
                     }
                 }
@@ -246,11 +242,9 @@ class PS_Page {
         $vars['id'] = $this->id;
         $vars['aop'] = 'delete_page';
         $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars, true);
-        $js['QUESTION'] = dgettext('pagesmith',
-                'Are you sure you want to delete this page?');
+        $js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
         if ($icon) {
-            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('pagesmith',
-                            'Delete') . '"></i>';
+            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('pagesmith', 'Delete') . '"></i>';
         } else {
             $js['LINK'] = dgettext('pagesmith', 'Delete');
         }
@@ -263,34 +257,27 @@ class PS_Page {
         $vars['aop'] = 'edit_page';
 
         if ($icon) {
-            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith',
-                            'Edit') . '"></i>';
+            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith', 'Edit') . '"></i>';
             return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
         } elseif (empty($label)) {
-            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith',
-                            'Edit') . '"></i> ' . dgettext('pagesmith', 'Edit');
-            return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null,
-                            null, 'btn btn-primary');
+            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith', 'Edit') . '"></i> ' . dgettext('pagesmith', 'Edit');
+            return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null, null, 'btn btn-primary');
         }
     }
 
     public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
-            $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith',
-                            'Remove as front page');
+            $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith', 'Remove as front page');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag" title="%s"></i>',
-                        dgettext('pagesmith', 'Remove as front page'));
+                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', dgettext('pagesmith', 'Remove as front page'));
             }
             $title = dgettext('pagesmith', 'Click to remove as front page');
             $vars['fp'] = 0;
         } else {
-            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith',
-                            'Show as home page');
+            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith', 'Show as home page');
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
-                        dgettext('pagesmith', 'Show as home page'));
+                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>', dgettext('pagesmith', 'Show as home page'));
             }
             $title = dgettext('pagesmith', 'Click to display on front page');
             $vars['fp'] = 1;
@@ -482,8 +469,7 @@ class PS_Page {
     {
         Layout::addStyle('pagesmith');
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
-            MiniAdmin::add('pagesmith',
-                    $this->editLink(dgettext('pagesmith', 'Edit this page')));
+            MiniAdmin::add('pagesmith', $this->editLink(dgettext('pagesmith', 'Edit this page')));
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         $this->loadTemplate();
@@ -502,49 +488,68 @@ class PS_Page {
         $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
 
         if (Current_User::allow('pagesmith') && $this->_key->show_after > time()) {
-            $tpl['SHOW_AFTER'] = t('Page hidden until %s',
-                    strftime('%F %H:%M', $this->_key->show_after));
+            $tpl['SHOW_AFTER'] = t('Page hidden until %s', strftime('%F %H:%M', $this->_key->show_after));
         }
 
-        $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith',
-                        $this->_tpl->page_path . 'page.tpl');
+        $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
         $this->pageLinks($tpl);
         if (PHPWS_Settings::get('pagesmith', 'back_to_top')) {
-            $tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>',
-                    PHPWS_Core::getCurrentUrl(), $anchor_title,
-                    '<i class="fa fa-arrow-circle-up"></i> ' .
+            $tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', PHPWS_Core::getCurrentUrl(), $anchor_title, '<i class="fa fa-arrow-circle-up"></i> ' .
                     dgettext('pagesmith', 'Back to top'));
         }
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
         return $content;
     }
 
-    public function delete()
+    public function restore()
     {
         $db = new PHPWS_DB('ps_page');
         $db->addWhere('id', $this->id);
-        $result = $db->delete();
-        if (PHPWS_Error::logIfError($result)) {
-            return false;
+        $db->addValue('deleted', 0);
+        $result = $db->update();
+        $key = new \Key($this->key_id);
+        $key->active = 1;
+        $key->save();
+    }
+
+    public function delete($permanent = false)
+    {
+        $db = new PHPWS_DB('ps_page');
+        $db->addWhere('id', $this->id);
+
+        if ($permanent) {
+            $result = $db->delete();
+            if (PHPWS_Error::logIfError($result)) {
+                return false;
+            }
+            Key::drop($this->key_id);
+            $db = new PHPWS_DB('ps_text');
+            $db->addWhere('pid', $this->id);
+            $result = $db->delete();
+
+            $db = new PHPWS_DB('ps_block');
+            $db->addWhere('pid', $this->id);
+            $db->delete();
+        } else {
+            $db->addValue('deleted', 1);
+            $db->addValue('last_updated', time());
+            $result = $db->update();
+            if (PHPWS_Error::logIfError($result)) {
+                return false;
+            }
+            $key = new \Key($this->key_id);
+            $key->active = 0;
+            $key->save();
+            $key->unregister();
         }
-        Key::drop($this->key_id);
 
-        $db = new PHPWS_DB('ps_text');
-        $db->addWhere('pid', $this->id);
-        $db->delete();
-
-        $db = new PHPWS_DB('ps_block');
-        $db->addWhere('pid', $this->id);
-        $db->delete();
-
+        $this->removeShortcuts();
         if ($this->parent_page) {
             $db = new PHPWS_DB('ps_page');
             $db->addWhere('parent_page', $this->parent_page);
             $db->addWhere('page_order', $this->page_order, '>');
             PHPWS_Error::logIfError($db->reduceColumn('page_order'));
         }
-
-        $this->removeShortcuts();
 
         return true;
     }
@@ -564,6 +569,7 @@ class PS_Page {
     private function pageLinks(&$tpl)
     {
         $db = new PHPWS_DB('ps_page');
+        $db->addWhere('deleted', 0);
         $db->addColumn('id');
         $db->addColumn('page_order');
         $db->setIndexBy('page_order');
@@ -593,9 +599,7 @@ class PS_Page {
 
         foreach ($pages as $page_no => $id) {
             if ($page_no == 0 && $prev_page) {
-                $link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith',
-                                'Previous'), 'pagesmith',
-                        array('id' => $prev_page));
+                $link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith', 'Previous'), 'pagesmith', array('id' => $prev_page));
                 $links[] = $link->get();
             }
 
@@ -607,8 +611,7 @@ class PS_Page {
                     $next_page = null;
                 }
             } else {
-                $link = new PHPWS_Link($page_no + 1, 'pagesmith',
-                        array('id' => $id));
+                $link = new PHPWS_Link($page_no + 1, 'pagesmith', array('id' => $id));
                 $link->setRewrite();
                 $links[] = $link->get();
             }
@@ -638,6 +641,7 @@ class PS_Page {
     public function getLastPage()
     {
         $db = new PHPWS_DB('ps_page');
+        $db->addWhere('deleted', 0);
         if (!$this->parent_page) {
             $db->addWhere('parent_page', $this->id);
         } else {
@@ -658,6 +662,15 @@ class PS_Page {
     public function setTitle($title)
     {
         $this->title = trim(strip_tags($title, '<em><i><u>'));
+    }
+
+    public static function purgeRows($rows)
+    {
+        $rows['last_updated'] = strftime('%Y/%m/%d %H:%M', $rows['last_updated']);
+        $rows['option'] = '<button class="btn btn-danger purge" data-page-id="' . $rows['id']
+                . '">Purge</button>&nbsp;' . '<button class="btn btn-success restore" data-page-id="'
+                . $rows['id'] . '">Restore</button>';
+        return $rows;
     }
 
 }

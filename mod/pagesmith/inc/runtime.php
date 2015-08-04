@@ -14,6 +14,7 @@ function showFP()
 {
     $db = new PHPWS_DB('ps_page');
     $db->addWhere('front_page', 1);
+    $db->addWhere('deleted', 0);
     Key::restrictView($db, 'pagesmith');
     $db->loadClass('pagesmith', 'PS_Page.php');
     $result = $db->getObjects('PS_Page');

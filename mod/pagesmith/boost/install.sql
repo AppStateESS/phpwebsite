@@ -22,6 +22,7 @@ CREATE TABLE ps_page (
   parent_page int NOT NULL default 0,
   page_order smallint NOT NULL default 0,
   hide_title smallint NOT NULL default 0,
+  deleted smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 

@@ -218,6 +218,7 @@ class PS_Forms
         $pgtags['NEW_PAGE_LINK_TEXT'] = $createText;
 
         $pager = new DBPager('ps_page', 'PS_Page');
+        $pager->addWhere('deleted', 0);
         $pager->cacheQueries();
         $pager->addPageTags($pgtags);
         $pager->setModule('pagesmith');
@@ -243,7 +244,7 @@ class PS_Forms
         if (empty($pager->display_rows)) {
             return null;
         }
-        foreach ($pager->display_rows as $row_id=>$page) {
+        foreach ($pager->display_rows as $row_id => $page) {
             $keys[$page->key_id] = $row_id;
         }
         $db = \Database::newDB();
@@ -400,6 +401,18 @@ class PS_Forms
         $form->mergeTemplate($tpl);
 
         $this->ps->content = PHPWS_Template::process($form->getTemplate(), 'pagesmith', 'settings.tpl');
+    }
+
+    public function purge()
+    {
+        javascript('jquery');
+        $script = PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/purge/script.js';
+        \Pager::prepare();
+        \Layout::addJSHeader("<script type='text/javascript' src='$script'><script>");
+        $template = new \Template;
+        $template->setModuleTemplate('pagesmith', 'purge.html');
+        $this->ps->title = 'Purge deleted pages';
+        $this->ps->content = $template->get();
     }
 
 }

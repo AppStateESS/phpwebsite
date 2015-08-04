@@ -13,8 +13,7 @@ function pagesmith_update(&$content, $currentVersion)
             $content[] = '<pre>';
 
             $db = new PHPWS_DB('ps_page');
-            $result = $db->addTableColumn('front_page',
-                    'smallint NOT NULL default 0');
+            $result = $db->addTableColumn('front_page', 'smallint NOT NULL default 0');
             if (PHPWS_Error::logIfError($result)) {
                 $content[] = "--- Unable to create table column 'front_page' on ps_page table.</pre>";
                 return false;
@@ -97,8 +96,7 @@ function pagesmith_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.0.5', '<'):
             $content[] = '<pre>';
-            pagesmithUpdateFiles(array('templates/page_templates/text_only/page.tpl'),
-                    $content);
+            pagesmithUpdateFiles(array('templates/page_templates/text_only/page.tpl'), $content);
             $content[] = '1.0.5 changes
 ----------------
 + Changed wording on move to front functionality
@@ -150,28 +148,24 @@ function pagesmith_update(&$content, $currentVersion)
             $source_img = PHPWS_SOURCE_DIR . 'mod/pagesmith/img/folder_icons/';
             $local_img = $home_dir . 'images/mod/pagesmith/folder_icons/';
 
-            if (is_dir($backup) || @PHPWS_File::copy_directory($local_tpl,
-                            $backup)) {
+            if (is_dir($backup) || @PHPWS_File::copy_directory($local_tpl, $backup)) {
                 $content[] = '--- Local page templates backed up to: ' . $backup;
             } else {
-                $content[] = sprintf('--- Could not backup directory "%s" to "%s"</pre>',
-                        $local_tpl, $backup);
+                $content[] = sprintf('--- Could not backup directory "%s" to "%s"</pre>', $local_tpl, $backup);
                 return false;
             }
 
             if (PHPWS_File::copy_directory($source_tpl, $local_tpl)) {
                 $content[] = '--- Local page templates updated.';
             } else {
-                $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>',
-                        $source_tpl, $local_tpl);
+                $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>', $source_tpl, $local_tpl);
                 return false;
             }
 
             if (PHPWS_File::copy_directory($source_img, $local_img)) {
                 $content[] = '--- New page template icons copied locally.';
             } else {
-                $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>',
-                        $source_img, $local_img);
+                $content[] = sprintf('--- Could not copy directory "%s" to "%s"</pre>', $source_img, $local_img);
                 return false;
             }
 
@@ -214,24 +208,20 @@ function pagesmith_update(&$content, $currentVersion)
             $db->dropTableColumn('btype');
 
             $db = new PHPWS_DB('ps_page');
-            if (PHPWS_Error::logIfError($db->addTableColumn('parent_page',
-                                    'int NOT NULL default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('parent_page', 'int NOT NULL default 0'))) {
                 $content[] = 'Could not create ps_page.parent_page column.';
                 return false;
             }
 
-            if (PHPWS_Error::logIfError($db->addTableColumn('page_order',
-                                    'smallint NOT NULL default 0'))) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('page_order', 'smallint NOT NULL default 0'))) {
                 $content[] = 'Could not create ps_page.page_order column.';
                 return false;
             }
 
             $db = new PHPWS_DB('ps_text');
 
-            if (PHPWS_DB::getDBType() == 'mysql' ||
-                    PHPWS_DB::getDBType() == 'mysqli') {
-                if (PHPWS_Error::logIfError($db->alterColumnType('content',
-                                        'longtext NOT NULL'))) {
+            if (PHPWS_DB::getDBType() == 'mysql' || PHPWS_DB::getDBType() == 'mysqli') {
+                if (PHPWS_Error::logIfError($db->alterColumnType('content', 'longtext NOT NULL'))) {
                     $content[] = 'Could not alter ps_text.content column.';
                 }
             }
@@ -287,8 +277,7 @@ function pagesmith_update(&$content, $currentVersion)
 
         case version_compare($currentVersion, '1.3.3', '<'):
             $db = new PHPWS_DB('ps_text');
-            if (PHPWS_Error::logIfError($db->alterColumnType('content',
-                                    'longtext'))) {
+            if (PHPWS_Error::logIfError($db->alterColumnType('content', 'longtext'))) {
                 $content[] = 'Could not alter ps_text.content column.';
                 return false;
             } else {
@@ -469,6 +458,20 @@ EOF;
 + Change: New page defaults to Text Only template.
 </pre>
 EOF;
+
+        case version_compare($currentVersion, '1.10.0', '<'):
+            $db = \Database::newDB();
+            $t1 = $db->addTable('ps_page');
+            $dt = $t1->addDatatype('deleted', 'smallint');
+            $dt->setDefault(0);
+            $dt->add();
+            $content[] = <<<EOF
+<pre>
+1.10.0 Changes
+---------------
++ Deleted pages are kept in database
+</pre>
+EOF;
     } // end switch
 
     return true;
@@ -478,11 +481,11 @@ function pagesmithUpdateFiles($files, &$content)
 {
     $result = PHPWS_Boost::updateFiles($files, 'pagesmith', true);
 
-    $content[] = '--- Updated the following files:';
+    $content[] = ' --- Updated the following files:';
     $content[] = "    " . implode("\n    ", $files);
 
     if (is_array($result)) {
-        $content[] = '--- Unable to update the following files:';
+        $content[] = ' --- Unable to update the following files:';
         $content[] = "    " . implode("\n    ", $result);
     }
 

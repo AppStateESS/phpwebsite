@@ -73,8 +73,19 @@ class PageSmith
                         }
                         $this->forms->settings();
                         break;
+
+                    case 'purge':
+                        if (!Current_User::allow('pagesmith', null, null, null, true)) {
+                            Current_User::disallow();
+                        }
+                        $this->forms->purge();
+                        break;
                 }
                 break;
+
+            case 'purge_listing':
+                $this->purgeListing();
+                exit;
 
             case 'edit_page':
                 $this->resetUndoSession(0);
@@ -109,7 +120,7 @@ class PageSmith
                     Current_User::disallow();
                 }
                 $this->loadPage();
-                $this->page->delete();
+                $this->page->delete(false);
                 PHPWS_Cache::clearCache();
                 $this->loadForms();
                 $this->forms->pageList();
@@ -198,6 +209,14 @@ class PageSmith
                 $this->forms->settings();
                 break;
 
+            case 'purgePage':
+                $this->purgePage($_GET['id']);
+                exit;
+
+            case 'restorePage':
+                $this->restorePage($_GET['id']);
+                exit;
+
             default:
                 PHPWS_Core::errorPage('404');
                 break;
@@ -211,6 +230,39 @@ class PageSmith
         } else {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
         }
+    }
+
+    private function purgePage($id)
+    {
+        $id = (int) $id;
+        $page = new PS_Page($id);
+        $page->delete(true);
+    }
+
+    private function restorePage($id)
+    {
+        $id = (int) $id;
+        $page = new PS_Page($id);
+        $page->restore();
+        
+    }
+    
+    private function purgeListing()
+    {
+        $db = \Database::newDB();
+        $pages = $db->addTable('ps_page');
+        $pages->addFieldConditional('deleted', 1);
+
+        $pager = new \DatabasePager($db);
+        $pager->setId('purge-list');
+        $pager->setHeaders(array('title' => 'Title', 'last_updated' => 'Deleted'));
+        $tbl_headers['title'] = $pages->getField('title');
+        $tbl_headers['last_updated'] = $pages->getField('last_updated');
+        $pager->setTableHeaders($tbl_headers);
+        $pager->setCallBack(array('PS_Page', 'purgeRows'));
+
+        $data = $pager->getJson();
+        echo json_encode($data);
     }
 
     private function getTextBlockData($block_id, $page_id, $section_id)
@@ -230,7 +282,7 @@ class PageSmith
     private function removeFromMenu()
     {
         $key_id = $this->page->key_id;
-        
+
         $link = new Menu_Link;
         $db = Database::getDB();
         $t1 = $db->addTable('menu_links');
@@ -242,7 +294,7 @@ class PageSmith
         PHPWS_Core::plugObject($link, $link_result);
         $link->delete();
     }
-    
+
     private function setUndoSession($page_id, $block_id, $content)
     {
         $_SESSION['page_undo'][$page_id][$block_id][] = $content;
@@ -325,6 +377,7 @@ class PageSmith
         $tabs['list'] = array('title' => dgettext('pagesmith', 'List'), 'link' => $link);
         if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'settings')) {
             $tabs['settings'] = array('title' => dgettext('pagesmith', 'Settings'), 'link' => $link);
+            $tabs['purge'] = array('title' => dgettext('pagesmith', 'Purge'), 'link' => $link);
         }
 
         $this->panel->quickSetTabs($tabs);
@@ -460,7 +513,7 @@ class PageSmith
             $this->loadPage();
         }
 
-        if ($this->page->id) {
+        if ($this->page->id && !$this->page->deleted) {
             $this->page->loadKey();
             if ($this->page->_key->allowView()) {
                 $content = $this->page->view();
