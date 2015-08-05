@@ -4,17 +4,17 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 if (PHPWS_Core::atHome()) {
     showFP();
 }
-
 
 function showFP()
 {
     $db = new PHPWS_DB('ps_page');
     $db->addWhere('front_page', 1);
-    $db->addWhere('deleted', 0);
+    if ($db->isTableColumn('deleted')) {
+        $db->addWhere('deleted', 0);
+    }
     Key::restrictView($db, 'pagesmith');
     $db->loadClass('pagesmith', 'PS_Page.php');
     $result = $db->getObjects('PS_Page');
@@ -29,7 +29,6 @@ function showFP()
                 Layout::add($content, 'pagesmith', 'view_' . $page->id, TRUE);
             }
         }
-
     } else {
         return null;
     }
