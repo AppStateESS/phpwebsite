@@ -24,9 +24,9 @@ $settings['fb_url']        = '';
 $settings['width']         = 290;
 $settings['height']        = 590;
 
-$settings['show_header']   = 1;
-$settings['show_border']   = 1;
-$settings['show_stream']   = 1;
+$settings['small_header']   = 0;
+$settings['hide_cover']   = 0;
+$settings['show_posts']   = 1;
 $settings['show_faces']    = 1;
 
 ?>

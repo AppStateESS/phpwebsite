@@ -10,53 +10,53 @@
       </label>
     </div>
   </div>
-  
+
   <div class="control-group">
     <label class="control-label" for="{DEFAULT_THEME_ID}">{FB_URL_LABEL_TEXT}</label>
     <div class="controls">
       {FB_URL}
     </div>
   </div>
-  
+
   <div class="control-group">
     <label class="control-label" for="{DEFAULT_THEME_ID}">{WIDTH_LABEL_TEXT}</label>
     <div class="controls">
       {WIDTH}
     </div>
   </div>
-  
+
   <div class="control-group">
     <label class="control-label" for="{DEFAULT_THEME_ID}">{HEIGHT_LABEL_TEXT}</label>
     <div class="controls">
       {HEIGHT}
     </div>
   </div>
-  
+
   <div class="control-group">
     <div class="controls">
       <label class="checkbox">
-        {SHOW_HEADER} {SHOW_HEADER_LABEL_TEXT}
+        {SMALL_HEADER} {SMALL_HEADER_LABEL_TEXT}
       </label>
       <span class="help-block">(i.e. "Find us on Facebook" header bar)</span>
     </div>
   </div>
-  
+
   <div class="control-group">
     <div class="controls">
       <label class="checkbox">
-        {SHOW_BORDER} {SHOW_BORDER_LABEL_TEXT}
+        {HIDE_COVER} {HIDE_COVER_LABEL_TEXT}
       </label>
     </div>
   </div>
-  
+
   <div class="control-group">
     <div class="controls">
       <label class="checkbox">
-        {SHOW_STREAM} {SHOW_STREAM_LABEL_TEXT}
+        {SHOW_POSTS} {SHOW_POSTS_LABEL_TEXT}
       </label>
     </div>
   </div>
-  
+
   <div class="control-group">
     <div class="controls">
       <label class="checkbox">
