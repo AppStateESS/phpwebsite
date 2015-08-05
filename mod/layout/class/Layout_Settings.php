@@ -27,7 +27,6 @@ class Layout_Settings {
     public $_contentVars     = array();
     public $_boxes           = array();
     public $_box_order       = array();
-    public $_move_box        = false;
     public $_theme_variables = null;
     public $_default_box     = null;
     public $_style_sheets    = null;
@@ -114,11 +113,6 @@ class Layout_Settings {
     public function isContentVar($module, $contentVar)
     {
         return in_array($module . '_' . $contentVar, $this->_contentVars);
-    }
-
-    public function isMoveBox()
-    {
-        return (bool)$this->_move_box;
     }
 
     public function loadBoxes()
@@ -267,7 +261,6 @@ class Layout_Settings {
         unset($vars['_contentVars']);
         unset($vars['_boxes']);
         unset($vars['_box_order']);
-        unset($vars['_move_box']);
         unset($vars['_theme_variables']);
         unset($vars['_default_box']);
         unset($vars['_style_sheets']);

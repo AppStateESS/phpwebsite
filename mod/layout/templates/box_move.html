@@ -1,0 +1,20 @@
+<?php
+    foreach ($rows as $theme_var=>$content_vars):
+?>
+            <div class="panel panel-default" id='<?=$theme_var?>' style='float:left;width:40%;margin-right:5%'>
+                <div class="panel-heading"><?=$theme_var?></div>
+                <div class="panel-body">
+<?php    
+        if (isset($content_vars)){foreach ($content_vars as $cvar):
+?>
+<p style="font-size:.9em">Move <strong><?=$cvar['name']?></strong>
+    <select class="form-control move-box" data-id="<?=$cvar['id']?>"><?=$move_select?></p>
+<?php
+        endforeach;} else { echo '<p class="sans"><em>Empty</em></p>';}
+?>
+                </div>
+            </div>
+<?php
+    endforeach;
+?>
+<div style="clear:both"></div>

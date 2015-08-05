@@ -19,7 +19,7 @@ class Layout_Admin
             Current_User::disallow();
         }
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        $title=$content = null;
+        $title = $content = null;
         $panel = Layout_Admin::adminPanel();
 
         if (isset($_REQUEST['command'])) {
@@ -32,11 +32,6 @@ class Layout_Admin
             case 'arrange':
                 $title = dgettext('layout', 'Arrange Layout');
                 $content[] = Layout_Admin::arrangeForm();
-                break;
-
-            case 'turn_off_box_move':
-                Layout::moveBoxes(false);
-                PHPWS_Core::goBack();
                 break;
 
             case 'post_style_change':
@@ -54,22 +49,6 @@ class Layout_Admin
                 Layout::resetDefaultBoxes();
                 unset($_SESSION['Layout_Settings']);
                 PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
-                break;
-
-            case 'move_boxes_on':
-                if (!Current_User::authorized('layout')) {
-                    Current_User::disallow();
-                }
-                Layout::moveBoxes(true);
-                PHPWS_Core::goBack();
-                break;
-
-            case 'move_boxes_off':
-                if (!Current_User::authorized('layout')) {
-                    Current_User::disallow();
-                }
-                Layout::moveBoxes(false);
-                PHPWS_Core::goBack();
                 break;
 
             case 'confirmThemeChange':
@@ -117,6 +96,7 @@ class Layout_Admin
             case 'moveBox':
                 $result = Layout_Admin::moveBox();
                 PHPWS_Error::logIfError($result);
+                exit;
                 javascript('close_refresh');
                 Layout::nakedDisplay();
                 break;
@@ -187,12 +167,9 @@ class Layout_Admin
                 Layout::nakedDisplay($content, dgettext('layout', 'Set meta tags'));
                 break;
 
-            case 'move_popup':
-                if (!Current_User::authorized('layout')) {
-                    Current_User::disallow();
-                }
-                Layout_Admin::moveBoxMenu();
-                break;
+            case 'boxMoveForm':
+                self::boxMoveForm();
+                exit;
         }
 
         $template['TITLE'] = $title;
@@ -293,19 +270,12 @@ class Layout_Admin
     public static function arrangeForm()
     {
         $vars['action'] = 'admin';
+
+        $template['MOVE_BOXES'] = '<button class="btn btn-primary" id="move-boxes">Move boxes</button>';
+        $template['MOVE_BOXES_DESC'] = dgettext('layout', 'Allows you to shift content to other area of your layout. Movement options depend on the current theme.');
+
         $vars['command'] = 'reset_boxes';
         $template['RESET_BOXES'] = PHPWS_Text::secureLink(dgettext('layout', 'Reset boxes'), 'layout', $vars, null, null, 'btn btn-primary');
-
-        if (Layout::isMoveBox()) {
-            $vars['command'] = 'move_boxes_off';
-            $label = dgettext('layout', 'Disable box move');
-        } else {
-            $vars['command'] = 'move_boxes_on';
-            $label = dgettext('layout', 'Enable box move');
-        }
-
-        $template['MOVE_BOXES'] = PHPWS_Text::secureLink($label, 'layout', $vars, null, null, 'btn btn-primary');
-        $template['MOVE_BOXES_DESC'] = dgettext('layout', 'When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme.');
         $template['RESET_DESC'] = dgettext('layout', 'Resets all content back to its original location. Use if problems with Box Move occurred.');
 
         $vars['command'] = 'clear_templates';
@@ -316,7 +286,55 @@ class Layout_Admin
         $template['CLEAR_CACHE'] = PHPWS_Text::secureLink(dgettext('layout', 'Clear cache'), 'layout', $vars, null, null, 'btn btn-primary');
         $template['CLEAR_CACHE_DESC'] = dgettext('layout', 'Clears all Cache Lite files. Good to try if module updates do not display.');
 
+        javascript('jquery');
+        $script = '<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/layout/javascript/move_boxes.js"></script>';
+        \Layout::addJSHeader($script, 'moveboxes');
+        $modal = new \Modal('box-move', '', 'Move boxes');
+        $modal->sizeLarge();
+
+        $template['MODAL'] = $modal->get();
         return PHPWS_Template::process($template, 'layout', 'arrange.tpl');
+    }
+
+    private static function boxMoveForm()
+    {
+        $current_theme = \Layout::getCurrentTheme();
+
+        $db = \Database::getDB();
+        $tbl = $db->addTable('layout_box');
+        $tbl->addFieldConditional('theme', $current_theme);
+        $tbl->addFieldConditional('active', 1);
+        $tbl->addOrderBy('theme_var');
+        $tbl->addOrderBy('box_order');
+
+        $boxes = $db->select();
+
+        $theme_vars = $_SESSION['Layout_Settings']->_allowed_move;
+
+        $move_select = '<optgroup label="Shift within current variable">'
+                . '<option>Click below to move this block</option>'
+                . '<option value="move_box_top">Top</option>'
+                . '<option value="move_box_up">Up</option>'
+                . '<option value="move_box_down">Down</option>'
+                . '<option value="move_box_bottom">Bottom</option>'
+                . '</optgroup>'
+                . '<optgroup label="Move to theme variable">';
+        foreach ($theme_vars as $tv) {
+            $listing[$tv] = null;
+            $move_select .= "<option>$tv</option>";
+        }
+        $move_select .= '</optgroup></select>';
+
+        foreach ($boxes as $box) {
+            $box_name = $box['module'] . ':' . $box['content_var'];
+            $listing[$box['theme_var']][$box['box_order']] = array('id' => $box['id'], 'name' => $box_name);
+        }
+        //var_dump($listing);exit;
+        $template = new \Template(array('rows' => $listing, 'move_select' => $move_select));
+        $template->setModuleTemplate('layout', 'box_move.html');
+
+        echo $template->get();
+        exit;
     }
 
     public static function changeTheme()
@@ -469,9 +487,9 @@ class Layout_Admin
         $values['meta_robots'] = $index . $follow;
 
         if (isset($_POST['key_id'])) {
-            $key_id = (int)$_POST['key_id'];
+            $key_id = (int) $_POST['key_id'];
         }
-        
+
         if (isset($key_id)) {
             $values['key_id'] = $key_id;
             $db = new PHPWS_DB('layout_metatags');
@@ -495,52 +513,6 @@ class Layout_Admin
         $content = Layout_Admin::metaForm($key_id);
         return $content;
     }
-
-    public static function moveBoxMenu()
-    {
-        $box = new Layout_Box($_GET['box']);
-        $vars['action'] = 'admin';
-        $vars['command'] = 'moveBox';
-        $vars['box_source'] = $box->id;
-
-        $vars['box_dest'] = 'move_box_top';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to top'), 'layout', $vars);
-
-        $vars['box_dest'] = 'move_box_up';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move up'), 'layout', $vars);
-
-        $vars['box_dest'] = 'move_box_down';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move down'), 'layout', $vars);
-
-        $vars['box_dest'] = 'move_box_bottom';
-        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to bottom'), 'layout', $vars);
-
-        if (Current_User::isDeity() && !$_SESSION['Layout_Settings']->deity_reload) {
-            $_SESSION['Layout_Settings']->loadSettings();
-        }
-
-        $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
-
-        foreach ($themeVars as $var) {
-            if ($box->theme_var == $var) {
-                continue;
-            }
-            $vars['box_dest'] = $var;
-            $theme_links[] = PHPWS_Text::secureLink(sprintf(dgettext('layout', 'Send to %s'), $var), 'layout', $vars);
-        }
-
-        $vars['box_dest'] = 'restore';
-        $template['RESTORE'] = PHPWS_Text::secureLink(dgettext('layout', 'Restore to default'), 'layout', $vars);
-
-        $template['STEP_LINKS'] = implode('<br>', $step_links);
-        $template['THEME_LINKS'] = implode('<br>', $theme_links);
-        $template['CANCEL'] = sprintf('<a href="." onclick="window.close()">%s</a>', dgettext('layout', 'Cancel'));
-        $template['TITLE'] = sprintf(dgettext('layout', 'Move box: %s'), $box->content_var);
-
-        $content = PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
-        Layout::nakedDisplay($content);
-    }
-
 }
 
 ?>

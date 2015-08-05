@@ -16,3 +16,4 @@
         <td>{CLEAR_CACHE_DESC}</td>
     </tr>
 </table>
+{MODAL}

@@ -400,11 +400,7 @@ class Layout
             foreach ($themeVarList as $theme_var) {
                 ksort($unsortedLayout[$theme_var]);
                 $upper_theme_var = strtoupper($theme_var);
-                if (Layout::isMoveBox() && !isset($GLOBALS['Layout_Plugs'][$theme_var])) {
-                    $bodyLayout[$upper_theme_var] = $theme_var . '' . implode('', $unsortedLayout[$theme_var]);
-                } else {
-                    $bodyLayout[$upper_theme_var] = implode('', $unsortedLayout[$theme_var]);
-                }
+                $bodyLayout[$upper_theme_var] = implode('', $unsortedLayout[$theme_var]);
             }
 
             Layout::loadHeaderTags($bodyLayout);
@@ -462,15 +458,6 @@ class Layout
             foreach ($content as $contentVar => $contentList) {
                 if (empty($contentList) || !is_array($contentList)) {
                     continue;
-                }
-                if (Layout::isMoveBox()) {
-                    $box = Layout::getBox($module, $contentVar);
-                    // the _MAIN content variable will return an empty box
-                    // This is the BODY tag which cannot be moved
-                    if (!empty($box)) {
-                        array_unshift($contentList, Layout::moveBoxesTag($box));
-                        //                        $contentList[] = Layout::moveBoxesTag($box);
-                    }
                 }
                 $list[$module][$contentVar] = implode('', $contentList);
             }
@@ -693,11 +680,6 @@ class Layout
         return "themes/$themeDir/";
     }
 
-    public static function isMoveBox()
-    {
-        return $_SESSION['Layout_Settings']->isMoveBox();
-    }
-
     /*
      * Loads a javascript file into the header of the theme.
      *
@@ -782,11 +764,6 @@ class Layout
         return $tpl;
     }
 
-    public static function moveBoxes($key)
-    {
-        $_SESSION['Layout_Settings']->_move_box = (bool) $key;
-    }
-
     public static function reset($theme = null)
     {
         if ($theme) {
@@ -836,55 +813,6 @@ class Layout
 
         $GLOBALS['Layout'][$module][$contentVar] = NULL;
         Layout::add($text, $module, $contentVar);
-    }
-
-    public static function miniLinks()
-    {
-        $vars['action'] = 'admin';
-        if (Layout::isMoveBox()) {
-            $vars['command'] = 'turn_off_box_move';
-            $links[] = PHPWS_Text::moduleLink('<i class="fa fa-toggle-on"></i> ' . dgettext('layout', 'Turn box move off'), 'layout', $vars);
-        } else {
-            $vars['command'] = 'move_boxes_on';
-            $links[] = PHPWS_Text::secureLink('<i class="fa fa-toggle-off"></i> ' . dgettext('layout', 'Turn box move on'), 'layout', $vars);
-        }
-
-        unset($vars['command']);
-        $vars['tab'] = 'meta';
-        $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i> ' . dgettext('layout', 'Change Website Title'), 'layout', $vars);
-
-        $key = Key::getCurrent();
-        if (javascriptEnabled() && Layout::getExtraStyles() && Key::checkKey($key)) {
-
-            $js_vars['width'] = 400;
-            $js_vars['height'] = 200;
-            $vars['key_id'] = $key->id;
-            $vars['action'] = 'admin';
-
-            $js_vars['label'] = '<i class="fa fa-paint-brush"></i> ' . dgettext('layout', 'Change style');
-            $vars['command'] = 'js_style_change';
-
-            $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
-            $links[] = javascript('open_window', $js_vars);
-
-            if (!$key->isHomeKey()) {
-                $js_vars['height'] = 400;
-                $js_vars['label'] = dgettext('layout', 'Meta tags');
-                $vars['command'] = 'page_meta_tags';
-                $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
-                $links[] = javascript('open_window', $js_vars);
-            }
-        }
-
-        if (!isset($links)) {
-            return;
-        }
-
-        MiniAdmin::add('layout', $links);
-
-        // MiniAdmin runs get before layout and runtime won't work
-        // with flagged keys
-        MiniAdmin::get();
     }
 
     public static function styleLink($link, $header = FALSE)
@@ -1087,25 +1015,6 @@ class Layout
         }
 
         return TRUE;
-    }
-
-    /**
-     * Makes a select form option to move boxes to other parts
-     * of the layout
-     */
-    public static function moveBoxesTag($box)
-    {
-        $vars['action'] = 'admin';
-        $vars['command'] = 'move_popup';
-        $vars['box'] = $box->id;
-
-        $js['width'] = 300;
-        $js['height'] = 400;
-        $js['address'] = PHPWS_Text::linkAddress('layout', $vars, true);
-        $js['label'] = '-' . dgettext('layout', 'Click to move') . '-';
-        $js['class'] = 'move-popup';
-        // Relative because bootstrap breaks z-index without it. z-index to keep to top
-        return '<div style="position:relative; z-index: 1000 !important; text-align : center">' . javascript('open_window', $js) . '</div>';
     }
 
     /**

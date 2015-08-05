@@ -6,7 +6,10 @@
 
 Layout::checkSettings();
 
+/*
 if (Current_User::allow('layout')) {
     Layout::miniLinks();
 }
+ * 
+ */
 ?>
