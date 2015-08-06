@@ -75,7 +75,12 @@ class Contact_User extends Base
                 break;
 
             case 'submitManagerApplication':
-                $this->submitManagerApplication();
+                if (!\PHPWS_Settings::get('properties', 'new_user_signup')) {
+                    $this->title = 'Sorry';
+                    $this->content = '<p>New manager sign ups are not permitted at this time.</p>';
+                } else {
+                    $this->submitManagerApplication();
+                }
                 break;
 
             case 'save_property':
@@ -93,10 +98,6 @@ class Contact_User extends Base
                 } else {
                     $this->editProperty($this->contact->id);
                 }
-                break;
-
-            case 'manager_sign_up':
-                $this->newManagerSignup();
                 break;
 
             case 'save_contact':
@@ -350,7 +351,12 @@ EOF;
                 break;
 
             case 'manager_sign_up':
-                $this->newManagerSetup();
+                if (!\PHPWS_Settings::get('properties', 'new_user_signup')) {
+                    $this->title = 'Sorry';
+                    $this->content = '<p>New manager sign ups are not permitted at this time.</p>';
+                } else {
+                    $this->newManagerSetup();
+                }
                 break;
 
             case 'edit_property':
