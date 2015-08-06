@@ -38,39 +38,39 @@ class LikeboxView {
             }
         }
         */
-        
+
         if ($this->settings->get('enabled') === true) {
             return;
         }
-        
+
         $tpl['fb_url'] = $this->settings->get('fb_url');
         $tpl['width']  = $this->settings->get('width');
         $tpl['height'] = $this->settings->get('height');
-        
-        if($this->settings->get('show_header') == 1) {
-            $tpl['show_header'] = 'true';
+
+        if($this->settings->get('small_header') == 1) {
+            $tpl['small_header'] = 'true';
         } else {
-            $tpl['show_header'] = 'false';
+            $tpl['small_header'] = 'false';
         }
-        
-        if ($this->settings->get('show_border') == 1) {
-            $tpl['show_border'] = 'true';
+
+        if ($this->settings->get('hide_cover') == 1) {
+            $tpl['hide_cover'] = 'true';
         } else {
-            $tpl['show_border'] = 'false';
+            $tpl['hide_cover'] = 'false';
         }
-        
-        if ($this->settings->get('show_stream') == 1) {
-            $tpl['show_stream'] = 'true';
+
+        if ($this->settings->get('show_posts') == 1) {
+            $tpl['show_posts'] = 'true';
         } else {
-            $tpl['show_stream'] = 'false';
+            $tpl['show_posts'] = 'false';
         }
-        
+
         if ($this->settings->get('show_faces') == 1) {
             $tpl['show_faces'] = 'true';
         } else {
             $tpl['show_faces'] = 'false';
         }
-        
+
         $content = PHPWS_Template::process($tpl, 'likebox', 'likebox.tpl');
 
         Layout::add($content, 'likebox', 'DEFAULT');

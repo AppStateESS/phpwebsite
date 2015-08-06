@@ -36,21 +36,21 @@ PHPWS_Core::initModClass('likebox', 'SettingsView.php');
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){
     // save the settings
     $settings = LikeboxSettings::getInstance();
-    
+
     $inputSettings['enabled']     = $_POST['enabled'];
-    
-    $inputSettings['show_header'] = $_POST['show_header'];
-    $inputSettings['show_border'] = $_POST['show_border'];
-    $inputSettings['show_stream'] = $_POST['show_stream'];
+
+    $inputSettings['small_header'] = $_POST['small_header'];
+    $inputSettings['hide_cover'] = $_POST['hide_cover'];
+    $inputSettings['show_posts'] = $_POST['show_posts'];
     $inputSettings['show_faces']  = $_POST['show_faces'];
 
     // Save the text fields
     $settings->set('fb_url', $_POST['fb_url']);
     $settings->set('width', $_POST['width']);
     $settings->set('height', $_POST['height']);
-    
+
     // A simple loop to set all the checkbox fields
-    $checkBoxes = array('enabled', 'show_header', 'show_border', 'show_stream', 'show_faces');
+    $checkBoxes = array('enabled', 'small_header', 'hide_cover', 'show_posts', 'show_faces');
     foreach($checkBoxes as $key){
         if(isset($inputSettings[$key])){
             $settings->set($key, 1);
@@ -58,7 +58,7 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){
             $settings->set($key, 0);
         }
     }
-    
+
     // redirect to the 'show settings' page, with a success message
     header('HTTP/1.1 303 See Other');
     header("Location: index.php?module=likebox&action=ShowSettings");

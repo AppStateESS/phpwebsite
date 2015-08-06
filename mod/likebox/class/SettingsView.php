@@ -41,25 +41,26 @@ class SettingsView {
         $form->setLabel('height', 'Height');
 
         // Show header bar i.e. "Find us on Facebook"
-        $form->addCheck('show_header', 'show_header');
-        $form->setLabel('show_header', 'Show header');
+        $form->addCheck('small_header', 'small_header');
+        $form->setLabel('small_header', 'Use Small header');
 
         // Show border
-        $form->addCheck('show_border', 'show_border');
-        $form->setLabel('show_border', 'Show border');
+        $form->addCheck('hide_cover', 'hide_cover');
+        $form->setLabel('hide_cover', 'Hide Cover Photo');
 
         // Show stream
-        $form->addCheck('show_stream', 'show_stream');
-        $form->setLabel('show_stream', 'Show stream');
+        $form->addCheck('show_posts', 'show_posts');
+        $form->setLabel('show_posts', 'Show Page Posts');
 
         // Show faces
         $form->addCheck('show_faces', 'show_faces');
-        $form->setLabel('show_faces', 'Show faces');
+        $form->setLabel('show_faces', 'Show Friend\'s faces');
 
         // Submit button
         $form->addSubmit('submit', 'Submit');
 
-        $checkBoxes = array('enabled', 'show_header', 'show_border', 'show_stream', 'show_faces');
+        $checkBoxes = array('enabled', 'small_header', 'hide_cover', 'show_posts', 'show_faces');
+
         foreach($checkBoxes as $key){
             $value = $this->settings->get($key);
             if(isset($value) && $value == 1){
