@@ -167,6 +167,21 @@ function PagerList() {
         });
     };
 
+    this.rowsPerPageChange = function()
+    {
+        $('.pager-rpp').change(function(e) {
+            var pager_id = $(this).parents('.pager-listing', this).attr('id');
+            var rpp = e.target.value;
+            $this.setCurrentRowsPerPage(pager_id, rpp);
+            $this.setCurrentPage(pager_id, 1);
+            $this.processData(pager_id);
+            hasher.setValue(pager_id, 'rpp', rpp);
+            hasher.setValue(pager_id, 'cp', 1);
+            hasher.encode();
+        });
+    }
+
+
     this.searchClick = function() {
         $this = this;
         var pager_id = '';
@@ -223,6 +238,10 @@ function PagerList() {
 
     this.setCurrentPage = function(pager_id, current_page) {
         this.pagers[pager_id].setCurrentPage(current_page);
+    };
+    
+    this.setCurrentRowsPerPage = function (pager_id, rows_per_page) {
+        this.pagers[pager_id].setCurrentRowsPerPage(rows_per_page);
     };
 
     this.setSort = function(pager_id, column_name, direction) {
@@ -359,6 +378,7 @@ function Pager(page) {
                 }
                 Pagers.sortHeaderClick();
                 Pagers.pageChangeClick();
+                Pagers.rowsPerPageChange();
                 Pagers.searchClick();
                 Pagers.triggerCallback();
             }
@@ -369,6 +389,7 @@ function Pager(page) {
     this.importContent = function(data) {
         this.rows = data.rows;
         this.page_listing = data.page_listing;
+        this.page_limit = data.page_limit;
         this.search_box = data.pager_search;
         this.headers = data.headers;
         this.row_id_column = data.row_id_column;
@@ -377,6 +398,11 @@ function Pager(page) {
     this.setCurrentPage = function(current_page)
     {
         this.current_page = current_page;
+    };
+    
+    this.setCurrentRowsPerPage = function (rows_per_page)
+    {
+        this.rows_per_page = rows_per_page;
     };
 
     this.clearRows = function()
@@ -413,7 +439,8 @@ function Pager(page) {
             }
             $('.pager-body').append(new_row.outerHTML());
         });
-        $('#page-list', this.page).html(this.page_listing);
+        $('.page-list, #page-list', this.page).html(this.page_listing);
+        $('.page-limit', this.page).html(this.page_limit);
         $('.pager-search', this.page).html(this.search_box);
         this.fillHeader();
     };

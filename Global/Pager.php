@@ -477,6 +477,7 @@ class Pager
         $data['current_page'] = $this->current_page;
         $data['rows_per_page'] = $this->rows_per_page;
         $data['page_listing'] = $this->getPageListing();
+        $data['page_limit'] = $this->getPageLimit();
         $data['search_column'] = $this->search_column;
         $data['pager_search'] = $this->getPageSearch();
         $data['row_id_column'] = $this->row_id_column;
@@ -593,6 +594,25 @@ EOF;
     public function setPreviousPageMarker($marker)
     {
         $this->prev_page_marker = $marker;
+    }
+
+    public function getPageLimit()
+    {
+        $rows_per_page = $this->rows_per_page;
+        
+        $limits[] = 10;
+        $limits[] = 25;
+        $limits[] = 50;
+        $limits[] = 100;
+
+        $content[] = '<div class="form-inline"><div class="form-group"><label>Rows per page: <select class="pager-rpp form-control"></label></div></div>';
+        foreach ($limits as $val) {
+            $selected = $rows_per_page == $val ? 'selected' : null;
+            $content[] = "<option $selected>$val</option>\n";
+        }
+        $content[] = '</select>';
+
+        return implode("\n", $content);
     }
 
     public function getPageListing()
