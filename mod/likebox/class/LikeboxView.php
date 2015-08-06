@@ -73,7 +73,7 @@ class LikeboxView {
 
         $content = PHPWS_Template::process($tpl, 'likebox', 'likebox.tpl');
 
-        Layout::add($content, 'likebox', 'DEFAULT');
+        Layout::add($content, 'likebox', 'view');
     }
 }
 ?>
