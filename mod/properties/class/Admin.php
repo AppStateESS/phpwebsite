@@ -608,7 +608,7 @@ EOF;
         $form->setLabel('roommate_only', 'Only use the roommate functionality');
 
         $form->addCheckbox('new_user_signup', 1);
-        $form->setMatch('new_user_signup', \PHPWS_Settings::get('properties', 'roommate_only'));
+        $form->setMatch('new_user_signup', \PHPWS_Settings::get('properties', 'new_user_signup'));
         $form->setLabel('new_user_signup', 'Allow new manager signup');
 
         $form->addSubmit('Save settings');
@@ -646,7 +646,7 @@ EOF;
         }
 
         \PHPWS_Settings::set('properties', 'roommate_only', (int) isset($_POST['roommate_only']));
-
+        \PHPWS_Settings::set('properties', 'new_user_signup', (int) isset($_POST['new_user_signup']));
         if (!isset($this->errors)) {
             \PHPWS_Settings::save('properties');
             return true;
