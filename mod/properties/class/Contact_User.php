@@ -75,7 +75,7 @@ class Contact_User extends Base
                 break;
 
             case 'submitManagerApplication':
-                if (!\PHPWS_Settings::get('properties', 'new_user_signup')) {
+                if (!self::allowNewUserSignup()) {
                     $this->title = 'Sorry';
                     $this->content = '<p>New manager sign ups are not permitted at this time.</p>';
                 } else {
@@ -351,7 +351,7 @@ EOF;
                 break;
 
             case 'manager_sign_up':
-                if (!\PHPWS_Settings::get('properties', 'new_user_signup')) {
+                if (!self::allowNewUserSignup()) {
                     $this->title = 'Sorry';
                     $this->content = '<p>New manager sign ups are not permitted at this time.</p>';
                 } else {
@@ -434,10 +434,36 @@ EOF;
             case 'checkUsername':
                 $this->checkUsername();
                 exit;
+                
+            case 'checkEmail':
+                $this->checkEmail();
+                exit;
         }
         $this->display();
     }
 
+    private function checkEmail()
+    {
+        $request = \Server::getCurrentRequest();
+
+        if (!$request->isVar('email')) {
+            throw new \Http\NotAcceptableException('No email address submitted');
+        }
+
+        $email = trim($request->getVar('email'));
+        
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(array('result' => 'invalid'));
+            exit;
+        }
+        
+        $db = \Database::getDB();
+        $t1 = $db->addTable('prop_contacts');
+        $t1->addFieldConditional('email_address', $email);
+        $result = $db->selectOneRow();
+        echo json_encode(array('result' => $result ? 'bad' : 'good'));
+    }
+    
     private function checkUsername()
     {
         $request = \Server::getCurrentRequest();
@@ -462,6 +488,11 @@ EOF;
         $tpl['MESSAGE'] = $this->message;
         $final_content = \PHPWS_Template::process($tpl, 'properties', 'admin.tpl');
         \Layout::add($final_content);
+    }
+
+    public static function allowNewUserSignup()
+    {
+        return \PHPWS_Settings::get('properties', 'new_user_signup') && strlen(\PHPWS_Settings::get('properties', 'email')) && strlen(\PHPWS_Settings::get('properties', 'approver_email'));
     }
 
 }

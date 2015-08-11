@@ -112,7 +112,6 @@ var Username = React.createClass({
     getInitialState: function() {
         return {
             waiting: false,
-            duplicate : false,
             error : false,
             message: null,
             accepted: false
@@ -436,10 +435,9 @@ var ContactInfo = React.createClass({
         });
     },
 
-    emailStatus : function (e) {
-        var value = e.target.value;
+    emailStatus : function (status) {
         this.setState({
-            emailStatus : value.length > 0
+            emailStatus : status
         });
     },
 
@@ -469,7 +467,7 @@ var ContactInfo = React.createClass({
                 </div>
                 <div className="row">
                     <div className="col-sm-6">
-                        <TextInput label={'Email address'} inputId={'emailAddress'} required={true} handleBlur={this.emailStatus}/>
+                        <Email status={this.emailStatus}/>
                     </div>
                     <div className="col-sm-6">
                         <TextInput label={'Phone number'} inputId={'phoneNumber'} required={true} handleBlur={this.phoneStatus}/>
@@ -481,6 +479,71 @@ var ContactInfo = React.createClass({
     }
 });
 
+var Email = React.createClass({
+
+    getInitialState: function() {
+        return {
+            waiting: false,
+            error : false,
+            message: null
+        };
+    },
+
+    handleBlur : function() {
+        var email = event.target.value;
+
+        this.setState({
+            waiting : true,
+        });
+
+        $.getJSON('index.php', {
+            module: 'properties',
+            cop : 'checkEmail',
+            email : email
+        }).done(function(data){
+            if (data.result == 'invalid') {
+                this.setState({
+                    error: true,
+                    waiting: false,
+                    message: 'This appears to be an invalid email address'
+                });
+                this.props.status(false);
+            } else if (data.result == 'bad') {
+                this.setState({
+                    error: true,
+                    waiting: false,
+                    message: 'Sorry, this address is already in use.'
+                });
+                this.props.status(false);
+            } else if (data.result == 'good') {
+                this.setState({
+                    error: false,
+                    waiting: false,
+                    message: null
+                });
+                this.props.status(true);
+            }
+        }.bind(this));
+
+    },
+
+    render : function() {
+        var status;
+
+        if (this.state.waiting) {
+            status = <div><i className="fa fa-lg fa-spinner fa-spin"></i> Checking email address...</div>;
+        } else if (this.state.error) {
+            status = <div className="alert alert-danger"><i className="fa fa-lg fa-exclamation-circle"></i> {this.state.message}</div>;
+        }
+
+        return (
+            <div>
+                <TextInput label={'Email address'} inputId={'emailAddress'} required={true} handleBlur={this.handleBlur}/>
+                {status}
+            </div>
+        );
+    }
+});
 
 var TextInput = React.createClass({
     getDefaultProps: function() {

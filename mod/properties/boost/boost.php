@@ -19,7 +19,7 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 $proper_name  = 'Properties';
-$version      = '1.4.0';
+$version      = '1.4.1';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;

@@ -112,7 +112,6 @@ var Username = React.createClass({displayName: "Username",
     getInitialState: function() {
         return {
             waiting: false,
-            duplicate : false,
             error : false,
             message: null,
             accepted: false
@@ -250,10 +249,12 @@ var Password = React.createClass({displayName: "Password",
 
     render : function() {
         var alert = null;
-            alert = React.createElement("div", {className: "alert alert-danger"}, React.createElement("i", {className: "fa fa-exclamation-circle"}), " Passwords must be greater than 8 characters");
         if (this.state.lengthError) {
+            alert = React.createElement("div", {className: "alert alert-danger"}, React.createElement("i", {className: "fa fa-exclamation-circle"}), " Passwords must be greater than 8 characters");
         } else if (this.state.password !== this.state.pwCheck) {
             alert = React.createElement("div", {className: "alert alert-danger"}, React.createElement("i", {className: "fa fa-exclamation-circle"}), " Passwords do not match");
+        } else if (this.state.password.length !== 0 && this.state.password === this.state.pwCheck) {
+            alert = React.createElement("div", {className: "alert alert-success"}, React.createElement("i", {className: "fa fa-check"}), " Password accepted. Be sure to write it down.");
         } else {
             alert = null;
         }
@@ -434,10 +435,9 @@ var ContactInfo = React.createClass({displayName: "ContactInfo",
         });
     },
 
-    emailStatus : function (e) {
-        var value = e.target.value;
+    emailStatus : function (status) {
         this.setState({
-            emailStatus : value.length > 0
+            emailStatus : status
         });
     },
 
@@ -467,7 +467,7 @@ var ContactInfo = React.createClass({displayName: "ContactInfo",
                 ),
                 React.createElement("div", {className: "row"},
                     React.createElement("div", {className: "col-sm-6"},
-                        React.createElement(TextInput, {label: 'Email address', inputId: 'emailAddress', required: true, handleBlur: this.emailStatus})
+                        React.createElement(Email, {status: this.emailStatus})
                     ),
                     React.createElement("div", {className: "col-sm-6"},
                         React.createElement(TextInput, {label: 'Phone number', inputId: 'phoneNumber', required: true, handleBlur: this.phoneStatus})
@@ -479,6 +479,71 @@ var ContactInfo = React.createClass({displayName: "ContactInfo",
     }
 });
 
+var Email = React.createClass({displayName: "Email",
+
+    getInitialState: function() {
+        return {
+            waiting: false,
+            error : false,
+            message: null
+        };
+    },
+
+    handleBlur : function() {
+        var email = event.target.value;
+
+        this.setState({
+            waiting : true,
+        });
+
+        $.getJSON('index.php', {
+            module: 'properties',
+            cop : 'checkEmail',
+            email : email
+        }).done(function(data){
+            if (data.result == 'invalid') {
+                this.setState({
+                    error: true,
+                    waiting: false,
+                    message: 'This appears to be an invalid email address'
+                });
+                this.props.status(false);
+            } else if (data.result == 'bad') {
+                this.setState({
+                    error: true,
+                    waiting: false,
+                    message: 'Sorry, this address is already in use.'
+                });
+                this.props.status(false);
+            } else if (data.result == 'good') {
+                this.setState({
+                    error: false,
+                    waiting: false,
+                    message: null
+                });
+                this.props.status(true);
+            }
+        }.bind(this));
+
+    },
+
+    render : function() {
+        var status;
+
+        if (this.state.waiting) {
+            status = React.createElement("div", null, React.createElement("i", {className: "fa fa-lg fa-spinner fa-spin"}), " Checking email address...");
+        } else if (this.state.error) {
+            status = React.createElement("div", {className: "alert alert-danger"}, React.createElement("i", {className: "fa fa-lg fa-exclamation-circle"}), " ", this.state.message);
+        }
+
+        return (
+            React.createElement("div", null,
+                React.createElement(TextInput, {label: 'Email address', inputId: 'emailAddress', required: true, handleBlur: this.handleBlur}),
+                status
+            )
+        );
+    }
+});
 
 var TextInput = React.createClass({displayName: "TextInput",
     getDefaultProps: function() {
@@ -553,6 +618,6 @@ var PasswordInput = React.createClass({displayName: "PasswordInput",
     }
 });
 
-$(window).load(function(){
+$(window).load(function() {
     React.render(React.createElement(ManagerSignUp, null), document.getElementById('manager-signup'));
 });
