@@ -106,6 +106,10 @@ class Contact
             if (!$this->id) {
                 $form->setMatch('contact_contact', 1);
             }
+            
+            $form->addCheck('private', 1);
+            $form->setLabel('private', 'Private renter');
+            $form->setMatch('private', $this->private);
         }
 
         $form->addPassword('password');
@@ -175,6 +179,10 @@ class Contact
     {
         $vars = array_keys(get_object_vars($this));
         foreach ($_POST as $key => $value) {
+            if ($key == 'private') {
+                continue;
+            }
+            
             if ($key == 'password') {
                 // new contacts must have a password
                 if (!$this->id) {
@@ -206,6 +214,7 @@ class Contact
                 }
             }
         }
+        $this->setPrivate(isset($_POST['private']));
 
         return !isset($this->errors);
     }
@@ -404,6 +413,11 @@ class Contact
     {
         if (empty($this->last_log)) {
             $this->last_log = time();
+        }
+        if ($this->private) {
+            $this->company_name = 'Private renter';
+            $this->company_url = null;
+            $this->company_address = null;
         }
         $db = new \PHPWS_DB('prop_contacts');
         $result = $db->saveObject($this);

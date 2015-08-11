@@ -20,17 +20,26 @@
 <div id="password-created"></div>
 
 <div class="form-group">
-    {COMPANY_NAME_LABEL} (first and last name if single landlord)
-    <!-- BEGIN error3 --><span class="label label-danger">{COMPANY_NAME_ERROR}</span><!-- END error3 -->
-    {COMPANY_NAME}
+    {PRIVATE} {PRIVATE_LABEL}
 </div>
 
-<div class="form-group">
-    {COMPANY_URL_LABEL} (Format: http://address.com)
-    <!-- BEGIN error4 --><span class="label label-danger">{COMPANY_URL_ERROR}</span><!-- END error4 -->
-    {COMPANY_URL}
+<div class="company-info">
+    <div class="form-group">
+        {COMPANY_NAME_LABEL} (first and last name if single landlord)
+        <!-- BEGIN error3 --><span class="label label-danger">{COMPANY_NAME_ERROR}</span><!-- END error3 -->
+        {COMPANY_NAME}
+    </div>
+    <div class="form-group">
+        {COMPANY_ADDRESS_LABEL}
+        <!-- BEGIN error9 --><span class="label label-danger">{COMPANY_ADDRESS_ERROR}</span><!-- END error9 -->
+        {COMPANY_ADDRESS}
+    </div>
+    <div class="form-group">
+        {COMPANY_URL_LABEL} (Format: http://address.com)
+        <!-- BEGIN error4 --><span class="label label-danger">{COMPANY_URL_ERROR}</span><!-- END error4 -->
+        {COMPANY_URL}
+    </div>
 </div>
-
 <div class="form-group">
     {FIRST_NAME_LABEL}
     <!-- BEGIN error5 --><span class="label label-danger">{FIRST_NAME_ERROR}</span><!-- END error5 -->
@@ -53,12 +62,6 @@
     {EMAIL_ADDRESS_LABEL}
     <!-- BEGIN error8 --><span class="label label-danger">{EMAIL_ADDRESS_ERROR}</span><!-- END error8 -->
     {EMAIL_ADDRESS}
-</div>
-
-<div class="form-group">
-    {COMPANY_ADDRESS_LABEL}
-    <!-- BEGIN error9 --><span class="label label-danger">{COMPANY_ADDRESS_ERROR}</span><!-- END error9 -->
-    {COMPANY_ADDRESS}
 </div>
 
 <div class="form-group">
