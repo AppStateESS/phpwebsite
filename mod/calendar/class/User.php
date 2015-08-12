@@ -167,14 +167,13 @@ class Calendar_User
                 . $this->calendar->schedule->id . '&date=' . $this->calendar->current_date . '">'
                 . strftime(CALENDAR_DAY_HEADER, $startdate) . '</a>';
         $template['SCHEDULE_PICK'] = $this->schedulePick();
-        $template['PICK'] = $this->getDatePick();
         $template['SUGGEST'] = $this->suggestLink();
         $template['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
 
         if ($this->calendar->schedule->id && $this->calendar->schedule->checkPermissions()) {
             $label = dgettext('calendar', 'Add event');
             $template['ADD_EVENT'] = '<button class="add-event btn btn-success" data-view="day" data-schedule-id="' .
-                    $this->calendar->schedule->id . '" data-date="' . ($this->calendar->current_date * 1000) .
+                    $this->calendar->schedule->id . '" data-date="' . ($this->calendar->current_date) .
                     '"><i class="fa fa-plus"></i> ' . $label . '</button>';
         }
 
@@ -218,17 +217,6 @@ class Calendar_User
         $template['DOWNLOAD'] = $this->eventDownloadLink($this->event->id);
         $template['VIEW_LINKS'] = $this->viewLinks('event');
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
-    }
-
-    public function getDatePick()
-    {
-        $js['month'] = $this->calendar->int_month;
-        $js['day'] = $this->calendar->int_day;
-        $js['year'] = $this->calendar->int_year;
-
-        $js['url'] = $this->getUrl();
-        $js['type'] = 'pick';
-        return javascript('js_calendar', $js);
     }
 
     public function getUrl()
@@ -497,8 +485,6 @@ class Calendar_User
         $month = $this->calendar->int_month;
         $year = $this->calendar->int_year;
 
-        $date_pick = $this->getDatePick();
-
         // Check cache
         if ($this->calendar->schedule->public && PHPWS_Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
@@ -540,7 +526,6 @@ class Calendar_User
         $template['PARTIAL_MONTH_NAME'] = strftime('%b', $date);
 
         $template['TITLE'] = $this->calendar->schedule->title;
-        $template['PICK'] = $date_pick;
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
         $view_links = $this->viewLinks('grid');
@@ -588,8 +573,6 @@ class Calendar_User
         $startdate = mktime(0, 0, 0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
 
-        $date_pick = $this->getDatePick();
-
         $this->calendar->loadEventList($startdate, $enddate);
 
         $tpl = new PHPWS_Template('calendar');
@@ -630,13 +613,12 @@ class Calendar_User
         $main_tpl['FULL_YEAR'] = strftime('%Y', mktime(0, 0, 0, $month, $day, $year));
         $main_tpl['ABRV_YEAR'] = strftime('%y', mktime(0, 0, 0, $month, $day, $year));
         $main_tpl['SCHEDULE_PICK'] = $this->schedulePick();
-        $main_tpl['PICK'] = $date_pick;
         $main_tpl['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
 
         $main_tpl['SUGGEST'] = $this->suggestLink();
         if ($this->calendar->schedule->checkPermissions()) {
             $main_tpl['ADD_EVENT'] = '<button class="add-event btn btn-success" data-schedule-id="' .
-                    $this->calendar->schedule->id . '" data-date="' . $this->calendar->current_date * 1000 .
+                    $this->calendar->schedule->id . '" data-date="' . $this->calendar->current_date .
                     '"><i class="fa fa-plus"></i> Add event</button>';
         }
 
@@ -848,7 +830,7 @@ class Calendar_User
                 Layout::add(\Calendar_Admin::eventModal($event));
                 \Calendar_Admin::includeEventJS();
                 $link = '<a style="cursor:pointer" class="add-event" data-schedule-id="' .
-                        $this->calendar->schedule->id . '" data-date="' . ($current_date * 1000) .
+                        $this->calendar->schedule->id . '" data-date="' . $current_date .
                         '">Add event</a>';
                 MiniAdmin::add('calendar', $link);
                 MiniAdmin::add('calendar', $this->calendar->schedule->uploadEventsLink());
@@ -1047,12 +1029,11 @@ class Calendar_User
         $main_tpl['FULL_YEAR'] = strftime('%Y', $this->calendar->current_date);
         $main_tpl['ABRV_YEAR'] = strftime('%y', $this->calendar->current_date);
         $main_tpl['SCHEDULE_PICK'] = $this->schedulePick();
-        $main_tpl['PICK'] = $this->getDatePick();
         $main_tpl['SUGGEST'] = $this->suggestLink();
         $main_tpl['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
         if ($this->calendar->schedule->checkPermissions()) {
             $main_tpl['ADD_EVENT'] = '<button class="add-event btn btn-success" data-view="week" data-schedule-id="' .
-                    $this->calendar->schedule->id . '" data-date="' . ($this->calendar->current_date * 1000) .
+                    $this->calendar->schedule->id . '" data-date="' . ($this->calendar->current_date) .
                     '"><i class="fa fa-plus"></i> ' . dgettext('calendar', 'Add event') . '</button>';
         }
 
