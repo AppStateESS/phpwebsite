@@ -6,7 +6,7 @@
  *
  * @link http://phpwebsite.appstate.edu/
  * @package phpws
- * @author Matthew McNaney <matt at tux dot appstate dot edu>,
+ * @author Matthew McNaney <mcnaneym dot appstate dot edu>,
  * @author Hilmar Runge <hi at dc4db dot net>
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  * @license http://opensource.org/licenses/gpl-3.0.html GNU GPLv3
