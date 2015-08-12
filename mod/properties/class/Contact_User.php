@@ -314,6 +314,7 @@ EOF;
         $db = new \PHPWS_DB('prop_contacts');
         $db->addWhere('username', $username);
         $db->addWhere('password', $password);
+        $db->addWhere('approved', 1);
 
         $result = $db->loadObject($this->contact);
         $this->contact->makeKey();

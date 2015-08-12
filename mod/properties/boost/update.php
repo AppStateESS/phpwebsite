@@ -145,7 +145,13 @@ EOF;
 -----------------
 + New user signup requires all email settings to be set.
 + Invalid and duplicate email addresses are now checked on signup.
-+ 
+</pre>
+EOF;
+        case (version_compare($currentVersion, '1.4.2', '<')):
+            $content[] = <<<EOF
+<pre>1.4.2 updates
+-----------------
++ Fixed: New managers could log in before approved.
 </pre>
 EOF;
     }
