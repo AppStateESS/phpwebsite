@@ -1,109 +1,143 @@
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $(".panel-heading").addClass("collapsed");
+});
+
+</script>
 <div id="search-criteria">
     <h3>Search criteria</h3>
     <p><em>Narrow your search by choosing one or more search criteria below.</em></p>
-    <!-- BEGIN criteria --><ul><li>{CRITERIA}</li></ul><!-- END criteria -->
+    <!-- BEGIN criteria --><ul class="list-group"><li class="list-group-item">{CRITERIA}</li></ul><!-- END criteria -->
 
     <div>{CLEAR}</div>
     <hr />
     {START_FORM}
 
-    <div class="accordion" id="properties-accordion">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#pcollapse1">Student Preference</button>
-            </div>
-            <div id="pcollapse1" class="accordion-body collapse">
-                <div class="accordion-inner">{STUDENT_TYPE}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse2">
-                    Distance from campus
-                </button>
-            </div>
-            <div id="pcollapse2" class="accordion-body collapse">
-                <div class="accordion-inner">{DISTANCE_OPTIONS}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse3">
-                    Price range
-                </button>
-            </div>
-            <div id="pcollapse3" class="accordion-body collapse">
-                <div class="accordion-inner">{PRICE_OPTIONS}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse4">
-                    Bedrooms
-                </button>
-            </div>
-            <div id="pcollapse4" class="accordion-body collapse">
-                <div class="accordion-inner">{BEDROOM_CHOICE}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse5">
-                    Bathrooms
-                </button>
-            </div>
-            <div id="pcollapse5" class="accordion-body collapse">
-                <div class="accordion-inner">{BATHROOM_CHOICE}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse6">
-                    Features/Amenities
-                </button>
-            </div>
-            <div id="pcollapse6" class="accordion-body collapse">
-                <div class="accordion-inner">{FEATURES}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse7">
-                    Manager
-                </button>
-            </div>
-            <div id="pcollapse7" class="accordion-body collapse">
-                <div class="accordion-inner">{MANAGER} {MANAGER_SUBMIT}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse8">
-                    Property name
-                </button>
-            </div>
-            <div id="pcollapse8" class="accordion-body collapse">
-                <div class="accordion-inner">{PROPERTY_NAME} {PROPERTY_NAME_SUBMIT}
-                </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse9">
-                    Contract
-                </button>
-            </div>
-            <div id="pcollapse9" class="accordion-body collapse">
-                <div class="accordion-inner">{SUBLEASE}<br />{NOSUB}
-                </div>
-            </div>
+<div class="panel-group" id="student-accordion">
+	<div class="panel panel-default">
+	<div class="panel-heading" data-toggle="collapse" data-parent="#student-accordion" data-target="#pcollapse1">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Student Preference
+		</h4>
+	  </div>
+	  <div id="pcollapse1" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {STUDENT_TYPE}
+		</div>
+	  </div>
+	</div>
+</div>
+<div class="panel-group" id="distance-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#distance-accordion" href="#pcollapse2">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+		Distance from campus
+		</h4>
+	  </div>
+	  <div id="pcollapse2" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {DISTANCE_OPTIONS}
+		</div>
+	  </div>
+</div>
+</div>
+<div class="panel-group" id="price-accordion">
+	<div class="panel panel-default">	  
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#price-accordion" href="#pcollapse3">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Price Range
+		</h4>
+	  </div>
+	  <div id="pcollapse3" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {PRICE_OPTIONS}
+		</div>
+	  </div>
+	  </div>
+</div>
+<div class="panel-group" id="bedrooms-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#bedrooms-accordion" href="#pcollapse4">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Bedrooms
+		</h4>
+	  </div>
+	  <div id="pcollapse4" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {BEDROOM_CHOICE}
+		</div>
+	  </div>
+	  </div>
+</div>
+<div class="panel-group" id="bathrooms-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#bathrooms-accordion" href="#pcollapse5">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Bathrooms
+		</h4>
+	  </div>
+	  <div id="pcollapse5" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {BATHROOM_CHOICE}
+		</div>
+	  </div>
+	  </div>
+</div>
+<div class="panel-group" id="feature-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#feature-accordion" href="#pcollapse6">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Features/Amenities
+		</h4>
+	  </div>
+	  <div id="pcollapse6" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {FEATURES}
+		</div>
+	  </div>
+	  </div>
+</div>
+<div class="panel-group" id="manager-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#manager-accordion" href="#pcollapse7">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Manager
+		</h4>
+	  </div>
+	  <div id="pcollapse7" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {MANAGER} {MANAGER_SUBMIT}
+		</div>
+	  </div>
+	  </div>
+</div>
+<div class="panel-group" id="properties-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#properties-accordion" href="#pcollapse8">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Property name
+		</h4>
+	  </div>
+	  <div id="pcollapse8" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {PROPERTY_NAME} {PROPERTY_NAME_SUBMIT}
+		</div>
+	  </div>
+	  </div>
+</div>
+<div class="panel-group" id="contract-accordion">
+	<div class="panel panel-default">
+	  <div class="panel-heading" data-toggle="collapse" data-parent="#contract-accordion" href="#pcollapse9">
+		<h4 class="panel-title btn btn-default btn-block accordion-toggle">
+			Contract
+		</h4>
+	  </div>
+	  <div id="pcollapse9" class="panel-collapse collapse">
+		<div class="panel-body">
+		  {SUBLEASE}<br />{NOSUB}
+		</div>
+	  </div>
         </div>
     </div>
     {END_FORM}
