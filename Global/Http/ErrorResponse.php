@@ -6,7 +6,6 @@ namespace Http;
  * Description
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 abstract class ErrorResponse extends \Response
 {
     protected $request;
@@ -15,7 +14,7 @@ abstract class ErrorResponse extends \Response
 
     public function __construct(\Request $request = null, \Exception $previous = null)
     {
-        if(is_null($request)) {
+        if (is_null($request)) {
             $request = \Server::getCurrentRequest();
         }
 
@@ -31,7 +30,7 @@ abstract class ErrorResponse extends \Response
 
     public function getView()
     {
-        if(is_null($this->view)) {
+        if (is_null($this->view)) {
             $this->view = $this->createErrorView($this->request, $this);
         }
 
@@ -57,15 +56,17 @@ abstract class ErrorResponse extends \Response
     {
         $iter = $request->getAccept()->getIterator();
 
-        foreach($iter as $type) {
-            if($type->matches('application/json'))
+        foreach ($iter as $type) {
+            if ($type->matches('application/json')) {
                 return new \View\JsonErrorView($request, $response);
-            if($type->matches('application/xml'))
+            }
+            if ($type->matches('application/xml')) {
                 return new \View\XmlErrorView($request, $response);
-            if($type->matches('text/html'))
+            }
+            if ($type->matches('text/html')) {
                 return new \View\HtmlErrorView($request, $response);
+            }
         }
     }
-}
 
-?>
+}
