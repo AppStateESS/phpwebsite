@@ -56,7 +56,7 @@ class Contact_User extends Base
         $form->setPlaceHolder('c_password', 'Password');
         $form->setSize('c_password', 10);
         $form->setClass('c_password', 'form-control');
-        $form->addSubmit('submit', 'Log in to Manager Account');
+        $form->addSubmit('submit', 'Manager Account Log In');
         $form->setClass('submit', 'btn btn-success btn-sm');
         return $form;
     }
