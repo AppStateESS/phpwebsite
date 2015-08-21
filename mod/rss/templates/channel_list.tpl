@@ -1,4 +1,4 @@
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover sans">
     <tr>
         <th>{TITLE_LABEL}</th>
         <th>{ACTIVE_LABEL}</th>

@@ -8,8 +8,8 @@ PHPWS_Core::initCoreClass('XMLParser.php');
 
 PHPWS_Core::requireConfig('rss');
 
-class RSS_Feed {
-
+class RSS_Feed
+{
     public $id = 0;
     public $title = NULL;
     public $address = NULL;
@@ -59,20 +59,12 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . dgettext('rss',
-                                'Reset') . '"></i>', 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . dgettext('rss', 'Reset') . '"></i>', 'rss', $vars);
 
-        $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
-                $this->id, Current_User::getAuthKey());
-        $jsvars['label'] = '<i class="fa fa-edit" title="' . dgettext('rss',
-                                'Edit the feed') . '"></i>';
-        $jsvars['height'] = '280';
-        $links[] = javascript('open_window', $jsvars);
+        $links[] = '<i data-id="' . $this->id . '" class="edit-feed pointer fa fa-edit" title="' . dgettext('rss', 'Edit the feed') . '"></i>';
 
-        $js['QUESTION'] = dgettext('rss',
-                'Are you sure you want to delete this RSS feed?');
-        $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
-                $this->id, Current_User::getAuthKey());
+        $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
+        $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
         $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('rss', 'Delete feed') . '"></i>';
         $links[] = javascript('confirm', $js);
 
@@ -80,12 +72,10 @@ class RSS_Feed {
 
         if ($this->display) {
             $vars['command'] = 'turn_off_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'),
-                            'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'), 'rss', $vars);
         } else {
             $vars['command'] = 'turn_on_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'),
-                            'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'), 'rss', $vars);
         }
 
         $hours = floor($this->refresh_time / 3600);
@@ -119,9 +109,9 @@ class RSS_Feed {
         }
 
         $refresh_time = sprintf(dgettext('rss', 'Every %s'), $time);
-
-        $tpl['ADDRESS'] = sprintf('<a href="%s">%s</a>', $this->address,
-                PHPWS_Text::shortenUrl($this->address));
+        $shortened_array = parse_url($this->address);
+        $shortened = $shortened_array['scheme'] . '://' . $shortened_array['host'];
+        $tpl['ADDRESS'] = sprintf('<a href="%s" title="%s">%s</a>', $this->address, $this->address, $shortened);
         $tpl['REFRESH_TIME'] = $refresh_time;
 
         return $tpl;
@@ -182,8 +172,7 @@ class RSS_Feed {
         } else {
             $address = trim($_POST['address']);
             if (!preg_match('|^https?://|', $address)) {
-                $error[] = dgettext('rss',
-                        'RSS import needs to be an offsite link.');
+                $error[] = dgettext('rss', 'RSS import needs to be an offsite link.');
             } else {
                 $this->setAddress($address);
             }
@@ -198,9 +187,7 @@ class RSS_Feed {
         if (empty($item_limit)) {
             $this->item_limit = RSS_FEED_LIMIT;
         } elseif ($item_limit > RSS_MAX_FEED) {
-            $error[] = sprintf(dgettext('rss',
-                            'You may not pull more than %s feeds.'),
-                    RSS_MAX_FEED);
+            $error[] = sprintf(dgettext('rss', 'You may not pull more than %s feeds.'), RSS_MAX_FEED);
             $this->item_limit = RSS_FEED_LIMIT;
         } else {
             $this->item_limit = $item_limit;
@@ -210,12 +197,10 @@ class RSS_Feed {
         $refresh_time = (int) $_POST['refresh_time'];
 
         if ($refresh_time < 60) {
-            $error[] = dgettext('rss',
-                    'Refresh time is too low. It must be over 60 seconds.');
+            $error[] = dgettext('rss', 'Refresh time is too low. It must be over 60 seconds.');
             $this->refresh_time = RSS_FEED_REFRESH;
         } elseif ($refresh_time > 2592000) {
-            $error[] = dgettext('rss',
-                    'You should refresh more often than every month.');
+            $error[] = dgettext('rss', 'You should refresh more often than every month.');
             $this->refresh_time = RSS_FEED_REFRESH;
         } else {
             $this->refresh_time = &$refresh_time;
@@ -260,8 +245,7 @@ class RSS_Feed {
                         break;
                     }
                     if (strlen($item_data['DESCRIPTION']) > RSS_SHORT_DESC_SIZE) {
-                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'],
-                                        0, RSS_SHORT_DESC_SIZE) . '...';
+                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'], 0, RSS_SHORT_DESC_SIZE) . '...';
                     } else {
                         $item_data['SHORT_DESCRIPTION'] = &$item_data['DESCRIPTION'];
                     }
@@ -279,11 +263,9 @@ class RSS_Feed {
             $image = & $this->mapped['IMAGE'];
 
             if (isset($image['LINK'])) {
-                $tpl['IMAGE'] = sprintf('<a  href="%s"><img class="img-responsive" src="%s" title="%s" /></a>',
-                        $image['LINK'], $image['URL'], $image['TITLE']);
+                $tpl['IMAGE'] = sprintf('<a  href="%s"><img class="img-responsive" src="%s" title="%s" /></a>', $image['LINK'], $image['URL'], $image['TITLE']);
             } else {
-                $tpl['IMAGE'] = sprintf('<img class="img-responsive" src="%s" title="%s" />',
-                        $image['URL'], $image['TITLE']);
+                $tpl['IMAGE'] = sprintf('<img class="img-responsive" src="%s" title="%s" />', $image['URL'], $image['TITLE']);
             }
         } else {
             $tpl['FEED_TITLE'] = &$this->title;
