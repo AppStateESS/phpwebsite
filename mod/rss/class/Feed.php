@@ -8,6 +8,10 @@ PHPWS_Core::initCoreClass('XMLParser.php');
 
 PHPWS_Core::requireConfig('rss');
 
+if (!defined('RSS_DATE_FORMAT')) {
+    define('RSS_DATE_FORMAT', '%A, %h %e, %Y %l:%M%P');
+}
+
 class RSS_Feed
 {
     public $id = 0;
@@ -250,6 +254,8 @@ class RSS_Feed
                         $item_data['SHORT_DESCRIPTION'] = &$item_data['DESCRIPTION'];
                     }
 
+                    $item_data['PUBDATE_REFORMATED'] = strftime(RSS_DATE_FORMAT, strtotime($item_data['PUBDATE']));
+                    
                     $tpl['item_list'][] = $item_data;
                     $count++;
                 }
