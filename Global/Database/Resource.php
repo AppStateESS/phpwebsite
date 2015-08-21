@@ -355,5 +355,3 @@ abstract class Resource extends Alias {
     }
 
 }
-
-?>

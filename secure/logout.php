@@ -50,4 +50,3 @@ if(isset($_SERVER['AUTH_TYPE'])) {
 <?php
     }
 }
-?>

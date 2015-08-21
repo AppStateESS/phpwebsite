@@ -31,5 +31,3 @@ class Varchar extends Character {
     }
 
 }
-
-?>

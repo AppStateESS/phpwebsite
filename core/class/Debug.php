@@ -252,5 +252,3 @@ function objectInfo($object)
 	test($info);
 	return TRUE;
 }
-
-?>

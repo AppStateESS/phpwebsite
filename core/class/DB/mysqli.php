@@ -150,11 +150,9 @@ class mysqli_PHPWS_SQL {
     {
         return 'UNLOCK TABLES;';
     }
-    
+
     public function using($tables)
     {
         return $tables[0] . ' using ' . implode(', ', $tables);
     }
 }
-
-?>

@@ -6,5 +6,3 @@
 javascript('jquery');
 
 $default['class'] = 'default-pop';
-
-?>

@@ -21,5 +21,3 @@
 javascript('jquery');
 $default['txtImage'] = dgettext('filecabinet', 'Image');
 $default['txtOf']  = dgettext('filecabinet', 'of');
-
-?>

@@ -224,5 +224,3 @@ abstract class Object extends Data {
     }
 
 }
-
-?>

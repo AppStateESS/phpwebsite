@@ -42,5 +42,3 @@ switch ($_REQUEST['action']){
         PHPWS_Core::home();
         break;
 }// End area switch
-
-?>

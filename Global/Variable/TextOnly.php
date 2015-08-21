@@ -26,5 +26,3 @@ class TextOnly extends \Variable\String
     }
 
 }
-
-?>

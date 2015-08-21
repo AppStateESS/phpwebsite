@@ -140,5 +140,3 @@ class ForeignKey extends Constraint implements TableCreateConstraint {
     }
 
 }
-
-?>

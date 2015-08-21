@@ -47,5 +47,3 @@ EOF;
         $this->setBodyScript($body_script);
     }
 }
-
-?>

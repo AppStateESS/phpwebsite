@@ -259,6 +259,3 @@ class PHPWS_DateTime extends PHPWS_Template {
 
 
 }// END CLASS PHPWS_DateTime
-
-
-?>

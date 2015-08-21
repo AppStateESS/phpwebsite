@@ -14,5 +14,3 @@ class NotFoundException extends Exception
         return new NotFoundResponse($request, $previous);
     }
 }
-
-?>

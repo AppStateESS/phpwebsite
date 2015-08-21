@@ -55,4 +55,3 @@ if (isset($_SESSION['BG'])) {
 }
 
 PHPWS_unBootstrap();
-?>

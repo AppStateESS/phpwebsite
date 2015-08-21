@@ -53,5 +53,3 @@ class JsonView implements \View
         return 'application/json';
     }
 }
-
-?>

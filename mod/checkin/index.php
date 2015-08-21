@@ -19,5 +19,3 @@ if (isset($_REQUEST['uop'])) {
 }
 
 $checkin->process();
-
-?>

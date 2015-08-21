@@ -814,4 +814,3 @@ unset($font_locations);
 // output final image :-)
 sendImage($im);
 // (sendImage also destroys all used images)
-?>

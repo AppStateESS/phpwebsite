@@ -25,4 +25,3 @@ class Multiple extends \Form\Choice\Select {
         parent::setName($name);
     }
 }
-?>

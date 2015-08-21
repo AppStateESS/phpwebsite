@@ -97,5 +97,3 @@ class ModuleLink extends Link {
     }
 
 }
-
-?>

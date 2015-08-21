@@ -460,5 +460,3 @@ class PHPWS_Module {
         return $module_list;
     }
 }
-
-?>

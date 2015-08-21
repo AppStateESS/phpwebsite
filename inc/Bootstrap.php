@@ -67,5 +67,3 @@ function PHPWS_unBootstrap()
     restore_error_handler();
     spl_autoload_unregister('phpwsAutoload');
 }
-
-?>

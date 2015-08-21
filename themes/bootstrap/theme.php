@@ -8,4 +8,3 @@ $key = Key::getCurrent();
 if (!is_null($key)) {
     Layout::plug('active', 'CONTENT_PAGE');
 }
-?>

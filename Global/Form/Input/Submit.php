@@ -18,5 +18,3 @@ class Submit extends \Form\Input {
     protected $label_location = 0;
 
 }
-
-?>

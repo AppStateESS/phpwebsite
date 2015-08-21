@@ -165,4 +165,3 @@ class Calendar_Factory
         return $cal;
     }
 }
-?>

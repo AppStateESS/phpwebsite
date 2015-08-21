@@ -30,5 +30,3 @@ class Email extends String {
     }
 
 }
-
-?>

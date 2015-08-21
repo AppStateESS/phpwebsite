@@ -95,5 +95,3 @@ abstract class Choice extends Base {
     }
 
 }
-
-?>

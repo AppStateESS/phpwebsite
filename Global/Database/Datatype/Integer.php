@@ -45,5 +45,3 @@ class Integer extends \Database\Datatype {
     }
 
 }
-
-?>

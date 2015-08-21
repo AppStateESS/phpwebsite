@@ -563,5 +563,3 @@ function walkingCase($variable_name, $prefix = null)
     array_unshift($var_array, $start);
     return implode('', $var_array);
 }
-
-?>

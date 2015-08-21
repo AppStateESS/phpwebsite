@@ -19,5 +19,3 @@ class Button extends \Form\Input {
     protected $label_location = 0;
 
 }
-
-?>

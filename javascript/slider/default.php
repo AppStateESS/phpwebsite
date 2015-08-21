@@ -19,5 +19,3 @@ switch ($speed) {
      $data['speed'] = 'fast';
      break;
 }
-
-?>

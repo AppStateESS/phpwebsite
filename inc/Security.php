@@ -69,7 +69,7 @@ if (!(PHPWS_Core::allowScriptTags()) &&
 
 /**
  * Checks for <script> embedding and any double-URL-encoded data
- * 
+ *
  * @return bool
  */
 function checkUserInput($input)
@@ -82,8 +82,8 @@ function checkUserInput($input)
         foreach ($input as $input_val) {
             if (!checkUserInput($input_val)) {
                 return FALSE;
-            }   
-        }   
+            }
+        }
         return TRUE;
     } else {
 
@@ -103,5 +103,3 @@ function stripslashes_deep($value)
 {
     return (is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value));
 }
-
-?>

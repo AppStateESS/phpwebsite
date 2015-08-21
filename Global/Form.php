@@ -799,5 +799,3 @@ class Form extends Tag {
     }
 
 }
-
-?>

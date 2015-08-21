@@ -54,5 +54,3 @@ function update_core_2_3_0()
         }
     }
 }
-
-?>
