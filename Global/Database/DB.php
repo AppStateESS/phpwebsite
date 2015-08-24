@@ -724,6 +724,22 @@ abstract class DB extends \Data {
         return $table;
     }
 
+    /**
+     * Returns a previously added table object
+     * @param string $table_name
+     * @return Database\Table
+     * @throws \Exception
+     */
+    public function getTable($table_name)
+    {
+        $index = !empty($alias) ? $alias : $table_name;
+        if (!isset($this->tables[$index])) {
+            throw new \Exception(t('Table not added'));
+        } else {
+            return $this->tables[$index];
+        }
+    }
+
     public function addExistConditional($subselect, $exists = true)
     {
         if ($subselect instanceof DB) {
