@@ -12,6 +12,7 @@ class ResourceFactory {
      * If table_name is not entered, Resource is checked for a table name
      * If resource is not found in table, the resource will just be as it was passed.
      * @param \Resource $resource
+     * @param integer $id Id of resource in table
      * @param string $table_name
      * @throws \Exception
      * @return boolean True if found, false if not.
