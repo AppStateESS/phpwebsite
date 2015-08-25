@@ -65,17 +65,15 @@ class RSS_Admin
                 echo json_encode($feed);
                 exit;
                 break;
-                
+
             case 'save_feed':
                 $result = $feed->post();
                 if (is_array($result)) {
-                    $tpl = RSS_Admin::editFeed($feed);
+                    $tpl['CONTENT'] = RSS_Admin::editFeed($feed, true);
                     $tpl['MESSAGE'] = implode('<br />', $result);
-                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
-                    exit();
                 } else {
                     $result = $feed->save();
-                    PHPWS_Core::goBack();
+                    PHPWS_Core::reroute('index.php?module=rss&tab=import');
                 }
                 break;
 
@@ -316,34 +314,42 @@ class RSS_Admin
         return $final_tpl;
     }
 
-    public static function editFeed()
+    public static function editFeed($feed = null, $add_submit = false)
     {
+        if (empty($feed)) {
+            $feed = new RSS_Feed;
+        }
         $form = new PHPWS_Form;
-        $form->addHidden('feed_id', 0);
+
+        $form->addHidden('feed_id', $feed->id);
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'save_feed');
 
-        $form->addTextArea('address');
+        $form->addTextArea('address', $feed->address);
         $form->setClass('address', 'form-control');
         $form->setLabel('address', dgettext('rss', 'Address'));
 
-        $form->addText('title');
+        $form->addText('title', $feed->title);
         $form->setClass('title', 'form-control');
         $form->setLabel('title', dgettext('rss', 'Title'));
 
-        $form->addSubmit('submit', dgettext('rss', 'Save'));
 
-        $form->addText('item_limit');
+        $form->addText('item_limit', $feed->item_limit);
         $form->setClass('item_limit', 'form-control');
         $form->setSize('item_limit', 2);
         $form->setLabel('item_limit', dgettext('rss', 'Item limit'));
 
-        $form->addText('refresh_time');
+        $form->addText('refresh_time', $feed->refresh_time);
         $form->setClass('refresh_time', 'form-control');
         $form->setSize('refresh_time', 5);
         $form->setLabel('refresh_time', dgettext('rss', 'Refresh time'));
+        if ($add_submit) {
+            $form->addSubmit('submit', dgettext('rss', 'Save'));
+            $form->setClass('submit', 'btn btn-primary');
+        }
 
         $template = $form->getTemplate();
+
 
         $template['TITLE_WARNING'] = dgettext('rss', 'Feed title will be used if left empty');
         $template['REFRESH_WARNING'] = dgettext('rss', 'In seconds');
@@ -370,7 +376,7 @@ class RSS_Admin
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $content = NULL;
-        
+
         $template['ADD_LINK'] = '<button class="btn btn-success edit-feed"><i></i> Add Feed</button>';
 
         /*

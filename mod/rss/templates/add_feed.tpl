@@ -22,4 +22,5 @@
         </div>
     </div>
 </div>
+{SUBMIT}
 {END_FORM}
