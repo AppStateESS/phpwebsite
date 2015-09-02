@@ -569,12 +569,8 @@ class Layout
     public static function getMetaTags($page_metatags = null)
     {
         if (!$page_metatags) {
-            extract($_SESSION['Layout_Settings']->getMetaTags());
-            if (!isset($GLOBALS['Layout_Robots'])) {
-                $meta_robots = '11';
-            } else {
-                $meta_robots = $GLOBALS['Layout_Robots'];
-            }
+            $meta_tags_settings = $_SESSION['Layout_Settings']->getMetaTags();
+            extract($meta_tags_settings);
         } else {
             extract($page_metatags);
         }
