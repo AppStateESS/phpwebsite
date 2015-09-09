@@ -566,10 +566,15 @@ class PS_Page
         $db->delete();
     }
 
+   
+    
     private function pageLinks(&$tpl)
     {
         $db = new PHPWS_DB('ps_page');
-        $db->addWhere('deleted', 0);
+        
+        if (version_compare(\PageSmith::getVersion(), '1.10.0', '>=')) {
+            $db->addWhere('deleted', 0);
+        }
         $db->addColumn('id');
         $db->addColumn('page_order');
         $db->setIndexBy('page_order');
