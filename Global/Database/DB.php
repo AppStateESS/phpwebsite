@@ -727,7 +727,7 @@ abstract class DB extends \Data {
     /**
      * Returns a previously added table object
      * @param string $table_name
-     * @return Database\Table
+     * @return \Database\Table
      * @throws \Exception
      */
     public function getTable($table_name)
