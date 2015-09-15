@@ -103,6 +103,12 @@ class ResourceFactory {
         $db->addConditional($tbl->getFieldConditional('id', self::pullId($resource) ));
         return $db->delete();
     }
+    
+    public static function getAsJSON(\Resource $resource)
+    {
+        $vars = $resource->getStringVars();
+        return json_encode($vars);
+    }
 
 }
 
