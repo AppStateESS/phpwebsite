@@ -11,4 +11,15 @@ namespace Variable;
 class Hash extends String
 {
       protected $regexp_match = '/^\w+$/';
+      
+      public function createRandom($length=32, $confusables=false, $uppercase=false)
+      {
+          $this->value = randomString($length, $confusables, $uppercase);
+      }
+      
+      public function md5Random()
+      {
+          $this->createRandom();
+          $this->value = md5($this->value);
+      }
 }
