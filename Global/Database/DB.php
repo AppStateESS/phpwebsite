@@ -1258,7 +1258,8 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns a passed $object parameter with values set from the current query.
+     * Returns a passed $object parameter with values set from the current query. If the object variables are protected
+     * or private, they will not accept the database results.
      *
      * @param object $object
      * @return object
@@ -1436,7 +1437,7 @@ abstract class DB extends \Data {
                 }
 
                 if ($module->isRandomOrder()) {
-                    $order[] = $module->getRandomOrder();
+                    $order[] = $this->getRandomCall();
                 } else {
                     $order_list = $module->getOrderBy();
                     if ($order_list) {
