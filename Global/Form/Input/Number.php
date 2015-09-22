@@ -12,5 +12,3 @@ namespace Form\Input;
 class Number extends Text {
 
 }
-
-?>

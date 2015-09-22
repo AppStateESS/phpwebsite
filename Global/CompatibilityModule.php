@@ -82,5 +82,3 @@ class CompatibilityModule extends \Module implements \SettingDefaults {
         }
     }
 }
-
-?>

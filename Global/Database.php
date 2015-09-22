@@ -41,8 +41,8 @@ class Database
     {
         return self::newDB($dsn);
     }
-    
-    
+
+
     /**
      * Creates a new DB object based on the dsn parameter OR the default
      * dsn.
@@ -114,7 +114,7 @@ class Database
     }
 
     /**
-     * Receives the legacy phpwebsite DSN string 
+     * Receives the legacy phpwebsite DSN string
      * (e.g pgsql://dbuser:dbpassword@localhost:5432/dbname
      * @param string $dsn
      * @return array Associative array of dsn values.
@@ -216,5 +216,3 @@ class Database
     }
 
 }
-
-?>

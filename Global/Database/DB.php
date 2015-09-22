@@ -1840,5 +1840,3 @@ abstract class DB extends \Data {
     }
 
 }
-
-?>

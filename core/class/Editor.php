@@ -156,7 +156,7 @@ class Editor {
     }
 
     /**
-     * This method used to check whether a particular wysiwyg would work in a particular browser. Not going to 
+     * This method used to check whether a particular wysiwyg would work in a particular browser. Not going to
      * check this anymore as we only use one wysiwyg.
      * @param type $type
      * @deprecated
@@ -167,5 +167,3 @@ class Editor {
         return true;
     }
 }
-
-?>

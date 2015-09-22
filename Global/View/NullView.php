@@ -23,5 +23,3 @@ class NullView implements \View
         return 'text/html';
     }
 }
-
-?>

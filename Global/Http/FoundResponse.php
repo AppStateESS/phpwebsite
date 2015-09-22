@@ -1,7 +1,7 @@
 <?php
 namespace Http;
 /**
- * Temporary Redirection - to clarify further, use either SeeOtherResponse (303) or 
+ * Temporary Redirection - to clarify further, use either SeeOtherResponse (303) or
  * TemporaryRedirectResponse (307)
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -14,5 +14,3 @@ class FoundResponse extends RedirectResponse
         return 302;
     }
 }
-
-?>

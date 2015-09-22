@@ -9,4 +9,3 @@ if (isset($_GET['id']) && isset($_GET['size'])) {
 } else {
     PHPWS_Core::errorPage('404');
 }
-?>

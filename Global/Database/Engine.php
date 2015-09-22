@@ -20,5 +20,3 @@ abstract class Engine {
         $this->db = $db;
     }
 }
-
-?>

@@ -44,4 +44,3 @@ class File extends Text {
     }
 
 }
-?>

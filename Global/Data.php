@@ -500,5 +500,3 @@ abstract class Data {
     }
 
 }
-
-?>

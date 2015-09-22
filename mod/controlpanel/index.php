@@ -12,4 +12,3 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 if ($_SESSION['User']->isLogged()) {
     Layout::add(PHPWS_ControlPanel::display());
 }
-?>

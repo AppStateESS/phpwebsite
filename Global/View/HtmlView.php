@@ -35,5 +35,3 @@ class HtmlView implements \View {
     }
 
 }
-
-?>

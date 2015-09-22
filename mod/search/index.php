@@ -18,5 +18,3 @@ if (isset($_REQUEST['tab']) || isset($_REQUEST['command'])) {
 } else {
     Search_User::main();
 }
-
-?>

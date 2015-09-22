@@ -70,5 +70,3 @@ class Radio extends \Form\Choice {
         return $this;
     }
 }
-
-?>

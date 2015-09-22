@@ -42,5 +42,3 @@ class Label extends \Tag {
         $this->required = (bool) $required;
     }
 }
-
-?>

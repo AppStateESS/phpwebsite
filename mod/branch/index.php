@@ -12,5 +12,3 @@ if (!Current_User::authorized('branch')) {
 PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
 $branch_admin = new Branch_Admin;
 $branch_admin->main();
-
-?>

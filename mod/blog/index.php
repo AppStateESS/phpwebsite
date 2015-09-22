@@ -30,5 +30,3 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin') {
 } else {
     Blog_User::main();
 }
-
-?>

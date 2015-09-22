@@ -14,5 +14,3 @@ class MethodNotAllowedResponse extends ErrorResponse
         return 405;
     }
 }
-
-?>

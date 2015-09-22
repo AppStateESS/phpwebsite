@@ -28,5 +28,3 @@ class Text extends \Database\Datatype {
     }
 
 }
-
-?>

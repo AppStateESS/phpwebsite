@@ -204,5 +204,3 @@ class DSN extends \Data {
     }
 
 }
-
-?>

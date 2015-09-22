@@ -54,5 +54,3 @@ class Character extends \Database\Datatype {
         return $this->varchar ? 'VARCHAR' : 'CHAR';
     }
 }
-
-?>

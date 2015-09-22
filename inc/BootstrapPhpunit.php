@@ -10,5 +10,3 @@ require_once PHPWS_SOURCE_DIR . 'Global/Functions.php';
 require_once PHPWS_SOURCE_DIR . 'Global/Implementations.php';
 
 ini_set('include_path', $val);
-
-?>

@@ -57,5 +57,3 @@ class Date extends Integer {
     }
 
 }
-
-?>

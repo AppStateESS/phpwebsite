@@ -39,7 +39,3 @@ define('FORM_USE_FILE_RESTRICTIONS', TRUE);
 
 // Form will use the below only if ABSOLUTE_UPLOAD_LIMIT is not defined
 define('FORM_MAX_FILE_SIZE', 15000000);
-
-
-
-?>

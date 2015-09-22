@@ -16,5 +16,3 @@ if (Current_User::authorized('access')) {
     Current_User::disallow();
     exit();
 }
-
-?>

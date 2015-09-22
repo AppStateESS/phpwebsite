@@ -360,4 +360,3 @@ class PHPWS_Link {
         return $this->get();
     }
 }
-?>

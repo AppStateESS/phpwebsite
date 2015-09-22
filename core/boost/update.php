@@ -513,7 +513,7 @@ EOF;
 <pre>2.8.0 changes
 --------------------
 + Settings table setting column is now TEXT not VARCHAR.
-</pre>               
+</pre>
 EOF;
 
         case version_compare($version, '2.8.1', '<'):
@@ -528,7 +528,7 @@ EOF;
 <pre>2.8.1 changes
 --------------------
 + Settings table setting column is now MEDIUMTEXT not TEXT.
-</pre>               
+</pre>
 EOF;
     }
     return true;
@@ -547,5 +547,3 @@ function coreUpdateFiles($files, &$content)
     $content[] = '';
     return $good;
 }
-
-?>

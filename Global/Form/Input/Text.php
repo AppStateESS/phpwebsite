@@ -131,5 +131,3 @@ class Text extends \Form\Input {
     }
 
 }
-
-?>

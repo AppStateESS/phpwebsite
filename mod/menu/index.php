@@ -16,5 +16,3 @@ if (isset($_REQUEST['site_map'])) {
 } else {
     PHPWS_Core::errorPage('404');
 }
-
-?>

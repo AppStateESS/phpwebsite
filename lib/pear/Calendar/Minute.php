@@ -135,4 +135,3 @@ class Calendar_Minute extends Calendar
         }
     }
 }
-?>

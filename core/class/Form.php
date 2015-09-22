@@ -8,4 +8,3 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'core/class/PHPWS_Form.php';
-?>

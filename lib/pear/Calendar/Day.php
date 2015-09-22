@@ -187,7 +187,7 @@ class Calendar_Day extends Calendar
      * @return boolean
      * @access public
      */
-    function isFirst() 
+    function isFirst()
     {
         return $this->first;
     }
@@ -229,4 +229,3 @@ class Calendar_Day extends Calendar
         return $this->empty;
     }
 }
-?>

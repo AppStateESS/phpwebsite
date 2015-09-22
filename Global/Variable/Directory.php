@@ -29,5 +29,3 @@ class Directory extends \Variable\String {
     }
 
 }
-
-?>

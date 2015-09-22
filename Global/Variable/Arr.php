@@ -260,5 +260,3 @@ class Arr extends \Variable {
     }
 
 }
-
-?>

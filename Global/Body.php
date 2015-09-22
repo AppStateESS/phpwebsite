@@ -57,5 +57,3 @@ class Body extends \Data {
     }
 
 }
-
-?>

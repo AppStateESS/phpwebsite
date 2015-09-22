@@ -230,5 +230,3 @@ class Image extends \Tag {
     }
 
 }
-
-?>

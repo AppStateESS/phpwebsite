@@ -402,10 +402,10 @@ abstract class Table extends Resource
 
     /**
      * Constructs an insertQuery.
-     * 
+     *
      * If a PEAR sequence table is found, and the usePearSequence boolean has not be set,
      * an Exception will be thrown.
-     * 
+     *
      * @param boolean $use_bind_vars If TRUE, bind variable format will be followed
      * in the query's construction
      * @return string
@@ -885,11 +885,9 @@ abstract class Table extends Resource
     {
         return $this->included_with_using;
     }
-    
+
     public function buildDatatype($type, $name)
     {
     }
 
 }
-
-?>
