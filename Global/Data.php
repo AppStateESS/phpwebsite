@@ -368,6 +368,8 @@ abstract class Data {
                 $func = walkingCase($key, 'set');
                 if (method_exists($this, $func)) {
                     $this->$func($value);
+                } elseif($this->isProtected($key)) {
+                    $this->$key = $value;
                 } else {
                     throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
                             $key, get_class($this)));
