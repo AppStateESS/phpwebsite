@@ -41,7 +41,8 @@ class PHPWS_Link {
     public function get()
     {
         $this->loadAddress();
-        if (!$this->address || !$this->label ) {
+        if ($this->address === '' || $this->label === '')
+        {
             return null;
         }
 
