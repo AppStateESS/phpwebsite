@@ -777,7 +777,11 @@ abstract class Table extends Resource
                 $data['id'] = $this->getLastPearSequence() + 1;
             }
             $prep->execute($data);
-            $this->incremented_ids[] = DB::$PDO->lastInsertId();
+            if (!$this->usePearSequence()) {
+                $this->incremented_ids[] = DB::$PDO->lastInsertId();
+            } else {
+                $this->incremented_ids[] = $data['id'];
+            }
             $this->db->recordQuery($query);
             $this->row_count += $prep->rowCount();
         }
