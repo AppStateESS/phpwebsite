@@ -143,7 +143,6 @@ class Contact
 
         $form->addText('company_name', $this->company_name);
         $form->setLabel('company_name', 'Company name');
-        $form->setRequired('company_name');
         $form->setSize('company_name', 40);
         $form->setClass('company_name', 'form-control');
 
@@ -418,6 +417,8 @@ class Contact
             $this->company_name = 'Private renter';
             $this->company_url = null;
             $this->company_address = null;
+        } elseif (empty($this->company_name)) {
+            $this->company_name = 'Private renter';
         }
         $db = new \PHPWS_DB('prop_contacts');
         $result = $db->saveObject($this);
