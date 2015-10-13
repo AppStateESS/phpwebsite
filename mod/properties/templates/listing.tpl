@@ -15,7 +15,7 @@
             <div class="details">Price: ${MONTHLY_RENT} per month<br />
                 Bedrooms: {BEDROOM_NO}<br />
                 Bathrooms: {BATHROOM_NO}<br />
-                Availablity: {MOVE_IN_DATE}
+                Availability: {MOVE_IN_DATE}
             </div>
         </div>
     </div>
