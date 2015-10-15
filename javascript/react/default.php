@@ -12,11 +12,13 @@ if (isset($data['development']) && $data['development']) {
     } else {
         Layout::addJSHeader("<script src='{$home_http}javascript/react/build/react.js'></script>", 'drwoao');
     }
+    Layout::addJSHeader("<script src='{$home_http}javascript/react/build/react-dom.js'></script>", 'rwoao');
     Layout::addJSHeader("<script src='{$home_http}javascript/react/build/JSXTransformer.js'></script>", 'jsxtrans');
 } else {
     if (isset($data['addons']) && $data['addons']) {
         Layout::addJSHeader("<script src='{$home_http}javascript/react/build/react-with-addons.min.js'></script>", 'rwao');
     } else {
-        Layout::addJSHeader("<script src='{$home_http}javascript/react/build/react.min.js'></script>", 'rwoao');
+        Layout::addJSHeader("<script src='{$home_http}javascript/react/build/react-dom.min.js'></script>", 'rwoao');
     }
+    Layout::addJSHeader("<script src='{$home_http}javascript/react/build/react.min.js'></script>", 'rwoao');
 }
