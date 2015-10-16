@@ -170,6 +170,11 @@ class Layout
 
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
+    
+    public static function removeJSHeader($index)
+    {
+        unset($GLOBALS['Layout_JS'][$index]);
+    }
 
     public static function extraStyle($filename)
     {
