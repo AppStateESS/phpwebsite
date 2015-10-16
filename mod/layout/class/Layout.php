@@ -167,7 +167,9 @@ class Layout
         if (empty($index)) {
             $index = $index_count++;
         }
-
+        if (empty($script)) {
+            return;
+        }
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
     
