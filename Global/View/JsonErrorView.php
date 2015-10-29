@@ -33,11 +33,24 @@ class JsonErrorView extends JsonView
     {
         if (defined('DISPLAY_ERRORS') && DISPLAY_ERRORS) {
             http_response_code($this->data['error']['code']);
-            echo json_encode($this->data);
+            $error = $this->data['error'];
+            $this->displayError($error);
             exit;
         } else {
             \Error::errorPage($this->data->error->code);
         }
+    }
+    
+    private function displayError($error)
+    {
+        echo "url : ", $error['url'];
+        echo "\nmethod : ", $error['method'];
+        echo "\nmodule : ", $error['module'];
+        echo "\nexception_file : ", $error['exception_file'];
+        echo "\nexception_line : ", $error['exception_line'];
+        echo "\nexception_message : ", $error['exception_message'];
+        echo "\n-------------------------------------\n";
+        echo $error['exception']->getTraceAsString();
     }
 
 }
