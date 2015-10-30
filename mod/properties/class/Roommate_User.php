@@ -721,31 +721,31 @@ class Roommate_User {
 
         $features = null;
         $search = $this->loadSearchParameters();
-        if (!@$search['amenities']['ac']) {
+        if (empty($search['amenities']['ac'])) {
             $vars['amen'] = 'ac';
             $features[] = \PHPWS_Text::moduleLink('AppalCart', 'properties', $vars);
         }
-        if (!@$search['amenities']['ch']) {
+        if (empty($search['amenities']['ch'])) {
             $vars['amen'] = 'ch';
             $features[] = \PHPWS_Text::moduleLink('Clubhouse', 'properties', $vars);
         }
-        if (!@$search['amenities']['dish']) {
+        if (empty($search['amenities']['dish'])) {
             $vars['amen'] = 'dish';
             $features[] = \PHPWS_Text::moduleLink('Dishwasher', 'properties', $vars);
         }
-        if (!@$search['amenities']['pet']) {
+        if (empty($search['amenities']['pet'])) {
             $vars['amen'] = 'pet';
             $features[] = \PHPWS_Text::moduleLink('Pet allowed', 'properties', $vars);
         }
-        if (!@$search['amenities']['tr']) {
+        if (empty($search['amenities']['tr'])) {
             $vars['amen'] = 'tr';
             $features[] = \PHPWS_Text::moduleLink('Trash pickup', 'properties', $vars);
         }
-        if (!@$search['amenities']['wo']) {
+        if (empty($search['amenities']['wo'])) {
             $vars['amen'] = 'wo';
             $features[] = \PHPWS_Text::moduleLink('Workout room', 'properties', $vars);
         }
-        if (!@$search['amenities']['wash']) {
+        if (empty($search['amenities']['wash'])) {
             $vars['amen'] = 'wash';
             $features[] = \PHPWS_Text::moduleLink('Washer/Dryer', 'properties', $vars);
         }

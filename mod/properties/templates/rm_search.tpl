@@ -29,22 +29,22 @@
     </div>
     <div class="accordion-group">
         <div class="accordion-heading">
-            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse2">
+            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse3">
                 Price range
             </button>
         </div>
-        <div id="pcollapse2" class="accordion-body collapse">
+        <div id="pcollapse3" class="accordion-body collapse">
             <div class="accordion-inner">{PRICE_OPTIONS}
             </div>
         </div>
     </div>
     <div class="accordion-group">
         <div class="accordion-heading">
-            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse2">
+            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse4">
                 Shared rooms
             </button>
         </div>
-        <div id="pcollapse2" class="accordion-body collapse">
+        <div id="pcollapse4" class="accordion-body collapse">
             <div class="accordion-inner">{BEDROOM_CHOICE}<br />
                 {BATHROOM_CHOICE}
             </div>
@@ -52,22 +52,22 @@
     </div>
     <div class="accordion-group">
         <div class="accordion-heading">
-            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse2">
+            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse5">
                 Features/Amenities
             </button>
         </div>
-        <div id="pcollapse2" class="accordion-body collapse">
+        <div id="pcollapse5" class="accordion-body collapse">
             <div class="accordion-inner">{FEATURES}
             </div>
         </div>
     </div>
     <div class="accordion-group">
         <div class="accordion-heading">
-            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse2">
+            <button type="button" class="btn btn-default accordion-toggle" data-toggle="collapse" data-target="#pcollapse6">
                 Contract
             </button>
         </div>
-        <div id="pcollapse2" class="accordion-body collapse">
+        <div id="pcollapse6" class="accordion-body collapse">
             <div class="accordion-inner">{SUBLEASE}<br />{NOSUB}
             </div>
         </div>
