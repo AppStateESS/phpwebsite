@@ -24,8 +24,8 @@ namespace Database;
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Expression extends Alias {
-
+class Expression extends Alias
+{
     /**
      * String containing the expression
      * @var string
@@ -49,7 +49,11 @@ class Expression extends Alias {
 
     public function stringAsField()
     {
-        return "{$this->expression} AS " . $this->getAlias();
+        if (empty($this->alias)) {
+            return $this->expression;
+        } else {
+            return "{$this->expression} AS " . $this->getAlias();
+        }
     }
 
     /**
