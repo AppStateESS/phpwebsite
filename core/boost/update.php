@@ -517,17 +517,18 @@ EOF;
 EOF;
 
         case version_compare($version, '2.8.1', '<'):
-            $db = \Database::newDB();
-            $t = $db->addTable('settings');
-            $dt_old = $t->getDataType('setting');
-            $t->buildDatatype('mediumtext', 'setting');
-            $dt_update = new \Database\Datatype\Text($t, 'setting');
-            $dt_update->setIsNull(true);
-            $t->alter($dt_old, $dt_update);
+            if ($db->getDatabaseType() == 'mysql') {
+                $db = \Database::newDB();
+                $t = $db->addTable('settings');
+                $dt_old = $t->getDataType('setting');
+                $dt_new = \Database\Datatype::factory($t, 'settings', 'mediumtext');
+                $dt_new->setIsNull(true);
+                $t->alter($dt_old, $dt_new);
+            }
             $content[] = <<<EOF
 <pre>2.8.1 changes
 --------------------
-+ Settings table setting column is now MEDIUMTEXT not TEXT.
++ Settings table setting column is now MEDIUMTEXT not TEXT in MySQL.
 </pre>
 EOF;
     }
