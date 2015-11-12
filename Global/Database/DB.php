@@ -155,7 +155,7 @@ abstract class DB extends \Data {
 
     /**
      * Holds the dsn object
-     * @var object
+     * @var \Database\DSN
      */
     protected $dsn;
 
