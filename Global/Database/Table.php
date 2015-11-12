@@ -133,7 +133,7 @@ abstract class Table extends Resource
      * @var mixed
      */
     private $use_pear_sequence;
-
+    
     /**
      * Extended class should add a primary index to the current table.
      */
@@ -889,9 +889,5 @@ abstract class Table extends Resource
     {
         return $this->included_with_using;
     }
-
-    public function buildDatatype($type, $name)
-    {
-    }
-
+    
 }
