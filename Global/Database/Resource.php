@@ -46,6 +46,12 @@ abstract class Resource extends Alias
      * @var boolean
      */
     protected $random_order = false;
+    
+    /**
+     * If True, a splat (*) will be added to the field listing.
+     * @var boolean
+     */
+    protected $force_splat;
 
     /**
      * @return string A string representing the contents of this resource
@@ -328,15 +334,12 @@ abstract class Resource extends Alias
      */
     public function fieldsAsString()
     {
-        if (empty($this->fields)) {
-            if ($this->use_in_query) {
-                if ($this->alias) {
-                    return $this->getAlias() . '.*';
-                } else {
-                    return $this->getFullName() . '.*';
-                }
-            }
+        if (empty($this->fields) && $this->use_in_query) {
+            return $this->getSplat();
         } else {
+            if ($this->force_splat) {
+                $cols[] = $this->getSplat();
+            }
             foreach ($this->fields as $field) {
                 $cols[] = $field->stringAsField();
             }
@@ -347,12 +350,26 @@ abstract class Resource extends Alias
         return null;
     }
 
+    private function getSplat()
+    {
+        if ($this->alias) {
+            return $this->getAlias() . '.*';
+        } else {
+            return $this->getFullName() . '.*';
+        }
+    }
+
     /**
      * Nulls out the object's fields parameter.
      */
     public function resetFields()
     {
         $this->fields = array();
+    }
+
+    public function forceSplat()
+    {
+        $this->force_splat = true;
     }
 
 }
