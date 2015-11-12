@@ -46,11 +46,13 @@ class JsonErrorView extends JsonView
         echo "url : ", $error['url'];
         echo "\nmethod : ", $error['method'];
         echo "\nmodule : ", $error['module'];
-        echo "\nexception_file : ", $error['exception_file'];
-        echo "\nexception_line : ", $error['exception_line'];
-        echo "\nexception_message : ", $error['exception_message'];
-        echo "\n-------------------------------------\n";
-        echo $error['exception']->getTraceAsString();
+        if (!empty($error['exception'])) {
+            echo "\nexception_file : ", $error['exception_file'];
+            echo "\nexception_line : ", $error['exception_line'];
+            echo "\nexception_message : ", $error['exception_message'];
+            echo "\n-------------------------------------\n";
+            echo $error['exception']->getTraceAsString();
+        }
     }
 
 }
