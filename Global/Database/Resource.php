@@ -12,8 +12,8 @@ namespace Database;
  * @abstract
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Resource extends Alias {
-
+abstract class Resource extends Alias
+{
     /**
      * Database object related to this object
      * @var \Database\DB
@@ -277,8 +277,7 @@ abstract class Resource extends Alias {
         }
         $field = new Field($this, $column_name, $alias);
         if (!($field->allowSplat() && $column_name == '*') && (DATABASE_CHECK_COLUMNS && !$this->columnExists($column_name))) {
-            throw new \Exception(t('Column does not exist in %s "%s"',
-                    get_class($this), $this->getFullName()));
+            throw new \Exception(t('Column does not exist in %s "%s"', get_class($this), $this->getFullName()));
         }
         return $field;
     }
@@ -294,13 +293,16 @@ abstract class Resource extends Alias {
     public function getFieldConditional($field_name, $value, $operator = null)
     {
         if ($operator == null) {
-            $operator = '=';
+            if (is_array($value)) {
+                $operator = 'IN';
+            } else {
+                $operator = '=';
+            }
         }
         if (is_string($field_name)) {
             $field_name = $this->getField($field_name);
         }
-        $cond = new Conditional($this->db, $field_name, $value,
-                $operator);
+        $cond = new Conditional($this->db, $field_name, $value, $operator);
         return $cond;
     }
 
@@ -316,8 +318,7 @@ abstract class Resource extends Alias {
      */
     public function addFieldConditional($field_name, $value, $operator = null)
     {
-        $this->db->addConditional($this->getFieldConditional($field_name,
-                        $value, $operator));
+        $this->db->addConditional($this->getFieldConditional($field_name, $value, $operator));
     }
 
     /**
