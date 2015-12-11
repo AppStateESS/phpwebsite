@@ -216,6 +216,8 @@ abstract class Table extends Resource
     abstract public function createPrimaryIndexId();
 
     abstract public function getLastPearSequence();
+    
+    abstract public function getPrimaryKeySequenceName();
 
     /**
      * @param string $name Name of the table
@@ -778,7 +780,7 @@ abstract class Table extends Resource
             }
             $prep->execute($data);
             if (!$this->usePearSequence()) {
-                $this->incremented_ids[] = DB::$PDO->lastInsertId();
+                $this->incremented_ids[] = DB::$PDO->lastInsertId($this->getPrimaryKeySequenceName());
             } else {
                 $this->incremented_ids[] = $data['id'];
             }
@@ -796,7 +798,7 @@ abstract class Table extends Resource
             return end($this->incremented_ids);
         }
     }
-
+    
     public function getPearSequenceName()
     {
         return $this->getFullName(false) . '_seq';
