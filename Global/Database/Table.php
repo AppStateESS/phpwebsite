@@ -768,6 +768,7 @@ abstract class Table extends Resource
 
     public function insert()
     {
+        $id_column_exists = $this->columnExists('id');
         $this->row_count = 0;
         $query = $this->insertQuery();
         $prep = DB::$PDO->prepare($query);
@@ -775,14 +776,18 @@ abstract class Table extends Resource
             foreach ($line as $key => $val) {
                 $data[$key] = $val->getValue();
             }
-            if ($this->usePearSequence()) {
-                $data['id'] = $this->getLastPearSequence() + 1;
+            if ($id_column_exists) {
+                if ($this->usePearSequence()) {
+                    $data['id'] = $this->getLastPearSequence() + 1;
+                }
             }
             $prep->execute($data);
-            if (!$this->usePearSequence()) {
-                $this->incremented_ids[] = DB::$PDO->lastInsertId($this->getPrimaryKeySequenceName());
-            } else {
-                $this->incremented_ids[] = $data['id'];
+            if ($id_column_exists) {
+                if (!$this->usePearSequence()) {
+                    $this->incremented_ids[] = DB::$PDO->lastInsertId($this->getPrimaryKeySequenceName());
+                } else {
+                    $this->incremented_ids[] = $data['id'];
+                }
             }
             $this->db->recordQuery($query);
             $this->row_count += $prep->rowCount();
