@@ -60,6 +60,9 @@ function Required() {
             case 'text':
                 return this.checkText(input);
 
+            case 'date':
+                return this.checkDate(input);
+
             case 'email':
                 return this.checkEmail(input);
 
@@ -101,6 +104,16 @@ function Required() {
     }
 
     this.checkText = function(input) {
+        if (input.val().length < 1) {
+            this.addEmptyError(input);
+            return false;
+        } else {
+            this.removeError(input);
+            return true;
+        }
+    };
+
+    this.checkDate = function(input) {
         if (input.val().length < 1) {
             this.addEmptyError(input);
             return false;
