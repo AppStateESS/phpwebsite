@@ -31,7 +31,6 @@ class Url extends String {
      */
     public function __construct($value = null, $varname = null)
     {
-        //$this->setRegexpMatch('/^(https?:\/\/|\.\/|\/\/)?\w([,\.\w\-\/&;?\+=~#])+$/i');
         parent::__construct($value, $varname);
     }
 
