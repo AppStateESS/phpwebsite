@@ -26,16 +26,22 @@ class JsonView implements \View
      * Command pattern as it allows you to pass around a call to json_encode as
      * you would a View object.
      *
+     * @param $data mixed Object or array to get encoded.
      * @param $options int See documentation for json_encode.
      * @param $depth int See documentation for json_encode.
      */
     public function __construct($data, $options = 0, $depth = 512)
     {
-        $this->data = $data;
+        $this->setData($data);
         $this->options = $options;
         $this->depth = $depth;
     }
 
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+    
     /**
      * Render as JSON.  This function essentially returns the result of a PECL
      * json json_encode.
@@ -53,5 +59,3 @@ class JsonView implements \View
         return 'application/json';
     }
 }
-
-?>

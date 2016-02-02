@@ -112,7 +112,9 @@ abstract class Resource extends Data {
         $vars = $this->getVars();
         foreach ($vars as $variable) {
             if ($variable instanceof \Variable) {
-                $dts[$variable->getVarname()] = $variable->loadDatatype($table);
+                if ($variable->getIsTableColumn()) {
+                    $dts[$variable->getVarname()] = $variable->loadDatatype($table);
+                }
             }
         }
         return empty($dts) ? null : $dts;
@@ -137,5 +139,3 @@ abstract class Resource extends Data {
     }
 
 }
-
-?>

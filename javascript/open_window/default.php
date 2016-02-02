@@ -45,5 +45,3 @@ if (!empty($data['secure'])) {
     $_SESSION['secure_open_window'][] = $rand;
     $data['id'] = $rand;
 }
-
-?>

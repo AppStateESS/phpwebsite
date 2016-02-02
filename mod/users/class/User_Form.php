@@ -754,7 +754,7 @@ class User_Form
         $ug->addFieldConditional('name', "%$name%", 'LIKE');
 
         $members = $group->getMembers();
-        if (isset($members)) {
+        if (!empty($members)) {
             $ug->addFieldConditional('id', $members, 'not in');
         }
         $groups = $db->select();

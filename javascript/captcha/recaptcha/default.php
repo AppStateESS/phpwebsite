@@ -22,5 +22,3 @@ $error = '';
 
 $default['content']	= recaptcha_get_html(RECAPTCHA_PUBLIC_KEY, $error, $ssl);
 $default['theme']	= RECAPTCHA_THEME;
-
-?>

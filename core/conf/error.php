@@ -119,5 +119,3 @@ $errors[KEY_DUPLICATE]                = _('Duplicate key found.');
 
 // Cookie.php 1600-1699
 $errors[COOKIE_SET_FAILED]            = _('Failed to write cookie.');
-
-?>

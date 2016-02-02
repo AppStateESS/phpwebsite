@@ -5,8 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Template implements View {
-
+class Template implements View
+{
     private $file;
     private $variables;
     private $encode = false;
@@ -94,9 +94,15 @@ class Template implements View {
 
     public function setThemeFile($module, $file)
     {
-        $current_theme = \Layout::getCurrentTheme();
-        $this->theme_file = implode('',
-                array(PHPWS_SOURCE_DIR, 'themes/', $current_theme, '/', 'templates/', $module, '/', $file));
+        if (!class_exists('Layout')) {
+            $db = \Database::getDB();
+            $lc = $db->addTable('layout_config');
+            $row = $db->selectOneRow();
+            $current_theme = $row['default_theme'];
+        } else {
+            $current_theme = \Layout::getCurrentTheme();
+        }
+        $this->theme_file = implode('', array(PHPWS_SOURCE_DIR, 'themes/', $current_theme, '/', 'templates/', $module, '/', $file));
     }
 
     /**
@@ -165,5 +171,3 @@ class Template implements View {
     }
 
 }
-
-?>

@@ -4,8 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
-class RSS_Admin {
+class RSS_Admin
+{
 
     public static function main()
     {
@@ -60,16 +60,20 @@ class RSS_Admin {
                 $tpl['MESSAGE'] = &$result;
                 break;
 
+            case 'feedInfo':
+                $feed = new RSS_Feed(filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT));
+                echo json_encode($feed);
+                exit;
+                break;
+
             case 'save_feed':
                 $result = $feed->post();
                 if (is_array($result)) {
-                    $tpl = RSS_Admin::editFeed($feed);
+                    $tpl['CONTENT'] = RSS_Admin::editFeed($feed, true);
                     $tpl['MESSAGE'] = implode('<br />', $result);
-                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
-                    exit();
                 } else {
                     $result = $feed->save();
-                    javascript('close_refresh');
+                    PHPWS_Core::reroute('index.php?module=rss&tab=import');
                 }
                 break;
 
@@ -143,14 +147,11 @@ class RSS_Admin {
         Layout::add(PHPWS_ControlPanel::display($content));
     }
 
-
     public static function sendMessage($message, $command)
     {
         $_SESSION['RSS_Message'] = $message;
 
-        PHPWS_Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
-        $command, Current_User::getAuthKey()));
-
+        PHPWS_Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
     }
 
     public static function getMessage()
@@ -206,7 +207,6 @@ class RSS_Admin {
         $tpl['TITLE'] = dgettext('rss', 'Edit channel');
 
         return $tpl;
-
     }
 
     public static function settings()
@@ -215,8 +215,8 @@ class RSS_Admin {
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'save_settings');
 
-        $files = array(1=>'1', 2=>'2');
-        $filenames = array(1=>'RSS 1.0', 2=>'RSS 2.0');
+        $files = array(1 => '1', 2 => '2');
+        $filenames = array(1 => 'RSS 1.0', 2 => 'RSS 2.0');
         $form->addRadio('rssfeed', $files);
         $form->setLabel('rssfeed', $filenames);
         $form->setMatch('rssfeed', PHPWS_Settings::get('rss', 'rssfeed'));
@@ -237,7 +237,7 @@ class RSS_Admin {
 
         $tpl = $form->getTemplate();
 
-        $fc['TITLE']   = dgettext('rss', 'General Settings');
+        $fc['TITLE'] = dgettext('rss', 'General Settings');
         $fc['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'settings.tpl');
 
         return $fc;
@@ -246,7 +246,7 @@ class RSS_Admin {
     public static function save_settings()
     {
         $message = null;
-        PHPWS_Settings::set('rss', 'rssfeed', (int)$_POST['rssfeed']);
+        PHPWS_Settings::set('rss', 'rssfeed', (int) $_POST['rssfeed']);
 
         if (!empty($_POST['editor'])) {
             if (PHPWS_Text::isValidInput($_POST['editor'], 'email')) {
@@ -305,7 +305,7 @@ class RSS_Admin {
             $tpl['channels'][] = $row;
         }
 
-        $tpl['TITLE_LABEL']  = dgettext('rss', 'Title');
+        $tpl['TITLE_LABEL'] = dgettext('rss', 'Title');
         $tpl['ACTIVE_LABEL'] = dgettext('rss', 'Active');
         $tpl['ACTION_LABEL'] = dgettext('rss', 'Action');
 
@@ -314,50 +314,57 @@ class RSS_Admin {
         return $final_tpl;
     }
 
-    public static function editFeed(RSS_Feed $feed)
+    public static function editFeed($feed = null, $add_submit = false)
     {
-        $form = new PHPWS_Form;
-        if ($feed->id) {
-            $form->addHidden('feed_id', $feed->id);
+        if (empty($feed)) {
+            $feed = new RSS_Feed;
         }
+        $form = new PHPWS_Form;
+
+        $form->addHidden('feed_id', $feed->id);
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'save_feed');
 
-        $form->addText('address', $feed->address);
+        $form->addTextArea('address', $feed->address);
+        $form->setClass('address', 'form-control');
         $form->setLabel('address', dgettext('rss', 'Address'));
-        $form->setSize('address', '30');
 
         $form->addText('title', $feed->title);
+        $form->setClass('title', 'form-control');
         $form->setLabel('title', dgettext('rss', 'Title'));
-        $form->setSize('title', '30');
 
-        $form->addSubmit('submit', dgettext('rss', 'Save'));
-
-        $form->addButton('cancel', dgettext('rss', 'Cancel'));
-        $form->setExtra('cancel', 'onclick="window.close()"');
 
         $form->addText('item_limit', $feed->item_limit);
+        $form->setClass('item_limit', 'form-control');
         $form->setSize('item_limit', 2);
         $form->setLabel('item_limit', dgettext('rss', 'Item limit'));
 
         $form->addText('refresh_time', $feed->refresh_time);
+        $form->setClass('refresh_time', 'form-control');
         $form->setSize('refresh_time', 5);
         $form->setLabel('refresh_time', dgettext('rss', 'Refresh time'));
+        if ($add_submit) {
+            $form->addSubmit('submit', dgettext('rss', 'Save'));
+            $form->setClass('submit', 'btn btn-primary');
+        }
 
         $template = $form->getTemplate();
+
 
         $template['TITLE_WARNING'] = dgettext('rss', 'Feed title will be used if left empty');
         $template['REFRESH_WARNING'] = dgettext('rss', 'In seconds');
 
         $content = PHPWS_Template::process($template, 'rss', 'add_feed.tpl');
 
-        $tpl['TITLE'] = dgettext('rss', 'Add Feed');
-        $tpl['CONTENT'] = $content;
-        return $tpl;
+        return $content;
     }
 
     public static function import()
     {
+        $source_http = PHPWS_SOURCE_HTTP;
+        $script = "<script src='{$source_http}mod/rss/javascript/feed.js'></script>";
+        javascript('jquery');
+        \Layout::addJSHeader($script);
         PHPWS_Core::requireConfig('rss');
 
         if (!ini_get('allow_url_fopen')) {
@@ -370,17 +377,29 @@ class RSS_Admin {
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $content = NULL;
 
-        $vars['address'] = 'index.php?module=rss&command=add_feed';
-        $vars['label'] = dgettext('rss', 'Add feed');
-        $vars['width'] = '450';
-        $vars['height'] = '350';
-        $template['ADD_LINK'] = javascript('open_window', $vars);
+        $template['ADD_LINK'] = '<button class="btn btn-success edit-feed"><i></i> Add Feed</button>';
 
-        $template['TITLE_LABEL']   = dgettext('rss', 'Title');
+        /*
+          $vars['address'] = 'index.php?module=rss&command=add_feed';
+          $vars['label'] = dgettext('rss', 'Add feed');
+          $vars['width'] = '450';
+          $vars['height'] = '350';
+          $template['ADD_LINK'] = javascript('open_window', $vars);
+         * 
+         */
+
+        $template['TITLE_LABEL'] = dgettext('rss', 'Title');
         $template['ADDRESS_LABEL'] = dgettext('rss', 'Address');
         $template['DISPLAY_LABEL'] = dgettext('rss', 'Display?');
-        $template['ACTION_LABEL']  = dgettext('rss', 'Action');
+        $template['ACTION_LABEL'] = dgettext('rss', 'Action');
         $template['REFRESH_TIME_LABEL'] = dgettext('rss', 'Refresh feed');
+        $modal = new \Modal('rss-modal');
+        $modal->addButton('<button class="btn btn-primary" id="save-feed"><i class="fa fa-save"></i> Save</button>');
+        $modal_content = RSS_Admin::editFeed();
+        $modal->setContent($modal_content);
+        $modal->setTitle('Edit feed');
+        $modal->setWidthPixel('400');
+        $template['MODAL'] = $modal->get();
 
         $pager = new DBPager('rss_feeds', 'RSS_Feed');
         $pager->setModule('rss');
@@ -388,7 +407,7 @@ class RSS_Admin {
         $pager->addPageTags($template);
         $pager->addRowTags('pagerTags');
         $content = $pager->get();
-        
+
         $tpl['TITLE'] = dgettext('rss', 'Import RSS Feeds');
         $tpl['CONTENT'] = $content;
         if (!defined('ALLOW_CACHE_LITE') || !ALLOW_CACHE_LITE) {
@@ -397,6 +416,7 @@ class RSS_Admin {
 
         return $tpl;
     }
+
 }
 
 ?>

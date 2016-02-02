@@ -14,5 +14,3 @@ class NotAcceptableException extends Exception
         return new NotAcceptableResponse($request, $previous);
     }
 }
-
-?>

@@ -72,6 +72,8 @@ abstract class Variable extends Data {
     protected $allowed_inputs = array();
 
     protected $datatype;
+    
+    protected $is_table_column = true;
 
     /**
      * Verifies the value property. Should throw Error exception on failure. This
@@ -493,6 +495,14 @@ abstract class Variable extends Data {
         return $dt;
     }
 
+    public function setIsTableColumn($allow)
+    {
+        $this->is_table_column = (bool)$allow;
+    }
+    
+    public function getIsTableColumn()
+    {
+        return $this->is_table_column;
+    }
+    
 }
-
-?>

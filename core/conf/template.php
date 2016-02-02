@@ -37,4 +37,3 @@ define('RETURN_BLANK_TEMPLATES', true);
  */
 
 define('LABEL_TEMPLATES', false);
-?>

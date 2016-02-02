@@ -155,7 +155,7 @@ abstract class DB extends \Data {
 
     /**
      * Holds the dsn object
-     * @var object
+     * @var \Database\DSN
      */
     protected $dsn;
 
@@ -724,6 +724,22 @@ abstract class DB extends \Data {
         return $table;
     }
 
+    /**
+     * Returns a previously added table object
+     * @param string $table_name
+     * @return \Database\Table
+     * @throws \Exception
+     */
+    public function getTable($table_name)
+    {
+        $index = !empty($alias) ? $alias : $table_name;
+        if (!isset($this->tables[$index])) {
+            throw new \Exception(t('Table not added'));
+        } else {
+            return $this->tables[$index];
+        }
+    }
+
     public function addExistConditional($subselect, $exists = true)
     {
         if ($subselect instanceof DB) {
@@ -1242,7 +1258,8 @@ abstract class DB extends \Data {
     }
 
     /**
-     * Returns a passed $object parameter with values set from the current query.
+     * Returns a passed $object parameter with values set from the current query. If the object variables are protected
+     * or private, they will not accept the database results.
      *
      * @param object $object
      * @return object
@@ -1420,7 +1437,7 @@ abstract class DB extends \Data {
                 }
 
                 if ($module->isRandomOrder()) {
-                    $order[] = $module->getRandomOrder();
+                    $order[] = $this->getRandomCall();
                 } else {
                     $order_list = $module->getOrderBy();
                     if ($order_list) {
@@ -1823,5 +1840,3 @@ abstract class DB extends \Data {
     }
 
 }
-
-?>

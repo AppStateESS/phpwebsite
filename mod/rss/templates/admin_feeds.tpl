@@ -1,5 +1,5 @@
 {ADD_LINK}
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover sans">
     <tr>
         <th>{TITLE_SORT} {TITLE_LABEL}</th>
         <th>{ADDRESS_LABEL}</th>
@@ -21,5 +21,6 @@
 </table>
 {EMPTY_MESSAGE}
 <div class="align-center"><b>{PAGE_LABEL}</b><br />
-{PAGES}<br />
-{LIMITS}</div>
+    {PAGES}<br />
+    {LIMITS}</div>
+{MODAL}

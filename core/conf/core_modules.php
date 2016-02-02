@@ -15,4 +15,3 @@ $core_modules = array('users',
     'miniadmin',
     'access'
 );
-?>

@@ -33,5 +33,3 @@ abstract class RedirectResponse extends \Response
         exit(); // TODO: Never ever exit early
     }
 }
-
-?>

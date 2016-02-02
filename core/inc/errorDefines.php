@@ -121,4 +121,3 @@ define('KEY_DUPLICATE',               -1405);
 
 /*********** Cookie.php ******************/
 define('COOKIE_SET_FAILED',           -1600);
-?>

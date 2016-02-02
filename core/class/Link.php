@@ -41,7 +41,7 @@ class PHPWS_Link {
     public function get()
     {
         $this->loadAddress();
-        if (!$this->address || !$this->label ) {
+        if (!strlen($this->address) || !strlen($this->label)) {
             return null;
         }
 
@@ -360,4 +360,3 @@ class PHPWS_Link {
         return $this->get();
     }
 }
-?>

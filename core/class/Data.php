@@ -34,4 +34,3 @@ abstract class Data {
         }
     }
 }
-?>

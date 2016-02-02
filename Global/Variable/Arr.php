@@ -11,13 +11,14 @@ namespace Variable;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @todo Added a shift and unshift function with associative properties
  */
-class Arr extends \Variable {
-
+class Arr extends \Variable
+{
     /**
      * Arr can use checkbox and select on form export
      * @var array
      */
     protected $allowed_inputs = array('checkbox', 'select');
+    protected $column_type = 'text';
 
     /**
      * Makes sure value is an array, throws Error exception otherwise.
@@ -233,8 +234,7 @@ class Arr extends \Variable {
             }
 
             if (!isset($val[$column_name])) {
-                throw new \Exception(t('Could not index array by column name "%s"',
-                        $column_name));
+                throw new \Exception(t('Could not index array by column name "%s"', $column_name));
             }
             $index = $val[$column_name];
 
@@ -244,8 +244,7 @@ class Arr extends \Variable {
 
             if (!empty($collapse_on)) {
                 if (!isset($val[$collapse_on])) {
-                    throw new \Exception(t('Could not collapse on value "%s"',
-                            $collapse_on));
+                    throw new \Exception(t('Could not collapse on value "%s"', $collapse_on));
                 }
                 $val = $val[$collapse_on];
             }
@@ -259,6 +258,18 @@ class Arr extends \Variable {
         $this->value = $new_value;
     }
 
-}
+    /**
+     * If value is a string, this set will try to unserialize it
+     * @param array|string $value
+     */
+    public function set($value)
+    {
+        if (!is_array($value) && is_string($value)) {
+            if (preg_match('/^a:\d{1,}:/', $value)) {
+                $value = unserialize($value);
+            }
+        }
+        parent::set($value);
+    }
 
-?>
+}

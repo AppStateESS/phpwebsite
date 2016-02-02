@@ -437,8 +437,8 @@ EOF;
             $db = \Database::newDB();
             $pp = $db->addTable('ps_page');
             if (!$pp->columnExists('hide_title') && $pp->columnExists('show_title')) {
-                $dt = $pp->getDatatype('show_title');
-                $dt->change('hide_title');
+                $dt = $pp->getField('show_title');
+                $pp->renameField($dt, 'hide_title');
             }
             $content[] = <<<EOF
 <pre>1.9.1 changes

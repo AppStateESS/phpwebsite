@@ -133,7 +133,7 @@ abstract class Table extends Resource
      * @var mixed
      */
     private $use_pear_sequence;
-
+    
     /**
      * Extended class should add a primary index to the current table.
      */
@@ -216,6 +216,8 @@ abstract class Table extends Resource
     abstract public function createPrimaryIndexId();
 
     abstract public function getLastPearSequence();
+    
+    abstract public function getPrimaryKeySequenceName();
 
     /**
      * @param string $name Name of the table
@@ -402,10 +404,10 @@ abstract class Table extends Resource
 
     /**
      * Constructs an insertQuery.
-     * 
+     *
      * If a PEAR sequence table is found, and the usePearSequence boolean has not be set,
      * an Exception will be thrown.
-     * 
+     *
      * @param boolean $use_bind_vars If TRUE, bind variable format will be followed
      * in the query's construction
      * @return string
@@ -766,6 +768,7 @@ abstract class Table extends Resource
 
     public function insert()
     {
+        $id_column_exists = $this->columnExists('id');
         $this->row_count = 0;
         $query = $this->insertQuery();
         $prep = DB::$PDO->prepare($query);
@@ -773,11 +776,19 @@ abstract class Table extends Resource
             foreach ($line as $key => $val) {
                 $data[$key] = $val->getValue();
             }
-            if ($this->usePearSequence()) {
-                $data['id'] = $this->getLastPearSequence() + 1;
+            if ($id_column_exists) {
+                if ($this->usePearSequence()) {
+                    $data['id'] = $this->getLastPearSequence() + 1;
+                }
             }
             $prep->execute($data);
-            $this->incremented_ids[] = DB::$PDO->lastInsertId();
+            if ($id_column_exists) {
+                if (!$this->usePearSequence()) {
+                    $this->incremented_ids[] = DB::$PDO->lastInsertId($this->getPrimaryKeySequenceName());
+                } else {
+                    $this->incremented_ids[] = $data['id'];
+                }
+            }
             $this->db->recordQuery($query);
             $this->row_count += $prep->rowCount();
         }
@@ -792,7 +803,7 @@ abstract class Table extends Resource
             return end($this->incremented_ids);
         }
     }
-
+    
     public function getPearSequenceName()
     {
         return $this->getFullName(false) . '_seq';
@@ -886,10 +897,4 @@ abstract class Table extends Resource
         return $this->included_with_using;
     }
     
-    public function buildDatatype($type, $name)
-    {
-    }
-
 }
-
-?>

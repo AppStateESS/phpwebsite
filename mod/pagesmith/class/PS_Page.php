@@ -79,7 +79,7 @@ class PS_Page
 
         if (empty($this->_tpl->structure)) {
             PHPWS_Error::log(PS_PG_TPL_ERROR, 'pagesmith', 'PS_Page::loadSections', $this->_tpl->file);
-            PHPWS_Core::errorPage();
+            throw new \Exception('Page template missing:' . $this->_tpl->file);
         }
 
         foreach ($this->_tpl->structure as $section_xml) {
@@ -566,10 +566,15 @@ class PS_Page
         $db->delete();
     }
 
+   
+    
     private function pageLinks(&$tpl)
     {
         $db = new PHPWS_DB('ps_page');
-        $db->addWhere('deleted', 0);
+        
+        if (version_compare(\PageSmith::getVersion(), '1.10.0', '>=')) {
+            $db->addWhere('deleted', 0);
+        }
         $db->addColumn('id');
         $db->addColumn('page_order');
         $db->setIndexBy('page_order');

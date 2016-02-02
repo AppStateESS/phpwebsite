@@ -267,6 +267,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             unset($template[$key]);
         }
 
+        $template['source_http'] = $template['SOURCE_HTTP'] = PHPWS_SOURCE_HTTP;
         $tpl->setData($template);
 
         $result = $tpl->get();

@@ -238,7 +238,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         }
         return $row_count;
     }
-    
+
     public function hasPearSequenceTable()
     {
         $seq_table_name = $this->getFullName(false) . '_seq';
@@ -297,4 +297,10 @@ ALTER TABLE $table_name MODIFY $old_column_name $new_column_parameters
 EOF;
         $this->db->exec($query);
     }
+
+    public function getPrimaryKeySequenceName()
+    {
+        return null;
+    }
+
 }

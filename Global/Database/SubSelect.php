@@ -52,6 +52,11 @@ class SubSelect extends Resource {
         }
         return sprintf('(%s) AS %s', $this->__toString(), $this->getAlias());
     }
+    
+    public function stringAsField()
+    {
+        return $this->getResourceQuery();
+    }
 
 }
 

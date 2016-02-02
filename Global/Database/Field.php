@@ -157,7 +157,11 @@ class Field extends Column {
 
         if ($result['COLUMN_DEFAULT'] !== null) {
             $sql[] = 'default';
-            $sql[] = $result['COLUMN_DEFAULT'];
+            if (is_string($result['COLUMN_DEFAULT'])) {
+                $sql[] = '\'' . $result['COLUMN_DEFAULT'] . '\'';
+            } else {
+                $sql[] = $result['COLUMN_DEFAULT'];
+            }
         }
 
         return implode(' ', $sql);

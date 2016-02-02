@@ -41,5 +41,3 @@ class GlobalModule extends Module implements SettingDefaults {
     }
 
 }
-
-?>

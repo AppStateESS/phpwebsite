@@ -66,19 +66,28 @@ class PulseFactory extends \ResourceFactory
      */
     private static function checkSaveRequirements(PulseSchedule $schedule)
     {
-        if (empty($schedule->getName())) {
+        $name = $schedule->getName();
+        if (empty($name)) {
             throw new \Exception('Schedule name may not be empty');
         }
-        if (empty($schedule->getRequiredFile())) {
+
+        $file = $schedule->getRequiredFile();
+        if (empty($file)) {
             throw new \Exception('Required file may not be empty');
         }
-        if (empty($schedule->getClassName())) {
+
+        $cname = $schedule->getClassName();
+        if (empty($cname)) {
             throw new \Exception('Class name may not be empty');
         }
-        if (empty($schedule->getClassMethod())) {
+
+        $cmethod = $schedule->getClassMethod();
+        if (empty($cmethod)) {
             throw new \Exception('Class method name may not be empty');
         }
-        if (empty($schedule->getInterim())) {
+
+        $interim = $schedule->getInterim();
+        if (empty($interim)) {
             throw new \Exception('Interim must be greater than zero minutes.');
         }
     }

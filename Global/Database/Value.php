@@ -10,8 +10,8 @@ namespace Database;
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Value extends Column {
-
+class Value extends Column
+{
     /**
      * @var string
      */
@@ -23,7 +23,7 @@ class Value extends Column {
      * @param string $name
      * @param string $value
      */
-    public function __construct(Table $table, $name, $value = null, $check_existence=null)
+    public function __construct(Table $table, $name, $value = null, $check_existence = null)
     {
         parent::__construct($table, $name, $check_existence);
         $this->set($value);
@@ -51,7 +51,7 @@ class Value extends Column {
                 $this->value = new \Variable\Double($value, $this->name);
                 return true;
                 break;
-            
+
             case 'object':
                 switch (\get_class($value)) {
                     case 'Expression':
@@ -72,6 +72,11 @@ class Value extends Column {
                 } else {
                     throw new \Exception(t('Unacceptable value type (%s)', gettype($value)));
                 }
+                return true;
+                break;
+                
+            case 'array':
+                $this->value = new \Variable\String(serialize($value), $this->name);
                 return true;
                 break;
 

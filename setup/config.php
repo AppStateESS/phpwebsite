@@ -14,5 +14,3 @@ define('CHECK_DB_CONNECTION', TRUE);
 
 // Set this value to false to disable auto forwarding during installation.
 define('AUTO_FORWARD', true);
-
-?>

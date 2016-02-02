@@ -63,5 +63,3 @@ class Index extends Constraint {
     }
 
 }
-
-?>

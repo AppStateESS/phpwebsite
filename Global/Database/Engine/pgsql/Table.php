@@ -339,5 +339,14 @@ ALTER TABLE $table_name ALTER COLUMN $column_name TYPE $new_column_parameters
 EOF;
         $this->db->exec($query);
     }
+    
+    public function getPrimaryKeySequenceName()
+    {
+        $sql_query = 'SELECT pg_get_serial_sequence(\'' . $this->getFullName(false) . '\', \'id\')';
+        $this->db->loadStatement($sql_query);
+        $result = $this->db->fetchColumn();
+        $seq = explode('.', $result);
+        return $seq[1];
+    }
 
 }

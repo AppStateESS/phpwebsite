@@ -135,7 +135,7 @@ Using Where
 If you want to narrow your selection, you will need to add where
 conditions to your object. To do this use:
 
-$db->addWhere(column_name, value, operator, conjuction, group)
+$db->addWhere(column_name, value, operator, conjunction, group)
 
 column name - the column table you want to match against.
 
@@ -144,7 +144,7 @@ value       - the value to compare the column against
 operator    - how to compare the column to the value. This
               defaults to equal (=).
 
-conj        - the conjuction between where conditions
+conj        - the conjunction between where conditions
 	      AND or OR with AND being the default
 
 group       - the group to file this where

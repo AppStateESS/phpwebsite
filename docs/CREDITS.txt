@@ -153,6 +153,9 @@ Chupurnov Valeriy
 XDSoft
 http://xdsoft.net/
 
+Diego Perini
+URL regular expression code
+https://gist.github.com/dperini/
 
 --------------------------------------------------------------------------
 To those who translate, we salute you.

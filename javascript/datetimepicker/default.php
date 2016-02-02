@@ -36,4 +36,3 @@ if (!isset($data['selector'])) {
     $data['selector'] = '.datetimepicker';
 }
 $data['options'] = implode(',', $options);
-?>

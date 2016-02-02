@@ -10,3 +10,5 @@ javascript/captcha/recaptcha/recaptcha_settings.php
 .project
 .settings/
 .vagrant
+.bower_components
+/bower_components/

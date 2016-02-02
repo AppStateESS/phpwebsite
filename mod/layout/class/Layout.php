@@ -167,8 +167,15 @@ class Layout
         if (empty($index)) {
             $index = $index_count++;
         }
-
+        if (empty($script)) {
+            return;
+        }
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
+    }
+    
+    public static function removeJSHeader($index)
+    {
+        unset($GLOBALS['Layout_JS'][$index]);
     }
 
     public static function extraStyle($filename)
@@ -569,12 +576,8 @@ class Layout
     public static function getMetaTags($page_metatags = null)
     {
         if (!$page_metatags) {
-            extract($_SESSION['Layout_Settings']->getMetaTags());
-            if (!isset($GLOBALS['Layout_Robots'])) {
-                $meta_robots = '11';
-            } else {
-                $meta_robots = $GLOBALS['Layout_Robots'];
-            }
+            $meta_tags_settings = $_SESSION['Layout_Settings']->getMetaTags();
+            extract($meta_tags_settings);
         } else {
             extract($page_metatags);
         }

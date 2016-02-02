@@ -24,6 +24,3 @@ if (isset($data['type'])) {
 
 $data['QUESTION'] = preg_replace("/(?<!\\\)'/", "\'", $data['QUESTION']);
 $data['QUESTION'] = str_replace('"', '&quot;', $data['QUESTION']);
-
-
-?>

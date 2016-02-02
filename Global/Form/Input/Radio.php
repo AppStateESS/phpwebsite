@@ -46,5 +46,3 @@ class Radio extends \Form\Input {
     }
 
 }
-
-?>

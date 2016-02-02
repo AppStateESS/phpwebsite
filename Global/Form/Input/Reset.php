@@ -12,5 +12,3 @@ namespace Form\Input;
 class Reset extends Text {
 
 }
-
-?>

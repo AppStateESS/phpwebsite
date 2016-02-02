@@ -25,4 +25,3 @@ abstract class Content extends Resource {
      */
     protected $hide_after = 0;
 }
-?>

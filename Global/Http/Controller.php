@@ -166,5 +166,3 @@ abstract class Controller implements \Controller {
     }
 
 }
-
-?>

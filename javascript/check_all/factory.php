@@ -161,4 +161,3 @@ EOF;
         $this->setBodyScript($body);
     }
 }
-?>

@@ -147,5 +147,3 @@ class Conditional extends \Data {
     }
 
 }
-
-?>

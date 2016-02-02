@@ -35,5 +35,3 @@ class Float extends \Variable
     }
 
 }
-
-?>

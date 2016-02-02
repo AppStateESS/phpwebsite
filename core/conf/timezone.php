@@ -82,5 +82,3 @@ array ('id' =>  13, 'codes' => NULL, 'city' => array('Rawaki Islands: Enderbury'
                                                                         'Kiribati')),
 array ('id' =>  14, 'codes' => NULL, 'city' => array('Line Islands: Kiritibati')),
 );
-
-?>

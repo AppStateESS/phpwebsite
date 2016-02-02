@@ -10,5 +10,3 @@ interface SettingDefaults {
 
     public function getSettingDefaults();
 }
-
-?>

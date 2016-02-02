@@ -260,7 +260,10 @@ abstract class Datatype extends \Data
 
     /**
      * Calls a CHANGE alteration for renaming the column.
+     * THIS IS A MYSQL SPECIFIC COMMAND. Use the Table class alter method instead.
+     *
      * @param string $new_name
+     * @deprecated
      */
     public function change($new_name)
     {
@@ -273,8 +276,10 @@ abstract class Datatype extends \Data
 
     /**
      * Calls a MODIFY alteration based on the current datatype settings.
+     * THIS IS A MYSQL SPECIFIC COMMAND. Use the Table class alter method instead.
      * @param string $after Name of column to place new column after. Null
-     * puts new column at the end of the table. 'FIRST' makes it the first column.
+     *  puts new column at the end of the table. 'FIRST' makes it the first column.
+     * @deprecated
      */
     public function modify($after = null)
     {

@@ -37,6 +37,3 @@ $all   = array('database' => array ('result_buffering' => true,
  */
 $mysql = array('table' => array('charset' => 'utf8',
                                 'collate' => 'utf8_unicode_ci'));
-
-
-?>

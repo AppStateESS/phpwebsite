@@ -49,5 +49,3 @@ abstract class Alias extends \Data {
     }
 
 }
-
-?>

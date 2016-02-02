@@ -247,6 +247,15 @@ class PageSmith
         
     }
     
+    public static function getVersion()
+    {
+        $db = \Database::newDB();
+        $tbl = $db->addTable('modules');
+        $tbl->addFieldConditional('title', 'pagesmith');
+        $tbl->addField('version');
+        return $db->selectColumn();
+    }
+    
     private function purgeListing()
     {
         $db = \Database::newDB();

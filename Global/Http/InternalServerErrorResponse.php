@@ -14,5 +14,3 @@ class InternalServerErrorResponse extends ErrorResponse
         return 500;
     }
 }
-
-?>

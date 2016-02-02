@@ -12,5 +12,3 @@ $default['set_timeout'] = ' ';
 if (isset($data['use_link'])) {
     unset($default['set_timeout']);
 }
-
-?>

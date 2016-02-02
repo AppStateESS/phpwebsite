@@ -360,7 +360,7 @@ abstract class Data {
                 throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
                         $key, get_class($this)));
             }
-            if ($this->$key instanceof Variable) {
+            if (!$this->isPrivate($key) && $this->$key instanceof Variable) {
                 if (!is_null($value)) {
                     $this->$key->set($value);
                 }
@@ -368,6 +368,8 @@ abstract class Data {
                 $func = walkingCase($key, 'set');
                 if (method_exists($this, $func)) {
                     $this->$func($value);
+                } elseif($this->isProtected($key)) {
+                    $this->$key = $value;
                 } else {
                     throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
                             $key, get_class($this)));
@@ -500,5 +502,3 @@ abstract class Data {
     }
 
 }
-
-?>

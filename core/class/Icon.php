@@ -155,5 +155,3 @@ class Icon extends \Tag {
     }
 
 }
-
-?>

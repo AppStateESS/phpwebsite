@@ -674,5 +674,3 @@ class PHPWS_Item {
 
 
 }// END CLASS PHPWS_Item
-
-?>
