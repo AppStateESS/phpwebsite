@@ -10,7 +10,7 @@ CREATE TABLE modules (
 );
 
 CREATE TABLE settings (
-  id int NOT NULL default 0,
+  id int NOT NULL AUTO_INCREMENT,
   module_name varchar(255) NOT NULL,
   variable_name varchar(255) NOT NULL,
   setting text,

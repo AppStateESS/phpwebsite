@@ -80,6 +80,16 @@ $(document).ready(function () {
         $('#event_form_end_date').val(end_date);
         $('event_form_sch_id').val(schedule_id);
         $('#edit-event').modal('show');
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            modal_this = this
+            $('#edit-event').on('shown.bs.modal', function(e) {
+                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                    modal_this.$element.focus()
+                }
+            })
+        };
     });
 
     $('.edit-event').click(function () {
@@ -102,6 +112,16 @@ $(document).ready(function () {
             fillEventForm(data);
         }, 'json').always(function () {
             $('#edit-event').modal('show');
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {
+                modal_this = this
+                $('#edit-event').on('shown.bs.modal', function(e) {
+                    if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                            && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                            && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                        modal_this.$element.focus()
+                    }
+                })
+            };
         });
     });
 

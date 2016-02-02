@@ -79,3 +79,34 @@ div#body-content #property-tabs ul {
     margin-top : 6px;
     display:block;
 }
+
+.panel-heading {
+    cursor: pointer;
+}
+
+@-moz-document url-prefix() { 
+  .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family:'FontAwesome';
+    content:"\f056";
+    float: right;
+    color: inherit;
+    margin-top: -22px;
+}
+.panel-heading.collapsed .accordion-toggle:after {
+    /* symbol for "collapsed" panels */
+    content:"\f055";
+}
+}
+
+.accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family:'FontAwesome';
+    content:"\f056";
+    float: right;
+    color: inherit;
+}
+.panel-heading.collapsed .accordion-toggle:after {
+    /* symbol for "collapsed" panels */
+    content:"\f055";
+}

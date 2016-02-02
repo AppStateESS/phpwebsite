@@ -37,6 +37,16 @@ $(document).ready(function () {
     $('#create-schedule').click(function () {
         resetScheduleForm();
         $('#schedule-modal').modal('show');
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            modal_this = this
+            $('#schedule-modal').on('shown.bs.modal', function(e) {
+                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                    modal_this.$element.focus()
+                }
+            })
+        };
     });
 
     $('#edit-schedule').click(function () {
@@ -44,5 +54,15 @@ $(document).ready(function () {
         resetScheduleForm();
         plugScheduleForm(schedule_id);
         $('#schedule-modal').modal('show');
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            modal_this = this
+            $('#schedule-modal').on('shown.bs.modal', function(e) {
+                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                    modal_this.$element.focus()
+                }
+            })
+        };
     });
 });
