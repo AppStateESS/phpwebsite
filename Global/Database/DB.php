@@ -14,8 +14,8 @@ if (!defined('DB_PERSISTENT_CONNECTION')) {
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class DB extends \Data {
-
+abstract class DB extends \Data
+{
     /**
      * Type of module data to pull.
      * @see DB::pullResourceData()
@@ -166,6 +166,13 @@ abstract class DB extends \Data {
     private $exists;
 
     /**
+     * If true, DB will rollback any outstanding transactions on destruction.
+     * This helps with throw exceptions during multiple executions.
+     * @var boolean
+     */
+    private $rollback_on_destruct = false;
+
+    /**
      * The current PDO object. Kept static to prevent constant construction.
      * @var \PDO
      */
@@ -263,9 +270,12 @@ abstract class DB extends \Data {
 
     /**
      * Starts a database transaction.
+     * @var boolean rollback_on_destruct If true, a premature destruction forces 
+     *  uncommitted executions to be rolled back.
      */
-    public function begin()
+    public function begin($rollback_on_destruct = false)
     {
+        $this->rollback_on_destruct = $rollback_on_destruct;
         if (self::$transaction_count == 0) {
             if (empty(self::$PDO)) {
                 throw new \Exception(t('PDO connection is missing'));
@@ -287,7 +297,6 @@ abstract class DB extends \Data {
             if (empty(self::$PDO)) {
                 throw new \Exception(t('PDO connection is missing'));
             }
-
             return self::$PDO->commit();
         } elseif (self::$transaction_count < 0) {
             throw new \Exception(t('Transaction not started'));
@@ -1748,12 +1757,20 @@ abstract class DB extends \Data {
      */
     public function __destruct()
     {
-        self::disconnect();
         if (self::$transaction_count > 0) {
-            trigger_error(t('%s uncommitted database transactions', self::$transaction_count), E_USER_ERROR);
+            if ($this->rollback_on_destruct) {
+                for ($i = 0; $i < self::$transaction_count; $i++) {
+                    $this->rollback();
+                }
+            } else {
+                self::disconnect();
+                trigger_error(t('%s uncommitted database transactions', self::$transaction_count), E_USER_ERROR);
+            }
         } elseif (self::$transaction_count < 0) {
+            self::disconnect();
             trigger_error(t('Database transaction commits and/or rollbacks are not in sync'), E_USER_ERROR);
         }
+        self::disconnect();
     }
 
     /**
