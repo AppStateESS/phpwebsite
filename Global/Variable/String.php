@@ -2,6 +2,8 @@
 
 namespace Variable;
 
+require_once PHPWS_SOURCE_DIR . 'Global/inc/defines.php';
+
 /**
  * Variable object for strings
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -9,8 +11,8 @@ namespace Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class String extends \Variable {
-
+class String extends \Variable
+{
     /**
      * Contains the form types that can be created from this object
      * @var array
@@ -57,24 +59,19 @@ class String extends \Variable {
     protected function verifyValue($value)
     {
         if (!$this->allow_empty && strlen($value) == 0) {
-            throw new \Exception(t('Value "%1$s" may not be an empty string',
-                    $this->varname));
+            throw new \Exception(t('Value "%1$s" may not be an empty string', $this->varname));
         }
 
         if (!is_string($value)) {
-            throw new \Exception(t('Value "%1$s" is a %2$s, not a string',
-                    $this->varname, gettype($value)));
+            throw new \Exception(t('Value "%1$s" is a %2$s, not a string', $this->varname, gettype($value)));
         }
 
         if ($this->limit && strlen($value) > $this->limit) {
-            throw new \Exception(t('%s is over the %s character limit',
-                    $this->getLabel(), $this->getLimit()));
+            throw new \Exception(t('%s is over the %s character limit', $this->getLabel(), $this->getLimit()));
         }
 
-        if (strlen($value) && isset($this->regexp_match) && !preg_match($this->regexp_match,
-                        $value)) {
-            throw new \Exception(t('String variable "%s" is not formatted correctly',
-                    $this->getVarName()));
+        if (strlen($value) && isset($this->regexp_match) && !preg_match($this->regexp_match, $value)) {
+            throw new \Exception(t('String variable "%s" is not formatted correctly', $this->getVarName()));
         }
 
         return true;
@@ -102,8 +99,7 @@ class String extends \Variable {
         }
 
         if (preg_match($match, $test) === false) {
-            throw new \Exception(t('Regular expression error: %s',
-                    preg_error_msg(preg_last_error())));
+            throw new \Exception(t('Regular expression error: %s', preg_error_msg(preg_last_error())));
         }
         $this->regexp_match = $match;
     }
@@ -130,7 +126,7 @@ class String extends \Variable {
      */
     public function getJavascript()
     {
-
+        
     }
 
     /**
@@ -247,7 +243,7 @@ class String extends \Variable {
     public function loadDataType(\Database\Table $table)
     {
         if (empty($this->column_type)) {
-            if ($this->limit <= 500 && $this->limit > 0) {
+            if ($this->limit <= DB_VARCHAR_LIMIT && $this->limit > 0) {
                 $this->column_type = 'Varchar';
             } else {
                 $this->column_type = 'Text';

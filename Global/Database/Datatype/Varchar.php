@@ -2,6 +2,8 @@
 
 namespace Database\Datatype;
 
+require_once PHPWS_SOURCE_DIR . 'Global/inc/defines.php';
+
 /*
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +24,13 @@ class Varchar extends Character {
 
     protected $varchar = true;
 
-    public function __construct(\Database\Table $table, $name, $length = 255)
+    public function __construct(\Database\Table $table, $name, $length = null)
     {
+        if (empty($length)) {
+            $length = DB_VARCHAR_LIMIT;
+        }
         parent::__construct($table, $name);
-        $this->size->setRange(0, 255);
+        $this->size->setRange(0, $length);
         $this->setSize($length);
         $this->default->setLimit($length);
     }
