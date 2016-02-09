@@ -166,13 +166,6 @@ abstract class DB extends \Data
     private $exists;
 
     /**
-     * If true, DB will rollback any outstanding transactions on destruction.
-     * This helps with throw exceptions during multiple executions.
-     * @var boolean
-     */
-    private $rollback_on_destruct = false;
-
-    /**
      * The current PDO object. Kept static to prevent constant construction.
      * @var \PDO
      */
@@ -273,9 +266,8 @@ abstract class DB extends \Data
      * @var boolean rollback_on_destruct If true, a premature destruction forces 
      *  uncommitted executions to be rolled back.
      */
-    public function begin($rollback_on_destruct = false)
+    public function begin()
     {
-        $this->rollback_on_destruct = $rollback_on_destruct;
         if (self::$transaction_count == 0) {
             if (empty(self::$PDO)) {
                 throw new \Exception(t('PDO connection is missing'));
@@ -1757,18 +1749,8 @@ abstract class DB extends \Data
      */
     public function __destruct()
     {
-        if (self::$transaction_count > 0) {
-            if ($this->rollback_on_destruct) {
-                for ($i = 0; $i < self::$transaction_count; $i++) {
-                    $this->rollback();
-                }
-            } else {
-                self::disconnect();
-                trigger_error(t('%s uncommitted database transactions', self::$transaction_count), E_USER_ERROR);
-            }
-        } elseif (self::$transaction_count < 0) {
-            self::disconnect();
-            trigger_error(t('Database transaction commits and/or rollbacks are not in sync'), E_USER_ERROR);
+        if (self::$transaction_count != 0) {
+            \Error::logError('DB object destructed with incomplete transactions');
         }
         self::disconnect();
     }
