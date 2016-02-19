@@ -15,7 +15,6 @@
         <link href="{THEME_HTTP}css/header.css" rel="stylesheet" media="screen">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         {JAVASCRIPT}
-        <script src="{THEME_HTTP}js/bootstrap.min.js"></script>
         <script src="{THEME_HTTP}js/phpws.js"></script>
         <script type="text/javascript">
             if (typeof CKEDITOR !== 'undefined') {
