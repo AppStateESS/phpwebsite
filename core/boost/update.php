@@ -531,6 +531,28 @@ EOF;
 + Settings table setting column is now MEDIUMTEXT not TEXT in MySQL.
 </pre>
 EOF;
+        case version_compare($version, '2.8.2', '<'):
+            $db = \Database::getDB();
+            $tbl = $db->addTable('settings');
+
+            if ($tbl->columnExists('id')) {
+                $indexes = $tbl->getIndexes();
+                if (empty($indexes)) {
+                    $tbl->dropColumn('id');
+                    $tbl->createPrimaryIndexId();
+                }
+            } else {
+                $tbl->createPrimaryIndexId();
+            }
+            $content[] = <<<EOF
+<pre>2.8.2 changes
+--------------------
++ Fixed: settings table missing primary key.
++ Updated url regular expression check on Variable/Url
++ Added option to force rollbacks on destruction of DB object.
++ Fixed discrepancy between Varchar limit and String.                    
+</pre>
+EOF;
     }
     return true;
 }
