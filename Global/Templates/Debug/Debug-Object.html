@@ -1,26 +1,26 @@
 <tr class="object">
     <td>
-        <strong><?=$varname?></strong>
+        <strong><?php echo $varname?></strong>
     </td>
     <td>
-        <em>(object) <?=$class_name?></em>
+        <em>(object) <?php echo $class_name?></em>
         <table class="var-listing">
             <?php if(isset($object_value)): ?>
             <tr>
-                <td colspan="2"><strong>Value:</strong> <?=$object_value?></td>
+                <td colspan="2"><strong>Value:</strong> <?php echo $object_value?></td>
             </tr>
             <?php endif ?>
             <?php if(isset($to_string)): ?>
             <tr>
-                <td colspan="2"><strong>toString:</strong> <?=@$to_string?></td>
+                <td colspan="2"><strong>toString:</strong> <?php echo @$to_string?></td>
             </tr>
             <?php endif ?>
 
             <?php if (isset($variables)): ?>
             <?php foreach ($variables as $subname=>$subvar): ?>
             <tr class="object-variables">
-                <td><strong><?=$subname?></strong></td>
-                <td><?=\Data::debugValue($subvar)?></td>
+                <td><strong><?php echo $subname?></strong></td>
+                <td><?php echo \Data::debugValue($subvar)?></td>
             </tr>
             <?php endforeach ?>
             <?php endif ?>

@@ -62,7 +62,7 @@ class HTML_Template_Flexy_Compiler_Regex_Math {
     function variables ($input) {
         $input = preg_replace(
             "/".$this->start."([0-9\(\)+*\/-]*)([a-z0-9]+)([0-9\(\)+*\/-]*)".$this->stop."/ie",
-            "'<?=\\1($'.str_replace('.','->','\\2').')\\3?>'",
+            "'<?php echo \\1($'.str_replace('.','->','\\2').')\\3?>'",
             $input);
             
         return $input;

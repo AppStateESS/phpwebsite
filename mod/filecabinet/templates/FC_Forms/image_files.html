@@ -1,16 +1,16 @@
 <?php if($files): foreach($files as $f): extract($f);?>
-<tr class="file-row" data-id="<?=$id?>">
+<tr class="file-row" data-id="<?php echo $id?>">
     <td>
-        <a data-url="<?=$filepath?>" data-id="<?=$id?>" class="view-file pointer" style="color : inherit"><i class="fa fa-search fa-lg"></i></a>
-        <i class="fa fa-edit fa-lg edit-file pointer" data-id="<?=$id?>"></i>
+        <a data-url="<?php echo $filepath?>" data-id="<?php echo $id?>" class="view-file pointer" style="color : inherit"><i class="fa fa-search fa-lg"></i></a>
+        <i class="fa fa-edit fa-lg edit-file pointer" data-id="<?php echo $id?>"></i>
     </td>
     <td class="file-title pointer">
         <div style='top: 50%;'>
-        <?=$title?>
+        <?php echo $title?>
         </div>
     </td>
     <td>
-        <i class="fa fa-trash-o fa-lg delete-file" data-id="<?=$id?>"></i>
+        <i class="fa fa-trash-o fa-lg delete-file" data-id="<?php echo $id?>"></i>
     </td>
 </tr>
 <?php endforeach; endif;?>

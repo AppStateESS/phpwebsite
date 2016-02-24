@@ -1,13 +1,13 @@
 <?php if($files): foreach($files as $f): extract($f);?>
-<tr class="file-row" data-id="<?=$id?>">
+<tr class="file-row" data-id="<?php echo $id?>">
     <td>
-        <i class="fa fa-edit fa-lg edit-file pointer" data-id="<?=$id?>"></i> 
+        <i class="fa fa-edit fa-lg edit-file pointer" data-id="<?php echo $id?>"></i> 
     </td>
     <td class="file-title pointer">
-        <?=$title?>
+        <?php echo $title?>
     </td>
     <td>
-        <i class="fa fa-trash-o fa-lg delete-file" data-id="<?=$id?>"></i>
+        <i class="fa fa-trash-o fa-lg delete-file" data-id="<?php echo $id?>"></i>
     </td>
 </tr>
 <?php endforeach; endif;?>

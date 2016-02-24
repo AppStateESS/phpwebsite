@@ -1,3 +1,3 @@
-<?=$form_start?>
-<div><?=$keyword_group?></div>
-<?=$form_end?>
+<?php echo $form_start?>
+<div><?php echo $keyword_group?></div>
+<?php echo $form_end?>

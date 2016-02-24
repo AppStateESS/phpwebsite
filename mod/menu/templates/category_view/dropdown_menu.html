@@ -1,8 +1,8 @@
-<li class="<?=$active ?'active':null?>">
-    <a href="javascript:void(0)"><?=$title?></a>
+<li class="<?php echo $active ?'active':null?>">
+    <a href="javascript:void(0)"><?php echo $title?></a>
     <?php if (!empty($links)): ?>
     <ul class='menu-top-links'>
-        <?=$links?>
+        <?php echo $links?>
     </ul>
     <?php endif;?>
 </li>

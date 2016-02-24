@@ -11,23 +11,23 @@
                     <legend>On Campus</legend>
                     <div class="form-group">
                         <label for="building">Building <i title="Required input" class="required fa fa-asterisk"></i></label>
-                        <input name="building" required id="building" type="text" class="form-control" value="<?=$building?>" />
+                        <input name="building" required id="building" type="text" class="form-control" value="<?php echo $building?>" />
                     </div>
                     <div class="form-group">
                         <label for="room-number">Room number</label>
-                        <input name="room_number" id="room-number" type="text" class="form-control"  value="<?=$room_number?>" />
+                        <input name="room_number" id="room-number" type="text" class="form-control"  value="<?php echo $room_number?>" />
                     </div>
                     <div class="form-group">
                         <label for="phone-number">Voice phone number <i title="Required input" class="required fa fa-asterisk"></i></label>
-                        <input required id="phone-number" type="tel" name="phone_number" class="form-control" placeholder="XXX-XXX-XXXX" value="<?=$phone_number?>" />
+                        <input required id="phone-number" type="tel" name="phone_number" class="form-control" placeholder="XXX-XXX-XXXX" value="<?php echo $phone_number?>" />
                     </div>
                     <div class="form-group">
                         <label for="fax-number">Fax number</label>
-                        <input id="fax-number" name="fax_number" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="<?=$fax_number?>" />
+                        <input id="fax-number" name="fax_number" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="<?php echo $fax_number?>" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email address <small>(note: you may use a social icon as well/instead)</small></label>
-                        <input id="email-address" name="email" type="email" class="form-control" value="<?=$email?>" />
+                        <input id="email-address" name="email" type="email" class="form-control" value="<?php echo $email?>" />
                     </div>
                 </fieldset>
             </div>
@@ -36,27 +36,27 @@
                     <legend>Mailing address</legend>
                     <div class="form-group">
                         <label for="post_box">Post box</label>
-                        <input id="post-box" name="post_box" type="text" class="form-control"  value="<?=$post_box?>" />
+                        <input id="post-box" name="post_box" type="text" class="form-control"  value="<?php echo $post_box?>" />
                     </div>
                     <div class="form-group">
                         <label for="street">Street</label>
-                        <input id="street" name="street" type="text" class="form-control"  value="<?=$street?>" />
+                        <input id="street" name="street" type="text" class="form-control"  value="<?php echo $street?>" />
                     </div>
                     <div class="form-group">
                         <label for="city">City</label>
-                        <input id="city" name="city" type="text" class="form-control"  value="<?=$city?>" />
+                        <input id="city" name="city" type="text" class="form-control"  value="<?php echo $city?>" />
                     </div>
                     <div class="form-group">
                         <label for="state">State</label> <small>(Not shown if city absent)</small>
                         <select id="state" name="state" class="form-control">
                             <?php foreach ($states as $abbr=>$full):
                             $selected = ($abbr == $state) ? 'selected="selected"' : null;
-                            ?><option value="<?=$abbr?>"<?=$selected?>><?=$full?></option><?php endforeach; ?>
+                            ?><option value="<?php echo $abbr?>"<?php echo $selected?>><?php echo $full?></option><?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="zip">Zip</label>
-                        <input id="zip" name="zip" type="text" class="form-control" value="<?=$zip?>" />
+                        <input id="zip" name="zip" type="text" class="form-control" value="<?php echo $zip?>" />
                     </div>
                 </fieldset>
             </div>
@@ -66,7 +66,7 @@
 </div>
 <div class="map-section contact-section">
     <div id="map-error" class="alert alert-danger" style="display:none"><strong>Error:</strong> <span class="message"></span></div>
-    <div class="map-image"><?=$thumbnail_map?></div>
+    <div class="map-image"><?php echo $thumbnail_map?></div>
     <div style="margin-bottom:1em"><button class="btn btn-primary grab-thumbnail">Create new thumbnail</button></div>
     <form method="post" action="contact/admin/saveThumbnail">
         <input id="latitude" type="hidden" name="latitude" value="" />
@@ -80,8 +80,8 @@
             <?php if (is_array($social)) { ?>
             <ul class="nav nav-pills nav-stacked" style="margin-top:1em">
                 <?php foreach ($social as $label=>$social_row):extract($social_row);?>
-                <li role="presentation" data-label="<?=$label?>" class="social-pick-tab">
-                    <a style="cursor:pointer"><?=$title?></a>
+                <li role="presentation" data-label="<?php echo $label?>" class="social-pick-tab">
+                    <a style="cursor:pointer"><?php echo $title?></a>
                 </li>
                 <?php endforeach;?>
             </ul>
