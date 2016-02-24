@@ -133,7 +133,7 @@ abstract class Table extends Resource
      * @var mixed
      */
     private $use_pear_sequence;
-    
+
     /**
      * Extended class should add a primary index to the current table.
      */
@@ -216,7 +216,7 @@ abstract class Table extends Resource
     abstract public function createPrimaryIndexId();
 
     abstract public function getLastPearSequence();
-    
+
     abstract public function getPrimaryKeySequenceName();
 
     /**
@@ -803,7 +803,7 @@ abstract class Table extends Resource
             return end($this->incremented_ids);
         }
     }
-    
+
     public function getPearSequenceName()
     {
         return $this->getFullName(false) . '_seq';
@@ -896,5 +896,14 @@ abstract class Table extends Resource
     {
         return $this->included_with_using;
     }
-    
+
+    public function dropColumn($column_name)
+    {
+        $table_name = $this->getFullName();
+        $query = <<<EOF
+ALTER TABLE $table_name drop $column_name
+EOF;
+        $this->db->exec($query);
+    }
+
 }
