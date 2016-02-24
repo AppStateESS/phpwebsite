@@ -1362,7 +1362,7 @@ class Calendar_Admin
     {
         $event_form = self::event_form($event);
         $modal = new \Modal('edit-event', $event_form, 'Edit Event');
-        $modal->sizeLarge();
+        $modal->setWidthPixel(650);
         $modal->addButton('<button class="btn btn-success" id="submit-event">Save</button>');
         return $modal->__toString();
     }
