@@ -285,6 +285,7 @@ class Branch_Admin {
     {
         $db = new PHPWS_DB;
         $loaddb = \PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
+        \Database::phpwsDSNLoader($this->getDSN(), $this->dbprefix);
         if (PHPWS_Error::isError($loaddb)) {
             return $loaddb;
         }
@@ -300,6 +301,8 @@ class Branch_Admin {
                 PHPWS_Error::log($result);
                 return $result;
             }
+            include PHPWS_SOURCE_DIR . 'core/boost/install.php';
+            core_install();
             Branch::loadHubDB();
             return true;
         } else {
