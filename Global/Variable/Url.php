@@ -4,6 +4,9 @@ namespace Variable;
 
 /**
  * A string variable designed for just URLs.
+ * 
+ * This version only works with offsite urls, not relative.
+ * 
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package Global
  * @subpackage Variable
