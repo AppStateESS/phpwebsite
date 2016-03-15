@@ -1,5 +1,5 @@
 /*!
- * Datepicker for Bootstrap v1.6.0-dev (https://github.com/eternicode/bootstrap-datepicker)
+ * Datepicker for Bootstrap v1.6.0 (https://github.com/eternicode/bootstrap-datepicker)
  *
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
@@ -316,8 +316,6 @@
 			} else {
 				o.defaultViewDate = UTCToday();
 			}
-			o.showOnFocus = o.showOnFocus !== undefined ? o.showOnFocus : true;
-			o.zIndexOffset = o.zIndexOffset !== undefined ? o.zIndexOffset : 10;
 		},
 		_events: [],
 		_secondaryEvents: [],
@@ -473,7 +471,8 @@
 		},
 
 		show: function(){
-			if (this.element.attr('readonly') && this.o.enableOnReadonly === false)
+      var element = this.component ? this.element.find('input') : this.element;
+			if (element.attr('readonly') && this.o.enableOnReadonly === false)
 				return;
 			if (!this.isInline)
 				this.picker.appendTo(this.o.container);
@@ -510,7 +509,7 @@
 			return this;
 		},
 
-		remove: function(){
+		destroy: function(){
 			this.hide();
 			this._detachEvents();
 			this._detachSecondaryEvents();
@@ -612,6 +611,7 @@
 
 		setDate: alias('setDates'),
 		setUTCDate: alias('setUTCDates'),
+		remove: alias('destroy'),
 
 		setValue: function(){
 			var formatted = this.getFormattedDate();
@@ -838,17 +838,22 @@
 				html += '<th class="cw">&#160;</th>';
 			}
 			while (dowCnt < this.o.weekStart + 7){
-				html += '<th class="dow">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</th>';
+				html += '<th class="dow';
+        if ($.inArray(dowCnt, this.o.daysOfWeekDisabled) > -1)
+          html += ' disabled';
+        html += '">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</th>';
 			}
 			html += '</tr>';
 			this.picker.find('.datepicker-days thead').append(html);
 		},
 
 		fillMonths: function(){
+      var localDate = this._utc_to_local(this.viewDate);
 			var html = '',
 			i = 0;
 			while (i < 12){
-				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
+        var focused = localDate && localDate.getMonth() === i ? ' focused' : '';
+				html += '<span class="month' + focused + '">' + dates[this.o.language].monthsShort[i++]+'</span>';
 			}
 			this.picker.find('.datepicker-months td').html(html);
 		},
@@ -939,6 +944,9 @@
 				if (thisYear < startStep || thisYear > endStep) {
 					classes.push('disabled');
 				}
+        if (thisYear === this.viewDate.getFullYear()) {
+				  classes.push('focused');
+        }
 
 				if (callback !== $.noop) {
 					before = callback(new Date(thisYear, 0, 1));
@@ -1054,9 +1062,10 @@
 			}
 			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
 
+			var monthsTitle = dates[this.o.language].monthsTitle || dates['en'].monthsTitle || 'Months';
 			var months = this.picker.find('.datepicker-months')
 						.find('.datepicker-switch')
-							.text(this.o.maxViewMode < 2 ? 'Months' : year)
+							.text(this.o.maxViewMode < 2 ? monthsTitle : year)
 							.end()
 						.find('span').removeClass('active');
 
@@ -1078,12 +1087,20 @@
 			if (this.o.beforeShowMonth !== $.noop){
 				var that = this;
 				$.each(months, function(i, month){
-					if (!$(month).hasClass('disabled')) {
-						var moDate = new Date(year, i, 1);
-						var before = that.o.beforeShowMonth(moDate);
-						if (before === false)
-							$(month).addClass('disabled');
-					}
+          var moDate = new Date(year, i, 1);
+          var before = that.o.beforeShowMonth(moDate);
+					if (before === undefined)
+						before = {};
+					else if (typeof(before) === 'boolean')
+						before = {enabled: before};
+					else if (typeof(before) === 'string')
+						before = {classes: before};
+					if (before.enabled === false && !$(month).hasClass('disabled'))
+					    $(month).addClass('disabled');
+					if (before.classes)
+					    $(month).addClass(before.classes);
+					if (before.tooltip)
+					    $(month).prop('title', before.tooltip);
 				});
 			}
 
@@ -1170,7 +1187,7 @@
 			e.preventDefault();
 			e.stopPropagation();
 
-			var target, dir, day, year, month;
+			var target, dir, day, year, month, monthChanged, yearChanged;
 			target = $(e.target);
 
 			// Clicked on the switch
@@ -1179,8 +1196,9 @@
 			}
 
 			// Clicked on prev or next
-			if (target.closest('.prev, .next').length > 0){
-				dir = DPGlobal.modes[this.viewMode].navStep * (target.hasClass('prev') ? -1 : 1);
+			var navArrow = target.closest('.prev, .next');
+			if (navArrow.length > 0) {
+				dir = DPGlobal.modes[this.viewMode].navStep * (navArrow.hasClass('prev') ? -1 : 1);
 				if (this.viewMode === 0){
 					this.viewDate = this.moveMonth(this.viewDate, dir);
 					this._trigger('changeMonth', this.viewDate);
@@ -1216,8 +1234,11 @@
 						if (month === 0) {
 							month = 11;
 							year = year - 1;
+							monthChanged = true;
+							yearChanged = true;
 						} else {
 							month = month - 1;
+							monthChanged = true;
  						}
  					}
 
@@ -1226,11 +1247,20 @@
 						if (month === 11){
 							month = 0;
 							year = year + 1;
+							monthChanged = true;
+							yearChanged = true;
  						} else {
 							month = month + 1;
+							monthChanged = true;
  						}
 					}
 					this._setDate(UTCDate(year, month, day));
+					if (yearChanged) {
+						this._trigger('changeYear', this.viewDate);
+					}
+					if (monthChanged) {
+						this._trigger('changeMonth', this.viewDate);
+					}
 				}
 
 				// Clicked on a month
@@ -1466,24 +1496,36 @@
 					if (!this.o.keyboardNavigation || this.o.daysOfWeekDisabled.length === 7)
 						break;
 					dir = e.keyCode === 37 || e.keyCode === 38 ? -1 : 1;
-					if (e.ctrlKey){
-						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveYear');
+          if (this.viewMode === 0) {
+  					if (e.ctrlKey){
+  						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveYear');
 
-						if (newViewDate)
-							this._trigger('changeYear', this.viewDate);
-					}
-					else if (e.shiftKey){
-						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveMonth');
+  						if (newViewDate)
+  							this._trigger('changeYear', this.viewDate);
+  					}
+  					else if (e.shiftKey){
+  						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveMonth');
 
-						if (newViewDate)
-							this._trigger('changeMonth', this.viewDate);
-					}
-					else if (e.keyCode === 37 || e.keyCode === 39){
-						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveDay');
-					}
-					else if (!this.weekOfDateIsDisabled(focusDate)){
-						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveWeek');
-					}
+  						if (newViewDate)
+  							this._trigger('changeMonth', this.viewDate);
+  					}
+  					else if (e.keyCode === 37 || e.keyCode === 39){
+  						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveDay');
+  					}
+  					else if (!this.weekOfDateIsDisabled(focusDate)){
+  						newViewDate = this.moveAvailableDate(focusDate, dir, 'moveWeek');
+  					}
+          } else if (this.viewMode === 1) {
+            if (e.keyCode === 38 || e.keyCode === 40) {
+              dir = dir * 4;
+            }
+            newViewDate = this.moveAvailableDate(focusDate, dir, 'moveMonth');
+          } else if (this.viewMode === 2) {
+            if (e.keyCode === 38 || e.keyCode === 40) {
+              dir = dir * 4;
+            }
+            newViewDate = this.moveAvailableDate(focusDate, dir, 'moveYear');
+          }
 					if (newViewDate){
 						this.focusDate = this.viewDate = newViewDate;
 						this.setValue();
@@ -1741,12 +1783,14 @@
 		weekStart: 0,
 		disableTouchKeyboard: false,
 		enableOnReadonly: true,
+		showOnFocus: true,
+		zIndexOffset: 10,
 		container: 'body',
 		immediateUpdates: false,
 		title: '',
 		templates: {
-			leftArrow: '<span class="glyphicon glyphicon-arrow-left"></span>',
-			rightArrow: '<span class="glyphicon glyphicon-arrow-right"></span>'
+			leftArrow: '&laquo;',
+			rightArrow: '&raquo;'
 		}
 	};
 	var locale_opts = $.fn.datepicker.locale_opts = [
@@ -1991,9 +2035,9 @@
 			                '<th colspan="7" class="datepicker-title"></th>'+
 			              '</tr>'+
 							'<tr>'+
-								'<th class="prev"><span class="glyphicon glyphicon-arrow-left"></span></th>'+
+								'<th class="prev">&laquo;</th>'+
 								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next"><span class="glyphicon glyphicon-arrow-right"></span></th>'+
+								'<th class="next">&raquo;</th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
@@ -2057,7 +2101,7 @@
 
 	/* DATEPICKER VERSION
 	 * =================== */
-	$.fn.datepicker.version = '1.6.0-dev';
+	$.fn.datepicker.version = '1.6.0';
 
 	/* DATEPICKER DATA-API
 	* ================== */
