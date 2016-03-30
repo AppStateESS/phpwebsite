@@ -47,7 +47,7 @@ class Menu {
                 PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",
                 81);
         foreach ($result as $menu) {
-            if ($menu->assoc_image) {
+            if ($menu->assoc_image && !\PHPWS_Core::atHome()) {
                 Layout::set($menu->showAssocImage(), 'menu', 'image');
             }
             Layout::set($menu->view(), 'menu', 'menu_' . $menu->id);
