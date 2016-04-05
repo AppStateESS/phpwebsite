@@ -16,6 +16,7 @@ if (!defined('DB_PERSISTENT_CONNECTION')) {
  */
 abstract class DB extends \Data
 {
+
     /**
      * Type of module data to pull.
      * @see DB::pullResourceData()
@@ -221,12 +222,19 @@ abstract class DB extends \Data
      */
     abstract public function listDatabases();
 
+    public static function delimit($value)
+    {
+        $db = \Database::getDB();
+        $dl = $db->getDelimiter();
+        return "$dl$value$dl";
+    }
+
     /**
      * Clones object and every variable. Simple clone will cause problems with
      * table references and the like.
      * Copied from php.net
      */
-    function __clone()
+    public function __clone()
     {
         foreach ($this as $key => $val) {
             if (is_object($val) || (is_array($val))) {
@@ -934,8 +942,7 @@ abstract class DB extends \Data
      * @param string $type
      * @return \Database\JoinTable
      */
-    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional
-    = null, $type = null)
+    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
     {
         $jt = new Join($left_resource, $right_resource, $type, $conditional);
         $this->joined_resources[] = $jt;
@@ -1740,7 +1747,7 @@ abstract class DB extends \Data
      */
     public function wrap($str)
     {
-        return wrap($str, $this->getDelimiter());
+        return $this->getDelimiter() . $str . $this->getDelimiter();
     }
 
     /**
