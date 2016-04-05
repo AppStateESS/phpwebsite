@@ -567,7 +567,7 @@ abstract class Table extends Resource
     public function getFullName($with_delimiter = true)
     {
         if ($with_delimiter) {
-            return $this->db->wrap($this->full_name);
+            return DB::delimit($this->full_name);
         } else {
             return $this->full_name;
         }
@@ -583,7 +583,7 @@ abstract class Table extends Resource
         $name = $this->db->getDatabaseName() . '.' . $this->getFullName(false);
 
         if ($with_delimiter) {
-            return wrap($name, $this::field_delimiter);
+            return DB::delimit($name);
         } else {
             return $name;
         }
@@ -602,9 +602,9 @@ abstract class Table extends Resource
     public function getAliasOrName()
     {
         if ($this->alias) {
-            return wrap($this->alias, $this->db->getDelimiter());
+            return DB::delimit($this->alias);
         } else {
-            return wrap($this->full_name, $this->db->getDelimiter());
+            return DB::delimit($this->full_name);
         }
     }
 
@@ -615,9 +615,9 @@ abstract class Table extends Resource
     public function __toString()
     {
         if ($this->alias) {
-            return wrap($this->alias, $this->db->getDelimiter());
+            return DB::delimit($this->alias);
         } else {
-            return wrap($this->full_name, $this->db->getDelimiter());
+            return DB::delimit($this->full_name);
         }
     }
 
@@ -628,9 +628,9 @@ abstract class Table extends Resource
     public function getResourceQuery()
     {
         if ($this->alias) {
-            return $this->db->wrap($this->full_name) . ' AS ' . $this->alias;
+            return DB::delimit($this->full_name) . ' AS ' . $this->alias;
         } else {
-            return $this->db->wrap($this->full_name);
+            return DB::delimit($this->full_name);
         }
     }
 
