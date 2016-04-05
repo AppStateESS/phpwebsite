@@ -224,7 +224,10 @@ abstract class DB extends \Data
 
     public static function delimit($value)
     {
-        $db = \Database::getDB();
+        static $db;
+        if (empty($db)) {
+            $db = \Database::getDB();
+        }
         $dl = $db->getDelimiter();
         return "$dl$value$dl";
     }
