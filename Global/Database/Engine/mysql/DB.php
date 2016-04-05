@@ -21,7 +21,8 @@ namespace Database\Engine\mysql;
 define('MYSQL_COLLATE', 'utf8_general_ci');
 define('MYSQL_CHARACTER_SET', 'utf8');
 
-class DB extends \Database\DB {
+class DB extends \Database\DB
+{
 
     public function getRandomCall()
     {
@@ -95,5 +96,3 @@ class DB extends \Database\DB {
     }
 
 }
-
-?>
