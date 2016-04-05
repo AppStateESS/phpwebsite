@@ -9,7 +9,8 @@
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Data {
+abstract class Data
+{
 
     const SET_MODE = 0;
     const GET_MODE = 1;
@@ -213,8 +214,7 @@ abstract class Data {
     public function debugToString()
     {
         if (!method_exists($this, '__toString')) {
-            throw new \Exception(t('Class "%s" does not contain a __toString method',
-                    get_class($this)));
+            throw new \Exception(t('Class "%s" does not contain a __toString method', get_class($this)));
         }
         if (function_exists('xdebug_var_dump')) {
             // xdebug adds <pre> tags
@@ -232,18 +232,15 @@ abstract class Data {
     private function checkVariableName($variable_name)
     {
         if (!is_string($variable_name)) {
-            throw new \Exception(t('Variable name expects a string not a %s',
-                    gettype($variable_name)));
+            throw new \Exception(t('Variable name expects a string not a %s', gettype($variable_name)));
         }
 
         if (preg_match('/\W/', $variable_name)) {
-            throw new \Exception(t('Illegally formatted variable name "%s"',
-                    $variable_name));
+            throw new \Exception(t('Illegally formatted variable name "%s"', $variable_name));
         }
 
         if (!property_exists($this, $variable_name)) {
-            throw new \Exception(t('Variable name "%s" not found in object',
-                    $variable_name));
+            throw new \Exception(t('Variable name "%s" not found in object', $variable_name));
         }
     }
 
@@ -357,27 +354,49 @@ abstract class Data {
     {
         foreach ($vars as $key => $value) {
             if (!property_exists($this, $key)) {
-                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
-                        $key, get_class($this)));
+                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
             }
             if (!$this->isPrivate($key) && $this->$key instanceof Variable) {
                 if (!is_null($value)) {
                     $this->$key->set($value);
                 }
             } elseif (!$this->isPublic($key)) {
-                $func = walkingCase($key, 'set');
+                $func = self::walkingCase($key, 'set');
                 if (method_exists($this, $func)) {
                     $this->$func($value);
-                } elseif($this->isProtected($key)) {
+                } elseif ($this->isProtected($key)) {
                     $this->$key = $value;
                 } else {
-                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
-                            $key, get_class($this)));
+                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
                 }
             } else {
                 $this->$key = $value;
             }
         }
+    }
+
+    /**
+     * Translate a variable with underlines into a walking case variable.
+     * Example: echo walkingCase('foo_bar');
+     * // fooBar
+     *
+     * A prefix will be added to the front of the string.
+     * @param string $variable_name
+     * @param string $prefix
+     * @return string
+     */
+    public static function walkingCase($variable_name, $prefix = null)
+    {
+        $var_array = explode('_', $variable_name);
+        if ($prefix) {
+            array_unshift($var_array, $prefix);
+        }
+        $start = array_shift($var_array);
+        foreach ($var_array as $key => $name) {
+            $var_array[$key] = ucfirst($name);
+        }
+        array_unshift($var_array, $start);
+        return implode('', $var_array);
     }
 
     public static function createClassName($name)
@@ -418,8 +437,7 @@ abstract class Data {
         }
 
         if (!is_writable(dirname($file_path))) {
-            throw new \Exception(t('Cannot write file to directory "%s"',
-                    dirname($file_path) . '/'));
+            throw new \Exception(t('Cannot write file to directory "%s"', dirname($file_path) . '/'));
         }
 
         $vars = $this->getVars();
