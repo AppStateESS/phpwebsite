@@ -53,7 +53,7 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
 }
 
-require_once PHPWS_SOURCE_DIR . 'Global/Implementations.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/Implementations.php';
 require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 PHPWS_Core::checkOverpost();
