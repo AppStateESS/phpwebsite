@@ -1,16 +1,3 @@
 <?php
 
-namespace Http;
-
-/**
- * Description
- * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
- */
-
-class MethodNotAllowedResponse extends ErrorResponse
-{
-    protected function getHttpResponseCode()
-    {
-        return 405;
-    }
-}
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/Http/' . basename(__FILE__);

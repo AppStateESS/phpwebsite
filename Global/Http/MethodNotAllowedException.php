@@ -1,18 +1,3 @@
 <?php
 
-namespace Http;
-
-/**
- * Description
- * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
- */
-
-class MethodNotAllowedException extends Exception
-{
-    protected function createResponse(\Request $request, \Exception $previous = null)
-    {
-        return new MethodNotAllowedResponse($request, $previous);
-    }
-}
-
-?>
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/Http/' . basename(__FILE__);
