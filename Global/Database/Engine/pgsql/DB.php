@@ -18,7 +18,8 @@ namespace Database\Engine\pgsql;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class DB extends \Database\DB {
+class DB extends \Database\DB
+{
 
     public function getRandomCall()
     {
@@ -73,8 +74,7 @@ class DB extends \Database\DB {
         $sql = 'SELECT datname FROM pg_database ORDER BY datname';
         $this->loadStatement($sql);
         while ($row = $this->fetch()) {
-            if (in_array($row['datname'],
-                            array('postgres', 'template0', 'template1'))) {
+            if (in_array($row['datname'], array('postgres', 'template0', 'template1'))) {
                 continue;
             }
             $databases[] = $row['datname'];
@@ -83,5 +83,3 @@ class DB extends \Database\DB {
     }
 
 }
-
-?>
