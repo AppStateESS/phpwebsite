@@ -134,7 +134,7 @@ abstract class Datatype extends \Data
 
     public function getName()
     {
-        return wrap((string) $this->name, $this->table->getDelimiter());
+        return DB::delimit((string) $this->name);
     }
 
     /**
