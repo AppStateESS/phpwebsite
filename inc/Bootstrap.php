@@ -5,9 +5,7 @@
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
-
-/***
+/* * *
  * Character Encoding
  *
  * This is part of the 'mbstring' extension and is not enabled by default.
@@ -18,14 +16,14 @@ if (extension_loaded('mbstring')) {
     mb_internal_encoding('UTF-8');
 }
 
-/*** Include System-wide Defines ***/
+/* * * Include System-wide Defines ** */
 if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
     require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
 } else {
     require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
 }
 
-/***
+/* * *
  * Error Display and Reporting *
  * DISPLAY_ERRORS is defined in config/defines.php
  */
@@ -40,11 +38,16 @@ if (DISPLAY_ERRORS) {
     error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 }
 
-/*** Include a bunch of function ***/
-/*** TODO: See Issue #94 ***/
-require_once PHPWS_SOURCE_DIR . 'Global/Functions.php';
+/* * * Include a bunch of function ** */
+require_once PHPWS_SOURCE_DIR . 'src/Http.php';
+require_once PHPWS_SOURCE_DIR . 'src/Log.php';
+require_once PHPWS_SOURCE_DIR . 'src/String.php';
+require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
+require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 
-/*** Exception Handler ***/
+
+
+/* * * Exception Handler ** */
 set_exception_handler(array('Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('Error', 'errorHandler'));
