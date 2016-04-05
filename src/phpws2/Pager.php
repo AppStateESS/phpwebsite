@@ -1,5 +1,6 @@
 <?php
 
+require_once PHPWS_SOURCE_DIR . 'src/Array.php';
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
