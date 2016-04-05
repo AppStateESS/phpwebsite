@@ -3,7 +3,8 @@
 /**
  * @author Matt McNaney <mcnaney at gmail dot com>
  */
-class PageCache extends Data {
+class PageCache extends Data
+{
 
     private $title;
     private $html;
@@ -48,14 +49,52 @@ class PageCache extends Data {
 
     public function setCSS($css)
     {
-        $this->css->set(compress($css, 'css'));
+        $this->css->set(self::compress($css, 'css'));
     }
 
     public function setHtml($html)
     {
-        $this->html->set(compress($html, 'html'));
+        $this->html->set(self::compress($html, 'html'));
+    }
+
+    /**
+     * Removes spaces from css and html content.
+     *
+     * @param string $text Text to be compressed
+     * @param string $type Either 'css' or 'html'
+     * @return string
+     */
+    public static function compress($text, $type = null)
+    {
+        // remove comments
+        switch ($type) {
+            case 'css':
+                $text = preg_replace('@/\*.*\*/@Um', ' ', $text);
+                break;
+            case 'html':
+                $text = preg_replace('/<\!--.*-->/U', ' ', $text);
+                break;
+        }
+        $text = str_replace(array(chr(9), chr(10), chr(11), chr(13)), ' ', $text);
+        // faster than preg_replace('/\s{2,}')
+        while (strstr($text, '  ')) {
+            $text = str_replace('  ', ' ', $text);
+        }
+
+        if ($type == 'css') {
+            $text = str_replace('; ', ';', $text);
+            $text = str_replace(' ;', ';', $text);
+            $text = str_replace('} ', '}', $text);
+            $text = str_replace(' }', '}', $text);
+            $text = str_replace('{ ', '{', $text);
+            $text = str_replace(' {', '{', $text);
+            $text = str_replace(': ', ':', $text);
+            $text = str_replace(' :', ':', $text);
+        } elseif ($type == 'html') {
+            $text = str_replace('> <', '><', $text);
+        }
+
+        return $text;
     }
 
 }
-
-?>
