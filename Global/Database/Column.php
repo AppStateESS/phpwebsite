@@ -55,8 +55,7 @@ abstract class Column extends Alias {
      */
     public function getName($with_delimiter = false)
     {
-        return $with_delimiter ? wrap($this->name->get(),
-                        $this->resource->db->getDelimiter()) : $this->name->get();
+        return $with_delimiter ? DB::delimit($this->name->get()) : $this->name->get();
     }
 
     /**
@@ -108,5 +107,3 @@ abstract class Column extends Alias {
     }
 
 }
-
-?>
