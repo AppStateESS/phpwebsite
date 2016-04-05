@@ -1,17 +1,3 @@
 <?php
 
-namespace Variable;
-
-/**
- * String variable that is numbers only.
- *
- * @author Matthew McNaney <mcnaney at gmail dot com>
- * @license http://opensource.org/licenses/lgpl-3.0.html
- */
-class NumberString extends \Variable\String
-{
-    protected $regexp_match = '/^-?[\d\.]+$/i';
-
-}
-
-?>
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/Variable/' . basename(__FILE__);
