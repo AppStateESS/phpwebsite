@@ -25,7 +25,7 @@ class Cabinet_Form
         $src = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/folder_options/folders.js';
         \Layout::addJSHeader("<script type='text/javascript' src='$src'></script>", 'folder-options');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         $folder = new Folder;
         $folder->ftype = $type;
         $folder->loadDirectory();
@@ -278,7 +278,7 @@ class Cabinet_Form
         $src = PHPWS_SOURCE_HTTP . 'mod/filecabinet/javascript/folder_options/contents.js';
         \Layout::addJSHeader("<script type='text/javascript' src='$src'></script>", 'folder-options');
         Layout::addStyle('filecabinet');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
 
         $dir_write = true;
         if (!is_writable($folder->getFullDirectory())) {
@@ -288,7 +288,7 @@ class Cabinet_Form
 
         if ($folder->ftype == IMAGE_FOLDER) {
             javascript('lightbox');
-            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $pager = new DBPager('images', 'PHPWS_Image');
             $pager->setTemplate('Forms/image_grid.tpl');
             $limits[9] = 9;
@@ -298,7 +298,7 @@ class Cabinet_Form
             $command = 'upload_image_form';
             $label = _('Add image');
         } elseif ($folder->ftype == DOCUMENT_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Document.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
             $pager = new DBPager('documents', 'PHPWS_Document');
             $pager->setTemplate('Forms/file_list.tpl');
             $limits[10] = 10;
@@ -309,7 +309,7 @@ class Cabinet_Form
             $command = 'upload_document_form';
             $pager->addSortHeader('downloaded', sprintf('<abbr title="%s">%s</abbr>', dgettext('filecabinet', 'Downloaded'), dgettext('filecabinet', 'DL')));
         } elseif ($folder->ftype = MULTIMEDIA_FOLDER) {
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $pager = new DBPager('multimedia', 'PHPWS_Multimedia');
             $pager->setTemplate('Forms/multimedia_grid.tpl');
             $limits[9] = 9;

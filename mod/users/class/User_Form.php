@@ -118,7 +118,7 @@ class User_Form
     {
         $group = new PHPWS_Group($id, FALSE);
 
-        $modules = PHPWS_Core::getModules();
+        $modules = \phpws\PHPWS_Core::getModules();
 
         foreach ($modules as $mod) {
             $preorder[$mod['title']] = $mod;
@@ -249,7 +249,7 @@ class User_Form
     public static function manageUsers()
     {
         Layout::addStyle('users');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
 
         $form = new PHPWS_Form('group-search');
         $form->setMethod('get');
@@ -328,7 +328,7 @@ class User_Form
 
     public static function manageGroups()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         Layout::addStyle('users');
 
         $pageTags['MEMBERS_LABEL'] = dgettext('users', 'Members');
@@ -796,7 +796,7 @@ class User_Form
     public static function authorizationSetup()
     {
         $template = array();
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
 
         $auth_list = User_Action::getAuthorizationList();
 
@@ -1034,7 +1034,7 @@ class User_Form
 
     public static function confirmGraphic()
     {
-        PHPWS_Core::initCoreClass('Captcha.php');
+        \phpws\PHPWS_Core::initCoreClass('Captcha.php');
         return Captcha::get();
     }
 
@@ -1199,7 +1199,7 @@ class User_Form
 
     public static function forgotForm()
     {
-        PHPWS_Core::initCoreClass('Captcha.php');
+        \phpws\PHPWS_Core::initCoreClass('Captcha.php');
         $form = new PHPWS_Form('forgot-password');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');

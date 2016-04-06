@@ -31,7 +31,7 @@ class FC_Multimedia_Manager
                 }
                 $this->loadMultimedia(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
                 $this->multimedia->delete();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'post_multimedia_upload':
@@ -175,7 +175,7 @@ class FC_Multimedia_Manager
         if (empty($folder)) {
             $folder = new Folder($this->multimedia->folder_id);
         }
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
         $form->setFormId('file-form');

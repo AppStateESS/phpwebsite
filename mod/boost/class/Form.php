@@ -43,8 +43,8 @@ class Boost_Form {
             $allow_update = false;
         }
 
-        $core_mods = PHPWS_Core::coreModList();
-        $installed_mods = PHPWS_Core::installModList();
+        $core_mods = \phpws\PHPWS_Core::coreModList();
+        $installed_mods = \phpws\PHPWS_Core::installModList();
 
         $dir_mods = PHPWS_Boost::getAllMods();
 
@@ -285,7 +285,7 @@ class Boost_Form {
 
         $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
 
-        $release_version = PHPWS_Core::releaseVersion();
+        $release_version = \phpws\PHPWS_Core::releaseVersion();
         $tpl['PHPWS_VERSION'] = $release_version;
 
         $result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');

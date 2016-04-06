@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/View/' . basename(__FILE__);
+namespace View;
+
+class HtmlView extends \phpws2\View\HtmlView{}

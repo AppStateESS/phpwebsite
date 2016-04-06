@@ -616,7 +616,7 @@ class PHAT_Form extends PHPWS_Item {
                         $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
                     if (PHATFORM_CAPTCHA && $this->_anonymous && !Current_User::isLogged()) {
-                        PHPWS_Core::initCoreClass('Captcha.php');
+                        \phpws\PHPWS_Core::initCoreClass('Captcha.php');
                         $formTags['CAPTCHA'] = Captcha::get();
                     }
                     $formTags['SUBMIT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Finish'), 'PHAT_Submit');
@@ -939,7 +939,7 @@ class PHAT_Form extends PHPWS_Item {
 
     function _formAction() {
         if (PHATFORM_CAPTCHA) {
-            PHPWS_Core::initCoreClass('Captcha.php');
+            \phpws\PHPWS_Core::initCoreClass('Captcha.php');
         }
 
         if(isset($_REQUEST['PHAT_Next'])) {
@@ -1514,7 +1514,7 @@ class PHAT_Form extends PHPWS_Item {
      * @access private
      */
     function _accessDenied() {
-        PHPWS_Core::errorPage('400');
+        \phpws\PHPWS_Core::errorPage('400');
     }// END FUNC accessDenied()
 
     function _confirmArchive() {

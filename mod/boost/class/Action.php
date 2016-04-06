@@ -10,7 +10,7 @@ class Boost_Action {
 
     public static function checkupdate($mod_title)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        \phpws\PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($mod_title);
 
         $file = $module->getVersionHttp();
@@ -86,7 +86,7 @@ class Boost_Action {
 
     public static function installModule($module_title)
     {
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
 
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title));
@@ -95,7 +95,7 @@ class Boost_Action {
 
     public static function uninstallModule($module_title)
     {
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
 
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title));
@@ -107,19 +107,19 @@ class Boost_Action {
 
     public function updateCore()
     {
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
         $content[] = dgettext('boost', 'Updating core');
 
         require_once PHPWS_SOURCE_DIR . 'core/boost/update.php';
 
-        $ver_info = PHPWS_Core::getVersionInfo(false);
+        $ver_info = \phpws\PHPWS_Core::getVersionInfo(false);
 
         $content[] = dgettext('boost', 'Processing update file.');
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
             $db = new PHPWS_DB('core_version');
-            $file_ver = PHPWS_Core::getVersionInfo();
+            $file_ver = \phpws\PHPWS_Core::getVersionInfo();
             $db->addValue('version', $file_ver['version']);
             $result = $db->update();
             if (PHPWS_Error::isError($result)) {
@@ -143,7 +143,7 @@ class Boost_Action {
 
     public static function updateModule($module_title)
     {
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title), FALSE);
 
@@ -156,7 +156,7 @@ class Boost_Action {
 
     public static function showDependedUpon($base_mod)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        \phpws\PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
         if (empty($dependents)) {
@@ -181,7 +181,7 @@ class Boost_Action {
 
     public static function showDependency($base_module_title)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        \phpws\PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
         $template['TITLE'] = sprintf(dgettext('boost', '%s Module Dependencies'),
@@ -233,13 +233,13 @@ class Boost_Action {
      */
     public static function checkAll()
     {
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
         $all_mods = PHPWS_Boost::getAllMods();
         if (empty($all_mods)) {
             return;
         }
 
-        PHPWS_Core::initCoreClass('Module.php');
+        \phpws\PHPWS_Core::initCoreClass('Module.php');
 
         $all_mods[] = 'core';
 

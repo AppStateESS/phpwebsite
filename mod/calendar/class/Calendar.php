@@ -75,7 +75,7 @@ class PHPWS_Calendar {
      */
     public function admin()
     {
-        PHPWS_Core::initModClass('calendar', 'Admin.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'Admin.php');
         $this->admin = new Calendar_Admin;
         $this->admin->calendar = & $this;
         $this->admin->main();
@@ -92,7 +92,7 @@ class PHPWS_Calendar {
 
     public function getEvents($start_search = null, $end_search = null)
     {
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
             $start_search = mktime(0, 0, 0, 1, 1, 1970);
         }
@@ -276,7 +276,7 @@ class PHPWS_Calendar {
      */
     public function loadSchedule()
     {
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
         if (!empty($_REQUEST['sch_id'])) {
             $this->schedule = new Calendar_Schedule($_REQUEST['sch_id']);
@@ -306,7 +306,7 @@ class PHPWS_Calendar {
 
     public function loadUser()
     {
-        PHPWS_Core::initModClass('calendar', 'User.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'User.php');
         $this->user = new Calendar_User;
         $this->user->calendar = & $this;
     }

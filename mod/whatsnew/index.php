@@ -43,7 +43,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['uop'])) {
     $whatsnew->userMenu();
 } else {
-    PHPWS_Core::home();
+    \phpws\PHPWS_Core::home();
 }
 
 

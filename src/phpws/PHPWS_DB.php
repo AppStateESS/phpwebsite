@@ -159,7 +159,7 @@ class PHPWS_DB
             }
             PHPWS_Error::log($connect);
             if ($show_error) {
-                PHPWS_Core::errorPage();
+                \phpws\PHPWS_Core::errorPage();
             } else {
                 return $connect;
             }
@@ -169,11 +169,11 @@ class PHPWS_DB
 
         // Load the factory files
         $type = $connect->dbsyntax;
-        $result = PHPWS_Core::initCoreClass('DB/' . $type . '.php');
+        $result = \phpws\PHPWS_Core::initCoreClass('DB/' . $type . '.php');
         if ($result == false) {
             PHPWS_DB::logDB(_('Failed to connect.'));
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB', PHPWS_SOURCE_DIR . 'src/phpws/DB/' . $type . '.php');
-            PHPWS_Core::errorPage();
+            \phpws\PHPWS_Core::errorPage();
         }
 
         $class_name = $type . '_PHPWS_SQL';
@@ -198,7 +198,7 @@ class PHPWS_DB
             return;
         }
 
-        PHPWS_Core::log($sql, 'db.log');
+        \phpws\PHPWS_Core::log($sql, 'db.log');
     }
 
     public static function exec($sql, $prefix = true)
@@ -2316,7 +2316,7 @@ class PHPWS_DB
                 if (!is_array($files)) {
                     continue;
                 }
-                PHPWS_Core::initModClass($files[0], $files[1]);
+                \phpws\PHPWS_Core::initModClass($files[0], $files[1]);
             }
             $this->load_class = null;
         }
@@ -2353,7 +2353,7 @@ class PHPWS_DB
             return false;
         }
 
-        return PHPWS_Core::plugObject($object, $variables);
+        return \phpws\PHPWS_Core::plugObject($object, $variables);
     }
 
 // END FUNC loadObject
@@ -2413,11 +2413,11 @@ class PHPWS_DB
             if (isset($itemResult[0]) && is_array($itemResult[0])) {
                 foreach ($itemResult as $key => $sub) {
                     $genClass = new $class_name;
-                    PHPWS_Core::plugObject($genClass, $sub, $args);
+                    \phpws\PHPWS_Core::plugObject($genClass, $sub, $args);
                     $items[$indexby][] = $genClass;
                 }
             } else {
-                PHPWS_Core::plugObject($genClass, $itemResult, $args);
+                \phpws\PHPWS_Core::plugObject($genClass, $itemResult, $args);
                 $items[$indexby] = $genClass;
             }
         }

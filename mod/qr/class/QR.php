@@ -51,7 +51,7 @@ class QR
             $key = Key::getHomeKey();
         }
 
-        $this->url = PHPWS_Core::getHomeHttp() . $key->url;
+        $this->url = \phpws\PHPWS_Core::getHomeHttp() . $key->url;
         $this->tag = md5($this->url);
         $this->file = QR_IMAGE_DIR . $this->tag . '_' . $this->size . '.png';
         $this->image = QR_IMAGE_HTTP . $this->tag . '_' . $this->size . '.png';

@@ -364,7 +364,7 @@ class Blog {
     public function view($edit = true, $summarized = true)
     {
         if (!$this->id) {
-            PHPWS_Core::errorPage(404);
+            \phpws\PHPWS_Core::errorPage(404);
         }
 
         $key = new Key($this->key_id);

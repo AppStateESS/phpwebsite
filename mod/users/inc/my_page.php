@@ -46,7 +46,7 @@ function my_page()
                             'An error occurred while updating your user account.');
                 } else {
                     $_SESSION['User'] = $user;
-                    PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
+                    \phpws\PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
                 }
             }
             break;
@@ -170,7 +170,7 @@ class User_Settings {
         $form->setClass('submit', 'btn btn-primary');
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
-            $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
+            $language_file = \phpws\PHPWS_Core::getConfigFile('users', 'languages.php');
 
             if ($language_file) {
                 include $language_file;

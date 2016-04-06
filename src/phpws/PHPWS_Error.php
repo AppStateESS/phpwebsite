@@ -66,7 +66,7 @@ class PHPWS_Error
         }
 
         try {
-            $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
+            $errorFile = \phpws\PHPWS_Core::getConfigFile($module, 'error.php');
         } catch (\Exception $e) {
             $errorFile = null;
         }

@@ -52,7 +52,7 @@ class Blog_User
                     Blog_User::miniAdminList();
                 }
                 if ($blog->publish_date > time() && !Current_User::allow('blog')) {
-                    PHPWS_Core::errorPage('404');
+                    \phpws\PHPWS_Core::errorPage('404');
                 } else {
                     $content = $blog->view(true, false);
                 }
@@ -92,14 +92,14 @@ class Blog_User
 
             case 'submit':
                 if (Current_User::allow('blog', 'edit_blog')) {
-                    PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action' => 'admin', 'tab' => 'new'), 1));
+                    \phpws\PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action' => 'admin', 'tab' => 'new'), 1));
                 } else {
-                    PHPWS_Core::errorPage(403);
+                    \phpws\PHPWS_Core::errorPage(403);
                 }
                 break;
 
             default:
-                PHPWS_Core::errorPage(404);
+                \phpws\PHPWS_Core::errorPage(404);
                 break;
         }
 
@@ -199,7 +199,7 @@ class Blog_User
         Layout::addStyle('blog');
         $result = Blog_User::getEntries($db, $limit, $offset);
         if ($page > 0 && empty($result)) {
-            PHPWS_Core::reroute('blog/action/view/page/1');
+            \phpws\PHPWS_Core::reroute('blog/action/view/page/1');
         }
 
         if (PHPWS_Error::isError($result)) {
@@ -234,7 +234,7 @@ class Blog_User
         foreach ($result as $blog) {
             if (!$rss) {
                 if (PHPWS_Core::moduleExists('rss')) {
-                    PHPWS_Core::initModClass('rss', 'RSS.php');
+                    \phpws\PHPWS_Core::initModClass('rss', 'RSS.php');
                     $key = new Key($blog->key_id);
                     RSS::showIcon($key);
                     $rss = true;

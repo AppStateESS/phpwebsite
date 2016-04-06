@@ -33,7 +33,7 @@ class TrackerFactory
 
     public static function newByType($type)
     {
-        PHPWS_Core::initModClass('analytics', "trackers/$type.php");
+        \phpws\PHPWS_Core::initModClass('analytics', "trackers/$type.php");
         return new $type();
     }
 
@@ -73,12 +73,12 @@ class TrackerFactory
 
         $trackers = array();
         foreach($result as $tracker) {
-            $found = PHPWS_Core::initModClass('analytics', "trackers/{$tracker['type']}.php");
+            $found = \phpws\PHPWS_Core::initModClass('analytics', "trackers/{$tracker['type']}.php");
             if(!$found) {
                 continue;
             }
             $t = new $tracker['type']();
-            PHPWS_Core::plugObject($t, $tracker);
+            \phpws\PHPWS_Core::plugObject($t, $tracker);
             $trackers[] = $t;
         }
 

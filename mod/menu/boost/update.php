@@ -212,7 +212,7 @@ Please download 1.2.1.</pre>';
                                     'int not null default 0'))) {
                 return false;
             }
-            PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+            \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
             $menus = $db->getObjects('Menu_Item');
             if (!empty($menus) && !PHPWS_Error::logIfError($menus)) {
                 foreach ($menus as $m) {

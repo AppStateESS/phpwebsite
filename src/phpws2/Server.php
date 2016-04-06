@@ -37,7 +37,7 @@ class Server {
 
     private static function forwardInfo()
     {
-        $url = PHPWS_Core::getCurrentUrl();
+        $url = \phpws\PHPWS_Core::getCurrentUrl();
 
         if ($url == 'index.php' || $url == '') {
             return;
@@ -58,7 +58,7 @@ class Server {
         $aUrl = explode('/', preg_replace('|/+$|', '', $url));
         $module = array_shift($aUrl);
 
-        $mods = PHPWS_Core::getModules(true, true);
+        $mods = \phpws\PHPWS_Core::getModules(true, true);
 
         if (!in_array($module, $mods)) {
             $GLOBALS['Forward'] = $module;

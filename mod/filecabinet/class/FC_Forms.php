@@ -136,21 +136,21 @@ class FC_Forms
     {
         switch ($request->getVar('ftype')) {
             case DOCUMENT_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
                 $doc = new PHPWS_Document($request->getVar('file_id'));
                 $doc->setTitle($request->getVar('title'));
                 $doc->save(false);
                 break;
 
             case IMAGE_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $img = new PHPWS_Image($request->getVar('file_id'));
                 $img->setTitle($request->getVar('title'));
                 $img->save(false, false, false);
                 break;
 
             case MULTIMEDIA_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $mm = new PHPWS_Multimedia($request->getVar('file_id'));
                 $mm->setTitle($request->getVar('title'));
                 $mm->save(false, false);
@@ -256,17 +256,17 @@ class FC_Forms
     {
         switch ($ftype) {
             case DOCUMENT_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
                 $file_class = 'PHPWS_Document';
                 break;
 
             case IMAGE_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $file_class = 'PHPWS_Image';
                 break;
 
             case MULTIMEDIA_FOLDER:
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $file_class = 'PHPWS_Multimedia';
                 break;
         }

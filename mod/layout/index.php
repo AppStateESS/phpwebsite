@@ -31,5 +31,5 @@ switch ($_REQUEST['action']){
         break;
 
     default:
-        PHPWS_Core::errorPage('404');
+        \phpws\PHPWS_Core::errorPage('404');
 } // END action switch

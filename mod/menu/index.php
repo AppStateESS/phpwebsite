@@ -14,5 +14,5 @@ if (isset($_REQUEST['site_map'])) {
 } elseif(Current_User::allow('menu')) {
     Menu::admin();
 } else {
-    PHPWS_Core::errorPage('404');
+    \phpws\PHPWS_Core::errorPage('404');
 }

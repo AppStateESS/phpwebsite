@@ -7,5 +7,5 @@ if (isset($_GET['id']) && isset($_GET['size'])) {
     echo $qr->get();
     exit();
 } else {
-    PHPWS_Core::errorPage('404');
+    \phpws\PHPWS_Core::errorPage('404');
 }

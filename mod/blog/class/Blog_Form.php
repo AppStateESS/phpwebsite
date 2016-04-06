@@ -115,7 +115,7 @@ class Blog_Form
         $form->setLabel('logged_users_only', dgettext('blog', 'Logged user view only'));
         $form->setMatch('logged_users_only', PHPWS_Settings::get('blog', 'logged_users_only'));
 
-        PHPWS_Core::initModClass('users', 'Action.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Action.php');
         $groups = User_Action::getGroups('group');
 
         if (!empty($groups)) {

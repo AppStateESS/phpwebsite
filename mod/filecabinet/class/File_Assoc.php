@@ -65,24 +65,24 @@ class FC_File_Assoc
     {
         switch ($this->file_type) {
             case FC_IMAGE:
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $this->_source = new PHPWS_Image($this->file_id);
                 break;
 
             case FC_DOCUMENT:
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
                 $this->_source = new PHPWS_Document($this->file_id);
                 break;
 
             case FC_MEDIA:
             case FC_MEDIA_RESIZE:
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $this->_source = new PHPWS_Multimedia($this->file_id);
                 break;
 
             case FC_IMAGE_RESIZE:
             case FC_IMAGE_CROP:
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $this->_resize_parent = new PHPWS_Image($this->file_id);
                 if (!$this->_resize_parent->id) {
                     $this->_resize_parent = null;
@@ -95,7 +95,7 @@ class FC_File_Assoc
                 break;
 
             case FC_IMAGE_RANDOM:
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $image = new PHPWS_Image;
                 $db = new PHPWS_DB('images');
                 $db->addWhere('folder_id', $this->file_id);
@@ -223,9 +223,9 @@ class FC_File_Assoc
 
     public function getThumbnail()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         switch ($this->file_type) {
             case FC_IMAGE:
@@ -266,12 +266,12 @@ class FC_File_Assoc
 
     public function getTag($embed = false, $base = false)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         if ($this->_use_style) {
-            PHPWS_Core::initModClass('layout', 'Layout.php');
+            \phpws\PHPWS_Core::initModClass('layout', 'Layout.php');
             Layout::addStyle('filecabinet', 'file_view.css');
         }
         switch ($this->file_type) {
@@ -339,7 +339,7 @@ class FC_File_Assoc
 
     public function randomImage()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image;
         $db = new PHPWS_DB('images');
         $db->addWhere('folder_id', $this->file_id);
@@ -360,7 +360,7 @@ class FC_File_Assoc
         $count++;
         Layout::addStyle('filecabinet');
         $message = null;
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $folder = new Folder($this->file_id);
         if (!$folder->public_folder) {
             if (!Current_User::allow('filecabinet')) {
@@ -419,7 +419,7 @@ class FC_File_Assoc
     {
         javascript('lightbox');
         $message = null;
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $folder = new Folder($this->file_id);
         if (!$folder->public_folder) {
             if (!Current_User::allow('filecabinet')) {
@@ -533,7 +533,7 @@ class FC_File_Assoc
 
     public function imageFolderView()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $db = new PHPWS_DB('images');
         $db->addWhere('folder_id', $this->file_id);
         $result = $db->getObjects('PHPWS_Image');

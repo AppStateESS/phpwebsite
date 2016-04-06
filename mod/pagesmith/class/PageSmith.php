@@ -165,7 +165,7 @@ class PageSmith
                     case 1:
                         $this->killSaved($this->page->id);
                         PHPWS_Cache::clearCache();
-                        PHPWS_Core::reroute($this->page->url());
+                        \phpws\PHPWS_Core::reroute($this->page->url());
                         break;
                 }
                 break;
@@ -188,7 +188,7 @@ class PageSmith
                     Current_User::disallow();
                 }
                 $this->shortenLinks();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'lengthen_links':
@@ -196,7 +196,7 @@ class PageSmith
                     Current_User::disallow();
                 }
                 $this->lengthenLinks();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'post_settings':
@@ -218,7 +218,7 @@ class PageSmith
                 exit;
 
             default:
-                PHPWS_Core::errorPage('404');
+                \phpws\PHPWS_Core::errorPage('404');
                 break;
         }
 
@@ -276,7 +276,7 @@ class PageSmith
 
     private function getTextBlockData($block_id, $page_id, $section_id)
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $content = null;
         if (!empty($block_id)) {
             $ps_block = new PS_Text($block_id);
@@ -300,7 +300,7 @@ class PageSmith
         if (empty($link_result)) {
             return;
         }
-        PHPWS_Core::plugObject($link, $link_result);
+        \phpws\PHPWS_Core::plugObject($link, $link_result);
         $link->delete();
     }
 
@@ -334,8 +334,8 @@ class PageSmith
             $this->setUndoSession(0, $section_id, $content);
             return;
         }
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
-        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
         $page = new PS_Page($page_id);
         $block = new PS_Text($block_id);
         $block->setContent($content);
@@ -351,14 +351,14 @@ class PageSmith
 
     public function loadForms()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Forms.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Forms.php');
         $this->forms = new PS_Forms;
         $this->forms->ps = & $this;
     }
 
     public function loadPage()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
 
         if (isset($_REQUEST['id'])) {
             $this->page = new PS_Page($_REQUEST['id']);
@@ -379,7 +379,7 @@ class PageSmith
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $this->panel = new PHPWS_Panel('pagesmith');
 
         $link = 'index.php?module=pagesmith&amp;aop=menu';
@@ -479,7 +479,7 @@ class PageSmith
 
 
         PHPWS_Cache::clearCache();
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
 
         if (\PHPWS_Settings::get('pagesmith', 'create_shortcuts')) {
             $result = $this->page->createShortcut();
@@ -548,7 +548,7 @@ class PageSmith
 
     public function postHeader()
     {
-        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
 
         $section = new PS_Text;

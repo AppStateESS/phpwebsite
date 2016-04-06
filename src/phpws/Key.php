@@ -79,7 +79,7 @@ class Key {
     public function getUrl($full_path = false)
     {
         if ($full_path) {
-            return sprintf('<a href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $this->url, $this->title);
+            return sprintf('<a href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $this->url, $this->title);
         } else {
             return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
         }
@@ -448,7 +448,7 @@ class Key {
 
     public function getTplTags()
     {
-        $module_names = PHPWS_Core::getModuleNames();
+        $module_names = \phpws\PHPWS_Core::getModuleNames();
 
         $tpl['ID'] = $this->id;
         $tpl['MODULE'] = $module_names[$this->module];

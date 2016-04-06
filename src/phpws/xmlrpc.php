@@ -171,7 +171,7 @@ class MyServer extends IXR_IntrospectionServer {
 
     public function blogger_getUsersBlogs($args)
     {
-        return array(array('url' => PHPWS_Core::getHomeHttp(), 'blogid' => '1', 'blogName' => Layout::getPageTitle(true)));
+        return array(array('url' => \phpws\PHPWS_Core::getHomeHttp(), 'blogid' => '1', 'blogName' => Layout::getPageTitle(true)));
     }
 
     public function metaWeblog_newPost($args)
@@ -274,7 +274,7 @@ class MyServer extends IXR_IntrospectionServer {
 
     public function dropUser()
     {
-        PHPWS_Core::killSession('User');
+        \phpws\PHPWS_Core::killSession('User');
     }
 
     public function metaWeblog_getRecentPosts($args)
@@ -300,8 +300,8 @@ class MyServer extends IXR_IntrospectionServer {
      */
     public function metaWeblog_newMediaObject($args)
     {
-        PHPWS_Core::requireInc('core', 'file_types.php');
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::requireInc('core', 'file_types.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
         $allowed_images = unserialize(ALLOWED_IMAGE_TYPES);
 
         /* Login the user */
@@ -343,7 +343,7 @@ class MyServer extends IXR_IntrospectionServer {
             return new IXR_Error(-651, "Unable to write file - $filename.");
         }
         fclose($handle);
-        $url = PHPWS_Core::getHomeHttp() . $img_directory . $filename;
+        $url = \phpws\PHPWS_Core::getHomeHttp() . $img_directory . $filename;
         return $url;
     }
 
@@ -386,7 +386,7 @@ class MyServer extends IXR_IntrospectionServer {
      */
     public function appendImages($text)
     {
-        $url = PHPWS_Core::getHomeHttp();
+        $url = \phpws\PHPWS_Core::getHomeHttp();
         return preg_replace('@(src=")\./(images)@', '\\1' . $url . '\\2', $text);
     }
 

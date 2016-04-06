@@ -21,7 +21,7 @@ if (isset($_REQUEST['uop'])) {
 } elseif (!empty($_GET['id'])) {
     $pageSmith->viewPage();
 } else {
-    PHPWS_Core::errorPage('404');
+    \phpws\PHPWS_Core::errorPage('404');
 }
 
 

@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Tag/' . basename(__FILE__);
+namespace Tag;
+
+class ModuleLink extends \phpws2\Tag\ModuleLink{}

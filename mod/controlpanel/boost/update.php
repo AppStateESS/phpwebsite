@@ -153,7 +153,7 @@ function controlpanel_update(&$content, $currentVersion)
                             'controlpanel'));
             $db->loadSelectStatement();
             $row = $db->fetchOneRow();
-            PHPWS_Core::plugObject($link, $row);
+            \phpws\PHPWS_Core::plugObject($link, $row);
             $link->kill();
             $content[] = '<pre>2.3.3 &amp; 2.3.4 changes
 -------------------

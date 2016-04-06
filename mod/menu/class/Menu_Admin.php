@@ -14,7 +14,7 @@ class Menu_Admin
         $request = \Server::getCurrentRequest();
         $title = $content = $message = NULL;
 
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
         if (!Current_User::allow('menu')) {
             Current_User::disallow(dgettext('menu', 'User attempted access to Menu administration.'));
@@ -136,7 +136,7 @@ class Menu_Admin
                     throw new \Http\MethodNotAllowedException;
                 }
                 $this->resetMenu();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 exit();
 
             default:
@@ -473,7 +473,7 @@ class Menu_Admin
         }
         foreach ($links as $l) {
             $menu_link = new Menu_Link;
-            PHPWS_Core::plugObject($menu_link, $l);
+            \phpws\PHPWS_Core::plugObject($menu_link, $l);
             $menu_link->delete();
         }
     }

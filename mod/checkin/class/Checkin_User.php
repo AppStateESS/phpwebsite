@@ -112,9 +112,9 @@ class Checkin_User extends Checkin
             case 'post_checkin':
                 if ($this->postCheckin()) {
                     if (PHPWS_Error::logIfError($this->visitor->save())) {
-                        PHPWS_Core::reroute('index.php?module=checkin&uop=error');
+                        \phpws\PHPWS_Core::reroute('index.php?module=checkin&uop=error');
                     } else {
-                        PHPWS_Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
+                        \phpws\PHPWS_Core::reroute('index.php?module=checkin&uop=thank&reason_id=' . $_POST['reason_id']);
                     }
                 } else {
                     $this->checkinForm();
@@ -122,7 +122,7 @@ class Checkin_User extends Checkin
                 break;
 
             default:
-                PHPWS_Core::errorPage('404');
+                \phpws\PHPWS_Core::errorPage('404');
         }
         Layout::add($this->main());
     }

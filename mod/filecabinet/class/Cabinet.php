@@ -102,7 +102,7 @@ class Cabinet
      */
     public function loadFileManager()
     {
-        PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
 
         if (empty($_GET['cm']) || preg_match('/\W/', $_GET['cm'])) {
             return false;
@@ -256,7 +256,7 @@ class Cabinet
                 }
 
                 Cabinet::unpinFolder();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'pin_form':
@@ -277,7 +277,7 @@ class Cabinet
                 }
                 $this->loadFolder();
                 $this->folder->delete();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'delete_incoming':
@@ -342,7 +342,7 @@ class Cabinet
                 if (filter_input(INPUT_POST, 'js') == 1) {
                     javascript('close_refresh');
                 } else {
-                    PHPWS_Core::goBack();
+                    \phpws\PHPWS_Core::goBack();
                 }
                 break;
 
@@ -402,7 +402,7 @@ class Cabinet
                     $this->fixDocumentDirectories();
                 }
 
-                PHPWS_Core::reroute('index.php?module=filecabinet&tab=settings');
+                \phpws\PHPWS_Core::reroute('index.php?module=filecabinet&tab=settings');
         }
 
         $template['TITLE'] = &$this->title;
@@ -423,7 +423,7 @@ class Cabinet
     public function download($document_id)
     {
         require_once 'HTTP/Download.php';
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         $document = new PHPWS_Document($document_id);
         if (empty($document->id)) {
@@ -480,7 +480,7 @@ class Cabinet
                 break;
 
             case 'fetch_media':
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $id = str_replace('fckvideo-', '', $_GET['mid']);
                 $media = new PHPWS_Multimedia($id);
                 echo $media->getTag();
@@ -499,7 +499,7 @@ class Cabinet
     public static function fileManager($itemname, $file_id = 0, $module = null)
     {
         Layout::addStyle('filecabinet');
-        PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'File_Manager.php');
         if (empty($module)) {
             $module = $_REQUEST['module'];
         }
@@ -514,7 +514,7 @@ class Cabinet
     public function viewImage($id, $view_folder = true)
     {
         Layout::addStyle('filecabinet');
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image($id);
         $folder = new Folder($image->folder_id);
 
@@ -553,7 +553,7 @@ class Cabinet
 
             if (!empty($next_img)) {
                 $next_link = Icon::show('next', dgettext('filecabinet', 'Next image'));
-                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $next_img[0]->popupAddress(), $next_link);
+                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $next_img[0]->popupAddress(), $next_link);
             }
 
             $db->resetWhere();
@@ -565,7 +565,7 @@ class Cabinet
 
             if (!empty($prev_img)) {
                 $prev_link = Icon::show('previous', dgettext('filecabinet', 'Previous image'));
-                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $prev_img[0]->popupAddress(), $prev_link);
+                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $prev_img[0]->popupAddress(), $prev_link);
             }
         }
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
@@ -576,7 +576,7 @@ class Cabinet
     {
         javascript('flowplayer');
         Layout::addStyle('filecabinet');
-        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
         $multimedia = new PHPWS_Multimedia($id);
 
         $folder = new Folder($multimedia->folder_id);
@@ -638,19 +638,19 @@ class Cabinet
 
     public function loadImageManager()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
         $this->image_mgr = new FC_Image_Manager;
     }
 
     public function loadDocumentManager()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
         $this->document_mgr = new FC_Document_Manager;
     }
 
     public function loadMultimediaManager()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Multimedia_Manager.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia_Manager.php');
         $this->loadFolder(MULTIMEDIA_FOLDER);
         $this->multimedia_mgr = new FC_Multimedia_Manager;
     }
@@ -658,7 +658,7 @@ class Cabinet
     public function loadForms()
     {
         if (empty($this->forms)) {
-            PHPWS_Core::initModClass('filecabinet', 'Forms.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Forms.php');
             $this->forms = new Cabinet_Form;
             $this->forms->cabinet = & $this;
         }
@@ -690,7 +690,7 @@ class Cabinet
 
     public function loadPanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
         $image_command = array('title' => dgettext('filecabinet', 'Image folders'), 'link' => $link);
@@ -739,7 +739,7 @@ class Cabinet
     {
         $this->loadFolder();
         if (!$this->folder->id) {
-            PHPWS_Core::errorPage('404');
+            \phpws\PHPWS_Core::errorPage('404');
         }
 
         $this->title = sprintf('%s - %s', $this->folder->title, $this->folder->getPublic());
@@ -752,9 +752,9 @@ class Cabinet
      */
     public function classifyFiles()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
-        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
 
         if (empty($_POST['file_count'])) {
             return false;
@@ -900,7 +900,7 @@ class Cabinet
         $form->addSubmit(dgettext('filecabinet', 'Upload'));
 
         if ($_REQUEST['type'] == 'mm') {
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $mm = new PHPWS_Multimedia($_REQUEST['id']);
             if (!$mm->id) {
                 return false;
@@ -924,10 +924,10 @@ class Cabinet
 
     public function postTN()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
         if ($_POST['type'] == 'mm') {
-            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $obj = new PHPWS_Multimedia($_POST['id']);
             if (!$obj->id) {
                 return false;
@@ -980,7 +980,7 @@ class Cabinet
 
     public static function getFile($id)
     {
-        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $file_assoc = new FC_File_Assoc($id);
         return $file_assoc;
     }
@@ -992,7 +992,7 @@ class Cabinet
 
     public static function getTag($id)
     {
-        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $file_assoc = new FC_File_Assoc($id);
         return $file_assoc->getTag();
     }
@@ -1041,7 +1041,7 @@ class Cabinet
             return true;
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+        \phpws\PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
         $db = new PHPWS_DB($table);
         $db->addColumn('id');
         $db->addColumn($column);
@@ -1268,19 +1268,19 @@ class Cabinet
         switch ($folder->ftype) {
             case IMAGE_FOLDER:
                 $type = 'image';
-                PHPWS_Core::initModClass('filecabinet', 'Image.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $class_name = 'PHPWS_Image';
                 break;
 
             case DOCUMENT_FOLDER:
                 $type = 'document';
-                PHPWS_Core::initModClass('filecabinet', 'Document.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
                 $class_name = 'PHPWS_Document';
                 break;
 
             case MULTIMEDIA_FOLDER:
                 $type = 'media';
-                PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+                \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
                 $class_name = 'PHPWS_Multimedia';
                 break;
         }

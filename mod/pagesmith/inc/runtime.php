@@ -19,7 +19,7 @@ function showFP()
     $db->loadClass('pagesmith', 'PS_Page.php');
     $result = $db->getObjects('PS_Page');
     if (!PHPWS_Error::logIfError($result) && !empty($result)) {
-        PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
+        \phpws\PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
         foreach ($result as $page) {
             $content = $page->view();
             if ($content && !PHPWS_Error::logIfError($content)) {

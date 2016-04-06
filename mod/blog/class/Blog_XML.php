@@ -142,11 +142,11 @@ class Blog_XML extends MyServer {
         $d['title'] = $blog->title;
 
         if (MOD_REWRITE_ENABLED) {
-            $d['link'] = PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
+            $d['link'] = \phpws\PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
         } else {
-            $d['link'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+            $d['link'] = \phpws\PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
         }
-        $d['permalink'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+        $d['permalink'] = \phpws\PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
         $d['mt_allow_pings'] = 0;
         $d['mt_convert_breaks'] = 0;

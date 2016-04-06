@@ -23,7 +23,7 @@ if (isset($_REQUEST['aop'])) {
     if (!Current_User::allow('properties')) {
         Current_User::disallow('Action not allowed');
     }
-    PHPWS_Core::initModClass('properties', 'Admin.php');
+    \phpws\PHPWS_Core::initModClass('properties', 'Admin.php');
     $admin = new Properties\Admin;
     if (isset($_GET['aop'])) {
         $admin->get();
@@ -31,7 +31,7 @@ if (isset($_REQUEST['aop'])) {
         $admin->post();
     }
 } elseif (isset($_REQUEST['uop'])) {
-    PHPWS_Core::initModClass('properties', 'User.php');
+    \phpws\PHPWS_Core::initModClass('properties', 'User.php');
     $user = new Properties\User;
     if (isset($_GET['uop'])) {
         $user->get();
@@ -40,9 +40,9 @@ if (isset($_REQUEST['aop'])) {
     }
 } elseif (isset($_REQUEST['rop'])) {
     if (!Current_User::isLogged()) {
-        PHPWS_Core::reroute(propertiesloginLink());
+        \phpws\PHPWS_Core::reroute(propertiesloginLink());
     }
-    PHPWS_Core::initModClass('properties', 'Roommate_User.php');
+    \phpws\PHPWS_Core::initModClass('properties', 'Roommate_User.php');
     $roommate = new Properties\Roommate_User;
     if ($_SESSION['properties_user_checked']) {
         $roommate->denyAccess();
@@ -54,7 +54,7 @@ if (isset($_REQUEST['aop'])) {
         }
     }
 } elseif (isset($_REQUEST['cop'])) {
-    PHPWS_Core::initModClass('properties', 'Contact_User.php');
+    \phpws\PHPWS_Core::initModClass('properties', 'Contact_User.php');
     $contact = new Properties\Contact_User;
     if (isset($_GET['cop'])) {
         $contact->get();
@@ -62,7 +62,7 @@ if (isset($_REQUEST['aop'])) {
         $contact->post();
     }
 } elseif (isset($_GET['id'])) {
-    PHPWS_Core::initModClass('properties', 'Property.php');
+    \phpws\PHPWS_Core::initModClass('properties', 'Property.php');
     try {
         $property = new Properties\Property($_GET['id']);
         $property->view();

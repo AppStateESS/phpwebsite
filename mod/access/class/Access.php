@@ -73,19 +73,19 @@ class Access
                     break;
 
                 case 'delete_allow_deny':
-                    PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
                     $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                     $allow_deny->delete();
                     Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
                     break;
                 case 'deny_allow':
-                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Denys and Allows');
                     $content = Access_Forms::denyAllowForm();
                     break;
 
                 case 'delete_shortcut':
-                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
                     $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
                     if (empty($shortcut->_error) && $shortcut->id) {
                         $result = $shortcut->delete();
@@ -97,7 +97,7 @@ class Access
                     break;
 
                 case 'shortcuts':
-                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Forms.php');
                     $title = dgettext('access', 'Shortcuts');
                     $content = Access_Forms::shortcuts();
                     break;
@@ -113,13 +113,13 @@ class Access
                     break;
 
                 case 'edit_shortcut':
-                    PHPWS_Core::initModClass('access', 'Forms.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Forms.php');
                     echo Access_Forms::shortcut_menu();
                     exit();
                     break;
 
                 case 'post_shortcut':
-                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
 
                     $sch_id = filter_input(INPUT_POST, 'sch_id', FILTER_SANITIZE_NUMBER_INT);
 
@@ -154,7 +154,7 @@ class Access
                 case 'add_rewritebase':
                     if (Current_User::isDeity()) {
                         Access::addRewriteBase();
-                        PHPWS_Core::goBack();
+                        \phpws\PHPWS_Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -163,7 +163,7 @@ class Access
                 case 'add_forward':
                     if (Current_User::isDeity()) {
                         Access::addForward();
-                        PHPWS_Core::goBack();
+                        \phpws\PHPWS_Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -172,7 +172,7 @@ class Access
                 case 'remove_forward':
                     if (Current_User::isDeity()) {
                         Access::removeForward();
-                        PHPWS_Core::goBack();
+                        \phpws\PHPWS_Core::goBack();
                     } else {
                         Current_User::disallow();
                     }
@@ -180,24 +180,24 @@ class Access
 
                 case 'menu_fix':
                     Access::menuFix();
-                    PHPWS_Core::goBack();
+                    \phpws\PHPWS_Core::goBack();
                     break;
 
                 case 'page_fix':
                     Access::pageFix();
-                    PHPWS_Core::goBack();
+                    \phpws\PHPWS_Core::goBack();
                     break;
 
                 case 'autoforward_on':
                     PHPWS_Settings::set('access', 'forward_ids', 1);
                     PHPWS_Settings::save('access');
-                    PHPWS_Core::goBack();
+                    \phpws\PHPWS_Core::goBack();
                     break;
 
                 case 'autoforward_off':
                     PHPWS_Settings::set('access', 'forward_ids', 0);
                     PHPWS_Settings::save('access');
-                    PHPWS_Core::goBack();
+                    \phpws\PHPWS_Core::goBack();
                     break;
             }
         }
@@ -238,7 +238,7 @@ class Access
                 $current_page_ids[] = array_pop($sc_array);
             }
         }
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
         foreach ($all_pages as $id => $title) {
             if (in_array($id, $current_page_ids)) {
                 continue;
@@ -276,7 +276,7 @@ class Access
     public function getAllowDenyList()
     {
         $content = array();
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
         if (!PHPWS_Settings::get('access', 'allow_deny_enabled')) {
             return "Order Allow,Deny\nAllow from all\n\n";
@@ -352,7 +352,7 @@ class Access
 
     public function loadShortcut($title)
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
         $shortcut = new Access_Shortcut;
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $title);
@@ -380,7 +380,7 @@ class Access
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
 
         if (MOD_REWRITE_ENABLED) {
@@ -418,7 +418,7 @@ class Access
 
     public function getShortcuts($active_only = false)
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addOrder('keyword');
         if ($active_only) {
@@ -430,7 +430,7 @@ class Access
     public static function sendMessage($message, $command)
     {
         $_SESSION['Access_message'] = $message;
-        PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        \phpws\PHPWS_Core::reroute(sprintf('index.php?module=access&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
     }
 
@@ -455,7 +455,7 @@ class Access
             return NULL;
         }
 
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('id', $_POST['shortcut']);
 
@@ -487,7 +487,7 @@ class Access
             exit();
         }
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
         if (!empty($_POST['allow_deny_enabled'])) {
             PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
@@ -591,7 +591,7 @@ class Access
 
     public static function forward()
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $GLOBALS['Forward']);
         $db->setLimit(1);
@@ -672,7 +672,7 @@ class Access
 
     public static function isDenied($ip)
     {
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -696,7 +696,7 @@ class Access
     {
         $allow_or_deny = (int) (bool) $allow_or_deny;
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -723,7 +723,7 @@ class Access
     {
         $allow_or_deny = (int) (bool) $allow_or_deny;
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
         $ad = new Access_Allow_Deny;
         if (!$ad->setIpAddress($ip)) {
             return false;
@@ -879,7 +879,7 @@ class Access
 
     public static function autoForward()
     {
-        $current_url = PHPWS_Core::getCurrentUrl();
+        $current_url = \phpws\PHPWS_Core::getCurrentUrl();
         if (preg_match('@pagesmith/\d+@', $current_url)) {
             $page_name = str_replace('/', ':', $current_url);
             $db = new PHPWS_DB('access_shortcuts');
@@ -888,7 +888,7 @@ class Access
             $db->setLimit(1);
             $keyword = $db->select('one');
             if (!empty($keyword)) {
-                PHPWS_Core::reroute($keyword);
+                \phpws\PHPWS_Core::reroute($keyword);
                 exit();
             }
         }

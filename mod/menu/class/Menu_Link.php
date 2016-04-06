@@ -85,7 +85,7 @@ class Menu_Link {
         } else {
             foreach ($hash[$this->id] as $rowId) {
                 $link = new Menu_Link();
-                PHPWS_Core::plugObject($link, $data[$rowId]);
+                \phpws\PHPWS_Core::plugObject($link, $data[$rowId]);
                 $link->loadChildren($data, $hash);
                 $this->_children[$link->id] = $link;
             }

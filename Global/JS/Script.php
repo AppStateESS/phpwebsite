@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/JS/' . basename(__FILE__);
+namespace JS;
+
+class Script extends \phpws2\JS\Script{}

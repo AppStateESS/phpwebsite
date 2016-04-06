@@ -49,7 +49,7 @@ class PHPWS_Cache {
 
     public static function writeIni($switch=0)
     {
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
         $info = "cache = $switch\n";
         return PHPWS_File::writeFile(CACHE_DIRECTORY . 'phpws_cache.ini', $info, TRUE);
     }

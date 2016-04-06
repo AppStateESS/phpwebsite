@@ -177,7 +177,7 @@ class PHPWS_Time {
 
 	public static function getTZList()
 	{
-		$file = PHPWS_Core::getConfigFile('core', 'timezone.php');
+		$file = \phpws\PHPWS_Core::getConfigFile('core', 'timezone.php');
 		include $file;
 		return $timezones;
 	}

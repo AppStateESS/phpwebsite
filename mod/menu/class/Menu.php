@@ -12,7 +12,7 @@ class Menu {
 
     public static function admin()
     {
-        PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
+        \phpws\PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
         $admin = new Menu_Admin;
         $admin->main();
     }
@@ -244,7 +244,7 @@ class Menu {
 
     public function atLink($url)
     {
-        $compare = PHPWS_Core::getCurrentUrl();
+        $compare = \phpws\PHPWS_Core::getCurrentUrl();
         return $url == $compare;
     }
 
@@ -262,9 +262,9 @@ class Menu {
     public static function siteMap()
     {
         if (!isset($_GET['site_map'])) {
-            PHPWS_Core::errorPage('404');
+            \phpws\PHPWS_Core::errorPage('404');
         }
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
         if ($_GET['site_map'] == 'all') {
             $db = new PHPWS_DB('menus');
@@ -272,11 +272,11 @@ class Menu {
             if ($result) {
                 foreach ($result as $menu) {
                     if (empty($menu->title)) {
-                        PHPWS_Core::errorPage('404');
+                        \phpws\PHPWS_Core::errorPage('404');
                     }
                     $result = $menu->getLinks();
                     if (PHPWS_Error::logIfError($result)) {
-                        PHPWS_Core::errorPage();
+                        \phpws\PHPWS_Core::errorPage();
                     }
                     $content = array();
                     if (!empty($result)) {
@@ -296,13 +296,13 @@ class Menu {
         } else {
             $menu = new Menu_Item((int) $_GET['site_map']);
             if (empty($menu->title)) {
-                PHPWS_Core::errorPage('404');
+                \phpws\PHPWS_Core::errorPage('404');
             }
 
             $result = $menu->getLinks();
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                PHPWS_Core::errorPage();
+                \phpws\PHPWS_Core::errorPage();
             }
             $content = array();
             if (!empty($result)) {
@@ -377,7 +377,7 @@ class Menu {
             return false;
         }
 
-        PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+        \phpws\PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 
         $link = new Menu_Link;
 
@@ -437,7 +437,7 @@ class Menu {
         }
         foreach ($menus as $m) {
             $menu = new Menu_Item;
-            PHPWS_Core::plugObject($menu, $m);
+            \phpws\PHPWS_Core::plugObject($menu, $m);
             $menu->_show_all = true;
             if (empty($menu->assoc_url)) {
                 $menu->setAssocUrl($m['url']);

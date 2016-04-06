@@ -145,7 +145,7 @@ abstract class Variable extends Data {
             $type = 'Bool';
         }
 
-        $class_name = 'Variable\\' . $type;
+        $class_name = 'phpws2\\Variable\\' . $type;
         if (class_exists($class_name)) {
             $var = new $class_name($value, $varname);
             // See this method's comment for information on the below
