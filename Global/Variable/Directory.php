@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Variable/' . basename(__FILE__);
+namespace Variable;
+
+class Directory extends \phpws2\Variable\Directory{}

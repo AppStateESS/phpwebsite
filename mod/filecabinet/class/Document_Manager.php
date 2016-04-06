@@ -33,7 +33,7 @@ class FC_Document_Manager
                     Current_User::disallow();
                 }
                 $this->document->delete();
-                PHPWS_Core::returnToBookmark();
+                \phpws\PHPWS_Core::returnToBookmark();
                 break;
             case 'post_document_upload':
                 if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
@@ -64,7 +64,7 @@ class FC_Document_Manager
                 // document exists, try making a shortcut
                 if ($this->document->id) {
 
-                    PHPWS_Core::initModClass('access', 'Shortcut.php');
+                    \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
                     $shortcut = new Access_Shortcut;
                     if (isset($_GET['keyword'])) {
                         $keyword = $_GET['keyword'];
@@ -85,7 +85,7 @@ class FC_Document_Manager
                         $shortcut->save();
                         $success = true;
                         $message = '<p>' . dgettext('filecabinet', 'Access shortcut successful!') . '</p>';
-                        $message .= '<a href="' . PHPWS_Core::getHomeHttp() . $shortcut->keyword . '">' . PHPWS_Core::getHomeHttp() . $shortcut->keyword . '</a>';
+                        $message .= '<a href="' . \phpws\PHPWS_Core::getHomeHttp() . $shortcut->keyword . '">' . \phpws\PHPWS_Core::getHomeHttp() . $shortcut->keyword . '</a>';
                     }
                 } else {
                     $message = dgettext('filecabinet', 'File not found');
@@ -111,7 +111,7 @@ class FC_Document_Manager
             $this->loadDocument();
         }
 
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
         $form->setFormId('file-form');
@@ -198,7 +198,7 @@ class FC_Document_Manager
                 Layout::nakedDisplay($content);
                 exit();
             }
-            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
             // This function doesn't do anything
             //FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 

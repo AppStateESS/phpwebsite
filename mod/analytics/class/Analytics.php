@@ -9,7 +9,7 @@ class Analytics
 {
     public static function injectTrackers()
     {
-        PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
+        \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         $trackers = TrackerFactory::getActive();
 
         if(empty($trackers)) return;
@@ -62,8 +62,8 @@ class Analytics
 
     public static function listTrackers()
     {
-        PHPWS_Core::initModClass('analytics', 'GenericTracker.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initModClass('analytics', 'GenericTracker.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
 
         $pager = new DBPager('analytics_tracker', 'GenericTracker');
         $pager->addSortHeader('name', dgettext('analytics', 'Name'));
@@ -114,14 +114,14 @@ class Analytics
 
     public static function editTracker()
     {
-        PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
+        \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         $tracker = TrackerFactory::getById($_REQUEST['tracker_id']);
         return self::showEditForm($tracker);
     }
 
     public static function deleteTracker()
     {
-        PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
+        \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         $tracker = TrackerFactory::getById($_REQUEST['tracker_id']);
         $tracker->delete();
 
@@ -130,7 +130,7 @@ class Analytics
 
     public static function saveTracker()
     {
-        PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
+        \phpws\PHPWS_Core::initModClass('analytics', 'TrackerFactory.php');
         if(isset($_REQUEST['tracker_id'])) {
             $tracker = TrackerFactory::getById($_REQUEST['tracker_id']);
         } else {
@@ -194,7 +194,7 @@ class Analytics
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         
         $link = PHPWS_Text::linkAddress('analytics', null, false, false, true, false);
 

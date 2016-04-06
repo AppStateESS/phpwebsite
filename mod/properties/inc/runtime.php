@@ -21,7 +21,7 @@
  */
 if (!PHPWS_Settings::get('properties', 'roommate_only')) {
     if (PHPWS_Core::atHome()) {
-        PHPWS_Core::initModClass('properties', 'User.php');
+        \phpws\PHPWS_Core::initModClass('properties', 'User.php');
         $user = new Properties\User;
         $user->searchPanel();
         $user->propertyListing();

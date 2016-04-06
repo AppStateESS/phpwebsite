@@ -82,7 +82,7 @@ class PHPWS_Core
      */
     public static function loadAsMod($use_file = true)
     {
-        PHPWS_Core::initCoreClass('Module.php');
+        \phpws\PHPWS_Core::initCoreClass('Module.php');
         $core_mod = new PHPWS_Module('core', $use_file);
         return $core_mod;
     }
@@ -128,7 +128,7 @@ class PHPWS_Core
      */
     public static function setLastPost()
     {
-        $key = PHPWS_Core::_getPostKey();
+        $key = \phpws\PHPWS_Core::_getPostKey();
         if (!PHPWS_Core::isPosted()) {
             $_SESSION['PHPWS_LastPost'][] = $key;
             if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK) {
@@ -179,7 +179,7 @@ class PHPWS_Core
             return false;
         }
 
-        $key = PHPWS_Core::_getPostKey();
+        $key = \phpws\PHPWS_Core::_getPostKey();
 
         if (!isset($_SESSION['PHPWS_Post_Count'])) {
             $_SESSION['PHPWS_Post_Count'][$key] = 1;
@@ -201,7 +201,7 @@ class PHPWS_Core
 
     public static function bookmark($allow_authkey = true)
     {
-        $url = PHPWS_Core::getCurrentUrl();
+        $url = \phpws\PHPWS_Core::getCurrentUrl();
 
         if (!$allow_authkey && preg_match('/authkey=/', $url)) {
             $url = null;
@@ -218,9 +218,9 @@ class PHPWS_Core
                 $_SESSION['PHPWS_Bookmark'] = null;
                 unset($_SESSION['PHPWS_Bookmark']);
             }
-            PHPWS_Core::reroute($bm);
+            \phpws\PHPWS_Core::reroute($bm);
         } else {
-            PHPWS_Core::goBack();
+            \phpws\PHPWS_Core::goBack();
         }
     }
 
@@ -231,14 +231,14 @@ class PHPWS_Core
     {
         if (isset($_SERVER['HTTP_REFERER'])) {
             // prevent an endless loop
-            $current_url = PHPWS_Core::getCurrentUrl(false);
+            $current_url = \phpws\PHPWS_Core::getCurrentUrl(false);
             if (strtolower($current_url) == strtolower($_SERVER['HTTP_REFERER'])) {
-                PHPWS_Core::home();
+                \phpws\PHPWS_Core::home();
             } else {
-                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+                \phpws\PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
             }
         } else {
-            PHPWS_Core::home();
+            \phpws\PHPWS_Core::home();
         }
     }
 
@@ -247,7 +247,7 @@ class PHPWS_Core
      */
     public static function home()
     {
-        PHPWS_Core::reroute();
+        \phpws\PHPWS_Core::reroute();
     }
 
     /**
@@ -264,7 +264,7 @@ class PHPWS_Core
      */
     public static function reroute($address = NULL)
     {
-        $current_url = PHPWS_Core::getCurrentUrl();
+        $current_url = \phpws\PHPWS_Core::getCurrentUrl();
 
         if ($current_url == $address) {
             return;
@@ -275,7 +275,7 @@ class PHPWS_Core
 
         if (!preg_match('/^http/', $address)) {
             $address = preg_replace('@^/@', '', $address);
-            $http = PHPWS_Core::getHttp();
+            $http = \phpws\PHPWS_Core::getHttp();
 
             $dirArray = explode('/', $_SERVER['PHP_SELF']);
             array_pop($dirArray);
@@ -363,7 +363,7 @@ class PHPWS_Core
      */
     public static function requireConfig($module, $file = NULL, $exitOnError = true)
     {
-        return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
+        return \phpws\PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
 
     /**
@@ -400,7 +400,7 @@ class PHPWS_Core
         if (empty($file)) {
             $file = 'config.php';
         }
-        $config_file = PHPWS_Core::getConfigFile($module, $file);
+        $config_file = \phpws\PHPWS_Core::getConfigFile($module, $file);
 
         if (empty($config_file) || !$config_file) {
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
@@ -497,7 +497,7 @@ class PHPWS_Core
             return true;
         } elseif (empty($_POST) && isset($_SERVER['CONTENT_LENGTH'])) {
             Security::log(_('User tried to post a file beyond server limits.'));
-            PHPWS_Core::errorPage('overpost');
+            \phpws\PHPWS_Core::errorPage('overpost');
         }
 
         return true;
@@ -514,7 +514,7 @@ class PHPWS_Core
             return $core_modules;
         }
 
-        $file = PHPWS_Core::getConfigFile('core', 'core_modules.php');
+        $file = \phpws\PHPWS_Core::getConfigFile('core', 'core_modules.php');
         if (PHPWS_Error::isError($file)) {
             return $file;
         }
@@ -715,7 +715,7 @@ class PHPWS_Core
 
     public static function getBaseURL()
     {
-        return PHPWS_Core::getHttp()
+        return \phpws\PHPWS_Core::getHttp()
                 . $_SERVER['HTTP_HOST']
                 . preg_replace('/index.*/', '', $_SERVER['PHP_SELF']);
     }
@@ -727,17 +727,17 @@ class PHPWS_Core
             $_SESSION['PHPWS_UrlHistory'] = array();
         }
 
-        array_push($_SESSION['PHPWS_UrlHistory'], PHPWS_Core::getCurrentUrl());
+        array_push($_SESSION['PHPWS_UrlHistory'], \phpws\PHPWS_Core::getCurrentUrl());
     }
 
     // TODO: A more formal and less nasty way to do this, issue #96
     public static function popUrlHistory()
     {
         if (!isset($_SESSION['PHPWS_UrlHistory']) || count($_SESSION['PHPWS_UrlHistory']) == 0) {
-            PHPWS_Core::home();
+            \phpws\PHPWS_Core::home();
         }
 
-        PHPWS_Core::reroute(array_pop($_SESSION['PHPWS_UrlHistory']));
+        \phpws\PHPWS_Core::reroute(array_pop($_SESSION['PHPWS_UrlHistory']));
     }
 
     /**

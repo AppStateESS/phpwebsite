@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/View/' . basename(__FILE__);
+namespace View;
+
+class JsonErrorView extends \phpws2\View\JsonErrorView{}

@@ -201,9 +201,9 @@ class Calendar_User
 
     public function event($js = false)
     {
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!$this->event->id) {
-            PHPWS_Core::errorPage('404');
+            \phpws\PHPWS_Core::errorPage('404');
         }
 
         $template = $this->event->getTpl();
@@ -239,7 +239,7 @@ class Calendar_User
 
     public function loadSuggestion($id = 0)
     {
-        PHPWS_Core::initModClass('calendar', 'Suggestion.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'Suggestion.php');
         $this->event = new Calendar_Suggestion;
         $this->event->_schedule = & $this->calendar->schedule;
         $this->event->schedule_id = $this->event->_schedule->id;
@@ -247,7 +247,7 @@ class Calendar_User
 
     public function loadEvent($event_id)
     {
-        PHPWS_Core::initModClass('calendar', 'Event.php');
+        \phpws\PHPWS_Core::initModClass('calendar', 'Event.php');
         $this->event = new Calendar_Event($event_id, $this->calendar->schedule);
         return true;
     }
@@ -267,7 +267,7 @@ class Calendar_User
 
             case 'suggest_event':
                 if (!PHPWS_Settings::get('calendar', 'allow_submissions')) {
-                    PHPWS_Core::errorPage('403');
+                    \phpws\PHPWS_Core::errorPage('403');
                 }
 
                 if (!$this->allowSuggestion()) {
@@ -276,7 +276,7 @@ class Calendar_User
                     break;
                 }
 
-                PHPWS_Core::initModClass('calendar', 'Admin.php');
+                \phpws\PHPWS_Core::initModClass('calendar', 'Admin.php');
                 $this->loadSuggestion();
                 $this->title = dgettext('calendar', 'Suggest event');
                 $this->content = Calendar_Admin::event_form($this->event, true);
@@ -284,7 +284,7 @@ class Calendar_User
 
             case 'post_suggestion':
                 if (!$this->postSuggestion()) {
-                    PHPWS_Core::initModClass('calendar', 'Admin.php');
+                    \phpws\PHPWS_Core::initModClass('calendar', 'Admin.php');
                     $this->title = dgettext('calendar', 'Suggest event');
                     $this->content = Calendar_Admin::event_form($this->event, true);
                 }
@@ -762,7 +762,7 @@ class Calendar_User
         $schedule_key = $this->calendar->schedule->getKey();
 
         if ((!$this->calendar->schedule->public && !$schedule_key->allowView())) {
-            PHPWS_Core::errorPage('403');
+            \phpws\PHPWS_Core::errorPage('403');
         }
 
         \Layout::disableRobots();

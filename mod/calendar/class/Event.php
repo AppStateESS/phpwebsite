@@ -699,7 +699,7 @@ EOF;
 
     public function save()
     {
-        PHPWS_Core::initModClass('search', 'Search.php');
+        \phpws\PHPWS_Core::initModClass('search', 'Search.php');
 
         $table = $this->_schedule->getEventTable();
 

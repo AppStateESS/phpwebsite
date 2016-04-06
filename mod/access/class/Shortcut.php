@@ -194,7 +194,7 @@ class Access_Shortcut
     public function getRewrite($full = FALSE, $linkable = TRUE)
     {
         if ($full) {
-            $address[] = PHPWS_Core::getHomeHttp();
+            $address[] = \phpws\PHPWS_Core::getHomeHttp();
         }
         $address[] = $this->keyword;
 

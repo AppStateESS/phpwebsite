@@ -189,11 +189,11 @@ class PHPWS_Mail {
         $bcc     = 'bcc:'      . (isset($headers['Bcc'])      ? $headers['Bcc']      : '');
         $replyto = 'reply-to:' . (isset($headers['Reply-To']) ? $headers['Reply-To'] : '');
         $subject = 'subject:'  . (isset($headers['Subject'])  ? $headers['Subject']  : '');
-        $module  = 'module:'   . PHPWS_Core::getCurrentModule();
+        $module  = 'module:'   . \phpws\PHPWS_Core::getCurrentModule();
         $user    = 'user:'     . (Current_User::isLogged() ? Current_User::getUsername() : '');
         $result  = 'result:'   . (PHPWS_Error::isError($result) ? 'Failure' : 'Success');
 
-        PHPWS_Core::log("$id $module $user $subject $from $to $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
+        \phpws\PHPWS_Core::log("$id $module $user $subject $from $to $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
     }
 
     /**

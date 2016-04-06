@@ -1752,7 +1752,7 @@ class PHPWS_Form {
     public function plugIn($values)
     {
         if (is_object($values)) {
-            $aVal = PHPWS_Core::stripObjValues($values);
+            $aVal = \phpws\PHPWS_Core::stripObjValues($values);
         } else {
             $aVal = & $values;
         }

@@ -430,7 +430,7 @@ class Users_Permission {
 
     public function getGroupList($groups)
     {
-        PHPWS_Core::initModClass('users', 'Group.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Group.php');
 
         $db = new PHPWS_DB('users_groups');
 
@@ -514,7 +514,7 @@ class Users_Permission {
             $key->_edit_groups = array();
         }
 
-        PHPWS_Core::initModClass('users', 'Group.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Group.php');
 
         foreach ($groups as $group_id) {
             $group_obj = new PHPWS_Group($group_id, false);

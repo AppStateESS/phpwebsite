@@ -35,7 +35,7 @@ class Signup_Slot {
 
     public function loadPeeps($registered = true)
     {
-        PHPWS_Core::initModClass('signup', 'Peeps.php');
+        \phpws\PHPWS_Core::initModClass('signup', 'Peeps.php');
 
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('slot_id', $this->id);

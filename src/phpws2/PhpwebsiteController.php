@@ -67,7 +67,7 @@ class PhpwebsiteController implements Controller
         $this->destructModules();
 
         // TODO: a more formal and less nasty way to do this, see issue #96
-        PHPWS_Core::pushUrlHistory();
+        \phpws\PHPWS_Core::pushUrlHistory();
     }
 
     protected function determineCurrentModule(\Request $request)

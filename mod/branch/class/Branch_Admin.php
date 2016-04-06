@@ -201,7 +201,7 @@ class Branch_Admin {
 
     public function install_branch_core()
     {
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
         $content = array();
 
         $this->title = dgettext('branch', 'Install branch core');
@@ -343,7 +343,7 @@ class Branch_Admin {
 
     public function post_basic()
     {
-        PHPWS_Core::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
         $result = true;
 
         if (empty($this->branch->dbname) && isset($this->dbname)) {
@@ -422,7 +422,7 @@ class Branch_Admin {
     public function core_module_installation()
     {
         if (!isset($_SESSION['Boost'])) {
-            $modules = PHPWS_Core::coreModList();
+            $modules = \phpws\PHPWS_Core::coreModList();
             $_SESSION['Boost'] = new PHPWS_Boost;
             $_SESSION['Boost']->loadModules($modules);
         }
@@ -502,7 +502,7 @@ class Branch_Admin {
 
     public function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=branch&amp;command=new';
         $newCommand = array('title' => dgettext('branch', 'New'), 'link' => $newLink);
 
@@ -852,7 +852,7 @@ class Branch_Admin {
         $page_tags['URL_LABEL'] = dgettext('branch', 'Url');
         $page_tags['ACTION_LABEL'] = dgettext('branch', 'Action');
 
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('branch_sites', 'Branch');
         $pager->setModule('branch');
         $pager->setTemplate('branch_list.tpl');

@@ -32,7 +32,7 @@ class MiniAdmin {
         if (!\Current_User::isLogged()) {
             return;
         }
-        $modlist = PHPWS_Core::getModuleNames();
+        $modlist = \phpws\PHPWS_Core::getModuleNames();
 
         $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
         $tpl['MINIADMIN_TITLE_ALT'] = dgettext('miniadmin', 'Administrate');

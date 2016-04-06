@@ -26,7 +26,7 @@ function check_cookie()
     if (!$cookie) {
         if (!isset($_GET['cc'])) {
             PHPWS_Cookie::write('cookie_enabled', 'y');
-            PHPWS_Core::reroute('index.php?cc=1');
+            \phpws\PHPWS_Core::reroute('index.php?cc=1');
         } else {
             $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
             $message = PHPWS_Template::process($tpl, 'layout', 'no_cookie.tpl');

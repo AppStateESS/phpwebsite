@@ -497,7 +497,7 @@ class PHPWS_User {
             return true;
         }
 
-        PHPWS_Core::initModClass('users', 'Permission.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Permission.php');
         return $this->_permission->allow($module, $subpermission, $item_id,
                         $itemname);
     }
@@ -512,7 +512,7 @@ class PHPWS_User {
 
     public function save()
     {
-        PHPWS_Core::initModClass('users', 'Group.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Group.php');
 
         if (!$this->id) {
             $newUser = true;
@@ -719,7 +719,7 @@ class PHPWS_User {
                     'Improper permission level for action requested.');
         }
         Security::log($message);
-        PHPWS_Core::errorPage('403');
+        \phpws\PHPWS_Core::errorPage('403');
     }
 
     public function getSettings()
@@ -751,7 +751,7 @@ class PHPWS_User {
 
     public function kill()
     {
-        PHPWS_Core::initModClass('users', 'Group.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Group.php');
 
         if (!$this->id) {
             return false;
@@ -785,7 +785,7 @@ class PHPWS_User {
      */
     public function removeAssociations()
     {
-        $modules = PHPWS_Core::getModules(true, true);
+        $modules = \phpws\PHPWS_Core::getModules(true, true);
         foreach ($modules as $mod) {
             $file = sprintf('%smod/%s/inc/remove_user.php', PHPWS_SOURCE_DIR,
                     $mod);
@@ -801,7 +801,7 @@ class PHPWS_User {
 
     public static function getAllGroups()
     {
-        PHPWS_Core::initModClass('users', 'Action.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Action.php');
         return User_Action::getGroups('group');
     }
 
@@ -823,7 +823,7 @@ class PHPWS_User {
             return UNRESTRICTED_PERMISSION;
         }
 
-        PHPWS_Core::initModClass('users', 'Permission.php');
+        \phpws\PHPWS_Core::initModClass('users', 'Permission.php');
 
         if (!isset($this->_permission)) {
             $this->loadPermissions();

@@ -7,7 +7,7 @@
 
 function menu_install(&$content)
 {
-    PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+    \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
     $menu = new Menu_Item;
     $menu->title = dgettext('menu', 'Main menu');
     $menu->template = 'basic';

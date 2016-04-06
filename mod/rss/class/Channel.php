@@ -103,7 +103,7 @@ class RSS_Channel {
 
     public function getAddress($include_http=TRUE)
     {
-        PHPWS_Core::initCoreClass('Link.php');
+        \phpws\PHPWS_Core::initCoreClass('Link.php');
         $link = new PHPWS_Link;
         $link->full_url = $include_http;
         $link->setRewrite();
@@ -171,7 +171,7 @@ class RSS_Channel {
             $this->loadFeeds();
         }
 
-        $home_http = PHPWS_Core::getHomeHttp();
+        $home_http = \phpws\PHPWS_Core::getHomeHttp();
         $template['CHANNEL_TITLE']       = $this->EncodeString($this->title);
         $template['CHANNEL_ADDRESS']     = $this->getAddress();
         $template['HOME_ADDRESS']        = $home_http;

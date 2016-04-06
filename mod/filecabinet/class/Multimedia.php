@@ -294,7 +294,7 @@ EOF;
         $tpl['FILE_DIRECTORY'] = $this->file_directory;
         $path = $this->getPath();
         if (!preg_match('/^(https?|rtmp):/', $path)) {
-            $path = PHPWS_Core::getHomeHttp() . $path;
+            $path = \phpws\PHPWS_Core::getHomeHttp() . $path;
         }
         $tpl['FILE_PATH'] = $path;
         $tpl['FILE_NAME'] = $this->file_name;

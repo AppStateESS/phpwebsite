@@ -381,7 +381,7 @@ timeout INT NOT NULL default 0,
 </pre>';
 
         case version_compare($currentVersion, '2.7.3', '<'):
-            PHPWS_Core::initModClass('users', 'Action.php');
+            \phpws\PHPWS_Core::initModClass('users', 'Action.php');
             User_Action::checkPermissionTables();
             $content[] = '<pre>2.7.3 changes
 ------------------------

@@ -80,7 +80,7 @@ class Setup {
                         'Remove the following file and refresh to continue:');
                 $this->content[] = '<pre>' . $configDir . 'config.php</pre>';
             } elseif ($this->writeConfigFile()) {
-                PHPWS_Core::killSession('configSettings');
+                \phpws\PHPWS_Core::killSession('configSettings');
                 $this->content[] = dgettext('core',
                                 'Your configuration file was written successfully!') . '<br />';
                 $this->content[] = '<a href="index.php?step=3">' . dgettext('core',
@@ -148,7 +148,7 @@ class Setup {
             return false;
         } else {
             $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '//%s');\n?>",
-                    str_replace('setup/', '', PHPWS_Core::getHomeHttp(false)));
+                    str_replace('setup/', '', \phpws\PHPWS_Core::getHomeHttp(false)));
             return file_put_contents($location . 'source.php', $source_http);
         }
     }
@@ -694,7 +694,7 @@ class Setup {
 
     public function installCoreModules()
     {
-        $modules = PHPWS_Core::coreModList();
+        $modules = \phpws\PHPWS_Core::coreModList();
         return $this->installModules($modules);
     }
 

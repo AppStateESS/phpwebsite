@@ -5,8 +5,8 @@
  */
 
 function users_unregister($module, &$content){
-    PHPWS_Core::initModClass('users', 'Permission.php');
-    PHPWS_Core::initModClass('users', 'My_Page.php');
+    \phpws\PHPWS_Core::initModClass('users', 'Permission.php');
+    \phpws\PHPWS_Core::initModClass('users', 'My_Page.php');
     $result = Users_Permission::removePermissions($module);
 
     if (PHPWS_Error::isError($result)) {

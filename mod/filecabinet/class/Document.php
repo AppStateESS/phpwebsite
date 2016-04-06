@@ -58,7 +58,7 @@ class PHPWS_Document extends File_Common
         static $icon_list = NULL;
 
         if (empty($icon_list)) {
-            $file = PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
+            $file = \phpws\PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
             if (!$file) {
                 return sprintf('<img class="fc-mime-icon" src="' . PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/mime_types/text.png" title="%s" alt="%s" />', htmlspecialchars($this->title, ENT_QUOTES), htmlspecialchars($this->title, ENT_QUOTES));
             } else {

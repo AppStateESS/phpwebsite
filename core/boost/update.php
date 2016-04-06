@@ -28,7 +28,7 @@ function core_update(&$content, $version)
                     return false;
                 }
 
-                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", PHPWS_CORE::getHomeHttp());
+                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", \phpws\PHPWS_Core::getHomeHttp());
                 if (!file_put_contents($config_dir . 'source.php', $source_http)) {
                     $content[] = '<p>Could not create config/core/source.php file.</p>';
                     return false;

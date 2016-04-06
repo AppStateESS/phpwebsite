@@ -187,7 +187,7 @@ class PHPWS_Text {
      */
     public function fixAnchors($text)
     {
-        $home_http = PHPWS_Core::getCurrentUrl();
+        $home_http = \phpws\PHPWS_Core::getCurrentUrl();
 
         return preg_replace('/href="#([\w\-]+)"/',
                 sprintf('href="%s#\\1"', $home_http), $text);

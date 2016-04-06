@@ -142,7 +142,7 @@ class Layout_Settings {
 
         if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+            \phpws\PHPWS_Core::errorPage();
         }
 
         if (empty($result)) {
@@ -161,7 +161,7 @@ class Layout_Settings {
         $result = $db->loadObject($this, false);
         if (PHPWS_Error::isError($result)){
             PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+            \phpws\PHPWS_Core::errorPage();
         }
 
         if ($theme && is_dir(Layout::getThemeDirRoot() . $theme)) {
@@ -256,7 +256,7 @@ class Layout_Settings {
     public function saveSettings()
     {
         $db = new PHPWS_DB('layout_config');
-        $vars = PHPWS_Core::stripObjValues($this);
+        $vars = \phpws\PHPWS_Core::stripObjValues($this);
         unset($vars['current_theme']);
         unset($vars['_contentVars']);
         unset($vars['_boxes']);

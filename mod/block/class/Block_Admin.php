@@ -39,7 +39,7 @@ class Block_Admin
 
     public static function cpanel()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
         $tabs['list'] = array('title' => dgettext('block', 'List'), 'link' => $linkBase);
         $tabs['settings'] = array('title' => dgettext('block', 'Settings'), 'link' => $linkBase);
@@ -76,7 +76,7 @@ class Block_Admin
 
                 $block->kill();
                 Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'edit':
@@ -101,7 +101,7 @@ class Block_Admin
                     Current_User::disallow();
                 }
                 Block_Admin::removeBlock();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'postBlock':
@@ -139,7 +139,7 @@ class Block_Admin
                     } elseif (isset($_REQUEST['key_id'])) {
                         Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
                     }
-                    PHPWS_Core::goBack();
+                    \phpws\PHPWS_Core::goBack();
                 } else {
                     $template['TITLE'] = dgettext('block', 'New Block');
                     $template['CONTENT'] = Block_Admin::edit($block, TRUE);
@@ -154,7 +154,7 @@ class Block_Admin
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
                 }
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'list':
@@ -181,7 +181,7 @@ class Block_Admin
     {
         $_SESSION['block_message'] = $message;
         if (isset($command)) {
-            PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action' => $command), TRUE));
+            \phpws\PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action' => $command), TRUE));
         }
     }
 
@@ -370,7 +370,7 @@ class Block_Admin
     public static function blockList()
     {
         Layout::addStyle('block');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         $pageTags['NEW_BLOCK'] = PHPWS_Text::secureLink(dgettext('block', 'Create new block'), 'block', array('action' => 'new'), null, dgettext('block', 'Create new block'), 'button');
         $pageTags['NEW_BLOCK_URI'] = PHPWS_Text::linkAddress('block', array('action' => 'new'), true);
         $pageTags['CONTENT'] = dgettext('block', 'Content');

@@ -214,7 +214,7 @@ function blog_update(&$content, $currentVersion)
             } else {
                 $content[] = '--- Created image_link column on blog_entries table';
             }
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            \phpws\PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
             if (Cabinet::convertImagesToFileAssoc('blog_entries', 'image_id')) {
                 $content[] = '--- Converted images to new File Cabinet format.';
             } else {

@@ -24,8 +24,8 @@ class Access_Forms {
         javascript('jquery');
         \Layout::includeJavascript('mod/access/javascript/access.min.js');
 
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('access_shortcuts', 'Access_Shortcut');
         $pager->setModule('access');
         $pager->setTemplate('forms/shortcut_list.tpl');
@@ -94,7 +94,7 @@ class Access_Forms {
             return;
         }
 
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
         $form = new PHPWS_Form('allow_deny');
         $form->addHidden('module', 'access');
@@ -237,7 +237,7 @@ class Access_Forms {
 
     public static function shortcut_menu()
     {
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
 
         $sch_id = filter_input(INPUT_GET, 'sch_id', FILTER_SANITIZE_NUMBER_INT);
 

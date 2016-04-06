@@ -13,7 +13,7 @@ namespace phpws2;
  * Previously an extension of the Exception class, Error was changed to a
  * class of static methods. The addition of PDO meant there would have been
  * three exceptions types (Error, PDOException, and the base Exception) which
- * would be a pain to pick in a catch. Much easier to just catch(Exception $e)
+ * would be a pain to pick in a catch. Much easier to just catch(\Exception $e)
  * which will work with PDO.
  */
 class Error {
@@ -51,7 +51,7 @@ class Error {
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
         if (SHOW_ALL_ERRORS || ($errno & (E_ERROR | E_PARSE | E_USER_ERROR))) {
-            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+            throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
         }
     }
 
@@ -78,7 +78,7 @@ class Error {
     /**
      * Writes the error message to a log file.
      */
-    public static function log(Exception $error)
+    public static function log(\Exception $error)
     {
         try {
             self::logError(self::getErrorInfo($error, LOG_ERROR_STACK));
@@ -103,7 +103,7 @@ class Error {
      * Time stamp handled by logging function
      * @return string
      */
-    private static function getErrorInfo(Exception $error, $error_stack = true, $xdebug = false)
+    private static function getErrorInfo(\Exception $error, $error_stack = true, $xdebug = false)
     {
         $file = $error->getFile();
         $line = $error->getLine();

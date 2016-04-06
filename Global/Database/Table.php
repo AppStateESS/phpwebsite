@@ -2,7 +2,7 @@
 
 namespace Database;
 
-class Table extends \phpws2\Database\Table
+abstract class Table extends \phpws2\Database\Table
 {
     
 }

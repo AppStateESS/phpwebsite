@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Form/Input/' . basename(__FILE__);
+namespace Form\Input;
+
+class Text extends \phpws2\Form\Input\Text{}

@@ -160,7 +160,7 @@ class PHPWS_Panel{
 
     public function getFirstTab()
     {
-        PHPWS_Core::initModClass('controlpanel', 'Tab.php');
+        \phpws\PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         $result = null;
 
         $tabs = $this->getTabs();

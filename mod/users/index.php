@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 if (!isset($_REQUEST['action'])) {
-    PHPWS_Core::errorPage('404');
+    \phpws\PHPWS_Core::errorPage('404');
 }
 
 if (!class_exists('PHPWS_User')){
@@ -39,6 +39,6 @@ switch ($_REQUEST['action']){
 
     case 'reset':
         $_SESSION['User'] = new PHPWS_User;
-        PHPWS_Core::home();
+        \phpws\PHPWS_Core::home();
         break;
 }// End area switch

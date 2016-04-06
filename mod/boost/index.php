@@ -20,7 +20,7 @@ if (!Current_User::authorized('boost')) {
 }
 
 if (!isset($_REQUEST['action'])) {
-    PHPWS_Core::errorPage(404);
+    \phpws\PHPWS_Core::errorPage(404);
 }
 
 $js = false;
@@ -54,7 +54,7 @@ switch ($_REQUEST['action']) {
         break;
 
     case 'aboutView':
-        PHPWS_Core::initModClass('boost', 'Boost.php');
+        \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
         PHPWS_Boost::aboutView($_REQUEST['aboutmod']);
         break;
 
@@ -82,7 +82,7 @@ switch ($_REQUEST['action']) {
         if (isset($_REQUEST['confirm']) && isset($_REQUEST['opmod']) && $_REQUEST['confirm'] == $_REQUEST['opmod']) {
             $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
         } else {
-            PHPWS_Core::goBack();
+            \phpws\PHPWS_Core::goBack();
         }
         break;
 

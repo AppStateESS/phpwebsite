@@ -112,7 +112,7 @@ class Layout
 
     public static function addBox($content_var, $module, $theme_var = NULL, $theme = NULL)
     {
-        PHPWS_Core::initModClass('layout', 'Box.php');
+        \phpws\PHPWS_Core::initModClass('layout', 'Box.php');
 
         if (!isset($theme)) {
             $theme = $_SESSION['Layout_Settings']->current_theme;
@@ -137,7 +137,7 @@ class Layout
         $result = $box->save();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            PHPWS_Core::errorPage();
+            \phpws\PHPWS_Core::errorPage();
         }
 
         Layout::resetBoxes();
@@ -507,7 +507,7 @@ class Layout
             $js = 'javascript/';
         }
 
-        PHPWS_CORE::initCoreClass('File.php');
+        \phpws\PHPWS_Core::initCoreClass('File.php');
         $headfile = PHPWS_SOURCE_DIR . $base . $js . $directory . '/head.js';
         $bodyfile = PHPWS_SOURCE_DIR . $base . $js . $directory . '/body.js';
         $defaultfile = PHPWS_SOURCE_DIR . $base . $js . $directory . '/default.php';
@@ -526,7 +526,7 @@ class Layout
 
         $data['source_http'] = PHPWS_SOURCE_HTTP;
         $data['source_dir'] = PHPWS_SOURCE_DIR;
-        $data['home_http'] = PHPWS_Core::getHomeHttp();
+        $data['home_http'] = \phpws\PHPWS_Core::getHomeHttp();
         $data['home_dir'] = PHPWS_HOME_DIR;
 
         try {
@@ -748,7 +748,7 @@ class Layout
 
         if (PHPWS_Error::isError($themeDir)) {
             PHPWS_Error::log($themeDir);
-            PHPWS_Core::errorPage();
+            \phpws\PHPWS_Core::errorPage();
         }
 
         $result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
@@ -888,7 +888,7 @@ class Layout
 
     public static function getBase()
     {
-        return '<base href="' . PHPWS_Core::getBaseURL() . '" />';
+        return '<base href="' . \phpws\PHPWS_Core::getBaseURL() . '" />';
     }
 
     public static function getPageTitle($only_root = FALSE)
@@ -929,7 +929,7 @@ class Layout
 
         if (isset($_GET['nojs'])) {
             $_SESSION['javascript_enabled'] = false;
-            PHPWS_Core::reroute(urldecode($_GET['ret']));
+            \phpws\PHPWS_Core::reroute(urldecode($_GET['ret']));
         } elseif (!isset($_SESSION['javascript_enabled'])) {
             $_SESSION['javascript_enabled'] = true;
         }
@@ -962,9 +962,9 @@ class Layout
         $template['SITE_NAME'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
 
         $template['BASE'] = Layout::getBase();
-        $template['HTTP'] = PHPWS_Core::getHttp(); // 'http' or 'https'
+        $template['HTTP'] = \phpws\PHPWS_Core::getHttp(); // 'http' or 'https'
         // Complete URL of the site's home page
-        $template['HOME_URL'] = PHPWS_Core::getHomeHttp(true, true, true);
+        $template['HOME_URL'] = \phpws\PHPWS_Core::getHomeHttp(true, true, true);
     }
 
     /**

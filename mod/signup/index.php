@@ -18,7 +18,7 @@ if (isset($_REQUEST['aop'])) {
 } elseif (isset($_REQUEST['sheet_id'])) {
     $signup->userMenu('signup_sheet');
 } else {
-    PHPWS_Core::home();
+    \phpws\PHPWS_Core::home();
 }
 
 ?>

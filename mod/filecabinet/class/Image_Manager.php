@@ -46,7 +46,7 @@ class FC_Image_Manager
                 }
                 $this->loadImage(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
                 $this->image->delete();
-                PHPWS_Core::goBack();
+                \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'post_image_upload':

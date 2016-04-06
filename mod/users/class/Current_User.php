@@ -158,7 +158,7 @@ final class Current_User {
             $auth->forceLogin();
         }
 
-        PHPWS_Core::initModClass('users', 'User_Form.php');
+        \phpws\PHPWS_Core::initModClass('users', 'User_Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
             Layout::set($login, 'users', 'login_box', false);
@@ -451,7 +451,7 @@ final class Current_User {
                 $user->setApproved(true);
                 $auth->createUser();
                 $user->save();
-                PHPWS_Core::initModClass('users', 'Action.php');
+                \phpws\PHPWS_Core::initModClass('users', 'Action.php');
                 User_Action::assignDefaultGroup($user);
             }
 
@@ -478,14 +478,14 @@ final class Current_User {
         if (Current_User::isLogged()) {
             return false;
         }
-        PHPWS_Core::bookmark(false);
+        \phpws\PHPWS_Core::bookmark(false);
         $auth = Current_User::getAuthorization();
         if (!empty($auth->login_link)) {
             $url = $auth->login_link;
         } else {
             $url = 'index.php?module=users&action=user&command=login_page';
         }
-        PHPWS_Core::reroute($url);
+        \phpws\PHPWS_Core::reroute($url);
     }
 
     public static function rememberLogin()
