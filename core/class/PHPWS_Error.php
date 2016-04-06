@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Error.php';
+class PHPWS_Error extends \phpws\PHPWS_Error{}

@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/XMLParser.php';
+class XMLParser extends \phpws\XMLParser{}

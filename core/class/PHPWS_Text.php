@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Text.php';
+class PHPWS_Text extends \phpws\PHPWS_Text{}

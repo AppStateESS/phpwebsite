@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/jsmin.php';
+class jsmin extends \phpws\jsmin{}
