@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/Engine/pgsql/Datatype/' . basename(__FILE__);
+namespace Database\Engine\pgsql\Datatype;
+
+class Serial extends \phpws2\Database\Engine\pgsql\Datatype\Serial{};

@@ -1,6 +1,6 @@
 <?php
 
-namespace Form;
+namespace phpws2\Form;
 
 /**
  *

@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Write, reads, and deletes cookies under one site index

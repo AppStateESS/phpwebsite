@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Datatype;
+namespace phpws2\Database\Datatype;
 /*
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>

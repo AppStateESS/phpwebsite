@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  *  Abstract class forming the basis of content objects
  * @todo See Database/Object

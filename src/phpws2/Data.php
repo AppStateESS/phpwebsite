@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Foundation abstract class for any data type object. Note: for overload to work
  * all variables in the parent object have to be protected.
@@ -441,7 +444,10 @@ abstract class Data
         }
 
         $vars = $this->getVars();
-        $content[] = "<?php";
+        $content[] = "<?php
+
+namespace phpws2;
+";
         foreach ($vars as $key => $value) {
             if ($value instanceof Variable) {
                 $content[] = $value->getPHP();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace phpws2\Database;
 
 /**
  * A Value is an amount or measure applied to a column in the database. Insert

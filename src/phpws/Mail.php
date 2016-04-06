@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Frontend class for Pear's Mail class.
@@ -6,7 +7,7 @@
  *
  * Usage:
  *
- * require_once 'core/class/Mail.php';
+ * require_once 'src/phpws/Mail.php';
  *
  * // All addresses can contain a proper name or just the address itself
  *

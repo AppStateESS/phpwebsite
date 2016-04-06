@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Datatype;
+namespace phpws2\Database\Datatype;
 
 require_once PHPWS_SOURCE_DIR . 'Global/inc/defines.php';
 

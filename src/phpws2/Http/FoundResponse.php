@@ -1,5 +1,5 @@
 <?php
-namespace Http;
+namespace phpws2\Http;
 /**
  * Temporary Redirection - to clarify further, use either SeeOtherResponse (303) or
  * TemporaryRedirectResponse (307)

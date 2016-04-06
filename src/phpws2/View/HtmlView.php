@@ -1,5 +1,5 @@
 <?php
-namespace View;
+namespace phpws2\View;
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>

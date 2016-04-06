@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Small class to help modules plug in features from other modules

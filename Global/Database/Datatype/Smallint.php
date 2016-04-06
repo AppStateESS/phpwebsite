@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/Datatype/' . basename(__FILE__);
+namespace Database\Datatype;
+
+class Smallint extends \phpws2\Database\Datatype\Smallint{}

@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /*
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  * it under the terms of the GNU General Public License as published by

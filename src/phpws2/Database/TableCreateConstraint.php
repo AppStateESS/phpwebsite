@@ -1,5 +1,5 @@
 <?php
-namespace Database;
+namespace phpws2\Database;
 /*
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  * it under the terms of the GNU General Public License as published by

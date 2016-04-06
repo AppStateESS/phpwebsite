@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Engine\pgsql;
+namespace phpws2\Database\Engine\pgsql;
 
 /**
  * Description of Table

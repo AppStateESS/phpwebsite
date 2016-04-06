@@ -1,5 +1,7 @@
 <?php
 
+namespace phpws2;
+
 /**
  * Class for creating DB objects and initializing the database connection.
  *

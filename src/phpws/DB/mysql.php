@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Mysql specific library

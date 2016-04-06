@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace phpws2\Database;
 
 /**
  * Extended by other classes, this class stores a pseudonym for an expression.

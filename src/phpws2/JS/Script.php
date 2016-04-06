@@ -1,6 +1,6 @@
 <?php
 
-namespace JS;
+namespace phpws2\JS;
 
 /**
  *

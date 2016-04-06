@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 /**
  * String variable that is alphanumeric with underlines only. Value must begin

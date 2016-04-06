@@ -1,6 +1,6 @@
 <?php
 
-namespace Form\Input;
+namespace phpws2\Form\Input;
 
 /**
  * Because hidden isn't displayed , it differs enough from input to extend base

@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 define('DBPAGER_DEFAULT_LIMIT', 25);
 define('DBPAGER_PAGE_LIMIT', 12);

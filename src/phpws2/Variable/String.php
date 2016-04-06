@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 require_once PHPWS_SOURCE_DIR . 'Global/inc/defines.php';
 

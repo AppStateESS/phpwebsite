@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 /**
  * Attribute follows the conventions of the W3 standard for "name".

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace phpws2\Database;
 
 /*
  * @author Matthew McNaney <mcnaney at gmail dot com>

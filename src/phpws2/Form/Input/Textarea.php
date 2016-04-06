@@ -1,6 +1,6 @@
 <?php
 
-namespace Form\Input;
+namespace phpws2\Form\Input;
 
 /**
  *

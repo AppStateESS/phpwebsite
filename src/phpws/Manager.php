@@ -1,5 +1,6 @@
 <?php
-require_once(PHPWS_SOURCE_DIR . 'core/class/Pager.php');
+namespace phpws;
+require_once(PHPWS_SOURCE_DIR . 'src/phpws/Pager.php');
 
 /**
  * Provides listing and selection functionality for generic Item handling.

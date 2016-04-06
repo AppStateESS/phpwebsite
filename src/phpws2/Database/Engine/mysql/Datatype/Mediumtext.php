@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Engine\mysql\Datatype;
+namespace phpws2\Database\Engine\mysql\Datatype;
 
 /*
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.

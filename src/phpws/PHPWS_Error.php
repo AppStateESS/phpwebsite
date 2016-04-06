@@ -1,5 +1,7 @@
 <?php
 
+namespace phpws;
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -13,7 +15,8 @@ require_once 'PEAR.php';
  */
 define('PHPWS_LOG_ERRORS', TRUE);
 
-class PHPWS_Error {
+class PHPWS_Error
+{
 
     /**
      * Replacement functions for PEAR's isError function. Prevents
@@ -41,8 +44,7 @@ class PHPWS_Error {
     public static function raiseError($message = null, $code = null, $mode = null, $options = null, $userinfo = null, $error_class = null, $skipmsg = false)
     {
         $pear = PHPWS_Error::getPear();
-        return $pear->raiseError($message, $code, $mode, $options, $userinfo,
-                        $error_class, $skipmsg);
+        return $pear->raiseError($message, $code, $mode, $options, $userinfo, $error_class, $skipmsg);
     }
 
     public static function logIfError($item)
@@ -60,8 +62,7 @@ class PHPWS_Error {
         $current_language = Language::getLocale();
         Language::setLocale(DEFAULT_LANGUAGE);
         if (empty($module)) {
-            return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get',
-                            'Value: ' . $value . ', Function: ' . $funcName);
+            return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
         }
 
         try {
@@ -84,8 +85,7 @@ class PHPWS_Error {
                     echo _('Core could not locate its error.php file.');
                     die;
                 }
-                return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core',
-                                'PHPWS_Error::get', 'Module: ' . $module);
+                return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', 'PHPWS_Error::get', 'Module: ' . $module);
             }
         }
 
@@ -124,8 +124,7 @@ class PHPWS_Error {
             }
         }
 
-        $error = PHPWS_Error::raiseError($message, $value, NULL, NULL,
-                        implode('', $fullError));
+        $error = PHPWS_Error::raiseError($message, $value, NULL, NULL, implode('', $fullError));
         Language::setLocale($current_language);
         return $error;
     }

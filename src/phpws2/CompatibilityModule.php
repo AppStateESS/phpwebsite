@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Default module class for old phpWebsite modules.
  *

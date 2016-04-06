@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 /**
  * A class to assist with float variables.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace phpws2\Database;
 
 if (!defined('DB_PERSISTENT_CONNECTION')) {
     define('DB_PERSISTENT_CONNECTION', false);

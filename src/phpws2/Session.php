@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Session is a replacement class for the $_SESSION array.
  * Obviously, the

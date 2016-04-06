@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Event is a class that is used to add Javascript events to Tags
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace Http;
+namespace phpws2\Http;
 
 /**
  * HttpController Abstract Class.  We highly recommend extending this for each

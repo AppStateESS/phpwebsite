@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * View assists developers with the display of their content.
  *

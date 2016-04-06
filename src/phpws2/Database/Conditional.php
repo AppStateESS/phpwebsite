@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace phpws2\Database;
 
 /**
  * This is a conditional class for use in limiting update, delete, or select

@@ -1,5 +1,7 @@
 <?php
 
+namespace phpws2;
+
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>

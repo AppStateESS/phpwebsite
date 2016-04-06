@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Class to assist with _SERVER super globals.
  * @author Matthew McNaney <mcnaney at gmail dot com>

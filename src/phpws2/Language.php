@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Translates text passed to it by the translate method. Depends on
  * gettext to function.

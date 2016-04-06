@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 /**
  * Small class that assists in loading CAPTCHA routines
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace phpws2\Database;
 
 /**
  * The DSN object stores information used to create a database connection.

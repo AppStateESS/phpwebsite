@@ -1,5 +1,5 @@
 <?php
-namespace Variable;
+namespace phpws2\Variable;
 /*
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>

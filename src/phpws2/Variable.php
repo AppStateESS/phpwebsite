@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Abstract class extended by various variables types (Arr, Bool, Date, etc.).
  * Assists with type restrictions, form generation, file configuration creation,
