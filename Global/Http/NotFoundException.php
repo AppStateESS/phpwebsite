@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Http/' . basename(__FILE__);
+class NotFoundException extends \phpws2\Http\NotFoundException{}
