@@ -1,3 +1,8 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/' . basename(__FILE__);
+namespace Database;
+
+class TableCreateConstraint extends \phpws2\Database\TableCreateConstraint
+{
+    
+}

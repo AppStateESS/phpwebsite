@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/' . basename(__FILE__);
+namespace Database;
+
+class Column extends \phpws2\Database\Column{}
