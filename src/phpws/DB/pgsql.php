@@ -1,5 +1,5 @@
 <?php
-namespace phpws;
+namespace phpws\DB;
 
 /**
  * Postgres specific library
