@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/Engine/mysql/Datatype/' . basename(__FILE__);
+namespace Database\Engine\mysql\Datatype;
+
+class Mediumtext extends \phpws2\Mediumtext{}

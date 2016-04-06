@@ -1,3 +1,4 @@
 <?php
+namespace Database;
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/' . basename(__FILE__);
+class DB extends \phpws2\Database\DB{}
