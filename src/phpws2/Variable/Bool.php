@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 /**
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace Form\Choice;
+namespace phpws2\Form\Choice;
 
 /**
  * The Select input is an extension of the Choice class. It builds a multiple

@@ -4,7 +4,7 @@
  * @author Matt McNaney <mcnaney at gmail dot com>
  */
 
-namespace Variable;
+namespace phpws2\Variable;
 
 class Directory extends \Variable\String {
 

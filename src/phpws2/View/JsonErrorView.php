@@ -1,6 +1,6 @@
 <?php
 
-namespace View;
+namespace phpws2\View;
 
 /**
  * Description

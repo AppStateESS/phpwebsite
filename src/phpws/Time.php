@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * The PHPWS_Time class is mainly for the parsing of timestamps
@@ -8,6 +9,6 @@
  * @version $Id$
  */
 
-require_once PHPWS_SOURCE_DIR . 'core/class/PHPWS_Time.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Time.php';
 
 ?>

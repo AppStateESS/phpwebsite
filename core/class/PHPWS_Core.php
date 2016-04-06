@@ -1,3 +1,2 @@
 <?php
-
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Core.php';
+class PHPWS_Core extends \phpws\PHPWS_Core{}

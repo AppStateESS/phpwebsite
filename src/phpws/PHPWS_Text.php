@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Controls the text parsing and profanity controls for phpWebSite

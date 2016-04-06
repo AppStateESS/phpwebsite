@@ -1,5 +1,5 @@
 <?php
-namespace View;
+namespace phpws2\View;
 /**
  * Standard JSON View.  Uses json_encode to encode the given data as JSON,
  * regardless of what the data is.  Upshot: you get RESTful API for free;

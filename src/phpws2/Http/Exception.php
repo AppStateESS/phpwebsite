@@ -1,6 +1,6 @@
 <?php
 
-namespace Http;
+namespace phpws2\Http;
 
 /**
  * Description

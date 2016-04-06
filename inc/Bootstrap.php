@@ -45,12 +45,10 @@ require_once PHPWS_SOURCE_DIR . 'src/String.php';
 require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
 require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 
-
-
 /* * * Exception Handler ** */
-set_exception_handler(array('Error', 'exceptionHandler'));
+set_exception_handler(array('phpws2\Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
-    set_error_handler(array('Error', 'errorHandler'));
+    set_error_handler(array('phpws2\Error', 'errorHandler'));
 }
 
 require_once PHPWS_SOURCE_DIR . 'src/phpws2/Implementations.php';

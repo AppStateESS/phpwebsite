@@ -1,5 +1,5 @@
 <?php
-namespace Form\Choice;
+namespace phpws2\Form\Choice;
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>

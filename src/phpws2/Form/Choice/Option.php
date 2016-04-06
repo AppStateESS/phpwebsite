@@ -1,6 +1,6 @@
 <?php
 
-namespace Form\Choice;
+namespace phpws2\Form\Choice;
 
 /**
  * The option tag is used within the select tag and is not used on its own.

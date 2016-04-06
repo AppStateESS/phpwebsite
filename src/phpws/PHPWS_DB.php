@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * A database class
@@ -8,8 +9,8 @@
  * @package Core
  */
 require_once PHPWS_SOURCE_DIR . 'lib/pear/MDB2.php';
-require_once PHPWS_SOURCE_DIR . 'core/class/DB/DB_Group_In.php';
-require_once PHPWS_SOURCE_DIR . 'core/class/DB/PHPWS_DB_Where.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws/DB/DB_Group_In.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws/DB/PHPWS_DB_Where.php';
 
 // Changing LOG_DB to true will cause ALL DB traffic to get logged
 // This can log can get very large, very fast. DO NOT enable it
@@ -171,7 +172,7 @@ class PHPWS_DB
         $result = PHPWS_Core::initCoreClass('DB/' . $type . '.php');
         if ($result == false) {
             PHPWS_DB::logDB(_('Failed to connect.'));
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB', PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB', PHPWS_SOURCE_DIR . 'src/phpws/DB/' . $type . '.php');
             PHPWS_Core::errorPage();
         }
 

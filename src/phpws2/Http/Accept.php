@@ -1,6 +1,6 @@
 <?php
 
-namespace Http;
+namespace phpws2\Http;
 
 /**
  * A php Object implementation of the HTTP Accept header, which indicates the 

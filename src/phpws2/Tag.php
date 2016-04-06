@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * The Tag class helps developers create custom HTML 5 tags.
  *

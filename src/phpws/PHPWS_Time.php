@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * The PHPWS_Time class is mainly for the parsing of timestamps

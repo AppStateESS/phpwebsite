@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 /**
  * Variable extender for arrays. Cannot be named "Array" because that is

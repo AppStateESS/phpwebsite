@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Controller Interface.  An instance of Controller must be returned by the
  * getController method of your Module instance.  This is the entry point into

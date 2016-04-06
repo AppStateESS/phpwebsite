@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * Procedural functions used throughout Beanie that run in the global namespace.
  *

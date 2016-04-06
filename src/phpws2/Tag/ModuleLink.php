@@ -1,6 +1,6 @@
 <?php
 
-namespace Tag;
+namespace phpws2\Tag;
 
 /**
  *

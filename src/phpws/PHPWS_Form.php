@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Creates HTML form elements and/or an entire form

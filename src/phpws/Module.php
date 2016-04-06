@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 /**
  * Class contains module information
  *

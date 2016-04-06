@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /* Default limit to use */
 define("PHPWS_PAGER_LIMIT", 10);

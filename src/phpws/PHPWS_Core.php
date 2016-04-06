@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Controls module manipulation
@@ -109,7 +110,7 @@ class PHPWS_Core
      */
     public static function initCoreClass($file)
     {
-        $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
+        $classFile = PHPWS_SOURCE_DIR . 'src/phpws/' . $file;
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {

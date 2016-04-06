@@ -1,6 +1,6 @@
 <?php
 
-namespace Variable;
+namespace phpws2\Variable;
 
 if (!defined('NUMBER_STRING_DIVIDER')) {
     define('NUMBER_STRING_DIVIDER', '-');

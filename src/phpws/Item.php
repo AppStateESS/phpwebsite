@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Base class for items used in phpWebSite's 0.x  modules.

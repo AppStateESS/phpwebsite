@@ -1,6 +1,6 @@
 <?php
 
-namespace Http;
+namespace phpws2\Http;
 
 /**
  * For now, the Accept system does not need any special behavior from

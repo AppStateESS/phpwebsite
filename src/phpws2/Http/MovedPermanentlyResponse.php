@@ -1,5 +1,5 @@
 <?php
-namespace Http;
+namespace phpws2\Http;
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>

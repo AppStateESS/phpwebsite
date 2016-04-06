@@ -1,5 +1,5 @@
 <?php
-namespace Variable;
+namespace phpws2\Variable;
 /*
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
  * it under the terms of the GNU General Public License as published by

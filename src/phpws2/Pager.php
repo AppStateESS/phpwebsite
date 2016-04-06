@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 require_once PHPWS_SOURCE_DIR . 'src/Array.php';
 /**
  *

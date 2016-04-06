@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Handles the logging and routing of security problems

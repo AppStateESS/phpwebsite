@@ -1,3 +1,5 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Database/Engine/pgsql/' . basename(__FILE__);
+namespace Database\Engine\pgsql;
+
+class Table extends \phpws2\Database\Engine\pgsql\Table{};

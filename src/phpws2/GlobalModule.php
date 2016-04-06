@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /**
  * This is a faux module used for purposes of extracting site settings.
  *

@@ -1,5 +1,8 @@
 <?php
 
+namespace phpws2;
+
+
 /*
  * Main controller class for phpWebSite.  Implements Controller, so it can be
  * used like any other Controller in the system.

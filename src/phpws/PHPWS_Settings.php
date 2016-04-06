@@ -1,4 +1,5 @@
 <?php
+namespace phpws;
 
 /**
  * Creates a session to hold module settings.
