@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/' . basename(__FILE__);
+class Modal extends \phpws2\Modal{}

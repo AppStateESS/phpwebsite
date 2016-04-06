@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/' . basename(__FILE__);
+class CompatibilityModule extends \phpws2\CompatibilityModule{}
