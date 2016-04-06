@@ -195,7 +195,7 @@ class Key {
 
     public function allowView($check_dates = true)
     {
-        if (Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
+        if (\Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
             return true;
         } elseif (!$this->active) {
             return false;
@@ -211,12 +211,12 @@ class Key {
             return true;
         } else {
             if ($this->restricted == KEY_LOGGED_RESTRICTED) {
-                return Current_User::isLogged();
+                return \Current_User::isLogged();
             } elseif ($this->restricted == KEY_GROUP_RESTRICTED) {
-                if ($this->edit_permission && Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
+                if ($this->edit_permission && \Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
                     return true;
                 } else {
-                    $user_groups = Current_User::getGroups();
+                    $user_groups = \Current_User::getGroups();
                     if (empty($user_groups)) {
                         return false;
                     } else {
@@ -235,7 +235,7 @@ class Key {
             return true;
         }
 
-        return Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name);
+        return \Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name);
     }
 
     public function init()
@@ -274,12 +274,12 @@ class Key {
         }
 
         if (empty($this->creator)) {
-            $this->creator = Current_User::getDisplayName();
-            $this->creator_id = Current_User::getId();
+            $this->creator = \Current_User::getDisplayName();
+            $this->creator_id = \Current_User::getId();
         }
 
-        $this->updater = Current_User::getDisplayName();
-        $this->updater_id = Current_User::getId();
+        $this->updater = \Current_User::getDisplayName();
+        $this->updater_id = \Current_User::getId();
 
         $this->update_date = time();
 
@@ -557,8 +557,8 @@ class Key {
         $db->setGroupConj('active', 'or');
 
 
-        if (Current_User::isDeity() ||
-                (isset($module) && Current_User::isUnrestricted($module) )
+        if (\Current_User::isDeity() ||
+                (isset($module) && \Current_User::isUnrestricted($module) )
         ) {
             return;
         }
@@ -568,11 +568,11 @@ class Key {
             $db->addWhere('phpws_key.hide_after', $now, '>', null, 'active');
         }
 
-        if (!Current_User::isLogged()) {
+        if (!\Current_User::isLogged()) {
             $db->addWhere('phpws_key.restricted', 0, null, 'and', 'active');
             return;
         } else {
-            $groups = Current_User::getGroups();
+            $groups = \Current_User::getGroups();
             if (empty($groups)) {
                 return;
             }
@@ -590,7 +590,7 @@ class Key {
             $db->setGroupConj('restrict_2', 'or');
 
             if (empty($module)) {
-                $levels = Current_User::getUnrestrictedLevels();
+                $levels = \Current_User::getUnrestrictedLevels();
                 if (!empty($levels)) {
                     $db->addWhere('phpws_key.module', $levels, null, null, 'permission');
                     $db->groupIn('permission', 'restrict_2');
@@ -608,7 +608,7 @@ class Key {
      *
      * Note that BEFORE this is called, the developer should check whether
      * the user has ANY rights to edit items in the first place.
-     * In other words, if Current_User::allow('module', 'edit_permission') == false
+     * In other words, if \Current_User::allow('module', 'edit_permission') == false
      * then they shouldn't even use this function. If it is used anyway, a forced negative
      * will be added (i.e. where 1 = 0);
      * If you wish to add other qualifications, use the $db->addWhere() group 'key_id'
@@ -624,20 +624,20 @@ class Key {
      */
     public static function restrictEdit($db, $module, $edit_permission = null, $source_table = null, $key_id_column = null, $owner_id_column = null)
     {
-        if (Current_User::isDeity()) {
+        if (\Current_User::isDeity()) {
             return;
         }
 
         // if the user doesn't have rights for the module or subpermissions,
         // then we just stymie the whole query
-        if (!Current_User::allow($module, $edit_permission)) {
+        if (!\Current_User::allow($module, $edit_permission)) {
             $db->setQWhere('1=0');
             return;
         }
 
         // If the current user has unrestricted rights to edit the item
         // linked to this key, no further restrictions are necessary
-        if (Current_User::isUnrestricted($module)) {
+        if (\Current_User::isUnrestricted($module)) {
             return;
         } else {
             $db->setDistinct(1);
@@ -650,10 +650,10 @@ class Key {
             }
 
             if (!empty($owner_id_column)) {
-                $db->addWhere($source_table . '.' . $owner_id_column, Current_User::getId(), null, 'or', 'key_1');
+                $db->addWhere($source_table . '.' . $owner_id_column, \Current_User::getId(), null, 'or', 'key_1');
             }
 
-            $groups = Current_User::getGroups();
+            $groups = \Current_User::getGroups();
             if (!empty($groups)) {
                 $db->addJoin('left', $source_table, 'phpws_key_edit', 'key_id', 'key_id');
                 $db->addWhere('phpws_key_edit.group_id', $groups, 'in', 'or', 'key_1');

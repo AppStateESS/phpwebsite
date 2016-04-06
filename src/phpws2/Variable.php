@@ -108,7 +108,7 @@ abstract class Variable extends Data {
         }
     }
 
-    public function setDatatype(\DB\Datatype $dt)
+    public function setDatatype(DB\Datatype $dt)
     {
         $this->datatype = $dt;
     }
@@ -477,7 +477,7 @@ abstract class Variable extends Data {
      * @return \Database\Datatype
      * @throws \Exception Error is varname is not set
      */
-    public function loadDataType(\Database\Table $table)
+    public function loadDataType(\phpws2\Database\Table $table)
     {
         $column_type = empty($this->column_type) ? 'Varchar' : $this->column_type;
 

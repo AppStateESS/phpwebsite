@@ -537,14 +537,14 @@ class Calendar_Admin
                 break;
 
             case 'blog_event':
-                if (PHPWS_Core::moduleExists('blog') && Current_User::allow('blog', 'edit_blog') && $this->calendar->schedule->checkPermissions(true)) {
+                if (\phpws\PHPWS_Core::moduleExists('blog') && Current_User::allow('blog', 'edit_blog') && $this->calendar->schedule->checkPermissions(true)) {
                     $event = $this->calendar->schedule->loadEvent();
                     $this->blogEvent();
                 }
                 break;
 
             case 'post_blog':
-                if (PHPWS_Core::moduleExists('blog') && Current_User::allow('blog', 'edit_blog') && $this->calendar->schedule->checkPermissions(true)) {
+                if (\phpws\PHPWS_Core::moduleExists('blog') && Current_User::allow('blog', 'edit_blog') && $this->calendar->schedule->checkPermissions(true)) {
                     $this->postBlog();
                 }
                 javascript('close_refresh');
@@ -1561,7 +1561,7 @@ class Calendar_Admin
     {
         $event = $this->calendar->schedule->loadEvent();
 
-        if (!PHPWS_Core::initModClass('blog', 'Blog.php')) {
+        if (!\phpws\PHPWS_Core::initModClass('blog', 'Blog.php')) {
             return;
         }
         $blog = new Blog;

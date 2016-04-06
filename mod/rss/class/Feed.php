@@ -4,9 +4,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initCoreClass('XMLParser.php');
+\phpws\PHPWS_Core::initCoreClass('XMLParser.php');
 
-PHPWS_Core::requireConfig('rss');
+\phpws\PHPWS_Core::requireConfig('rss');
 
 if (!defined('RSS_DATE_FORMAT')) {
     define('RSS_DATE_FORMAT', '%A, %h %e, %Y %l:%M%P');

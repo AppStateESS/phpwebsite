@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
+\phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Block extends PS_Section {
     // Id to the element tracked by this block e.g. the image id

@@ -17,7 +17,7 @@ if (!class_exists('PHPWS_User')){
     return;
 }
 
-PHPWS_Core::initModClass('users', 'Action.php');
+\phpws\PHPWS_Core::initModClass('users', 'Action.php');
 
 switch ($_REQUEST['action']){
     case 'user':

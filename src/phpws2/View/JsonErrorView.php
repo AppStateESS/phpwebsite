@@ -9,7 +9,7 @@ namespace phpws2\View;
 class JsonErrorView extends JsonView
 {
 
-    public function __construct(\Request $request, \Http\ErrorResponse $response)
+    public function __construct(\phpws2\Request $request, \Http\ErrorResponse $response)
     {
         $json = array();
         $json['url'] = $request->getUrl();

@@ -250,7 +250,7 @@ abstract class DB extends \Data
      * Accepts a DSN object to create a new
      * @param \Database\DSN $dsn
      */
-    public function __construct(\Database\DSN $dsn)
+    public function __construct(\phpws2\Database\DSN $dsn)
     {
         $this->setDSN($dsn);
     }
@@ -329,7 +329,7 @@ abstract class DB extends \Data
      *
      * @param \Database\Conditional $conditional
      */
-    public function setConditional(\Database\Conditional $conditional)
+    public function setConditional(\phpws2\Database\Conditional $conditional)
     {
         $this->conditional = $conditional;
     }
@@ -339,7 +339,7 @@ abstract class DB extends \Data
      * conditional parameter if not yet set.
      * @param \Database\Conditional $conditional
      */
-    public function addConditional(\Database\Conditional $conditional)
+    public function addConditional(\phpws2\Database\Conditional $conditional)
     {
         if (empty($this->conditional)) {
             $this->setConditional($conditional);
@@ -427,7 +427,7 @@ abstract class DB extends \Data
      * Sets the DSN and loads the PDO object for future queries.
      * @param \Database\DSN $dsn
      */
-    public function setDSN(\Database\DSN $dsn)
+    public function setDSN(\phpws2\Database\DSN $dsn)
     {
         $this->dsn = $dsn;
         $this->loadPDO();
@@ -603,7 +603,7 @@ abstract class DB extends \Data
             'blob', 'both', 'by', 'call', 'cascade', 'case', 'change', 'char', 'character', 'check',
             'collate', 'column', 'condition', 'connection', 'constraint', 'continue', 'convert',
             'create', 'cross', 'current_date', 'current_role', 'current_time', 'current_timestamp',
-            'current_user', 'cursor', 'database', 'databases', 'day_hour', 'day_microsecond',
+            '\Current_User', 'cursor', 'database', 'databases', 'day_hour', 'day_microsecond',
             'day_minute', 'day_second', 'dec', 'decimal', 'declare', 'default', 'delayed',
             'delete', 'desc', 'describe', 'deterministic', 'distinct', 'distinctrow', 'div',
             'do', 'double', 'drop', 'dual', 'each', 'else', 'elseif', 'enclosed', 'end', 'escaped',
@@ -945,7 +945,7 @@ abstract class DB extends \Data
      * @param string $type
      * @return \Database\JoinTable
      */
-    public function joinResources(\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
+    public function joinResources(\phpws2\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
     {
         $jt = new Join($left_resource, $right_resource, $type, $conditional);
         $this->joined_resources[] = $jt;
@@ -1605,7 +1605,7 @@ abstract class DB extends \Data
     {
         $fields = array();
         foreach ($this->tables as $tbl) {
-            if (DATABASE_CHECK_COLUMNS && !$tbl->columnExists($column_name)) {
+            if (\phpws2\Database_CHECK_COLUMNS && !$tbl->columnExists($column_name)) {
                 throw new \Exception(t('Column "%s" not found', $column_name));
             }
             if ($add_to_table) {

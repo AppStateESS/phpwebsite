@@ -240,7 +240,7 @@ class String extends \Variable
      * @param \Database\Table $table
      * @return \Database\Datatype
      */
-    public function loadDataType(\Database\Table $table)
+    public function loadDataType(\phpws2\Database\Table $table)
     {
         if (empty($this->column_type)) {
             if ($this->limit <= DB_VARCHAR_LIMIT && $this->limit > 0) {

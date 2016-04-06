@@ -6,13 +6,13 @@ namespace phpws2\Http;
  * Description
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-abstract class ErrorResponse extends \Response
+abstract class ErrorResponse extends \phpws2\Response
 {
     protected $request;
     protected $backtrace;
     protected $exception;
 
-    public function __construct(\Request $request = null, \Exception $previous = null)
+    public function __construct(\phpws2\Request $request = null, \Exception $previous = null)
     {
         if (is_null($request)) {
             $request = \Server::getCurrentRequest();
@@ -52,7 +52,7 @@ abstract class ErrorResponse extends \Response
         return $this->exception;
     }
 
-    protected function createErrorView(\Request $request, \Response $response)
+    protected function createErrorView(\phpws2\Request $request, \phpws2\Response $response)
     {
         $iter = $request->getAccept()->getIterator();
 

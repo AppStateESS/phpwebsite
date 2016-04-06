@@ -7,7 +7,7 @@
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-PHPWS_Core::requireConfig('layout');
+\phpws\PHPWS_Core::requireConfig('layout');
 require_once PHPWS_SOURCE_DIR . 'mod/layout/class/Functions.php';
 
 if (!defined('LAYOUT_IGNORE_JS_CHECK')) {
@@ -37,8 +37,8 @@ if (!defined('LAYOUT_FORCE_MOD_JS')) {
     define('LAYOUT_FORCE_MOD_JS', false);
 }
 
-PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
-PHPWS_Core::initCoreClass('Template.php');
+\phpws\PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
+\phpws\PHPWS_Core::initCoreClass('Template.php');
 
 class Layout
 {
@@ -924,7 +924,7 @@ class Layout
         }
 
         if (!isset($_SESSION['javascript_enabled'])) {
-            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(PHPWS_Core::getCurrentUrl()) . '"/></noscript>';
+            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(\phpws\PHPWS_Core::getCurrentUrl()) . '"/></noscript>';
         }
 
         if (isset($_GET['nojs'])) {

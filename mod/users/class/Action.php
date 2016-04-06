@@ -8,9 +8,9 @@
  * @package Core
  */
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
-PHPWS_Core::requireConfig('users');
-PHPWS_Core::initModClass('users', 'User_Form.php');
-//PHPWS_Core::initCoreClass('Form.php');
+\phpws\PHPWS_Core::requireConfig('users');
+\phpws\PHPWS_Core::initModClass('users', 'User_Form.php');
+//\phpws\PHPWS_Core::initCoreClass('Form.php');
 
 
 if (!defined('ALLOW_DEITY_FORGET')) {
@@ -1260,7 +1260,7 @@ class User_Action
                     return false;
                 }
 
-                if (PHPWS_Core::isPosted()) {
+                if (\phpws\PHPWS_Core::isPosted()) {
                     $content = dgettext('users', 'Please check your email for a response.');
                     return true;
                 }
@@ -1302,7 +1302,7 @@ class User_Action
                 $content = dgettext('users', 'Email address not found. Please try again.');
                 return false;
             } else {
-                if (PHPWS_Core::isPosted()) {
+                if (\phpws\PHPWS_Core::isPosted()) {
                     $content = dgettext('users', 'Please check your email for a response.');
                     return true;
                 }

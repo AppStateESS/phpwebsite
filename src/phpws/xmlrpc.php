@@ -244,7 +244,7 @@ class MyServer extends IXR_IntrospectionServer {
      */
     public function logUser($username, $password, $subpermission = null)
     {
-        $result = Current_User::loginUser($username, $password);
+        $result = \Current_User::loginUser($username, $password);
 
         // Bad result or blank result returns an error message
         if (PHPWS_Error::logIfError($result) || !$result) {
@@ -377,7 +377,7 @@ class MyServer extends IXR_IntrospectionServer {
         if (!$this->logUser($args[0], $args[1])) {
             return 'Not a User! Username:' . trim($args[0]) . ' Password:' . $args[1];
         } else {
-            return 'Username is "' . Current_User::getUsername() . '"';
+            return 'Username is "' . \Current_User::getUsername() . '"';
         }
     }
 

@@ -5,8 +5,8 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('controlpanel');
-PHPWS_Core::initModClass('controlpanel', 'Tab.php');
+\phpws\PHPWS_Core::requireConfig('controlpanel');
+\phpws\PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 
 class PHPWS_Panel{
     public $itemname     = null;

@@ -30,7 +30,7 @@ class Character extends \Database\Datatype {
      * @param string $name
      * @param integer $length
      */
-    public function __construct(\Database\Table $table, $name, $length=255)
+    public function __construct(\phpws2\Database\Table $table, $name, $length=255)
     {
         parent::__construct($table, $name);
         $this->size = new \Variable\Integer(null, $this->varName());

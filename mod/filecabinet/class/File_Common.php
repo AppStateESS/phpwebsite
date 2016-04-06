@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initCoreClass('File.php');
+\phpws\PHPWS_Core::initCoreClass('File.php');
 
 define('FILE_TITLE_CUTOFF', 24);
 

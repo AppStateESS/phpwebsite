@@ -29,7 +29,7 @@ namespace phpws;
  * @package Core
  *
  */
-PHPWS_Core::configRequireOnce('core', 'formConfig.php', true);
+\phpws\PHPWS_Core::configRequireOnce('core', 'formConfig.php', true);
 
 class PHPWS_Form {
 
@@ -1496,8 +1496,8 @@ class PHPWS_Form {
         $template['FORM_ENCODE'] = $this->getEncode();
 
         unset($this->_elements['authkey']);
-        if (class_exists('Current_User') && $this->use_auth_key) {
-            if ($authkey = Current_User::getAuthKey()) {
+        if (class_exists('\Current_User') && $this->use_auth_key) {
+            if ($authkey = \Current_User::getAuthKey()) {
                 $this->addHidden('authkey', $authkey);
             }
         }

@@ -165,7 +165,7 @@ class Pager
         $this->search_column = trim(rawurldecode($column));
     }
 
-    public function setTemplate(\Template $template)
+    public function setTemplate(Template $template)
     {
         if (!is_file($template->getFile())) {
             throw new \Exception(t('Could not find template file: %t', $template->getFile()));

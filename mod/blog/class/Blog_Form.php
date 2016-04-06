@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initCoreClass('Form.php');
+\phpws\PHPWS_Core::initCoreClass('Form.php');
 
 class Blog_Form
 {

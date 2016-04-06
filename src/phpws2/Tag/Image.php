@@ -121,7 +121,7 @@ class Image extends \Tag {
     private function loadSrc()
     {
         $this->loadRelativePath();
-        $this->setSrc(\Server::getSiteUrl() . $this->getRelativePath());
+        $this->setSrc(Server::getSiteUrl() . $this->getRelativePath());
     }
 
     /**

@@ -27,8 +27,8 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 // Include some things we're probably going to always need
-PHPWS_Core::initModClass('addthis', 'Settings.php');
-PHPWS_Core::initModClass('addthis', 'SettingsView.php');
+\phpws\PHPWS_Core::initModClass('addthis', 'Settings.php');
+\phpws\PHPWS_Core::initModClass('addthis', 'SettingsView.php');
 
 
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){

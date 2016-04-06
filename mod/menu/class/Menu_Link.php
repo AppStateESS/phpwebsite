@@ -237,11 +237,11 @@ class Menu_Link {
         }
 
         if (!$current_url) {
-            $current_url = preg_quote(PHPWS_Core::getCurrentUrl(true, false));
+            $current_url = preg_quote(\phpws\PHPWS_Core::getCurrentUrl(true, false));
         }
 
         if (!$redirect_url) {
-            $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
+            $redirect_url = preg_quote(\phpws\PHPWS_Core::getCurrentUrl());
         }
 
         if (preg_match("@$redirect_url$@", $this->url)) {

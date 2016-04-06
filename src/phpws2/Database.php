@@ -39,7 +39,7 @@ class Database
      * @param \Database\DSN $dsn
      * @return Database\DB
      */
-    public static function getDB(\Database\DSN $dsn = null)
+    public static function getDB(\phpws2\Database\DSN $dsn = null)
     {
         return self::newDB($dsn);
     }
@@ -52,7 +52,7 @@ class Database
      * @return \Database\DB
      * @throws \Exception
      */
-    public static function newDB(\Database\DSN $dsn = null)
+    public static function newDB(\phpws2\Database\DSN $dsn = null)
     {
         if (is_null($dsn)) {
             if (empty(self::$default_dsn)) {
@@ -171,7 +171,7 @@ class Database
      * @see \Database\DSN::$dsn
      * @param \Database\DSN $dsn
      */
-    public static function setDefaultDSN(\Database\DSN $dsn)
+    public static function setDefaultDSN(\phpws2\Database\DSN $dsn)
     {
         self::$default_dsn = $dsn;
     }

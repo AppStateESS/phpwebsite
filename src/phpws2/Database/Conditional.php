@@ -41,7 +41,7 @@ class Conditional extends \Data {
         'NOT LIKE', 'NOT ILIKE', 'REGEXP', 'RLIKE', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN',
         'IS', 'IS NOT', '~', 'AND', 'OR');
 
-    public function __construct(\Database\DB $db, $left, $right, $operator)
+    public function __construct(\phpws2\Database\DB $db, $left, $right, $operator)
     {
         $this->db = $db;
         $this->setLeft($left);

@@ -51,7 +51,7 @@ abstract class Data
      */
     public function isPrivate($variable_name)
     {
-        $reflection = new ReflectionClass(get_called_class());
+        $reflection = new \ReflectionClass(get_called_class());
         return $reflection->getProperty($variable_name)->isPrivate();
     }
 
@@ -62,7 +62,7 @@ abstract class Data
      */
     public function isProtected($variable_name)
     {
-        $reflection = new ReflectionClass(get_called_class());
+        $reflection = new \ReflectionClass(get_called_class());
         return $reflection->getProperty($variable_name)->isProtected();
     }
 
@@ -73,7 +73,7 @@ abstract class Data
      */
     public function isPublic($variable_name)
     {
-        $reflection = new ReflectionClass(get_called_class());
+        $reflection = new \ReflectionClass(get_called_class());
         return $reflection->getProperty($variable_name)->isPublic();
     }
 

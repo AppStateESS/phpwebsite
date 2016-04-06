@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
+\phpws\PHPWS_Core::requireConfig('filecabinet');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 define('GENERIC_VIDEO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg');
 define('GENERIC_AUDIO_ICON', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/audio.png');

@@ -18,8 +18,8 @@ if (!defined('UTF8_MODE')) {
     define('UTF8_MODE', false);
 }
 
-PHPWS_Core::requireConfig('core', 'text_settings.php');
-PHPWS_Core::initCoreClass('Link.php');
+\phpws\PHPWS_Core::requireConfig('core', 'text_settings.php');
+\phpws\PHPWS_Core::initCoreClass('Link.php');
 
 if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
@@ -707,7 +707,7 @@ class PHPWS_Text {
      */
     public static function makeRelative(&$text, $prefix = true, $inlink_only = false)
     {
-        $address = addslashes(PHPWS_Core::getHomeHttp());
+        $address = addslashes(\phpws\PHPWS_Core::getHomeHttp());
         if ($prefix) {
             $pre = './';
         } else {
@@ -778,7 +778,7 @@ class PHPWS_Text {
         if (empty($query)) {
             if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
                 $query = $_SERVER['REDIRECT_QUERY_STRING'];
-            } elseif (PHPWS_Core::isRewritten()) {
+            } elseif (\phpws\PHPWS_Core::isRewritten()) {
                 if (dirname($_SERVER['PHP_SELF']) == '/') {
                     $rewrite = substr($_SERVER['REQUEST_URI'], 1);
                 } else {

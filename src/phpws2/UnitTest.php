@@ -54,7 +54,7 @@ class UnitTest {
             } else {
                 echo 'Failure!';
             }
-        } catch (\Error $e) {
+        } catch (Error $e) {
             echo 'Failure<br>', '<i>' . $e->getMessage() . '</i>';
         }
         echo '</p>';

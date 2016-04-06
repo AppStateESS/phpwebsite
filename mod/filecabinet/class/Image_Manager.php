@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::initModClass('filecabinet', 'Image.php');
+\phpws\PHPWS_Core::requireConfig('filecabinet');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
 if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
     define('RESIZE_IMAGE_USE_DUPLICATE', true);

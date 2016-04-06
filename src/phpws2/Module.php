@@ -91,7 +91,7 @@ abstract class Module extends Data implements Controller {
      * @see ModuleManager::beforeRun()
      * @return void
      */
-    public function beforeRun(\Request $request, \Controller $controller)
+    public function beforeRun(\phpws2\Request $request, \phpws2\Controller $controller)
     {
 
     }
@@ -108,7 +108,7 @@ abstract class Module extends Data implements Controller {
      * @see ModuleManager::afterRun()
      * @return void
      */
-    public function afterRun(\Request $request, \Response $response)
+    public function afterRun(\phpws2\Request $request, \phpws2\Response $response)
     {
 
     }
@@ -124,7 +124,7 @@ abstract class Module extends Data implements Controller {
 
     }
 
-    public function runTime(\Request $request)
+    public function runTime(\phpws2\Request $request)
     {
 
     }
@@ -175,7 +175,7 @@ abstract class Module extends Data implements Controller {
         $this->proper_name = new \Variable\TextOnly(null, 'proper_name');
     }
 
-    public function execute(\Request $request)
+    public function execute(Request $request)
     {
         $controller = $this->getController($request);
 

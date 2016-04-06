@@ -23,7 +23,7 @@ class Serial extends \Database\Datatype\Integer {
     protected $is_number = true;
     protected $default = null;
 
-    public function __construct(\Database\Table $table, $name)
+    public function __construct(\phpws2\Database\Table $table, $name)
     {
         parent::__construct($table, $name);
         $this->default = null;

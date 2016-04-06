@@ -233,7 +233,7 @@ class Blog_User
         $rss = false;
         foreach ($result as $blog) {
             if (!$rss) {
-                if (PHPWS_Core::moduleExists('rss')) {
+                if (\phpws\PHPWS_Core::moduleExists('rss')) {
                     \phpws\PHPWS_Core::initModClass('rss', 'RSS.php');
                     $key = new Key($blog->key_id);
                     RSS::showIcon($key);
@@ -304,7 +304,7 @@ class Blog_User
 
             case 1:
                 // home page only
-                if (!PHPWS_Core::atHome()) {
+                if (!\phpws\PHPWS_Core::atHome()) {
                     return;
                 }
                 break;

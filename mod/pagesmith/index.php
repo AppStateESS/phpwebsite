@@ -10,7 +10,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
+\phpws\PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
 
 $pageSmith = new PageSmith;
 

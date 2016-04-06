@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
-PHPWS_Core::requireConfig('pagesmith');
+\phpws\PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
+\phpws\PHPWS_Core::requireConfig('pagesmith');
 
 if (!defined('PS_ALLOWED_HEADER_TAGS')) {
     define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
@@ -488,7 +488,7 @@ class PageSmith
         }
 
         if (PHPWS_Error::isError($result) && $menu_link) {
-            if (PHPWS_Core::initModClass('menu', 'Menu.php')) {
+            if (\phpws\PHPWS_Core::initModClass('menu', 'Menu.php')) {
                 Menu::quickKeyLink($this->page->key_id);
             }
         }

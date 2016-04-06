@@ -656,7 +656,7 @@ class PHPWS_Manager {
                 }
 
                 /* Process this item and concatenate onto the current list of items */
-                $listTags['LIST_ITEMS'] .= PHPWS_Template::processTemplate($rowTags, 'core', $rowTpl, FALSE);
+                $listTags['LIST_ITEMS'] .= \phpws\PHPWS_Template::processTemplate($rowTags, 'core', $rowTpl, FALSE);
             }
 
             if(isset($this->_listPaging[$this->listName]) && is_array($this->_listPaging[$this->listName]) && (sizeof($this->_listPaging[$this->listName]) > 0)) {
@@ -676,7 +676,7 @@ class PHPWS_Manager {
                     $permission = $this->_listPermissions[$this->listName][$actionString];
 
                     if(isset($permission)) {
-                        if(Current_User::allow($this->_module, $permission)) {
+                        if(\Current_User::allow($this->_module, $permission)) {
                             $actions[$actionString] = $actionLabel;
                         }
                     } else {
@@ -695,17 +695,17 @@ class PHPWS_Manager {
                 /* Add hidden variable to designate the current module */
                 $ele = new Form_Hidden('module', $this->_module);
                 $elements[0] = $ele->get();
-                $elements[0] .= PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
+                $elements[0] .= \phpws\PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
 
                 /* Create final form and dump it into a content variable to be returned */
                 $content = sprintf('<form name="%s" action="index.php" method="post">%s</form>', 'PHPWS_MAN_LIST_' . $this->listName, implode("\n", $elements));
             } else {
-                $content = PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
+                $content = \phpws\PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
             }
 
         } else {
             $listTags['LIST_ITEMS'] = '<tr><td colspan="' . $columns . '">' . _('No items for the current list.') . '</td></tr>';
-            $content = PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
+            $content = \phpws\PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
         }
 
         /* reinitialize sort and order before next list */
@@ -787,7 +787,7 @@ class PHPWS_Manager {
         }
 
         /* Set associative mode for db and execute query */
-        $result = PHPWS_DB::getAll($sql);
+        $result = \phpws\PHPWS_DB::getAll($sql);
 
         if($filterGroups) {
             $size = sizeof($result);
@@ -828,7 +828,7 @@ class PHPWS_Manager {
             $sql .= $order;
         }
 
-        return PHPWS_DB::getCol($sql);
+        return \phpws\PHPWS_DB::getCol($sql);
     }
 
     /**
@@ -867,7 +867,7 @@ class PHPWS_Manager {
             }
 
             /* Execute query and test for failure */
-            $result = PHPWS_DB::query($sql);
+            $result = \phpws\PHPWS_DB::query($sql);
             if($result)
             return TRUE;
             else

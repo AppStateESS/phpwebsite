@@ -6,8 +6,8 @@
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  */
 
-PHPWS_Core::initModClass('addthis', 'AddThisView.php');
-PHPWS_Core::initModClass('addthis', 'Settings.php');
+\phpws\PHPWS_Core::initModClass('addthis', 'AddThisView.php');
+\phpws\PHPWS_Core::initModClass('addthis', 'Settings.php');
 
 $settings = addthis\Settings::getInstance();
 

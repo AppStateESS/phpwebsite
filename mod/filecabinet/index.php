@@ -8,7 +8,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../core/conf/404.html';
     exit();
 }
-PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 $cabinet = new Cabinet;
 
 if (isset($_REQUEST['uop'])) {

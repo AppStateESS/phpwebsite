@@ -307,7 +307,7 @@ class PHPWS_Item {
         } else {
             $this->_owner = NULL;
             $error = 'The user session was not available in PHPWS_Item::setOwner().';
-            $er = new PEAR;
+            $er = new \PEAR;
             return $er->raiseError($error);
         }
     } // END FUNC setOwner
@@ -333,7 +333,7 @@ class PHPWS_Item {
         } else {
             $this->_editor = NULL;
             $error = 'The user session was not available in PHPWS_Item::setEditor().';
-            $er = new PEAR;
+            $er = new \PEAR;
             return $er->raiseError($error);
         }
     } // END FUNC set_editor

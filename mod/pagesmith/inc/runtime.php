@@ -4,7 +4,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-if (PHPWS_Core::atHome()) {
+if (\phpws\PHPWS_Core::atHome()) {
     showFP();
 }
 

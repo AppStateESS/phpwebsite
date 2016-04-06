@@ -6,8 +6,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireConfig('calendar');
-PHPWS_Core::requireInc('calendar', 'error_defines.php');
+\phpws\PHPWS_Core::requireConfig('calendar');
+\phpws\PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
 define('MINI_CAL_NO_SHOW', 0);
 define('MINI_CAL_SHOW_FRONT', 1);

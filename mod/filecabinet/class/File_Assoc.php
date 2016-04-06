@@ -4,7 +4,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::requireInc('filecabinet', 'defines.php');
+\phpws\PHPWS_Core::requireInc('filecabinet', 'defines.php');
 
 class FC_File_Assoc
 {

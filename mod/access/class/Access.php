@@ -14,7 +14,7 @@ define('ACCESS_FILES_DIR', 5);
 define('ACCESS_HTACCESS_WRITE', 6);
 define('ACCESS_HTACCESS_MISSING', 7);
 
-PHPWS_Core::requireConfig('access');
+\phpws\PHPWS_Core::requireConfig('access');
 
 class Access
 {
