@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::requireConfig('boost');
+\phpws\PHPWS_Core::requireConfig('boost');
 
 if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
     Current_User::disallow();
@@ -26,9 +26,9 @@ if (!isset($_REQUEST['action'])) {
 $js = false;
 
 $content = array();
-PHPWS_Core::initModClass('boost', 'Form.php');
-PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-PHPWS_Core::initModClass('boost', 'Action.php');
+\phpws\PHPWS_Core::initModClass('boost', 'Form.php');
+\phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+\phpws\PHPWS_Core::initModClass('boost', 'Action.php');
 
 $boostPanel = new PHPWS_Panel('boost');
 $boostPanel->enableSecure();

@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireConfig('miniadmin');
+\phpws\PHPWS_Core::requireConfig('miniadmin');
 
 if (!defined('MINIADMIN_TEMPLATE')) {
     define('MINIADMIN_TEMPLATE', 'mini_admin.html');

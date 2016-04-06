@@ -5,7 +5,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+\phpws\PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 
 define('MENU_MISSING_TPL', -2);
 

@@ -22,7 +22,7 @@ if (!defined('LOG_DIRECTORY')) {
 }
 
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
-PHPWS_Core::initCoreClass('PHPWS_Error.php');
+\phpws\PHPWS_Core::initCoreClass('PHPWS_Error.php');
 
 class PHPWS_Core
 {
@@ -129,7 +129,7 @@ class PHPWS_Core
     public static function setLastPost()
     {
         $key = \phpws\PHPWS_Core::_getPostKey();
-        if (!PHPWS_Core::isPosted()) {
+        if (!\phpws\PHPWS_Core::isPosted()) {
             $_SESSION['PHPWS_LastPost'][] = $key;
             if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK) {
                 array_shift($_SESSION['PHPWS_LastPost']);
@@ -271,7 +271,7 @@ class PHPWS_Core
         }
 
         // Set last post since we will be skipping it
-        //PHPWS_Core::setLastPost();
+        //\phpws\PHPWS_Core::setLastPost();
 
         if (!preg_match('/^http/', $address)) {
             $address = preg_replace('@^/@', '', $address);
@@ -432,7 +432,7 @@ class PHPWS_Core
 
         $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
 
-        if (PHPWS_Core::isBranch()) {
+        if (\phpws\PHPWS_Core::isBranch()) {
             $branch_name = Branch::getCurrentBranchName();
             $message = '{' . $branch_name . '} ' . $message;
         } else {
@@ -542,7 +542,7 @@ class PHPWS_Core
         $var_array = NULL;
 
         if (!is_array($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::stripObjValues', $className);
+            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', '\phpws\PHPWS_Core::stripObjValues', $className);
         }
 
         foreach ($classVars as $key => $value) {
@@ -572,7 +572,7 @@ class PHPWS_Core
         $classVars = get_class_vars($className);
 
         if (!is_array($classVars) || empty($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::plugObject', $className);
+            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', '\phpws\PHPWS_Core::plugObject', $className);
         }
 
         if (isset($variables) && !is_array($variables)) {
@@ -610,7 +610,7 @@ class PHPWS_Core
      */
     public static function getHomeHttp($with_http = true, $with_directory = true, $with_slash = true)
     {
-        $url = Server::getSiteUrl($with_http, $with_directory);
+        $url = \phpws2\Server::getSiteUrl($with_http, $with_directory);
         if ($with_slash && !preg_match('/\/$/', $url)) {
             $url .= '/';
         }
@@ -638,7 +638,7 @@ class PHPWS_Core
         include $file;
 
         if (!$get_file) {
-            if (!PHPWS_DB::isTable('core_version')) {
+            if (!\phpws\PHPWS_DB::isTable('core_version')) {
                 $version = '1.0.0';
             } else {
                 $db = new PHPWS_DB('core_version');
@@ -664,7 +664,7 @@ class PHPWS_Core
      */
     public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
-        return Server::getCurrentUrl($relative, $use_redirect);
+        return \Server::getCurrentUrl($relative, $use_redirect);
     }
 
     /**
@@ -680,7 +680,7 @@ class PHPWS_Core
             $GLOBALS['Allow_Entry'] = true;
             return true;
         } else {
-            if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
+            if (!\phpws\PHPWS_Core::initModClass('branch', 'Branch.php')) {
                 PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
                 return false;
             }

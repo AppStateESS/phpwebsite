@@ -18,11 +18,11 @@ namespace phpws2\Http;
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Controller implements \Controller {
+abstract class Controller implements \phpws2\Controller {
 
     private $module;
 
-    public function __construct(\Module $module)
+    public function __construct(Module $module)
     {
         $this->module = $module;
     }
@@ -32,27 +32,27 @@ abstract class Controller implements \Controller {
         return $this->module;
     }
 
-    public function execute(\Request $request)
+    public function execute(\phpws2\Request $request)
     {
         $this->onBeforeExecute($request);
 
         switch ($request->getMethod()) {
-            case \Request::GET:
+            case \phpws2\Request::GET:
                 $response = $this->get($request);
                 break;
-            case \Request::HEAD:
+            case \phpws2\Request::HEAD:
                 $response = $this->head($request);
                 break;
-            case \Request::POST:
+            case \phpws2\Request::POST:
                 $response = $this->post($request);
                 break;
-            case \Request::PUT:
+            case \phpws2\Request::PUT:
                 $response = $this->put($request);
                 break;
-            case \Request::DELETE:
+            case \phpws2\Request::DELETE:
                 $response = $this->delete($request);
                 break;
-            case \Request::OPTIONS:
+            case \phpws2\Request::OPTIONS:
                 $response = $this->options($request);
                 break;
             case REQUEST::PATCH:
@@ -74,57 +74,57 @@ abstract class Controller implements \Controller {
         return $response;
     }
 
-    public function onBeforeExecute(\Request &$request)
+    public function onBeforeExecute(\phpws2\Request &$request)
     {
 
     }
 
-    public function onAfterExecute(\Request $request, \Response &$response)
+    public function onAfterExecute(\phpws2\Request $request, \phpws2\Response &$response)
     {
 
     }
 
-    protected function getHtmlView($data, \Request $request)
+    protected function getHtmlView($data, \phpws2\Request $request)
     {
         throw new \Http\MethodNotAllowedException($request);
     }
 
-    public function get(\Request $request)
+    public function get(\phpws2\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function head(\Request $request)
+    public function head(\phpws2\Request $request)
     {
 
     }
 
-    public function post(\Request $request)
-    {
-        return new MethodNotAllowedResponse($request);
-    }
-
-    public function put(\Request $request)
+    public function post(\phpws2\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function delete(\Request $request)
+    public function put(\phpws2\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function options(\Request $request)
+    public function delete(\phpws2\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function patch(\Request $request)
+    public function options(\phpws2\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function getView($data, \Request $request = null)
+    public function patch(\phpws2\Request $request)
+    {
+        return new MethodNotAllowedResponse($request);
+    }
+
+    public function getView($data, \phpws2\Request $request = null)
     {
         if (is_null($request)) {
             $request = \Server::getCurrentRequest();
@@ -153,12 +153,12 @@ abstract class Controller implements \Controller {
         return $view;
     }
 
-    protected function getJsonView($data, \Request $request)
+    protected function getJsonView($data, \phpws2\Request $request)
     {
         return new \View\JsonView($data);
     }
 
-    protected function getXmlView($data, \Request $request)
+    protected function getXmlView($data, \phpws2\Request $request)
     {
         // TODO: Find a nice way to just XML encode anything and provide a
         // default view here.

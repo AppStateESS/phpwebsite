@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('search', 'User.php');
+\phpws\PHPWS_Core::initModClass('search', 'User.php');
 
 Search_User::searchBox();
 

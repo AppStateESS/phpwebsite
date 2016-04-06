@@ -31,8 +31,8 @@ class PHPWS_DB_Where {
             return false;
         }
 
-        if (!PHPWS_DB::checkOperator($operator)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', 'PHPWS_DB::addWhere', _('DB Operator:') . $operator);
+        if (!\phpws\PHPWS_DB::checkOperator($operator)) {
+            return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', '\phpws\PHPWS_DB::addWhere', _('DB Operator:') . $operator);
         }
 
         if ($operator == 'LIKE' || $operator == 'ILIKE') {

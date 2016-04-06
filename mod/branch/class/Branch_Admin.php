@@ -10,7 +10,7 @@ define('BRANCH_CONNECT_WITH_TABLES', 3);
 define('BRANCH_CONNECT_SUCCESS', 4);
 define('BRANCH_CONNECT_BAD_DB', 5);
 
-PHPWS_Core::initModClass('branch', 'Branch.php');
+\phpws\PHPWS_Core::initModClass('branch', 'Branch.php');
 
 class Branch_Admin {
 

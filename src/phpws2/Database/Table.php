@@ -148,7 +148,7 @@ abstract class Table extends Resource
 
     abstract public function constraintTypeAfterName();
 
-    abstract public function alter(\Database\Datatype $old, \Database\Datatype $new);
+    abstract public function alter(\phpws2\Database\Datatype $old, \Database\Datatype $new);
 
     /**
      * Serializes the primary key in the current table. This is a one time method
@@ -169,7 +169,7 @@ abstract class Table extends Resource
      * @param \Database\Field $field Field to change
      * @param string $new_name Name to change field to.
      */
-    abstract public function renameField(\Database\Field $field, $new_name);
+    abstract public function renameField(\phpws2\Database\Field $field, $new_name);
 
     /**
      * Return the type of database column the current column is.

@@ -9,8 +9,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
+\phpws\PHPWS_Core::requireConfig('filecabinet');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 class PHPWS_Document extends File_Common
 {

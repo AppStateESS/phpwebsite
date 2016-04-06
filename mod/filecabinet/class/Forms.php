@@ -4,8 +4,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::initModClass('filecabinet', 'Image.php');
-PHPWS_Core::initModClass('filecabinet', 'Document.php');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'Image.php');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class Cabinet_Form
 {

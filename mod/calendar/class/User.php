@@ -637,7 +637,7 @@ class Calendar_User
         $this->loadSuggestion();
 
         if ($this->event->post()) {
-            if (PHPWS_Core::isPosted()) {
+            if (\phpws\PHPWS_Core::isPosted()) {
                 $this->title = dgettext('calendar', 'Duplicate suggestion.');
                 $this->content = dgettext('calendar', 'You may try to suggest a different event.');
                 return true;

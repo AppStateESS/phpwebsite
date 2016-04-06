@@ -35,7 +35,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('whatsnew', 'Whatsnew.php');
+\phpws\PHPWS_Core::initModClass('whatsnew', 'Whatsnew.php');
 $whatsnew = new whatsnew;
 
 if (isset($_REQUEST['aop'])) {

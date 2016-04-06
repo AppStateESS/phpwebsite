@@ -9,7 +9,7 @@ define('CALENDAR_EVENT_TYPE_ALL_DAY', 2);
 define('CALENDAR_EVENT_TYPE_STARTS', 3);
 define('CALENDAR_EVENT_TYPE_ENDS', 4);
 
-PHPWS_Core::requireInc('calendar', 'error_defines.php');
+\phpws\PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
 if (!defined('CALENDAR_SAME_DAY_MDY')) {
     define('CALENDAR_SAME_DAY_MDY', true);
@@ -464,7 +464,7 @@ EOF;
         if ($this->_schedule->checkPermissions()) {
             $link[] = $this->editLink('icon');
             $link[] = $this->deleteLink('icon');
-            if (PHPWS_Core::moduleExists('blog')) {
+            if (\phpws\PHPWS_Core::moduleExists('blog')) {
                 if (Current_User::allow('blog', 'edit_blog', null, null, true)) {
                     $link[] = $this->blogLink('icon');
                 }

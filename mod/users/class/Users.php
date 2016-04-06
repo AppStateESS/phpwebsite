@@ -10,9 +10,9 @@ if (!defined('USERS_AUTH_PATH')) {
     define('USERS_AUTH_PATH', PHPWS_SOURCE_DIR . 'mod/users/scripts/');
 }
 
-PHPWS_Core::initModClass('users', 'Permission.php');
-PHPWS_Core::initModClass('users', 'Authorization.php');
-PHPWS_Core::requireConfig('users');
+\phpws\PHPWS_Core::initModClass('users', 'Permission.php');
+\phpws\PHPWS_Core::initModClass('users', 'Authorization.php');
+\phpws\PHPWS_Core::requireConfig('users');
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 
 if (!defined('ALLOWED_USERNAME_CHARACTERS')) {

@@ -20,7 +20,7 @@
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 if (!PHPWS_Settings::get('properties', 'roommate_only')) {
-    if (PHPWS_Core::atHome()) {
+    if (\phpws\PHPWS_Core::atHome()) {
         \phpws\PHPWS_Core::initModClass('properties', 'User.php');
         $user = new Properties\User;
         $user->searchPanel();

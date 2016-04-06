@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+\phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
 class Menu {
 

@@ -4,8 +4,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireInc('signup', 'errordefines.php');
-PHPWS_Core::requireConfig('signup');
+\phpws\PHPWS_Core::requireInc('signup', 'errordefines.php');
+\phpws\PHPWS_Core::requireConfig('signup');
 
 if (!defined('SIGNUP_WINDOW')) {
     define('SIGNUP_WINDOW', 3600);

@@ -4,6 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initModClass('calendar', 'Calendar.php');
-PHPWS_Core::initCoreClass('Time.php');
+\phpws\PHPWS_Core::initModClass('calendar', 'Calendar.php');
+\phpws\PHPWS_Core::initCoreClass('Time.php');
 ?>

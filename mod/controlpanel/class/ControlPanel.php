@@ -5,7 +5,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+\phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 

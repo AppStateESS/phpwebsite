@@ -7,8 +7,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initCoreClass('Module.php');
-PHPWS_Core::configRequireOnce('boost', 'config.php');
+\phpws\PHPWS_Core::initCoreClass('Module.php');
+\phpws\PHPWS_Core::configRequireOnce('boost', 'config.php');
 
 define('BOOST_NEW', 0);
 define('BOOST_START', 1);
@@ -878,7 +878,7 @@ class PHPWS_Boost
         if (!$errorDir) {
             $GLOBALS['Boost_Current_Directory'] = false;
         }
-        if ($check_branch && !PHPWS_Core::isBranch() && \phpws\PHPWS_Core::moduleExists('branch')) {
+        if ($check_branch && !\phpws\PHPWS_Core::isBranch() && \phpws\PHPWS_Core::moduleExists('branch')) {
             $db = new PHPWS_DB('branch_sites');
             $db->addColumn('branch_name');
             $db->addColumn('directory');
@@ -947,7 +947,7 @@ class PHPWS_Boost
 
     public function updateBranches(&$content)
     {
-        if (!PHPWS_Core::moduleExists('branch')) {
+        if (!\phpws\PHPWS_Core::moduleExists('branch')) {
             return true;
         }
 

@@ -24,7 +24,7 @@ class Varchar extends Character {
 
     protected $varchar = true;
 
-    public function __construct(\Database\Table $table, $name, $length = null)
+    public function __construct(\phpws2\Database\Table $table, $name, $length = null)
     {
         if (empty($length)) {
             $length = DB_VARCHAR_LIMIT;

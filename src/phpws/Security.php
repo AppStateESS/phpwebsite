@@ -11,8 +11,8 @@ namespace phpws;
 class Security {
     public static function log($message)
     {
-        if (class_exists('Current_User') && isset($_SESSION['User'])) {
-            $username = Current_User::getUsername();
+        if (class_exists('\Current_User') && isset($_SESSION['User'])) {
+            $username = \Current_User::getUsername();
         } else {
             $username = _('Unknown user');
         }

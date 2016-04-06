@@ -15,7 +15,7 @@ function core_update(&$content, $version)
 1.7.3 and return.</p>';
 
         case version_compare($version, '2.0.0', '<'):
-            if (PHPWS_Core::isBranch()) {
+            if (\phpws\PHPWS_Core::isBranch()) {
                 $content[] = 'This update can only be performed on the hub.';
                 return false;
             }

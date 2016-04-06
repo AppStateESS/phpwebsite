@@ -6,7 +6,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireConfig('block');
+\phpws\PHPWS_Core::requireConfig('block');
 
 class Block_Admin
 {

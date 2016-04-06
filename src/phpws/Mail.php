@@ -41,7 +41,7 @@ namespace phpws;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('core', 'mail_settings.php');
+\phpws\PHPWS_Core::requireConfig('core', 'mail_settings.php');
 
 class PHPWS_Mail {
     public $send_to           = array();
@@ -190,7 +190,7 @@ class PHPWS_Mail {
         $replyto = 'reply-to:' . (isset($headers['Reply-To']) ? $headers['Reply-To'] : '');
         $subject = 'subject:'  . (isset($headers['Subject'])  ? $headers['Subject']  : '');
         $module  = 'module:'   . \phpws\PHPWS_Core::getCurrentModule();
-        $user    = 'user:'     . (Current_User::isLogged() ? Current_User::getUsername() : '');
+        $user    = 'user:'     . (\Current_User::isLogged() ? \Current_User::getUsername() : '');
         $result  = 'result:'   . (PHPWS_Error::isError($result) ? 'Failure' : 'Success');
 
         \phpws\PHPWS_Core::log("$id $module $user $subject $from $to $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');

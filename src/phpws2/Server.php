@@ -15,7 +15,7 @@ class Server {
 
     /**
      *
-     * @return \Request
+     * @return \phpws2\Request
      */
     public static function getCurrentRequest()
     {

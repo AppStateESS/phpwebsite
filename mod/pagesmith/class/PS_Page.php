@@ -455,7 +455,7 @@ class PS_Page
     public function flag()
     {
         $this->loadKey();
-        if (!PHPWS_Core::atHome() && $this->key_id) {
+        if (!\phpws\PHPWS_Core::atHome() && $this->key_id) {
             $this->_key->flag();
         }
     }
@@ -477,7 +477,7 @@ class PS_Page
         $this->flag();
 
         $this->loadSections();
-        if (!empty($this->title) && !PHPWS_Core::atHome()) {
+        if (!empty($this->title) && !\phpws\PHPWS_Core::atHome()) {
             Layout::addPageTitle($this->title);
         }
 

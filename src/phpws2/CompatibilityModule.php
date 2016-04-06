@@ -10,12 +10,12 @@ namespace phpws2;
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class CompatibilityModule extends \Module implements \SettingDefaults {
+class CompatibilityModule extends Module implements \phpws2\SettingDefaults {
 
     public $unregister;
     public $register;
 
-    public function runTime(\Request $request)
+    public function runTime(\phpws2\Request $request)
     {
         if (is_file($this->directory . 'inc/runtime.php')) {
             require_once $this->directory . 'inc/runtime.php';
@@ -42,7 +42,7 @@ class CompatibilityModule extends \Module implements \SettingDefaults {
         return $settings;
     }
 
-    public function getController(\Request $request)
+    public function getController(\phpws2\Request $request)
     {
         return $this;
     }
@@ -52,7 +52,7 @@ class CompatibilityModule extends \Module implements \SettingDefaults {
         return new \View\NullView;
     }
 
-    public function execute(\Request $request)
+    public function execute(\phpws2\Request $request)
     {
         include $this->directory . 'index.php';
         return new Response(new \View\NullView());

@@ -1528,7 +1528,7 @@ EOF;
 
         DBPager::plugPageTags($template);
         $this->final_template = & $template;
-        return PHPWS_Template::process($template, $this->module, $this->template);
+        return \phpws\PHPWS_Template::process($template, $this->module, $this->template);
     }
 
     public function getFinalTemplate()

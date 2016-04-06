@@ -22,7 +22,7 @@
  * @author Verdon Vaillancourt <verdonv at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('whatsnew');
+\phpws\PHPWS_Core::requireConfig('whatsnew');
 
 class Whatsnew {
     var $forms      = null;

@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initCoreClass('xmlrpc.php');
+\phpws\PHPWS_Core::initCoreClass('xmlrpc.php');
 
 class Blog_XML extends MyServer {
     public $image_directory = 'images/blog/';

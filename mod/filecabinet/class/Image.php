@@ -7,9 +7,9 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::requireConfig('filecabinet');
-PHPWS_Core::requireInc('filecabinet', 'defines.php');
-PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
+\phpws\PHPWS_Core::requireConfig('filecabinet');
+\phpws\PHPWS_Core::requireInc('filecabinet', 'defines.php');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 if (!defined('FC_MIN_POPUP_SIZE')) {
     define('FC_MIN_POPUP_SIZE', 400);

@@ -9,8 +9,8 @@
  * @author  Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initModClass('users', 'Authorization.php');
-PHPWS_Core::initModClass('users', 'Users.php');
+\phpws\PHPWS_Core::initModClass('users', 'Authorization.php');
+\phpws\PHPWS_Core::initModClass('users', 'Users.php');
 
 if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);

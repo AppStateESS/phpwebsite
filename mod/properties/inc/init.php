@@ -18,7 +18,7 @@
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-PHPWS_Core::initModClass('properties', 'Contact.php');
+\phpws\PHPWS_Core::initModClass('properties', 'Contact.php');
 function propertiesLoginLink()
 {
     $login = \PHPWS_Settings::get('properties', 'login_link');

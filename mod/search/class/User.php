@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('search');
+\phpws\PHPWS_Core::requireConfig('search');
 class Search_User {
 
     public static function main()
@@ -116,7 +116,7 @@ class Search_User {
 
         $query_string = str_replace(' ', '+', $search_phrase);
 
-        $site = urlencode(PHPWS_Core::getHomeHttp(FALSE, FALSE, FALSE));
+        $site = urlencode(\phpws\PHPWS_Core::getHomeHttp(FALSE, FALSE, FALSE));
         $url = sprintf($gosite['url'], $query_string, $site);
 
         header('location: ' . $url);

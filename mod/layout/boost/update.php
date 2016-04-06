@@ -223,7 +223,7 @@ EOF;
 </pre>
 EOF;
         case version_compare($currentVersion, '2.7.0', '<'):
-            if (PHPWS_Core::moduleExists('block')) {
+            if (\phpws\PHPWS_Core::moduleExists('block')) {
                 $db = Database::newDB();
                 $t = $db->addTable('layout_config');
                 $t->addField('header');

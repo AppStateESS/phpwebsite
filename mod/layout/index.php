@@ -23,7 +23,7 @@ if (!Current_User::allow('layout')) {
     Current_User::disallow();
 }
 
-PHPWS_Core::initModClass('layout', 'LayoutAdmin.php');
+\phpws\PHPWS_Core::initModClass('layout', 'LayoutAdmin.php');
 
 switch ($_REQUEST['action']){
     case 'admin':

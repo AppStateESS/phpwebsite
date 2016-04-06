@@ -6,8 +6,8 @@
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  */
 
-PHPWS_Core::initModClass('likebox', 'LikeboxView.php');
-PHPWS_Core::initModClass('likebox', 'LikeboxSettings.php');
+\phpws\PHPWS_Core::initModClass('likebox', 'LikeboxView.php');
+\phpws\PHPWS_Core::initModClass('likebox', 'LikeboxSettings.php');
 
 $settings = LikeboxSettings::getInstance();
 

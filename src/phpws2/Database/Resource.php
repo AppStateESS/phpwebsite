@@ -62,7 +62,7 @@ abstract class Resource extends Alias
      * @param \DB $db Database object this resource is part of
      * @param string $alias Pseudonym for this resource
      */
-    public function __construct(\Database\DB $db, $alias = null)
+    public function __construct(\phpws2\Database\DB $db, $alias = null)
     {
         $this->db = $db;
         $this->setAlias($alias);

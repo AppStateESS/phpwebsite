@@ -48,7 +48,7 @@ abstract class Resource extends Data {
         return $this->table;
     }
 
-    public function post(\Request $request)
+    public function post(\phpws2\Request $request)
     {
         $post_vars = $request->getRequestVars();
         $this->setVars($post_vars);
@@ -110,7 +110,7 @@ abstract class Resource extends Data {
      * @param \Database\Table $table
      * @return Array
      */
-    public function getVariablesAsDatatypes(\Database\Table $table)
+    public function getVariablesAsDatatypes(\phpws2\Database\Table $table)
     {
         $vars = $this->getVars();
         foreach ($vars as $variable) {
@@ -129,7 +129,7 @@ abstract class Resource extends Data {
      * @param \Database\DB $db
      * @return \Database\Table
      */
-    public function createTable(\Database\DB $db)
+    public function createTable(\phpws2\Database\DB $db)
     {
         $resource_table = $db->buildTable($this->getTable());
         $datatypes = $this->getVariablesAsDatatypes($resource_table);

@@ -84,7 +84,7 @@ class Head {
      * Adds a Javascript object to the script_stack variable
      * @param \Javascript $js
      */
-    public function addJavascript(\Javascript $js)
+    public function addJavascript(Javascript $js)
     {
         $this->script_stack[] = $js;
     }

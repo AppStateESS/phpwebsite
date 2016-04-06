@@ -18,7 +18,7 @@ if (!defined('CACHE_TPL_LOCALLY')) {
     define('CACHE_TPL_LOCALLY', false);
 }
 
-class PHPWS_Template extends HTML_Template_Sigma {
+class PHPWS_Template extends \HTML_Template_Sigma {
     public $module           = NULL;
     public $error            = NULL;
     public $lastTemplatefile = NULL;
@@ -54,7 +54,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return PHPWS_SOURCE_DIR . "mod/$module/templates/";
         }
 
-        $theme = Layout::getThemeDirRoot() . Layout::getTheme();
+        $theme = \Layout::getThemeDirRoot() . \Layout::getTheme();
         return sprintf('%s/templates/%s/', $theme, $module);
     }
 
@@ -65,7 +65,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public function setCache()
     {
-        if ($this->ignore_cache || !PHPWS_Template::allowSigmaCache()) {
+        if ($this->ignore_cache || !\phpws\PHPWS_Template::allowSigmaCache()) {
             return;
         }
 
@@ -115,7 +115,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
      */
     public static function getTemplateDirectory($module, $directory=NULL)
     {
-        $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
+        $theme_dir  = \phpws\PHPWS_Template::getTplDir($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_DIR, $module, $directory);
 
         if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
@@ -129,7 +129,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     public static function getTemplateHttp($module, $directory=NULL)
     {
-        $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
+        $theme_dir  = \phpws\PHPWS_Template::getTplDir($module) . $directory;
         $module_dir = sprintf('%smod/%s/templates/%s', PHPWS_SOURCE_HTTP, $module, $directory);
         if (FORCE_THEME_TEMPLATES) {
             return $theme_dir;
@@ -143,7 +143,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
      */
     public function listTemplates($module, $directory=NULL)
     {
-        $tpl_dir = PHPWS_Template::getTemplateDirectory($module, $directory);
+        $tpl_dir = \phpws\PHPWS_Template::getTemplateDirectory($module, $directory);
 
         if (!$result = scandir($tpl_dir)) {
             return NULL;
@@ -170,7 +170,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
             $result = $this->loadTemplateFile($file);
             $used_tpl = & $file;
         } else {
-            $theme_tpl    = PHPWS_Template::getTplDir($module) . $file;
+            $theme_tpl    = \phpws\PHPWS_Template::getTplDir($module) . $file;
             $mod_tpl      = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
 
             if (PHPWS_Error::isError($theme_tpl)) {
@@ -231,7 +231,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     {
         if (!is_array($template)) {
             return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core',
-                                    'PHPWS_Template::process',
+                                    '\phpws\PHPWS_Template::process',
                                     'template=' . gettype($template));
             return NULL;
         }
@@ -242,10 +242,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         if ($strict) {
-            $tpl = new PHPWS_Template;
+            $tpl = new \phpws\PHPWS_Template;
             $tpl->setFile($file, true);
         } else {
-            $tpl = new PHPWS_Template($module, $file);
+            $tpl = new \phpws\PHPWS_Template($module, $file);
         }
 
         $tpl->ignore_cache = (bool)$ignore_cache;
@@ -294,9 +294,9 @@ class PHPWS_Template extends HTML_Template_Sigma {
     public static function processTemplate($template, $module, $file, $defaultTpl=true)
     {
         if ($defaultTpl) {
-            return PHPWS_Template::process($template, $module, $file);
+            return \phpws\PHPWS_Template::process($template, $module, $file);
         } else {
-            $tpl = new PHPWS_Template($module);
+            $tpl = new \phpws\PHPWS_Template($module);
             $tpl->setFile($file, true);
             $tpl->setData($template);
             return $tpl->get();

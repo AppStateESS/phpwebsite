@@ -4,7 +4,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
 
 class FC_Multimedia_Manager
 {

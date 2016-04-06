@@ -658,7 +658,7 @@ class Form extends Tag {
     }
 
     /**
-     * Returns an array of input (\Form\Choice or \Form\Input) objects from the
+     * Returns an array of input (Form\Choice or \Form\Input) objects from the
      * Form if it has been previously set.
      *
      * If you expect only one answer then:

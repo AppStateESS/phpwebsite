@@ -9,7 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('signup', 'Signup.php');
+\phpws\PHPWS_Core::initModClass('signup', 'Signup.php');
 $signup = new Signup;
 if (isset($_REQUEST['aop'])) {
     $signup->adminMenu();

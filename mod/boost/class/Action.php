@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-PHPWS_Core::initModClass('boost', 'Boost.php');
+\phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
 
 class Boost_Action {
 

@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::requireConfig('rss');
+\phpws\PHPWS_Core::requireConfig('rss');
 if (!defined('CURRENT_LANGUAGE')) {
     define('CURRENT_LANGUAGE', 'en_US');
 }

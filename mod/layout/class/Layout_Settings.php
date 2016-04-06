@@ -7,7 +7,7 @@
  * @version $Id$
  */
 
-PHPWS_Core::initModClass('layout', 'Box.php');
+\phpws\PHPWS_Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
     public $current_theme    = null;
@@ -180,7 +180,7 @@ class Layout_Settings {
             $this->loadStyleSheets($themeVars);
         } else {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
-            //PHPWS_Core::errorPage();
+            //\phpws\PHPWS_Core::errorPage();
         }
         if (Current_User::isDeity()) {
             $this->deity_reload = true;

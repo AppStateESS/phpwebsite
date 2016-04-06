@@ -433,7 +433,7 @@ class Request extends Data {
      * // prints "Beta"
      * </code>
      *
-     * @return \Request
+     * @return \phpws2\Request
      */
     public function getNextRequest()
     {

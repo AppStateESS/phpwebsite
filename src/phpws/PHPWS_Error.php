@@ -32,7 +32,7 @@ class PHPWS_Error
     {
         static $pear = null;
         if (empty($pear)) {
-            $pear = new PEAR;
+            $pear = new \PEAR;
         }
         return $pear;
     }

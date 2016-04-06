@@ -30,7 +30,7 @@ abstract class Column extends Alias {
      * @param boolean $check_existence If true, check to see if column exists
      *        before creating
      */
-    public function __construct(\Database\Resource $resource, $name, $check_existence = null)
+    public function __construct(\phpws2\Database\Resource $resource, $name, $check_existence = null)
     {
         $check_existance = empty($check_existance) ? DATABASE_CHECK_COLUMNS : $check_existance;
         if (!\Database\DB::allowed($name)) {

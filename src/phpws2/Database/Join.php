@@ -14,7 +14,7 @@ class Join {
     private $conditional;
     private $join_type = 'INNER';
 
-    public function __construct(\Database\Resource $left_resource, \Database\Resource $right_resource, $join_type = null, $conditional = null)
+    public function __construct(\phpws2\Database\Resource $left_resource, \Database\Resource $right_resource, $join_type = null, $conditional = null)
     {
         $this->setLeft($left_resource);
         $this->setRight($right_resource);

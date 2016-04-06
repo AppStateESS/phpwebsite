@@ -54,11 +54,11 @@ if (ERRORS_AS_EXCEPTION) {
 require_once PHPWS_SOURCE_DIR . 'src/phpws2/Implementations.php';
 require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
-PHPWS_Core::checkOverpost();
-PHPWS_Core::setLastPost();
+\phpws\PHPWS_Core::checkOverpost();
+\phpws\PHPWS_Core::setLastPost();
 
 Language::setLocale(Settings::get('Global', 'language'));
-if (!PHPWS_Core::checkBranch()) {
+if (!\phpws\PHPWS_Core::checkBranch()) {
     throw new Exception('Unknown branch called');
 }
 

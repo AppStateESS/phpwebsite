@@ -76,7 +76,7 @@ class pgsql_PHPWS_SQL {
 
     public function renameColumn($table, $column_name, $new_name, $specs)
     {
-        $table = PHPWS_DB::addPrefix($table);
+        $table = \phpws\PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s', $table, $column_name, $new_name);
         return $sql;
     }
@@ -102,7 +102,7 @@ class pgsql_PHPWS_SQL {
         }, $query);
 
         if (preg_match('/id int [\w\s]* primary key[\w\s]*,/iU', $query)) {
-            $tableName = PHPWS_DB::extractTableName($query);
+            $tableName = \phpws\PHPWS_DB::extractTableName($query);
 
             $query = preg_replace('/primary key/i', '', $query);
             $query = preg_replace('/if exists /i', '', $query);
@@ -117,7 +117,7 @@ class pgsql_PHPWS_SQL {
 
     public function dropSequence($table)
     {
-        $table = PHPWS_DB::addPrefix($table);
+        $table = \phpws\PHPWS_DB::addPrefix($table);
         $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP SEQUENCE $table");
         if (PHPWS_Error::isError($result)) {
             return $result;

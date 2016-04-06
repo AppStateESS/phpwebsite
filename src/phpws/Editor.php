@@ -8,7 +8,7 @@ namespace phpws;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::initCoreClass('File.php');
+\phpws\PHPWS_Core::initCoreClass('File.php');
 
 // If true, then force the usage of the selected editor
 if (!defined('FORCE_EDITOR')) {

@@ -10,7 +10,7 @@ namespace phpws2;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-require_once PHPWS_SOURCE_DIR . 'Global/Implementations.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/Implementations.php';
 
 class GlobalModule extends Module implements SettingDefaults {
 

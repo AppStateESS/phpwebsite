@@ -62,7 +62,7 @@ abstract class Constraint {
         }
     }
 
-    protected function checkDatatype(\Database\Datatype $datatype)
+    protected function checkDatatype(\phpws2\Database\Datatype $datatype)
     {
         $type = $datatype->getDatatype();
         if ($type == 'blob' || $type == 'text') {

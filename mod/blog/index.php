@@ -10,7 +10,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 
-PHPWS_Core::initModClass('blog', 'Blog.php');
+\phpws\PHPWS_Core::initModClass('blog', 'Blog.php');
 
 if (isset($_GET['xmlrpc']))
 {

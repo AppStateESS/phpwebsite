@@ -35,14 +35,14 @@ class Activity extends \Resource {
     /**
      * Stamps the current datestamp and ip_address.
      */
-    public static function stampResource(\Resource $resource, $action)
+    public static function stampResource(Resource $resource, $action)
     {
         $activity = new Activity;
         $activity->class_name = $resource->getNamespace();
         $activity->resource_id = $resource->getId();
         $activity->action = $action;
 
-        if (\User\Current::isLoggedIn()) {
+        if (User\Current::isLoggedIn()) {
             $activity->user_id = \User\Current::getUserId();
         }
         try {

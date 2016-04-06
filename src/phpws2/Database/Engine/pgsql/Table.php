@@ -59,7 +59,7 @@ class Table extends \Database\Table
         return $this->db->exec($query);
     }
 
-    public function renameField(\Database\Field $field, $new_name)
+    public function renameField(\phpws2\Database\Field $field, $new_name)
     {
         $update_name = new \Variable\Attribute($new_name, 'update_name');
         $sql[] = 'ALTER TABLE';
@@ -266,7 +266,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      * @param \Database\Datatype $old
      * @param \Database\Datatype $new
      */
-    public function alter(\Database\Datatype $old, \Database\Datatype $new)
+    public function alter(\phpws2\Database\Datatype $old, \Database\Datatype $new)
     {
         $this->alterColumnParameters($new);
         $this->alterNullStatus($old, $new);
@@ -278,7 +278,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      * @param \Database\Datatype $old
      * @param \Database\Datatype $new
      */
-    private function alterNullStatus(\Database\Datatype $old, \Database\Datatype $new)
+    private function alterNullStatus(\phpws2\Database\Datatype $old, \Database\Datatype $new)
     {
         $table_name = $this->getFullName();
         $column_name = $new->getName();
@@ -303,7 +303,7 @@ EOF;
      * @param \Database\Datatype $old
      * @param \Database\Datatype $new
      */
-    private function alterDefaultStatus(\Database\Datatype $old, \Database\Datatype $new)
+    private function alterDefaultStatus(\phpws2\Database\Datatype $old, \Database\Datatype $new)
     {
         $old_default = $old->getDefault();
         $new_default = $new->getDefault();
@@ -321,7 +321,7 @@ EOF;
         }
     }
 
-    private function alterColumnParameters(\Database\Datatype $new)
+    private function alterColumnParameters(\phpws2\Database\Datatype $new)
     {
         $table_name = $this->getFullName();
         $column_name = $new->getName();

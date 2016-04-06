@@ -5,7 +5,7 @@
  */
 
 // Destroy unused sessions
-if (PHPWS_Core::getCurrentModule() != 'users'){
+if (\phpws\PHPWS_Core::getCurrentModule() != 'users'){
     \phpws\PHPWS_Core::killSession('Member_Pager');
     \phpws\PHPWS_Core::killSession('All_Demo');
     \phpws\PHPWS_Core::killSession('User_Manager');

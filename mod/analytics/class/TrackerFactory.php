@@ -5,7 +5,7 @@
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
-PHPWS_Core::initModClass('analytics', 'Tracker.php');
+\phpws\PHPWS_Core::initModClass('analytics', 'Tracker.php');
 
 class TrackerFactory
 {

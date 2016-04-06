@@ -21,7 +21,7 @@ class ResourceFactory
      * @throws \Exception
      * @return boolean True if found, false if not.
      */
-    public static function loadByID(\Resource $resource, $id = null, $table_name = null)
+    public static function loadByID(Resource $resource, $id = null, $table_name = null)
     {
         if (empty($table_name)) {
             $table_name = $resource->getTable();
@@ -49,7 +49,7 @@ class ResourceFactory
      * @param \Resource $resource
      * @param string $table_name
      */
-    public static function saveResource(\Resource $resource, $table_name = null)
+    public static function saveResource(Resource $resource, $table_name = null)
     {
         if (empty($table_name)) {
             $table_name = $resource->getTable();
@@ -89,7 +89,7 @@ class ResourceFactory
      * @return integer
      * @throws \Exception
      */
-    private static function pullId(\Resource $resource)
+    private static function pullId(Resource $resource)
     {
         $id = $resource->getId();
         if (empty($id)) {
@@ -104,7 +104,7 @@ class ResourceFactory
      * @param string $table_name Not required if in Resource->table
      * @return integer Number of rows deleted.
      */
-    public static function deleteResource(\Resource $resource, $table_name = null)
+    public static function deleteResource(Resource $resource, $table_name = null)
     {
         if (empty($table_name)) {
             $table_name = $resource->getTable();
@@ -115,7 +115,7 @@ class ResourceFactory
         return $db->delete();
     }
 
-    public static function getAsJSON(\Resource $resource)
+    public static function getAsJSON(Resource $resource)
     {
         $vars = $resource->getStringVars();
         return json_encode($vars);

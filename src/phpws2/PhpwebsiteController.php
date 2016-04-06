@@ -29,7 +29,7 @@ class PhpwebsiteController implements Controller
      */
     private $current_module;
 
-    public function execute(\Request $request)
+    public function execute(Request $request)
     {
         try {
             /**
@@ -42,7 +42,7 @@ class PhpwebsiteController implements Controller
             /**
              * Moved from Bootstrap, eventually to be deprecated
              */
-            if (!PHPWS_Core::checkBranch()) {
+            if (!\phpws\PHPWS_Core::checkBranch()) {
                 throw new Exception('Unknown branch called');
             }
 
@@ -70,7 +70,7 @@ class PhpwebsiteController implements Controller
         \phpws\PHPWS_Core::pushUrlHistory();
     }
 
-    protected function determineCurrentModule(\Request $request)
+    protected function determineCurrentModule(\phpws2\Request $request)
     {
         // Try the Old Fashioned Way first
         if ($request->isVar('module')) {
@@ -108,7 +108,7 @@ class PhpwebsiteController implements Controller
         return $module;
     }
 
-    private function renderResponse(\Request $request, \Response $response)
+    private function renderResponse(\phpws2\Request $request, \phpws2\Response $response)
     {
         // Temporary until proper error pages are fully implemented
         // @todo customizable, editable error pages that don't dump a bunch of
@@ -160,21 +160,21 @@ class PhpwebsiteController implements Controller
         }
     }
 
-    private function beforeRun(\Request $request, \Controller $controller)
+    private function beforeRun(\phpws2\Request $request, \phpws2\Controller $controller)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->beforeRun($request, $controller);
         }
     }
 
-    private function runTime(\Request $request)
+    private function runTime(\phpws2\Request $request)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->runTime($request);
         }
     }
 
-    private function afterRun(\Request $request, \Response &$response)
+    private function afterRun(\phpws2\Request $request, \phpws2\Response &$response)
     {
         foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->afterRun($request, $response);

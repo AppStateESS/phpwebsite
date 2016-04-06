@@ -9,8 +9,8 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::initModClass('filecabinet', 'Folder.php');
-PHPWS_Core::requireConfig('filecabinet');
+\phpws\PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+\phpws\PHPWS_Core::requireConfig('filecabinet');
 
 class Cabinet
 {

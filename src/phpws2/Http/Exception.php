@@ -11,7 +11,7 @@ abstract class Exception extends \Exception
 {
     private $response;
 
-    public final function __construct(\Request $request = null, Exception $previous = null)
+    public final function __construct(\phpws2\Request $request = null, Exception $previous = null)
     {
         if(is_null($request)) {
             $request = \Server::getCurrentRequest();
@@ -23,7 +23,7 @@ abstract class Exception extends \Exception
         parent::__construct($response->getPhrase(), $response->getCode(), $previous);
     }
 
-    protected abstract function createResponse(\Request $request, \Exception $previous = null);
+    protected abstract function createResponse(\phpws2\Request $request, \Exception $previous = null);
 
     public function getResponse()
     {

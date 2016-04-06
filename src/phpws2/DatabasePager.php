@@ -28,7 +28,7 @@ class DatabasePager extends Pager {
      */
     protected $show_query = false;
 
-    public function __construct(\Database\DB $db)
+    public function __construct(\phpws2\Database\DB $db)
     {
         $this->db = $db;
         parent::__construct();

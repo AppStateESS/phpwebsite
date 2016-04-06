@@ -57,7 +57,7 @@ class JS {
         }
     }
 
-    public function isScriptIncluded(\JS\Script $script)
+    public function isScriptIncluded(JS\Script $script)
     {
         if (empty($this->hashes)) {
             return false;
@@ -71,7 +71,7 @@ class JS {
      * @param \Javascript\Script $script
      * @return void
      */
-    public function addScript(\JS\Script $script)
+    public function addScript(JS\Script $script)
     {
         if ($this->isScriptIncluded($script)) {
             return;

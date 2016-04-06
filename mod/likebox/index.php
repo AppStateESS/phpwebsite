@@ -29,8 +29,8 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 // Include some things we're probably going to always need
-PHPWS_Core::initModClass('likebox', 'LikeboxSettings.php');
-PHPWS_Core::initModClass('likebox', 'SettingsView.php');
+\phpws\PHPWS_Core::initModClass('likebox', 'LikeboxSettings.php');
+\phpws\PHPWS_Core::initModClass('likebox', 'SettingsView.php');
 
 
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'SaveSettings'){

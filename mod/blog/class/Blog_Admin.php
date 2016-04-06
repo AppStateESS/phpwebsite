@@ -7,7 +7,7 @@
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-PHPWS_Core::initModClass('blog', 'Blog_Form.php');
+\phpws\PHPWS_Core::initModClass('blog', 'Blog_Form.php');
 if (!defined('MAX_BLOG_CACHE_PAGES')) {
     define('MAX_BLOG_CACHE_PAGES', 3);
 }
