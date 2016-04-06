@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Cookie.php';
+class PHPWS_Cookie extends \phpws\PHPWS_Cookie{}

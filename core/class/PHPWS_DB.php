@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_DB.php';
+class PHPWS_DB extends \phpws\PHPWS_DB{}

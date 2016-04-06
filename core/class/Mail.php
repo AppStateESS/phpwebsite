@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/Mail.php';
+class Mail extends \phpws\Mail{}

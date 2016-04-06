@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Form.php';
+class PHPWS_Form extends \phpws\PHPWS_Form{}

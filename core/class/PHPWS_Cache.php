@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Cache.php';
+class PHPWS_Cache extends \phpws\PHPWS_Cache{}
