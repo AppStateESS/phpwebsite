@@ -56,7 +56,7 @@ abstract class Constraint {
     protected function check($datatype)
     {
         if (is_array($datatype)) {
-            $this->checkDatatyPEAR::ray($datatype);
+            $this->checkDatatypeArray($datatype);
         } else {
             $this->checkDatatype($datatype);
         }
@@ -96,7 +96,7 @@ abstract class Constraint {
      * @param array $datatypes
      * @throws \Exception
      */
-    protected function checkDatatyPEAR::ray(Array $datatypes)
+    protected function checkDatatypeArray(Array $datatypes)
     {
         foreach ($datatypes as $dt) {
             $this->checkDatatype($dt);
