@@ -15,4 +15,3 @@ namespace phpws2\Database\Engine\mysql\Datatype;
  */
 class Datetime extends \phpws2\Database\Datatype\Date {}
 
-?>

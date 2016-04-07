@@ -21,5 +21,3 @@ function menu_install(&$content)
         return true;
     }
 }
-
-?>

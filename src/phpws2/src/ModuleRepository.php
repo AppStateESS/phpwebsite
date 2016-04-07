@@ -145,5 +145,3 @@ final class ModuleRepository
         return false;
     }
 }
-
-?>
