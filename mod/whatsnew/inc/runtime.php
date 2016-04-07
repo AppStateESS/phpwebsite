@@ -27,5 +27,3 @@
 if (PHPWS_Settings::get('whatsnew', 'enable')) {
     Whatsnew::showBlock();
 }
-
-?>

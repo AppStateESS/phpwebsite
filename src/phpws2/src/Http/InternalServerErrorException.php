@@ -14,5 +14,3 @@ class InternalServerErrorException extends \Exception
         return new InternalServerErrorResponse($request, $previous);
     }
 }
-
-?>

@@ -12,5 +12,3 @@ function pagesmith_uninstall(&$content)
     $content[] = 'Tables removed.';
     return TRUE;
 }
-
-?>

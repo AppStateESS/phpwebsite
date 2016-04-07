@@ -10,5 +10,3 @@ $item_permissions = false;
 $permissions['assign_visitors'] = dgettext('checkin', 'Assign visitors');
 $permissions['remove_visitors'] = dgettext('checkin', 'Remove visitors');
 $permissions['settings']        = dgettext('checkin', 'Settings');
-
-?>

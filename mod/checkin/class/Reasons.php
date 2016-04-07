@@ -64,5 +64,3 @@ class Checkin_Reasons {
         return !PHPWS_Error::logIfError($db->saveObject($this));
     }
 }
-
-?>

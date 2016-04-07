@@ -91,5 +91,3 @@ class Accept
         return new AcceptIterator($this->mediaRanges);
     }
 }
-
-?>

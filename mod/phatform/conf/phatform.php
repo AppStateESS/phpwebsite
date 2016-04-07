@@ -59,5 +59,3 @@ define('PHAT_MAIL_CONTENT_TYPE', 'text/html');
 if (!defined('PHATFORM_CAPTCHA')) {
     define('PHATFORM_CAPTCHA', true);
 }
-
-?>

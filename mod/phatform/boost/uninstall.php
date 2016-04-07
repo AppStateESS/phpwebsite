@@ -41,5 +41,3 @@ function phatform_uninstall(&$content) {
 
     return TRUE;
 }
-
-?>

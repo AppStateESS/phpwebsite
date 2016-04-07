@@ -1061,5 +1061,3 @@ class Property extends Room_Base {
     }
 
 }
-
-?>

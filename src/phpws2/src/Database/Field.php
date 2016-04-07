@@ -168,5 +168,3 @@ class Field extends Column {
     }
 
 }
-
-?>

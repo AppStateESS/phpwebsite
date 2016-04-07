@@ -5,5 +5,3 @@
  */
 
 $data['message'] = _('Please fill out the field:') . ' ';
-
-?>

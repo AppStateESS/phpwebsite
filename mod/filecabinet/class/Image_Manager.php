@@ -336,5 +336,3 @@ class FC_Image_Manager
     }
 
 }
-
-?>

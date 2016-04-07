@@ -54,4 +54,3 @@ function javascriptMod($module, $directory, $data = null, $wrap_header = false, 
     return Layout::getJavascript($directory, $data, $root_directory, $wrap_header, $wrap_body);
 }
 
-?>

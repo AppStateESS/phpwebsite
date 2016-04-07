@@ -60,5 +60,3 @@ class Hidden extends \phpws2\Form\Input {
     }
 
 }
-
-?>

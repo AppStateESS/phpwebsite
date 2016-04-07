@@ -14,4 +14,4 @@ $import_sql   = FALSE;
 $about        = TRUE;
 $priority     = 10;
 $dependency   = TRUE;
-?>
+

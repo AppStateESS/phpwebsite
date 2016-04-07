@@ -528,4 +528,3 @@ class Users_Permission {
 
 }
 
-?>

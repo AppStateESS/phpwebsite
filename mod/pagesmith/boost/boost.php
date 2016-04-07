@@ -11,4 +11,4 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/pagesmith/chec
 $about        = true;
 $priority     = 50;
 $dependency   = true;
-?>
+

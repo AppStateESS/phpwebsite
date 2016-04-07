@@ -361,4 +361,3 @@ class PHPWS_Calendar {
 
 }
 
-?>

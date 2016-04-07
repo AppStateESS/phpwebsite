@@ -8,5 +8,3 @@
 
 \phpws\PHPWS_Core::requireConfig('menu', 'config.php');
 \phpws\PHPWS_Core::initModClass('menu', 'Menu.php');
-
-?>

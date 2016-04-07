@@ -179,5 +179,3 @@ function cpFileUpdate($files, &$content)
     }
     $content[] = '    ' . implode("\n    ", $files);
 }
-
-?>

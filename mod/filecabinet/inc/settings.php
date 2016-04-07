@@ -32,4 +32,3 @@ $settings = array('base_doc_directory' => PHPWS_HOME_DIR . 'files/filecabinet/',
     'allow_direct_links' => 0,
     'autofloat' => 1
 );
-?>

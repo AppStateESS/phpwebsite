@@ -24,4 +24,3 @@ function pagesmith_install(&$content)
 	$section->save($page->key_id);
 	return true;
 }
-?>

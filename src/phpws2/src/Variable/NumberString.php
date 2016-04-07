@@ -14,4 +14,3 @@ class NumberString extends \Variable\String
 
 }
 
-?>

@@ -187,5 +187,3 @@ function moveBlockImages()
         $block->save();
     }
 }
-
-?>

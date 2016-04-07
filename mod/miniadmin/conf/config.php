@@ -7,4 +7,3 @@
 
 define('MINIADMIN_TEMPLATE', 'mini_admin.html');
 
-?>

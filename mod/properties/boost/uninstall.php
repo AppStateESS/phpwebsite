@@ -32,6 +32,3 @@ function properties_uninstall(&$content)
     $content[] = 'Properties tables removed.';
     return TRUE;
 }
-
-
-?>

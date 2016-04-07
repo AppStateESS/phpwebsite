@@ -44,5 +44,3 @@ define('SMTP_AUTH',    FALSE);
 define('SMTP_USER',    'username');
 define('SMTP_PASS',    'password');
 define('SMTP_PERSIST', TRUE);
-
-?>

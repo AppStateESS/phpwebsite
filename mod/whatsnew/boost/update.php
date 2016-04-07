@@ -121,5 +121,3 @@ function whatsnewUpdateFiles($files, &$content)
     }
     $content[] = "    " . implode("\n    ", $files);
 }
-
-?>

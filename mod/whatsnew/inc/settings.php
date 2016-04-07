@@ -32,5 +32,3 @@ $settings['show_summaries']         = 0;
 $settings['show_dates']             = 0;
 $settings['show_source_modules']    = 0;
 $settings['exclude']                = serialize(array('filecabinet'));
-
-?>

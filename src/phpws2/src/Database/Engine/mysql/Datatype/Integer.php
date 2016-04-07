@@ -155,4 +155,3 @@ class Integer extends \phpws2\Database\Datatype {
 
 }
 
-?>

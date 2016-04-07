@@ -25,5 +25,3 @@ $settings['roommate_only'] = 0;
 $settings['new_user_signup'] = 1;
 $settings['email'] = null;
 $settings['approver_email'] = null;
-
-?>

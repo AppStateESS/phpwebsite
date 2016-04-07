@@ -8,4 +8,4 @@ define('QR_IMAGE_HTTP', PHPWS_HOME_HTTP . 'images/qr/');
 
 // L, M, Q, H (low, medium, etc.)
 define('QR_ERROR_CORRECTION_LEVEL', 'L');
-?>
+

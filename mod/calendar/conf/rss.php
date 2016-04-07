@@ -10,4 +10,3 @@
 $channel['title'] = 'Events';
 $channel['description'] = 'Events of note at this site.';
 
-?>

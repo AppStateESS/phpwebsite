@@ -37,7 +37,4 @@ define('RECAPTCHA_PRIVATE_KEY', '');
  * See: http://recaptcha.net/apidocs/captcha/client.html for information
  * custom theming.
  */
-define('RECAPTCHA_THEME',		'clean');
-
-
-?>
+define('RECAPTCHA_THEME', 'clean');

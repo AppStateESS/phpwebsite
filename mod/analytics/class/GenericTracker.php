@@ -56,4 +56,3 @@ class GenericTracker extends Tracker
     }
 }
 
-?>

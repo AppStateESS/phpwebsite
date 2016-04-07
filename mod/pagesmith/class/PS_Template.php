@@ -120,5 +120,3 @@ class PS_Template {
         $this->thumbnail, $this->title);
     }
 }
-
-?>

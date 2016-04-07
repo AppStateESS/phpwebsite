@@ -12,5 +12,3 @@ function block_view($block_id) {
     $template['BLOCK'] = $block->view(FALSE, FALSE);
     return PHPWS_Template::process($template, 'block', 'embedded.tpl');
 }
-
-?>

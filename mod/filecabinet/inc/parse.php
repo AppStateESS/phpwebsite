@@ -40,5 +40,3 @@ function filecabinet_document($file_type=null, $file_id=null)
         return $multimedia->getTag();
     }
 }
-
-?>

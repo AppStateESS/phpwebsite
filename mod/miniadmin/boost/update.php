@@ -105,4 +105,3 @@ function miniadminUpdateFiles($files, &$content)
     $content[] = '';
 }
 
-?>

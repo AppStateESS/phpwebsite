@@ -15,4 +15,4 @@ $settings = array('default_authorization' => 1,
     'show_login' => 1,
     'session_warning' => 0
 );
-?>
+

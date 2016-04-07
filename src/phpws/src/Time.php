@@ -10,5 +10,3 @@ namespace phpws;
  */
 
 class Time extends PHPWS_Time{}
-
-?>

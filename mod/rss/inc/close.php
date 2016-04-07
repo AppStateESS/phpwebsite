@@ -11,5 +11,3 @@ if (empty($key) || $key->isDummy() || $key->restricted) {
 
 \phpws\PHPWS_Core::initModClass('rss', 'RSS.php');
 RSS::showIcon($key);
-
-?>

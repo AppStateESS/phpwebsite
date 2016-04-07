@@ -36,5 +36,3 @@ define('LAYOUT_CHECK_COOKIE', false);
  * assumes the user has it activated.
  */
 define('LAYOUT_IGNORE_JS_CHECK', false);
-
-?>

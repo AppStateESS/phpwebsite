@@ -24,4 +24,3 @@ class Color extends String {
         return $input;
     }
 }
-?>

@@ -784,4 +784,4 @@ EOF;
 }
 
 // End of core class
-?>
+

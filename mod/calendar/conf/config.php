@@ -61,4 +61,3 @@ define('CALENDAR_SAME_DAY_MDY', true);
  * Date format for upcoming events window
  */
 define('CALENDAR_UPCOMING_FORMAT', '%A, %e %b');
-?>

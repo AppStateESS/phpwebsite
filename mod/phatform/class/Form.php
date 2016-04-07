@@ -1831,5 +1831,3 @@ class PHAT_Form extends PHPWS_Item {
     }// END FUNC action()
 
 }// END CLASS PHAT_Form
-
-?>

@@ -14,5 +14,3 @@ class NotFoundResponse extends ErrorResponse
         return 404;
     }
 }
-
-?>

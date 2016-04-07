@@ -18,5 +18,3 @@ function search_unregister_key(Key $key)
     $db->addWhere('key_id', (int)$key->id);
     return $db->delete();
 }
-
-?>

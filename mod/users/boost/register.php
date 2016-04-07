@@ -46,4 +46,3 @@ function users_register($module, &$content)
     }
 }
 
-?>

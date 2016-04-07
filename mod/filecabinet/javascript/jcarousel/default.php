@@ -20,5 +20,3 @@
  */
 
 javascript('lightbox');
-
-?>

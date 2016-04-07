@@ -226,5 +226,3 @@ class PHPWS_Panel_Tab {
     }
 
 }
-
-?>

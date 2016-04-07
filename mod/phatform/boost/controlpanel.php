@@ -12,5 +12,3 @@ $link[] = array ('label'       => 'Form Generator',
 		 'image'       => 'phatform.png',
 		 'description' => 'Creates online forms. Email, CSV reporting available.',
 		 'tab'         => 'content');
-
-?>

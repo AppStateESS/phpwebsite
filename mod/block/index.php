@@ -17,5 +17,3 @@ if (!Current_User::authorized('block')) {
 
 \phpws\PHPWS_Core::initModClass('block', 'Block_Admin.php');
 Block_Admin::action();
-
-?>

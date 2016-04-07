@@ -8,4 +8,3 @@ namespace phpws;
  */
 require_once PHPWS_SOURCE_DIR . 'src/phpws/src/File.php';
 
-?>

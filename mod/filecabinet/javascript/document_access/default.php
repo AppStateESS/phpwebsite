@@ -5,4 +5,4 @@
 
 javascript('jquery_ui');
 $data['auth'] = Current_User::getAuthKey();
-?>
+

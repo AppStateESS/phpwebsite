@@ -19,4 +19,4 @@ if (Current_User::allow('pagesmith', 'edit_page')) {
                                 'Edit current page'), 'pagesmith', $vars));
     }
 }
-?>
+

@@ -19,4 +19,3 @@ namespace phpws2\Database\Engine\mysql\Datatype;
 
 class Longtext extends \phpws2\Database\Datatype\Text {}
 
-?>

@@ -30,5 +30,3 @@ $link[] = array(
         'image'         => 'whatsnew.png',
         'tab'           => 'content'
         );
-
-?>

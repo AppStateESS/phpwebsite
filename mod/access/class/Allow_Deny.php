@@ -120,5 +120,3 @@ class Access_Allow_Deny {
     }
 
 }
-
-?>

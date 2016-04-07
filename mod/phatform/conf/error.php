@@ -31,6 +31,3 @@ PHATFORM_ELEMENT_NOT_OBJ       => dgettext('phatform', 'Form element is not an o
 PHATFORM_ARCHIVE_PATH          => dgettext('phatform', 'The archive path is not web server writable.'),
 PHATFORM_EXPORT_PATH           => dgettext('phatform', 'The export path is not web server writable.')
 );
-
-
-?>

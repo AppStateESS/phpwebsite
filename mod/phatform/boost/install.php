@@ -25,5 +25,3 @@ function phatform_install(&$content)
     copy(PHPWS_SOURCE_DIR . 'mod/phatform/boost/htaccess', PHPWS_HOME_DIR . 'files/phatform/.htaccess');
     return true;
 }
-
-?>

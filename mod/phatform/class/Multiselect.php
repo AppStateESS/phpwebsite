@@ -203,4 +203,3 @@ class PHAT_Multiselect extends PHAT_Element {
 }
 
 // END CLASS PHAT_Multiselect
-?>

@@ -510,4 +510,3 @@ class Signup_Forms {
 
 }
 
-?>

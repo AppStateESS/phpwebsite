@@ -27,4 +27,3 @@ function propertiesLoginLink()
     }
     return $login;
 }
-?>

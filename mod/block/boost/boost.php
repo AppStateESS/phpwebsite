@@ -14,4 +14,3 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/block/check.xm
 $about        = true;
 $priority     = 50;
 $dependency   = true;
-?>

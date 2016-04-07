@@ -14,5 +14,3 @@ class MethodNotAllowedException extends \Exception
         return new MethodNotAllowedResponse($request, $previous);
     }
 }
-
-?>

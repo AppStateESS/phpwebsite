@@ -29,4 +29,4 @@ if (Current_User::isLogged()) {
         MiniAdmin::add('qr', '<a data-toggle="modal" data-target="#qr-modal" class="pointer">Show QR codes</a>');
     }
 }
-?>
+

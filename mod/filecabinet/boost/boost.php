@@ -15,4 +15,3 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/filecabinet/ch
 $about        = true;
 $priority     = 50;
 $dependency   = true;
-?>

@@ -267,5 +267,3 @@ class String extends \Variable
     }
 
 }
-
-?>

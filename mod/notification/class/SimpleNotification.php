@@ -30,5 +30,3 @@ class SimpleNotification extends Notification
         return $this->content;
     }
 }
-
-?>

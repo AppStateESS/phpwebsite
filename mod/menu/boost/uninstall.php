@@ -17,4 +17,4 @@ function menu_uninstall(&$content)
 
     return TRUE;
 }
-?>
+

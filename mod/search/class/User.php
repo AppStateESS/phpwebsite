@@ -307,5 +307,3 @@ class Search_User {
 
 
 }
-
-?>

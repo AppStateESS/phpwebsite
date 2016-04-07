@@ -5,5 +5,3 @@
  */
 
 $use_permissions = true;
-
-?>

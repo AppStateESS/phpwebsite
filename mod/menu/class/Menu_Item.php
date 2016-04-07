@@ -526,4 +526,3 @@ class Menu_Item {
 
 }
 
-?>

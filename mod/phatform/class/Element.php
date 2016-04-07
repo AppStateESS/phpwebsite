@@ -618,4 +618,3 @@ class PHAT_Element extends PHPWS_Item {
         return $content;
     } // END FUNC remove
 } // END CLASS PHAT_Element
-?>

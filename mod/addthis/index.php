@@ -59,4 +59,3 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'ShowSettings') {
     \Layout::add(\PHPWS_ControlPanel::display($settingsView->show()));
 }
 
-?>

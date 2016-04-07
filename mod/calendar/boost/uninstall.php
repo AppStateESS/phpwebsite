@@ -71,5 +71,3 @@ function calendar_uninstall(&$content)
     }
     return true;
 }
-
-?>

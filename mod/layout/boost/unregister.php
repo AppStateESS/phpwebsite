@@ -30,4 +30,3 @@ function layout_unregister($module, &$content){
     unset($_SESSION['Layout_Settings']->_boxes[$module]);
 }
 
-?>

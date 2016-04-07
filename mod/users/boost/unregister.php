@@ -29,6 +29,3 @@ function users_unregister($module, &$content){
 
     return TRUE;
 }
-
-
-?>
