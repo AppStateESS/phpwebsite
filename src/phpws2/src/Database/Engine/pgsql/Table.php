@@ -204,7 +204,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      * Returns true is current table has a sequence schema
      * @return boolean
      */
-    public function hasPEAR::SequenceTable()
+    public function hasPearSequenceTable()
     {
         $sequence_table = $this->getFullName(false) . '_seq';
         $q = DB::$PDO->query("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S' AND c.relname = '$sequence_table'");
@@ -212,9 +212,9 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         return (bool) $result;
     }
 
-    public function getLastPEAR::Sequence()
+    public function getLastPearSequence()
     {
-        $seq_table = $this->getPEAR::SequenceName();
+        $seq_table = $this->getPearSequenceName();
         $result = DB::$PDO->query("select nextval('$seq_table')");
         return $result->fetchColumn();
     }
@@ -224,8 +224,8 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      */
     public function serializePrimaryKey()
     {
-        if (!$this->hasPEAR::SequenceTable()) {
-            throw new \Exception('There is not a \PEAR::DB sequence for this table');
+        if (!$this->hasPearSequenceTable()) {
+            throw new \Exception('There is not a PEAR::DB sequence for this table');
         }
 
         $table_name = $this->getFullName();

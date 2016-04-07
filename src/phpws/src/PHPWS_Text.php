@@ -661,7 +661,7 @@ class PHPWS_Text
 // END FUNC checkLink()
 
     /**
-     * Returns true if the text apPEAR::s to have unslashed quotes or apostrophes
+     * Returns true if the text appears to have unslashed quotes or apostrophes
      *
      * @author Matthew McNaney <mcnaney at gmail dot com>
      * @param  string  $text Text to be checked for unslashed quotes or apostrophes

@@ -186,7 +186,7 @@ class PHPWS_Item {
      * object which called this function to the table specified via the $this->_table
      * variable.  The column names in the table must coorespond to the variable
      * names in this object and the object which called this function.  Any variable
-     * that apPEAR::s which does not have a cooresponding column in the database will
+     * that appears which does not have a cooresponding column in the database will
      * be ignored. Underscores preceding private variables in the object will be
      * removed before interpreting the column name.
      *

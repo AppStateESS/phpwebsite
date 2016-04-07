@@ -100,7 +100,7 @@ class Text extends \phpws2\Form\Input {
 
     /**
      * Sets the autocomplete parameter to on or off depending on the parameter
-     * sent. NULL will prevent the parameter from apPEAR::ing on the input.
+     * sent. NULL will prevent the parameter from appearing on the input.
      * @param boolean $ac
      * @return \phpws2\Form\Input\Text Returns current object
      */
