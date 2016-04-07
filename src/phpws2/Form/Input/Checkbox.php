@@ -9,7 +9,7 @@ namespace phpws2\Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Checkbox extends \Form\Input {
+class Checkbox extends \phpws2\Form\Input {
 
     /**
      * Default label location is after the checkbox input

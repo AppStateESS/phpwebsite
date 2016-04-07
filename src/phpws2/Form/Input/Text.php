@@ -9,7 +9,7 @@ namespace phpws2\Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Text extends \Form\Input {
+class Text extends \phpws2\Form\Input {
 
     /**
      * The character size of the text field
@@ -67,7 +67,7 @@ class Text extends \Form\Input {
      * Sets the size and maxsize parameter the text input
      * @param integer $size
      * @param integer $maxlength
-     * @return \Form\Input\Text Returns current object
+     * @return \phpws2\Form\Input\Text Returns current object
      */
     public function setSize($size, $maxlength = null)
     {
@@ -80,7 +80,7 @@ class Text extends \Form\Input {
 
     /**
      * @param integer $maxlength
-     * @return \Form\Input\Text Returns current object
+     * @return \phpws2\Form\Input\Text Returns current object
      */
     public function setMaxLength($maxlength)
     {
@@ -90,7 +90,7 @@ class Text extends \Form\Input {
 
     /**
      * @param integer $minlength
-     * @return \Form\Input\Text Returns current object
+     * @return \phpws2\Form\Input\Text Returns current object
      */
     public function setMinLength($minlength)
     {
@@ -100,9 +100,9 @@ class Text extends \Form\Input {
 
     /**
      * Sets the autocomplete parameter to on or off depending on the parameter
-     * sent. NULL will prevent the parameter from appearing on the input.
+     * sent. NULL will prevent the parameter from apPEAR::ing on the input.
      * @param boolean $ac
-     * @return \Form\Input\Text Returns current object
+     * @return \phpws2\Form\Input\Text Returns current object
      */
     public function setAutocomplete($ac = null)
     {
@@ -120,7 +120,7 @@ class Text extends \Form\Input {
      * Sets a text fields placeholder text.
      * @see Form\Input\Text::$placeholder
      * @param string $placeholder
-     * @return \Form\Input\Text Returns current object
+     * @return \phpws2\Form\Input\Text Returns current object
      */
     public function setPlaceholder($placeholder)
     {

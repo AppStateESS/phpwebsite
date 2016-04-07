@@ -50,7 +50,7 @@ class Field extends Column {
     protected $show_distinct = false;
     /**
      *
-     * @param \Database\Resource $resource
+     * @param \phpws2\Database\Resource $resource
      * @param string $name
      * @param string $alias
      * @param boolean $check_existance Sends boolean argument to Column constructor
@@ -80,7 +80,7 @@ class Field extends Column {
     }
 
     /**
-     * @see \Database\Field::$show_in_select
+     * @see \phpws2\Database\Field::$show_in_select
      * @param bool $show
      * @return boolean
      */

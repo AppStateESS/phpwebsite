@@ -17,7 +17,7 @@ namespace phpws2\Database\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Text extends \Database\Datatype {
+class Text extends \phpws2\Database\Datatype {
 
     /**
      * Text does not allow defaults.

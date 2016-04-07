@@ -16,7 +16,7 @@ abstract class Resource extends Alias
 {
     /**
      * Database object related to this object
-     * @var \Database\DB
+     * @var \phpws2\Database\DB
      * @access public
      */
     public $db = null;
@@ -69,7 +69,7 @@ abstract class Resource extends Alias
     }
 
     /**
-     * @see \Database\Resource::$joined
+     * @see \phpws2\Database\Resource::$joined
      * @param boolean $joined
      */
     public function setJoined($joined)
@@ -87,7 +87,7 @@ abstract class Resource extends Alias
      */
     public function addOrderBy($column, $direction = 'ASC')
     {
-        if (!($column instanceof \Database\Field) && is_string($column)) {
+        if (!($column instanceof \phpws2\Database\Field) && is_string($column)) {
             $column = $this->getField($column);
         }
 
@@ -163,10 +163,10 @@ abstract class Resource extends Alias
      * Adds a having conditional to the resource. Using having when comparing
      * aggregates (sum, avg, max, etc.).
      * @staticvar int $stack_number
-     * @param \Database\Column $column Column to compare
+     * @param \phpws2\Database\Column $column Column to compare
      * @param string $value Value to compare against
      * @param string $operator Comparison operator (=, >, !=)
-     * @return \Database\Conditional
+     * @return \phpws2\Database\Conditional
      */
     public function addHaving($column, $value, $operator = null)
     {
@@ -245,7 +245,7 @@ abstract class Resource extends Alias
      * @param mixed $column_name    If not a Field object, then the name of the column in the table or Expression
      * @param string           $alias          An alias to be used within the query for this field.
      * @param boolean          $show_in_select If true, show in a select query. False, otherwise.
-     * @return \Database\Field
+     * @return \phpws2\Database\Field
      */
     public function addField($column_name, $alias = null, $show_in_select = true)
     {
@@ -294,7 +294,7 @@ abstract class Resource extends Alias
      * @param string $field_name Column to compare against
      * @param string $value Value to compare column against
      * @param string $operator If NULL, is set to equal (=)
-     * @return \Database\Conditional
+     * @return \phpws2\Database\Conditional
      */
     public function getFieldConditional($field_name, $value, $operator = null)
     {
@@ -317,7 +317,7 @@ abstract class Resource extends Alias
      * that addConditional ONLY USES "AND" COMPARISONS. This is just a shortcut.
      * More intricate conditionals should not use this method.
      *
-     * @see \Database\Table::getFieldConditional
+     * @see \phpws2\Database\Table::getFieldConditional
      * @param string $field_name
      * @param string $value
      * @param string $operator

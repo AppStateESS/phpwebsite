@@ -22,7 +22,7 @@ abstract class Base extends \Tag {
     /**
      * The label tag associated with this input. Should contain information
      * as to the function of the input or its title.
-     * @var \Form\Label
+     * @var \phpws2\Form\Label
      */
     private $label = null;
 
@@ -227,7 +227,7 @@ abstract class Base extends \Tag {
     /**
      * Sets the field as required before form submission.
      * @param boolean $required
-     * @return \Form\Base
+     * @return \phpws2\Form\Base
      */
     public function setRequired($required = true)
     {

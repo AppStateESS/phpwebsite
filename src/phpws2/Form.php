@@ -174,7 +174,7 @@ class Form extends Tag {
      * @param string $type
      * @param string $name
      * @param array $value
-     * @return \Form\Choice
+     * @return \phpws2\Form\Choice
      * @throws \Exception
      */
     public function addChoice($type, $name, $value = null)
@@ -199,18 +199,18 @@ class Form extends Tag {
 
     /**
      * Adds a Select object to the form input queue.
-     * @see \Form\Choice\Select
+     * @see \phpws2\Form\Choice\Select
      * @param string $name Name of select input
      * @param array $value Associate array of values; key as value, value as output
      * @param string $label Label associated to input
-     * @return \Form\Choice\Select
+     * @return \phpws2\Form\Choice\Select
      */
     public function addSelect($name, array $value = null, $label = null)
     {
         if (preg_match('/[^\w\-\[\]]/', $name)) {
             throw new \Exception(t('Improperly formatted input name'));
         }
-        $select = new \Form\Choice\Select($name, $value);
+        $select = new \phpws2\Form\Choice\Select($name, $value);
         if (!empty($label)) {
             $select->setLabel($label);
         }
@@ -220,18 +220,18 @@ class Form extends Tag {
 
     /**
      * Creates a multiple choice select input and adds it to form object.
-     * @see \Form\Choice\Select
+     * @see \phpws2\Form\Choice\Select
      * @param string $name Name of select input
      * @param array $value Associate array of values; key as value, value as output
      * @param string $label  Label associated to input
-     * @return \Form\Choice\Multiple
+     * @return \phpws2\Form\Choice\Multiple
      */
     public function addMultiple($name, array $value = null, $label = null)
     {
         if (preg_match('/[^\w\-\[\]]/', $name)) {
             throw new \Exception(t('Improperly formatted input name'));
         }
-        $multiple = new \Form\Choice\Multiple($name, $value);
+        $multiple = new \phpws2\Form\Choice\Multiple($name, $value);
         if (!empty($label)) {
             $multiple->setLabel($label);
         }
@@ -243,7 +243,7 @@ class Form extends Tag {
      * @see Form::addInput()
      * @param string $name
      * @param string $value
-     * @return  \Form\Input\Hidden
+     * @return  \phpws2\Form\Input\Hidden
      */
     public function addHidden($name, $value)
     {
@@ -256,7 +256,7 @@ class Form extends Tag {
      * @param string $name
      * @param string $value
      * @param string $label
-     * @return \Form\Choice\Radio
+     * @return \phpws2\Form\Choice\Radio
      */
     public function addRadio($name, $value, $label = null)
     {
@@ -270,7 +270,7 @@ class Form extends Tag {
      * @param string $name
      * @param string $value
      * @param string $label
-     * @return \Form\Input\Checkbox
+     * @return \phpws2\Form\Input\Checkbox
      */
     public function addCheckbox($name, $value, $label = null)
     {
@@ -283,7 +283,7 @@ class Form extends Tag {
      * @param string $name
      * @param string $value
      * @param string $label
-     * @return \Form\Input\Text
+     * @return \phpws2\Form\Input\Text
      */
     public function addTextField($name, $value = null, $label = null)
     {
@@ -296,7 +296,7 @@ class Form extends Tag {
      * @param string $name
      * @param string $value
      * @param string $label
-     * @return \Form\Input\Textarea
+     * @return \phpws2\Form\Input\Textarea
      */
     public function addTextArea($name, $value = null, $label = null)
     {
@@ -308,7 +308,7 @@ class Form extends Tag {
      * @see Form::addInput()
      * @param string $name
      * @param string $value
-     * @return \Form\Input\Submit
+     * @return \phpws2\Form\Input\Submit
      */
     public function addSubmit($name = null, $value = null)
     {
@@ -327,7 +327,7 @@ class Form extends Tag {
      * @see Form::addInput()
      * @param string $name
      * @param string $value
-     * @return \Form\Input\Button
+     * @return \phpws2\Form\Input\Button
      */
     public function addButton($name, $value)
     {
@@ -338,7 +338,7 @@ class Form extends Tag {
      * Adds an Email input
      * @param string $name
      * @param string $value
-     * @return \Form\Input\Email
+     * @return \phpws2\Form\Input\Email
      */
     public function addEmail($name, $value = null)
     {
@@ -349,7 +349,7 @@ class Form extends Tag {
      * Adds an Date input
      * @param string $name
      * @param string $value
-     * @return \Form\Input\Email
+     * @return \phpws2\Form\Input\Email
      */
     public function addDate($name, $value = null, $label = null)
     {
@@ -360,7 +360,7 @@ class Form extends Tag {
      * Adds an Datetime input
      * @param string $name
      * @param string $value
-     * @return \Form\Input\Email
+     * @return \phpws2\Form\Input\Email
      */
     public function addDatetime($name, $value = null, $label = null)
     {
@@ -371,7 +371,7 @@ class Form extends Tag {
      * Adds an Color input
      * @param string $name
      * @param string $value
-     * @return \Form\Input\Email
+     * @return \phpws2\Form\Input\Email
      */
     public function addColor($name, $value = null, $label = null)
     {
@@ -383,7 +383,7 @@ class Form extends Tag {
      * @param string $name
      * @param string $value
      * @param string $label
-     * @return \Form\Input\File
+     * @return \phpws2\Form\Input\File
      */
     public function addFile($name, $value = null, $label = null)
     {
@@ -395,7 +395,7 @@ class Form extends Tag {
      * @param string $name
      * @param string $value
      * @param string $label
-     * @return \Form\Input\Password
+     * @return \phpws2\Form\Input\Password
      */
     public function addPassword($name, $value = null, $label = null)
     {
@@ -529,7 +529,7 @@ class Form extends Tag {
                 $multiple = count($input_list) > 1;
                 foreach ($input_list as $input) {
                     $group_name = $input_name . '_group';
-                    if ($input instanceof \Form\Choice\Radio || $input instanceof \Form\Choice\Checkbox) {
+                    if ($input instanceof \phpws2\Form\Choice\Radio || $input instanceof \phpws2\Form\Choice\Checkbox) {
                         $choice_array = $input->getStringArray();
                         if ($choice_as_array) {
                             $value[$input_name] = $choice_array;
@@ -617,7 +617,7 @@ class Form extends Tag {
      */
     public function plugInput($input)
     {
-        if (!$input instanceof \Form\Base) {
+        if (!$input instanceof \phpws2\Form\Base) {
             throw new \Exception(t('plugInput only accepts Input and Choice class objects'));
         }
         $this->inputs[$input->getName()][] = $input;
@@ -658,7 +658,7 @@ class Form extends Tag {
     }
 
     /**
-     * Returns an array of input (Form\Choice or \Form\Input) objects from the
+     * Returns an array of input (Form\Choice or \phpws2\Form\Input) objects from the
      * Form if it has been previously set.
      *
      * If you expect only one answer then:
@@ -669,7 +669,7 @@ class Form extends Tag {
      * See also __get.
      *
      * @param string $name
-     * @return array Array of all \Form\Base extended objects under the passed name.
+     * @return array Array of all \phpws2\Form\Base extended objects under the passed name.
      * @throws \Exception
      */
     public function getInput($name)
@@ -687,7 +687,7 @@ class Form extends Tag {
      * See also __get.
      *
      * @param string $name
-     * @return \Form\Base
+     * @return \phpws2\Form\Base
      * @throws \Exception
      */
     public function getSingleInput($name)
@@ -715,7 +715,7 @@ class Form extends Tag {
      * Returns the array of inputs associated with the name if the count > 1
      * or a single input object if not.
      * @param string $name
-     * @return \Form\Base | array
+     * @return \phpws2\Form\Base | array
      */
     public function __get($name)
     {

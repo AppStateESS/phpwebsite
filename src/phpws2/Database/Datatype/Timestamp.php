@@ -18,7 +18,7 @@ namespace phpws2\Database\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Timestamp extends \Database\Datatype {
+class Timestamp extends \phpws2\Database\Datatype {
 
     protected function loadDefault()
     {

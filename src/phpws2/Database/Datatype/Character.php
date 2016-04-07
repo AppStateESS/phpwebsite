@@ -17,7 +17,7 @@ namespace phpws2\Database\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Character extends \Database\Datatype {
+class Character extends \phpws2\Database\Datatype {
 
     /**
      * If true, char is actually a varchar!

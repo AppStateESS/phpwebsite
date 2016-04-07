@@ -7,7 +7,7 @@ namespace phpws2\Form\Choice;
   * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Multiple extends \Form\Choice\Select {
+class Multiple extends \phpws2\Form\Choice\Select {
     /**
      * @var boolean Switches the Select into multiple mode
      */

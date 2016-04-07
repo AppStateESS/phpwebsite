@@ -9,7 +9,7 @@ namespace phpws2\Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Radio extends \Form\Input {
+class Radio extends \phpws2\Form\Input {
 
     /**
      * Indicates label should print after the input tag.

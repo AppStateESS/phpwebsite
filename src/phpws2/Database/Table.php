@@ -148,7 +148,7 @@ abstract class Table extends Resource
 
     abstract public function constraintTypeAfterName();
 
-    abstract public function alter(\phpws2\Database\Datatype $old, \Database\Datatype $new);
+    abstract public function alter(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new);
 
     /**
      * Serializes the primary key in the current table. This is a one time method
@@ -166,14 +166,14 @@ abstract class Table extends Resource
 
     /**
      * Engine specific function to rename a field.
-     * @param \Database\Field $field Field to change
+     * @param \phpws2\Database\Field $field Field to change
      * @param string $new_name Name to change field to.
      */
     abstract public function renameField(\phpws2\Database\Field $field, $new_name);
 
     /**
      * Return the type of database column the current column is.
-     * @return \Database\Datatype
+     * @return \phpws2\Database\Datatype
      */
     abstract public function getDataType($column_name);
 
@@ -514,7 +514,7 @@ abstract class Table extends Resource
             throw new \Exception(\t('No values were passed'));
         }
         foreach ($columns as $col) {
-            if (is_object($col) && ($col instanceof \Database\Field || $col instanceof \Database\Datatype)) {
+            if (is_object($col) && ($col instanceof \phpws2\Database\Field || $col instanceof \phpws2\Database\Datatype)) {
                 $this->primary_key[] = $col;
             } elseif (is_array($col) && $recursion == false) {
                 // set to true just long enough to finish the recursion
@@ -522,7 +522,7 @@ abstract class Table extends Resource
                 call_user_func_array(array('self', 'setPrimaryKey'), $col);
                 $recursion = false;
             } elseif (is_string($col)) {
-                $this->primary_key[] = new \Database\Field($this, $col, null, false);
+                $this->primary_key[] = new \phpws2\Database\Field($this, $col, null, false);
             } else {
                 throw new \Exception(\t('Could not use supplied parameters'));
             }
@@ -542,7 +542,7 @@ abstract class Table extends Resource
      * Adds datatypes to the table for creation or alteration.
      * @param string $name The name given to that datatype (id, last_name)
      * @param string $type The type (Blob, Char, Int) of the datatype
-     * @return \Database\Datatype
+     * @return \phpws2\Database\Datatype
      */
     public function addDataType($name, $type)
     {
@@ -640,10 +640,10 @@ abstract class Table extends Resource
      *
      * Example:
      * <code>
-     * $select = \Database::newDB()();
+     * $select = \phpws2\Database::newDB()();
      * $bar = $select->addTable('bar');
      *
-     * $db = \Database::newDB()();
+     * $db = \phpws2\Database::newDB()();
      * $foo = $db->addTable('foo');
      * $foo->insertSelect($select);
      * </code>
@@ -723,7 +723,7 @@ abstract class Table extends Resource
     protected function getConstraintString($create_query = false)
     {
         foreach ($this->constraints as $c) {
-            if ($create_query && !is_a($c, '\Database\TableCreateConstraint')) {
+            if ($create_query && !is_a($c, '\phpws2\Database\TableCreateConstraint')) {
                 throw new \Exception('This constraint is not allowed during table creation');
             }
             $sql[] = $c->getConstraintString();
@@ -820,7 +820,7 @@ abstract class Table extends Resource
      * A extending Table class can alter this function to fit its variants.
      * Unsupported data types can be unset, new datatypes can be added.
      *
-     * @see \Database\Datatype::factory()
+     * @see \phpws2\Database\Datatype::factory()
      * @return array
      */
     public function getDatatypeList()

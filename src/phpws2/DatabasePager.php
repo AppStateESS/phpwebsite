@@ -12,7 +12,7 @@ class DatabasePager extends Pager {
 
     /**
      *
-     * @var \Database\DB
+     * @var \phpws2\Database\DB
      */
     protected $db;
 
@@ -135,10 +135,10 @@ class DatabasePager extends Pager {
                     $this->sort_column));
         }
 
-        /* @var $field \Database\Field */
+        /* @var $field \phpws2\Database\Field */
         $field = $this->table_headers[$this->sort_column];
-        if (!is_a($field, '\Database\Field') && !is_a($field,
-                        '\Database\Expression')) {
+        if (!is_a($field, '\phpws2\Database\Field') && !is_a($field,
+                        '\phpws2\Database\Expression')) {
             throw new Exception(t('Sort column "%s" is not a Field or Expression object',
                     $this->sort_column));
         }

@@ -13,7 +13,7 @@ abstract class Column extends Alias {
 
     /**
      * Reference to the parent table object
-     * @var \Database\Resource
+     * @var \phpws2\Database\Resource
      */
     public $resource = null;
 
@@ -26,14 +26,14 @@ abstract class Column extends Alias {
     /**
      * Constructs a new column object
      * @param string $name Name of the column
-     * @param \Database\Resource $resource
+     * @param \phpws2\Database\Resource $resource
      * @param boolean $check_existence If true, check to see if column exists
      *        before creating
      */
     public function __construct(\phpws2\Database\Resource $resource, $name, $check_existence = null)
     {
         $check_existance = empty($check_existance) ? DATABASE_CHECK_COLUMNS : $check_existance;
-        if (!\Database\DB::allowed($name)) {
+        if (!\phpws2\Database\DB::allowed($name)) {
             throw new \Exception(t('Bad column name'));
         }
         $this->name = new \Variable\Attribute($name, 'name');
@@ -90,7 +90,7 @@ abstract class Column extends Alias {
 
     /**
      *
-     * @return \Database\Resource
+     * @return \phpws2\Database\Resource
      */
     public function getTable()
     {
@@ -99,7 +99,7 @@ abstract class Column extends Alias {
 
     /**
      *
-     * @return \Database\Resource
+     * @return \phpws2\Database\Resource
      */
     public function getResource()
     {

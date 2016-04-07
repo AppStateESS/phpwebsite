@@ -7,7 +7,7 @@ namespace phpws2\Database\Engine\pgsql;
  *
  * @author matt
  */
-class Table extends \Database\Table
+class Table extends \phpws2\Database\Table
 {
     /**
      * Table name is NOT included after "using" in a delete query
@@ -32,7 +32,7 @@ class Table extends \Database\Table
     public function addPrimaryIndexId()
     {
         $id = $this->addDatatype('id', 'serial');
-        $pk = new \Database\PrimaryKey($id);
+        $pk = new \phpws2\Database\PrimaryKey($id);
         $this->addPrimaryKey($pk);
         return $id;
     }
@@ -166,7 +166,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $schema = $this->getSchema($column_name);
 
         $column_type = $schema['data_type'];
-        $dt = \Database\Datatype::factory($this, $column_name, $column_type);
+        $dt = \phpws2\Database\Datatype::factory($this, $column_name, $column_type);
 
         $indexes = $this->getIndexes();
         if (!empty($indexes)) {
@@ -204,7 +204,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      * Returns true is current table has a sequence schema
      * @return boolean
      */
-    public function hasPearSequenceTable()
+    public function hasPEAR::SequenceTable()
     {
         $sequence_table = $this->getFullName(false) . '_seq';
         $q = DB::$PDO->query("SELECT c.relname FROM pg_class c WHERE c.relkind = 'S' AND c.relname = '$sequence_table'");
@@ -212,9 +212,9 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         return (bool) $result;
     }
 
-    public function getLastPearSequence()
+    public function getLastPEAR::Sequence()
     {
-        $seq_table = $this->getPearSequenceName();
+        $seq_table = $this->getPEAR::SequenceName();
         $result = DB::$PDO->query("select nextval('$seq_table')");
         return $result->fetchColumn();
     }
@@ -224,8 +224,8 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      */
     public function serializePrimaryKey()
     {
-        if (!$this->hasPearSequenceTable()) {
-            throw new \Exception('There is not a PEAR::DB sequence for this table');
+        if (!$this->hasPEAR::SequenceTable()) {
+            throw new \Exception('There is not a \PEAR::DB sequence for this table');
         }
 
         $table_name = $this->getFullName();
@@ -263,10 +263,10 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
 
     /**
      * Modifys the parameters of a datatype column.
-     * @param \Database\Datatype $old
-     * @param \Database\Datatype $new
+     * @param \phpws2\Database\Datatype $old
+     * @param \phpws2\Database\Datatype $new
      */
-    public function alter(\phpws2\Database\Datatype $old, \Database\Datatype $new)
+    public function alter(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
     {
         $this->alterColumnParameters($new);
         $this->alterNullStatus($old, $new);
@@ -275,10 +275,10 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
 
     /**
      * Works with self::alter to change the null status of a column if needed.
-     * @param \Database\Datatype $old
-     * @param \Database\Datatype $new
+     * @param \phpws2\Database\Datatype $old
+     * @param \phpws2\Database\Datatype $new
      */
-    private function alterNullStatus(\phpws2\Database\Datatype $old, \Database\Datatype $new)
+    private function alterNullStatus(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
     {
         $table_name = $this->getFullName();
         $column_name = $new->getName();
@@ -300,10 +300,10 @@ EOF;
 
     /**
      * Works with self:alter to change teh default setting of a column.
-     * @param \Database\Datatype $old
-     * @param \Database\Datatype $new
+     * @param \phpws2\Database\Datatype $old
+     * @param \phpws2\Database\Datatype $new
      */
-    private function alterDefaultStatus(\phpws2\Database\Datatype $old, \Database\Datatype $new)
+    private function alterDefaultStatus(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
     {
         $old_default = $old->getDefault();
         $new_default = $new->getDefault();

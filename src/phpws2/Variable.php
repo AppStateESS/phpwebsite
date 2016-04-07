@@ -473,8 +473,8 @@ abstract class Variable extends Data {
      * Loads a datatype into the passed Table object based on settings in the
      * current Variable object.
      *
-     * @param \Database\Table $table
-     * @return \Database\Datatype
+     * @param \phpws2\Database\Table $table
+     * @return \phpws2\Database\Datatype
      * @throws \Exception Error is varname is not set
      */
     public function loadDataType(\phpws2\Database\Table $table)

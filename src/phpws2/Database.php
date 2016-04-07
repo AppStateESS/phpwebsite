@@ -19,7 +19,7 @@ class Database
      * can be changed per construction of this class, this is the fallback DSN.
      * It is initialized in the Config/Configuration.php file. This variable remains
      * static as there is no need to have more than one default connection.
-     * @var \Database\DSN
+     * @var \phpws2\Database\DSN
      */
     static private $default_dsn;
 
@@ -36,7 +36,7 @@ class Database
 
     /**
      * Alias for newDB
-     * @param \Database\DSN $dsn
+     * @param \phpws2\Database\DSN $dsn
      * @return Database\DB
      */
     public static function getDB(\phpws2\Database\DSN $dsn = null)
@@ -48,8 +48,8 @@ class Database
     /**
      * Creates a new DB object based on the dsn parameter OR the default
      * dsn.
-     * @param \Database\DSN $dsn
-     * @return \Database\DB
+     * @param \phpws2\Database\DSN $dsn
+     * @return \phpws2\Database\DB
      * @throws \Exception
      */
     public static function newDB(\phpws2\Database\DSN $dsn = null)
@@ -72,7 +72,7 @@ class Database
             }
         }
 
-        $class_name = '\Database\Engine\\' . $dsn->getDatabaseType() . '\DB';
+        $class_name = '\phpws2\Database\Engine\\' . $dsn->getDatabaseType() . '\DB';
 
         $db = new $class_name($dsn);
         return $db;
@@ -80,7 +80,7 @@ class Database
 
     /**
      * Returns the DSN object currently stored in the default_dsn static variable.
-     * @return \Database\DSN
+     * @return \phpws2\Database\DSN
      */
     public static function getDefaultDSN()
     {
@@ -95,12 +95,12 @@ class Database
      * @param string $database_name
      * @param string $host
      * @param string $port
-     * @return \Database\DSN
+     * @return \phpws2\Database\DSN
      */
     public static function newDSN($database_type, $username, $password = null, $database_name = null, $host = null, $port
     = null)
     {
-        $dsn = new \Database\DSN($database_type, $username, $password, $database_name, $host, $port);
+        $dsn = new \phpws2\Database\DSN($database_type, $username, $password, $database_name, $host, $port);
         return $dsn;
     }
 
@@ -168,8 +168,8 @@ class Database
 
     /**
      * Sets the default dsn static variable.
-     * @see \Database\DSN::$dsn
-     * @param \Database\DSN $dsn
+     * @see \phpws2\Database\DSN::$dsn
+     * @param \phpws2\Database\DSN $dsn
      */
     public static function setDefaultDSN(\phpws2\Database\DSN $dsn)
     {
@@ -180,7 +180,7 @@ class Database
      * Loads a file, extracts dsn variables and constructs a DSN object.
      *
      * @param string $filename Path to dsn configuration file.
-     * @return \Database\DSN
+     * @return \phpws2\Database\DSN
      * @throws \Exception
      */
     public static function createDSNFromFile($filename)

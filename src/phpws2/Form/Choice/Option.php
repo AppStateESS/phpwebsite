@@ -29,7 +29,7 @@ class Option extends \Tag {
 
     /**
      * If the value is not set, the $text parameter is copied to value.
-     * @param string $text Text that appears between the option tag
+     * @param string $text Text that apPEAR::s between the option tag
      * @param string $value The value of the option tag.
      * @param string $optgroup Name of group this option is a member of.
      */

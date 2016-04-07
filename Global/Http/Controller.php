@@ -2,4 +2,4 @@
 
 namespace Http;
 
-class Controller extends \phpws2\Http\Controller{}
+abstract class Controller extends \phpws2\Http\Controller{}

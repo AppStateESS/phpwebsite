@@ -18,7 +18,7 @@ namespace phpws2\Database\Engine\pgsql\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Serial extends \Database\Datatype\Integer {
+class Serial extends \phpws2\Database\Datatype\Integer {
 
     protected $is_number = true;
     protected $default = null;

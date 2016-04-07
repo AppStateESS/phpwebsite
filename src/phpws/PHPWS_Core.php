@@ -33,9 +33,9 @@ class PHPWS_Core
     public static function getModules($active = true, $just_title = false)
     {
         if ($active) {
-            $mods = ModuleRepository::getInstance()->getActiveModules();
+            $mods = \phpws2\ModuleRepository::getInstance()->getActiveModules();
         } else {
-            $mods = ModuleRepository::getInstance()->getAllModules();
+            $mods = \phpws2\ModuleRepository::getInstance()->getAllModules();
         }
 
         if ($just_title) {
@@ -69,7 +69,7 @@ class PHPWS_Core
      */
     public static function getModuleNames()
     {
-        $mods = ModuleRepository::getInstance()->getAllModules();
+        $mods = \phpws2\ModuleRepository::getInstance()->getAllModules();
 
         foreach ($mods as $o) {
             $listing[$o->getTitle()] = $o->getProperName();
@@ -255,7 +255,7 @@ class PHPWS_Core
      */
     public static function getHttp()
     {
-        return Server::getHttp();
+        return \phpws2\Server::getHttp();
     }
 
     /**
@@ -318,7 +318,7 @@ class PHPWS_Core
      */
     public static function moduleExists($module_title)
     {
-        return ModuleRepository::getInstance()->hasModule($module_title);
+        return \phpws2\ModuleRepository::getInstance()->hasModule($module_title);
     }
 
     /**
@@ -326,7 +326,7 @@ class PHPWS_Core
      */
     public static function getCurrentModule()
     {
-        $active = ModuleRepository::getInstance()->getCurrentModule();
+        $active = \phpws2\ModuleRepository::getInstance()->getCurrentModule();
         if (is_null($active))
             return null;
         return $active->getTitle();
@@ -528,7 +528,7 @@ class PHPWS_Core
      */
     public static function installModList($active_only = false)
     {
-        return ModuleRepository::getInstance()->getActiveModules();
+        return \phpws2\ModuleRepository::getInstance()->getActiveModules();
     }
 
     /**

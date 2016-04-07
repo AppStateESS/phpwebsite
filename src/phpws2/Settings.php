@@ -28,7 +28,7 @@ class Settings extends Data {
 
     public function loadDefaultSettings($module_name, $variable_name)
     {
-        $module = ModuleRepository::getInstance()->getModule($module_name);
+        $module = \phpws2\ModuleRepository::getInstance()->getModule($module_name);
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!array_key_exists($variable_name, $settings)) {
@@ -45,7 +45,7 @@ class Settings extends Data {
     {
         $settings = self::singleton();
         $settings->variables[$module_name][$variable_name] = $setting;
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         if (!$db->tableExists('settings')) {
             self::createSettingsTable();
         }
@@ -74,7 +74,7 @@ class Settings extends Data {
 
     public static function createSettingsTable()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         if ($db->tableExists('settings')) {
             return;
         }
@@ -120,7 +120,7 @@ class Settings extends Data {
         if (preg_match('/\W/', $module)) {
             throw \Exception('Bad string format for module parameter');
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t1 = $db->addTable('settings');
         $t1->addFieldConditional('module_name', $module);
         $db->delete();

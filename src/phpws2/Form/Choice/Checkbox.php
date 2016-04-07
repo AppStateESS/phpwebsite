@@ -9,7 +9,7 @@ namespace phpws2\Form\Choice;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Checkbox extends \Form\Choice {
+class Checkbox extends \phpws2\Form\Choice {
     /**
      * @see Form\Choice::$breaks
      * @var boolean
@@ -27,7 +27,7 @@ class Checkbox extends \Form\Choice {
         }
 
         foreach ($options as $value => $label) {
-            $option = new \Form\Input\Radio($this->getName(), $value, $label);
+            $option = new \phpws2\Form\Input\Radio($this->getName(), $value, $label);
             if ($this->selection == $value) {
                 $options->setSelection(true);
             }

@@ -18,7 +18,7 @@ namespace phpws2\Database\Engine\mysql\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Tinyint extends \Database\Datatype\Int {
+class Tinyint extends \phpws2\Database\Datatype\Int {
     protected $signed_limit_low = -128;
     protected $signed_limit_high = 127;
     protected $unsigned_limit_high = 255;

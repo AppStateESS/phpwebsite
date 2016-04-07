@@ -18,7 +18,7 @@ namespace phpws2\Database\Engine\mysql\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Integer extends \Database\Datatype {
+class Integer extends \phpws2\Database\Datatype {
 
     /**
      * If true, the integer will be unsigned (i.e. without negative values).

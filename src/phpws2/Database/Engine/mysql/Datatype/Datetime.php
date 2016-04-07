@@ -13,6 +13,6 @@ namespace phpws2\Database\Engine\mysql\Datatype;
  *
  * @author matt
  */
-class Datetime extends \Database\Datatype\Date {}
+class Datetime extends \phpws2\Database\Datatype\Date {}
 
 ?>

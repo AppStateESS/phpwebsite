@@ -142,7 +142,7 @@ abstract class Object extends Data {
             return;
         }
 
-        $this->DB = \Database::newDB();
+        $this->DB = \phpws2\Database::newDB();
         if (empty($this->table_name)) {
             throw new \Exception(t('Missing table name'));
         }

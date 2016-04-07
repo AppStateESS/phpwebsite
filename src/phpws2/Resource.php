@@ -107,7 +107,7 @@ abstract class Resource extends Data {
     /**
      * Returns an associative array of Datatypes based on the Variable parameter
      * objects in the current object
-     * @param \Database\Table $table
+     * @param \phpws2\Database\Table $table
      * @return Array
      */
     public function getVariablesAsDatatypes(\phpws2\Database\Table $table)
@@ -126,8 +126,8 @@ abstract class Resource extends Data {
     /**
      * Creates a new table based on the resource object. Returns table object
      * if successful
-     * @param \Database\DB $db
-     * @return \Database\Table
+     * @param \phpws2\Database\DB $db
+     * @return \phpws2\Database\Table
      */
     public function createTable(\phpws2\Database\DB $db)
     {

@@ -18,7 +18,7 @@ namespace phpws2\Database\Engine\pgsql;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class DB extends \Database\DB
+class DB extends \phpws2\Database\DB
 {
 
     public function getRandomCall()

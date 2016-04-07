@@ -54,7 +54,7 @@ class PhpwebsiteController implements Controller
                 $response = $module->execute($request->getNextRequest());
                 $this->renderResponse($request, $response);
                 $this->afterRun($request, $response);
-                if ($response instanceof \Http\RedirectResponse) {
+                if ($response instanceof \phpws2\Http\RedirectResponse) {
                     $response->forward();
                 }
             }
@@ -95,10 +95,10 @@ class PhpwebsiteController implements Controller
             }
         }
 
-        $mr = ModuleRepository::getInstance();
+        $mr = \phpws2\ModuleRepository::getInstance();
 
         if (!$mr->hasModule($title)) {
-            throw new \Http\NotFoundException($request);
+            throw new \phpws2\Http\NotFoundException($request);
         }
 
         $module = $mr->getModule($title);
@@ -113,11 +113,11 @@ class PhpwebsiteController implements Controller
         // Temporary until proper error pages are fully implemented
         // @todo customizable, editable error pages that don't dump a bunch of
         // stack if it's not needed or if debug is disabled
-        if ($response instanceof \Html\NotFoundResponse) {
+        if ($response instanceof \phpws2\Html\NotFoundResponse) {
             Error::errorPage(404);
         }
 
-        if ($response instanceof \Http\RedirectResponse) {
+        if ($response instanceof \phpws2\Http\RedirectResponse) {
             return;
         }
 
@@ -136,7 +136,7 @@ class PhpwebsiteController implements Controller
         
         if ($view->getContentType() == 'text/html' && !$ajax) {
             if (class_exists('Layout')) {
-                Layout::add($rendered);
+                \Layout::add($rendered);
                 $this->skipLayout = false;
             } else {
                 echo $rendered;
@@ -150,7 +150,7 @@ class PhpwebsiteController implements Controller
 
     private function destructModules()
     {
-        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+        foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             // This is a temporary thing to prevent Layout from running in the
             // event of a JSON request or otherwise non-HTML Response.
             if ($this->skipLayout && strtolower($mod->getTitle()) == 'layout')
@@ -162,28 +162,28 @@ class PhpwebsiteController implements Controller
 
     private function beforeRun(\phpws2\Request $request, \phpws2\Controller $controller)
     {
-        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+        foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->beforeRun($request, $controller);
         }
     }
 
     private function runTime(\phpws2\Request $request)
     {
-        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+        foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->runTime($request);
         }
     }
 
     private function afterRun(\phpws2\Request $request, \phpws2\Response &$response)
     {
-        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+        foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->afterRun($request, $response);
         }
     }
 
     private function loadModuleInits()
     {
-        foreach (ModuleRepository::getInstance()->getActiveModules() as $mod) {
+        foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             if ($mod->isActive()) {
                 $mod->init();
             }

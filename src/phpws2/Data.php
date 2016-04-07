@@ -482,12 +482,12 @@ namespace phpws2;
 
     /**
      * Return a form object based on the Variables in the current object.
-     * @return \Form
+     * @return \phpws2\Form
      */
     public function pullForm()
     {
         $vars = $this->getVars();
-        $form = new \Form;
+        $form = new \phpws2\Form;
         foreach ($vars as $parameter) {
             if ($parameter instanceof \Variable) {
                 if ($parameter->getVarname() == 'id') {
