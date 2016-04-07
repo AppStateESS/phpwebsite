@@ -9,6 +9,6 @@ namespace phpws;
  * @version $Id$
  */
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Time.php';
+class Time extends PHPWS_Time{}
 
 ?>
