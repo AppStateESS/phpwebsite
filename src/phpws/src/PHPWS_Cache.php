@@ -16,7 +16,7 @@ class PHPWS_Cache {
                          'cacheDir' => CACHE_DIRECTORY,
                          'lifeTime' => (int)$lifetime
         );
-        $cache = new Cache_Lite($options);
+        $cache = new \Cache_Lite($options);
 
         return $cache;
     }
