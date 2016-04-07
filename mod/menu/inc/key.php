@@ -40,5 +40,3 @@ function menu_unregister_key(Key $key)
 
     return true;
 }
-
-?>

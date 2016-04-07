@@ -11,5 +11,3 @@ $permissions['add_tab']    = dgettext('controlpanel', 'Add Tab');
 $permissions['move_link']  = dgettext('controlpanel', 'Move Link');
 
 $itemPermissions = FALSE;
-
-?>

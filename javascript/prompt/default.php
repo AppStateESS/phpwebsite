@@ -20,5 +20,3 @@ if (isset($data['answer'])) {
     $data['answer'] = preg_replace("/([^\\\])'/", "\\1\'", $data['answer']);
     $data['answer'] = str_replace("&#039;", "\\'", $data['answer']);
 }
-
-?>

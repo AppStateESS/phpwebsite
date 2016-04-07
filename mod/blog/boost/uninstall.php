@@ -14,5 +14,3 @@ function blog_uninstall(&$content)
     return TRUE;
 }
 
-
-?>

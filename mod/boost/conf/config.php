@@ -31,4 +31,3 @@ define('BOOST_NO_REGISTER_FILE', -6);
 define('BOOST_NO_REGISTER_FUNCTION', -7);
 define('BOOST_FAILED_BACKUP', -8);
 define('BOOST_FAILED_LOCAL_COPY', -9);
-?>

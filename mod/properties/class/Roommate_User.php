@@ -879,5 +879,3 @@ class Roommate_User {
     }
 
 }
-
-?>

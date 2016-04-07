@@ -6,4 +6,4 @@
  */
 
 javascript('jquery');
-?>
+

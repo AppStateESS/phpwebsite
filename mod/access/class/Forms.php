@@ -291,5 +291,3 @@ class Access_Forms {
     }
 
 }
-
-?>

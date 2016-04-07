@@ -14,5 +14,3 @@ class NotAcceptableResponse extends ErrorResponse
         return 406;
     }
 }
-
-?>

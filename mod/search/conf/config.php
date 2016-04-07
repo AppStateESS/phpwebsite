@@ -14,5 +14,3 @@ define('SEARCH_MIN_WORD_LENGTH', 3);
  * The text will disappear if the search box is clicked.
  */
 define('SEARCH_DEFAULT', NULL);
-
-?>

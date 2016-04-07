@@ -31,4 +31,3 @@ $link[] = array(
         'tab'           => 'admin'
         );
 
-?>

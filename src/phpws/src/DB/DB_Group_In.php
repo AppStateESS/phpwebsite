@@ -46,4 +46,3 @@ class DB_Group_In {
 
 }
 
-?>

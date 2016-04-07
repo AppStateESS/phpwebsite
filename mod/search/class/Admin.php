@@ -406,5 +406,3 @@ class Search_Admin {
         PHPWS_Settings::save('search');
     }
 }
-
-?>

@@ -11,4 +11,4 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/calendar/check
 $import_sql   = true;
 $about        = true;
 $dependency   = true;
-?>
+

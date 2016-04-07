@@ -267,5 +267,3 @@ function layoutUpdateFiles($files, &$content)
     }
     $content[] = "     " . implode("\n     ", $files);
 }
-
-?>

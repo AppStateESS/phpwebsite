@@ -304,4 +304,3 @@ class PHPWS_Template extends \HTML_Template_Sigma {
     }
 }
 
-?>

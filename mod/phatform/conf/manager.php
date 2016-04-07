@@ -126,5 +126,3 @@ $optionsColumns = array('id'   =>$id,
 $optionsExtraLabels = array('actions_label'=>$actions,
 			    'delete_label' =>$delete,
 			    'edit_label'   =>$edit);
-
-?>

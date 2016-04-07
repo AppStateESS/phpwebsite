@@ -17,4 +17,3 @@ switch ($type) {
         $data['input_type'] = 'button';
         break;
 }
-?>

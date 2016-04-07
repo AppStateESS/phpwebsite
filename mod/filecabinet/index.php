@@ -40,5 +40,3 @@ if (isset($_REQUEST['uop'])) {
         $cabinet->download($_GET['id']);
     }
 }
-
-?>

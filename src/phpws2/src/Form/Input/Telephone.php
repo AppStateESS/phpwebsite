@@ -12,5 +12,3 @@ namespace phpws2\Form\Input;
 class Telephone extends Text {
 
 }
-
-?>

@@ -23,5 +23,3 @@ if (MOD_REWRITE_ENABLED && Current_User::allow('access')) {
         Access::shortcut($key);
     }
 }
-
-?>

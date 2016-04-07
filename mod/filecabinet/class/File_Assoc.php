@@ -574,5 +574,3 @@ class FC_File_Assoc
     }
 
 }
-
-?>

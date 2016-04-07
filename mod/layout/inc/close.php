@@ -12,4 +12,3 @@ if (defined('LAYOUT_CHECK_COOKIE') && LAYOUT_CHECK_COOKIE) {
     check_cookie();
 }
 echo Layout::display();
-?>

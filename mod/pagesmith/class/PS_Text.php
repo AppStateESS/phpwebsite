@@ -86,5 +86,3 @@ class PS_Text extends PS_Section {
     }
 
 }
-
-?>

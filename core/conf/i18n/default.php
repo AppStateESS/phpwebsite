@@ -12,5 +12,3 @@ define('PREFERRED_YEAR_DISPLAY',  '%Y');
 define('PHPWS_DATE_FORMAT',       'm/d/Y');
 define('PHPWS_DAY_START',         0); // 0 = Sunday, 1 = Monday
 define('PHPWS_TIME_DIFF',         0);
-
-?>

@@ -12,4 +12,3 @@ function rss_uninstall()
     return TRUE;
 }
 
-?>

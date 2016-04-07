@@ -13,5 +13,3 @@ if (isset($_SESSION['Search_Admin'])) {
     \phpws\PHPWS_Core::initModClass('search', 'Admin.php');
     Search_Admin::miniAdmin();
 }
-
-?>

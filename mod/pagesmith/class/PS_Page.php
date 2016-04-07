@@ -680,4 +680,3 @@ class PS_Page
 
 }
 
-?>

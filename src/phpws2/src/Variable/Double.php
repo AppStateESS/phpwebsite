@@ -26,5 +26,3 @@ class Double extends Float
         return true;
     }
 }
-
-?>

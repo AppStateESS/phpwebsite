@@ -144,4 +144,3 @@ $languages['vi_VN'] = 'Vietnamese';
 // $languages['yo_YO'] = 'Yoruba';
 // $languages['zh_ZH'] = 'Chinese';
 // $languages['zu_ZU'] = 'Zulu';
-?>

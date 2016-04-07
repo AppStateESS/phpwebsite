@@ -524,4 +524,3 @@ function pagesmithSearchIndex()
     return true;
 }
 
-?>

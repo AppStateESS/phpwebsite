@@ -12,5 +12,3 @@ abstract class MovedPermanentlyResponse extends RedirectResponse
         return 301;
     }
 }
-
-?>

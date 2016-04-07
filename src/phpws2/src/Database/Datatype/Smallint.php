@@ -26,4 +26,3 @@ class Smallint extends \phpws2\Database\Datatype\Integer {
 
 }
 
-?>

@@ -41,4 +41,3 @@ USER_NOT_FOUND            => dgettext('users', 'Could not find user.'),
 USER_DEACTIVATED          => dgettext('users', 'User account deactivated.'),
 USER_PASSWORD_BLANK       => dgettext('users', 'Password was blank')
 );
-?>

@@ -409,4 +409,3 @@ function menuUpdateFiles($files, &$content)
     }
 }
 
-?>

@@ -237,5 +237,3 @@ class Session extends Data {
     }
 
 }
-
-?>

@@ -149,4 +149,3 @@ abstract class Constraint {
 
 }
 
-?>

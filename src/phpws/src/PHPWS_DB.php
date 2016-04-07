@@ -2924,4 +2924,3 @@ class PHPWS_DB
 }
 
 // END PHPWS_DB_Where
-?>

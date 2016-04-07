@@ -167,5 +167,3 @@ class Integer extends \Variable {
     }
 
 }
-
-?>

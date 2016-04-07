@@ -178,4 +178,3 @@ class Checkin_User extends Checkin
 
 }
 
-?>

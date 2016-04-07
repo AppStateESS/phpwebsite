@@ -33,4 +33,4 @@ class NotificationQueue
         return empty($this->queue);
     }
 }
-?>
+

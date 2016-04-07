@@ -5,5 +5,3 @@
  */
 
 $data['question'] = dgettext('pagesmith', 'Are you sure you want to delete this page template?');
-
-?>

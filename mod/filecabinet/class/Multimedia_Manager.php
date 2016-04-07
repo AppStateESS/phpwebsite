@@ -308,5 +308,3 @@ class FC_Multimedia_Manager
     }
 
 }
-
-?>

@@ -46,5 +46,3 @@ if (isset($data['type'])) {
 }
 
 $data['alt'] = _('Pick date');
-
-?>

@@ -6,5 +6,3 @@
  */
 
 $settings['show_alternates'] = 0;
-
-?>

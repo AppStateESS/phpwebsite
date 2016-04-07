@@ -57,4 +57,3 @@ class JsonErrorView extends JsonView
 
 }
 
-?>

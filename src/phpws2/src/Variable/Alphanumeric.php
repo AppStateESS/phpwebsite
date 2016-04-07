@@ -16,4 +16,3 @@ class Alphanumeric extends \Variable\String {
 
 }
 
-?>

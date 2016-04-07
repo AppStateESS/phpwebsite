@@ -323,5 +323,3 @@ function calendarUpdateFiles($files, &$content) {
     $content[] = '    ' . implode("\n    ", $files);
     $content[] = '';
 }
-
-?>

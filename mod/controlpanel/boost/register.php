@@ -12,5 +12,3 @@ function controlpanel_register($module, &$content)
     $result = PHPWS_ControlPanel::registerModule($module, $content);
     return $result;
 }
-
-?>

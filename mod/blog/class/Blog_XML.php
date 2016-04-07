@@ -172,5 +172,3 @@ class Blog_XML extends MyServer {
     }
 
 }
-
-?>

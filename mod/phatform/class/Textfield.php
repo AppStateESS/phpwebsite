@@ -176,5 +176,3 @@ class PHAT_Textfield extends PHAT_Element {
         }
     } // END FUNC save
 } // END CLASS PHAT_Textfield
-
-?>

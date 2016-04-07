@@ -16,5 +16,3 @@ if (Current_User::allow('checkin')) {
     $checkin_admin = new Checkin_Admin;
     $checkin_admin->menu();
 }
-
-?>

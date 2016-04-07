@@ -19,5 +19,3 @@ define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
  * change the below to false. Do so at your own risk.
  */
 define('PS_CHECK_CHAR_LENGTH', true);
-
-?>

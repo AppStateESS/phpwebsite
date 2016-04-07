@@ -9,6 +9,3 @@ $settings['rssfeed'] = 1;
 $settings['editor'] = null;
 $settings['webmaster'] = null;
 $settings['copyright'] = sprintf('Copyright %s', date('Y'));
-
-
-?>

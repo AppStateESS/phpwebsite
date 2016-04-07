@@ -76,4 +76,4 @@ class LikeboxView {
         Layout::add($content, 'likebox', 'view');
     }
 }
-?>
+

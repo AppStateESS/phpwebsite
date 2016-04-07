@@ -35,5 +35,3 @@ class Textarea extends \phpws2\Form\Base {
     }
 
 }
-
-?>

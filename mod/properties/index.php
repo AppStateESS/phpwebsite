@@ -71,4 +71,3 @@ if (isset($_REQUEST['aop'])) {
         \PHPWS_Core::errorPage('404');
     }
 }
-?>

@@ -46,5 +46,3 @@ class Checkbox extends \phpws2\Form\Input {
     }
 
 }
-
-?>

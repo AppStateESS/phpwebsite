@@ -20,5 +20,3 @@ if (isset($_REQUEST['aop'])) {
 } else {
     \phpws\PHPWS_Core::home();
 }
-
-?>

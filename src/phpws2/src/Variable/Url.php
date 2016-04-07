@@ -38,5 +38,3 @@ class Url extends String {
     }
 
 }
-
-?>

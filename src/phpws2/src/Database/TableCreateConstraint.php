@@ -21,4 +21,3 @@ interface TableCreateConstraint {
     public function getConstraintType();
 }
 
-?>

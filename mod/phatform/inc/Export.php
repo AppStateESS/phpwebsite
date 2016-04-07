@@ -90,5 +90,3 @@ function export($formId = NULL) {
 	readfile($filepath);
 	exit();
 }
-
-?>

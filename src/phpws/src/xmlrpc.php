@@ -449,5 +449,3 @@ function record($file, $info, $append = true)
                 strftime('%T') . ' ' . $info . "\n");
     }
 }
-
-?>

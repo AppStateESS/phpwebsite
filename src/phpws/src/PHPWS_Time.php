@@ -229,5 +229,3 @@ class PHPWS_Time {
 		}
 	}
 }
-
-?>

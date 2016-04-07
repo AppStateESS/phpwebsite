@@ -25,4 +25,3 @@ $content[] = "<b>Welcome to the phpWebSite $version</b><br />
 
 ";
 
-?>

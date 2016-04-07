@@ -77,4 +77,3 @@ define('GRAD_STUDENT', 2);
 
 define('NONSMOKER', 1);
 define('SMOKER', 2);
-?>

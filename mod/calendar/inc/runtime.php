@@ -24,4 +24,3 @@ if ($mini_cal_display == MINI_CAL_SHOW_ALWAYS ||
     }
 }
 
-?>

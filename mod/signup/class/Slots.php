@@ -379,4 +379,3 @@ class Signup_Slot {
 
 }
 
-?>

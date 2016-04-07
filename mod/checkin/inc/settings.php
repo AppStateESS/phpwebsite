@@ -15,4 +15,4 @@ $settings['sendback'] = 1;
 $settings['email'] = 0;
 $settings['gender'] = 0;
 $settings['birthdate'] = 0;
-?>
+

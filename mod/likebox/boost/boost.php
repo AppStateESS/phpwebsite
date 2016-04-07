@@ -30,4 +30,3 @@ $dependency   = false;
 $image_dir    = false;
 $file_dir     = false;
 
-?>

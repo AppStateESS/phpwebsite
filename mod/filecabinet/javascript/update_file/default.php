@@ -5,5 +5,3 @@
  */
 
 javascript('jquery');
-
-?>

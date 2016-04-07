@@ -434,4 +434,3 @@ class Blog_Admin {
 
 }
 
-?>

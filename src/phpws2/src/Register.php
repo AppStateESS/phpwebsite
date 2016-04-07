@@ -33,4 +33,3 @@ abstract class Register extends Data {
         $this->registrant = $registrant;
     }
 }
-?>

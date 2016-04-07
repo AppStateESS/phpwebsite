@@ -280,4 +280,4 @@ class Checkin {
     }
 
 }
-?>
+

@@ -45,4 +45,3 @@ function verify($return_value=false)
         return false;
     }
 }
-?>

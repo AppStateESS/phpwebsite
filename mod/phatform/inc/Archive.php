@@ -69,5 +69,3 @@ function archive($formId = NULL) {
         system($goCode);
     }
 }
-
-?>

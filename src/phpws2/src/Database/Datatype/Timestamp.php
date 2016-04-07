@@ -27,4 +27,3 @@ class Timestamp extends \phpws2\Database\Datatype {
 
 }
 
-?>

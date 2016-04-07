@@ -20,4 +20,3 @@ class Version extends String {
 
 }
 
-?>

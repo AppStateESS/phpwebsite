@@ -13,6 +13,3 @@ function checkin_uninstall(&$content)
     PHPWS_DB::dropTable('checkin_rtos');
     return true;
 }
-
-
-?>

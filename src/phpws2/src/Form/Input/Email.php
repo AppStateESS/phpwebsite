@@ -10,5 +10,3 @@ namespace phpws2\Form\Input;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Email extends Text {}
-
-?>

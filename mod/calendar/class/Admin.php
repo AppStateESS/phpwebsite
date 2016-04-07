@@ -1589,5 +1589,3 @@ class Calendar_Admin
     }
 
 }
-
-?>
