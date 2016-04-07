@@ -429,7 +429,7 @@ class PHPWS_Module {
 
         foreach ($dep_list['MODULE'] as $stats) {
             extract($stats);
-            $module = new PHPWS_Module($TITLE, false);
+            $module = new \phpws\PHPWS_Module($TITLE, false);
 
             if (!$module->isInstalled()) {
                 return false;

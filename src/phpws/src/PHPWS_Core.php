@@ -83,7 +83,7 @@ class PHPWS_Core
     public static function loadAsMod($use_file = true)
     {
         \phpws\PHPWS_Core::initCoreClass('Module.php');
-        $core_mod = new PHPWS_Module('core', $use_file);
+        $core_mod = new \phpws\PHPWS_Module('core', $use_file);
         return $core_mod;
     }
 
