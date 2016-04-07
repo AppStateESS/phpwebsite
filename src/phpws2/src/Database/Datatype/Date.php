@@ -25,4 +25,3 @@ class Date extends \phpws2\Database\Datatype {
 
 }
 
-?>

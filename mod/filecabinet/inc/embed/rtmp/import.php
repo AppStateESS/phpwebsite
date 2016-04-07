@@ -38,4 +38,3 @@ function rtmp_import($media)
     return true;
 }
 
-?>

@@ -481,5 +481,3 @@ abstract class Room_Base {
     }
 
 }
-
-?>

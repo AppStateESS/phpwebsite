@@ -7,4 +7,3 @@
 
 javascript('jquery');
 
-?>

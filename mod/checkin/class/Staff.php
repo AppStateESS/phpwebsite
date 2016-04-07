@@ -223,4 +223,3 @@ class Checkin_Staff {
     }
 }
 
-?>

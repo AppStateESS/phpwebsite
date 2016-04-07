@@ -418,5 +418,3 @@ class RSS_Admin
     }
 
 }
-
-?>

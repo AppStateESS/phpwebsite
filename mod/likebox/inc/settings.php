@@ -29,4 +29,3 @@ $settings['hide_cover']   = 0;
 $settings['show_posts']   = 1;
 $settings['show_faces']    = 1;
 
-?>

@@ -198,4 +198,3 @@ class PHAT_Checkbox extends PHAT_Element {
 }
 
 // END CLASS PHAT_Checkbox
-?>

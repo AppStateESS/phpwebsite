@@ -5,4 +5,3 @@ if(\phpws\PHPWS_Core::moduleExists('analytics')) {
     Analytics::injectTrackers();
 }
 
-?>

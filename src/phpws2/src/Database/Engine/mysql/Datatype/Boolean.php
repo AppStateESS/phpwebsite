@@ -14,4 +14,3 @@ class Boolean extends \phpws2\Database\Datatype\Int {
 
 }
 
-?>

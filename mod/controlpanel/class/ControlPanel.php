@@ -524,4 +524,3 @@ class PHPWS_ControlPanel {
 
 }
 
-?>

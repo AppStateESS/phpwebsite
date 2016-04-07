@@ -8,5 +8,3 @@
 
 define('MAX_BLOCK_FILE_WIDTH', 200);
 define('MAX_BLOCK_FILE_HEIGHT', 400);
-
-?>

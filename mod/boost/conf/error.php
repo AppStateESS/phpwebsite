@@ -21,4 +21,3 @@ $errors[BOOST_FAILED_BACKUP] = dgettext('boost',
         'Unable to make a backup of a local module file.');
 $errors[BOOST_FAILED_LOCAL_COPY] = dgettext('boost',
         'Failed to copy file to local directory.');
-?>

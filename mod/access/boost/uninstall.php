@@ -14,5 +14,3 @@ function access_uninstall(&$content)
     $content[] = dgettext('access', 'Access tables removed.');
     return TRUE;
 }
-
-?>

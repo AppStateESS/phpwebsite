@@ -424,5 +424,3 @@ class Tag extends Data
     }
 
 }
-
-?>

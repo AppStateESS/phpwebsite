@@ -41,5 +41,3 @@ function filecabinet_install(&$content)
 
     return true;
 }
-
-?>

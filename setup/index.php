@@ -118,5 +118,3 @@ function serverPass($content)
         display(dgettext('core', 'Checking server'), implode('<br />', $content));
     }
 }
-
-?>

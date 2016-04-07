@@ -11,4 +11,4 @@ $link[] = array('label' => 'Contact',
     'image' => 'contact.png',
     'tab' => 'content'
 );
-?>
+

@@ -124,5 +124,3 @@ class Whatsnew_Forms {
 
 
 }
-
-?>

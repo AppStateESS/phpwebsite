@@ -11,4 +11,3 @@ $input_classes = array('form-control');
 $label_classes = array('control-label');
 $group_classes = array('form-group');
 $button_classes = array('btn', 'btn-default');
-?>

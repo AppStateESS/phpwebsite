@@ -272,4 +272,3 @@ class Layout_Box {
     }
 
 }
-?>

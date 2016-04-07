@@ -198,4 +198,3 @@ class OpenWebAnalyticsTracker extends Tracker
     }
 }
 
-?>

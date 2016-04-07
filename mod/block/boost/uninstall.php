@@ -15,5 +15,3 @@ function block_uninstall(&$content)
     return true;
 }
 
-
-?>

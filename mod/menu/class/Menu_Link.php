@@ -377,4 +377,3 @@ class Menu_Link {
 
 }
 
-?>

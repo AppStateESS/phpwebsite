@@ -29,4 +29,3 @@ class Blob extends \phpws2\Database\Datatype {
 
 }
 
-?>

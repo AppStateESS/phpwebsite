@@ -92,5 +92,3 @@ abstract class Input extends Base {
         $this->placeholder = strip_tags($placeholder);
     }
 }
-
-?>

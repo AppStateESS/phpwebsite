@@ -7,4 +7,3 @@
 
 MiniAdmin::get();
 
-?>

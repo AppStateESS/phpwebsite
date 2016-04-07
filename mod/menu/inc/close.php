@@ -16,4 +16,3 @@ if (PHPWS_Settings::get('menu', 'display_type')) {
 }
 unset($GLOBALS['MENU_LINKS']);
 Menu::miniadmin();
-?>

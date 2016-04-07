@@ -162,5 +162,3 @@ function rss_update(&$content, $version)
 
     return true;
 }
-
-?>

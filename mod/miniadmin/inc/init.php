@@ -6,5 +6,3 @@
  */
 
 \phpws\PHPWS_Core::initModClass('miniadmin', 'MiniAdmin.php');
-
-?>

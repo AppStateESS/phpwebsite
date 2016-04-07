@@ -12,4 +12,4 @@ $about        = TRUE;
 $file_dir     = TRUE; // required for backup access files
 $priority     = 15;
 $dependency   = true;
-?>
+

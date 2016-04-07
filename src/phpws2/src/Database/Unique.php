@@ -26,4 +26,3 @@ class Unique extends Constraint implements TableCreateConstraint {
     }
 }
 
-?>

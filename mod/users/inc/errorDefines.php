@@ -55,5 +55,3 @@ define('USER_AUTH_MISSING',        'L2');
 define('USER_NOT_APPROVED',        'L3');
 define('USER_NOT_ACTIVE',          'L4');
 define('USER_DEACTIVATED',         'L5');
-
-?>

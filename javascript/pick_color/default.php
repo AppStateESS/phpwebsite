@@ -6,5 +6,3 @@
 javascript('jquery');
 
 $data['rand_id'] = 'cp' . rand();
-
-?>

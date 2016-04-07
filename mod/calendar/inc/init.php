@@ -6,4 +6,4 @@
  */
 \phpws\PHPWS_Core::initModClass('calendar', 'Calendar.php');
 \phpws\PHPWS_Core::initCoreClass('Time.php');
-?>
+

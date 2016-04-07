@@ -35,4 +35,3 @@ if (isset($data['view'])) {
 }
 
 $data['form_url'] = \PHPWS_Text::linkAddress('properties', $ar, true, false, false);
-?>

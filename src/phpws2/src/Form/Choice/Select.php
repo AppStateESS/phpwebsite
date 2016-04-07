@@ -104,5 +104,3 @@ class Select extends \phpws2\Form\Choice {
     }
 
 }
-
-?>

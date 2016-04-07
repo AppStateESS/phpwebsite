@@ -28,4 +28,3 @@ CKEDITOR.config.customConfig = '{$source_http}javascript/ckeditor/phpws_config.j
 </script>
 EOF;
 Layout::addJSHeader($header, 'ckeditor-head');
-?>

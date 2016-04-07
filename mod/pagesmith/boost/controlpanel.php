@@ -12,5 +12,3 @@ $link[] = array('label'       => 'PageSmith',
 		'image'       => 'pagesmith.png',
 		'tab'         => 'content'
 		);
-
-?>

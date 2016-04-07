@@ -126,5 +126,3 @@ class Image extends Tag {
         $this->alt = htmlentities($alt);
     }
 }
-
-?>

@@ -12,4 +12,3 @@ if (Current_User::allow('layout')) {
 }
  * 
  */
-?>

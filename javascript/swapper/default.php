@@ -48,5 +48,3 @@ foreach($data as $key=>$value) {
         unset($data[$key]);
     }
 }
-
-?>

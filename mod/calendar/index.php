@@ -20,5 +20,3 @@ if ( ( isset($_REQUEST['aop']) || isset($_REQUEST['tab']) ) && Current_User::all
 } else {
     $Calendar->user();
 }
-
-?>

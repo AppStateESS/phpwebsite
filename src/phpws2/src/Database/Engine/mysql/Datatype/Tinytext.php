@@ -19,4 +19,3 @@ namespace phpws2\Database\Engine\mysql\Datatype;
 
 class Tinytext extends Text {}
 
-?>

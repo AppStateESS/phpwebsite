@@ -49,4 +49,3 @@ function pulse_update(&$content, $currentVersion)
     return TRUE;
 }
 
-?>

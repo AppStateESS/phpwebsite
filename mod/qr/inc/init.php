@@ -5,4 +5,3 @@
 \phpws\PHPWS_Core::requireInc('qr', 'defines.php');
 \phpws\PHPWS_Core::initModClass('qr', 'QR.php');
 
-?>

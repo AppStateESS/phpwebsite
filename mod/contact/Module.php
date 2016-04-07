@@ -87,4 +87,3 @@ class Module extends \Module implements \SettingDefaults
 
 }
 
-?>

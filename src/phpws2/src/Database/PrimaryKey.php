@@ -36,4 +36,3 @@ class PrimaryKey extends Constraint implements TableCreateConstraint {
 
 }
 
-?>

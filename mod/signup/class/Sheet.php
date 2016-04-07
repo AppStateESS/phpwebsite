@@ -298,4 +298,3 @@ class Signup_Sheet {
 
 }
 
-?>

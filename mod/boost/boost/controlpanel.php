@@ -12,4 +12,3 @@ $link[] = array('label' => dgettext('boost', 'Boost'),
     'image' => 'boost.png',
     'tab' => 'admin'
 );
-?>

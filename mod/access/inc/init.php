@@ -14,4 +14,3 @@ if (PHPWS_Settings::get('access', 'forward_ids')) {
 if (isset($GLOBALS['Forward'])) {
     Access::forward();
 }
-?>

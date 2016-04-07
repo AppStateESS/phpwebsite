@@ -60,4 +60,3 @@ if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'ShowSettings') {
     Layout::add($settingsView->show());
 }
 
-?>

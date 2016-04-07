@@ -2,7 +2,6 @@
 
 namespace phpws2;
 
-
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package Global
@@ -14,11 +13,12 @@ namespace phpws2;
  * either a GET (requesting a view or response), a POST (submission of information
  * leading to change in the system), or a PUT (creation of a new item n the system).
  */
-class Request extends Data {
+class Request extends Data
+{
+
     /**
      * Constant defining a GET request was sent.
      */
-
     const GET = 'GET';
 
     /**
@@ -357,8 +357,7 @@ class Request extends Data {
      */
     public function setMethod($method)
     {
-        if (in_array($method,
-                        array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
+        if (in_array($method, array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
             $this->method = $method;
         } else {
             throw new \Exception(t('Unknown state type'));
@@ -440,8 +439,7 @@ class Request extends Data {
         $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
 
         return new Request(
-                $url, $this->getMethod(), $this->getRequestVars(),
-                $this->getRawData(), $this->getAccept());
+                $url, $this->getMethod(), $this->getRequestVars(), $this->getRawData(), $this->getAccept());
     }
 
     /**
@@ -513,5 +511,3 @@ class Request extends Data {
     }
 
 }
-
-?>

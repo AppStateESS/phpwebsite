@@ -1202,5 +1202,3 @@ function manager_lower_methods(&$item, $key)
 {
     $item = strtolower($item);
 }
-
-?>

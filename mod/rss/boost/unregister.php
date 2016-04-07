@@ -18,5 +18,3 @@ function rss_unregister($module, &$content)
         return TRUE;
     }
 }
-
-?>

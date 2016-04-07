@@ -185,4 +185,3 @@ class Blog_Form
 
 }
 
-?>

@@ -301,4 +301,3 @@ class PHPWS_Panel_Link {
 
 }
 
-?>

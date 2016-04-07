@@ -722,5 +722,3 @@ function fc_update_parent_links()
     // remove superfluous column
     PHPWS_Error::logIfError($db->dropTableColumn('parent_id'));
 }
-
-?>

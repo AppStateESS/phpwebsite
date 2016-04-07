@@ -967,5 +967,3 @@ class FC_File_Manager
     }
 
 }
-
-?>

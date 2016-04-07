@@ -460,4 +460,3 @@ function userUpdateFiles($files, &$content)
     $content[] = '';
 }
 
-?>

@@ -85,5 +85,3 @@ class PS_Block extends PS_Section {
     }
 
 }
-
-?>

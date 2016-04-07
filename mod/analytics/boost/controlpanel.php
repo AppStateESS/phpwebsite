@@ -13,4 +13,3 @@ $link[] = array('label'       => 'Analytics',
 		'tab'         => 'admin'
 		);
 
-?>

@@ -668,5 +668,3 @@ class Calendar_Schedule {
     }
 
 }
-
-?>

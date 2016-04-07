@@ -22,5 +22,3 @@ if ( ( isset($_REQUEST['command']) || isset($_REQUEST['tab']) ) && Current_User:
 } else {
     \phpws\PHPWS_Core::errorPage('404');
 }
-
-?>

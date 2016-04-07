@@ -343,5 +343,3 @@ abstract class Module extends Data implements Controller {
     }
 
 }
-
-?>

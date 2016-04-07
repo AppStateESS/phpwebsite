@@ -10,4 +10,3 @@
 $channel['title'] = 'Webpages';
 $channel['description'] = 'News and Information from this site';
 
-?>

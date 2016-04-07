@@ -13,5 +13,3 @@ if (PHPWS_Settings::get('blog', 'home_page_display')) {
 } else {
     Blog_User::showSide();
 }
-
-?>

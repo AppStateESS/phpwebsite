@@ -50,4 +50,3 @@ if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'phatform') {
 
 }
 
-?>

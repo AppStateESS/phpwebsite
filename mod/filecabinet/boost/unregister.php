@@ -13,5 +13,3 @@ function filecabinet_unregister($module, &$content)
     $content[] = dgettext('filecabinet', 'Unregistered from File Cabinet.');
     return true;
 }
-
-?>

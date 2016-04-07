@@ -14,4 +14,4 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/search/check.x
 $about        = TRUE;
 $priority     = 50;
 $dependency   = true;
-?>
+

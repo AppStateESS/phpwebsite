@@ -49,4 +49,4 @@ class AddThisView {
         \Layout::add($content, 'addthis', 'DEFAULT');
     }
 }
-?>
+

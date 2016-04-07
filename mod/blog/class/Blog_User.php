@@ -333,5 +333,3 @@ class Blog_User
     }
 
 }
-
-?>

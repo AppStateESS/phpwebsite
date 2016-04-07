@@ -362,5 +362,3 @@ class PHPWS_Pager {
         unset($this->returnData);
     }
 } // END CLASS PHPWS_Pager
-
-?>

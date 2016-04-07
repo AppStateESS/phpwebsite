@@ -290,5 +290,3 @@ class Roommate extends Room_Base {
     }
 
 }
-
-?>

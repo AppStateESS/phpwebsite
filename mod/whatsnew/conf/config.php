@@ -24,6 +24,3 @@
 
 //define('WHATSNEW_DATE_FORMAT', '%H:%M, %A, %B %e');
 define('WHATSNEW_DATE_FORMAT', '%H:%M %D');
-
-
-?>

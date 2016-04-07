@@ -177,4 +177,3 @@ function checkinUpdateFiles($files, &$content)
     $content[] = "    " . implode("\n    ", $files);
 }
 
-?>

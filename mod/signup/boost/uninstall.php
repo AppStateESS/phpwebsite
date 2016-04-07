@@ -11,4 +11,3 @@ function signup_uninstall(&$content) {
     $content[] = dgettext('signup', 'Signup tables dropped.');
     return true;
 }
-?>

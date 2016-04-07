@@ -33,5 +33,3 @@ function showFP()
         return null;
     }
 }
-
-?>

@@ -158,5 +158,3 @@ function createLocalAuthScript()
     PHPWS_Settings::save('users');
     return true;
 }
-
-?>

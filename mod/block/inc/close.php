@@ -24,4 +24,4 @@ if (Current_User::allow('block')) {
                 '" data-key-id="'.$key->id.'" id="add-block"><i class="fa fa-plus"></i> Add block here</a>');
     }
 }
-?>
+

@@ -21,4 +21,4 @@ class Site extends \Resource {
     }
 
 }
-?>
+

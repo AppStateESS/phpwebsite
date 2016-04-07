@@ -17,4 +17,3 @@ $permissions['scripting']        = '<del>' . dgettext('users', 'Allow script tag
  * Also controls individual user authorization setting
  */
 $permissions['settings']         = dgettext('users', 'Authorization/Settings');
-?>

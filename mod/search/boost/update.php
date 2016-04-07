@@ -128,5 +128,3 @@ function searchUpdateFiles($files, &$content)
     $content[] = "    " . implode("\n    ", $files);
     $content[] = '';
 }
-
-?>

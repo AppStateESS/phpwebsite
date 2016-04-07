@@ -39,4 +39,3 @@ class HtmlErrorView extends \Template {
 
 }
 
-?>

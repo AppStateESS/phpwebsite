@@ -174,4 +174,3 @@ function branch_update_files($files, &$content)
     $content[] = '';
 }
 
-?>

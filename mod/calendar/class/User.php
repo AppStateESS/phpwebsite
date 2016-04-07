@@ -1174,4 +1174,3 @@ class Calendar_User
 
 }
 
-?>

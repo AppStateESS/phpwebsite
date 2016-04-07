@@ -88,5 +88,3 @@ class PHPWS_Cache {
     }
 
 }
-
-?>

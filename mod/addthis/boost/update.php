@@ -17,4 +17,3 @@ EOF;
     }
     return TRUE;
 }
-?>

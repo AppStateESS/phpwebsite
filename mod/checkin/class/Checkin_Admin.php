@@ -1813,4 +1813,3 @@ class Checkin_Admin extends Checkin {
 
 }
 
-?>

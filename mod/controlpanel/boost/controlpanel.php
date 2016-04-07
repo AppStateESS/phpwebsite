@@ -23,4 +23,3 @@ $tabs[] = array('id' => 'unsorted',
     'title' => dgettext('controlpanel', 'Unsorted'),
     'link' => 'index.php?module=controlpanel',
 );
-?>

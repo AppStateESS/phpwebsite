@@ -19,5 +19,3 @@ class SeeOtherResponse extends RedirectResponse
         return 303;
     }
 }
-
-?>

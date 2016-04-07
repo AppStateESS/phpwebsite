@@ -13,4 +13,3 @@ $priority     = 50;
 $dependency   = false;
 $image_dir    = true;
 
-?>

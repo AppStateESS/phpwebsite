@@ -16,5 +16,3 @@ $alternate_search_engine['bing']['url'] = 'http://www.bing.com/search?q=%s+url%3
 
 $alternate_search_engine['yahoo']['title']  = 'Yahoo';
 $alternate_search_engine['yahoo']['url']  = 'http://search.yahoo.com/search?va=%s&vs=%s';
-
-?>

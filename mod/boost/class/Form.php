@@ -315,4 +315,3 @@ class Boost_Form {
 
 }
 
-?>

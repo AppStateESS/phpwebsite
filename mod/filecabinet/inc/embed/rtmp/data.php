@@ -6,5 +6,3 @@
  */
 
 $embed_name  = 'RTMP Streaming Video';
-
-?>

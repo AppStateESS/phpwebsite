@@ -1044,4 +1044,3 @@ class PHPWS_Boost
 
 }
 
-?>

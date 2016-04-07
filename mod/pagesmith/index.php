@@ -23,6 +23,3 @@ if (isset($_REQUEST['uop'])) {
 } else {
     \phpws\PHPWS_Core::errorPage('404');
 }
-
-
-?>

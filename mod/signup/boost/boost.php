@@ -12,6 +12,3 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/signup/check.x
 $about        = true;
 $priority     = 50;
 $dependency   = true;
-
-
-?>

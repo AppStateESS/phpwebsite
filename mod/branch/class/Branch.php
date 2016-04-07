@@ -407,4 +407,3 @@ class Branch {
 
 }
 
-?>

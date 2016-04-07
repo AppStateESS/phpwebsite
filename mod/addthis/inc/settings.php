@@ -24,4 +24,3 @@ $settings['fb_like_enabled']     = 1;
 $settings['google_plus_enabled'] = 1;
 $settings['share_bar_enabled']   = 1;
 
-?>

@@ -211,4 +211,3 @@ class PHAT_Textarea extends PHAT_Element {
 }
 
 // END CLASS PHAT_Textarea
-?>

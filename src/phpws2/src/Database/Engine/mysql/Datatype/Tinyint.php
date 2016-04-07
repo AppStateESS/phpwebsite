@@ -24,4 +24,3 @@ class Tinyint extends \phpws2\Database\Datatype\Int {
     protected $unsigned_limit_high = 255;
 }
 
-?>

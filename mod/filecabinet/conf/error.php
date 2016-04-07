@@ -30,5 +30,3 @@ $errors[FC_THUMBNAIL_NOT_WRITABLE] = dgettext('filecabinet', 'Thumbnail director
 $errors[FC_FFMPEG_NOT_FOUND]       = dgettext('filecabinet', 'FFMpeg file not found.');
 $errors[FC_DUPLICATE_FILE]         = dgettext('filecabinet', 'Duplicate file found.');
 $errors[FC_FILE_TYPE_MISMATCH]     = dgettext('filecabinet', 'Unacceptable file type.');
-
-?>

@@ -69,5 +69,3 @@ define('FC_NO_RIGHTS', PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/no_file_select.p
 define('FC_VIDEO_TYPES', 'flv,mp4,mp3,ogg,webm');
 
 define('FC_ICON_PAGER_LINKS', true);
-
-?>

@@ -23,5 +23,3 @@
  */
 
 $use_permissions  = true;
-
-?>

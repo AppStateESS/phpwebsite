@@ -22,6 +22,3 @@ javascript('jquery');
 
 $default['panel_width'] = 400;
 $default['panel_height'] = 250;
-
-
-?>

@@ -592,4 +592,3 @@ final class Current_User {
 
 }
 
-?>

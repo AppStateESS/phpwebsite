@@ -690,6 +690,3 @@ function paginateDataArray($content, $link_back, $default_limit=10, $make_sectio
         return array("0"=>"$string_of_items", "1"=>"$nav_links", "2"=>"$section_info");
     }
 }// END FUNC paginateDataArray()
-
-
-?>

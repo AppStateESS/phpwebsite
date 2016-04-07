@@ -29,5 +29,3 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/whatsnew/check
 $about        = true;
 $priority     = 50;
 $dependency   = true;
-
-?>

@@ -453,5 +453,3 @@ class PHAT_FormManager extends PHPWS_Manager {
     }// END FUNC action
 
 }// END CLASS PHAT_FormManager
-
-?>

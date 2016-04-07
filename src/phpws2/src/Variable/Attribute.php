@@ -22,4 +22,3 @@ class Attribute extends \Variable\String {
     }
 }
 
-?>

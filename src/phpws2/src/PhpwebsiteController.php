@@ -285,5 +285,3 @@ class PhpwebsiteController implements Controller
     }
 
 }
-
-?>

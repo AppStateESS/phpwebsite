@@ -262,5 +262,3 @@ class User_Settings {
     }
 
 }
-
-?>

@@ -266,4 +266,3 @@ class pgsql_PHPWS_SQL {
 
 }
 
-?>

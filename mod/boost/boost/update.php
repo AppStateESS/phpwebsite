@@ -147,5 +147,3 @@ function update_boost_files($files, &$content)
     $content[] = ' ' . implode("\n    ", $files);
     $content[] = '';
 }
-
-?>

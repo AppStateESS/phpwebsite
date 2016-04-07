@@ -214,5 +214,3 @@ function signupUpdateFiles($files, &$content)
     }
     $content[] = "    " . implode("\n    ", $files);
 }
-
-?>

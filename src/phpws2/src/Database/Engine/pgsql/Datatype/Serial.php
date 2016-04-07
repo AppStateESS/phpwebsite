@@ -30,4 +30,3 @@ class Serial extends \phpws2\Database\Datatype\Integer {
     }
 }
 
-?>

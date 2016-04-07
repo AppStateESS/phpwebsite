@@ -2872,4 +2872,4 @@ if (!class_exists('QRcode', false)) {
 	} // end QRcode class
 
 } // END OF "class_exists QRcode"
-?>
+

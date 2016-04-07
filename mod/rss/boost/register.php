@@ -10,5 +10,3 @@ function rss_register($module, &$content)
     \phpws\PHPWS_Core::initModClass('rss', 'RSS.php');
     return RSS::registerModule($module, $content);
 }
-
-?>

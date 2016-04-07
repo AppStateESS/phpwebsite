@@ -10,6 +10,3 @@
 
 define('MENU_CURRENT_LINK_STYLE', 'current-link active');
 
-
-
-?>

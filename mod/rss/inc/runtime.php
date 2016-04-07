@@ -9,5 +9,3 @@
 if (!isset($_REQUEST['module'])) {
     RSS::showFeeds();
 }
-
-?>

@@ -63,5 +63,3 @@ class AcceptMediaRange
         return $this->params;
     }
 }
-
-?>

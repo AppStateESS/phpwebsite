@@ -122,4 +122,3 @@ if ($js) {
     $finalContent = $boostPanel->display();
     Layout::add(PHPWS_ControlPanel::display($finalContent));
 }
-?>

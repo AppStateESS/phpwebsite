@@ -80,5 +80,3 @@ class Layout_User_Settings {
     }
 
 }
-
-?>

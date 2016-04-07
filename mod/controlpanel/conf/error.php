@@ -9,4 +9,3 @@ CP_MISSING_TITLE  => dgettext('controlpanel', 'Tab is missing a title.'),
 CP_MISSING_LINK   => dgettext('controlpanel', 'Tab is missing a link address.'),
 CP_NO_TABS        => dgettext('controlpanel', 'Unable to pull control panel tabs from database.')
 );
-?>

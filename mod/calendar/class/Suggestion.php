@@ -152,5 +152,3 @@ class Calendar_Suggestion extends Calendar_Event {
 
 
 }
-
-?>
