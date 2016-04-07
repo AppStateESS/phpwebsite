@@ -17,4 +17,3 @@ if($settings->get('enabled') == 1){
     $view->view();
 }
 
-?>

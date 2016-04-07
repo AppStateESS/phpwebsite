@@ -23,5 +23,3 @@ class DateTime extends Date {
     protected $format = '%Y-%m-%d %H:%M:%S';
 
 }
-
-?>

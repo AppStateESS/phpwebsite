@@ -58,4 +58,3 @@ class File extends \Variable\String {
 
 }
 
-?>

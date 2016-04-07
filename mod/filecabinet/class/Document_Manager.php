@@ -234,5 +234,3 @@ class FC_Document_Manager
     }
 
 }
-
-?>

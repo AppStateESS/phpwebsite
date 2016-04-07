@@ -748,6 +748,3 @@ class PHAT_Report {
     }// END FUNC paginateDataArray()
 
 }// END CLASS PHAT_Report
-
-
-?>

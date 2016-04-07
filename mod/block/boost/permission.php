@@ -11,4 +11,3 @@ $permissions['delete_block'] = dgettext('block', 'Delete block');
 
 $item_permissions = TRUE;
 
-?>

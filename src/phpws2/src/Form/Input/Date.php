@@ -86,5 +86,3 @@ class Date extends Text {
     }
 
 }
-
-?>

@@ -19,5 +19,3 @@ abstract class Notification
 
     public abstract function toString();
 }
-
-?>

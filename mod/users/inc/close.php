@@ -13,4 +13,3 @@ if (\phpws\PHPWS_Core::getCurrentModule() != 'users'){
 }
 
 Current_User::permissionMenu();
-?>

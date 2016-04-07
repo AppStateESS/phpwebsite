@@ -28,5 +28,3 @@ define('RSS_FEED_REFRESH', 3600);
 define('RSS_MAX_FEED', 50);
 
 define('RSS_SHORT_DESC_SIZE', 70);
-
-?>

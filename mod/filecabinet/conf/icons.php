@@ -51,4 +51,3 @@ $icon_list = array('application/asx'          => 'video.png',
                    'video/x-tango'            => 'video.png' ,
                    'video/x-vif'              => 'video.png');
 
-?>

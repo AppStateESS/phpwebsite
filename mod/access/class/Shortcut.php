@@ -214,5 +214,3 @@ class Access_Shortcut
     }
 
 }
-
-?>

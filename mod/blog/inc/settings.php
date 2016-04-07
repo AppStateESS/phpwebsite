@@ -23,4 +23,3 @@ $settings['logged_users_only']       = 0;
 $settings['comment_script']          = '';
 $settings['show_posted_date']        = true;
 $settings['show_posted_by']          = true;
-?>

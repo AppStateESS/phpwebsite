@@ -885,5 +885,3 @@ class Branch_Admin {
     }
 
 }
-
-?>

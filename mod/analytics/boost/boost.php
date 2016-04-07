@@ -14,4 +14,4 @@ $about        = true;
 $priority     = 50;
 $dependency   = false;
 $image_dir    = false;
-?>
+

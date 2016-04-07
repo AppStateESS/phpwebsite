@@ -163,5 +163,3 @@ $all_file_types['xlsx']['vb']    = 'Microsoft Excel 2007 Spreadsheet';
 $all_file_types['zip']['mct'][] = 'application/x-zip';
 $all_file_types['zip']['fi'][]  = 'zip archive';
 $all_file_types['zip']['vb']    = 'Compressed Zip Archive';
-
-?>

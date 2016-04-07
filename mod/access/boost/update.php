@@ -219,5 +219,3 @@ function access_update(&$content, $version)
 
     return true;
 }
-
-?>

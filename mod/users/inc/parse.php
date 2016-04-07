@@ -22,5 +22,3 @@ function new_account($item)
 
     return PHPWS_Text::moduleLink($link, 'users', $signup_vars);
 }
-
-?>

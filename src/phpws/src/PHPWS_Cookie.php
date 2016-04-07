@@ -42,5 +42,3 @@ class PHPWS_Cookie {
         }
     }
 }
-
-?>

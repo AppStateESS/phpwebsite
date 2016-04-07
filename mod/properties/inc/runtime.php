@@ -59,5 +59,3 @@ function purgeProperties()
         $db->delete();
     }
 }
-
-?>

@@ -264,5 +264,3 @@ abstract class Base extends \Tag {
     }
 
 }
-
-?>

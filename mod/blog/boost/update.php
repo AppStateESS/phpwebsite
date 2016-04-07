@@ -362,5 +362,3 @@ function blogUpdateFiles($files, &$content)
     }
     $content[] = "     " . implode("\n     ", $files);
 }
-
-?>

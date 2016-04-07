@@ -186,4 +186,3 @@ class PHAT_Radiobutton extends PHAT_Element {
 }
 
 // END CLASS PHAT_Radiobutton
-?>

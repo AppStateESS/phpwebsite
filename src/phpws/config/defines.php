@@ -323,4 +323,4 @@ if (!defined('ALLOW_SCRIPT_TAGS')) {
  *  </Location>
  */
 //define('COSIGN_LOGOUT_URL', 'http://cosign.example.com/cosign-bin/logout');
-?>
+

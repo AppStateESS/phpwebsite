@@ -32,4 +32,4 @@ if (Current_User::isLogged() && PHPWS_Settings::get('users', 'session_warning'))
     \Layout::addJSHeader("<script type='text/javascript'>var sess_expirationMinutes = $timeout;var sess_warningMinutes = $warning_minutes;</script>"
             . "<script type='text/javascript' src='$path'></script>");
 }
-?>
+

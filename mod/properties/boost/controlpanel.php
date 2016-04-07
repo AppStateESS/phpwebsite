@@ -24,5 +24,3 @@ $link[] = array('label' => 'Properties',
         'description' => dgettext('Properties', 'Manage off-campus properties.'),
         'image'       => 'properties.gif',
         'tab'         => 'content');
-
-?>

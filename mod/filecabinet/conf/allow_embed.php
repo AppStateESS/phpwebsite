@@ -6,5 +6,3 @@
  */
 
 $allowed_embeds[] = 'youtube';
-
-?>

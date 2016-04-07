@@ -515,4 +515,3 @@ class Layout_Admin
     }
 }
 
-?>

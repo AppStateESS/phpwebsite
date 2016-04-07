@@ -9,5 +9,3 @@
 
 $channel['title'] = 'Blog Entries';
 $channel['description'] = 'Personal musings on things relevant to this web site.';
-
-?>

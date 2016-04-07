@@ -106,4 +106,3 @@ class Link extends \Tag {
 
 }
 
-?>

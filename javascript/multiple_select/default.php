@@ -27,6 +27,3 @@ if (empty($data['options']) || !is_array($data['options'])) {
 }
 
 $default['add'] = '+';
-
-
-?>

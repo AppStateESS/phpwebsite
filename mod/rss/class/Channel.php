@@ -227,5 +227,3 @@ class RSS_Channel {
     }
 
 }
-
-?>

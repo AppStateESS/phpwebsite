@@ -12,4 +12,4 @@ $unregister   = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/rss/check.xml';
 $about        = TRUE;
 $dependency   = true;
-?>
+

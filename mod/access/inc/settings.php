@@ -10,4 +10,4 @@ $settings = array('allow_deny_enabled' => 1,
                   'allow_all'         =>  1,
                   'forward_ids'       => 0
 );
-?>
+

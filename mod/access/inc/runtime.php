@@ -11,4 +11,3 @@ if(isset($GLOBALS['Forward']) && !array_key_exists('module', $_REQUEST)) {
     \phpws\PHPWS_Core::errorPage(404);
 }
 
-?>

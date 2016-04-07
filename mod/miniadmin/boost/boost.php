@@ -12,4 +12,3 @@ $about        = TRUE;
 $priority     = 99;
 $dependency   = true;
 
-?>

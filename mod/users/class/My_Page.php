@@ -141,5 +141,3 @@ class My_Page {
     }
 
 }
-
-?>

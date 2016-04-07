@@ -16,4 +16,4 @@ function analytics_uninstall(&$content)
     $content[] = dgettext('analytics', 'Analytics tables removed.');
     return TRUE;
 }
-?>
+

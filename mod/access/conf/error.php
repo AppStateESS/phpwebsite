@@ -12,4 +12,3 @@ ACCESS_FILES_DIR         => dgettext('access', 'The files/access/ directory is n
 ACCESS_HTACCESS_WRITE    => dgettext('access', 'Unable to write .htaccess file.'),
 ACCESS_HTACCESS_MISSING  => dgettext('access', '.htaccess file is missing.')
 );
-?>

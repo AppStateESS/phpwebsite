@@ -158,5 +158,3 @@ class PHPWS_Error
     }
 
 }
-
-?>

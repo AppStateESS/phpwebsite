@@ -100,5 +100,3 @@ class Option extends \Tag {
     }
 
 }
-
-?>

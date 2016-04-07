@@ -1033,4 +1033,3 @@ function getEmbedded($stuff)
     return call_user_func_array($function_name, $parameters);
 }
 
-?>
