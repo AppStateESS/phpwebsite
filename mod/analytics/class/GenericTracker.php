@@ -14,7 +14,7 @@ class GenericTracker extends Tracker
 {
     public function track()
     {
-        throw new Exception('Cannot track with the GenericTracker.');
+        throw new \Exception('Cannot track with the GenericTracker.');
     }
 
     public function trackerType()
@@ -24,17 +24,17 @@ class GenericTracker extends Tracker
 
     public function addForm(PHPWS_Form &$form)
     {
-        throw new Exception('Cannot create or edit a GenericTracker.');
+        throw new \Exception('Cannot create or edit a GenericTracker.');
     }
 
     public function joinDb(PHPWS_DB &$db)
     {
-        throw new Exception('Cannot load a GenericTracker like that.');
+        throw new \Exception('Cannot load a GenericTracker like that.');
     }
 
     public function getFormTemplate()
     {
-        throw new Exception('Cannot create or edit a GenericTracker.');
+        throw new \Exception('Cannot create or edit a GenericTracker.');
     }
 
     public function getPagerTags()

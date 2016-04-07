@@ -108,7 +108,7 @@ class Access_Shortcut
         $db->addWhere('id', $this->id, '!=');
         $result = $db->select();
         if ($result) {
-            throw new Exception('Shortcut keyword already in use', 3);
+            throw new \Exception('Shortcut keyword already in use', 3);
         }
 
         $this->setKeyword($keyword, false);

@@ -44,7 +44,7 @@
             }
         
             if(!QRinput::check($mode, $size, $setData)) {
-                throw new Exception('Error m:'.$mode.',s:'.$size.',d:'.join(',',$setData));
+                throw new \Exception('Error m:'.$mode.',s:'.$size.',d:'.join(',',$setData));
                 return null;
             }
             
@@ -282,7 +282,7 @@
         public function __construct($version = 0, $level = QR_ECLEVEL_L)
         {
             if ($version < 0 || $version > QRSPEC_VERSION_MAX || $level > QR_ECLEVEL_H) {
-                throw new Exception('Invalid version no');
+                throw new \Exception('Invalid version no');
                 return NULL;
             }
             
@@ -300,7 +300,7 @@
         public function setVersion($version)
         {
             if($version < 0 || $version > QRSPEC_VERSION_MAX) {
-                throw new Exception('Invalid version no');
+                throw new \Exception('Invalid version no');
                 return -1;
             }
 
@@ -319,7 +319,7 @@
         public function setErrorCorrectionLevel($level)
         {
             if($level > QR_ECLEVEL_H) {
-                throw new Exception('Invalid ECLEVEL');
+                throw new \Exception('Invalid ECLEVEL');
                 return -1;
             }
 
@@ -351,11 +351,11 @@
         public function insertStructuredAppendHeader($size, $index, $parity)
         {
             if( $size > MAX_STRUCTURED_SYMBOLS ) {
-                throw new Exception('insertStructuredAppendHeader wrong size');
+                throw new \Exception('insertStructuredAppendHeader wrong size');
             }
             
             if( $index <= 0 || $index > MAX_STRUCTURED_SYMBOLS ) {
-                throw new Exception('insertStructuredAppendHeader wrong index');
+                throw new \Exception('insertStructuredAppendHeader wrong index');
             }
 
             $buf = array($size, $index, $parity);
@@ -619,7 +619,7 @@
                     
                 $ver = QRspec::getMinimumVersion((int)(($bits + 7) / 8), $this->level);
                 if($ver < 0) {
-                    throw new Exception('WRONG VERSION');
+                    throw new \Exception('WRONG VERSION');
                     return -1;
                 } else if($ver > $this->getVersion()) {
                     $this->setVersion($ver);

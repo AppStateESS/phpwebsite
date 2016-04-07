@@ -14,11 +14,11 @@ class PulseController
         if ($request->isVar('hash')) {
             $schedule_hash = $request->getVar('hash');
             if (preg_match('/\W/', $schedule_hash)) {
-                throw new Exception\PulseException('Improper schedule hash');
+                throw new \Exception\PulseException('Improper schedule hash');
             }
             $schedule = PulseFactory::pullReadyScheduleByHash($schedule_hash);
             if (empty($schedule)) {
-                throw new Exception\PulseException('Schedule hash not found: ' . $schedule_hash);
+                throw new \Exception\PulseException('Schedule hash not found: ' . $schedule_hash);
             } else {
                 $schedules[] = $schedule;
             }

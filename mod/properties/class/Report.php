@@ -135,7 +135,7 @@ class Report {
         $result = $db->delete();
         if (\PHPWS_Error::isError($result)) {
             \PHPWS_Error::log($result);
-            throw new Exception('Could not delete report');
+            throw new \Exception('Could not delete report');
         }
         return true;
     }

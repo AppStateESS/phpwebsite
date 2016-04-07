@@ -128,7 +128,6 @@ class Cabinet_Form
             $this->cabinet->content = dgettext('filecabinet', 'Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions.');
             return;
         }
-
         $allowed_file_types = $this->cabinet->getAllowedTypes();
 
         $result = PHPWS_File::readDirectory($classify_dir, false, true);
@@ -623,7 +622,6 @@ If you are sure, type Y-E-S below.'),
         $image_types = explode(',', PHPWS_Settings::get('filecabinet', 'image_files'));
         $media_types = explode(',', PHPWS_Settings::get('filecabinet', 'media_files'));
         $doc_types = explode(',', PHPWS_Settings::get('filecabinet', 'document_files'));
-
         $all_file_types = PHPWS_File::getAllFileTypes();
 
         $form = new PHPWS_Form('allowed-file-types');
