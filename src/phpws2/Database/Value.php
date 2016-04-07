@@ -19,7 +19,7 @@ class Value extends Column
     protected $splat = true;
 
     /**
-     * @param \Database\Table $table
+     * @param \phpws2\Database\Table $table
      * @param string $name
      * @param string $value
      */

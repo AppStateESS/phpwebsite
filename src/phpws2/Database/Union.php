@@ -14,8 +14,8 @@ class Union {
     public function __construct(array $db_array)
     {
         foreach ($db_array as $db) {
-            if (!($db instanceof \Database\DB)) {
-                throw new \Exception(t('createUnion only accepts \Database\DB object arrays'));
+            if (!($db instanceof \phpws2\Database\DB)) {
+                throw new \Exception(t('createUnion only accepts \phpws2\Database\DB object arrays'));
             }
         }
         $this->db_stack = $db_array;
@@ -28,7 +28,7 @@ class Union {
         }
         $f_query = '(' . implode(') UNION (', $query) . ')';
 
-        $qdb = \Database::newDB();
+        $qdb = \phpws2\Database::newDB();
         $qdb->loadStatement($f_query);
         return $qdb->fetchAll();
     }

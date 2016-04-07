@@ -17,6 +17,6 @@ namespace phpws2\Database\Engine\mysql\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Longtext extends \Database\Datatype\Text {}
+class Longtext extends \phpws2\Database\Datatype\Text {}
 
 ?>

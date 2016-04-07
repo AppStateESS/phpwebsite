@@ -98,7 +98,7 @@ class Template implements View
     public function setThemeFile($module, $file)
     {
         if (!class_exists('Layout')) {
-            $db = \Database::getDB();
+            $db = \phpws2\Database::getDB();
             $lc = $db->addTable('layout_config');
             $row = $db->selectOneRow();
             $current_theme = $row['default_theme'];

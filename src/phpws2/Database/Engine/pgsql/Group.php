@@ -8,7 +8,7 @@ namespace phpws2\Database\Engine\pgsql;
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Group extends \Database\Group {
+class Group extends \phpws2\Database\Group {
 
     /**
      * GROUP_SET is supported in Postgresql but the code isn't here yet

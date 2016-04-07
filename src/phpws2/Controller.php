@@ -26,5 +26,5 @@ interface Controller
      *
      * @param $request Request The Request Object
      */
-    public function execute(Request $request);
+    public function execute(\phpws2\Request $request);
 }

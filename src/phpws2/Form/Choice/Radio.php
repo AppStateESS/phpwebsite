@@ -9,7 +9,7 @@ namespace phpws2\Form\Choice;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Radio extends \Form\Choice {
+class Radio extends \phpws2\Form\Choice {
 
     /**
      * Radio options have breaks between them.
@@ -25,7 +25,7 @@ class Radio extends \Form\Choice {
     public function addOptions(array $options)
     {
         foreach ($options as $value => $label) {
-            $option = new \Form\Input\Radio($this->getName(), $value, $label);
+            $option = new \phpws2\Form\Input\Radio($this->getName(), $value, $label);
             if ($this->selection == $value) {
                 $option->setSelection(true);
             }

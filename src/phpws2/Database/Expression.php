@@ -12,7 +12,7 @@ namespace phpws2\Database;
  * query.
  *
  * Example:
- * $DB = \Database::newDB()();
+ * $DB = \phpws2\Database::newDB()();
  * $foo = $DB->addTable('foo');
  * $expression = $DB->getExpression('sounds like'); //mysql specific operator
  * $foo->addWhere('some_value', 'orange', $expression);

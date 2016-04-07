@@ -48,7 +48,7 @@ abstract class Package {
 
     public function isInstalled()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $modules = $db->addTable('Modules');
         $modules->addWhere('title', $this->title);
         $db->loadSelectStatement();
@@ -71,11 +71,11 @@ abstract class Package {
      * When creating foreign keys, the order of the addition is very important.
      * The parent tables must be added prior to the child tables.
      * @param string $table_name
-     * @return \Database\Table
+     * @return \phpws2\Database\Table
      */
     public function addTable($table_name)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $table = $db->buildTable($table_name);
         $this->tables[$table->getName()] = $table;
         return $table;
@@ -104,7 +104,7 @@ abstract class Package {
             $this->createTables();
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('Modules');
         $tbl->addValue('title', $this->title->get());
         $tbl->addValue('version', $this->version->get());
@@ -120,7 +120,7 @@ abstract class Package {
         if ($this->remove_tables && !empty($this->tables)) {
             $this->dropTables();
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('Modules');
         $tbl->addWhere('title', $this->title->get());
         $db->delete();

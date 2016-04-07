@@ -7,7 +7,7 @@ namespace phpws2\Database\Engine\mysql;
  *
  * @author matt
  */
-class Table extends \Database\Table
+class Table extends \phpws2\Database\Table
 {
     private $storage_engine = 'InnoDB';
 
@@ -22,13 +22,13 @@ class Table extends \Database\Table
     /**
      * Adds an integer datatype with a primary key index to the table. It is
      * created when the table is built.
-     * @return \Database\Datatype\Integer
+     * @return \phpws2\Database\Datatype\Integer
      */
     public function addPrimaryIndexId()
     {
         $id = $this->addDatatype('id', 'int');
         $id->setAutoIncrement();
-        $pk = new \Database\PrimaryKey($id);
+        $pk = new \phpws2\Database\PrimaryKey($id);
         $this->addPrimaryKey($pk);
         return $id;
     }
@@ -161,7 +161,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
             throw new \Exception(t('Unable to retrieve information about column %s', $column_name));
         }
         $column_type = $schema['DATA_TYPE'];
-        $dt = \Database\Datatype::factory($this, $column_name, $column_type);
+        $dt = \phpws2\Database\Datatype::factory($this, $column_name, $column_type);
 
         $indexes = $this->getIndexes();
         if (!empty($indexes)) {
@@ -221,7 +221,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
     public function getLastPearSequence()
     {
         $seq_table_name = $this->getFullName(false) . '_seq';
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable($seq_table_name);
         $tbl->addField('id');
         $db->loadSelectStatement();
@@ -284,10 +284,10 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
 
     /**
      * Modifys the parameters of a datatype column.
-     * @param \Database\Datatype $old
-     * @param \Database\Datatype $new
+     * @param \phpws2\Database\Datatype $old
+     * @param \phpws2\Database\Datatype $new
      */
-    public function alter(\phpws2\Database\Datatype $old, \Database\Datatype $new)
+    public function alter(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
     {
         $table_name = $this->getFullName();
         $old_column_name = $old->getName();

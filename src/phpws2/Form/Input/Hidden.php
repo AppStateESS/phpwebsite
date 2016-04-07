@@ -10,7 +10,7 @@ namespace phpws2\Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Hidden extends \Form\Input {
+class Hidden extends \phpws2\Form\Input {
 
     /**
      * Value of the hidden element

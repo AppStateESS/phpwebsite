@@ -59,11 +59,11 @@ abstract class Datatype extends \Data
      * database engine type is checked first. This allows database specific data
      * type instructions to be used.
      *
-     * @param \Database\Table $table
+     * @param \phpws2\Database\Table $table
      * @param string $name Name of column/data type
      * @param string $type Data type
      * @param string $value Default value for column
-     * @return \Database\Datatype Returns an extension of Datatype
+     * @return \phpws2\Database\Datatype Returns an extension of Datatype
      * @throws \Exception
      */
     public static function factory(Table $table, $name, $type, $value = null)
@@ -82,9 +82,9 @@ abstract class Datatype extends \Data
         $engine_file = PHPWS_SOURCE_DIR . "Global/Database/Engine/$engine/Datatype/$class_name.php";
 
         if (is_file($engine_file)) {
-            $datatype_name = "\Database\Engine\\$engine\Datatype\\$class_name";
+            $datatype_name = "\phpws2\Database\Engine\\$engine\Datatype\\$class_name";
         } elseif (is_file($class_file)) {
-            $datatype_name = "\Database\Datatype\\$class_name";
+            $datatype_name = "\phpws2\Database\Datatype\\$class_name";
         } else {
             throw new \Exception(\t('Unknown class name "%s"', $class_name));
         }

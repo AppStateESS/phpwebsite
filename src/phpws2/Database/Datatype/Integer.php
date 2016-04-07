@@ -18,7 +18,7 @@ namespace phpws2\Database\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Integer extends \Database\Datatype {
+class Integer extends \phpws2\Database\Datatype {
 
     /**
      * Loads an integer variable into the default parameter.

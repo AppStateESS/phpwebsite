@@ -12,7 +12,7 @@ namespace phpws2\Database\Datatype;
  *
  * @author matt
  */
-class Date extends \Database\Datatype {
+class Date extends \phpws2\Database\Datatype {
 
     /**
      * Loads an string variable into the default parameter.

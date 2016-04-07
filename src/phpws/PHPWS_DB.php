@@ -1294,7 +1294,7 @@ class PHPWS_DB
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
         $result = \phpws\PHPWS_DB::exec($query);
 
-        if (PEAR::isError($result)) {
+        if (\PEAR::isError($result)) {
             return $result;
         } else {
             $this->affected_count = $result;
@@ -1332,7 +1332,7 @@ class PHPWS_DB
         $query = "UPDATE $table SET " . implode(', ', $columns) . " $where $order $limit";
         $result = \phpws\PHPWS_DB::exec($query);
 
-        if (PEAR::isError($result)) {
+        if (\PEAR::isError($result)) {
             return $result;
         } else {
             $this->affected_count = $result;
@@ -1687,7 +1687,7 @@ class PHPWS_DB
         $query = "UPDATE $table SET $column_name = $column_name $math $where";
         $result = \phpws\PHPWS_DB::query($query);
 
-        if (PEAR::isError($result)) {
+        if (\PEAR::isError($result)) {
             return $result;
         } else {
             return true;
@@ -1727,7 +1727,7 @@ class PHPWS_DB
         $sql = "DELETE FROM $table $where $order $limit";
         $result = \phpws\PHPWS_DB::exec($sql);
 
-        if (PEAR::isError($result)) {
+        if (\PEAR::isError($result)) {
             return $result;
         } else {
             $this->affected_count = $result;
@@ -2050,7 +2050,7 @@ class PHPWS_DB
                 \phpws\PHPWS_DB::homogenize($query);
                 $result = \phpws\PHPWS_DB::query($query);
 
-                if (PEAR::isError($result)) {
+                if (\PEAR::isError($result)) {
                     if ($report_errors) {
                         return $result;
                     } else {

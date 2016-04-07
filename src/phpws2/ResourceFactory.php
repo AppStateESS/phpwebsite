@@ -31,7 +31,7 @@ class ResourceFactory
             $id = self::pullId($resource);
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $table = $db->addTable($table_name);
         $table->addFieldConditional('id', (int) $id);
         $result = $db->selectOneRow();
@@ -56,7 +56,7 @@ class ResourceFactory
         }
 
         $id = $resource->getId();
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable($table_name);
         $vars = $resource->getVars();
 
@@ -109,7 +109,7 @@ class ResourceFactory
         if (empty($table_name)) {
             $table_name = $resource->getTable();
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable($table_name);
         $db->addConditional($tbl->getFieldConditional('id', self::pullId($resource)));
         return $db->delete();

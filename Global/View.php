@@ -1,3 +1,3 @@
 <?php
 
-class View extends \phpws2\View{}
+interface View extends \phpws2\View{}

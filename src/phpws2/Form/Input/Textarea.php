@@ -9,7 +9,7 @@ namespace phpws2\Form\Input;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Textarea extends \Form\Base {
+class Textarea extends \phpws2\Form\Base {
 
     /**
      * @var string

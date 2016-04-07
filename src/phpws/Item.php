@@ -186,7 +186,7 @@ class PHPWS_Item {
      * object which called this function to the table specified via the $this->_table
      * variable.  The column names in the table must coorespond to the variable
      * names in this object and the object which called this function.  Any variable
-     * that appears which does not have a cooresponding column in the database will
+     * that apPEAR::s which does not have a cooresponding column in the database will
      * be ignored. Underscores preceding private variables in the object will be
      * removed before interpreting the column name.
      *
@@ -269,7 +269,7 @@ class PHPWS_Item {
             }
         } else {
             $error = 'Argument passed was not an array in PHPWS_Item::setVars()';
-            return PEAR::raiseError($error);
+            return \PEAR::raiseError($error);
         }
     } // END FUNC setVars
 
@@ -302,7 +302,7 @@ class PHPWS_Item {
             } else {
                 $this->_owner = NULL;
                 $error = 'The user session did not contain a name in PHPWS_Item::setOwner().';
-                return PEAR::raiseError($error);
+                return \PEAR::raiseError($error);
             }
         } else {
             $this->_owner = NULL;
@@ -328,7 +328,7 @@ class PHPWS_Item {
             } else {
                 $this->_editor = NULL;
                 $error = 'The user session did not contain a username in PHPWS_Item::setEditor().';
-                return PEAR::raiseError($error);
+                return \PEAR::raiseError($error);
             }
         } else {
             $this->_editor = NULL;
@@ -356,7 +356,7 @@ class PHPWS_Item {
                 } else {
                     $this->_ip = NULL;
                     $error = 'The remote address provided was not valid in PHPWS_Item::setIp().';
-                    return PEAR::raiseError($error);
+                    return \PEAR::raiseError($error);
                 }
             } else {
                 $this->_ip = $_SERVER['REMOTE_ADDR'];
@@ -364,7 +364,7 @@ class PHPWS_Item {
         } else {
             $this->_ip = NULL;
             $error = 'No remote address was available to set the ip in PHPWS_Item::setIp.';
-            return PEAR::raiseError($error);
+            return \PEAR::raiseError($error);
         }
     } // END FUNC setIp
 
@@ -473,7 +473,7 @@ class PHPWS_Item {
             $this->_table = $table;
         } else {
             $error = 'Table name passed was not a string in PHPWS_Item::setTable().';
-            return PEAR::raiseError($error);
+            return \PEAR::raiseError($error);
         }
     } // END FUNC setTable
 
@@ -491,7 +491,7 @@ class PHPWS_Item {
         $this->_exclude = array_merge($this->_exclude, $list);
         else {
             $error = 'Argument passed was not an array in PHPWS_Item::addExclude().';
-            return PEAR::raiseError($error);
+            return \PEAR::raiseError($error);
         }
     } // END FUNC addExclude
 

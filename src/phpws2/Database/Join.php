@@ -14,7 +14,7 @@ class Join {
     private $conditional;
     private $join_type = 'INNER';
 
-    public function __construct(\phpws2\Database\Resource $left_resource, \Database\Resource $right_resource, $join_type = null, $conditional = null)
+    public function __construct(\phpws2\Database\Resource $left_resource, \phpws2\Database\Resource $right_resource, $join_type = null, $conditional = null)
     {
         $this->setLeft($left_resource);
         $this->setRight($right_resource);
@@ -68,7 +68,7 @@ class Join {
 
     public function setLeft($resource)
     {
-        if (!is_subclass_of($resource, '\Database\Resource')) {
+        if (!is_subclass_of($resource, '\phpws2\Database\Resource')) {
             throw new \Exception(t('Resource object required'));
         }
 
@@ -78,7 +78,7 @@ class Join {
 
     public function setRight($resource)
     {
-        if (!is_subclass_of($resource, '\Database\Resource')) {
+        if (!is_subclass_of($resource, '\phpws2\Database\Resource')) {
             throw new \Exception(t('Join parameters must be SubSelect, Field, or Table objects'));
         }
         $resource->setJoined(true);

@@ -1,3 +1,3 @@
 <?php
 
-class Controller extends \phpws2\Controller{}
+interface Controller extends \phpws2\Controller{}

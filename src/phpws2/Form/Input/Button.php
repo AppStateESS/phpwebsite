@@ -10,7 +10,7 @@ namespace phpws2\Form\Input;
  * @subpackage Input
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Button extends \Form\Input {
+class Button extends \phpws2\Form\Input {
 
     /**
      * @see Form\Base::$label_location

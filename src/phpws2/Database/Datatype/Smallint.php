@@ -18,7 +18,7 @@ namespace phpws2\Database\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Smallint extends \Database\Datatype\Integer {
+class Smallint extends \phpws2\Database\Datatype\Integer {
 
     protected $signed_limit_low = -32768;
     protected $signed_limit_high = 32767;

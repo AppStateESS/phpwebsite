@@ -22,7 +22,7 @@ abstract class Controller implements \phpws2\Controller {
 
     private $module;
 
-    public function __construct(Module $module)
+    public function __construct(\phpws2\Module $module)
     {
         $this->module = $module;
     }
@@ -64,7 +64,7 @@ abstract class Controller implements \phpws2\Controller {
         }
 
 
-        if (!is_a($response, '\Response')) {
+        if (!is_a($response, '\phpws2\Response')) {
             throw new \Exception(t("Controller %s did not return a response object for the %s method",
                     get_class($this), $request->getMethod()));
         }
@@ -86,7 +86,7 @@ abstract class Controller implements \phpws2\Controller {
 
     protected function getHtmlView($data, \phpws2\Request $request)
     {
-        throw new \Http\MethodNotAllowedException($request);
+        throw new \phpws2\Http\MethodNotAllowedException($request);
     }
 
     public function get(\phpws2\Request $request)

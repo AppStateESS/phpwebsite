@@ -70,7 +70,7 @@ class Conditional extends \Data {
 
     public function setLeft($left)
     {
-        if ($left instanceof \Database\SubSelect) {
+        if ($left instanceof \phpws2\Database\SubSelect) {
             throw new \Exception('Left side conditional may not be a SubSelect object');
         }
         $this->testSide($left);
@@ -79,7 +79,7 @@ class Conditional extends \Data {
 
     public function getLeft()
     {
-        if ($this->left instanceof \Database\Alias && $this->left->hasAlias()) {
+        if ($this->left instanceof \phpws2\Database\Alias && $this->left->hasAlias()) {
             return $this->left->getAlias();
         } else {
             return $this->left;

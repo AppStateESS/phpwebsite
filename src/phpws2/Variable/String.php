@@ -237,8 +237,8 @@ class String extends \Variable
      * NOTE: If the text is extremely long, "Text" may not be enough
      * for MySQL.
      *
-     * @param \Database\Table $table
-     * @return \Database\Datatype
+     * @param \phpws2\Database\Table $table
+     * @return \phpws2\Database\Datatype
      */
     public function loadDataType(\phpws2\Database\Table $table)
     {

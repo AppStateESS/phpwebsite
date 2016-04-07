@@ -156,13 +156,13 @@ abstract class DB extends \Data
 
     /**
      * Holds the dsn object
-     * @var \Database\DSN
+     * @var \phpws2\Database\DSN
      */
     protected $dsn;
 
     /**
      * a subselect (not) exists check
-     * @var \Database\Exists
+     * @var \phpws2\Database\Exists
      */
     private $exists;
 
@@ -226,7 +226,7 @@ abstract class DB extends \Data
     {
         static $db = null;
         if (empty($db)) {
-            $db = \Database::getDB();
+            $db = \phpws2\Database::getDB();
         }
         $dl = $db->getDelimiter();
         return "$dl$value$dl";
@@ -248,7 +248,7 @@ abstract class DB extends \Data
 
     /**
      * Accepts a DSN object to create a new
-     * @param \Database\DSN $dsn
+     * @param \phpws2\Database\DSN $dsn
      */
     public function __construct(\phpws2\Database\DSN $dsn)
     {
@@ -327,7 +327,7 @@ abstract class DB extends \Data
     /**
      * Sets the conditional for use in select or update queries.
      *
-     * @param \Database\Conditional $conditional
+     * @param \phpws2\Database\Conditional $conditional
      */
     public function setConditional(\phpws2\Database\Conditional $conditional)
     {
@@ -337,14 +337,14 @@ abstract class DB extends \Data
     /**
      * Adds a new conditional on to the current conditional, if exists. Sets
      * conditional parameter if not yet set.
-     * @param \Database\Conditional $conditional
+     * @param \phpws2\Database\Conditional $conditional
      */
     public function addConditional(\phpws2\Database\Conditional $conditional)
     {
         if (empty($this->conditional)) {
             $this->setConditional($conditional);
         } else {
-            $new_conditional = new \Database\Conditional($this, $this->conditional, $conditional, 'AND');
+            $new_conditional = new \phpws2\Database\Conditional($this, $this->conditional, $conditional, 'AND');
             $this->setConditional($new_conditional);
         }
     }
@@ -375,13 +375,13 @@ abstract class DB extends \Data
             throw new Exception(t('No arguments sent to stackConditionals'));
         }
         foreach ($args as $conditional) {
-            if (!($conditional instanceof \Database\Conditional)) {
+            if (!($conditional instanceof \phpws2\Database\Conditional)) {
                 throw new Exception(t('Argument sent to stackConditionals was not a Database\Conditional object'));
             }
             if (empty($current_conditional)) {
                 $current_conditional = $conditional;
             } else {
-                $current_conditional = new \Database\Conditional($this, $current_conditional, $conditional, 'AND');
+                $current_conditional = new \phpws2\Database\Conditional($this, $current_conditional, $conditional, 'AND');
             }
         }
         $this->setConditional($current_conditional);
@@ -400,12 +400,12 @@ abstract class DB extends \Data
      * @param mixed $left
      * @param mixed $right
      * @param string $operator
-     * @return \Database\Conditional
+     * @return \phpws2\Database\Conditional
      */
     public function createConditional($left, $right, $operator = null)
     {
         if (is_null($operator)) {
-            if ($left instanceof \Database\Conditional && $right instanceof \Database\Conditional) {
+            if ($left instanceof \phpws2\Database\Conditional && $right instanceof \phpws2\Database\Conditional) {
                 $operator = 'AND';
             } else {
                 $operator = '=';
@@ -416,7 +416,7 @@ abstract class DB extends \Data
 
     /**
      * Returns the currently set conditional from the DB object.
-     * @return \Database\Conditional
+     * @return \phpws2\Database\Conditional
      */
     public function getConditional()
     {
@@ -425,7 +425,7 @@ abstract class DB extends \Data
 
     /**
      * Sets the DSN and loads the PDO object for future queries.
-     * @param \Database\DSN $dsn
+     * @param \phpws2\Database\DSN $dsn
      */
     public function setDSN(\phpws2\Database\DSN $dsn)
     {
@@ -527,7 +527,7 @@ abstract class DB extends \Data
             throw new \Exception('SQL query was empty');
         }
 
-        \Database::logQuery($sql);
+        \phpws2\Database::logQuery($sql);
         if (empty(self::$PDO)) {
             $this->loadPDO();
         }
@@ -547,7 +547,7 @@ abstract class DB extends \Data
             throw new \Exception('SQL query was empty');
         }
 
-        \Database::logQuery($sql);
+        \phpws2\Database::logQuery($sql);
         if (empty(self::$PDO)) {
             $this->loadPDO();
         }
@@ -668,11 +668,11 @@ abstract class DB extends \Data
      * @param string $expression
      * @param string $alias Alias for the expression.
      * @return Expression
-     * @see \Database\Expression
+     * @see \phpws2\Database\Expression
      */
     public function getExpression($expression, $alias = null)
     {
-        return new \Database\Expression($expression, $alias);
+        return new \phpws2\Database\Expression($expression, $alias);
     }
 
     /**
@@ -687,7 +687,7 @@ abstract class DB extends \Data
 
     /**
      * Returns the currently used DSN connection information
-     * @return \Database\DSN
+     * @return \phpws2\Database\DSN
      */
     public function getDSN()
     {
@@ -716,7 +716,7 @@ abstract class DB extends \Data
      * @param string table_name
      * @param string alias Table designation/nickname
      * @param boolean use_in_query If true, use table in select or delete query.
-     * @return \Database\Table : reference to the object in the tables stack
+     * @return \phpws2\Database\Table : reference to the object in the tables stack
      */
     public function addTable($table_name, $alias = null, $use_in_query = true)
     {
@@ -730,7 +730,7 @@ abstract class DB extends \Data
         }
         $table = $this->buildTable($table_name, $alias);
 
-        // @see \Database\Resource::$show_all_fields
+        // @see \phpws2\Database\Resource::$show_all_fields
         $table->useInQuery($use_in_query);
         $this->tables[$index] = $table;
         return $table;
@@ -739,7 +739,7 @@ abstract class DB extends \Data
     /**
      * Returns a previously added table object
      * @param string $table_name
-     * @return \Database\Table
+     * @return \phpws2\Database\Table
      * @throws \Exception
      */
     public function getTable($table_name)
@@ -769,7 +769,7 @@ abstract class DB extends \Data
      * Creates a table object without requiring its existence in the database.
      * @param string $table_name
      * @param string $alias
-     * @return \Database\Table
+     * @return \phpws2\Database\Table
      */
     public function buildTable($table_name, $alias = null)
     {
@@ -817,7 +817,7 @@ abstract class DB extends \Data
 
     /**
      * Returns the first table object on the DB table stack.
-     * @return \Database\Table
+     * @return \phpws2\Database\Table
      */
     public function getFirstTable()
     {
@@ -939,13 +939,13 @@ abstract class DB extends \Data
 
     /**
      *
-     * @param \Database\Resource $left_resource
-     * @param \Database\Resource $right_resource
-     * @param \Database\Conditional $conditional
+     * @param \phpws2\Database\Resource $left_resource
+     * @param \phpws2\Database\Resource $right_resource
+     * @param \phpws2\Database\Conditional $conditional
      * @param string $type
-     * @return \Database\JoinTable
+     * @return \phpws2\Database\JoinTable
      */
-    public function joinResources(\phpws2\Database\Resource $left_resource, \Database\Resource $right_resource, \Database\Conditional $conditional = null, $type = null)
+    public function joinResources(\phpws2\Database\Resource $left_resource, \phpws2\Database\Resource $right_resource, \phpws2\Database\Conditional $conditional = null, $type = null)
     {
         $jt = new Join($left_resource, $right_resource, $type, $conditional);
         $this->joined_resources[] = $jt;
@@ -1039,7 +1039,7 @@ abstract class DB extends \Data
      * The array should contain modules the dev wants to delete.
      * For example:
      *
-     * $DB = \Database::newDB()();
+     * $DB = \phpws2\Database::newDB()();
      * $t1 = $DB->addTable('t1', 'a1');
      * $t2 = $DB->addTable('t2', 'a2');
      *
@@ -1151,11 +1151,11 @@ abstract class DB extends \Data
      *
      * Example:
      * <code>
-     * query1 = \Database::newDB()();
+     * query1 = \phpws2\Database::newDB()();
      * $query1->addTable('foo');
      * $query1->setAs('foo_result');
      *
-     * $query2 = \Database::newDB()();
+     * $query2 = \phpws2\Database::newDB()();
      * $subquery1 = $query2->addSubSelect($query1);
      * $query2->addExpression('foo_result.*');
      * echo $query2->selectQuery();
@@ -1180,7 +1180,7 @@ abstract class DB extends \Data
     /**
      * Returns a SubSelect object based on the current db object
      * @param \DB $DB
-     * @param \Database\Alias $alias
+     * @param \phpws2\Database\Alias $alias
      * @return SubSelect
      */
     public function getSubSelect(DB $DB, $alias = null)
@@ -1717,7 +1717,7 @@ abstract class DB extends \Data
                 return $result;
             }
         } elseif (is_array($value)) {
-            return array_map(array('\Database\DB', 'quote'), $value);
+            return array_map(array('\phpws2\Database\DB', 'quote'), $value);
         } elseif (is_null($value)) {
             return 'NULL';
         } else {
@@ -1731,7 +1731,7 @@ abstract class DB extends \Data
      */
     public function recordQuery($query)
     {
-        \Database::logQuery($query);
+        \phpws2\Database::logQuery($query);
     }
 
     /**

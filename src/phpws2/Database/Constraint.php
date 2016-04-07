@@ -16,7 +16,7 @@ abstract class Constraint {
 
     /**
      *
-     * @param mixed $columns A single or array of \Database\Datatype objects
+     * @param mixed $columns A single or array of \phpws2\Database\Datatype objects
      * @param string $name
      */
     public function __construct($columns, $name = null)
@@ -39,7 +39,7 @@ abstract class Constraint {
 
     /**
      *
-     * @param mixed $columns A single or array of \Database\Datatype objects
+     * @param mixed $columns A single or array of \phpws2\Database\Datatype objects
      */
     public function setColumns($columns)
     {
@@ -56,7 +56,7 @@ abstract class Constraint {
     protected function check($datatype)
     {
         if (is_array($datatype)) {
-            $this->checkDatatypeArray($datatype);
+            $this->checkDatatyPEAR::ray($datatype);
         } else {
             $this->checkDatatype($datatype);
         }
@@ -69,7 +69,7 @@ abstract class Constraint {
             throw new \Exception(t('Constraint column may not be a blob'));
         }
 
-        if (!is_a($datatype, '\Database\Datatype')) {
+        if (!is_a($datatype, '\phpws2\Database\Datatype')) {
             throw new \Exception(t('Constraint column is not a data type'));
         }
     }
@@ -96,7 +96,7 @@ abstract class Constraint {
      * @param array $datatypes
      * @throws \Exception
      */
-    protected function checkDatatypeArray(Array $datatypes)
+    protected function checkDatatyPEAR::ray(Array $datatypes)
     {
         foreach ($datatypes as $dt) {
             $this->checkDatatype($dt);
@@ -112,7 +112,7 @@ abstract class Constraint {
 
     public function getConstraintString()
     {
-        if (!is_a($this, '\Database\TableCreateConstraint')) {
+        if (!is_a($this, '\phpws2\Database\TableCreateConstraint')) {
             throw new \Exception('This constraint is not allowed during table creation');
         }
 

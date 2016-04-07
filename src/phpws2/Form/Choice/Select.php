@@ -11,7 +11,7 @@ namespace phpws2\Form\Choice;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Select extends \Form\Choice {
+class Select extends \phpws2\Form\Choice {
 
     /**
      * Determines whether the resultant select tag is set to multiple status.
@@ -77,7 +77,7 @@ class Select extends \Form\Choice {
             }
         } else {
             foreach ($options as $value => $text) {
-                $this->options[$value] = new \Form\Choice\Option($text, $value,
+                $this->options[$value] = new \phpws2\Form\Choice\Option($text, $value,
                         $optgroup);
             }
         }
