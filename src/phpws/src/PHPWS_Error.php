@@ -59,8 +59,8 @@ class PHPWS_Error
 
     public static function get($value, $module, $funcName = NULL, $extraInfo = NULL)
     {
-        $current_language = Language::getLocale();
-        Language::setLocale(DEFAULT_LANGUAGE);
+        $current_language = \phpws2\Language::getLocale();
+        \phpws2\Language::setLocale(DEFAULT_LANGUAGE);
         if (empty($module)) {
             return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
         }
@@ -125,7 +125,7 @@ class PHPWS_Error
         }
 
         $error = PHPWS_Error::raiseError($message, $value, NULL, NULL, implode('', $fullError));
-        Language::setLocale($current_language);
+        \phpws2\Language::setLocale($current_language);
         return $error;
     }
 
