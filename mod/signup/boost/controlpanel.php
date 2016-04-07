@@ -12,5 +12,3 @@ $link[] = array('label'       => 'Signup',
                 'image'       => 'signup.png',
 		'tab'         => 'content'
 		);
-
-		?>

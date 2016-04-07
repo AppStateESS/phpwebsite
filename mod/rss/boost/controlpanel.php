@@ -11,4 +11,3 @@ $link[] = array('label'       => dgettext('rss', 'RSS Feeds'),
 		'image'       => 'rss.png',
 		'tab'         => 'admin'
 		);
-		?>

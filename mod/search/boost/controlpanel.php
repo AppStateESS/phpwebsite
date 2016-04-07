@@ -11,4 +11,3 @@ $link[] = array('label'       => dgettext('search', 'Search'),
 		'image'       => 'search.png',
 		'tab'         => 'admin'
 		);
-		?>

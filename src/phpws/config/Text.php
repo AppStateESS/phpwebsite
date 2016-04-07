@@ -119,4 +119,4 @@ $words = array(
 
            define('ALLOW_PROFANITY', FALSE);
            define('PROFANE_WORDS', serialize($words));
-           ?>
+           

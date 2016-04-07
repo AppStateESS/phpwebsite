@@ -12,4 +12,3 @@ $link[] = array('label'       => dgettext('block', 'Block'),
 		'image'       => 'block.png',
 		'tab'         => 'content'
 		);
-		?>

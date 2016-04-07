@@ -12,5 +12,3 @@ $link[] = array('label'       => 'Blog',
 		'image'       => 'blog.png',
 		'tab'         => 'content'
 		);
-
-		?>

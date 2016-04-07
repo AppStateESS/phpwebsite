@@ -11,4 +11,3 @@ $link[] = array('label'       => dgettext('menu', 'Menu'),
 		'image'       => 'menu.png',
 		'tab'         => 'content'
 		);
-		?>

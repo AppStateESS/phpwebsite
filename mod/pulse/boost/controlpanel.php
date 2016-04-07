@@ -12,4 +12,3 @@ $link[] = array('label'       => 'Pulse',
 		'image'       => 'pulse.png',
 		'tab'         => 'admin'
 		);
-		?>

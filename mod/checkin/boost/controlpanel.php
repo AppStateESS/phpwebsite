@@ -12,5 +12,3 @@ $link[] = array('label'       => 'Checkin',
 		'image'       => 'checkin.png',
 		'tab'         => 'content'
 		);
-
-		?>

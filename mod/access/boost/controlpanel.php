@@ -10,5 +10,3 @@ $link[] = array('label'       => dgettext('access', 'Access'),
 		'image'       => 'access.png',
 		'tab'         => 'admin'
 		);
-
-		?>

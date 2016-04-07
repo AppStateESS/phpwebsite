@@ -16,4 +16,3 @@ $link[] = array('label'       => dgettext('users', 'User Administration'),
 		'image'       => 'users.png',
 		'tab'         => 'admin'
 		);
-		?>

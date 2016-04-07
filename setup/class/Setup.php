@@ -143,7 +143,6 @@ class Setup {
             $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');",
                     $_SESSION['configSettings']['dbprefix']);
         }
-        $config_file[] = '?>';
         if (!file_put_contents($filename, implode("\n", $config_file))) {
             return false;
         } else {

@@ -337,7 +337,6 @@ class Branch_Admin {
             $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');",
                     $this->dbprefix);
         }
-        $config_file[] = '?>';
         return file_put_contents($filename, implode("\n", $config_file));
     }
 

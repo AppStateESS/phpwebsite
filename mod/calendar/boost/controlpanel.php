@@ -12,6 +12,3 @@ $link[] = array('label'       => dgettext('calendar', 'Calendar'),
 		'image'       => 'calendar.png',
 		'tab'         => 'content'
 		);
-
-
-		?>

@@ -11,5 +11,3 @@ $link[] = array('label'       => dgettext('branch', 'Branch'),
 		'image'       => 'branch.png',
 		'tab'         => 'admin'
 		);
-
-		?>
