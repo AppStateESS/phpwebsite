@@ -7,5 +7,5 @@ namespace phpws;
  * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-require_once PHPWS_SOURCE_DIR . 'src/phpws/PHPWS_Text.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws/src/PHPWS_Text.php';
 

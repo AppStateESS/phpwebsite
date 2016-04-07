@@ -25,7 +25,7 @@
 
 spl_autoload_register(function($class_name){
     $file_path = PHPWS_SOURCE_DIR . 'src/phpws/src/' . str_replace('\\', '/', str_replace('phpws\\', '', $class_name)) . '.php';
-    if (is_file($file_path)) {
+    if (is_readable($file_path)) {
         require_once $file_path;
     }
 });

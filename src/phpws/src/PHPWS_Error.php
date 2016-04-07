@@ -140,7 +140,7 @@ class PHPWS_Error
             $error = $value;
         }
         $final = PHPWS_Error::printError($error);
-        Error::logError($final);
+        \phpws2\Error::logError($final);
     }
 
     public static function printError($error)
