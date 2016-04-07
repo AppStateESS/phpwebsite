@@ -17,10 +17,10 @@ if (extension_loaded('mbstring')) {
 }
 
 /* * * Include System-wide Defines ** */
-if (file_exists(PHPWS_SOURCE_DIR . 'core/conf/defines.php')) {
-    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.php');
+if (file_exists(PHPWS_HOME_DIR . 'config/defines.php')) {
+    require_once(PHPWS_HOME_DIR . 'config/defines.php');
 } else {
-    require_once(PHPWS_SOURCE_DIR . 'core/conf/defines.dist.php');
+    require_once(PHPWS_SOURCE_DIR . 'src/phpws/config/defines.php');
 }
 
 /* * *
@@ -51,7 +51,7 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('phpws2\Error', 'errorHandler'));
 }
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/Implementations.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/src/Implementations.php';
 require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 \phpws\PHPWS_Core::checkOverpost();
@@ -59,7 +59,7 @@ require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 
 Language::setLocale(Settings::get('Global', 'language'));
 if (!\phpws\PHPWS_Core::checkBranch()) {
-    throw new Exception('Unknown branch called');
+    throw new \Exception('Unknown branch called');
 }
 
 function PHPWS_unBootstrap()

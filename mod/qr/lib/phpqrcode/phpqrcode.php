@@ -1057,7 +1057,7 @@
             }
         
             if(!QRinput::check($mode, $size, $setData)) {
-                throw new Exception('Error m:'.$mode.',s:'.$size.',d:'.join(',',$setData));
+                throw new \Exception('Error m:'.$mode.',s:'.$size.',d:'.join(',',$setData));
                 return null;
             }
             
@@ -1295,7 +1295,7 @@
         public function __construct($version = 0, $level = QR_ECLEVEL_L)
         {
             if ($version < 0 || $version > QRSPEC_VERSION_MAX || $level > QR_ECLEVEL_H) {
-                throw new Exception('Invalid version no');
+                throw new \Exception('Invalid version no');
                 return NULL;
             }
             
@@ -1313,7 +1313,7 @@
         public function setVersion($version)
         {
             if($version < 0 || $version > QRSPEC_VERSION_MAX) {
-                throw new Exception('Invalid version no');
+                throw new \Exception('Invalid version no');
                 return -1;
             }
 
@@ -1332,7 +1332,7 @@
         public function setErrorCorrectionLevel($level)
         {
             if($level > QR_ECLEVEL_H) {
-                throw new Exception('Invalid ECLEVEL');
+                throw new \Exception('Invalid ECLEVEL');
                 return -1;
             }
 
@@ -1364,11 +1364,11 @@
         public function insertStructuredAppendHeader($size, $index, $parity)
         {
             if( $size > MAX_STRUCTURED_SYMBOLS ) {
-                throw new Exception('insertStructuredAppendHeader wrong size');
+                throw new \Exception('insertStructuredAppendHeader wrong size');
             }
             
             if( $index <= 0 || $index > MAX_STRUCTURED_SYMBOLS ) {
-                throw new Exception('insertStructuredAppendHeader wrong index');
+                throw new \Exception('insertStructuredAppendHeader wrong index');
             }
 
             $buf = array($size, $index, $parity);
@@ -1632,7 +1632,7 @@
                     
                 $ver = QRspec::getMinimumVersion((int)(($bits + 7) / 8), $this->level);
                 if($ver < 0) {
-                    throw new Exception('WRONG VERSION');
+                    throw new \Exception('WRONG VERSION');
                     return -1;
                 } else if($ver > $this->getVersion()) {
                     $this->setVersion($ver);
@@ -2235,7 +2235,7 @@
         public static function splitStringToQRinput($string, QRinput $input, $modeHint, $casesensitive = true)
         {
             if(is_null($string) || $string == '\0' || $string == '') {
-                throw new Exception('empty string!!!');
+                throw new \Exception('empty string!!!');
             }
 
             $split = new QRsplit($string, $input, $modeHint);
@@ -2870,7 +2870,7 @@
             
             $this->datacode = $input->getByteStream();
             if(is_null($this->datacode)) {
-                throw new Exception('null imput string');
+                throw new \Exception('null imput string');
             }
 
             QRspec::getEccSpec($input->getVersion(), $input->getErrorCorrectionLevel(), $spec);
@@ -2884,7 +2884,7 @@
             
             $ret = $this->init($spec);
             if($ret < 0) {
-                throw new Exception('block alloc error');
+                throw new \Exception('block alloc error');
                 return null;
             }
 
@@ -2971,10 +2971,10 @@
         public function encodeMask(QRinput $input, $mask)
         {
             if($input->getVersion() < 0 || $input->getVersion() > QRSPEC_VERSION_MAX) {
-                throw new Exception('wrong version');
+                throw new \Exception('wrong version');
             }
             if($input->getErrorCorrectionLevel() > QR_ECLEVEL_H) {
-                throw new Exception('wrong level');
+                throw new \Exception('wrong level');
             }
 
             $raw = new QRrawcode($input);
@@ -3052,7 +3052,7 @@
         public function encodeString8bit($string, $version, $level)
         {
             if(string == NULL) {
-                throw new Exception('empty string!');
+                throw new \Exception('empty string!');
                 return NULL;
             }
 
@@ -3072,7 +3072,7 @@
         {
 
             if($hint != QR_MODE_8 && $hint != QR_MODE_KANJI) {
-                throw new Exception('bad hint');
+                throw new \Exception('bad hint');
                 return NULL;
             }
 

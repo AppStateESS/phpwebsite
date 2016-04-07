@@ -515,7 +515,7 @@ class FC_File_Assoc
      * @param type $file_type
      * @param type $id
      * @param type $tag
-     * @throws Exception
+     * @throws \Exception
      */
     /*
       public static function updateTag($file_type, $id, $tag)
@@ -526,7 +526,7 @@ class FC_File_Assoc
       $db->addValue('tag', htmlentities($tag, ENT_QUOTES, 'UTF-8'));
       $result = $db->update();
       if (PEAR::isError($result)) {
-      throw new Exception($result->getMessage());
+      throw new \Exception($result->getMessage());
       }
       }
      */

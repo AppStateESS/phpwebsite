@@ -4,7 +4,7 @@
  * @version $Id$
  */
 
-include 'core/conf/version.php';
+include 'src/phpws/version.php';
 
 $content[] = "<b>Welcome to the phpWebSite $version</b><br />
 

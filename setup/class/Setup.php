@@ -34,7 +34,7 @@ class Setup {
 
     public function __construct()
     {
-        include './core/conf/version.php';
+        include 'src/phpws/version.php';
         $this->phpws_version = $version;
         if (isset($_REQUEST['step'])) {
             $this->setStep($_REQUEST['step']);
@@ -497,7 +497,7 @@ class Setup {
 
     public function show($content, $title = NULL, $forward = false)
     {
-        include 'core/conf/version.php';
+        include 'src/phpws/version.php';
         $tpl = new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', true);
         if (!isset($title)) {

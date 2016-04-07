@@ -690,14 +690,14 @@ class Layout
      * @param string $index  The name of javascript. prevents repeats
      * @param array $data
      * @param boolean $wrap_contents If true, wrap the contents of head.js with <script> tags
-     * @throws Exception
+     * @throws \Exception
      */
 
     public static function loadJavascriptFile($filename, $index, $data = NULL, $wrap_contents = false)
     {
         if (!is_file($filename)) {
             // Throw an exception because the file is missing.
-            throw new Exception("Missing javascript file: $filename");
+            throw new \Exception("Missing javascript file: $filename");
             return FALSE;
         }
 

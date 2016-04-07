@@ -62,7 +62,7 @@
             
             $this->datacode = $input->getByteStream();
             if(is_null($this->datacode)) {
-                throw new Exception('null imput string');
+                throw new \Exception('null imput string');
             }
 
             QRspec::getEccSpec($input->getVersion(), $input->getErrorCorrectionLevel(), $spec);
@@ -76,7 +76,7 @@
             
             $ret = $this->init($spec);
             if($ret < 0) {
-                throw new Exception('block alloc error');
+                throw new \Exception('block alloc error');
                 return null;
             }
 
@@ -163,10 +163,10 @@
         public function encodeMask(QRinput $input, $mask)
         {
             if($input->getVersion() < 0 || $input->getVersion() > QRSPEC_VERSION_MAX) {
-                throw new Exception('wrong version');
+                throw new \Exception('wrong version');
             }
             if($input->getErrorCorrectionLevel() > QR_ECLEVEL_H) {
-                throw new Exception('wrong level');
+                throw new \Exception('wrong level');
             }
 
             $raw = new QRrawcode($input);
@@ -244,7 +244,7 @@
         public function encodeString8bit($string, $version, $level)
         {
             if(string == NULL) {
-                throw new Exception('empty string!');
+                throw new \Exception('empty string!');
                 return NULL;
             }
 
@@ -264,7 +264,7 @@
         {
 
             if($hint != QR_MODE_8 && $hint != QR_MODE_KANJI) {
-                throw new Exception('bad hint');
+                throw new \Exception('bad hint');
                 return NULL;
             }
 

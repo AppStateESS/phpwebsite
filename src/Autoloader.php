@@ -1,24 +1,13 @@
 <?php
 
-/*
-  spl_autoload_register(function($class){
-  $directory = PHPWS_SOURCE_DIR . 'src/';
-  $class_name = str_replace('\\', '/', $class);
-  $core_class_file = $directory . 'phpws/' . $class_name . '.php';
-  $global_class_file = $directory . 'phpws2/' . $class_name . '.php';
-  echo $core_class_file;
-  echo '<br>';
-  echo $global_class_file;
-  if (is_file($core_class_file)) {
-  require_once $core_class_file;
-  } else if (is_file($global_class_file)) {
-  require_once $global_class_file;
-  }
-  });
- */
+if (!defined('STRICT_AUTOLOADER')) {
+    define('STRICT_AUTOLOADER', false);
+}
 
 spl_autoload_register('phpwsOldLoad');
-spl_autoload_register('phpwsNewLoad');
+if (!STRICT_AUTOLOADER) {
+    spl_autoload_register('phpwsNewLoad');
+}
 
 function phpwsNewLoad($class_name)
 {
@@ -27,13 +16,14 @@ function phpwsNewLoad($class_name)
     if (isset($files_found[$class_name])) {
         return;
     }
-    $class_name = preg_replace('@^/|/$@', '', str_replace('\\', '/', $class_name));
+    
+    $class_array = explode('\\', $class_name);
+    $class_dir = array_shift($class_array);
+    
+    $base_dir = PHPWS_SOURCE_DIR . "src/$class_dir/autoload.php";
 
-    $base_dir = PHPWS_SOURCE_DIR . 'src/';
-
-    $class_path = $base_dir . $class_name . '.php';
-    if (is_file($class_path)) {
-        require_once $class_path;
+    if (is_file($base_dir)) {
+        require_once $base_dir;
     }
 }
 

@@ -1,3 +1,0 @@
-Files removed from this directory:
-
-language.php

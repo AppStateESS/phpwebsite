@@ -1,3 +1,3 @@
 <?php
 
-class Link extends \phpws\Link{}
+class Link extends \phpws\PHPWS_Link{}
