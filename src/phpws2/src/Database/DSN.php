@@ -6,7 +6,7 @@ namespace phpws2\Database;
  * The DSN object stores information used to create a database connection.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */

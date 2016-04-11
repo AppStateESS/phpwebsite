@@ -10,7 +10,7 @@ namespace phpws2\View;
  * implementation.
  *
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
