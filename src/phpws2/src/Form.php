@@ -6,7 +6,7 @@ namespace phpws2;
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 // @todo drop if not used
@@ -735,7 +735,7 @@ class Form extends Tag {
     {
         javascript('jquery');
         \Layout::addJSHeader("<script type='text/javascript' src='" .
-                PHPWS_SOURCE_HTTP . "Global/Templates/Form/required.js'></script>");
+                PHPWS_SOURCE_HTTP . "src/phpws2/templates/Form/required.js'></script>");
     }
 
     private function pushAllowedClass($allowed, $class_name)
