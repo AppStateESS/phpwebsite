@@ -1,8 +1,5 @@
 <?php
 
-namespace phpws2;
-
-
 /*
  * Main controller class for phpWebSite.  Implements Controller, so it can be
  * used like any other Controller in the system.
@@ -70,7 +67,7 @@ class PhpwebsiteController implements Controller
         \phpws\PHPWS_Core::pushUrlHistory();
     }
 
-    protected function determineCurrentModule(\phpws2\Request $request)
+    protected function determineCurrentModule(\Request $request)
     {
         // Try the Old Fashioned Way first
         if ($request->isVar('module')) {
@@ -108,7 +105,7 @@ class PhpwebsiteController implements Controller
         return $module;
     }
 
-    private function renderResponse(\phpws2\Request $request, \phpws2\Response $response)
+    private function renderResponse(\Request $request, \Response $response)
     {
         // Temporary until proper error pages are fully implemented
         // @todo customizable, editable error pages that don't dump a bunch of
@@ -160,21 +157,21 @@ class PhpwebsiteController implements Controller
         }
     }
 
-    private function beforeRun(\phpws2\Request $request, \phpws2\Controller $controller)
+    private function beforeRun(\Request $request, $controller)
     {
         foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->beforeRun($request, $controller);
         }
     }
 
-    private function runTime(\phpws2\Request $request)
+    private function runTime(\Request $request)
     {
         foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->runTime($request);
         }
     }
 
-    private function afterRun(\phpws2\Request $request, \phpws2\Response &$response)
+    private function afterRun(\Request $request, \Response &$response)
     {
         foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->afterRun($request, $response);

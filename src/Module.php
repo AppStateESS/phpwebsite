@@ -1,11 +1,8 @@
 <?php
 
-namespace phpws2;
-
-
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -13,7 +10,7 @@ namespace phpws2;
  * Base abstract class for all modules. Every Module class is expect to
  * extend this class to assure preparation and run time functionality.
  */
-abstract class Module extends Data implements Controller {
+abstract class Module extends \Data implements Controller {
 
     /**
      * Array of dependencies for the module. Modules will not be loaded
@@ -91,7 +88,7 @@ abstract class Module extends Data implements Controller {
      * @see ModuleManager::beforeRun()
      * @return void
      */
-    public function beforeRun(\phpws2\Request $request, \phpws2\Controller $controller)
+    public function beforeRun(\Request $request, \Controller $controller)
     {
 
     }
@@ -108,7 +105,7 @@ abstract class Module extends Data implements Controller {
      * @see ModuleManager::afterRun()
      * @return void
      */
-    public function afterRun(\phpws2\Request $request, \phpws2\Response $response)
+    public function afterRun(\Request $request, \Response $response)
     {
 
     }
@@ -124,7 +121,7 @@ abstract class Module extends Data implements Controller {
 
     }
 
-    public function runTime(\phpws2\Request $request)
+    public function runTime(\Request $request)
     {
 
     }
@@ -159,7 +156,7 @@ abstract class Module extends Data implements Controller {
      * @return Controller A Controller object that will be called to run your
      *                    module
      */
-    public abstract function getController(Request $request);
+    public abstract function getController(\Request $request);
 
     /**
      * The constuction method for all modules based upon it. The parent of each
@@ -175,7 +172,7 @@ abstract class Module extends Data implements Controller {
         $this->proper_name = new \Variable\TextOnly(null, 'proper_name');
     }
 
-    public function execute(Request $request)
+    public function execute(\Request $request)
     {
         $controller = $this->getController($request);
 
@@ -342,4 +339,10 @@ abstract class Module extends Data implements Controller {
         return (bool) $this->deprecated;
     }
 
+}
+
+interface SettingDefaults
+{
+
+    public function getSettingDefaults();
 }

@@ -1,16 +1,11 @@
 <?php
 
-namespace phpws2;
-
-
 /**
  * This is a faux module used for purposes of extracting site settings.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/src/Implementations.php';
 
 class GlobalModule extends Module implements SettingDefaults {
 

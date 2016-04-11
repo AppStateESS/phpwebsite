@@ -1,12 +1,8 @@
 <?php
 
-namespace phpws2;
-
-
 /**
  * Class to assist with _SERVER super globals.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Server {
@@ -14,8 +10,9 @@ class Server {
     private static $REQUEST_SINGLETON;
 
     /**
-     *
-     * @return \phpws2\Request
+     * For now, the Request object is global. Eventually it will be swapped out
+     * for a framework version.
+     * @return \Request
      */
     public static function getCurrentRequest()
     {
@@ -29,7 +26,7 @@ class Server {
             $data = file_get_contents('php://input');
             $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
 
-            self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data,
+            self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data,
                     $accept);
         }
         return self::$REQUEST_SINGLETON;

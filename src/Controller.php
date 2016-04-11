@@ -1,8 +1,5 @@
 <?php
 
-namespace phpws2;
-
-
 /**
  * Controller Interface.  An instance of Controller must be returned by the
  * getController method of your Module instance.  This is the entry point into
@@ -13,7 +10,7 @@ namespace phpws2;
  * compatibility, but we STRONGLY recommend that you extend from the
  * HttpController abstract class instead.
  *
- * @package Global
+ * @package phpws2
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -26,5 +23,5 @@ interface Controller
      *
      * @param $request Request The Request Object
      */
-    public function execute(\phpws2\Request $request);
+    public function execute(\Request $request);
 }
