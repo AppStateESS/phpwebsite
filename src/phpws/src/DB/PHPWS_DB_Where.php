@@ -32,7 +32,7 @@ class PHPWS_DB_Where {
         }
 
         if (!\phpws\PHPWS_DB::checkOperator($operator)) {
-            return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', '\phpws\PHPWS_DB::addWhere', _('DB Operator:') . $operator);
+            return \phpws\PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', '\phpws\PHPWS_DB::addWhere', _('DB Operator:') . $operator);
         }
 
         if ($operator == 'LIKE' || $operator == 'ILIKE') {
