@@ -41,7 +41,7 @@ namespace phpws2;
  * This conforms with HTML 5.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Tag extends Data
