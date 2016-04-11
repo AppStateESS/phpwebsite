@@ -6,7 +6,7 @@ namespace phpws2\Variable;
  * Variable extender for arrays. Cannot be named "Array" because that is
  * reserved, even with namespaces.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @todo Added a shift and unshift function with associative properties

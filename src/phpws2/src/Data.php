@@ -8,7 +8,7 @@ namespace phpws2;
  * all variables in the parent object have to be protected.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -89,9 +89,9 @@ abstract class Data
     {
         ob_start();
         if ($html) {
-            include 'Global/Templates/Debug/Debug-Array.html';
+            include 'phpws2/templates/Debug/Debug-Array.html';
         } else {
-            include 'Global/Templates/Debug/Debug-Array.txt';
+            include 'phpws2/templates/Debug/Debug-Array.txt';
         }
         return ob_get_clean();
     }
@@ -101,9 +101,9 @@ abstract class Data
         ob_start();
         $value = ($type == 'string') ? "'$value'" : $value;
         if ($html) {
-            include 'Global/Templates/Debug/Debug-Default.html';
+            include 'phpws2/templates/Debug/Debug-Default.html';
         } else {
-            include 'Global/Templates/Debug/Debug-Default.txt';
+            include 'phpws2/templates/Debug/Debug-Default.txt';
         }
         return ob_get_clean();
     }
@@ -126,9 +126,9 @@ abstract class Data
 
         ob_start();
         if ($html) {
-            include 'Global/Templates/Debug/Debug-Object.html';
+            include 'phpws2/templates/Debug/Debug-Object.html';
         } else {
-            include 'Global/Templates/Debug/Debug-Object.txt';
+            include 'phpws2/templates/Debug/Debug-Object.txt';
         }
         return ob_get_clean();
     }
@@ -194,9 +194,9 @@ abstract class Data
         }
         $debug_output = implode("\n", $row);
         if ($html) {
-            include 'Global/Templates/Debug/Debug.html';
+            include 'phpws2/templates/Debug/Debug.html';
         } else {
-            include 'Global/Templates/Debug/Debug.txt';
+            include 'phpws2/templates/Debug/Debug.txt';
         }
         exit();
     }

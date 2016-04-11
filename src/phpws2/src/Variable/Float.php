@@ -5,7 +5,7 @@ namespace phpws2\Variable;
 /**
  * A class to assist with float variables.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */

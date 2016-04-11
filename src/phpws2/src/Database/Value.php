@@ -6,7 +6,7 @@ namespace phpws2\Database;
  * A Value is an amount or measure applied to a column in the database. Insert
  * puts new values in a column. Update changes column values.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */

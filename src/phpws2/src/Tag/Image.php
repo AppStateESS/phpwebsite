@@ -3,7 +3,7 @@ namespace phpws2\Tag;
 /**
  * Helps in the creation of an img tag.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Image extends \Tag {

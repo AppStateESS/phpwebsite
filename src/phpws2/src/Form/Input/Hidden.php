@@ -6,7 +6,7 @@ namespace phpws2\Form\Input;
  * Because hidden isn't displayed , it differs enough from input to extend base
  * instead.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */

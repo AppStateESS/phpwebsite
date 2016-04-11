@@ -7,7 +7,7 @@ namespace phpws2\Database;
  * manipulated. A table is an example and a database subselect is another.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage DB
  * @abstract
  * @license http://opensource.org/licenses/lgpl-3.0.html

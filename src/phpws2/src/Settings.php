@@ -7,7 +7,7 @@ namespace phpws2;
  * Stores and retrieves settings within Modules.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Settings extends Data {

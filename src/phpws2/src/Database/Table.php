@@ -4,7 +4,7 @@ namespace phpws2\Database;
 
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @see Resource

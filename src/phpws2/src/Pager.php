@@ -7,7 +7,7 @@ require_once PHPWS_SOURCE_DIR . 'src/Array.php';
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Pager
@@ -151,7 +151,7 @@ class Pager
     {
         javascript('jquery');
         $source_http = PHPWS_SOURCE_HTTP;
-        $header = "<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>";
+        $header = "<script type='text/javascript' src='{$source_http}src/phpws2/templates/Pager/pager.js'></script>";
         \Layout::addJSHeader($header);
     }
 
@@ -452,7 +452,7 @@ class Pager
     protected function getJavascript()
     {
         $source_http = PHPWS_SOURCE_HTTP;
-        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}Global/Templates/Pager/pager.js'></script>");
+        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}src/phpws2/templates/Pager/pager.js'></script>");
     }
 
     public function getJson()

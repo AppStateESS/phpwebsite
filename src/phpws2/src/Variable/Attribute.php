@@ -5,7 +5,7 @@ namespace phpws2\Variable;
 /**
  * Attribute follows the conventions of the W3 standard for "name".
  * @link http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
- * @package Global
+ * @package phpws2
  * @subpackage Variable
  * @subpackage String
  * @author Matthew McNaney <mcnaney at gmail dot com>

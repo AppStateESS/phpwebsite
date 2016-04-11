@@ -7,7 +7,7 @@ namespace phpws2;
  * Translates text passed to it by the translate method. Depends on
  * gettext to function.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Language {

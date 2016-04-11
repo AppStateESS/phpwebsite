@@ -11,7 +11,7 @@ namespace phpws2\Database;
  * The parent function must set the table in the construct.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage DB
  * @see \Data
  * @todo This may be a relic of 1.x. May not be needed. Combine with Resource or

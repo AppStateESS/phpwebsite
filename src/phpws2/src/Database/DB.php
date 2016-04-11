@@ -11,7 +11,7 @@ if (!defined('DB_PERSISTENT_CONNECTION')) {
  * for extension by different database engines in the Engine directory.
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 abstract class DB extends \Data

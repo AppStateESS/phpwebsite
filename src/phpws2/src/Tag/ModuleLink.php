@@ -5,7 +5,7 @@ namespace phpws2\Tag;
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class ModuleLink extends Link {

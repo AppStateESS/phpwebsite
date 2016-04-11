@@ -5,7 +5,7 @@ namespace phpws2\Database\Engine\mysql;
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 class Group extends \phpws2\Database\Group {

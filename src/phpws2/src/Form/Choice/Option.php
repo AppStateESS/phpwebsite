@@ -5,7 +5,7 @@ namespace phpws2\Form\Choice;
 /**
  * The option tag is used within the select tag and is not used on its own.
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
