@@ -9,7 +9,7 @@ namespace phpws2\Http;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-abstract class RedirectResponse extends \phpws2\Response
+abstract class RedirectResponse extends \Response
 {
     private $url;
 

@@ -9,7 +9,7 @@ namespace phpws2\Http;
 
 class NotFoundException extends Exception
 {
-    protected function createResponse(\phpws2\Request $request, Exception $previous = null)
+    protected function createResponse(\Request $request, Exception $previous = null)
     {
         return new NotFoundResponse($request, $previous);
     }
