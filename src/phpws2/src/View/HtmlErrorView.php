@@ -10,7 +10,7 @@ class HtmlErrorView extends \Template {
 
     protected $code;
 
-    public function __construct(\phpws2\Request $request, \phpws2\Http\ErrorResponse $response)
+    public function __construct(\Request $request, \phpws2\Http\ErrorResponse $response)
     {
         $vars = array();
         $vars['url'] = $request->getUrl();
@@ -24,7 +24,7 @@ class HtmlErrorView extends \Template {
         $this->code = $vars['code'];
 
         parent::__construct($vars,
-                PHPWS_SOURCE_DIR . 'Global/Templates/Http/HtmlError.html', false);
+                PHPWS_SOURCE_DIR . 'src/phpws2/templates/Http/HtmlError.html', false);
     }
 
     public function render()
