@@ -2,7 +2,7 @@
 
 namespace phpws2\Database\Datatype;
 
-require_once PHPWS_SOURCE_DIR . 'Global/inc/defines.php';
+require_once PHPWS_SOURCE_DIR . 'src/phpws2/config/String.php';
 
 /*
  * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
