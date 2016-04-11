@@ -255,7 +255,7 @@ class PHPWS_Core
      */
     public static function getHttp()
     {
-        return \phpws2\Server::getHttp();
+        return \Server::getHttp();
     }
 
     /**
@@ -347,7 +347,7 @@ class PHPWS_Core
         $module = preg_replace('/[^\w\.]/', '', $module);
 
         if ($module == 'core') {
-            $local_config = PHPWS_HOME_DIR . 'config/' . $file;
+            $local_config = PHPWS_HOME_DIR . 'config/phpws/' . $file;
             if (is_readable($local_config)) {
                 return $local_config;
             }
@@ -383,7 +383,7 @@ class PHPWS_Core
         }
 
         if (!is_file($inc_file)) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
+            \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
             if ($exitOnError) {
                 throw new \Exception(t('Could not find inc file to require: %s', $inc_file));
             } else {
@@ -408,7 +408,7 @@ class PHPWS_Core
         $config_file = \phpws\PHPWS_Core::getConfigFile($module, $file);
 
         if (empty($config_file) || !$config_file) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
+            \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
             if ($exitOnError) {
                 throw new \Exception(t('Could not find config file to require: %s', $inc_file));
             } else {
@@ -520,7 +520,7 @@ class PHPWS_Core
         }
 
         $file = \phpws\PHPWS_Core::getConfigFile('core', 'CoreModuleList.php');
-        if (PHPWS_Error::isError($file)) {
+        if (\phpws\PHPWS_Error::isError($file)) {
             return $file;
         }
 
@@ -547,7 +547,7 @@ class PHPWS_Core
         $var_array = NULL;
 
         if (!is_array($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', '\phpws\PHPWS_Core::stripObjValues', $className);
+            return \phpws\PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', '\phpws\PHPWS_Core::stripObjValues', $className);
         }
 
         foreach ($classVars as $key => $value) {
@@ -577,11 +577,11 @@ class PHPWS_Core
         $classVars = get_class_vars($className);
 
         if (!is_array($classVars) || empty($classVars)) {
-            return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', '\phpws\PHPWS_Core::plugObject', $className);
+            return \phpws\PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', '\phpws\PHPWS_Core::plugObject', $className);
         }
 
         if (isset($variables) && !is_array($variables)) {
-            return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
+            return \phpws\PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
         }
 
         foreach ($classVars as $key => $value) {
@@ -615,7 +615,7 @@ class PHPWS_Core
      */
     public static function getHomeHttp($with_http = true, $with_directory = true, $with_slash = true)
     {
-        $url = \phpws2\Server::getSiteUrl($with_http, $with_directory);
+        $url = \Server::getSiteUrl($with_http, $with_directory);
         if ($with_slash && !preg_match('/\/$/', $url)) {
             $url .= '/';
         }
@@ -686,14 +686,14 @@ class PHPWS_Core
             return true;
         } else {
             if (!\phpws\PHPWS_Core::initModClass('branch', 'Branch.php')) {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
+                \phpws\PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
                 return false;
             }
             if (Branch::checkCurrentBranch()) {
                 $GLOBALS['Allow_Entry'] = true;
                 return true;
             } else {
-                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
+                \phpws\PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Hash not found: ' . SITE_HASH . ' from ' . getcwd());
                 return false;
             }
         }
