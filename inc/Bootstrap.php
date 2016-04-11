@@ -39,11 +39,19 @@ if (DISPLAY_ERRORS) {
 }
 
 /* * * Include a bunch of function ** */
+require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 require_once PHPWS_SOURCE_DIR . 'src/Http.php';
 require_once PHPWS_SOURCE_DIR . 'src/Log.php';
+require_once PHPWS_SOURCE_DIR . 'src/Controller.php';
+require_once PHPWS_SOURCE_DIR . 'src/PhpwebsiteController.php';
+require_once PHPWS_SOURCE_DIR . 'src/Module.php';
+require_once PHPWS_SOURCE_DIR . 'src/CompatibilityModule.php';
+require_once PHPWS_SOURCE_DIR . 'src/GlobalModule.php';
+require_once PHPWS_SOURCE_DIR . 'src/Request.php';
+require_once PHPWS_SOURCE_DIR . 'src/Response.php';
+require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 require_once PHPWS_SOURCE_DIR . 'src/String.php';
 require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
-require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 
 /* * * Exception Handler ** */
 set_exception_handler(array('phpws2\Error', 'exceptionHandler'));
@@ -51,7 +59,6 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('phpws2\Error', 'errorHandler'));
 }
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/src/Implementations.php';
 require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 \phpws\PHPWS_Core::checkOverpost();
@@ -66,5 +73,4 @@ function PHPWS_unBootstrap()
 {
     restore_exception_handler();
     restore_error_handler();
-    spl_autoload_unregister('phpwsAutoload');
 }
