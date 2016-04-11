@@ -155,12 +155,12 @@ class PHPWS_Item {
             $className = get_class($this);
             $itemResult = $DB->select('row');
 
-            if (PHPWS_Error::isError($itemResult)) {
+            if (\phpws\PHPWS_Error::isError($itemResult)) {
                 return $itemResult;
             }
 
             if (!isset($itemResult)) {
-                return PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, 'core', 'PHPWS_Item::init');
+                return \phpws\PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, 'core', 'PHPWS_Item::init');
             } else {
                 foreach ($itemResult as $key => $value) {
                     if (preg_match('/^[oa]:\d/i', $value)) {
@@ -173,7 +173,7 @@ class PHPWS_Item {
                 }
             }
         } else {
-            return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::init');
+            return \phpws\PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::init');
         }
 
         return TRUE;
@@ -232,9 +232,9 @@ class PHPWS_Item {
             $DB = new PHPWS_DB($this->_table);
             $DB->addWhere('id', $this->_id);
             $result = $DB->delete();
-            return (PHPWS_Error::isError($result) ? $result : TRUE);
+            return (\phpws\PHPWS_Error::isError($result) ? $result : TRUE);
         } else
-        return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::kill');
+        return \phpws\PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::kill');
     } // END FUNC kill
 
     /**
@@ -376,7 +376,7 @@ class PHPWS_Item {
      * unallowed html tags.
      *
      * @param  string  $label The string to set this item's label to.
-     * @return boolean TRUE on success and PHPWS_Error on failure.
+     * @return boolean TRUE on success and \phpws\PHPWS_Error on failure.
      * @access public
      */
     function setLabel($label = NULL) {
@@ -384,7 +384,7 @@ class PHPWS_Item {
             $this->_label = PHPWS_Text::parseInput($label);
         } else {
             $error = "No label was requested.";
-            return new PHPWS_Error("core", "PHPWS_Item::setLabel()", $error);
+            return new \phpws\PHPWS_Error("core", "PHPWS_Item::setLabel()", $error);
         }
     } // END FUNC set_label
 

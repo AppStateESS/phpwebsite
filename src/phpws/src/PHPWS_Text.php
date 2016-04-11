@@ -240,7 +240,7 @@ class PHPWS_Text
     public function profanityFilter($text)
     {
         if (!is_string($text)) {
-            return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
+            return \phpws\PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
         }
 
         $words = unserialize(PROFANE_WORDS);
@@ -265,7 +265,7 @@ class PHPWS_Text
     public static function sentence($text, $stripNewlines = false)
     {
         if (!is_string($text)) {
-            return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
+            return \phpws\PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
         }
 
         return preg_split("/\r\n|\n/", $text);

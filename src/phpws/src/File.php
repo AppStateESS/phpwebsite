@@ -147,14 +147,14 @@ class PHPWS_File
 
         if (!is_dir($dest_directory)) {
             if (!mkdir($dest_directory)) {
-                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
+                \phpws\PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
                 return false;
             }
             chmod($dest_directory, 0755);
         }
 
         if (!is_writable($dest_directory)) {
-            PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
+            \phpws\PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
             return false;
         }
 
@@ -183,9 +183,9 @@ class PHPWS_File
 
                 if (!copy($src_file, $dest_file)) {
                     if ($dest_exists && !is_writable($dest_file)) {
-                        PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_file);
+                        \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_file);
                     } else {
-                        PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core', 'PHPWS_File::copy_directory', $dest_file);
+                        \phpws\PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core', 'PHPWS_File::copy_directory', $dest_file);
                     }
                 } else {
                     chmod($dest_file, 0644);
@@ -247,12 +247,12 @@ class PHPWS_File
             $fp = fopen($file_origin, 'rb');
 
             if (!$fp) {
-                return PHPWS_Error::get(PHPWS_FILE_CANT_READ, 'core', 'PHPWS_File::fileCopy', $file_origin);
+                return \phpws\PHPWS_Error::get(PHPWS_FILE_CANT_READ, 'core', 'PHPWS_File::fileCopy', $file_origin);
             }
 
             $dir_check = is_writable($destination_directory);
             if (!$dir_check) {
-                return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
+                return \phpws\PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
             }
 
             $dest_file_exists = file_exists($destination_directory . $file_destination);
@@ -261,7 +261,7 @@ class PHPWS_File
                 if ($overwrite) {
                     $fp = is_writable($destination_directory . $file_destination);
                     if (!$fp) {
-                        return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
+                        return \phpws\PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
                     }
 
                     if ($copy_file = copy($file_origin, $destination_directory . $file_destination)) {
@@ -646,7 +646,7 @@ class PHPWS_File
                 } elseif (is_file($dir . $file)) {
                     $result = unlink($dir . $file);
                     if (!$result) {
-                        PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir . $file);
+                        \phpws\PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir . $file);
                         return false;
                     }
                 }
@@ -655,7 +655,7 @@ class PHPWS_File
 
             $result = rmdir($dir);
             if (!$result) {
-                PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir);
+                \phpws\PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir);
                 return false;
             }
 

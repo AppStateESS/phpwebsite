@@ -191,7 +191,7 @@ class PHPWS_Mail {
         $subject = 'subject:'  . (isset($headers['Subject'])  ? $headers['Subject']  : '');
         $module  = 'module:'   . \phpws\PHPWS_Core::getCurrentModule();
         $user    = 'user:'     . (\Current_User::isLogged() ? \Current_User::getUsername() : '');
-        $result  = 'result:'   . (PHPWS_Error::isError($result) ? 'Failure' : 'Success');
+        $result  = 'result:'   . (\phpws\PHPWS_Error::isError($result) ? 'Failure' : 'Success');
 
         \phpws\PHPWS_Core::log("$id $module $user $subject $from $to $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
     }
@@ -289,7 +289,7 @@ class PHPWS_Mail {
             foreach($this->send_to as $address) {
                 $recipients['To']   = $address;
                 $result = $mail_object->send($recipients, $m_headers, $body);
-                if (PHPWS_Error::logIfError($result)) {
+                if (\phpws\PHPWS_Error::logIfError($result)) {
                     $error_found = true;
                 }
                 self::log($recipients['To'], $m_headers, $result);
@@ -303,7 +303,7 @@ class PHPWS_Mail {
             $recipients['To']   = implode(',', $this->send_to);
             $result = $mail_object->send($recipients, $m_headers, $body);
             self::log($recipients['To'], $m_headers, $result);
-            PHPWS_Error::logIfError($result);
+            \phpws\PHPWS_Error::logIfError($result);
             return $result;
         }
     }

@@ -294,14 +294,14 @@ class PHPWS_Manager {
 
         if(!isset($this->_module)) {
             $message = _('Manager cannot initialize, the module was not set.');
-            $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
+            $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
             $error->message(NULL);
         }
 
         $config = PHPWS_SOURCE_DIR . 'mod/' . $this->_module . '/conf/manager.php';
         if(!file_exists($config)) {
             $message = sprintf(_('Manager configuration file not found for module: %s'), $this->_module);
-            $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
+            $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
             $error->message(NULL);
         }
 
@@ -309,7 +309,7 @@ class PHPWS_Manager {
 
         if(!is_array($lists) || !is_array($templates)) {
             $message = _('Manager configuration file is an improper format.');
-            $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
+            $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
             $error->message(NULL);
         }
 
@@ -341,7 +341,7 @@ class PHPWS_Manager {
             || (isset($$paging) && !is_array($$paging))) {
 
                 $message = _('Manager configuration file is an improper format.');
-                $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
+                $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
                 $error->message(NULL);
             }
 
@@ -381,7 +381,7 @@ class PHPWS_Manager {
 
         if(!isset($this->_table) && !isset($this->_request)) {
             $message = _('Manager was not fully initialized to get a list.');
-            $error = new PHPWS_Error('core', 'PHPWS_Manager::getList()', $message, 'exit', 1);
+            $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager::getList()', $message, 'exit', 1);
             $error->message(NULL);
         }
 
@@ -753,11 +753,11 @@ class PHPWS_Manager {
                 }
                 $sql .= ' FROM ' . $table;
             } else {
-                $error = new PHPWS_Error('core', 'PHPWS_Manager:getItems()', 'Format error in config file.', 'exit', 1);
+                $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager:getItems()', 'Format error in config file.', 'exit', 1);
                 $error->message(NULL);
             }
         } else {
-            $error = new PHPWS_Error('core', 'PHPWS_Manager:getItems()', 'Table not set!', 'exit', 1);
+            $error = new \phpws\PHPWS_Error('core', 'PHPWS_Manager:getItems()', 'Table not set!', 'exit', 1);
             $error->message(NULL);
         }
 

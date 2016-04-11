@@ -20,7 +20,7 @@ class PHPWS_Cookie {
 
         $cookie_index = sprintf('%s[%s]', COOKIE_HASH, $name);
         if (!setcookie($cookie_index, $value, $time)) {
-            return PHPWS_Error::get(COOKIE_SET_FAILED, 'core', 'PHPWS_Cookie::write');
+            return \phpws\PHPWS_Error::get(COOKIE_SET_FAILED, 'core', 'PHPWS_Cookie::write');
         }
     }
 

@@ -174,7 +174,7 @@ class DBPager
     public function __construct($table, $class = null)
     {
         if (empty($table)) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
+            $this->error = \phpws\PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::__construct');
             return;
         }
 
@@ -198,7 +198,7 @@ class DBPager
         $this->table = & $table;
         $this->db = new PHPWS_DB($table);
 
-        if (PHPWS_Error::isError($this->db)) {
+        if (\phpws\PHPWS_Error::isError($this->db)) {
             $this->error = $this->db;
             $this->db = null;
         }
@@ -216,7 +216,7 @@ class DBPager
             }
             $this->_class_vars = $class_var_list;
         } elseif ($class) {
-            $this->error = PHPWS_Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
+            $this->error = \phpws\PHPWS_Error::get(DBPAGER_NO_CLASS, 'core', 'DBPager::__construct', $class);
         }
 
         $this->loadLink();
@@ -762,7 +762,7 @@ class DBPager
             }
         }
         $count = $this->getTotalRows();
-        if (PHPWS_Error::isError($count)) {
+        if (\phpws\PHPWS_Error::isError($count)) {
             throw new \Exception($count->getMessage());
         }
 
@@ -835,7 +835,7 @@ class DBPager
             $result = $this->db->getObjects($this->class);
         }
         $this->row_query = $this->db->lastQuery();
-        if (PHPWS_Error::isError($result)) {
+        if (\phpws\PHPWS_Error::isError($result)) {
             return $result;
         }
 
@@ -1224,7 +1224,7 @@ class DBPager
 
                 if (!empty($this->row_tags)) {
                     if (!in_array($this->row_tags['method'], $this->_methods)) {
-                        return PHPWS_Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $this->row_tags['method']);
+                        return \phpws\PHPWS_Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $this->row_tags['method']);
                     }
 
                     if (empty($this->row_tags['variable'])) {
@@ -1301,8 +1301,8 @@ class DBPager
 
         $template = $form->getTemplate();
 
-        if (PHPWS_Error::isError($template)) {
-            PHPWS_Error::log($template);
+        if (\phpws\PHPWS_Error::isError($template)) {
+            \phpws\PHPWS_Error::log($template);
             return null;
         }
 
@@ -1375,7 +1375,7 @@ EOF;
 
         $pages = $this->getPageLinks();
 
-        if (PHPWS_Error::isError($pages)) {
+        if (\phpws\PHPWS_Error::isError($pages)) {
             return $pages;
         }
 
@@ -1463,7 +1463,7 @@ EOF;
 
         if (empty($this->display_rows)) {
             $result = $this->initialize();
-            if (PHPWS_Error::isError($result)) {
+            if (\phpws\PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -1475,16 +1475,16 @@ EOF;
         }
 
         if (!isset($this->module)) {
-            return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
+            return \phpws\PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
         }
 
         if (!isset($this->template)) {
-            return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
+            return \phpws\PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
         }
 
         $rows = $this->getPageRows();
 
-        if (PHPWS_Error::isError($rows)) {
+        if (\phpws\PHPWS_Error::isError($rows)) {
             return $rows;
         }
 

@@ -30,8 +30,8 @@ class Editor {
     {
         $editorList = $this->getEditorList();
 
-        if (PHPWS_Error::isError($editorList)) {
-            PHPWS_Error::log($editorList);
+        if (\phpws\PHPWS_Error::isError($editorList)) {
+            \phpws\PHPWS_Error::log($editorList);
             $this->type = null;
             return;
         }
@@ -43,8 +43,8 @@ class Editor {
         $this->editorList = $editorList;
         if (isset($type)) {
             $result = $this->setType($type);
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (\phpws\PHPWS_Error::isError($result)) {
+                \phpws\PHPWS_Error::log($result);
                 $this->type = null;
                 return;
             }
@@ -147,7 +147,7 @@ class Editor {
             $this->type = $type;
         }
         else {
-            return PHPWS_Error::get(EDITOR_MISSING_FILE, 'core', 'Editor::constructor', $type);
+            return \phpws\PHPWS_Error::get(EDITOR_MISSING_FILE, 'core', 'Editor::constructor', $type);
         }
     }
 

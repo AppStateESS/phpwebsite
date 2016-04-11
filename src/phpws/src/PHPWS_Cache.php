@@ -81,7 +81,7 @@ class PHPWS_Cache {
         }
 
         if (!is_string($content)) {
-            return PHPWS_Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
+            return \phpws\PHPWS_Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
         }
         $cache = PHPWS_Cache::initCache();
         return $cache->save($content, md5($key));

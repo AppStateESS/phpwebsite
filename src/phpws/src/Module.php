@@ -112,7 +112,7 @@ class PHPWS_Module {
             // even if use_file is false, we get the version_http from the file
             $filename = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
             if (!is_file($filename)) {
-                $this->_error = PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_Module::init', $filename);
+                $this->_error = \phpws\PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_Module::init', $filename);
             } else {
                 include $filename;
             }
@@ -138,10 +138,10 @@ class PHPWS_Module {
                 $result = PHPWS_Module::initByDB();
             }
 
-            if (PHPWS_Error::isError($result)) {
+            if (\phpws\PHPWS_Error::isError($result)) {
                 $this->_error = $result;
             } elseif(empty($result)) {
-                $this->_error = PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
+                $this->_error = \phpws\PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
             }
         }
     }
@@ -288,7 +288,7 @@ class PHPWS_Module {
                 $this->setProperName($this->getProperName(true));
             }
             $result = $db->saveObject($this);
-            if (PHPWS_Error::isError($result)) {
+            if (\phpws\PHPWS_Error::isError($result)) {
                 return $result;
             }
 
@@ -297,7 +297,7 @@ class PHPWS_Module {
             $db = new PHPWS_DB('core_version');
             $db->addValue('version', $this->version);
             $result = $db->update();
-            if (PHPWS_Error::isError($result)) {
+            if (\phpws\PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -326,7 +326,7 @@ class PHPWS_Module {
             $db->addValue('version', $stats['VERSION']);
             $result = $db->insert();
 
-            if (PHPWS_Error::isError($result)) {
+            if (\phpws\PHPWS_Error::isError($result)) {
                 return $result;
             }
         }
@@ -382,8 +382,8 @@ class PHPWS_Module {
         $db->addWhere('title', $title);
         $db->addColumn('title');
         $result = $db->select('one');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (\phpws\PHPWS_Error::isError($result)) {
+            \phpws\PHPWS_Error::log($result);
             return false;
         } else {
             if (isset($result)) {
@@ -401,8 +401,8 @@ class PHPWS_Module {
         $db = new PHPWS_DB('modules');
         $db->addWhere('title', $this->title);
         $result = $db->select('row');
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
+        if (\phpws\PHPWS_Error::isError($result)) {
+            \phpws\PHPWS_Error::log($result);
             return false;
         }
         return version_compare($result['version'], $this->getVersion(), '<');

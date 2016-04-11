@@ -24,7 +24,7 @@ class PHPWS_Error
      */
     public static function isError($item)
     {
-        $pear = PHPWS_Error::getPear();
+        $pear = \phpws\PHPWS_Error::getPear();
         return $pear->isError($item);
     }
 
@@ -43,14 +43,14 @@ class PHPWS_Error
      */
     public static function raiseError($message = null, $code = null, $mode = null, $options = null, $userinfo = null, $error_class = null, $skipmsg = false)
     {
-        $pear = PHPWS_Error::getPear();
+        $pear = \phpws\PHPWS_Error::getPear();
         return $pear->raiseError($message, $code, $mode, $options, $userinfo, $error_class, $skipmsg);
     }
 
     public static function logIfError($item)
     {
-        if (PHPWS_Error::isError($item)) {
-            PHPWS_Error::log($item);
+        if (\phpws\PHPWS_Error::isError($item)) {
+            \phpws\PHPWS_Error::log($item);
             return true;
         } else {
             return false;
@@ -62,7 +62,7 @@ class PHPWS_Error
         $current_language = \phpws2\Language::getLocale();
         \phpws2\Language::setLocale(DEFAULT_LANGUAGE);
         if (empty($module)) {
-            return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+            return \phpws\PHPWS_Error::get(PHPWS_NO_MODULE, 'core', '\phpws\PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
         }
 
         try {
@@ -85,7 +85,7 @@ class PHPWS_Error
                     echo _('Core could not locate its error.php file.');
                     die;
                 }
-                return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', 'PHPWS_Error::get', 'Module: ' . $module);
+                return \phpws\PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', '\phpws\PHPWS_Error::get', 'Module: ' . $module);
             }
         }
 
@@ -94,7 +94,7 @@ class PHPWS_Error
         if (!isset($errors))
             return FALSE;
 
-        if (PHPWS_Error::isError($value)) {
+        if (\phpws\PHPWS_Error::isError($value)) {
             $value = $value->getCode();
         }
 
@@ -124,7 +124,7 @@ class PHPWS_Error
             }
         }
 
-        $error = PHPWS_Error::raiseError($message, $value, NULL, NULL, implode('', $fullError));
+        $error = \phpws\PHPWS_Error::raiseError($message, $value, NULL, NULL, implode('', $fullError));
         \phpws2\Language::setLocale($current_language);
         return $error;
     }
@@ -134,12 +134,12 @@ class PHPWS_Error
         if ((bool) PHPWS_LOG_ERRORS == FALSE) {
             return;
         }
-        if (!PHPWS_Error::isError($value)) {
-            $error = PHPWS_Error::get($value, $module, $funcName, $extraInfo);
+        if (!\phpws\PHPWS_Error::isError($value)) {
+            $error = \phpws\PHPWS_Error::get($value, $module, $funcName, $extraInfo);
         } else {
             $error = $value;
         }
-        $final = PHPWS_Error::printError($error);
+        $final = \phpws\PHPWS_Error::printError($error);
         \phpws2\Error::logError($final);
     }
 

@@ -36,8 +36,8 @@ class PHPWS_Settings
     {
         if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
             $result = PHPWS_Settings::load($module);
-            if (PHPWS_Error::isError($result)) {
-                PHPWS_Error::log($result);
+            if (\phpws\PHPWS_Error::isError($result)) {
+                \phpws\PHPWS_Error::log($result);
                 return false;
             }
         }
@@ -149,7 +149,7 @@ class PHPWS_Settings
                     break;
             }
             $result = $db->insert();
-            if (PHPWS_Error::isError($result)) {
+            if (\phpws\PHPWS_Error::isError($result)) {
                 unset($GLOBALS['PHPWS_Settings'][$module]);
                 PHPWS_Settings::load($module);
                 return $result;
@@ -175,7 +175,7 @@ class PHPWS_Settings
     {
         $default = PHPWS_Settings::loadConfig($module);
         if (!$default) {
-            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::reset', $module);
+            return \phpws\PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::reset', $module);
         }
 
         include $default;
@@ -198,7 +198,7 @@ class PHPWS_Settings
         $default = PHPWS_Settings::loadConfig($module);
         if (!$default) {
             $GLOBALS['PHPWS_Settings'][$module] = 1;
-            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
+            return \phpws\PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
         }
 
         include $default;
@@ -208,7 +208,7 @@ class PHPWS_Settings
         $db->addWhere('module', $module);
         $result = $db->select();
 
-        if (PHPWS_Error::isError($result)) {
+        if (\phpws\PHPWS_Error::isError($result)) {
             return $result;
         } elseif (empty($result)) {
             PHPWS_Settings::save($module);

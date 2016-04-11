@@ -247,7 +247,7 @@ class MyServer extends IXR_IntrospectionServer {
         $result = \Current_User::loginUser($username, $password);
 
         // Bad result or blank result returns an error message
-        if (PHPWS_Error::logIfError($result) || !$result) {
+        if (\phpws\PHPWS_Error::logIfError($result) || !$result) {
             return new IXR_Error(4000, XMLRPC_CANNOT_AUTHENTICATE);
         }
 
