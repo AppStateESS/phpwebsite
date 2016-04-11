@@ -5,7 +5,7 @@ namespace phpws2\Database;
 /**
  * A database data type
  * @author Matthew McNaney <mcnaney at gmail dot com>
- * @package Global
+ * @package phpws2
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -134,7 +134,7 @@ abstract class Datatype extends \Data
 
     public function getName()
     {
-        return wrap((string) $this->name, $this->table->getDelimiter());
+        return \phpws2\Database\DB::delimit((string) $this->name);
     }
 
     /**
