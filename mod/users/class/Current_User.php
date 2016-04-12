@@ -573,7 +573,7 @@ final class Current_User {
             PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users',
                     'Current_User::loadAuthorization',
                     USERS_AUTH_PATH . $user->auth_script);
-            return false;
+            throw new \Exception("Could not find authentication class '$class_name'");
         }
         $GLOBALS['User_Authorization'] = new $class_name($user);
         return true;
