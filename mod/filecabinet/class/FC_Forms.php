@@ -158,12 +158,12 @@ class FC_Forms
         }
     }
 
-    private function printFolderList(\phpws2\Request $request)
+    private function printFolderList(\Request $request)
     {
         echo $this->factory->printFolderList();
     }
 
-    private function saveFolder(\phpws2\Request $request)
+    private function saveFolder(\Request $request)
     {
         $folder_id = $request->getVar('folder_id');
 
@@ -193,12 +193,12 @@ class FC_Forms
         }
     }
 
-    private function printFile(\phpws2\Request $request)
+    private function printFile(\Request $request)
     {
         echo $this->factory->printFile($request->getVar('id'));
     }
 
-    private function deleteFile(\phpws2\Request $request)
+    private function deleteFile(\Request $request)
     {
         if (!Current_User::authorized('filecabinet')) {
             $this->sendErrorHeader('No permissions to delete files');
@@ -229,7 +229,7 @@ class FC_Forms
         $db->delete();
     }
 
-    public function uploadFile(\phpws2\Request $request)
+    public function uploadFile(\Request $request)
     {
         if (Current_User::authorized('filecabinet')) {
             return;
