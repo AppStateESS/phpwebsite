@@ -64,8 +64,8 @@ class Error {
     {
         http_response_code($code);
         $error_text = get_status_text($code);
-        $default = PHPWS_SOURCE_DIR . 'Global/Error/Pages/' . ERROR_PAGE_TEMPLATE;
-        $error_template = PHPWS_SOURCE_DIR . "Global/Error/Pages/$code.html";
+        $default = PHPWS_SOURCE_DIR . 'src/phpws2/templates/Error/Pages/' . ERROR_PAGE_TEMPLATE;
+        $error_template = PHPWS_SOURCE_DIR . "src/phpws2/templates/Error/Pages/$code.html";
         $source_http = PHPWS_SOURCE_HTTP;
         if (is_file($error_template)) {
             include $error_template;

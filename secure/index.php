@@ -15,7 +15,7 @@ if (file_exists('../config/core/config.php')) {
 }
 
 // Build new URL
-require_once PHPWS_SOURCE_DIR . 'Global/Server.php';
+require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 $redirect = preg_replace('/secure\/?$/', '', \Server::getSiteUrl());
 ?>
 <html>

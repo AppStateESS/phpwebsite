@@ -35,7 +35,6 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-require_once PHPWS_SOURCE_DIR . 'Global/Data.php';
 
 class Session extends Data {
 

@@ -10,9 +10,6 @@
 chdir('../');
 set_include_path('lib/pear/');
 
-
-require_once 'Global/Functions.php';
-
 define('CONFIG_CREATED', is_file('config/core/config.php'));
 if (CONFIG_CREATED) {
     require_once './config/core/config.php';
