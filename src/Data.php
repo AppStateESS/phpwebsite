@@ -1,8 +1,5 @@
 <?php
 
-namespace phpws2;
-
-
 /**
  * Foundation abstract class for any data type object. Note: for overload to work
  * all variables in the parent object have to be protected.
