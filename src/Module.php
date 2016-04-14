@@ -10,7 +10,7 @@
  * Base abstract class for all modules. Every Module class is expect to
  * extend this class to assure preparation and run time functionality.
  */
-abstract class Module extends \Data implements Controller {
+abstract class Module extends \Data implements \Controller {
 
     /**
      * Array of dependencies for the module. Modules will not be loaded
