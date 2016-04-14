@@ -58,7 +58,7 @@ function process($arguments)
     // Helps with Security include
     $_SERVER['REQUEST_URI'] = 'pulse.php';
     
-    require_once PHPWS_SOURCE_DIR . 'inc/Bootstrap.php';
+    require_once PHPWS_SOURCE_DIR . 'src/Bootstrap.php';
     require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
     require_once PHPWS_SOURCE_DIR . 'mod/pulse/class/PulseController.php';
     try {

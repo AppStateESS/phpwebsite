@@ -4,7 +4,7 @@ if (file_exists('../config/core/config.php')) {
     define('PHPWEBSITE', true);
 
     require_once('../config/core/config.php');
-    require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
+    require_once(PHPWS_SOURCE_DIR . 'src/Bootstrap.php');
 
     if (isset($_SERVER['PHP_AUTH_USER'])) {
         require_once(PHPWS_SOURCE_DIR . 'mod/users/class/Current_User.php');

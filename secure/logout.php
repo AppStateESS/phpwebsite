@@ -5,7 +5,7 @@ if(file_exists('../config/core/config.php')) {
     define('PHPWEBSITE', true);
 
     require_once('../config/core/config.php');
-    require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
+    require_once(PHPWS_SOURCE_DIR . 'src/Bootstrap.php');
 
     session_name(md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
 }
