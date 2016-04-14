@@ -44,7 +44,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Tag extends Data
+class Tag extends \Data
 {
     /**
      * Tag type (e.g. p, b, div, etc.)

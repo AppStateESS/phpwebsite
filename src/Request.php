@@ -11,7 +11,7 @@
  * either a GET (requesting a view or response), a POST (submission of information
  * leading to change in the system), or a PUT (creation of a new item n the system).
  */
-class Request extends Data
+class Request extends \Data
 {
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace phpws;
 
 /**
@@ -689,7 +690,7 @@ class PHPWS_Core
                 \phpws\PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'Cannot load Branch class');
                 return false;
             }
-            if (Branch::checkCurrentBranch()) {
+            if (\Branch::checkCurrentBranch()) {
                 $GLOBALS['Allow_Entry'] = true;
                 return true;
             } else {

@@ -6,7 +6,7 @@ namespace phpws2;
 /**
  * @author Matt McNaney <mcnaney at gmail dot com>
  */
-class PageCache extends Data
+class PageCache extends \Data
 {
 
     private $title;

@@ -10,7 +10,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Resource extends Data {
+abstract class Resource extends \Data {
 
     /**
      * Primary key of Resource

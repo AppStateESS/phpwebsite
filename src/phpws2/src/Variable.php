@@ -12,7 +12,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Variable extends Data {
+abstract class Variable extends \Data {
 
     /**
      * The variable's value

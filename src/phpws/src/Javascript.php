@@ -9,7 +9,7 @@ namespace phpws;
 
 \phpws\PHPWS_Core::initCoreClass('jsmin.php');
 
-abstract class Javascript extends Data {
+abstract class Javascript extends \Data {
     /**
      * @var string
      */

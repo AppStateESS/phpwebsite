@@ -18,7 +18,7 @@ namespace phpws2\Database;
  * delete
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Object extends Data {
+abstract class Object extends \Data {
 
     /**
      * Reference to the parent object's primary key.

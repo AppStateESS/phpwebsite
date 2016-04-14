@@ -7,7 +7,7 @@
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class GlobalModule extends Module implements SettingDefaults {
+class GlobalModule extends \Module implements \SettingDefaults {
 
     /**
      * Eventually to be handled by UI
