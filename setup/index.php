@@ -17,18 +17,18 @@ if (CONFIG_CREATED) {
     define('SITE_HASH', md5(rand()));
 }
 
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     define('PHPWS_SOURCE_DIR', getcwd() . '/');
+    define('PHPWS_HOME_DIR', getcwd() . '/');
 }
+require_once 'src/Bootstrap.php';
 
 if (!defined('PHPWS_SOURCE_HTTP')) {
     define('PHPWS_SOURCE_HTTP', './');
 }
-require_once 'core/conf/defines.dist.php';
-loadTimeZone();
 
 require_once './setup/config.php';
-require_once './core/class/Template.php';
 require_once './setup/class/Setup.php';
 
 // Core is loaded in Init

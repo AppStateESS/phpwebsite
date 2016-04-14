@@ -7,14 +7,14 @@
  * @version $Id$
  */
 require_once 'MDB2.php';
-require_once 'core/class/Debug.php';
 if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
     define('DIRECTORY_SLASH', '\\');
 } else {
     define('DIRECTORY_SLASH', '/');
 }
 
-class Setup {
+class Setup
+{
 
     public $phpws_version = null;
 
@@ -74,25 +74,18 @@ class Setup {
         } else {
             $configDir = PHPWS_SOURCE_DIR . 'config/core/';
             if (is_file($configDir . 'config.php')) {
-                $this->content[] = dgettext('core',
-                        'Your configuration file already exists.');
-                $this->content[] = dgettext('core',
-                        'Remove the following file and refresh to continue:');
+                $this->content[] = dgettext('core', 'Your configuration file already exists.');
+                $this->content[] = dgettext('core', 'Remove the following file and refresh to continue:');
                 $this->content[] = '<pre>' . $configDir . 'config.php</pre>';
             } elseif ($this->writeConfigFile()) {
                 \phpws\PHPWS_Core::killSession('configSettings');
-                $this->content[] = dgettext('core',
-                                'Your configuration file was written successfully!') . '<br />';
-                $this->content[] = '<a href="index.php?step=3">' . dgettext('core',
-                                'Move on to Step 3') . '</a>';
+                $this->content[] = dgettext('core', 'Your configuration file was written successfully!') . '<br />';
+                $this->content[] = '<a href="index.php?step=3">' . dgettext('core', 'Move on to Step 3') . '</a>';
             } else {
-                $this->content[] = dgettext('core',
-                        'Your configuration file could not be written into the following directory:');
+                $this->content[] = dgettext('core', 'Your configuration file could not be written into the following directory:');
                 $this->content[] = "<pre>$configDir</pre>";
-                $this->content[] = dgettext('core',
-                        'Please check your directory permissions and try again.');
-                $this->content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core',
-                                'Permission Help') . '</a>';
+                $this->content[] = dgettext('core', 'Please check your directory permissions and try again.');
+                $this->content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('core', 'Permission Help') . '</a>';
             }
         }
         $this->title = dgettext('core', 'Create Configuration File');
@@ -125,29 +118,23 @@ class Setup {
 
         $filename = $location . 'config.php';
         if (is_file($filename)) {
-            $this->messages[] = dgettext('core',
-                    'Configuration file already exists.');
+            $this->messages[] = dgettext('core', 'Configuration file already exists.');
             return false;
         }
 
         $config_file[] = '<?php';
-        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');",
-                PHPWS_SOURCE_DIR);
-        $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');",
-                PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');", PHPWS_SOURCE_DIR);
 
         $config_file[] = sprintf("define('SITE_HASH', '%s');", md5(rand()));
-        $config_file[] = sprintf("define('PHPWS_DSN', '%s');",
-                $_SESSION['configSettings']['dsn']);
+        $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $_SESSION['configSettings']['dsn']);
         if (isset($_SESSION['configSettings']['dbprefix'])) {
-            $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');",
-                    $_SESSION['configSettings']['dbprefix']);
+            $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');", $_SESSION['configSettings']['dbprefix']);
         }
         if (!file_put_contents($filename, implode("\n", $config_file))) {
             return false;
         } else {
-            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '//%s');\n?>",
-                    str_replace('setup/', '', \phpws\PHPWS_Core::getHomeHttp(false)));
+            $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '//%s');\n?>", str_replace('setup/', '', \phpws\PHPWS_Core::getHomeHttp(false)));
             return file_put_contents($location . 'source.php', $source_http);
         }
     }
@@ -160,11 +147,9 @@ class Setup {
 
         // all is well
         $aiw = true;
-        if (empty($_POST['username']) || preg_match('/[^\w\.\-]/',
-                        $_POST['username'])) {
+        if (empty($_POST['username']) || preg_match('/[^\w\.\-]/', $_POST['username'])) {
             $aiw = false;
-            $this->messages[] = dgettext('users',
-                    'Username is improperly formatted.');
+            $this->messages[] = dgettext('users', 'Username is improperly formatted.');
         } else {
             $_SESSION['User']->username = $_POST['username'];
         }
@@ -178,8 +163,7 @@ class Setup {
 
         if (empty($_POST['email'])) {
             $aiw = false;
-            $this->messages[] = dgettext('core',
-                    'Please enter an email address.');
+            $this->messages[] = dgettext('core', 'Please enter an email address.');
         } else {
             $_SESSION['User']->setEmail($_POST['email']);
         }
@@ -195,22 +179,19 @@ class Setup {
         if (!empty($_POST['dbuser'])) {
             $this->setConfigSet('dbuser', $_POST['dbuser']);
         } else {
-            $this->messages['dbuser'] = dgettext('core',
-                    'Missing a database user name.');
+            $this->messages['dbuser'] = dgettext('core', 'Missing a database user name.');
             $check = false;
         }
 
         if (!empty($_POST['dbpass'])) {
             if (preg_match('/[^\w\s\.!\?]/', $_POST['dbpass'])) {
-                $this->messages['dbpass'] = dgettext('core',
-                        'Database password may contain alphanumeric characters, punctuation, spaces and underscores only.');
+                $this->messages['dbpass'] = dgettext('core', 'Database password may contain alphanumeric characters, punctuation, spaces and underscores only.');
                 $check = false;
             } else {
                 $this->setConfigSet('dbpass', $_POST['dbpass']);
             }
         } elseif (empty($currentPW)) {
-            $this->messages['dbpass'] = dgettext('core',
-                    'Missing a database password.');
+            $this->messages['dbpass'] = dgettext('core', 'Missing a database password.');
             $check = false;
         }
 
@@ -219,15 +200,13 @@ class Setup {
         if (!empty($_POST['dbname'])) {
             $this->setConfigSet('dbname', $_POST['dbname']);
         } else {
-            $this->messages['dbname'] = dgettext('core',
-                    'Missing a database name.');
+            $this->messages['dbname'] = dgettext('core', 'Missing a database name.');
             $check = false;
         }
 
         if (!empty($_POST['dbprefix'])) {
             if (preg_match('/\W/', $_POST['dbprefix'])) {
-                $this->messages['dbpref'] = dgettext('core',
-                        'Table prefix must be alphanumeric characters or underscores only');
+                $this->messages['dbpref'] = dgettext('core', 'Table prefix must be alphanumeric characters or underscores only');
                 $check = false;
             } else {
                 $this->setConfigSet('dbprefix', $_POST['dbprefix']);
@@ -245,26 +224,32 @@ class Setup {
             return true;
         }
 
-        $checkConnection = $this->testDBConnect();
+        // previously, this error was silenced. Now, all errors produce exceptions
+        // causing this previous code to blow up. We catch it now and test
+        // for an unknown database. Unfortunately we don't have a real exception
+        // code, so we have to make do.
+        try {
+            $checkConnection = $this->testDBConnect();
+        } catch (\Exception $e) {
+            if (preg_match('@42000/1049@', $e->getMessage())) {
+                $checkConnection = -1;
+            } else {
+                throw $e;
+            }
+        }
 
         if ($checkConnection == 1) {
             // Database already exists and is empty.
             $this->messages[] = dgettext('core', 'Database found.');
             return true;
         } elseif ($checkConnection == 2) {
-            $sub[] = dgettext('core',
-                    'PhpWebSite was able to connect, but the database already contained tables.');
+            $sub[] = dgettext('core', 'PhpWebSite was able to connect, but the database already contained tables.');
             if ($this->getConfigSet('dbprefix')) {
-                $sub[] = dgettext('core',
-                        'Since you set a table prefix, you may force an installation into this database.');
-                $sub[] = dgettext('core',
-                        'Click the link below to continue or change your connection settings.');
-                $sub[] = sprintf('<a href="index.php?step=7">%s</a>',
-                        dgettext('core',
-                                'I want to install phpWebSite in this database.'));
+                $sub[] = dgettext('core', 'Since you set a table prefix, you may force an installation into this database.');
+                $sub[] = dgettext('core', 'Click the link below to continue or change your connection settings.');
+                $sub[] = sprintf('<a href="index.php?step=7">%s</a>', dgettext('core', 'I want to install phpWebSite in this database.'));
             } else {
-                $sub[] = dgettext('core',
-                        'Create a new database, remove all tables from the database you want to use, or use table prefixing.');
+                $sub[] = dgettext('core', 'Create a new database, remove all tables from the database you want to use, or use table prefixing.');
                 $_SESSION['configSettings']['database'] = false;
             }
             $this->messages['main'] = implode('<br />', $sub);
@@ -278,10 +263,8 @@ class Setup {
                 $this->databaseConfig();
             }
         } else {
-            $this->messages[] = dgettext('core',
-                    'Unable to connect to the database with the information provided.');
-            $this->messages[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . dgettext('core',
-                            'Database Help') . '</a>';
+            $this->messages[] = dgettext('core', 'Unable to connect to the database with the information provided.');
+            $this->messages[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . dgettext('core', 'Database Help') . '</a>';
             return false;
         }
     }
@@ -295,18 +278,15 @@ class Setup {
         if (PHPWS_Error::isError($db)) {
             PHPWS_Error::log($db);
             $this->messages[] = dgettext('core', 'Unable to connect.');
-            $this->messages[] = dgettext('core',
-                    'Check your configuration settings.');
+            $this->messages[] = dgettext('core', 'Check your configuration settings.');
             return false;
         }
 
         $result = $db->query('CREATE DATABASE ' . $this->getConfigSet('dbname'));
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($db);
-            $this->messages[] = dgettext('core',
-                    'Unable to create the database.');
-            $this->messages[] = dgettext('core',
-                    'You will need to create it manually and rerun the setup.');
+            $this->messages[] = dgettext('core', 'Unable to create the database.');
+            $this->messages[] = dgettext('core', 'You will need to create it manually and rerun the setup.');
             return false;
         }
 
@@ -407,42 +387,32 @@ class Setup {
 
         $databases = array('mysqli' => 'MySQL', 'pgsql' => 'PostgreSQL');
 
-        $formTpl['DBTYPE_DEF'] = dgettext('core',
-                'phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
+        $formTpl['DBTYPE_DEF'] = dgettext('core', 'phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
 
-        $formTpl['DBUSER_DEF'] = dgettext('core',
-                        'This is the user name that phpWebSite will use to access its database.')
-                . ' <br /><i>' . dgettext('core',
-                        'Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
+        $formTpl['DBUSER_DEF'] = dgettext('core', 'This is the user name that phpWebSite will use to access its database.')
+                . ' <br /><i>' . dgettext('core', 'Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
         if (isset($this->messages['dbuser'])) {
             $formTpl['DBUSER_ERR'] = $this->messages['dbuser'];
         }
 
-        $formTpl['DBPASS_DEF'] = dgettext('core',
-                'Enter the database\'s user password here.');
+        $formTpl['DBPASS_DEF'] = dgettext('core', 'Enter the database\'s user password here.');
         if (isset($this->messages['dbpass'])) {
             $formTpl['DBPASS_ERR'] = $this->messages['dbpass'];
         }
 
 
-        $formTpl['DBPREF_DEF'] = dgettext('core',
-                'If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
+        $formTpl['DBPREF_DEF'] = dgettext('core', 'If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
         if (isset($this->messages['dbpref'])) {
             $formTpl['DBPREF_ERR'] = $this->messages['dbpref'];
         }
 
-        $formTpl['DBHOST_DEF'] = dgettext('core',
-                        'If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
-                . '<br />' . dgettext('core',
-                        'Otherwise, enter the ip or dns to the database server.');
+        $formTpl['DBHOST_DEF'] = dgettext('core', 'If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
+                . '<br />' . dgettext('core', 'Otherwise, enter the ip or dns to the database server.');
 
-        $formTpl['DBPORT_DEF'] = dgettext('core',
-                'If your host specification requires access via a specific port, enter it here.');
+        $formTpl['DBPORT_DEF'] = dgettext('core', 'If your host specification requires access via a specific port, enter it here.');
 
-        $formTpl['DBNAME_DEF'] = dgettext('core',
-                        'The database\'s name into which you are installing phpWebSite.')
-                . '<br /><i>' . dgettext('core',
-                        'Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
+        $formTpl['DBNAME_DEF'] = dgettext('core', 'The database\'s name into which you are installing phpWebSite.')
+                . '<br /><i>' . dgettext('core', 'Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
         if (isset($this->messages['dbname'])) {
             $formTpl['DBNAME_ERR'] = $this->messages['dbname'];
         }
@@ -506,8 +476,7 @@ class Setup {
         if ($forward && AUTO_FORWARD) {
             $time = 2;
             $address = 'index.php?step=3';
-            $setupData['META'] = sprintf('<meta http-equiv="refresh" content="%s; url=%s" />',
-                    $time, $address);
+            $setupData['META'] = sprintf('<meta http-equiv="refresh" content="%s; url=%s" />', $time, $address);
         }
         $setupData['TITLE'] = $title;
         $setupData['MAIN_CONTENT'] = implode('<br />', $content);
@@ -533,15 +502,10 @@ class Setup {
 
         // step > 2; check for session
         if (!isset($_SESSION['session_check'])) {
-            $this->content[] = dgettext('core',
-                    'phpWebSite depends on sessions to move data between pages.');
-            $this->content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>',
-                    DEFAULT_LANGUAGE, dgettext('core', 'Sessions Help'));
-            $this->content[] = sprintf(dgettext('core',
-                            'If you think your sessions are working properly, %syou can click here return to the beginning%s.'),
-                    '<a href="index.php">', '</a>');
-            $this->title = dgettext('core',
-                    'There is a problem with your sessions.');
+            $this->content[] = dgettext('core', 'phpWebSite depends on sessions to move data between pages.');
+            $this->content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>', DEFAULT_LANGUAGE, dgettext('core', 'Sessions Help'));
+            $this->content[] = sprintf(dgettext('core', 'If you think your sessions are working properly, %syou can click here return to the beginning%s.'), '<a href="index.php">', '</a>');
+            $this->title = dgettext('core', 'There is a problem with your sessions.');
             $this->display();
         }
     }
@@ -553,34 +517,24 @@ class Setup {
         if (CONFIG_CREATED) {
             switch ($this->testDBConnect(PHPWS_DSN)) {
                 case '2':
-                    $this->content[] = dgettext('core',
-                            'phpWebSite configuration file and database have been found. We are assuming your installation is complete.');
-                    $this->content[] = dgettext('core',
-                            'You should move or delete the setup directory.');
-                    $this->content[] = dgettext('core',
-                            'If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
-                    $this->title = dgettext('core',
-                            'There is a problem with your database');
+                    $this->content[] = dgettext('core', 'phpWebSite configuration file and database have been found. We are assuming your installation is complete.');
+                    $this->content[] = dgettext('core', 'You should move or delete the setup directory.');
+                    $this->content[] = dgettext('core', 'If you are returning here from a previous incomplete installation, you will need to clear the database of all tables and try again.');
+                    $this->title = dgettext('core', 'There is a problem with your database');
                     $this->display();
                     exit();
 
                 case '-1':
-                    $this->content[] = dgettext('core',
-                            'The phpWebSite configuration file exists but it\'s specified database does not.');
-                    $this->content[] = dgettext('core',
-                            'Create the database set in the config file or delete the config file.');
-                    $this->title = dgettext('core',
-                            'There is a problem with your database');
+                    $this->content[] = dgettext('core', 'The phpWebSite configuration file exists but it\'s specified database does not.');
+                    $this->content[] = dgettext('core', 'Create the database set in the config file or delete the config file.');
+                    $this->title = dgettext('core', 'There is a problem with your database');
                     $this->display();
                     exit();
 
                 case '0':
-                    $this->content[] = dgettext('core',
-                            'The phpWebSite configuration file exists but we could not connect to it\'s specified database.');
-                    $this->content[] = dgettext('core',
-                            'Check your dsn settings or delete the config file.');
-                    $this->title = dgettext('core',
-                            'There is a problem with your database');
+                    $this->content[] = dgettext('core', 'The phpWebSite configuration file exists but we could not connect to it\'s specified database.');
+                    $this->content[] = dgettext('core', 'Check your dsn settings or delete the config file.');
+                    $this->title = dgettext('core', 'There is a problem with your database');
                     $this->display();
                     exit();
 
@@ -631,10 +585,8 @@ class Setup {
 
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $this->content[] = dgettext('core',
-                    'Some errors occurred while creating the core database tables.');
-            $this->content[] = dgettext('core',
-                    'Please check your error log file.');
+            $this->content[] = dgettext('core', 'Some errors occurred while creating the core database tables.');
+            $this->content[] = dgettext('core', 'Please check your error log file.');
             return false;
         }
 
@@ -646,14 +598,11 @@ class Setup {
 
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                $this->content[] = dgettext('core',
-                        'Some errors occurred while creating the core database tables.');
-                $this->content[] = dgettext('core',
-                        'Please check your error log file.');
+                $this->content[] = dgettext('core', 'Some errors occurred while creating the core database tables.');
+                $this->content[] = dgettext('core', 'Please check your error log file.');
                 return false;
             } else {
-                $this->content[] = dgettext('core',
-                        'Core installation successful.');
+                $this->content[] = dgettext('core', 'Core installation successful.');
                 return true;
             }
         }
@@ -669,10 +618,8 @@ class Setup {
 
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $this->content[] = dgettext('core',
-                            'An error occurred while trying to install your modules.')
-                    . ' ' . dgettext('core',
-                            'Please check your error logs and try again.');
+            $this->content[] = dgettext('core', 'An error occurred while trying to install your modules.')
+                    . ' ' . dgettext('core', 'Please check your error logs and try again.');
             return true;
         } else {
             $this->content[] = $result;
@@ -700,21 +647,15 @@ class Setup {
     public function finish()
     {
         $this->content[] = '<hr />';
-        $this->content[] = dgettext('core',
-                        'Installation of phpWebSite is complete.') . '<br />';
-        $this->content[] = dgettext('core',
-                        'If you experienced any error messages, check your error.log file.') . '<br />';
+        $this->content[] = dgettext('core', 'Installation of phpWebSite is complete.') . '<br />';
+        $this->content[] = dgettext('core', 'If you experienced any error messages, check your error.log file.') . '<br />';
         if (CHECK_DIRECTORY_PERMISSIONS) {
-            $this->content[] = dgettext('core',
-                    'Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
-            $this->content[] = dgettext('core',
-                    'If you do not change it now, your next page will be an error screen.');
+            $this->content[] = dgettext('core', 'Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
+            $this->content[] = dgettext('core', 'If you do not change it now, your next page will be an error screen.');
         } else {
-            $this->content[] = dgettext('core',
-                    'After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
+            $this->content[] = dgettext('core', 'After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
         }
-        $this->content[] = '<a href="../index.php">' . dgettext('core',
-                        'Go to my new website!') . '</a>' . '<br />';
+        $this->content[] = '<a href="../index.php">' . dgettext('core', 'Go to my new website!') . '</a>' . '<br />';
     }
 
     public function display()
@@ -758,64 +699,47 @@ class Setup {
         }
 
         $test['session_auto_start']['pass'] = !(bool) ini_get('session.auto_start'); // need 0
-        $test['session_auto_start']['fail'] = dgettext('core',
-                'session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file.');
-        $test['session_auto_start']['name'] = dgettext('core',
-                'Session auto start disabled');
+        $test['session_auto_start']['fail'] = dgettext('core', 'session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file.');
+        $test['session_auto_start']['name'] = dgettext('core', 'Session auto start disabled');
         $test['session_auto_start']['crit'] = true;
 
         $test['pear_files']['pass'] = is_file('lib/pear/MDB2.php');
-        $test['pear_files']['fail'] = sprintf(dgettext('core',
-                        'Could not find Pear library files. You will need to %sdownload the pear package from our site%s and unzip it in your installation directory.'),
-                '<a href="http://phpwebsite.appstate.edu/downloads/pear.zip">',
-                '</a>');
+        $test['pear_files']['fail'] = sprintf(dgettext('core', 'Could not find Pear library files. You will need to %sdownload the pear package from our site%s and unzip it in your installation directory.'), '<a href="http://phpwebsite.appstate.edu/downloads/pear.zip">', '</a>');
         $test['pear_files']['name'] = dgettext('core', 'Pear library installed');
         $test['pear_files']['crit'] = true;
 
         $test['gd']['pass'] = extension_loaded('gd');
-        $test['gd']['fail'] = sprintf(dgettext('core',
-                        'You need to compile the %sGD image library%s into PHP.'),
-                '<a href="http://www.libgd.org/Main_Page">', '</a>');
+        $test['gd']['fail'] = sprintf(dgettext('core', 'You need to compile the %sGD image library%s into PHP.'), '<a href="http://www.libgd.org/Main_Page">', '</a>');
         $test['gd']['name'] = dgettext('core', 'GD graphic libraries installed');
         $test['gd']['crit'] = true;
 
         $test['image_dir']['pass'] = is_dir('images/') && is_writable('images/');
-        $test['image_dir']['fail'] = sprintf(dgettext('core',
-                        '%s directory does not exist or is not writable.'),
-                PHPWS_SOURCE_DIR . 'images/');
+        $test['image_dir']['fail'] = sprintf(dgettext('core', '%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR . 'images/');
         $test['image_dir']['name'] = dgettext('core', 'Image directory ready');
         $test['image_dir']['crit'] = true;
 
         $test['conf']['pass'] = is_dir('config/core/') && is_writable('config/core/');
-        $test['conf']['fail'] = sprintf(dgettext('core',
-                        '%s directory does not exist or is not writable.'),
-                PHPWS_SOURCE_DIR . 'config/core/');
+        $test['conf']['fail'] = sprintf(dgettext('core', '%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR . 'config/core/');
         $test['conf']['name'] = dgettext('core', 'Config directory ready');
         $test['conf']['crit'] = true;
 
         $test['file_dir']['pass'] = is_dir('files/') && is_writable('files/');
-        $test['file_dir']['fail'] = sprintf(dgettext('core',
-                        '%s directory does not exist or is not writable.'),
-                PHPWS_SOURCE_DIR . 'files/');
+        $test['file_dir']['fail'] = sprintf(dgettext('core', '%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR . 'files/');
         $test['file_dir']['name'] = dgettext('core', 'File directory ready');
         $test['file_dir']['crit'] = true;
 
         $test['log_dir']['pass'] = is_dir('logs/') && is_writable('logs/');
-        $test['log_dir']['fail'] = sprintf(dgettext('core',
-                        '%s directory does not exist or is not writable.'),
-                PHPWS_SOURCE_DIR . 'logs/');
+        $test['log_dir']['fail'] = sprintf(dgettext('core', '%s directory does not exist or is not writable.'), PHPWS_SOURCE_DIR . 'logs/');
         $test['log_dir']['name'] = dgettext('core', 'Log directory ready');
         $test['log_dir']['crit'] = true;
 
         $test['ffmpeg']['pass'] = is_file('/usr/bin/ffmpeg');
-        $test['ffmpeg']['fail'] = dgettext('core',
-                'You do not appear to have ffmpeg installed. File Cabinet will not be able to create thumbnail images from uploaded videos');
+        $test['ffmpeg']['fail'] = dgettext('core', 'You do not appear to have ffmpeg installed. File Cabinet will not be able to create thumbnail images from uploaded videos');
         $test['ffmpeg']['name'] = dgettext('core', 'FFMPEG installed');
         $test['ffmpeg']['crit'] = false;
 
         $test['mime_type']['pass'] = function_exists('finfo_open') || function_exists('mime_content_type') || !ini_get('safe_mode');
-        $test['mime_type']['fail'] = dgettext('core',
-                'Unable to detect MIME file type. You will need to compile finfo_open into PHP.');
+        $test['mime_type']['fail'] = dgettext('core', 'Unable to detect MIME file type. You will need to compile finfo_open into PHP.');
         $test['mime_type']['name'] = dgettext('core', 'MIME file type detection');
         $test['mime_type']['crit'] = true;
 
@@ -825,33 +749,26 @@ class Setup {
             $phpversion = PHP_VERSION;
         }
 
-        $test['php_version']['pass'] = version_compare($phpversion, '5.1.0',
-                '>=');
-        $test['php_version']['fail'] = sprintf(dgettext('core',
-                        'Your server must run PHP version 5.1.0 or higher. You are running version %s.'),
-                $phpversion);
+        $test['php_version']['pass'] = version_compare($phpversion, '5.1.0', '>=');
+        $test['php_version']['fail'] = sprintf(dgettext('core', 'Your server must run PHP version 5.1.0 or higher. You are running version %s.'), $phpversion);
         $test['php_version']['name'] = dgettext('core', 'PHP 5 version check');
         $test['php_version']['crit'] = true;
 
         $memory_limit = (int) ini_get('memory_limit');
 
         $test['memory']['pass'] = ($memory_limit > 8);
-        $test['memory']['fail'] = dgettext('core',
-                'Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level.');
-        $test['memory']['fail'] .= dgettext('core',
-                'We suggest raising the limit in your php.ini file or uncommenting the "ini_set(\'memory_limit\', \'10M\');" line in your config/core/config.php file after installation.');
+        $test['memory']['fail'] = dgettext('core', 'Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level.');
+        $test['memory']['fail'] .= dgettext('core', 'We suggest raising the limit in your php.ini file or uncommenting the "ini_set(\'memory_limit\', \'10M\');" line in your config/core/config.php file after installation.');
         $test['memory']['name'] = dgettext('core', 'Memory limit exceeded');
         $test['memory']['crit'] = false;
 
         $test['globals']['pass'] = !(bool) ini_get('register_globals');
-        $test['globals']['fail'] = dgettext('core',
-                'You have register_globals enabled. You should disable it.');
+        $test['globals']['fail'] = dgettext('core', 'You have register_globals enabled. You should disable it.');
         $test['globals']['name'] = dgettext('core', 'Register globals disabled');
         $test['globals']['crit'] = false;
 
         $test['magic_quotes']['pass'] = !get_magic_quotes_gpc() && !get_magic_quotes_runtime();
-        $test['magic_quotes']['fail'] = dgettext('core',
-                'Magic quotes is enabled. Please disable it in your php.ini file.');
+        $test['magic_quotes']['fail'] = dgettext('core', 'Magic quotes is enabled. Please disable it in your php.ini file.');
         $test['magic_quotes']['name'] = dgettext('core', 'Magic quotes disabled');
         $test['magic_quotes']['crit'] = true;
 
@@ -869,8 +786,7 @@ class Setup {
         $content = array();
 
         if (!$allow_install) {
-            $this->title = dgettext('core',
-                    'Cannot install phpWebSite because of the following reasons:');
+            $this->title = dgettext('core', 'Cannot install phpWebSite because of the following reasons:');
             $this->content = '<ul>' . PHPWS_Text::tag_implode('li', $crit) . '</ul>';
             $this->display();
         } else {
@@ -908,10 +824,8 @@ class Setup {
             case '3':
                 if ($this->createCore()) {
                     if ($this->installCoreModules()) {
-                        $this->content[] = dgettext('core',
-                                'Core modules installed successfully.');
-                        $this->content[] = sprintf('<a href="index.php?step=4">%s</a>',
-                                dgettext('core', 'Click to continue'));
+                        $this->content[] = dgettext('core', 'Core modules installed successfully.');
+                        $this->content[] = sprintf('<a href="index.php?step=4">%s</a>', dgettext('core', 'Click to continue'));
                     }
                 }
                 break;
@@ -927,18 +841,15 @@ class Setup {
                     if (empty($result)) {
                         $_SESSION['User']->setDisplayName('Administrator');
                         $_SESSION['User']->save();
-                        $this->content[] = dgettext('core',
-                                'New user created successfully.');
+                        $this->content[] = dgettext('core', 'New user created successfully.');
                         $this->step = 6;
                         $this->goToStep();
                         break;
                     } elseif (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
-                        $this->content[] = dgettext('core',
-                                'Sorry an error occurred. Please check your logs.');
+                        $this->content[] = dgettext('core', 'Sorry an error occurred. Please check your logs.');
                     } else {
-                        $this->content[] = dgettext('core',
-                                'Cannot create a new user. Initial user already exists.');
+                        $this->content[] = dgettext('core', 'Cannot create a new user. Initial user already exists.');
                         $this->display();
                     }
                 } else {
@@ -948,13 +859,10 @@ class Setup {
 
             case '6':
                 if ($this->installContentModules()) {
-                    $this->content[] = dgettext('core',
-                            'Starting modules installed.');
-                    $this->content[] = dgettext('core',
-                            'The site should be ready for you to use.');
+                    $this->content[] = dgettext('core', 'Starting modules installed.');
+                    $this->content[] = dgettext('core', 'The site should be ready for you to use.');
                     //                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
-                    $this->content[] = sprintf('<a href="../">%s</a>',
-                            dgettext('core', 'Continue to your new site...'));
+                    $this->content[] = sprintf('<a href="../">%s</a>', dgettext('core', 'Continue to your new site...'));
                     unset($_SESSION['configSettings']);
                     unset($_SESSION['User']);
                     unset($_SESSION['session_check']);
