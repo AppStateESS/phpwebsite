@@ -12,8 +12,7 @@
  * @license http://opensource.org/licenses/gpl-3.0.html GNU GPLv3
  * @copyright Copyright 2013, Appalachian State University & Contributors
  */
-
-/****
+/* * **
  * Begin output buffering right away.
  * This is important to prevent stray output
  * from being included in AJAX/JSON responses.
@@ -27,14 +26,21 @@ ob_start();
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
 } else {
-    $url = 'http://' . $_SERVER['HTTP_HOST'] . str_replace('index.php', '',
-                    $_SERVER['PHP_SELF']) . 'setup/index.php';
+    $url = 'http://' . $_SERVER['HTTP_HOST'] . str_replace('index.php', '', $_SERVER['PHP_SELF']) . 'setup/index.php';
     echo 'Configuration file not found. <a href="' . $url . '">Continue to setup</a>.';
     exit();
 }
 
-require_once(PHPWS_SOURCE_DIR . 'inc/Bootstrap.php');
+require_once(PHPWS_SOURCE_DIR . 'src/Bootstrap.php');
+
+if (!\phpws\PHPWS_Core::checkBranch()) {
+    throw new \Exception('Unknown branch called');
+}
+\phpws\PHPWS_Core::checkOverpost();
+\phpws\PHPWS_Core::setLastPost();
+Language::setLocale(Settings::get('Global', 'language'));
 loadTimeZone();
+
 $request = \Server::getCurrentRequest();
 $controller = new PhpwebsiteController();
 $controller->execute($request);
