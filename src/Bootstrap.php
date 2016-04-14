@@ -40,6 +40,7 @@ if (DISPLAY_ERRORS) {
 
 /* * * Include a bunch of function ** */
 require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
+require_once PHPWS_SOURCE_DIR . 'src/Data.php';
 require_once PHPWS_SOURCE_DIR . 'src/Http.php';
 require_once PHPWS_SOURCE_DIR . 'src/Log.php';
 require_once PHPWS_SOURCE_DIR . 'src/Controller.php';
@@ -52,6 +53,7 @@ require_once PHPWS_SOURCE_DIR . 'src/Response.php';
 require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 require_once PHPWS_SOURCE_DIR . 'src/String.php';
 require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
+require_once PHPWS_SOURCE_DIR . 'src/Security.php';
 
 /* * * Exception Handler ** */
 set_exception_handler(array('phpws2\Error', 'exceptionHandler'));
@@ -59,14 +61,8 @@ if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('phpws2\Error', 'errorHandler'));
 }
 
-require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
-require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
-\phpws\PHPWS_Core::checkOverpost();
-\phpws\PHPWS_Core::setLastPost();
-
-Language::setLocale(Settings::get('Global', 'language'));
-if (!\phpws\PHPWS_Core::checkBranch()) {
-    throw new \Exception('Unknown branch called');
+if (!defined('PHPWS_SOURCE_HTTP')) {
+    require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 }
 
 function PHPWS_unBootstrap()
