@@ -43,6 +43,7 @@ require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 require_once PHPWS_SOURCE_DIR . 'src/Data.php';
 require_once PHPWS_SOURCE_DIR . 'src/Http.php';
 require_once PHPWS_SOURCE_DIR . 'src/Log.php';
+require_once PHPWS_SOURCE_DIR . 'src/Key.php';
 require_once PHPWS_SOURCE_DIR . 'src/Controller.php';
 require_once PHPWS_SOURCE_DIR . 'src/PhpwebsiteController.php';
 require_once PHPWS_SOURCE_DIR . 'src/Module.php';
