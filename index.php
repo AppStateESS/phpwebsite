@@ -19,7 +19,6 @@
  */
 ob_start();
 
-
 /**
  * Include the defines used in Global library
  */
@@ -32,6 +31,10 @@ if (is_file('config/core/config.php')) {
 }
 
 require_once(PHPWS_SOURCE_DIR . 'src/Bootstrap.php');
+
+if (!defined('PHPWS_SOURCE_HTTP')) {
+    require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
+}
 
 if (!\phpws\PHPWS_Core::checkBranch()) {
     throw new \Exception('Unknown branch called');

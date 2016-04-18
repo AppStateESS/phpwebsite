@@ -41,6 +41,7 @@ if (DISPLAY_ERRORS) {
 /* * * Include a bunch of function ** */
 require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 require_once PHPWS_SOURCE_DIR . 'src/Data.php';
+require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 require_once PHPWS_SOURCE_DIR . 'src/Http.php';
 require_once PHPWS_SOURCE_DIR . 'src/Log.php';
 require_once PHPWS_SOURCE_DIR . 'src/Key.php';
@@ -51,7 +52,6 @@ require_once PHPWS_SOURCE_DIR . 'src/CompatibilityModule.php';
 require_once PHPWS_SOURCE_DIR . 'src/GlobalModule.php';
 require_once PHPWS_SOURCE_DIR . 'src/Request.php';
 require_once PHPWS_SOURCE_DIR . 'src/Response.php';
-require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 require_once PHPWS_SOURCE_DIR . 'src/String.php';
 require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
 require_once PHPWS_SOURCE_DIR . 'src/Security.php';
@@ -60,10 +60,6 @@ require_once PHPWS_SOURCE_DIR . 'src/Security.php';
 set_exception_handler(array('phpws2\Error', 'exceptionHandler'));
 if (ERRORS_AS_EXCEPTION) {
     set_error_handler(array('phpws2\Error', 'errorHandler'));
-}
-
-if (!defined('PHPWS_SOURCE_HTTP')) {
-    require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 }
 
 function PHPWS_unBootstrap()
