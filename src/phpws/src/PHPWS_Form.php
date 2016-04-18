@@ -1637,7 +1637,7 @@ class PHPWS_Form
 
     public static function formTextField($name, $value, $size = 30, $maxsize = 255, $label = null)
     {
-        $element = new Form_Textfield($name, $value);
+        $element = new Form_TextField($name, $value);
         $element->setSize($size, $maxsize);
         return $element->get();
     }

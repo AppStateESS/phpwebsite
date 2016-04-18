@@ -20,11 +20,11 @@
  */
 
 /**
- * Description of Form_Textfield
+ * Description of Form_CheckBox
  *
  * @author Matthew McNaney <mcnaneym@appstate.edu>
  */
-class Form_TextField extends \phpws\Form_TextField
+class Form_Checkbox extends \phpws\Form_Checkbox
 {
     //put your code here
 }
