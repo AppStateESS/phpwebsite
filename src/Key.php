@@ -1,5 +1,4 @@
 <?php
-namespace phpws;
 
 /**
  * Small class to help modules plug in features from other modules
@@ -22,7 +21,8 @@ if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = null;
 }
 
-class Key {
+class Key
+{
 
     // if the id is 0 (zero) then this is a _dummy_ key
     // dummy keys are not saved
@@ -598,7 +598,6 @@ class Key {
             }
             $db->groupIn('restrict_1', 'base');
             $db->groupIn('restrict_2', 'restrict_1');
-
         }
     }
 

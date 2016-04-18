@@ -1,3 +1,3 @@
 <?php
 
-class Key extends \phpws\Key{}
+require_once PHPWS_SOURCE_DIR . 'src/Key.php';
