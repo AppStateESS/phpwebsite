@@ -12,6 +12,7 @@
 
 class PhpwebsiteController implements Controller
 {
+
     private $module_array_all;
     private $module_array_active;
     private $module_stack;
@@ -94,8 +95,10 @@ class PhpwebsiteController implements Controller
 
         $mr = \phpws2\ModuleRepository::getInstance();
 
+        // No module called, route to home page
         if (!$mr->hasModule($title)) {
-            throw new \phpws2\Http\NotFoundException($request);
+            \phpws\PHPWS_Core::home();
+            return;
         }
 
         $module = $mr->getModule($title);
@@ -130,7 +133,7 @@ class PhpwebsiteController implements Controller
         $rendered = $view->render();
 
         $ajax = (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-        
+
         if ($view->getContentType() == 'text/html' && !$ajax) {
             if (class_exists('Layout')) {
                 \Layout::add($rendered);
