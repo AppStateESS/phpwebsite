@@ -113,11 +113,12 @@ EOF;
 
     public static function display()
     {
-        // no city data (required) no output
-        $city = \Settings::get('contact', 'city');
-        if (empty($city)) {
+        $building = \Settings::get('contact', 'building');
+
+        if (empty($building)) {
             return;
         }
+
         $contact_info = self::load();
         $values = self::getValues($contact_info, true);
 
