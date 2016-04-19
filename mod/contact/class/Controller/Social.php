@@ -32,7 +32,7 @@ class Social extends \Http\Controller
         if (empty($url)) {
             unset($social_links[$label]);
         } else {
-            $social_links[$label] = $url;
+            $social_links[$label] = preg_replace('/https?:\/\//', '', $url);
         }
         \contact\Factory\ContactInfo\Social::saveLinks($social_links);
         echo 'post successful';
