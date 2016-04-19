@@ -3,6 +3,7 @@
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
+
 namespace contact;
 
 /**
@@ -25,16 +26,16 @@ class Module extends \Module implements \SettingDefaults
         $cmd = $request->shiftCommand();
         if ($cmd == 'admin' && \Current_User::allow('contact')) {
             $controller = $request->shiftCommand();
-            
+
             switch ($controller) {
                 case 'map':
                     $map = new \contact\Controller\Map($this);
                     return $map;
-                    
+
                 case 'social':
                     $social = new \contact\Controller\Social($this);
                     return $social;
-                    
+
                 case 'contactinfo':
                 default:
                     $contact_info = new \contact\Controller\ContactInfo($this);
@@ -86,4 +87,3 @@ class Module extends \Module implements \SettingDefaults
     }
 
 }
-

@@ -1,11 +1,11 @@
 <h3>Contact Us</h3>
 <div class="contact-social-icons">
-<?php if (!empty($social)) { 
+    <?php if (!empty($social)) {
     foreach($social as $label=>$link) {
-        extract($link);
-?>
-<a href="<?php echo $prefix,$url?>"><i class="fa fa-2x fa-<?php echo $icon?>" title="<?php echo $title?>"></i></a>
-<?php } } ?>
+    extract($link);
+    ?>
+    <a href="<?php echo $prefix,$url?>"><i class="fa fa-2x fa-<?php echo $icon?>" title="<?php echo $title?>"></i></a>
+    <?php } } ?>
 </div>
 <p>
     <?php if(!empty($room_number)){echo "Rm. $room_number, ";}?><?php echo $building?><br />

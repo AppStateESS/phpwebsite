@@ -8,6 +8,7 @@ namespace contact\Resource\ContactInfo;
  */
 class PhysicalAddress extends \Data
 {
+
     /**
      * Room nummber in building
      * @var \Variable\Integer
@@ -21,7 +22,7 @@ class PhysicalAddress extends \Data
     private $building;
 
     /**
-     * 
+     *
      * @var \Variable\TextOnly
      */
     private $street;
