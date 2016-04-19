@@ -14,7 +14,7 @@
                         <input name="building" required id="building" type="text" class="form-control" value="<?php echo $building?>" />
                     </div>
                     <div class="form-group">
-                        <label for="room-number">Room number</label>
+                        <label for="room-number">Room number</label> <small>(Numbers only)</small>
                         <input name="room_number" id="room-number" type="text" class="form-control"  value="<?php echo $room_number?>" />
                     </div>
                     <div class="form-group">
@@ -26,7 +26,7 @@
                         <input id="fax-number" name="fax_number" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="<?php echo $fax_number?>" />
                     </div>
                     <div class="form-group">
-                        <label for="email">Email address <small>(note: you may use a social icon as well/instead)</small></label>
+                        <label for="email">Email address</label> <small>(note: you may use a social icon as well/instead)</small>
                         <input id="email-address" name="email" type="email" class="form-control" value="<?php echo $email?>" />
                     </div>
                 </fieldset>
@@ -35,7 +35,7 @@
                 <fieldset>
                     <legend>Mailing address</legend>
                     <div class="form-group">
-                        <label for="post_box">Post box</label>
+                        <label for="post_box">Post box</label> <small>(Numbers only)</small>
                         <input id="post-box" name="post_box" type="text" class="form-control"  value="<?php echo $post_box?>" />
                     </div>
                     <div class="form-group">
