@@ -7,7 +7,9 @@ $(window).load(function () {
     contact_map.start();
     contact_social.start();
     contact_form.start();
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 });
 
 function ContactForm() {

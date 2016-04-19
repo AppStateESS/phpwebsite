@@ -6,6 +6,7 @@ use contact\Resource\ContactInfo;
 
 class ContactInfo extends \Resource
 {
+
     /**
      * @var ContactInfo\PhysicalAddress
      */
@@ -36,6 +37,16 @@ class ContactInfo extends \Resource
      */
     private $email;
 
+    /**
+     * @var \Variable\String
+     */
+    private $site_contact_name;
+
+    /**
+     * @var \Variable\String
+     */
+    private $site_contact_email;
+
     public function __construct()
     {
         $this->physical_address = new ContactInfo\PhysicalAddress;
@@ -46,10 +57,14 @@ class ContactInfo extends \Resource
         $this->map = new ContactInfo\Map;
         $this->email = new \Variable\Email(null, 'email');
         $this->email->allowNull(true);
+        $this->site_contact_name = new \Variable\TextOnly(null, 'site_contact_name');
+        $this->site_contact_name->allowNull(true);
+        $this->site_contact_email = new \Variable\TextOnly(null, 'site_contact_email');
+        $this->site_contact_email->allowNull(true);
     }
 
     /**
-     * 
+     *
      * @return contact\Resource\ContactInfo\PhysicalAddress
      */
     public function getPhysicalAddress()
@@ -58,7 +73,7 @@ class ContactInfo extends \Resource
     }
 
     /**
-     * 
+     *
      * @return contact\Resource\ContactInfo\Social
      */
     public function getSocial()
@@ -67,7 +82,7 @@ class ContactInfo extends \Resource
     }
 
     /**
-     * 
+     *
      * @return contact\Resource\ContactInfo\Map
      */
     public function getMap()
@@ -115,20 +130,40 @@ class ContactInfo extends \Resource
         $email = $this->email->get();
         return $email;
     }
-    
+
     public function setPhysicalAddress(ContactInfo\PhysicalAddress $physical_address)
     {
         $this->physical_address = $physical_address;
     }
-    
+
     public function setMap(ContactInfo\Map $map)
     {
         $this->map = $map;
     }
-    
+
     public function setSocial(ContactInfo\Social $social)
     {
         $this->social = $social;
+    }
+
+    public function setSiteContactName($contact_name)
+    {
+        $this->site_contact_name->set($contact_name);
+    }
+
+    public function getSiteContactName()
+    {
+        return $this->site_contact_name->get();
+    }
+
+    public function setSiteContactEmail($contact_email)
+    {
+        $this->site_contact_email->set($contact_email);
+    }
+
+    public function getSiteContactEmail()
+    {
+        return $this->site_contact_email->get();
     }
 
 }

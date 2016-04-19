@@ -4,6 +4,10 @@
     <li role="presentation" class="social-tab contact-tab"><a style="cursor:pointer">Social icons</a></li>
 </ul>
 <div class="contact-info-section contact-section">
+    <?php if (isset($message)) : ?>
+    <div class='alert alert-info'><?php echo $message ?></div>
+    <?php endif; ?>
+
     <form action="./contact/admin/contactinfo" method="post" class="phpws-form">
         <div class="row">
             <div class="col-sm-6">
@@ -26,9 +30,20 @@
                         <input id="fax-number" name="fax_number" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="<?php echo $fax_number?>" />
                     </div>
                     <div class="form-group">
-                        <label for="email">Email address</label> <small>(note: you may use a social icon as well/instead)</small>
+                        <label for="email">Email address</label><br /><small>(note: you may use a social icon as well/instead)</small>
                         <input id="email-address" name="email" type="email" class="form-control" value="<?php echo $email?>" />
                     </div>
+                    <frameset><legend>Site contact <i class="text-muted fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Data entered below appears in its own block."></i></legend>
+
+                        <div class="form-group">
+                            <label for="site-contact-name">Name</label>
+                            <input id="site-contact-name" name="site_contact_name" class="form-control" value="<?php echo $site_contact_name?>"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="site-contact-email">Email address</label>
+                            <input id="site-contact-email" name="site_contact_email" class="form-control" value="<?php echo $site_contact_email?>"/>
+                        </div>
+                    </frameset>
                 </fieldset>
             </div>
             <div class="col-sm-6">

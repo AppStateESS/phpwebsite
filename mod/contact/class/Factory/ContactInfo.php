@@ -38,6 +38,11 @@ class ContactInfo
 <script type='text/javascript'>var active_tab = '$active_tab';var thumbnail_map = '$thumbnail_map';var social_urls = $js_social_links;</script>
 EOF;
 
+        if (isset($_SESSION['Contact_Message'])) {
+            $values['message'] = $_SESSION['Contact_Message'];
+            unset($_SESSION['Contact_Message']);
+        }
+
         \Layout::addJSHeader($js_string);
         $script = PHPWS_SOURCE_HTTP . 'mod/contact/javascript/contact.js';
         \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
@@ -53,6 +58,8 @@ EOF;
         $contact_info->setPhoneNumber(\Settings::get('contact', 'phone_number'));
         $contact_info->setFaxNumber(\Settings::get('contact', 'fax_number'));
         $contact_info->setEmail(\Settings::get('contact', 'email'));
+        $contact_info->setSiteContactName(\Settings::get('contact', 'site_contact_name'));
+        $contact_info->setSiteContactEmail(\Settings::get('contact', 'site_contact_email'));
 
         $contact_info->setPhysicalAddress(ContactInfo\PhysicalAddress::load());
         $contact_info->setMap(Factory\ContactInfo\Map::load());
@@ -69,6 +76,9 @@ EOF;
         if ($values['fax_number']) {
             $values['formatted_fax_number'] = $contact_info->getFaxNumber(true);
         }
+
+        $values['site_contact_name'] = $contact_info->getSiteContactName();
+        $values['site_contact_email'] = $contact_info->getSiteContactEmail();
 
         $physical_address = $contact_info->getPhysicalAddress();
         $map = $contact_info->getMap();
@@ -97,6 +107,8 @@ EOF;
         $contact_info->setPhoneNumber($values['phone_number']);
         $contact_info->setFaxNumber($values['fax_number']);
         $contact_info->setEmail($values['email']);
+        $contact_info->setSiteContactName($values['site_contact_name']);
+        $contact_info->setSiteContactEmail($values['site_contact_email']);
         self::save($contact_info);
 
         $physical_address = $contact_info->getPhysicalAddress();
@@ -109,10 +121,32 @@ EOF;
         \Settings::set('contact', 'phone_number', $contact_info->getPhoneNumber());
         \Settings::set('contact', 'fax_number', $contact_info->getFaxNumber());
         \Settings::set('contact', 'email', $contact_info->getEmail());
+        \Settings::set('contact', 'site_contact_name', $contact_info->getSiteContactName());
+        \Settings::set('contact', 'site_contact_email', $contact_info->getSiteContactEmail());
+    }
+
+    private static function showSiteContact()
+    {
+        require_once PHPWS_SOURCE_DIR . 'mod/contact/config/default_message.php';
+        $name = SITE_CONTACT_NAME;
+        $email = SITE_CONTACT_EMAIL;
+        $sc_name = \phpws2\Settings::get('contact', 'site_contact_name');
+        $sc_email = \phpws2\Settings::get('contact', 'site_contact_email');
+        if (!empty($sc_name) && !empty($sc_email)) {
+            $name = $sc_name;
+            $email = $sc_email;
+        }
+        if (empty($name) || empty($email)) {
+            return;
+        }
+        $content = "Please report problems with this site or content errors to <a href='mailto:$email'>$name <i class='fa fa-envelope-o'></i></a>.";
+        \Layout::add($content, 'contact', 'SITE_CONTACT');
     }
 
     public static function display()
     {
+        self::showSiteContact();
+
         $building = \Settings::get('contact', 'building');
 
         if (empty($building)) {

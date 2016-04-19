@@ -62,6 +62,8 @@ class Module extends \Module implements \SettingDefaults
         $settings['phone_number'] = null;
         $settings['fax_number'] = null;
         $settings['email'] = null;
+        $settings['site_contact_name'] = null;
+        $settings['site_contact_email'] = null;
 
         // Physical Address
         $settings['street'] = null;
