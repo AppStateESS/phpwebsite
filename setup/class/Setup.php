@@ -333,7 +333,15 @@ class Setup
         if (empty($dsn)) {
             $dsn = $this->getDSN(1);
             $pear_db = new MDB2;
-            $connection = $pear_db->connect($dsn);
+            try {
+                $connection = $pear_db->connect($dsn);
+            } catch (\Exception $e) {
+                if (preg_match('/28000\/1045/', $e->getMessage())) {
+                    return 0;
+                } else {
+                    throw $e;
+                }
+            }
 
             if (PHPWS_Error::isError($connection)) {
                 PHPWS_Error::log($connection);
@@ -589,6 +597,9 @@ class Setup
             $this->content[] = dgettext('core', 'Please check your error log file.');
             return false;
         }
+
+        require_once PHPWS_SOURCE_DIR . 'core/boost/install.php';
+        core_install();
 
         if ($result == true) {
             $db = new PHPWS_DB('core_version');
