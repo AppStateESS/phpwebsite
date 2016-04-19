@@ -550,7 +550,21 @@ EOF;
 + Fixed: settings table missing primary key.
 + Updated url regular expression check on Variable/Url
 + Added option to force rollbacks on destruction of DB object.
-+ Fixed discrepancy between Varchar limit and String.                    
++ Fixed discrepancy between Varchar limit and String.
+</pre>
+EOF;
+        case version_compare($version, '2.9.0', '<'):
+            $db = \Database::getDB();
+            $tbl = $db->addTable('settings');
+
+            if (!$tbl->columnExists('id')) {
+                $tbl->createPrimaryIndexId();
+            }
+            $content[] = <<<EOF
+<pre>2.9.0 changes
+--------------------
++ Overhaul of Core and Global classes. Now namespaced.
++ Fixed: settings table missing primary key again because install wasn't doing it.
 </pre>
 EOF;
     }
