@@ -16,6 +16,7 @@ if (!defined('CALENDAR_UPCOMING_FORMAT')) {
 
 class Calendar_User
 {
+
     /**
      * @var pointer to the parent Calendar object
      */
@@ -69,11 +70,11 @@ class Calendar_User
         $month = (int) date('m', $startdate);
         $day = (int) date('d', $startdate);
 
-        $day_events = @$this->calendar->sorted_list[$year]['months'][$month]['days'][$day]['events'];
-
-        if (!$day_events) {
+        if (!isset($this->calendar->sorted_list[$year]['months'][$month]['days'][$day]['events'])) {
             return false;
         }
+
+        $day_events = $this->calendar->sorted_list[$year]['months'][$month]['days'][$day]['events'];
 
         $hour_list = array();
         foreach ($day_events as $oEvent) {
@@ -304,7 +305,7 @@ class Calendar_User
                     $this->title = dgettext('calendar', 'Sorry');
                     $this->content = dgettext('calendar', 'Schedule unavailable.');
                 } else {
-                    
+
                 }
                 break;
 
@@ -1173,4 +1174,3 @@ class Calendar_User
     }
 
 }
-
