@@ -112,13 +112,19 @@ class PHPWS_Core
     public static function initCoreClass($file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'src/phpws/src/' . $file;
+        $orLookHere = PHPWS_SOURCE_DIR . 'src/' . $file;
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            throw new \Exception(t('Core class file not found: %s', $classFile));
+            if (!is_file($orLookHere)) {
+                throw new \Exception(t('Core class file not found: %s', $classFile));
+            } else {
+                require_once $orLookHere;
+            }
+        } else {
+            require_once $classFile;
         }
 
-        require_once $classFile;
         return true;
     }
 
