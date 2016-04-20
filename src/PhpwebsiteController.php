@@ -56,10 +56,10 @@ class PhpwebsiteController implements Controller
                     $response->forward();
                 }
             }
-        } catch (Http\Exception $e) {
+        } catch (\phpws2\Http\Exception $e) {
             $this->renderResponse($request, $e->getResponse());
-        } catch (Exception $e) {
-            $this->renderResponse($request, new Http\InternalServerErrorResponse(null, $e));
+        } catch (\Exception $e) {
+            $this->renderResponse($request, new \phpws2\Http\InternalServerErrorResponse(null, $e));
         }
 
         $this->destructModules();
