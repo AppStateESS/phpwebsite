@@ -23,7 +23,7 @@
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
 
-$autoloaders = [
+$autoloaders = array(
     'canopy'=>'CanopyLoader',
     'legacy'=>'LegacyLoader'
-];
+);
