@@ -7,7 +7,8 @@
  */
 \phpws\PHPWS_Core::initModClass('checkin', 'Checkin.php');
 
-class Checkin_Admin extends Checkin {
+class Checkin_Admin extends Checkin
+{
 
     public $panel = null;
     public $use_panel = true;
@@ -538,7 +539,7 @@ class Checkin_Admin extends Checkin {
         return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
 
-    public function waiting($small_view=false)
+    public function waiting($small_view = false)
     {
         Layout::addStyle('checkin');
         javascriptMod('checkin', 'send_note');
@@ -730,7 +731,9 @@ class Checkin_Admin extends Checkin {
         $form->addHidden('aop', 'post_staff');
         if (!$this->staff->id) {
             javascript('jquery');
-            javascriptMod('checkin', 'search_user');
+            javascript('jquery_ui');
+            $script_add = '<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/checkin/javascript/search_user/script.js"></script>';
+            \Layout::addJSHeader($script_add);
 
             $this->title = dgettext('checkin', 'Add staff member');
             $form->addText('username');
@@ -985,8 +988,10 @@ class Checkin_Admin extends Checkin {
         $db->addWhere('username', "$username%", 'like');
         $db->addColumn('username');
         $result = $db->select('col');
-        if (!empty($result) && !PHPWS_Error::logIfError($result)) {
-            echo implode("\n", $result);
+        if (!empty($result)) {
+            echo json_encode($result);
+        } else {
+            echo '[]';
         }
         exit();
     }
@@ -995,7 +1000,7 @@ class Checkin_Admin extends Checkin {
     {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addValue('summary', $reason);
-        return!PHPWS_Error::logIfError($db->insert());
+        return !PHPWS_Error::logIfError($db->insert());
     }
 
     /**
@@ -1021,12 +1026,16 @@ class Checkin_Admin extends Checkin {
         $db = new PHPWS_DB('checkin_reasons');
         $db->addWhere('id', (int) $_GET['reason_id']);
         $db->addValue('summary', strip_tags($_GET['reason']));
-        return!PHPWS_Error::logIfError($db->update());
+        return !PHPWS_Error::logIfError($db->update());
     }
 
     public function postStaff()
     {
-        @$staff_id = (int) $_POST['staff_id'];
+        $staff_id = 0;
+
+        if (isset($_POST['staff_id'])) {
+            $staff_id = (int) $_POST['staff_id'];
+        }
 
         if (!empty($staff_id)) {
             $this->loadStaff($staff_id);
@@ -1073,7 +1082,7 @@ class Checkin_Admin extends Checkin {
         $filter = 0x0;
 
         // Update last name filter
-        if ($_POST['last_name'] == 'yes') {
+        if (isset($_POST['last_name'])) {
             $filter = $filter | LAST_NAME_BITMASK;
             if (!empty($_POST['last_name_filter'])) {
                 $this->staff->filter_type = $filter;    // parseFilter() checks filter_type, so it needs to be updated early
@@ -1087,7 +1096,7 @@ class Checkin_Admin extends Checkin {
         }
 
         // Update reason filter
-        if ($_POST['reason'] == 'yes') {
+        if (isset($_POST['reason'])) {
             $filter = $filter | REASON_BITMASK;
             if (!empty($_POST['reason_filter'])) {
                 $this->staff->_reasons = $_POST['reason_filter'];
@@ -1097,7 +1106,7 @@ class Checkin_Admin extends Checkin {
         }
 
         // Update gender filter
-        if ($_POST['gender'] == 'yes') {
+        if (isset($_POST['gender'])) {
             $filter = $filter | GENDER_BITMASK;
             if (isset($_POST['gender_filter'])) {
                 $this->staff->gender_filter = $_POST['gender_filter'];
@@ -1109,7 +1118,7 @@ class Checkin_Admin extends Checkin {
         }
 
         // Update birthdate filter
-        if ($_POST['birthdate'] == 'yes') {
+        if (isset($_POST['birthdate'])) {
             $filter = $filter | BIRTHDATE_BITMASK;
             if (!empty($_POST['start_date']) && !empty($_POST['end_date'])) {
                 $this->staff->birthdate_filter_start = strtotime($_POST['start_date']);
@@ -1237,7 +1246,7 @@ class Checkin_Admin extends Checkin {
         $this->staff->save();
     }
 
-    public function visitorReport($print=false)
+    public function visitorReport($print = false)
     {
         \phpws\PHPWS_Core::initModClass('checkin', 'Staff.php');
         \phpws\PHPWS_Core::initModClass('checkin', 'Visitors.php');
@@ -1294,15 +1303,14 @@ class Checkin_Admin extends Checkin {
         $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
         $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
         $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
-        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin',
-                                                    array('aop' => 'visitor_report', 'print' => 1, 'vis_id' => $visitor->id));
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'visitor_report', 'print' => 1, 'vis_id' => $visitor->id));
 
         $tpl['NAME_NOTE'] = dgettext('checkin', 'Please note: if a visitor typed in a different or misspelled name, they may not appear on this list. Also, different people may have the same name.');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitor_report.tpl');
         $this->title = sprintf('Visits from ' . $visitor->getName());
     }
 
-    public function monthReport($print=false)
+    public function monthReport($print = false)
     {
         \phpws\PHPWS_Core::initModClass('checkin', 'Staff.php');
         \phpws\PHPWS_Core::initModClass('checkin', 'Visitors.php');
@@ -1379,9 +1387,9 @@ class Checkin_Admin extends Checkin {
 
     public function report2()
     {
-        $today =        mktime(0, 0, 0);
-        $tomorrow =     $today + 86400;
-        $form =         new PHPWS_Form('report-date');
+        $today = mktime(0, 0, 0);
+        $tomorrow = $today + 86400;
+        $form = new PHPWS_Form('report-date');
         $form->setMethod('get');
         $form->addHidden('module', 'checkin');
         $form->addHidden('aop', 'report');
@@ -1430,7 +1438,6 @@ class Checkin_Admin extends Checkin {
 
         //$this->content = PHPWS_Template::process($tpl, 'checkin', 'report.tpl');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'report_new.tpl');
-
     }
 
     public function report()
@@ -1475,7 +1482,7 @@ class Checkin_Admin extends Checkin {
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'report.tpl');
     }
 
-    public function dailyReport($print=false)
+    public function dailyReport($print = false)
     {
         \phpws\PHPWS_Core::initCoreClass('Link.php');
         $this->loadStaffList();
@@ -1812,4 +1819,3 @@ class Checkin_Admin extends Checkin {
     }
 
 }
-
