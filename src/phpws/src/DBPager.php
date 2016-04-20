@@ -1,4 +1,5 @@
 <?php
+
 namespace phpws;
 
 define('DBPAGER_DEFAULT_LIMIT', 25);
@@ -27,6 +28,7 @@ if (!defined('UTF8_MODE')) {
  */
 class DBPager
 {
+
     /**
      * Name of the class used
      */
@@ -284,8 +286,7 @@ class DBPager
      * your source object contains the variable your are joining. (e.g. $this->t2_title must exist)
      *
      */
-    public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name = null, $searchable
-    = false)
+    public function joinResult($source_column, $join_table, $join_column, $content_column, $new_name = null, $searchable = false)
     {
         static $join_match = null;
         static $index = 1;
@@ -1444,8 +1445,9 @@ EOF;
         fclose($fp);
 
         $new_file = time() . '_pager.csv';
-        require_once 'HTTP/Download.php';
-        $dl = new HTTP_Download;
+
+        require_once PHPWS_SOURCE_DIR . 'lib/pear/HTTP/Download.php';
+        $dl = new \HTTP_Download;
         $dl->setFile($file_path);
         $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $new_file);
         $dl->setContentType('text/csv');
