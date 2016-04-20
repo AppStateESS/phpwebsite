@@ -4,24 +4,22 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
 function phatform_install(&$content)
 {
-    if (!@mkdir('files/phatform/')) {
-        $content[] = dgettext('phatform', 'Failed to create files directory.');
+    if (!is_dir('files/phatform/')) {
+        mkdir('files/phatform/');
     }
-
-    if (!@mkdir('files/phatform/archive/')) {
-        $content[] = dgettext('phatform', 'Failed to create archive directory.');
+    if (!is_dir('files/phatform/archive')) {
+        mkdir('files/phatform/archive/');
     }
-
-    if (!@mkdir('files/phatform/report/')) {
-        $content[] = dgettext('phatform', 'Failed to create report directory.');
+    if (!is_dir('files/phatform/report')) {
+        mkdir('files/phatform/report/');
     }
-
-    if (!@mkdir('files/phatform/export/')) {
-        $content[] = dgettext('phatform', 'Failed to create export directory.');
+    if (!is_dir('files/phatform/export')) {
+        mkdir('files/phatform/export/');
     }
-    copy(PHPWS_SOURCE_DIR . 'mod/phatform/boost/htaccess', PHPWS_HOME_DIR . 'files/phatform/.htaccess');
+    if (!is_file('files/phatform/.htaccess')) {
+        copy(PHPWS_SOURCE_DIR . 'mod/phatform/boost/htaccess', PHPWS_HOME_DIR . 'files/phatform/.htaccess');
+    }
     return true;
 }
