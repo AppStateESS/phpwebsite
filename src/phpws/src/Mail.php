@@ -1,9 +1,10 @@
 <?php
+
 namespace phpws;
 
 /**
  * Frontend class for Pear's Mail class.
- * Settings are in core/conf/mail_settings.php
+ * Settings are in src/phpws/config/Mail.php
  *
  * Usage:
  *
@@ -40,30 +41,31 @@ namespace phpws;
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
+\phpws\PHPWS_Core::requireConfig('core', 'Mail.php');
 
-\phpws\PHPWS_Core::requireConfig('core', 'Mail');
+class PHPWS_Mail
+{
 
-class PHPWS_Mail {
-    public $send_to           = array();
-    public $subject_line      = null;
-    public $from_address      = null;
-    public $reply_to_address  = null;
-    public $carbon_copy       = null;
-    public $blind_copy        = null;
-    public $message_body      = null;
-    public $html_body         = null;
-    public $message_tpl       = null;
+    public $send_to = array();
+    public $subject_line = null;
+    public $from_address = null;
+    public $reply_to_address = null;
+    public $carbon_copy = null;
+    public $blind_copy = null;
+    public $message_body = null;
+    public $html_body = null;
+    public $message_tpl = null;
     public $send_individually = true;
-    public $backend_type      = MAIL_BACKEND;
+    public $backend_type = MAIL_BACKEND;
 
     public function addSendTo($address)
     {
         return $this->_addAddress('send_to', $address);
     }
 
-    public function sendIndividually($send=true)
+    public function sendIndividually($send = true)
     {
-        $this->send_individually = (bool)$send;
+        $this->send_individually = (bool) $send;
     }
 
     public function setSubject($subject_line)
@@ -147,7 +149,6 @@ class PHPWS_Mail {
         return false;
     }
 
-
     /**
      * Check the validity of the an email address.
      * Must contain only word characters, spaces, less than,
@@ -156,11 +157,11 @@ class PHPWS_Mail {
      */
     public function checkAddress($email_address)
     {
-        if ( preg_match('/\n|\r/', $email_address) ) {
+        if (preg_match('/\n|\r/', $email_address)) {
             return false;
         }
 
-        if ( substr_count($email_address, '@') != 1 ) {
+        if (substr_count($email_address, '@') != 1) {
             return false;
         }
 
@@ -182,16 +183,16 @@ class PHPWS_Mail {
 
     protected static function log($to, $headers, $result)
     {
-        $id      = 'id:'       . $headers['Message-Id'];
-        $from    = 'from:'     . (isset($headers['From'])     ? $headers['From']     : '');
-        $to      = 'to:'       . $to;
-        $cc      = 'cc:'       . (isset($headers['Cc'])       ? $headers['Cc']       : '');
-        $bcc     = 'bcc:'      . (isset($headers['Bcc'])      ? $headers['Bcc']      : '');
+        $id = 'id:' . $headers['Message-Id'];
+        $from = 'from:' . (isset($headers['From']) ? $headers['From'] : '');
+        $to = 'to:' . $to;
+        $cc = 'cc:' . (isset($headers['Cc']) ? $headers['Cc'] : '');
+        $bcc = 'bcc:' . (isset($headers['Bcc']) ? $headers['Bcc'] : '');
         $replyto = 'reply-to:' . (isset($headers['Reply-To']) ? $headers['Reply-To'] : '');
-        $subject = 'subject:'  . (isset($headers['Subject'])  ? $headers['Subject']  : '');
-        $module  = 'module:'   . \phpws\PHPWS_Core::getCurrentModule();
-        $user    = 'user:'     . (\Current_User::isLogged() ? \Current_User::getUsername() : '');
-        $result  = 'result:'   . (\phpws\PHPWS_Error::isError($result) ? 'Failure' : 'Success');
+        $subject = 'subject:' . (isset($headers['Subject']) ? $headers['Subject'] : '');
+        $module = 'module:' . \phpws\PHPWS_Core::getCurrentModule();
+        $user = 'user:' . (\Current_User::isLogged() ? \Current_User::getUsername() : '');
+        $result = 'result:' . (\phpws\PHPWS_Error::isError($result) ? 'Failure' : 'Success');
 
         \phpws\PHPWS_Core::log("$id $module $user $subject $from $to $cc $bcc $replyto $result", 'phpws-mail.log', 'mail');
     }
@@ -206,15 +207,15 @@ class PHPWS_Mail {
     {
         $param = array();
 
-        require_once 'Mail.php';
-        require_once 'Mail/mime.php';
+        require_once PHPWS_SOURCE_DIR . 'lib/pear/Mail.php';
+        require_once PHPWS_SOURCE_DIR . 'lib/pear/Mail/mime.php';
 
         if (empty($this->send_to) || empty($this->from_address) ||
-        ( empty($this->message_body) && empty($this->html_body) ) ) {
+                ( empty($this->message_body) && empty($this->html_body) )) {
             return false;
         }
 
-        $message = new Mail_mime();
+        $message = new \Mail_mime();
         if (!empty($this->message_body)) {
             $message->setTXTBody($this->message_body);
         }
@@ -225,8 +226,8 @@ class PHPWS_Mail {
 
         $body = $message->get();
 
-        $headers['From']       = & $this->from_address;
-        $headers['Subject']    = & $this->subject_line;
+        $headers['From'] = & $this->from_address;
+        $headers['Subject'] = & $this->subject_line;
         $headers['Message-Id'] = $this->genMessageId();
 
         if (isset($this->reply_to_address)) {
@@ -245,7 +246,7 @@ class PHPWS_Mail {
             case 'mail':
                 $from = $this->from_address;
                 // Strip anything outside of <>
-                if(preg_match('/.*<.+>$/', $from)) {
+                if (preg_match('/.*<.+>$/', $from)) {
                     $from = preg_replace('/.*<([^>]+)>/', '\\1', $from);
                 }
                 $param = "-f$from";
@@ -263,8 +264,8 @@ class PHPWS_Mail {
                     return false;
                 }
 
-                if ( !defined('SMTP_AUTH') ||
-                ( SMTP_AUTH && (!defined('SMTP_USER') || !defined('SMTP_PASS')) ) ) {
+                if (!defined('SMTP_AUTH') ||
+                        ( SMTP_AUTH && (!defined('SMTP_USER') || !defined('SMTP_PASS')) )) {
                     return false;
                 }
 
@@ -279,15 +280,14 @@ class PHPWS_Mail {
                     $param['auth'] = false;
                 }
                 break;
-
         }
 
         $m_headers = $message->headers($headers);
-        $mail_object = Mail::factory($this->backend_type, $param);
+        $mail_object = \Mail::factory($this->backend_type, $param);
 
         if ($this->send_individually) {
-            foreach($this->send_to as $address) {
-                $recipients['To']   = $address;
+            foreach ($this->send_to as $address) {
+                $recipients['To'] = $address;
                 $result = $mail_object->send($recipients, $m_headers, $body);
                 if (\phpws\PHPWS_Error::logIfError($result)) {
                     $error_found = true;
@@ -300,7 +300,7 @@ class PHPWS_Mail {
                 return true;
             }
         } else {
-            $recipients['To']   = implode(',', $this->send_to);
+            $recipients['To'] = implode(',', $this->send_to);
             $result = $mail_object->send($recipients, $m_headers, $body);
             self::log($recipients['To'], $m_headers, $result);
             \phpws\PHPWS_Error::logIfError($result);
