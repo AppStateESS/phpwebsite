@@ -1,11 +1,15 @@
 <?php
+
 /**
  * Configuration file for phatform module
  *
  * @version $Id$
  */
-
 include(PHPWS_SOURCE_DIR . 'mod/phatform/boost/boost.php');
+
+if (!defined('PHAT_WARNING')) {
+    define('PHAT_WARNING', true);
+}
 
 /* Phatform version number */
 define('PHAT_VERSION', $version);
@@ -50,7 +54,7 @@ define('PHAT_ENTRY_LIST_TTL', 300);
 define('PHAT_MAX_CHARS_TEXT_ENTRY', 15000);
 
 /* Set outcoming mail preference.
- Available Options: text/plain, text/html
+  Available Options: text/plain, text/html
  */
 define('PHAT_MAIL_CONTENT_TYPE', 'text/html');
 

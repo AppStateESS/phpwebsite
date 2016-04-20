@@ -1,3 +1,4 @@
 <div class="menu" style="text-align: right;">{LINKS}
-<hr />
+    <hr />
 </div>
+{WARNING}
