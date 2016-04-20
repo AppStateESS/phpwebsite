@@ -42,7 +42,7 @@ class Checkin_User extends Checkin
         // If birthdate is requested
         if (PHPWS_Settings::get('checkin', 'birthdate')) {
             /*
-             * Minimum representable date is 12-13-1901, and instead of doing 
+             * Minimum representable date is 12-13-1901, and instead of doing
              * lots of math to ensure that all selected dates in 1901 are after
              * 12-13-1901, just make the minimum year always be 1902
              */
@@ -60,6 +60,10 @@ class Checkin_User extends Checkin
 
             $form->addSelect('reason_id', $reasons);
             $form->setLabel('reason_id', dgettext('checkin', 'Reason for visit'));
+        } else {
+            $this->title = 'Sorry, but I cannot check in visitors.';
+            $this->content = 'Missing visit reasons.';
+            return;
         }
         $form->addSubmit(dgettext('checkin', 'Check in'));
 
@@ -177,4 +181,3 @@ class Checkin_User extends Checkin
     }
 
 }
-
