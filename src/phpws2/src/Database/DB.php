@@ -274,7 +274,7 @@ abstract class DB extends \Data
 
     /**
      * Starts a database transaction.
-     * @var boolean rollback_on_destruct If true, a premature destruction forces 
+     * @var boolean rollback_on_destruct If true, a premature destruction forces
      *  uncommitted executions to be rolled back.
      */
     public function begin()
@@ -774,7 +774,7 @@ abstract class DB extends \Data
     public function buildTable($table_name, $alias = null)
     {
         $engine = $this->getDatabaseType();
-        $table_class = "Database\Engine\\$engine\Table";
+        $table_class = "\\phpws2\\Database\\Engine\\$engine\Table";
         $table = new $table_class($this, $table_name, $alias);
         return $table;
     }
@@ -842,7 +842,7 @@ abstract class DB extends \Data
          * @see Group
          */
         $engine = $this->getDatabaseType();
-        $group_class = "Database\Engine\\$engine\Group";
+        $group_class = "\\phpws2\\Database\\Engine\\$engine\Group";
         $this->group_by = new $group_class($fields, $group_type);
         return $this->group_by;
     }
@@ -1132,7 +1132,6 @@ abstract class DB extends \Data
                 $update_values[] = $bar;
             }
         }
-
         $query[] = implode(', ', $update_values);
 
         if (!empty($where)) {

@@ -12,6 +12,7 @@ namespace phpws2\Database;
  */
 class Value extends Column
 {
+
     /**
      * @var string
      */
@@ -74,7 +75,7 @@ class Value extends Column
                 }
                 return true;
                 break;
-                
+
             case 'array':
                 $this->value = new \Variable\String(serialize($value), $this->name);
                 return true;
@@ -96,9 +97,9 @@ class Value extends Column
      */
     public function __toString()
     {
-        if (is_a($this->value, 'Database\Field')) {
+        if (is_a($this->value, '\phpws2\Database\Field')) {
             return $this->getFullName() . '=' . $this->value->getFullName();
-        } elseif (is_a($this->value, 'Database\Expression')) {
+        } elseif (is_a($this->value, '\phpws2\Database\Expression')) {
             return $this->getFullName() . '=' . $this->getValue();
         } else {
             return $this->getName(true) . '=' . $this->resource->db->quote($this->getValue());
