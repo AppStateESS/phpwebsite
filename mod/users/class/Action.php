@@ -1019,7 +1019,7 @@ class User_Action
         \phpws\PHPWS_Core::initModClass('users', 'Permission.php');
 
         //extract($_POST);
-        $group_id = (int)$_POST['group_id'];
+        $group_id = (int) $_POST['group_id'];
 
         // Error here
         if (empty($group_id)) {
@@ -1027,8 +1027,8 @@ class User_Action
         }
 
         $module_permission = $_POST['module_permission'];
-        
-        if(isset($_POST['sub_permission'])) {
+
+        if (isset($_POST['sub_permission'])) {
             $sub_permission = $_POST['sub_permission'];
         }
 
@@ -1488,7 +1488,7 @@ class User_Action
         return implode('<br>', $content);
     }
 
-    public function activateUser($user_id, $value)
+    public static function activateUser($user_id, $value)
     {
         $db = new PHPWS_DB('users');
         $db->addWhere('id', (int) $user_id);
@@ -1591,4 +1591,3 @@ class User_Action
     }
 
 }
-
