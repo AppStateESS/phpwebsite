@@ -1,3 +1,6 @@
 <?php
 
-class File extends \phpws\File{}
+class File extends \phpws\PHPWS_File
+{
+
+}
