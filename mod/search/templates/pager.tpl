@@ -1,5 +1,5 @@
 {EMPTY_MESSAGE} {TOTAL_ROWS} {START_FORM}
-<table cellpadding="5" width="100%">
+<table class="table table-striped">
     <tr>
         <th width="1%">&nbsp;</th>
         <th>{KEYWORD_LABEL} {KEYWORD_SORT}</th>
@@ -24,7 +24,7 @@
 <div class="bgcolor2 padded">{COMMAND} {SUBMIT} {CHECK_ALL}</div>
 {END_FORM}
 <div class="align-center">
-<p>{PAGE_LABEL} {PAGES} {PAGE_DROP}</p>
-<p>{LIMIT_LABEL} {LIMITS}</p>
-<p>{SEARCH}</p>
+    <p>{PAGE_LABEL} {PAGES} {PAGE_DROP}</p>
+    <p>{LIMIT_LABEL} {LIMITS}</p>
+    <p>{SEARCH}</p>
 </div>
