@@ -2,7 +2,6 @@
 
 namespace phpws2;
 
-
 /**
  * Translates text passed to it by the translate method. Depends on
  * gettext to function.
@@ -10,7 +9,8 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Language {
+class Language
+{
 
     /**
      * Domain of translation. Usually the identifier is the module name
@@ -33,8 +33,7 @@ class Language {
     {
         $args = func_get_args();
         if (count($args) == 0) {
-            trigger_error(t('Language->translate() expects at least one parameter'),
-                    E_USER_ERROR);
+            trigger_error(t('Language->translate() expects at least one parameter'), E_USER_ERROR);
         }
 
         if (is_array($args[0])) {
@@ -76,6 +75,9 @@ class Language {
 
     public static function setLocale($locale)
     {
+        if (!is_string($locale)) {
+            return;
+        }
         $versions = array();
         $versions[] = $locale . '.UTF-8';
         $versions[] = $locale . '.UTF8';
