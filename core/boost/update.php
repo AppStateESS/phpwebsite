@@ -567,6 +567,20 @@ EOF;
 + Fixed: settings table missing primary key again because install wasn't doing it.
 </pre>
 EOF;
+        case version_compare($version, '2.9.1', '<'):
+            $db = \phpws2\Database::getDB();
+            $tbl = $db->addTable('settings');
+            $setting = $tbl->getDatatype('setting');
+            $new_setting = new \phpws2\Database\Datatype\Text($tbl, 'settings');
+            $new_setting->setIsNull(true);
+            $tbl->alter($setting, $new_setting);
+
+            $content[] = <<<EOF
+<pre>2.9.1 changes
+--------------------
++ Fixed: settings table value made is null.
+</pre>
+EOF;
     }
     return true;
 }
