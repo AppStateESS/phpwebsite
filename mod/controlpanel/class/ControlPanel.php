@@ -7,7 +7,8 @@
  */
 \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
-class PHPWS_ControlPanel {
+class PHPWS_ControlPanel
+{
 
     public static function display($content = null, $current_tab = null)
     {
@@ -64,8 +65,7 @@ class PHPWS_ControlPanel {
         }
 
         if (empty($panel->tabs)) {
-            return dgettext('controlpanel',
-                    'No tabs available in the Control Panel.');
+            return dgettext('controlpanel', 'No tabs available in the Control Panel.');
         }
 
         if (!isset($content) && $current_mod == 'controlpanel') {
@@ -74,8 +74,7 @@ class PHPWS_ControlPanel {
                     $link_content[] = $link->view();
                 }
 
-                $link_content = PHPWS_Template::process(array('LINKS' => implode('',
-                                    $link_content)), 'controlpanel', 'links.tpl');
+                $link_content = PHPWS_Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
                 $panel->setContent($link_content);
             }
         } else {
@@ -87,13 +86,11 @@ class PHPWS_ControlPanel {
         }
 
         if (!isset($panel->tabs[$panel->getCurrentTab()])) {
-            return dgettext('controlpanel',
-                    'An error occurred while accessing the Control Panel.');
+            return dgettext('controlpanel', 'An error occurred while accessing the Control Panel.');
         }
         $tab = $panel->tabs[$panel->getCurrentTab()];
         $link = str_replace('&amp;', '&', $tab->getLink(false)) . '&tab=' . $tab->id;
-        $current_link = str_replace($_SERVER['PHP_SELF'] . '\?', '',
-                $_SERVER['REQUEST_URI']);
+        $current_link = str_replace($_SERVER['PHP_SELF'] . '\?', '', $_SERVER['REQUEST_URI']);
 
         // Headers to the tab's link if it is not a control panel
         // link tab.
@@ -149,6 +146,8 @@ class PHPWS_ControlPanel {
             $DB->addOrder('label');
         }
         $DB->setIndexBy('id');
+        $DB->addWhere('controlpanel_link.itemname', 'modules.title');
+        $DB->addWhere('modules.active', 1);
         $result = $DB->getObjects('PHPWS_Panel_Link');
 
         if (empty($result)) {
@@ -176,13 +175,10 @@ class PHPWS_ControlPanel {
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Link.php');
 
         $itemnameList = array();
-        $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR,
-                $module);
+        $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($cpFile)) {
-            PHPWS_Boost::addLog($module,
-                    dgettext('controlpanel',
-                            'Control Panel unregisteration file not implemented.'));
+            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel unregisteration file not implemented.'));
 
             return FALSE;
         }
@@ -257,8 +253,7 @@ class PHPWS_ControlPanel {
             }
         }
 
-        $content[] = dgettext('controlpanel',
-                'Control Panel links and tabs have been removed.');
+        $content[] = dgettext('controlpanel', 'Control Panel links and tabs have been removed.');
         PHPWS_ControlPanel::reset();
         return true;
     }
@@ -268,13 +263,10 @@ class PHPWS_ControlPanel {
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Link.php');
 
-        $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR,
-                $module);
+        $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($cpFile)) {
-            PHPWS_Boost::addLog($module,
-                    dgettext('controlpanel',
-                            'Control Panel file not implemented.'));
+            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel file not implemented.'));
             return false;
         }
 
@@ -286,24 +278,19 @@ class PHPWS_ControlPanel {
                 $tab = new PHPWS_Panel_Tab;
 
                 if (!isset($info['id'])) {
-                    $tab->setId(strtolower(preg_replace('/\W/', '_',
-                                            $info['title'])));
+                    $tab->setId(strtolower(preg_replace('/\W/', '_', $info['title'])));
                 } else {
                     $tab->setId($info['id']);
                 }
 
                 if (!isset($info['title'])) {
-                    $content[] = dgettext('controlpanel',
-                                    'Unable to create tab.') . ' ' . dgettext('controlpanel',
-                                    'Missing title.');
+                    $content[] = dgettext('controlpanel', 'Unable to create tab.') . ' ' . dgettext('controlpanel', 'Missing title.');
                     continue;
                 }
                 $tab->setTitle($info['title']);
 
                 if (!isset($info['link'])) {
-                    $content[] = dgettext('controlpanel',
-                                    'Unable to create tab.') . ' ' . dgettext('controlpanel',
-                                    'Missing link.');
+                    $content[] = dgettext('controlpanel', 'Unable to create tab.') . ' ' . dgettext('controlpanel', 'Missing link.');
                     continue;
                 }
 
@@ -317,18 +304,14 @@ class PHPWS_ControlPanel {
 
                 $result = $tab->save();
                 if (PHPWS_Error::isError($result)) {
-                    $content[] = dgettext('controlpanel',
-                            'An error occurred when trying to save a controlpanel tab.');
+                    $content[] = dgettext('controlpanel', 'An error occurred when trying to save a controlpanel tab.');
                     PHPWS_Error::log($result);
                     return false;
                 }
             }
-            $content[] = sprintf(dgettext('controlpanel',
-                            'Control Panel tabs created for %s.'), $module);
+            $content[] = sprintf(dgettext('controlpanel', 'Control Panel tabs created for %s.'), $module);
         } else {
-            PHPWS_Boost::addLog($module,
-                    dgettext('controlpanel',
-                            'Control Panel tabs not implemented.'));
+            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel tabs not implemented.'));
         }
 
         if (isset($link) && is_array($link)) {
@@ -371,9 +354,7 @@ class PHPWS_ControlPanel {
                     continue;
                 } elseif (!isset($result)) {
                     $tab_id = 'unsorted';
-                    PHPWS_Boost::addLog($module,
-                            dgettext('controlpanel',
-                                    'Unable to load a link into a specified tab.'));
+                    PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Unable to load a link into a specified tab.'));
                 } else {
                     $tab_id = $info['tab'];
                 }
@@ -382,17 +363,14 @@ class PHPWS_ControlPanel {
                 $result = $modlink->save();
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = dgettext('controlpanel',
-                            'There was a problem trying to save a Control Panel link.');
+                    $content[] = dgettext('controlpanel', 'There was a problem trying to save a Control Panel link.');
                     return false;
                 }
                 $db->resetWhere();
             }
-            $content[] = sprintf(dgettext('controlpanel',
-                            'Control Panel links created for %s.'), $module);
+            $content[] = sprintf(dgettext('controlpanel', 'Control Panel links created for %s.'), $module);
         } else {
-            PHPWS_Boost::addLog($module,
-                    dgettext('controlpanel', 'No Control Panel links found.'));
+            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'No Control Panel links found.'));
         }
 
         PHPWS_ControlPanel::reset();
@@ -441,9 +419,7 @@ class PHPWS_ControlPanel {
     public static function panelLink($fly_out = false)
     {
         Layout::addStyle('controlpanel', 'panel_link.css');
-        $reg_link = PHPWS_Text::quickLink(dgettext('controlpanel',
-                                'Control Panel'), 'controlpanel',
-                        array('command' => 'panel_view'));
+        $reg_link = PHPWS_Text::quickLink(dgettext('controlpanel', 'Control Panel'), 'controlpanel', array('command' => 'panel_view'));
 
         if (!$fly_out) {
             return $reg_link->get();
@@ -466,16 +442,13 @@ class PHPWS_ControlPanel {
             foreach ($all_links as $tab => $links) {
                 foreach ($links as $link) {
                     $tpl->setCurrentBlock('links');
-                    $tpl->setData(array('LINK' => sprintf('<a href="%s&amp;authkey=%s">%s</a>',
-                                $link->url, $authkey,
-                                str_replace(' ', '&#160;', $link->label))));
+                    $tpl->setData(array('LINK' => sprintf('<a href="%s&amp;authkey=%s">%s</a>', $link->url, $authkey, str_replace(' ', '&#160;', $link->label))));
                     $tpl->parseCurrentBlock();
                 }
 
                 $tab_link = $all_tabs[$tab]->link . '&amp;tab=' . $all_tabs[$tab]->id;
                 $tpl->setCurrentBlock('tab');
-                $tpl->setData(array('TAB_TITLE' => sprintf('<a href="%s">%s</a>',
-                            $tab_link, $all_tabs[$tab]->title)));
+                $tpl->setData(array('TAB_TITLE' => sprintf('<a href="%s">%s</a>', $tab_link, $all_tabs[$tab]->title)));
                 $tpl->parseCurrentBlock();
             }
         }
@@ -492,11 +465,9 @@ class PHPWS_ControlPanel {
         if (!\Current_User::isDeity()) {
             return;
         }
-        $delete_links = filter_input(INPUT_GET, 'delete_links',
-                FILTER_VALIDATE_INT);
+        $delete_links = filter_input(INPUT_GET, 'delete_links', FILTER_VALIDATE_INT);
 
-        $remove_cp_link = filter_input(INPUT_GET, 'remove_cp_link',
-                FILTER_VALIDATE_INT);
+        $remove_cp_link = filter_input(INPUT_GET, 'remove_cp_link', FILTER_VALIDATE_INT);
 
         if ($delete_links === 1) {
             $_SESSION['controlpanel_delete_links'] = true;
@@ -523,4 +494,3 @@ class PHPWS_ControlPanel {
     }
 
 }
-
