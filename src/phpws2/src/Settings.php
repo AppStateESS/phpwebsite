@@ -2,7 +2,6 @@
 
 namespace phpws2;
 
-
 /**
  * Stores and retrieves settings within Modules.
  *
@@ -10,7 +9,8 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Settings extends \Data {
+class Settings extends \Data
+{
 
     public $variables;
     private static $settings;
@@ -32,8 +32,7 @@ class Settings extends \Data {
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!array_key_exists($variable_name, $settings)) {
-                throw new \Exception(t('Unknown setting "%s:%s"', $module_name,
-                        $variable_name));
+                throw new \Exception(t('Unknown setting "%s:%s"', $module_name, $variable_name));
             }
             $this->set($module_name, $variable_name, $settings[$variable_name]);
         } else {
@@ -50,10 +49,7 @@ class Settings extends \Data {
             self::createSettingsTable();
         }
         $s = $db->addTable('settings');
-        $db->setConditional($db->createConditional($s->getFieldConditional('module_name',
-                                $module_name),
-                        $s->getFieldConditional('variable_name', $variable_name),
-                        'and'));
+        $db->setConditional($db->createConditional($s->getFieldConditional('module_name', $module_name), $s->getFieldConditional('variable_name', $variable_name), 'and'));
         $db->delete();
         $s->reset();
         if (is_array($setting)) {
@@ -114,7 +110,7 @@ class Settings extends \Data {
         }
         return self::$settings;
     }
-    
+
     public static function reset($module)
     {
         if (preg_match('/\W/', $module)) {
@@ -129,4 +125,3 @@ class Settings extends \Data {
     }
 
 }
-

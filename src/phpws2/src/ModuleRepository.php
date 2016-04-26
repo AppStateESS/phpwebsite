@@ -2,19 +2,18 @@
 
 namespace phpws2;
 
-
 /**
  * Description
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-
 final class ModuleRepository
 {
+
     private static $INSTANCE;
 
     public static function getInstance()
     {
-        if(is_null(self::$INSTANCE)) {
+        if (is_null(self::$INSTANCE)) {
             self::$INSTANCE = new ModuleRepository();
         }
 
@@ -37,18 +36,19 @@ final class ModuleRepository
         $db = Database::newDB();
         $mods = $db->addTable('modules');
         $mods->addOrderBy($mods->getField('priority'));
+        $mods->addFieldConditional('active', 1);
         $db->loadSelectStatement();
 
-        while($row = $db->fetch()) {
+        while ($row = $db->fetch()) {
             $row = array_map('trim', $row);
-            if(is_file(PHPWS_SOURCE_DIR . 'mod/' . $row['title'] . '/Module.php')) {
+            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $row['title'] . '/Module.php')) {
                 $module = $this->loadModule($row);
             } else {
                 $module = $this->loadCompatibilityModule($row);
             }
             $this->addModule($module);
         }
-        if(count($this->getActiveModules()) == 0) {
+        if (count($this->getActiveModules()) == 0) {
             // @todo better exceptions
             throw new \Exception(t('No active modules installed'));
         }
@@ -108,8 +108,9 @@ final class ModuleRepository
     public function getActiveModules()
     {
         $active = array();
-        foreach($this->modules as $module) {
-            if($module->isActive()) $active[] = $module;
+        foreach ($this->modules as $module) {
+            if ($module->isActive())
+                $active[] = $module;
         }
         return $active;
     }
@@ -117,16 +118,17 @@ final class ModuleRepository
     public function getInactiveModules()
     {
         $active = array();
-        foreach($this->modules as $module) {
-            if(!$module->isActive()) $active[] = $module;
+        foreach ($this->modules as $module) {
+            if (!$module->isActive())
+                $active[] = $module;
         }
         return $active;
     }
 
     public function getModule($title)
     {
-        foreach($this->getAllModules() as $module) {
-            if($module->getTitle() == $title) {
+        foreach ($this->getAllModules() as $module) {
+            if ($module->getTitle() == $title) {
                 return $module;
             }
         }
@@ -137,11 +139,12 @@ final class ModuleRepository
 
     public function hasModule($title)
     {
-        foreach($this->getAllModules() as $module) {
-            if($module->getTitle() == $title) {
+        foreach ($this->getAllModules() as $module) {
+            if ($module->getTitle() == $title) {
                 return true;
             }
         }
         return false;
     }
+
 }
