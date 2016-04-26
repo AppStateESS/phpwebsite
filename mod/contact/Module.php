@@ -57,29 +57,29 @@ class Module extends \Module implements \SettingDefaults
     public function getSettingDefaults()
     {
         // ContactInfo
-        $settings['building'] = null;
-        $settings['room_number'] = null;
-        $settings['phone_number'] = null;
-        $settings['fax_number'] = null;
-        $settings['email'] = null;
-        $settings['site_contact_name'] = null;
-        $settings['site_contact_email'] = null;
+        $settings['building'] = '';
+        $settings['room_number'] = '';
+        $settings['phone_number'] = '';
+        $settings['fax_number'] = '';
+        $settings['email'] = '';
+        $settings['site_contact_name'] = '';
+        $settings['site_contact_email'] = '';
 
         // Physical Address
-        $settings['street'] = null;
-        $settings['post_box'] = null;
-        $settings['city'] = null;
+        $settings['street'] = '';
+        $settings['post_box'] = '';
+        $settings['city'] = '';
         $settings['state'] = 'NC';
-        $settings['zip'] = null;
+        $settings['zip'] = '';
 
         // Offsite
-        $settings['social'] = null;
+        $settings['social'] = '';
 
         // Map
-        $settings['thumbnail_map'] = null;
-        $settings['latitude'] = null;
-        $settings['longitude'] = null;
-        $settings['full_map_link'] = null;
+        $settings['thumbnail_map'] = '';
+        $settings['latitude'] = '';
+        $settings['longitude'] = '';
+        $settings['full_map_link'] = '';
 
         $settings['zoom'] = 17;
         $settings['dimension_x'] = '300';
