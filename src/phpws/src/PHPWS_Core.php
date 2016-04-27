@@ -355,8 +355,11 @@ class PHPWS_Core
 
         if ($module == 'core') {
             $local_config = PHPWS_HOME_DIR . 'config/phpws/' . $file;
+            $hub_config = PHPWS_SOURCE_DIR . 'config/phpws/' . $file;
             if (is_readable($local_config)) {
                 return $local_config;
+            } elseif (is_readable($hub_config)) {
+                return $hub_config;
             }
             $file = PHPWS_SOURCE_DIR . 'src/phpws/config/' . $file;
         } else {
