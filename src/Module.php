@@ -10,7 +10,8 @@
  * Base abstract class for all modules. Every Module class is expect to
  * extend this class to assure preparation and run time functionality.
  */
-abstract class Module extends \Data implements \Controller {
+abstract class Module extends \Data implements \Controller
+{
 
     /**
      * Array of dependencies for the module. Modules will not be loaded
@@ -177,7 +178,12 @@ abstract class Module extends \Data implements \Controller {
         $controller = $this->getController($request);
 
         if (!($controller instanceof Controller)) {
-            throw new \Exception(t('Object returned by getController was not a Controller.'));
+            if (is_object($controller)) {
+                $type = 'Object ' . get_class($controller);
+            } else {
+                $type = gettype($controller);
+            }
+            throw new \Exception(t('The value [%s] returned by getController was not a Controller.', $type));
         }
 
         // TODO: Implement event manager and fire a beforeExecute event
