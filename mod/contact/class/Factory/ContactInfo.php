@@ -125,7 +125,7 @@ EOF;
         \Settings::set('contact', 'site_contact_email', $contact_info->getSiteContactEmail());
     }
 
-    private static function showSiteContact()
+    public static function showSiteContact()
     {
         require_once PHPWS_SOURCE_DIR . 'mod/contact/config/default_message.php';
         $name = SITE_CONTACT_NAME;
@@ -145,8 +145,6 @@ EOF;
 
     public static function display()
     {
-        self::showSiteContact();
-
         $building = \Settings::get('contact', 'building');
 
         if (empty($building)) {

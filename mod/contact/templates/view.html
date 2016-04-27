@@ -1,30 +1,32 @@
-<h3>Contact Us</h3>
-<div class="contact-social-icons">
-    <?php if (!empty($social)) {
-    foreach($social as $label=>$link) {
-    extract($link);
-    ?>
-    <a href="<?php echo $prefix,$url?>"><i class="fa fa-2x fa-<?php echo $icon?>" title="<?php echo $title?>"></i></a>
-    <?php } } ?>
-</div>
-<p>
-    <?php if (!empty($room_number)){echo "Rm. $room_number, ";}?><?php echo $building?><br />
-    <?php if (!empty($post_box)){echo "P.O. Box $post_box<br />";}?>
-    <?php if (!empty($street)){echo $street . '<br />';}?>
-    <?php if (!empty($city) && !empty($state) && !empty($zip)){echo "$city, $state $zip<br />";}?>
-</p>
+<div class="pull-left" style="margin-right: 1em">
+    <h3>Contact Us</h3>
+    <div class="contact-social-icons">
+        <?php if (!empty($social)) {
+        foreach($social as $label=>$link) {
+        extract($link);
+        ?>
+        <a href="<?php echo $prefix,$url?>"><i class="fa fa-2x fa-<?php echo $icon?>" title="<?php echo $title?>"></i></a>
+        <?php } } ?>
+    </div>
+    <p>
+        <?php if (!empty($room_number)){echo "Rm. $room_number, ";}?><?php echo $building?><br />
+        <?php if (!empty($post_box)){echo "P.O. Box $post_box<br />";}?>
+        <?php if (!empty($street)){echo $street . '<br />';}?>
+        <?php if (!empty($city) && !empty($state) && !empty($zip)){echo "$city, $state $zip<br />";}?>
+    </p>
 
-<p><strong>Phone:</strong> <a href="tel:+1<?php echo $phone_number?>"><?php echo $formatted_phone_number?></a>
-    <?php if (!empty($formatted_fax_number)): ?>
-    <br />
-    <strong>Fax:</strong> <?php echo $formatted_fax_number?>
+    <p><strong>Phone:</strong> <a href="tel:+1<?php echo $phone_number?>"><?php echo $formatted_phone_number?></a>
+        <?php if (!empty($formatted_fax_number)): ?>
+        <br />
+        <strong>Fax:</strong> <?php echo $formatted_fax_number?>
+        <?php endif; ?>
+    </p>
+    <?php if (!empty($email)): ?>
+    <p>
+        <strong>Email:</strong> <a href="mailto:<?php echo $email?>"><?php echo $email?></a>
+    </p>
     <?php endif; ?>
-</p>
-<?php if (!empty($email)): ?>
-<p>
-    <strong>Email:</strong> <a href="mailto:<?php echo $email?>"><?php echo $email?></a>
-</p>
-<?php endif; ?>
+</div>
 <div class="contact-map">
     <a href='<?php echo $full_map_link?>' target='_blank'><img src='<?php echo $thumbnail_map?>' class='img-responsive' /></a>
 </div>

@@ -24,33 +24,43 @@ class Module extends \Module implements \SettingDefaults
     public function getController(\Request $request)
     {
         $cmd = $request->shiftCommand();
-        if ($cmd == 'admin' && \Current_User::allow('contact')) {
-            $controller = $request->shiftCommand();
+        if ($cmd == 'admin') {
+            if (\Current_User::allow('contact')) {
+                $controller = $request->shiftCommand();
 
-            switch ($controller) {
-                case 'map':
-                    $map = new \contact\Controller\Map($this);
-                    return $map;
+                switch ($controller) {
+                    case 'map':
+                        $map = new \contact\Controller\Map($this);
+                        return $map;
 
-                case 'social':
-                    $social = new \contact\Controller\Social($this);
-                    return $social;
+                    case 'social':
+                        $social = new \contact\Controller\Social($this);
+                        return $social;
 
-                case 'contactinfo':
-                default:
-                    $contact_info = new \contact\Controller\ContactInfo($this);
-                    return $contact_info;
+                    case 'contactinfo':
+                    default:
+                        $contact_info = new \contact\Controller\ContactInfo($this);
+                        return $contact_info;
+                }
+            } else {
+                \Current_User::requireLogin();
             }
         } else {
-            \Current_User::requireLogin();
+            $controller = new \contact\Controller\User($this);
+            return $controller;
         }
     }
 
     public function runTime(\Request $request)
     {
-        $content = Factory\ContactInfo::display();
-        if (!empty($content)) {
-            \Layout::add($content, 'contact', 'box');
+        Factory\ContactInfo::showSiteContact();
+        $request = \Server::getCurrentRequest();
+        $module = $request->getModule();
+        if ($module !== 'contact') {
+            $content = Factory\ContactInfo::display();
+            if (!empty($content)) {
+                \Layout::add($content, 'contact', 'box');
+            }
         }
     }
 
