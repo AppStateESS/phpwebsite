@@ -25,7 +25,7 @@ if (extension_loaded('mbstring')) {
 if (file_exists(PHPWS_HOME_DIR . 'config/defines.php')) {
     require_once(PHPWS_HOME_DIR . 'config/defines.php');
 } elseif (file_exists(PHPWS_SOURCE_DIR . 'config/defines.php')) {
-    require_once(PHPWS_HOME_DIR . 'config/defines.php');
+    require_once(PHPWS_SOURCE_DIR . 'config/defines.php');
 } else {
     require_once(PHPWS_SOURCE_DIR . 'src/phpws/config/defines.php');
 }
