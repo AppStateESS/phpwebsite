@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 /**
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
-
 function LegacyLoader($class_name)
 {
     // stores previously found requires
@@ -40,12 +39,15 @@ function LegacyLoader($class_name)
     if (is_file($new_mod_file)) {
         $files_found[$class_name] = $new_mod_file;
         require_once $new_mod_file;
+        return true;
     } elseif (is_file($global_file)) {
         $files_found[$class_name] = $global_file;
         require_once $global_file;
+        return true;
     } elseif (is_file($class_file)) {
         $files_found[$class_name] = $class_file;
         require_once $class_file;
+        return true;
     } elseif (isset($_REQUEST['module'])) {
         $module = preg_replace('/\W/', '', $_REQUEST['module']);
 
@@ -58,6 +60,9 @@ function LegacyLoader($class_name)
         if (is_file($class_file)) {
             $files_found[$class_name] = $class_file;
             require_once $class_file;
+            return true;
+        } else {
+            return false;
         }
     }
 }

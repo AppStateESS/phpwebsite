@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 /**
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
-
 function CanopyLoader($class_name)
 {
     static $files_found = array();
@@ -30,13 +29,16 @@ function CanopyLoader($class_name)
     if (isset($files_found[$class_name])) {
         return;
     }
-    
+
     $class_array = explode('\\', $class_name);
     $class_dir = array_shift($class_array);
-    
+
     $base_dir = PHPWS_SOURCE_DIR . "src/$class_dir/autoload.php";
 
     if (is_file($base_dir)) {
         require_once $base_dir;
+        return true;
+    } else {
+        return false;
     }
 }
