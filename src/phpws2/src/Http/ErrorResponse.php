@@ -8,6 +8,7 @@ namespace phpws2\Http;
  */
 abstract class ErrorResponse extends \Response
 {
+
     protected $request;
     protected $backtrace;
     protected $exception;
@@ -58,13 +59,13 @@ abstract class ErrorResponse extends \Response
 
         foreach ($iter as $type) {
             if ($type->matches('application/json')) {
-                return new \View\JsonErrorView($request, $response);
+                return new \phpws2\View\JsonErrorView($request, $response);
             }
             if ($type->matches('application/xml')) {
-                return new \View\XmlErrorView($request, $response);
+                return new \phpws2\View\XmlErrorView($request, $response);
             }
             if ($type->matches('text/html')) {
-                return new \View\HtmlErrorView($request, $response);
+                return new \phpws2\View\HtmlErrorView($request, $response);
             }
         }
     }
