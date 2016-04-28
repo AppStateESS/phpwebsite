@@ -1,0 +1,6 @@
+{
+    "require": {
+        "doctrine/dbal": "^2.5",
+        "doctrine/common": "^2.6"
+    }
+}
