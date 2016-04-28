@@ -1,4 +1,5 @@
 <?php
+
 namespace phpws;
 
 /**
@@ -24,6 +25,7 @@ define('CLEAR_DSN', true);
 
 class PHPWS_DB
 {
+
     public $tables = null;
     public $where = array();
     public $order = array();
@@ -150,7 +152,8 @@ class PHPWS_DB
 
         $dbname = \phpws\PHPWS_DB::getDbName($dsn);
 
-        $pear_db = new \MDB2;
+        //$pear_db = new \MDB2;
+        $pear_db = new FakeMDB2;
         $connect = $pear_db->connect($dsn, array('persistent' => false));
 
         if (\phpws\PHPWS_Error::isError($connect)) {
