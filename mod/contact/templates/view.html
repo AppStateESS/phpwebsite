@@ -1,4 +1,4 @@
-<div class="pull-left" style="margin-right: 1em">
+<div>
     <h3>Contact Us</h3>
     <div class="contact-social-icons">
         <?php if (!empty($social)) {
@@ -22,6 +22,7 @@
         <?php endif; ?>
     </p>
     <?php if (!empty($email)): ?>
+    <?php echo $other_information ?>
     <p>
         <strong>Email:</strong> <a href="mailto:<?php echo $email?>"><?php echo $email?></a>
     </p>

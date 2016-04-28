@@ -15,6 +15,7 @@ class ContactInfo
     public static function form(\Request $request, $active_tab)
     {
         javascript('jquery');
+        javascript('ckeditor');
         \Form::requiredScript();
 
         if (!in_array($active_tab, array('contact-info', 'map', 'social'))) {
@@ -26,7 +27,7 @@ class ContactInfo
         $contact_info = self::load();
         $values = self::getValues($contact_info);
         require PHPWS_SOURCE_DIR . 'mod/contact/config/states.php';
-        $values['states'] = & $states;
+        $values['states'] = $states;
         if (!empty($thumbnail_map)) {
             $values['thumbnail_map'] = "<img src='$thumbnail_map' />";
         } else {
@@ -60,6 +61,7 @@ EOF;
         $contact_info->setEmail(\Settings::get('contact', 'email'));
         $contact_info->setSiteContactName(\Settings::get('contact', 'site_contact_name'));
         $contact_info->setSiteContactEmail(\Settings::get('contact', 'site_contact_email'));
+        $contact_info->setOtherInformation(\Settings::get('contact', 'other_information'));
 
         $contact_info->setPhysicalAddress(ContactInfo\PhysicalAddress::load());
         $contact_info->setMap(Factory\ContactInfo\Map::load());
@@ -79,6 +81,7 @@ EOF;
 
         $values['site_contact_name'] = $contact_info->getSiteContactName();
         $values['site_contact_email'] = $contact_info->getSiteContactEmail();
+        $values['other_information'] = $contact_info->getOtherInformation();
 
         $physical_address = $contact_info->getPhysicalAddress();
         $map = $contact_info->getMap();
@@ -109,6 +112,7 @@ EOF;
         $contact_info->setEmail($values['email']);
         $contact_info->setSiteContactName($values['site_contact_name']);
         $contact_info->setSiteContactEmail($values['site_contact_email']);
+        $contact_info->setOtherInformation($values['other_information']);
         self::save($contact_info);
 
         $physical_address = $contact_info->getPhysicalAddress();
@@ -123,6 +127,7 @@ EOF;
         \Settings::set('contact', 'email', $contact_info->getEmail());
         \Settings::set('contact', 'site_contact_name', $contact_info->getSiteContactName());
         \Settings::set('contact', 'site_contact_email', $contact_info->getSiteContactEmail());
+        \Settings::set('contact', 'other_information', $contact_info->getOtherInformation());
     }
 
     public static function showSiteContact()

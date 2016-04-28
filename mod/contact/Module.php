@@ -74,6 +74,7 @@ class Module extends \Module implements \SettingDefaults
         $settings['email'] = null;
         $settings['site_contact_name'] = null;
         $settings['site_contact_email'] = null;
+        $settings['other_information'] = null;
 
         // Physical Address
         $settings['street'] = null;

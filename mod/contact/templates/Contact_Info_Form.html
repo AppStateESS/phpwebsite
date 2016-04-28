@@ -9,6 +9,7 @@
     <?php endif; ?>
 
     <form action="./contact/admin/contactinfo" method="post" class="phpws-form">
+        <input class="btn btn-primary btn-lg" type="submit" style="margin:1em 0" value="Save Contact Info" />
         <div class="row">
             <div class="col-sm-6">
                 <fieldset>
@@ -33,17 +34,6 @@
                         <label for="email">Email address</label><br /><small>(note: you may use a social icon as well/instead)</small>
                         <input id="email-address" name="email" type="email" class="form-control" value="<?php echo $email?>" />
                     </div>
-                    <frameset><legend>Site contact <i class="text-muted fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Data entered below appears in its own block."></i></legend>
-
-                        <div class="form-group">
-                            <label for="site-contact-name">Name</label>
-                            <input id="site-contact-name" name="site_contact_name" class="form-control" value="<?php echo $site_contact_name?>"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="site-contact-email">Email address</label>
-                            <input id="site-contact-email" name="site_contact_email" class="form-control" value="<?php echo $site_contact_email?>"/>
-                        </div>
-                    </frameset>
                 </fieldset>
             </div>
             <div class="col-sm-6">
@@ -76,7 +66,26 @@
                 </fieldset>
             </div>
         </div>
-        <input class="btn btn-primary" type="submit" value="Save Contact Info" />
+        <fieldset><legend>Other information <i class="text-muted fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Extra phone numbers, hours of operation, etc. "></i></legend>
+            <textarea id="other-information" name="other_information" class="form-control"><?php echo $other_information?></textarea>
+        </fieldset>
+        <fieldset style="margin-top:1em"><legend>Site contact <i class="text-muted fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Data entered below appears in its own block."></i></legend>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="site-contact-name">Name</label>
+                        <input id="site-contact-name" name="site_contact_name" class="form-control" value="<?php echo $site_contact_name?>"/>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="site-contact-email">Email address</label>
+                        <input id="site-contact-email" name="site_contact_email" class="form-control" value="<?php echo $site_contact_email?>"/>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <input class="btn btn-primary btn-lg" type="submit" style="margin-top:1em" value="Save Contact Info" />
     </form>
 </div>
 <div class="map-section contact-section">

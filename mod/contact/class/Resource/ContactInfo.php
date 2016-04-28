@@ -13,12 +13,12 @@ class ContactInfo extends \Resource
     private $physical_address;
 
     /**
-     * @var \Variable\String
+     * @var \phpws2\Variable\String
      */
     private $phone_number;
 
     /**
-     * @var \Variable\String
+     * @var \phpws2\Variable\String
      */
     private $fax_number;
 
@@ -33,34 +33,41 @@ class ContactInfo extends \Resource
     private $map;
 
     /**
-     * @var \Variable\Email
+     * @var \phpws2\Variable\Email
      */
     private $email;
 
     /**
-     * @var \Variable\String
+     * @var \phpws2\Variable\String
      */
     private $site_contact_name;
 
     /**
-     * @var \Variable\String
+     * @var \phpws2\Variable\String
      */
     private $site_contact_email;
+
+    /**
+     * @var \phpws2\Variable\String
+     */
+    private $other_information;
 
     public function __construct()
     {
         $this->physical_address = new ContactInfo\PhysicalAddress;
-        $this->phone_number = new \Variable\String(null, 'phone_number');
-        $this->fax_number = new \Variable\String(null, 'phone_number');
+        $this->phone_number = new \phpws2\Variable\String(null, 'phone_number');
+        $this->fax_number = new \phpws2\Variable\String(null, 'phone_number');
         $this->fax_number->allowEmpty(true);
         $this->social = new ContactInfo\Social;
         $this->map = new ContactInfo\Map;
-        $this->email = new \Variable\Email(null, 'email');
+        $this->email = new \phpws2\Variable\Email(null, 'email');
         $this->email->allowNull(true);
-        $this->site_contact_name = new \Variable\TextOnly(null, 'site_contact_name');
+        $this->site_contact_name = new \phpws2\Variable\TextOnly(null, 'site_contact_name');
         $this->site_contact_name->allowNull(true);
-        $this->site_contact_email = new \Variable\TextOnly(null, 'site_contact_email');
+        $this->site_contact_email = new \phpws2\Variable\TextOnly(null, 'site_contact_email');
         $this->site_contact_email->allowNull(true);
+        $this->other_information = new \phpws2\Variable\String(null, 'other_information');
+        $this->other_information->allowNull(true);
     }
 
     /**
@@ -164,6 +171,16 @@ class ContactInfo extends \Resource
     public function getSiteContactEmail()
     {
         return $this->site_contact_email->get();
+    }
+
+    public function setOtherInformation($info)
+    {
+        $this->other_information->set($info);
+    }
+
+    public function getOtherInformation()
+    {
+        return $this->other_information->get();
     }
 
 }
