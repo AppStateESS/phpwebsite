@@ -155,11 +155,66 @@ class FakeMDB2Connection
         return $allTables;
     }
 
-    public function tableInfo($table)
+    public function tableInfo($tableName)
     {
         $sm = $this->connection->getSchemaManager();
-        $columns = $sm->listTableDetails($table);
-        var_dump($columns);
+        $table = $sm->listTableDetails($tableName);
+        $primaryKey = $table->getPrimaryKey();
+        $pkColumns = $primaryKey->getColumns();
+
+        $columns = $table->getColumns();
+        foreach ($columns as $key => $col) {
+            $row = $col->toArray();
+            $row['nativetype'] = $row['type'] = $this->getDBType($col);
+            $row['mdb2type'] = $this->getMDB2Type($col);
+
+            $row['table'] = $tableName;
+            $row['flags'] = '';
+            if (in_array($key, $pkColumns)) {
+                $row['flags'] .= 'primary_key';
+            }
+            if ($col->getNotnull()) {
+                $row['flags'] .= ' not_null';
+            }
+
+            $mdbColumns[$key] = $row;
+        }
+        return $mdbColumns;
+    }
+
+    private function getDBType($col)
+    {
+        $type = $col->getType();
+
+        switch (get_class($type)) {
+            case 'Doctrine\DBAL\Types\IntegerType':
+                return 'int';
+                break;
+
+            case 'Doctrine\DBAL\Types\SmallIntType':
+                return 'smallint';
+                break;
+
+            case 'Doctrine\DBAL\Types\StringType':
+                return 'varchar';
+                break;
+        }
+    }
+
+    private function getMDB2Type($col)
+    {
+        $type = $col->getType();
+
+        switch (get_class($type)) {
+            case 'Doctrine\DBAL\Types\IntegerType':
+            case 'Doctrine\DBAL\Types\SmallIntType':
+                return 'integer';
+                break;
+
+            case 'Doctrine\DBAL\Types\StringType':
+                return 'text';
+                break;
+        }
     }
 
 }
