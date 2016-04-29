@@ -160,7 +160,11 @@ class FakeMDB2Connection
         $sm = $this->connection->getSchemaManager();
         $table = $sm->listTableDetails($tableName);
         $primaryKey = $table->getPrimaryKey();
-        $pkColumns = $primaryKey->getColumns();
+        if (isset($primaryKey)) {
+            $pkColumns = $primaryKey->getColumns();
+        } else {
+            $pkColumns = array();
+        }
 
         $columns = $table->getColumns();
         foreach ($columns as $key => $col) {
@@ -175,6 +179,13 @@ class FakeMDB2Connection
             }
             if ($col->getNotnull()) {
                 $row['flags'] .= ' not_null';
+            }
+            if ($col->getUnsigned()) {
+                $row['flags'] .= ' unsigned';
+            }
+
+            if ($row['notnull'] && $row['nativetype'] == 'varchar') {
+                $row['default'] = '';
             }
 
             $mdbColumns[$key] = $row;
@@ -198,13 +209,16 @@ class FakeMDB2Connection
             case 'Doctrine\DBAL\Types\StringType':
                 return 'varchar';
                 break;
+
+            case 'Doctrine\DBAL\Types\TextType':
+                return 'text';
+                break;
         }
     }
 
     private function getMDB2Type($col)
     {
         $type = $col->getType();
-
         switch (get_class($type)) {
             case 'Doctrine\DBAL\Types\IntegerType':
             case 'Doctrine\DBAL\Types\SmallIntType':
@@ -213,6 +227,14 @@ class FakeMDB2Connection
 
             case 'Doctrine\DBAL\Types\StringType':
                 return 'text';
+                break;
+
+            case 'Doctrine\DBAL\Types\TextType':
+                if ($col->getLength() > 256) {
+                    return 'clob';
+                } else {
+                    return 'text';
+                }
                 break;
         }
     }
