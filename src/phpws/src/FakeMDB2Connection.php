@@ -139,7 +139,7 @@ class FakeMDB2Connection
         return array_keys($columns);
     }
 
-    public function loadModule($var1, $var2, $var3)
+    public function loadModule($var1, $var2 = null, $var3 = null)
     {
 
     }
