@@ -29,7 +29,7 @@ namespace phpws;
 class FakeMDB2
 {
 
-    public function connect($dsn, $unused)
+    public function connect($dsn, $unused = null)
     {
         $connection = new FakeMDB2Connection($dsn);
         return $connection;
