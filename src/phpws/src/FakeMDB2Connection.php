@@ -31,6 +31,7 @@ class FakeMDB2Connection
 
     private $connection;
     public $dbsyntax;
+    public $last_query;
 
     public function __construct($dsn)
     {
@@ -105,6 +106,7 @@ class FakeMDB2Connection
 
     public function queryCol($sql)
     {
+        $result = null;
         while ($row = $this->connection->fetchColumn($sql)) {
             $result[] = $row;
         }
@@ -256,6 +258,15 @@ class FakeMDB2Connection
                 }
                 break;
         }
+    }
+
+    public function nextID($table_name)
+    {
+        $sequence_table = $table_name . '_seq';
+        $this->connection->executeQuery("insert into $sequence_table (id) values (null)");
+        $value = $this->connection->lastInsertId();
+        $this->connection->executeQuery("delete from $sequence_table where id < $value");
+        return $value;
     }
 
 }
