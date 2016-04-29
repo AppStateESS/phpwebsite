@@ -72,7 +72,7 @@ class FakeMDB2Connection
             $dbport = null;
         }
 
-        $this->dbsyntax = $dbtype;
+        $this->phptype = $this->dbsyntax = $dbtype;
 
         if ($dbtype == 'mysqli' || $dbtype == 'mysql') {
             $dbtype = 'pdo_mysql';
@@ -93,6 +93,11 @@ class FakeMDB2Connection
         $value = preg_replace("/^'/", '', $value);
         $value = preg_replace("/'$/", '', $value);
         return $value;
+    }
+
+    public function quote($value)
+    {
+        return $this->connection->quote($value);
     }
 
     public function queryOne($sql)
