@@ -32,6 +32,7 @@ class FakeMDB2Connection
     private $connection;
     public $dbsyntax;
     public $last_query;
+    public $phptype;
 
     public function __construct($dsn)
     {
@@ -96,16 +97,19 @@ class FakeMDB2Connection
 
     public function queryOne($sql)
     {
+        $this->last_query = $sql;
         return $this->connection->fetchColumn($sql);
     }
 
     public function queryAll($sql)
     {
+        $this->last_query = $sql;
         return $this->connection->fetchAll($sql);
     }
 
     public function queryCol($sql)
     {
+        $this->last_query = $sql;
         $result = null;
         while ($row = $this->connection->fetchColumn($sql)) {
             $result[] = $row;
@@ -115,6 +119,7 @@ class FakeMDB2Connection
 
     public function queryRow($sql)
     {
+        $this->last_query = $sql;
         return $this->connection->fetchAssoc($sql);
     }
 
@@ -125,11 +130,13 @@ class FakeMDB2Connection
 
     public function exec($sql)
     {
+        $this->last_query = $sql;
         return $this->connection->executeQuery($sql);
     }
 
     public function query($sql)
     {
+        $this->last_query = $sql;
         return $this->connection->executeQuery($sql);
     }
 
