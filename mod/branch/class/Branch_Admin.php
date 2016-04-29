@@ -12,7 +12,8 @@ define('BRANCH_CONNECT_BAD_DB', 5);
 
 \phpws\PHPWS_Core::initModClass('branch', 'Branch.php');
 
-class Branch_Admin {
+class Branch_Admin
+{
 
     // Contains the panel object
     public $panel = null;
@@ -97,8 +98,7 @@ class Branch_Admin {
             case 'edit':
                 // editing existing branch
                 if (empty($this->branch->id)) {
-                    $this->content = dgettext('branch',
-                            'Incorrect or missing branch id.');
+                    $this->content = dgettext('branch', 'Incorrect or missing branch id.');
                 }
                 break;
 
@@ -138,8 +138,7 @@ class Branch_Admin {
                     $result = $this->branch->save();
                     if (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
-                        $this->title = dgettext('branch',
-                                'An error occurred while saving your branch.');
+                        $this->title = dgettext('branch', 'An error occurred while saving your branch.');
                         $this->content = $result->getMessage();
                         return;
                     }
@@ -147,16 +146,12 @@ class Branch_Admin {
                     if ($new_branch) {
                         if ($this->branch->createDirectories()) {
                             $this->setCreateStep(3);
-                            $this->title = dgettext('branch',
-                                    'Create branch directories');
-                            $this->message[] = dgettext('branch',
-                                    'Branch created successfully.');
+                            $this->title = dgettext('branch', 'Create branch directories');
+                            $this->message[] = dgettext('branch', 'Branch created successfully.');
                             $this->install_branch_core();
                         } else {
-                            $this->title = dgettext('branch',
-                                    'Unable to create branch directories.');
-                            $this->content = dgettext('branch',
-                                    'Sorry, but Branch failed to make the proper directories.');
+                            $this->title = dgettext('branch', 'Unable to create branch directories.');
+                            $this->content = dgettext('branch', 'Sorry, but Branch failed to make the proper directories.');
                         }
                     } else {
                         $this->listBranches();
@@ -174,8 +169,7 @@ class Branch_Admin {
                     $this->content[] = dgettext('branch', 'All done!');
                     $this->resetAdmin();
                 } elseif ($_SESSION['Boost']->currentDone()) {
-                    $meta = sprintf('index.php?module=branch&command=core_module_installation&branch_id=%s&authkey=%s',
-                            $this->branch->id, Current_User::getAuthKey());
+                    $meta = sprintf('index.php?module=branch&command=core_module_installation&branch_id=%s&authkey=%s', $this->branch->id, Current_User::getAuthKey());
                     Layout::metaRoute($meta);
                 }
                 break;
@@ -192,8 +186,7 @@ class Branch_Admin {
             case 'force_install':
                 $this->setCreateStep(2);
                 $this->saveDSN();
-                $this->message[] = dgettext('branch',
-                        'Connection successful. Database available.');
+                $this->message[] = dgettext('branch', 'Connection successful. Database available.');
                 $this->edit_basic();
                 break;
         }// end of the command switch
@@ -208,59 +201,46 @@ class Branch_Admin {
 
         $dsn = $this->getDSN();
         if (empty($dsn)) {
-            $this->content[] = dgettext('branch',
-                    'Unable to get database connect information. Please try again.');
+            $this->content[] = dgettext('branch', 'Unable to get database connect information. Please try again.');
             return false;
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'admin/',
-                        $this->branch->directory . 'admin/')) {
-            $this->content[] = dgettext('branch',
-                    'Failed to copy admin file to branch.');
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'admin/', $this->branch->directory . 'admin/')) {
+            $this->content[] = dgettext('branch', 'Failed to copy admin file to branch.');
             return false;
         } else {
             $this->content[] = dgettext('branch', 'Copied admin file to branch.');
         }
 
         if (is_file(PHPWS_SOURCE_DIR . 'core/inc/htaccess')) {
-            $this->content[] = dgettext('branch',
-                    '.htaccess detected on hub. Attempting to create default file on branch.');
-            if (copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess',
-                            $this->branch->directory . '.htaccess')) {
+            $this->content[] = dgettext('branch', '.htaccess detected on hub. Attempting to create default file on branch.');
+            if (copy(PHPWS_SOURCE_DIR . 'core/inc/htaccess', $this->branch->directory . '.htaccess')) {
                 $this->content[] = dgettext('branch', 'Copied successfully.');
             } else {
-                $this->content[] = dgettext('branch',
-                        'Unable to copy .htaccess file.');
+                $this->content[] = dgettext('branch', 'Unable to copy .htaccess file.');
             }
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'secure/',
-                        $this->branch->directory . 'secure/')) {
-            $this->content[] = dgettext('branch',
-                    'Failed to copy secure directory to branch.');
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'secure/', $this->branch->directory . 'secure/')) {
+            $this->content[] = dgettext('branch', 'Failed to copy secure directory to branch.');
             return false;
         } else {
             $this->content[] = dgettext('branch', 'Copied secure directory to branch.');
         }
 
-        $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>',
-                PHPWS_SOURCE_DIR);
-        $index_file = sprintf('<?php include \'%sindex.php\'; ?>',
-                PHPWS_SOURCE_DIR);
+        $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>', PHPWS_SOURCE_DIR);
+        $index_file = sprintf('<?php include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
         file_put_contents($this->branch->directory . 'phpws_stats.php', $stats);
         file_put_contents($this->branch->directory . 'index.php', $index_file);
 
-        file_put_contents($this->branch->directory . 'config/.htaccess',
-                'Deny from all');
+        file_put_contents($this->branch->directory . 'config/.htaccess', 'Deny from all');
 
 
         if (!$this->copy_config()) {
-            $this->content[] = dgettext('branch',
-                    'Failed to create config.php file in the branch.');
+            $this->content[] = dgettext('branch', 'Failed to create config.php file in the branch.');
             return false;
         } else {
-            $this->content[] = dgettext('branch',
-                    'Config file created successfully.');
+            $this->content[] = dgettext('branch', 'Config file created successfully.');
         }
 
         $result = $this->create_core();
@@ -273,8 +253,7 @@ class Branch_Admin {
             $this->content[] = dgettext('branch', 'Core SQL import successful.');
         }
 
-        $link = dgettext('branch',
-                'Core installed successfully. Continue to core module installation.');
+        $link = dgettext('branch', 'Core installed successfully. Continue to core module installation.');
         $vars['command'] = 'core_module_installation';
         $vars['branch_id'] = $this->branch->id;
         $this->content[] = PHPWS_Text::secureLink($link, 'branch', $vars);
@@ -326,16 +305,12 @@ class Branch_Admin {
         }
 
         $config_file[] = '<?php';
-        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');",
-                PHPWS_SOURCE_DIR);
-        $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');",
-                $this->branch->directory);
-        $config_file[] = sprintf("define('SITE_HASH', '%s');",
-                $this->branch->site_hash);
+        $config_file[] = sprintf("define('PHPWS_SOURCE_DIR', '%s');", PHPWS_SOURCE_DIR);
+        $config_file[] = sprintf("define('PHPWS_HOME_DIR', '%s');", $this->branch->directory);
+        $config_file[] = sprintf("define('SITE_HASH', '%s');", $this->branch->site_hash);
         $config_file[] = sprintf("define('PHPWS_DSN', '%s');", $this->getDSN());
         if (!empty($this->dbprefix)) {
-            $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');",
-                    $this->dbprefix);
+            $config_file[] = sprintf("define('PHPWS_TABLE_PREFIX', '%s');", $this->dbprefix);
         }
         return file_put_contents($filename, implode("\n", $config_file));
     }
@@ -355,8 +330,7 @@ class Branch_Admin {
         }
 
         if (!is_dir($this->branch->directory)) {
-            $this->message[] = dgettext('branch',
-                    'Branch directory does not exist.');
+            $this->message[] = dgettext('branch', 'Branch directory does not exist.');
             $directory = explode('/', $this->branch->directory);
             // removes item after the /
             array_pop($directory);
@@ -368,26 +342,21 @@ class Branch_Admin {
             if (!$this->branch->id) {
                 if (is_writable($write_dir)) {
                     if (mkdir($this->branch->directory)) {
-                        $this->message[] = dgettext('branch',
-                                'Directory creation successful.');
+                        $this->message[] = dgettext('branch', 'Directory creation successful.');
                     } else {
-                        $this->message[] = dgettext('branch',
-                                'Unable to create the directory. You will need to create it manually.');
+                        $this->message[] = dgettext('branch', 'Unable to create the directory. You will need to create it manually.');
                         return false;
                     }
                 } else {
-                    $this->message[] = dgettext('branch',
-                            'Unable to create the directory. You will need to create it manually.');
+                    $this->message[] = dgettext('branch', 'Unable to create the directory. You will need to create it manually.');
                     $result = false;
                 }
             }
         } elseif (!is_writable($this->branch->directory)) {
-            $this->message[] = dgettext('branch',
-                    'Directory exists but is not writable.');
+            $this->message[] = dgettext('branch', 'Directory exists but is not writable.');
             $result = false;
         } elseif (!$this->branch->id && PHPWS_File::listDirectories($this->branch->directory)) {
-            $this->message[] = dgettext('branch',
-                    'Directory exists but already contains files.');
+            $this->message[] = dgettext('branch', 'Directory exists but already contains files.');
             $result = false;
         }
 
@@ -395,22 +364,19 @@ class Branch_Admin {
             $this->message[] = dgettext('branch', 'You must name your branch.');
             $result = false;
         } elseif (!$this->branch->setBranchName($_POST['branch_name'])) {
-            $this->message[] = dgettext('branch',
-                    'You may not use that branch name.');
+            $this->message[] = dgettext('branch', 'You may not use that branch name.');
             $result = false;
         }
 
         if (empty($_POST['url'])) {
-            $this->message[] = dgettext('branch',
-                    'Enter your site\'s url address.');
+            $this->message[] = dgettext('branch', 'Enter your site\'s url address.');
             $result = false;
         } else {
             $this->branch->url = $_POST['url'];
         }
 
         if (empty($_POST['site_hash'])) {
-            $this->message[] = dgettext('branch',
-                    'Your branch site must have a site_hash.');
+            $this->message[] = dgettext('branch', 'Your branch site must have a site_hash.');
             $result = false;
         } else {
             $this->branch->site_hash = $_POST['site_hash'];
@@ -431,15 +397,12 @@ class Branch_Admin {
 
         $this->title = dgettext('branch', 'Installing core modules');
 
-        $result = $_SESSION['Boost']->install(false, true,
-                $this->branch->directory);
+        $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
 
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $this->content[] = dgettext('branch',
-                            'An error occurred while trying to install your modules.')
-                    . ' ' . dgettext('branch',
-                            'Please check your error logs and try again.');
+            $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.')
+                    . ' ' . dgettext('branch', 'Please check your error logs and try again.');
             Branch::loadHubDB();
             return true;
         } else {
@@ -482,8 +445,7 @@ class Branch_Admin {
     {
         if (isset($this->dbuser)) {
             $dbtype = str_replace('mysql', 'mysqli', $this->dbtype);
-            $dsn = sprintf('%s://%s:%s@%s', $dbtype, $this->dbuser,
-                    $this->dbpass, $this->dbhost);
+            $dsn = sprintf('%s://%s:%s@%s', $dbtype, $this->dbuser, $this->dbpass, $this->dbhost);
 
             if ($this->dbport) {
                 $dsn .= ':' . $this->dbport;
@@ -570,23 +532,19 @@ class Branch_Admin {
                 if (isset($_POST['createdb'])) {
                     $result = $this->createDB();
                     if (PHPWS_Error::isError($result)) {
-                        $this->message[] = dgettext('branch',
-                                'An error occurred when trying to connect to the database.');
+                        $this->message[] = dgettext('branch', 'An error occurred when trying to connect to the database.');
                         $this->edit_db();
                     } elseif ($result) {
-                        $this->message[] = dgettext('branch',
-                                'Database created successfully.');
+                        $this->message[] = dgettext('branch', 'Database created successfully.');
                         $this->setCreateStep(2);
                         $this->saveDSN();
                         $this->edit_basic();
                     } else {
-                        $this->message[] = dgettext('branch',
-                                'Unable to create the database. You will need to create it manually.');
+                        $this->message[] = dgettext('branch', 'Unable to create the database. You will need to create it manually.');
                         $this->edit_db();
                     }
                 } else {
-                    $this->message[] = dgettext('branch',
-                            'Connected successfully, but the database does not exist.');
+                    $this->message[] = dgettext('branch', 'Connected successfully, but the database does not exist.');
                     $this->edit_db();
                 }
                 break;
@@ -594,8 +552,7 @@ class Branch_Admin {
             case BRANCH_NO_CONNECTION:
             case BRANCH_CONNECT_BAD_DB:
                 // Failed connection
-                $this->message[] = dgettext('branch',
-                        'Could not connect to the database.');
+                $this->message[] = dgettext('branch', 'Could not connect to the database.');
                 $this->edit_db();
                 break;
 
@@ -603,8 +560,7 @@ class Branch_Admin {
                 // connection successful
                 $this->setCreateStep(2);
                 $this->saveDSN();
-                $this->message[] = dgettext('branch',
-                        'Connection successful. Database available.');
+                $this->message[] = dgettext('branch', 'Connection successful. Database available.');
                 $this->edit_basic();
                 break;
 
@@ -612,20 +568,16 @@ class Branch_Admin {
                 if ($force_on_populated && !empty($this->dbprefix)) {
                     $this->setCreateStep(2);
                     $this->saveDSN();
-                    $this->message[] = dgettext('branch',
-                            'Connection successful. Database available.');
+                    $this->message[] = dgettext('branch', 'Connection successful. Database available.');
                     $this->edit_basic();
                 } else {
-                    $this->message[] = dgettext('branch',
-                            'Connected successfully, but this database already contains tables.');
+                    $this->message[] = dgettext('branch', 'Connected successfully, but this database already contains tables.');
 
                     if (!empty($this->dbprefix)) {
-                        $this->message[] = dgettext('branch',
-                                'Though not recommended, you can force installation by clicking Continue below.');
+                        $this->message[] = dgettext('branch', 'Though not recommended, you can force installation by clicking Continue below.');
                         $force = true;
                     } else {
-                        $this->message[] = dgettext('branch',
-                                'Though not recommended, prefixing will allow you to install to this database.');
+                        $this->message[] = dgettext('branch', 'Though not recommended, prefixing will allow you to install to this database.');
                         $force = false;
                     }
                     $this->edit_db($force);
@@ -667,8 +619,7 @@ class Branch_Admin {
         $form->setLabel('site_hash', dgettext('branch', 'ID hash'));
         $template = $form->getTemplate();
         $template['BRANCH_LEGEND'] = dgettext('branch', 'Branch specifications');
-        $this->content = PHPWS_Template::process($template, 'branch',
-                        'edit_basic.tpl');
+        $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
     }
 
     /**
@@ -717,14 +668,12 @@ class Branch_Admin {
 
         $template = $form->getTemplate();
 
-        $this->content = PHPWS_Template::process($template, 'branch',
-                        'edit_db.tpl');
+        $this->content = PHPWS_Template::process($template, 'branch', 'edit_db.tpl');
     }
 
     public function checkConnection()
     {
-        $dsn = \Database::newDSN($this->dbtype, $this->dbuser, $this->dbpass,
-                        null, $this->dbhost, $this->dbport);
+        $dsn = \Database::newDSN($this->dbtype, $this->dbuser, $this->dbpass, null, $this->dbhost, $this->dbport);
 
         try {
             $db = \Database::newDB($dsn);
@@ -766,26 +715,22 @@ class Branch_Admin {
 
         $this->dbname = $_POST['dbname'];
         if (!PHPWS_DB::allowed($this->dbname)) {
-            $this->message[] = dgettext('branch',
-                    'This database name is not allowed.');
+            $this->message[] = dgettext('branch', 'This database name is not allowed.');
             $result = false;
         }
 
         if (empty($this->dbname)) {
-            $this->message[] = dgettext('branch',
-                    'You must type a database name.');
+            $this->message[] = dgettext('branch', 'You must type a database name.');
             $result = false;
         }
 
         if (empty($this->dbuser)) {
-            $this->message[] = dgettext('branch',
-                    'You must type a database user.');
+            $this->message[] = dgettext('branch', 'You must type a database user.');
             $result = false;
         }
 
         if (preg_match('/\W/', $this->dbprefix)) {
-            $content[] = dgettext('branch',
-                    'Table prefix must be alphanumeric characters or underscores only');
+            $content[] = dgettext('branch', 'Table prefix must be alphanumeric characters or underscores only');
             $result = false;
         }
 
@@ -824,7 +769,7 @@ class Branch_Admin {
             return false;
         }
 
-        $tdb = new MDB2;
+        $tdb = new \phpws\FakeMDB2;
         $db = $tdb->connect($dsn);
 
         if (PHPWS_Error::isError($db)) {

@@ -9,7 +9,6 @@ namespace phpws;
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-require_once PHPWS_SOURCE_DIR . 'lib/pear/MDB2.php';
 require_once PHPWS_SOURCE_DIR . 'src/phpws/src/DB/DB_Group_In.php';
 require_once PHPWS_SOURCE_DIR . 'src/phpws/src/DB/PHPWS_DB_Where.php';
 
@@ -17,7 +16,7 @@ require_once PHPWS_SOURCE_DIR . 'src/phpws/src/DB/PHPWS_DB_Where.php';
 // This can log can get very large, very fast. DO NOT enable it
 // on a live server. It is for development purposes only.
 define('LOG_DB', false);
-
+define('MDB2_FETCHMODE_ASSOC', 1);
 define('DEFAULT_MODE', MDB2_FETCHMODE_ASSOC);
 
 // Removes dsn from log after failed database connection
@@ -152,7 +151,6 @@ class PHPWS_DB
 
         $dbname = \phpws\PHPWS_DB::getDbName($dsn);
 
-        //$pear_db = new \MDB2;
         $pear_db = new FakeMDB2;
         $connect = $pear_db->connect($dsn, array('persistent' => false));
 
@@ -182,9 +180,6 @@ class PHPWS_DB
         $class_name = '\\phpws\\DB\\' . $type . '_PHPWS_SQL';
 
         $dblib = new $class_name;
-        if (!empty($dblib->portability)) {
-            $connect->setOption('portability', $dblib->portability);
-        }
         $connect->setOption('seqcol_name', 'id');
 
         $GLOBALS['PHPWS_DB']['lib'] = $dblib;
@@ -341,24 +336,12 @@ class PHPWS_DB
 
     public function setMode($mode)
     {
-        switch (strtolower($mode)) {
-            case 'ordered':
-                $this->mode = MDB2_FETCHMODE_ORDERED;
-                break;
 
-            case 'object':
-                $this->mode = MDB2_FETCHMODE_OBJECT;
-                break;
-
-            case 'assoc':
-                $this->mode = MDB2_FETCHMODE_ASSOC;
-                break;
-        }
     }
 
     public function getMode()
     {
-        return $this->mode;
+        return 1;
     }
 
     public static function isTable($table)

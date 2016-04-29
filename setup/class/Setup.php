@@ -6,7 +6,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-require_once 'MDB2.php';
 if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
     define('DIRECTORY_SLASH', '\\');
 } else {
@@ -272,7 +271,7 @@ class Setup
     public function createDatabase()
     {
         $dsn = $this->getDSN(1);
-        $dbobj = new MDB2;
+        $dbobj = new \phpws\FakeMDB2;
         $db = $dbobj->connect($dsn);
 
         if (PHPWS_Error::isError($db)) {
@@ -332,7 +331,7 @@ class Setup
     {
         if (empty($dsn)) {
             $dsn = $this->getDSN(1);
-            $pear_db = new MDB2;
+            $pear_db = new \phpws\FakeMDB2;
             try {
                 $connection = $pear_db->connect($dsn);
             } catch (\Exception $e) {
@@ -351,7 +350,7 @@ class Setup
             $dsn = $this->getDSN(2);
         }
 
-        $tdb = new MDB2;
+        $tdb = new \phpws\FakeMDB2;
         $mdb2_connection = $tdb->connect($dsn);
 
         if (PHPWS_Error::isError($mdb2_connection)) {
@@ -714,9 +713,9 @@ class Setup
         $test['session_auto_start']['name'] = dgettext('core', 'Session auto start disabled');
         $test['session_auto_start']['crit'] = true;
 
-        $test['pear_files']['pass'] = is_file('lib/pear/MDB2.php');
-        $test['pear_files']['fail'] = sprintf(dgettext('core', 'Could not find Pear library files. You will need to %sdownload the pear package from our site%s and unzip it in your installation directory.'), '<a href="http://phpwebsite.appstate.edu/downloads/pear.zip">', '</a>');
-        $test['pear_files']['name'] = dgettext('core', 'Pear library installed');
+        $test['pear_files']['pass'] = is_file('vendor/autoload.php');
+        $test['pear_files']['fail'] = 'Install composer and run it in the root of your installation directory.';
+        $test['pear_files']['name'] = dgettext('core', 'Composer installed');
         $test['pear_files']['crit'] = true;
 
         $test['gd']['pass'] = extension_loaded('gd');
