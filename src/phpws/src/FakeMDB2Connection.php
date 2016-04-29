@@ -159,6 +159,20 @@ class FakeMDB2Connection
     {
         $sm = $this->connection->getSchemaManager();
         $table = $sm->listTableDetails($tableName);
+
+        $indexes = $table->getIndexes();
+        if (empty($indexes)) {
+            $indexColumns = array();
+        } else {
+            foreach ($indexes as $idx_name => $idx) {
+                $cols = $idx->getColumns();
+                foreach ($cols as $c) {
+                    $indexColumns[] = $c;
+                }
+            }
+        }
+
+
         $primaryKey = $table->getPrimaryKey();
         if (isset($primaryKey)) {
             $pkColumns = $primaryKey->getColumns();
@@ -177,6 +191,11 @@ class FakeMDB2Connection
             if (in_array($key, $pkColumns)) {
                 $row['flags'] .= 'primary_key';
             }
+
+            if (in_array($key, $indexColumns)) {
+                $row['flags'] .= ' multiple_key';
+            }
+
             if ($col->getNotnull()) {
                 $row['flags'] .= ' not_null';
             }
