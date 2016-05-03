@@ -41,8 +41,11 @@ class FakeMDB2Connection
         $this->connection = \Doctrine\DBAL\DriverManager::getConnection($params, $config);
     }
 
-    private function parseDSN($dsn)
+    public function parseDSN($dsn)
     {
+        if (empty($dsn)) {
+            throw new \Exception('Empty DSN received');
+        }
         $first_colon = strpos($dsn, ':');
         $second_colon = strpos($dsn, ':', $first_colon + 1);
         $third_colon = strpos($dsn, ':', $second_colon + 1);
@@ -64,8 +67,11 @@ class FakeMDB2Connection
             $dbhost = 'localhost';
         }
 
-        $dbname = substr($dsn, $third_slash + 1);
-
+        if ($third_slash) {
+            $dbname = substr($dsn, $third_slash + 1);
+        } else {
+            $dbname = null;
+        }
         if ($third_colon) {
             $dbport = substr($dsn, $third_colon + 1, $third_slash - $third_colon - 1);
         } else {
@@ -272,13 +278,40 @@ class FakeMDB2Connection
         }
     }
 
+    private function checkSequenceTable($sequence_name)
+    {
+        if ($this->tableExists($sequence_name)) {
+            return;
+        }
+
+        $driver_name = $this->connection->getDriver()->getName();
+        if (in_array($driver_name, array('pdo_mysql', 'mysqli'))) {
+            $query = "CREATE TABLE $sequence_name (id int not null auto_increment, primary key (id))";
+        } else {
+            $query = "CREATE SEQUENCE $sequence_name INCREMENT 1 START 1";
+        }
+
+        $this->connection->executeQuery($query);
+    }
+
+    public function tableExists($sequence_table)
+    {
+        return $this->connection->getSchemaManager()->tablesExist(array($sequence_table));
+    }
+
     public function nextID($table_name)
     {
         $sequence_table = $table_name . '_seq';
+        $this->checkSequenceTable($sequence_table);
         $this->connection->executeQuery("insert into $sequence_table (id) values (null)");
         $value = $this->connection->lastInsertId();
         $this->connection->executeQuery("delete from $sequence_table where id < $value");
         return $value;
+    }
+
+    public function isConnected()
+    {
+        return $this->connection->isConnected();
     }
 
 }
