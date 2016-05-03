@@ -270,107 +270,134 @@ class Setup
 
     public function createDatabase()
     {
-        $dsn = $this->getDSN(1);
-        $dbobj = new \phpws\FakeMDB2;
-        $db = $dbobj->connect($dsn);
-
-        if (PHPWS_Error::isError($db)) {
-            PHPWS_Error::log($db);
+        $dsn = $this->getPDODSN(false);
+        $dbuser = $this->getConfigSet('dbuser');
+        $dbpass = $this->getConfigSet('dbpass');
+        try {
+            $db = new \PDO($this->getPDODSN(false), $dbuser, $dbpass);
+        } catch (\Exception $e) {
+            PHPWS_Error::log($e->getMessage());
             $this->messages[] = dgettext('core', 'Unable to connect.');
             $this->messages[] = dgettext('core', 'Check your configuration settings.');
             return false;
         }
 
-        $result = $db->query('CREATE DATABASE ' . $this->getConfigSet('dbname'));
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($db);
+        $sql = 'CREATE DATABASE ' . $this->getConfigSet('dbname');
+        try {
+            $result = $db->exec($sql);
+        } catch (\Exception $e) {
+            PHPWS_Error::log($e->getMessage());
             $this->messages[] = dgettext('core', 'Unable to create the database.');
             $this->messages[] = dgettext('core', 'You will need to create it manually and rerun the setup.');
             return false;
         }
 
-        $dsn = $this->getDSN(2);
-        $this->setConfigSet('dsn', $dsn);
+
+        $this->setConfigSet('dsn', $this->getDoctrineDSN());
         $_SESSION['configSettings']['database'] = true;
 
         return true;
     }
 
-    public function getDSN($mode)
+    public function getDoctrineDSN($includeDB = true)
     {
         $dbtype = $this->getConfigSet('dbtype');
         $dbuser = $this->getConfigSet('dbuser');
         $dbpass = $this->getConfigSet('dbpass');
         $dbhost = $this->getConfigSet('dbhost');
         $dbport = $this->getConfigSet('dbport');
-        $dbname = $this->getConfigSet('dbname');
+        if ($includeDB) {
+            $dbname = $this->getConfigSet('dbname');
+            if (empty($dbhost)) {
+                $dbhost = 'localhost';
+            }
+        } else {
+            $dbname = $dbhost = null;
+        }
 
-        $dsn = $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost;
-
+        $dsn = $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost . '/' . $dbname;
         if (!empty($dbport)) {
             $dsn .= ':' . $dbport;
         }
-
-        switch ($mode) {
-            case 1:
-                if ($dbtype == 'pgsql') {
-                    return $dsn . '/' . $dbname;
-                } else {
-                    return $dsn;
-                }
-                break;
-
-            case 2:
-                $dsn .= '/' . $dbname;
-                return $dsn;
-                break;
-        }
+        return $dsn;
     }
 
+    public function getPDODSN($includeDB = true)
+    {
+        $dbtype = $this->getConfigSet('dbtype');
+        $dbhost = $this->getConfigSet('dbhost');
+        $dbport = $this->getConfigSet('dbport');
+        if ($includeDB) {
+            $dbname = 'dbname=' . $this->getConfigSet('dbname') . ';';
+        } else {
+            $dbname = null;
+        }
+        if (empty($dbhost)) {
+            $dbhost = 'host=localhost;';
+        } else {
+            $dbhost = 'host=' . $dbhost . ';';
+        }
+
+        if ($dbtype == 'mysqli') {
+            $dbtype = 'mysql';
+        }
+
+        $dsn = $dbtype . ':' . $dbname . $dbhost;
+        return $dsn;
+    }
+
+    /**
+     * Performs database check and returns integer based on result
+     *
+     * -1 : Config file exists, database does not
+     *  0 : Config file exists but could not connect to the database
+     *  1 : all is well, continue with install
+     *  2 : Config file and database already present. Stop install.
+     *
+     * @param type $dsn
+     * @return int
+     * @throws \Exception
+     */
     public function testDBConnect($dsn = null)
     {
+        // if no dsn, we assume input is coming from the form
+        // We do not use getDSN because we have to use the PDO connect
+        // which has a different format from Doctrine's DSN because
+        // of course it does.
         if (empty($dsn)) {
-            $dsn = $this->getDSN(1);
-            $pear_db = new \phpws\FakeMDB2;
+            $dbuser = $this->getConfigSet('dbuser');
+            $dbpass = $this->getConfigSet('dbpass');
             try {
-                $connection = $pear_db->connect($dsn);
+                $connection = new \PDO($this->getPDODSN(false), $dbuser, $dbpass);
             } catch (\Exception $e) {
-                if (preg_match('/28000\/1045/', $e->getMessage())) {
+                if (preg_match('/\[28000\] \[1045\]/', $e->getMessage())) {
                     return 0;
                 } else {
                     throw $e;
                 }
             }
-
-            if (PHPWS_Error::isError($connection)) {
-                PHPWS_Error::log($connection);
-                return 0;
-            }
-            $connection->disconnect();
-            $dsn = $this->getDSN(2);
         }
-
+        $dsn = $this->getDoctrineDSN();
         $tdb = new \phpws\FakeMDB2;
         $mdb2_connection = $tdb->connect($dsn);
-
-        if (PHPWS_Error::isError($mdb2_connection)) {
-            // mysql delivers the first error, postgres the second
-            if ($mdb2_connection->getCode() == MDB2_ERROR_NOSUCHDB ||
-                    $mdb2_connection->getCode() == MDB2_ERROR_CONNECT_FAILED) {
-                return -1;
+        if ($mdb2_connection->isConnected()) {
+            $tables = $mdb2_connection->listTables();
+            if (count($tables)) {
+                return 2;
             } else {
-                PHPWS_Error::log($connection);
-                return 0;
+                $this->setConfigSet('dsn', $dsn);
+                return 1;
             }
+        } else {
+            return -1;
         }
-        $mdb2_connection->loadModule('Manager', null, true);
-        $tables = $mdb2_connection->listTables();
-        if (count($tables)) {
-            return 2;
-        }
+    }
 
-        $this->setConfigSet('dsn', $dsn);
-        return 1;
+    public function getMDB2Connection()
+    {
+        $dsn = $this->getDoctrineDSN();
+        $db = new \phpws\FakeMDB2;
+        $mdb2_connection = $db->connect($dsn);
     }
 
     public function setConfigSet($setting, $value)

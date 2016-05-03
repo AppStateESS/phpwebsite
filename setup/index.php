@@ -91,27 +91,3 @@ function fakeCore()
     require_once './core/class/Error.php';
     require_once './core/class/File.php';
 }
-
-/**
- * Checks to see if the server check was passed
- * @return unknown_type
- */
-function serverPass($content)
-{
-    exit('serverpass');
-    if (!isset($_COOKIE['check_server']) || !$_COOKIE['check_server']) {
-        if (checkServer($content)) {
-            $content[] = dgettext('core',
-                    'Server passed enough tests to allow installation.');
-            $content[] = sprintf('<p><a href="index.php">%s</a></p>',
-                    dgettext('core', 'Continue...'));
-            setcookie('check_server', 1, 0);
-        } else {
-            $content[] = dgettext('core',
-                    'Server failed crucial tests. You may not install phpWebSite.');
-            setcookie('check_server', 0, 0);
-        }
-
-        display(dgettext('core', 'Checking server'), implode('<br />', $content));
-    }
-}
