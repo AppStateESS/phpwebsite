@@ -151,8 +151,8 @@ class PHPWS_DB
 
         $dbname = \phpws\PHPWS_DB::getDbName($dsn);
 
-        $pear_db = new FakeMDB2;
-        $connect = $pear_db->connect($dsn, array('persistent' => false));
+        $fake_pear = new FakeMDB2;
+        $connect = $fake_pear->connect($dsn);
 
         if (\phpws\PHPWS_Error::isError($connect)) {
             if (CLEAR_DSN) {
