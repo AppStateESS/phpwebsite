@@ -46,8 +46,9 @@ loadTimeZone();
 
 $request = \Server::getCurrentRequest();
 $controller = new PhpwebsiteController();
+xdebug_start_trace();
 $controller->execute($request);
-
+xdebug_stop_trace();
 
 /**
  * "BG Mode" - Used to echo raw output from the session,
