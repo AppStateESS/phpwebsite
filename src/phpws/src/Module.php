@@ -1,31 +1,35 @@
 <?php
+
 namespace phpws;
+
 /**
  * Class contains module information
  *
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PHPWS_Module {
-    public $title         = null;
-    public $proper_name   = null;
-    public $priority      = 50;
-    public $directory     = null;
-    public $version       = null;
-    public $active        = true;
-    public $image_dir     = false;
-    public $file_dir      = false;
-    public $register      = false;
-    public $unregister    = false;
-    public $import_sql    = false;
-    public $version_http  = null;
-    public $about         = false;
-    public $fullMod       = true;
-    private $_dependency   = false;
-    private $_dep_list     = null;
-    public $_error        = null;
+class PHPWS_Module
+{
 
-    public function __construct($title=null, $file=true)
+    public $title = null;
+    public $proper_name = null;
+    public $priority = 50;
+    public $directory = null;
+    public $version = null;
+    public $active = true;
+    public $image_dir = false;
+    public $file_dir = false;
+    public $register = false;
+    public $unregister = false;
+    public $import_sql = false;
+    public $version_http = null;
+    public $about = false;
+    public $fullMod = true;
+    private $_dependency = false;
+    private $_dep_list = null;
+    public $_error = null;
+
+    public function __construct($title = null, $file = true)
     {
         if (isset($title)) {
             $this->setTitle($title);
@@ -96,13 +100,13 @@ class PHPWS_Module {
         }
 
         if (isset($dependency)) {
-            $this->_dependency = (bool)$dependency;
+            $this->_dependency = (bool) $dependency;
         }
 
         return true;
     }
 
-    public function init($file=true)
+    public function init($file = true)
     {
         $title = &$this->title;
 
@@ -123,7 +127,7 @@ class PHPWS_Module {
                 $version = $db->select('one');
             }
 
-            $this->_dependency = (bool)$dependency;
+            $this->_dependency = (bool) $dependency;
             $this->setVersion($version);
             $this->setRegister(false);
             $this->setImportSQL(true);
@@ -140,12 +144,11 @@ class PHPWS_Module {
 
             if (\phpws\PHPWS_Error::isError($result)) {
                 $this->_error = $result;
-            } elseif(empty($result)) {
+            } elseif (empty($result)) {
                 $this->_error = \phpws\PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
             }
         }
     }
-
 
     public function setTitle($title)
     {
@@ -157,19 +160,18 @@ class PHPWS_Module {
         $this->proper_name = $name;
     }
 
-    public function getProperName($useTitle=false)
+    public function getProperName($useTitle = false)
     {
         if (!isset($this->proper_name) && $useTitle == true) {
             return ucwords(str_replace('_', ' ', $this->title));
-        }
-        else {
+        } else {
             return $this->proper_name;
         }
     }
 
     public function setPriority($priority)
     {
-        $this->priority = (int)$priority;
+        $this->priority = (int) $priority;
     }
 
     public function getPriority()
@@ -199,7 +201,7 @@ class PHPWS_Module {
 
     public function setRegister($register)
     {
-        $this->register = (bool)$register;
+        $this->register = (bool) $register;
     }
 
     public function isRegister()
@@ -209,7 +211,7 @@ class PHPWS_Module {
 
     public function setUnregister($unregister)
     {
-        $this->unregister = (bool)$unregister;
+        $this->unregister = (bool) $unregister;
     }
 
     public function isUnregister()
@@ -219,7 +221,7 @@ class PHPWS_Module {
 
     public function setImportSQL($sql)
     {
-        $this->import_sql = (bool)$sql;
+        $this->import_sql = (bool) $sql;
     }
 
     public function isImportSQL()
@@ -229,7 +231,7 @@ class PHPWS_Module {
 
     public function setImageDir($switch)
     {
-        $this->image_dir = (bool)$switch;
+        $this->image_dir = (bool) $switch;
     }
 
     public function isImageDir()
@@ -239,7 +241,7 @@ class PHPWS_Module {
 
     public function setFileDir($switch)
     {
-        $this->file_dir = (bool)$switch;
+        $this->file_dir = (bool) $switch;
     }
 
     public function isFileDir()
@@ -249,7 +251,7 @@ class PHPWS_Module {
 
     public function setActive($active)
     {
-        $this->active = (bool)$active;
+        $this->active = (bool) $active;
     }
 
     public function isActive()
@@ -259,7 +261,7 @@ class PHPWS_Module {
 
     public function setAbout($about)
     {
-        $this->about = (bool)$about;
+        $this->about = (bool) $about;
     }
 
     public function isAbout()
@@ -337,7 +339,7 @@ class PHPWS_Module {
         static $depend_list = array();
 
         if (!empty($depend_list) &&
-        isset($depend_list[$this->title])) {
+                isset($depend_list[$this->title])) {
             return $depend_list[$this->title];
         }
 
@@ -351,10 +353,9 @@ class PHPWS_Module {
         } else {
             return $depend_list[$this->title] = $result;
         }
-
     }
 
-    public function isInstalled($title=null)
+    public function isInstalled($title = null)
     {
         static $module_list = array();
 
@@ -443,7 +444,6 @@ class PHPWS_Module {
         return true;
     }
 
-
     public function getDependencies()
     {
         $file = $this->getDirectory() . 'boost/dependency.xml';
@@ -460,4 +460,5 @@ class PHPWS_Module {
 
         return $module_list;
     }
+
 }
