@@ -90,7 +90,7 @@ class PHPWS_DB
 
     public static function touchDB()
     {
-        if (!\phpws\PHPWS_DB::isConnected()) {
+        if (!self::isConnected()) {
             return \phpws\PHPWS_DB::loadDB();
         }
     }
@@ -1440,7 +1440,6 @@ class PHPWS_DB
         if ($this->return_query) {
             return trim($sql);
         }
-
         switch ($type) {
             case 'assoc':
                 /*
