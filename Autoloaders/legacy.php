@@ -25,11 +25,8 @@
 function LegacyLoader($class_name)
 {
     // stores previously found requires
-    static $files_found = array();
-
-    if (isset($files_found[$class_name])) {
-        // If class was found, we require and move on
-        require_once $files_found[$class_name];
+    static $not_found = array();
+    if (in_array($class_name, $not_found)) {
         return;
     }
     $class_name = preg_replace('@^/|/$@', '', str_replace('\\', '/', $class_name));
@@ -37,15 +34,12 @@ function LegacyLoader($class_name)
     $global_file = PHPWS_SOURCE_DIR . 'Global/' . $class_name . '.php';
     $class_file = PHPWS_SOURCE_DIR . 'core/class/' . $class_name . '.php';
     if (is_file($new_mod_file)) {
-        $files_found[$class_name] = $new_mod_file;
         require_once $new_mod_file;
         return true;
     } elseif (is_file($global_file)) {
-        $files_found[$class_name] = $global_file;
         require_once $global_file;
         return true;
     } elseif (is_file($class_file)) {
-        $files_found[$class_name] = $class_file;
         require_once $class_file;
         return true;
     } elseif (isset($_REQUEST['module'])) {
@@ -58,10 +52,10 @@ function LegacyLoader($class_name)
         $class_file = PHPWS_SOURCE_DIR . "mod/$module/class/$class_name.php";
 
         if (is_file($class_file)) {
-            $files_found[$class_name] = $class_file;
             require_once $class_file;
             return true;
         } else {
+            $not_found[] = $class_name;
             return false;
         }
     }

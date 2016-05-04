@@ -22,12 +22,20 @@
 /**
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
-spl_autoload_register(function($class_name) {
+spl_autoload_register('phpws2Autoloader');
+
+function phpws2Autoloader($class_name)
+{
+    static $not_found = array();
+    if (in_array($class_name, $not_found)) {
+        return;
+    }
     $file_path = PHPWS_SOURCE_DIR . 'src/phpws2/src/' . str_replace('\\', '/', str_replace('phpws2\\', '', $class_name)) . '.php';
     if (is_file($file_path)) {
         require_once $file_path;
         return true;
     } else {
+        $not_found[] = $class_name;
         return false;
     }
-});
+}

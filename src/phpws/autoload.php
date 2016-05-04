@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,10 +22,21 @@
 /**
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
+spl_autoload_register('phpwsAutoload');
 
-spl_autoload_register(function($class_name){
+function phpwsAutoload($class_name)
+{
+    static $not_found = array();
+    if (in_array($class_name, $not_found)) {
+        return;
+    }
+
     $file_path = PHPWS_SOURCE_DIR . 'src/phpws/src/' . str_replace('\\', '/', str_replace('phpws\\', '', $class_name)) . '.php';
     if (is_readable($file_path)) {
         require_once $file_path;
+        return true;
+    } else {
+        return false;
+        $not_found[] = $class_name;
     }
-});
+}
