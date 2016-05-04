@@ -114,8 +114,9 @@ class FakeMDB2Connection
         $stmt->execute();
         $result = $stmt->fetchColumn();
         if ($result === false) {
-            return null;
+            $result = null;
         }
+        return $result;
     }
 
     public function queryAll($sql)
