@@ -117,20 +117,15 @@ class FakeMDB2Connection
 
     public function queryAll($sql)
     {
-
         $this->last_query = $sql;
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        return $this->connection->fetchAll($sql);
     }
 
     public function queryCol($sql)
     {
         $this->last_query = $sql;
         $result = null;
-
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt = $this->connection->executeQuery($sql);
         while ($row = $stmt->fetchColumn()) {
             $result[] = $row;
         }
@@ -140,8 +135,7 @@ class FakeMDB2Connection
     public function queryRow($sql)
     {
         $this->last_query = $sql;
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt = $this->connection->executeQuery($sql);
         return $stmt->fetch();
     }
 
