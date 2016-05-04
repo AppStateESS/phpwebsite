@@ -112,7 +112,10 @@ class FakeMDB2Connection
         $this->last_query = $sql;
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchColumn();
+        $result = $stmt->fetchColumn();
+        if ($result === false) {
+            return null;
+        }
     }
 
     public function queryAll($sql)
