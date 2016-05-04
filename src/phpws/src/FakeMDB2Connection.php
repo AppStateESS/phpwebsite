@@ -46,6 +46,7 @@ class FakeMDB2Connection
         if (empty($dsn)) {
             throw new \Exception('Empty DSN received');
         }
+
         $first_colon = strpos($dsn, ':');
         $second_colon = strpos($dsn, ':', $first_colon + 1);
         $third_colon = strpos($dsn, ':', $second_colon + 1);
@@ -109,20 +110,28 @@ class FakeMDB2Connection
     public function queryOne($sql)
     {
         $this->last_query = $sql;
-        return $this->connection->fetchColumn($sql);
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 
     public function queryAll($sql)
     {
+
         $this->last_query = $sql;
-        return $this->connection->fetchAll($sql);
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     public function queryCol($sql)
     {
         $this->last_query = $sql;
         $result = null;
-        while ($row = $this->connection->fetchColumn($sql)) {
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        while ($row = $stmt->fetchColumn()) {
             $result[] = $row;
         }
         return $result;
@@ -131,7 +140,9 @@ class FakeMDB2Connection
     public function queryRow($sql)
     {
         $this->last_query = $sql;
-        return $this->connection->fetchAssoc($sql);
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     public function disconnect()
