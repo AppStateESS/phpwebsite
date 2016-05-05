@@ -12,7 +12,8 @@ if (!defined('MAX_BLOG_CACHE_PAGES')) {
     define('MAX_BLOG_CACHE_PAGES', 3);
 }
 
-class Blog_Admin {
+class Blog_Admin
+{
 
     public static function main()
     {
@@ -257,7 +258,6 @@ class Blog_Admin {
         PHPWS_Settings::save('blog');
     }
 
-
     public static function setForward($message, $command)
     {
         $_SESSION['Blog_Forward'] = $message;
@@ -301,16 +301,13 @@ class Blog_Admin {
     public static function entry_list()
     {
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
-        $db = new PHPWS_DB('blog_stickies');
-        $db->addColumn('blog_id');
-        $GLOBALS['blog_stickies'] = $db->select('col');
-
         $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
         $pageTags['ACTION'] = dgettext('blog', 'Action');
-        $pageTags['ADD'] = PHPWS_Text::secureLink(t('Create new blog entry'),
-                        'blog', array('action' => 'admin', 'command' => 'new'),
-                        null, t('Create new blog entry'),
-                        'btn btn-success pull-right');
+        $pageTags['ADD'] = PHPWS_Text::secureLink(
+                        t('Create new blog entry'), 'blog',
+                        array('action' => 'admin', 'command' => 'new'), null,
+                        t('Create new blog entry'), 'btn btn-success pull-right'
+        );
         $pageTags['ADD_URI'] = PHPWS_Text::linkAddress('blog',
                         array('action' => 'admin', 'command' => 'new'), true);
         $pageTags['ADD_TEXT'] = t('Create new blog entry');
@@ -333,7 +330,6 @@ class Blog_Admin {
         $content = $pager->get();
         return $content;
     }
-
 
     public static function sticky($blog)
     {
@@ -420,7 +416,7 @@ class Blog_Admin {
         }
 
         $db = new PHPWS_DB('blog_entries');
-        $db->addWhere('create_date', (int)$date, '<');
+        $db->addWhere('create_date', (int) $date, '<');
         $entries = $db->getObjects('Blog');
 
         if (empty($entries) || PHPWS_Error::logIfError($entries)) {
@@ -433,4 +429,3 @@ class Blog_Admin {
     }
 
 }
-
