@@ -162,10 +162,14 @@ class FakeMDB2Connection
 
     public function listTableFields($table)
     {
-        $tableColumns = null;
-        $sm = $this->connection->getSchemaManager();
-        $columns = $sm->listTableColumns($table);
-        return array_keys($columns);
+        static $table_fields = array();
+        if (!isset($table_fields[$this->connection->getDatabase()][$table])) {
+            $tableColumns = null;
+            $sm = $this->connection->getSchemaManager();
+            $columns = $sm->listTableColumns($table);
+            $table_fields[$this->connection->getDatabase()][$table] = array_keys($columns);
+        }
+        return $table_fields[$this->connection->getDatabase()][$table];
     }
 
     public function loadModule($var1, $var2 = null, $var3 = null)
@@ -175,13 +179,17 @@ class FakeMDB2Connection
 
     public function listTables()
     {
-        $allTables = null;
-        $sm = $this->connection->getSchemaManager();
-        $tables = $sm->listTables();
-        foreach ($tables as $tbl) {
-            $allTables[] = $tbl->getName();
+        static $table_list = array();
+        if (!isset($table_list[$this->connection->getDatabase()])) {
+            $allTables = null;
+            $sm = $this->connection->getSchemaManager();
+            $tables = $sm->listTables();
+            foreach ($tables as $tbl) {
+                $allTables[] = $tbl->getName();
+            }
+            $table_list[$this->connection->getDatabase()] = $allTables;
         }
-        return $allTables;
+        return $table_list[$this->connection->getDatabase()];
     }
 
     public function tableInfo($tableName)
