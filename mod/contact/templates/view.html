@@ -15,18 +15,22 @@
         <?php if (!empty($city) && !empty($state) && !empty($zip)){echo "$city, $state $zip<br />";}?>
     </p>
 
-    <p><strong>Phone:</strong> <a href="tel:+1<?php echo $phone_number?>"><?php echo $formatted_phone_number?></a>
+    <?php if (!empty($phone_number) || !empty($formatted_fax_number)): ?>
+    <p>
+        <?php if (!empty($phone_number)): ?>
+        <strong>Phone:</strong> <a href="tel:+1<?php echo $phone_number?>"><?php echo $formatted_phone_number?></a>
+        <?php endif; ?>
         <?php if (!empty($formatted_fax_number)): ?>
         <br />
         <strong>Fax:</strong> <?php echo $formatted_fax_number?>
         <?php endif; ?>
     </p>
     <?php if (!empty($email)): ?>
-    <?php echo $other_information ?>
     <p>
         <strong>Email:</strong> <a href="mailto:<?php echo $email?>"><?php echo $email?></a>
     </p>
-    <?php endif; ?>
+    <?php endif; endif;?>
+    <?php echo $other_information ?>
 </div>
 <div class="contact-map">
     <a href='<?php echo $full_map_link?>' target='_blank'><img src='<?php echo $thumbnail_map?>' class='img-responsive' /></a>
