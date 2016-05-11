@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+
+.arrow-left {
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #EF313E;
+    position: absolute;
+    left: 0px;
+    top: -10px;
+    height: 0px;
+}
+
+.error-message {
+    background-color: #EF313E;
+    min-width: 100px;
+    position: absolute;
+    padding: 5px;
+    left: 10px;
+    top: -15px;
+    height: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: arial;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+.error {
+    display: inline;
+    position: relative;
+    top: 8px;
+    z-index: 999;
+}
+
+form#search_list, #search_list div {
+    display : inline;
+    margin-left : 100px;
+}
