@@ -38,7 +38,8 @@ class FakeMDB2Connection
     {
         $config = new \Doctrine\DBAL\Configuration;
         $params = $this->parseDSN($dsn);
-        $this->connection = \Doctrine\DBAL\DriverManager::getConnection($params, $config);
+        $this->connection = \Doctrine\DBAL\DriverManager::getConnection($params,
+                        $config);
     }
 
     public function parseDSN($dsn)
@@ -47,6 +48,7 @@ class FakeMDB2Connection
             throw new \Exception('Empty DSN received');
         }
 
+        $dsn_length = strlen($dsn);
         $first_colon = strpos($dsn, ':');
         $second_colon = strpos($dsn, ':', $first_colon + 1);
         $third_colon = strpos($dsn, ':', $second_colon + 1);
@@ -56,12 +58,19 @@ class FakeMDB2Connection
         $third_slash = strpos($dsn, '/', $second_slash + 1);
 
         $dbtype = substr($dsn, 0, $first_colon);
-        $dbuser = substr($dsn, $second_slash + 1, $second_colon - $second_slash - 1);
+        $dbuser = substr($dsn, $second_slash + 1,
+                $second_colon - $second_slash - 1);
         $dbpass = substr($dsn, $second_colon + 1, $at_sign - $second_colon - 1);
-        if ($third_colon) {
-            $dbhost = substr($dsn, $at_sign + 1, $third_colon - $at_sign - 1);
-        } else {
-            $dbhost = substr($dsn, $at_sign + 1, $third_slash - $at_sign - 1);
+
+
+        if ($at_sign) {
+            if ($third_slash == 0) {
+                $length = $dsn_length;
+            } else {
+                $length = $third_slash - $at_sign - 1;
+            }
+
+            $dbhost = substr($dsn, $at_sign + 1, $length);
         }
 
         if (empty($dbhost)) {
@@ -69,22 +78,28 @@ class FakeMDB2Connection
         }
 
         if ($third_slash) {
-            $dbname = substr($dsn, $third_slash + 1);
+            if ($third_colon == 0) {
+                $length = $dsn_length;
+            } else {
+                $length = $third_colon - $third_slash - 1;
+            }
+            $dbname = substr($dsn, $third_slash + 1, $length);
         } else {
             $dbname = null;
         }
+
         if ($third_colon) {
-            $dbport = substr($dsn, $third_colon + 1, $third_slash - $third_colon - 1);
+            $dbport = substr($dsn, $third_colon + 1);
         } else {
             $dbport = null;
         }
 
         $this->phptype = $this->dbsyntax = $dbtype;
-
         if ($dbtype == 'mysqli' || $dbtype == 'mysql') {
             $dbtype = 'pdo_mysql';
+        } elseif ($dbtype == 'pgsql') {
+            $dbtype = 'pdo_pgsql';
         }
-
         return array('driver' => $dbtype, 'user' => $dbuser, 'password' => $dbpass, 'host' => $dbhost,
             'port' => $dbport, 'dbname' => $dbname);
     }
@@ -301,8 +316,7 @@ class FakeMDB2Connection
             return;
         }
 
-        $driver_name = $this->connection->getDriver()->getName();
-        if (in_array($driver_name, array('pdo_mysql', 'mysqli'))) {
+        if ($this->isMysql()) {
             $query = "CREATE TABLE $sequence_name (id int not null auto_increment, primary key (id))";
         } else {
             $query = "CREATE SEQUENCE $sequence_name INCREMENT 1 START 1";
@@ -313,16 +327,37 @@ class FakeMDB2Connection
 
     public function tableExists($sequence_table)
     {
-        return $this->connection->getSchemaManager()->tablesExist(array($sequence_table));
+        if ($this->isMysql()) {
+            return $this->connection->getSchemaManager()->tablesExist(array($sequence_table));
+        } else {
+            $seqtb = $this->connection->getSchemaManager()->listSequences();
+            foreach ($seqtb as $seq) {
+                if ($seq->getName() === $sequence_table) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public function isMysql()
+    {
+        return in_array($this->connection->getDriver()->getName(),
+                array('pdo_mysql', 'mysqli'));
     }
 
     public function nextID($table_name)
     {
         $sequence_table = $table_name . '_seq';
         $this->checkSequenceTable($sequence_table);
-        $this->connection->executeQuery("insert into $sequence_table (id) values (null)");
-        $value = $this->connection->lastInsertId();
-        $this->connection->executeQuery("delete from $sequence_table where id < $value");
+
+        if ($this->isMysql()) {
+            $this->connection->executeQuery("insert into $sequence_table (id) values (null)");
+            $value = $this->connection->lastInsertId();
+            $this->connection->executeQuery("delete from $sequence_table where id < $value");
+        } else {
+            $value = $this->queryOne("select nextval('$sequence_table')");
+        }
         return $value;
     }
 
