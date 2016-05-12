@@ -1,4 +1,5 @@
 <?php
+
 namespace phpws\DB;
 
 /**
@@ -7,14 +8,8 @@ namespace phpws\DB;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-class pgsql_PHPWS_SQL {
-
-    public $portability = null;
-
-    public function __construct()
-    {
-        $this->portability = MDB2_PORTABILITY_RTRIM;
-    }
+class pgsql_PHPWS_SQL
+{
 
     public function export(&$info)
     {
@@ -24,7 +19,8 @@ class pgsql_PHPWS_SQL {
             case 'int4':
             case 'int':
                 $setting = 'INT';
-                $info['flags'] = preg_replace('/unique primary/', 'PRIMARY KEY', $info['flags']);
+                $info['flags'] = preg_replace('/unique primary/', 'PRIMARY KEY',
+                        $info['flags']);
                 break;
 
             case 'int2':
@@ -77,7 +73,8 @@ class pgsql_PHPWS_SQL {
     public function renameColumn($table, $column_name, $new_name, $specs)
     {
         $table = \phpws\PHPWS_DB::addPrefix($table);
-        $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s', $table, $column_name, $new_name);
+        $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s', $table,
+                $column_name, $new_name);
         return $sql;
     }
 
@@ -97,7 +94,8 @@ class pgsql_PHPWS_SQL {
         $query = str_ireplace('datetime', 'timestamp without time zone', $query);
 
         $from = '/double\((\d+),(\d+)\)/Ui';
-        $query = preg_replace_callback($from, function($match) {
+        $query = preg_replace_callback($from,
+                function($match) {
             return 'numeric(' . $match[1] . ', ' . $match[2] . ')';
         }, $query);
 
@@ -178,9 +176,11 @@ class pgsql_PHPWS_SQL {
         for ($i = 0; $i < $length; $i++) {
             if ($pararray[$i] == 'default' && isset($pararray[$i + 1])) {
                 if ($number) {
-                    $default_value = preg_replace('/\'"`/', '', $pararray[$i + 1]);
+                    $default_value = preg_replace('/\'"`/', '',
+                            $pararray[$i + 1]);
                 } else {
-                    $default_value = preg_replace('/"`/', '\'', $pararray[$i + 1]);
+                    $default_value = preg_replace('/"`/', '\'',
+                            $pararray[$i + 1]);
                 }
                 $extra[1] = "ALTER TABLE $table ALTER $column SET DEFAULT $default_value;";
                 $extra[2] = "UPDATE $table set $column = $default_value;";
@@ -265,4 +265,3 @@ class pgsql_PHPWS_SQL {
     }
 
 }
-
