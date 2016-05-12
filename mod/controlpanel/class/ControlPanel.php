@@ -262,7 +262,7 @@ class PHPWS_ControlPanel
     {
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Link.php');
-
+        $module = trim($module);
         $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($cpFile)) {
