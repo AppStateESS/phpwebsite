@@ -166,7 +166,7 @@ class FakeMDB2Connection
     public function exec($sql)
     {
         $this->last_query = $sql;
-        return $this->connection->executeQuery($sql);
+        return $this->connection->executeUpdate($sql);
     }
 
     public function query($sql)
