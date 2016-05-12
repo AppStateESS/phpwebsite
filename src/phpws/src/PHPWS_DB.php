@@ -1502,7 +1502,7 @@ class PHPWS_DB
                     if (\phpws\PHPWS_Error::isError($result)) {
                         return $result;
                     }
-                    return $result[0];
+                    return array_pop($result);
                 } else {
                     $result = $GLOBALS['PHPWS_DB']['connection']->queryCol($sql);
                     if (\phpws\PHPWS_Error::isError($result)) {
