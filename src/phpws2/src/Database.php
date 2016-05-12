@@ -14,6 +14,7 @@ namespace phpws2;
  */
 class Database
 {
+
     /**
      * This is the DSN connection used by default for this site. Although the DSN
      * can be changed per construction of this class, this is the fallback DSN.
@@ -43,7 +44,6 @@ class Database
     {
         return self::newDB($dsn);
     }
-
 
     /**
      * Creates a new DB object based on the dsn parameter OR the default
@@ -97,10 +97,10 @@ class Database
      * @param string $port
      * @return \phpws2\Database\DSN
      */
-    public static function newDSN($database_type, $username, $password = null, $database_name = null, $host = null, $port
-    = null)
+    public static function newDSN($database_type, $username, $password = null, $database_name = null, $host = null, $port = null)
     {
-        $dsn = new \phpws2\Database\DSN($database_type, $username, $password, $database_name, $host, $port);
+        $dsn = new \phpws2\Database\DSN($database_type, $username, $password,
+                $database_name, $host, $port);
         return $dsn;
     }
 
@@ -115,14 +115,13 @@ class Database
         self::setDefaultDSN(self::createDSNFromFile($filename));
     }
 
-    /**
-     * Receives the legacy phpwebsite DSN string
-     * (e.g pgsql://dbuser:dbpassword@localhost:5432/dbname
-     * @param string $dsn
-     * @return array Associative array of dsn values.
-     */
     public static function parseDSN($dsn)
     {
+        if (empty($dsn)) {
+            throw new \Exception('Empty DSN received');
+        }
+
+        $dsn_length = strlen($dsn);
         $first_colon = strpos($dsn, ':');
         $second_colon = strpos($dsn, ':', $first_colon + 1);
         $third_colon = strpos($dsn, ':', $second_colon + 1);
@@ -132,26 +131,45 @@ class Database
         $third_slash = strpos($dsn, '/', $second_slash + 1);
 
         $dbtype = substr($dsn, 0, $first_colon);
-        $dbuser = substr($dsn, $second_slash + 1, $second_colon - $second_slash - 1);
+        $dbuser = substr($dsn, $second_slash + 1,
+                $second_colon - $second_slash - 1);
         $dbpass = substr($dsn, $second_colon + 1, $at_sign - $second_colon - 1);
-        if ($third_colon) {
-            $dbhost = substr($dsn, $at_sign + 1, $third_colon - $at_sign - 1);
-        } else {
-            $dbhost = substr($dsn, $at_sign + 1, $third_slash - $at_sign - 1);
+
+
+        if ($at_sign) {
+            if ($third_slash == 0) {
+                $length = $dsn_length;
+            } else {
+                $length = $third_slash - $at_sign - 1;
+            }
+
+            $dbhost = substr($dsn, $at_sign + 1, $length);
         }
 
-        $dbname = substr($dsn, $third_slash + 1);
+        if (empty($dbhost)) {
+            $dbhost = 'localhost';
+        }
+
+        if ($third_slash) {
+            if ($third_colon == 0) {
+                $length = $dsn_length;
+            } else {
+                $length = $third_colon - $third_slash - 1;
+            }
+            $dbname = substr($dsn, $third_slash + 1, $length);
+        } else {
+            $dbname = null;
+        }
 
         if ($third_colon) {
-            $dbport = substr($dsn, $third_colon + 1, $third_slash - $third_colon - 1);
+            $dbport = substr($dsn, $third_colon + 1);
         } else {
             $dbport = null;
         }
 
-        if ($dbtype == 'mysqli') {
-            $dbtype = 'mysql';
+        if ($dbtype == 'mysql') {
+            $dbtype = 'mysqli';
         }
-
         return array('dbtype' => $dbtype, 'dbuser' => $dbuser, 'dbpass' => $dbpass, 'dbhost' => $dbhost,
             'dbport' => $dbport, 'dbname' => $dbname);
     }
@@ -160,7 +178,8 @@ class Database
     {
         $dsn_array = self::parseDSN($dsn);
         extract($dsn_array);
-        self::setDefaultDSN(self::newDSN($dbtype, $dbuser, $dbpass, $dbname, $dbhost, $dbport));
+        self::setDefaultDSN(self::newDSN($dbtype, $dbuser, $dbpass, $dbname,
+                        $dbhost, $dbport));
         if ($table_prefix) {
             self::$default_dsn->setTablePrefix($table_prefix);
         }
@@ -197,7 +216,8 @@ class Database
         }
         include $filename;
 
-        return self::newDSN($database_type, $username, $password, $database_name, $host, $port);
+        return self::newDSN($database_type, $username, $password,
+                        $database_name, $host, $port);
     }
 
     /**
