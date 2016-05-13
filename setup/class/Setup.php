@@ -376,6 +376,7 @@ class Setup
         $dsn = $this->getDoctrineDSN();
         $tdb = new \phpws\FakeMDB2;
         $mdb2_connection = $tdb->connect($dsn);
+        $mdb2_connection->quote('');
         if ($mdb2_connection->isConnected()) {
             $tables = $mdb2_connection->listTables();
             if (count($tables)) {

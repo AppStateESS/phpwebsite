@@ -40,9 +40,6 @@ class FakeMDB2Connection
         $params = $this->parseDSN($dsn);
         $this->connection = \Doctrine\DBAL\DriverManager::getConnection($params,
                         $config);
-        // this is run because Doctrine is not considered connected until a
-        // query is run.
-        $this->connection->quote('');
     }
 
     public function parseDSN($dsn)
