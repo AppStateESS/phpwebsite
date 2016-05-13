@@ -338,10 +338,6 @@ class Setup
             $dbhost = 'host=' . $dbhost . ';';
         }
 
-        if ($dbtype == 'mysqli') {
-            $dbtype = 'mysql';
-        }
-
         $dsn = $dbtype . ':' . $dbname . $dbhost;
         return $dsn;
     }
@@ -419,7 +415,7 @@ class Setup
         $form = new PHPWS_Form();
         $form->addHidden('step', '2');
 
-        $databases = array('mysqli' => 'MySQL', 'pgsql' => 'PostgreSQL');
+        $databases = array('mysql' => 'MySQL', 'pgsql' => 'PostgreSQL');
 
         $formTpl['DBTYPE_DEF'] = dgettext('core', 'phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
 
