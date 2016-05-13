@@ -2033,16 +2033,7 @@ class PHPWS_DB
                 $sqlCommand = array();
 
                 \phpws\PHPWS_DB::homogenize($query);
-                $result = \phpws\PHPWS_DB::query($query);
-
-                if (\PEAR::isError($result)) {
-                    if ($report_errors) {
-                        return $result;
-                    } else {
-                        \phpws\PHPWS_Error::log($result);
-                        $error = true;
-                    }
-                }
+                $result = \phpws\PHPWS_DB::exec($query);
                 $first_import = true;
             }
         }
