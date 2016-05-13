@@ -166,10 +166,12 @@ class Database
         } else {
             $dbport = null;
         }
-
-        if ($dbtype == 'mysql') {
-            $dbtype = 'mysqli';
-        }
+        /*
+          if ($dbtype == 'mysql') {
+          $dbtype = 'mysqli';
+          }
+         *
+         */
         return array('dbtype' => $dbtype, 'dbuser' => $dbuser, 'dbpass' => $dbpass, 'dbhost' => $dbhost,
             'dbport' => $dbport, 'dbname' => $dbname);
     }
