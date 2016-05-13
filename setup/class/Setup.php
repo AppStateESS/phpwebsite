@@ -370,7 +370,7 @@ class Setup
             try {
                 $connection = new \PDO($this->getPDODSN(false), $dbuser, $dbpass);
             } catch (\Exception $e) {
-                if (preg_match('/\[28000\] \[1045\]/', $e->getMessage())) {
+                if (preg_match('/\[28000\] \[1045\]|08006/', $e->getMessage())) {
                     return 0;
                 } else {
                     throw $e;
