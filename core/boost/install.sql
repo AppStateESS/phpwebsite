@@ -1,9 +1,9 @@
 CREATE TABLE modules (
- title CHAR(40) NOT NULL,
- proper_name CHAR(40) NOT NULL,
+ title varchar(40) NOT NULL,
+ proper_name varchar(40) NOT NULL,
  priority SMALLINT NOT NULL,
  active SMALLINT NOT NULL,
- version CHAR(20) NOT NULL,
+ version varchar(20) NOT NULL,
  register SMALLINT NOT NULL,
  unregister SMALLINT NOT NULL,
  PRIMARY KEY (title)
@@ -16,8 +16,8 @@ CREATE TABLE settings (
 );
 
 CREATE TABLE registered (
- module CHAR(40) NOT NULL,
- registered_to CHAR(40) NOT NULL
+ module varchar(40) NOT NULL,
+ registered_to varchar(40) NOT NULL
 );
 
 
