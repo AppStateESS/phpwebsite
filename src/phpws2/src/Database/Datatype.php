@@ -69,6 +69,9 @@ abstract class Datatype extends \Data
     public static function factory(Table $table, $name, $type, $value = null)
     {
         $engine = $table->db->getDatabaseType();
+        if ($engine == 'mysqli') {
+            $engine = 'mysql';
+        }
         $alltypes = $table->getDatatypeList();
         $type = strtolower($type);
         if (empty($type)) {
@@ -107,9 +110,9 @@ abstract class Datatype extends \Data
             return 'not null';
         }
     }
-    
+
     /**
-     * 
+     *
      * @return boolean
      */
     public function getIsNull()
@@ -209,7 +212,7 @@ abstract class Datatype extends \Data
     {
         return $this->default;
     }
-    
+
     /**
      *
      * The default may be set to NULL (Text datatype does this) in case default
@@ -231,9 +234,9 @@ abstract class Datatype extends \Data
         }
         return $this;
     }
-    
+
     /**
-     * Removes a default status. 
+     * Removes a default status.
      */
     public function nullDefault()
     {
