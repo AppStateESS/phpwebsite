@@ -773,7 +773,7 @@ abstract class DB extends \Data
      */
     public function buildTable($table_name, $alias = null)
     {
-        $engine = $this->getDatabaseType(true);
+        $engine = $this->getDatabaseType();
         if ($engine == 'mysqli') {
             $engine = 'mysql';
         }
