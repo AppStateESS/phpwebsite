@@ -152,7 +152,11 @@ class DSN extends \Data {
      */
     public function getPDOString()
     {
-        $pdo_string[] = $this->database_type . ':';
+        $dbtype = $this->database_type->get();
+        if ($dbtype == 'mysqli') {
+            $dbtype = 'mysql';
+        }
+        $pdo_string[] = $dbtype . ':';
         if (!$this->host->isEmpty()) {
             $pdo_string[] = 'host=' . $this->host . ';';
         }

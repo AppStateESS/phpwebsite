@@ -72,7 +72,13 @@ class Database
             }
         }
 
-        $class_name = '\phpws2\Database\Engine\\' . $dsn->getDatabaseType() . '\DB';
+        $dbtype = $dsn->getDatabaseType()->get();
+
+        if ($dbtype == 'mysqli') {
+            $dbtype = 'mysql';
+        }
+
+        $class_name = '\phpws2\Database\Engine\\' . $dbtype . '\DB';
 
         $db = new $class_name($dsn);
         return $db;

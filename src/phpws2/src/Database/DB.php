@@ -773,7 +773,10 @@ abstract class DB extends \Data
      */
     public function buildTable($table_name, $alias = null)
     {
-        $engine = $this->getDatabaseType();
+        $engine = $this->getDatabaseType(true);
+        if ($engine == 'mysqli') {
+            $engine = 'mysql';
+        }
         $table_class = "\\phpws2\\Database\\Engine\\$engine\Table";
         $table = new $table_class($this, $table_name, $alias);
         return $table;
