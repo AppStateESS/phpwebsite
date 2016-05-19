@@ -24,9 +24,8 @@
  */
 function CanopyLoader($class_name)
 {
-    static $files_found = array();
-
-    if (isset($files_found[$class_name])) {
+    static $not_found = array();
+    if (in_array($class_name, $not_found)) {
         return;
     }
 
@@ -39,6 +38,7 @@ function CanopyLoader($class_name)
         require_once $base_dir;
         return true;
     } else {
+        $not_found[] = $class_name;
         return false;
     }
 }
