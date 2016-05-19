@@ -40,6 +40,7 @@ class FakeMDB2Connection
         $params = $this->parseDSN($dsn);
         $this->connection = \Doctrine\DBAL\DriverManager::getConnection($params,
                         $config);
+        $this->connection->connect();
     }
 
     public function parseDSN($dsn)
