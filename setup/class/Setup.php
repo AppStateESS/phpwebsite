@@ -146,9 +146,13 @@ class Setup
             return false;
         } else {
             $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '//%s');\n?>",
-                    str_replace('setup/', '',
-                            \phpws\PHPWS_Core::getHomeHttp(false)));
-            return file_put_contents($location . 'source.php', $source_http);
+                    str_replace('setup/', '', \phpws\PHPWS_Core::getHomeHttp(false)));
+            if (is_file($location . 'source.php')) {
+                $this->messages[] = 'source.php already exists! New copy saved as source.new.php';
+                return file_put_contents($location . 'source.new.php', $source_http);
+            } else {
+                return file_put_contents($location . 'source.php', $source_http);
+            }
         }
     }
 
@@ -252,8 +256,10 @@ class Setup
         try {
             $checkConnection = $this->testDBConnect();
         } catch (\Exception $e) {
-            if (preg_match('@42000@', $e->getMessage()) &&
-                    preg_match('@1049@', $e->getMessage())) {
+            // tests for missing database in mysql and postgresql
+            if ( (preg_match('@42000@', $e->getMessage()) &&
+                    preg_match('@1049@', $e->getMessage())) ||
+                    preg_match('@08006@', $e->getMessage())) {
                 $checkConnection = -1;
             } else {
                 throw $e;
@@ -410,7 +416,6 @@ class Setup
         $dsn = $this->getDoctrineDSN();
         $tdb = new \phpws\FakeMDB2;
         $mdb2_connection = $tdb->connect($dsn);
-        $mdb2_connection->quote('');
         if ($mdb2_connection->isConnected()) {
             $tables = $mdb2_connection->listTables();
             if (count($tables)) {
