@@ -356,7 +356,6 @@ class PHPWS_DB
     public static function listTables()
     {
         \phpws\PHPWS_DB::touchDB();
-        $GLOBALS['PHPWS_DB']['connection']->loadModule('Manager');
         return $GLOBALS['PHPWS_DB']['connection']->listTables();
     }
 
@@ -1527,9 +1526,6 @@ class PHPWS_DB
             default:
                 \phpws\PHPWS_DB::logDB($sql);
                 $result = $GLOBALS['PHPWS_DB']['connection']->queryAll($sql, null, $mode);
-                if (\phpws\PHPWS_Error::isError($result)) {
-                    return $result;
-                }
 
                 if (isset($indexby)) {
                     return \phpws\PHPWS_DB::_indexBy($result, $indexby);
