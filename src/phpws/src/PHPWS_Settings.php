@@ -208,9 +208,7 @@ class PHPWS_Settings
         $db->addWhere('module', $module);
         $result = $db->select();
 
-        if (\phpws\PHPWS_Error::isError($result)) {
-            return $result;
-        } elseif (empty($result)) {
+        if (empty($result)) {
             PHPWS_Settings::save($module);
         } else {
             foreach ($result as $key => $value) {
