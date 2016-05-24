@@ -657,7 +657,7 @@ class PHPWS_Item {
         }
     }
 
-    function get($name) {
+    function get($name = '') {
         $vars = get_object_vars($this);
         $pri = "_{$name}";
         $pub = "{$name}";
