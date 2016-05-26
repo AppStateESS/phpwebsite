@@ -18,8 +18,10 @@ if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'phatform') {
     \phpws\PHPWS_Core::initModClass('phatform', 'Textarea.php');
     \phpws\PHPWS_Core::initModClass('phatform', 'Textfield.php');
 
-    define('DEFAULT_REPLY_ADDRESS', "forms@{$_SERVER['SERVER_NAME']}");
-    
+    if (!defined('DEFAULT_REPLY_ADDRESS')) {
+        define('DEFAULT_REPLY_ADDRESS', "forms@{$_SERVER['SERVER_NAME']}");
+    }
+
     /**
      * error definitions
      */
