@@ -244,7 +244,7 @@ class Menu_Link {
             $redirect_url = preg_quote(PHPWS_Core::getCurrentUrl());
         }
 
-        if (preg_match('@$redirect_url$@', $this->url)) {
+        if (preg_match('#' . $redirect_url . '$#', $this->url)) {
             return true;
         } else {
             return false;
