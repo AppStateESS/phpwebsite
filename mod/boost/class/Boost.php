@@ -813,7 +813,7 @@ class PHPWS_Boost
         \phpws\PHPWS_Core::log($message, 'boost.log');
     }
 
-    public function aboutView($module)
+    public static function aboutView($module)
     {
         \phpws\PHPWS_Core::initCoreClass('Module.php');
         $mod = new PHPWS_Module($module);
