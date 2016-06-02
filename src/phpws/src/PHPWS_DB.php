@@ -356,7 +356,10 @@ class PHPWS_DB
     public static function listTables()
     {
         \phpws\PHPWS_DB::touchDB();
-        return $GLOBALS['PHPWS_DB']['connection']->listTables();
+        $db = \phpws2\Database::getDB();
+        return $db->listTables();
+        // Can't use Doctrine here because it doesn't recognize postgresql ranges.
+        //return $GLOBALS['PHPWS_DB']['connection']->listTables();
     }
 
     public function listDatabases()
