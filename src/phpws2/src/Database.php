@@ -123,63 +123,47 @@ class Database
 
     public static function parseDSN($dsn)
     {
-        if (empty($dsn)) {
-            throw new \Exception('Empty DSN received');
-        }
+        $dbtype = $dbname = $dbuser = $dbpass = $dbhost = $dsport = null;
+        $section = explode('/', $dsn);
+        $count = 0;
+        foreach ($section as $sec) {
+            switch ($count) {
+                case 0:
+                    $dbtype = str_replace(':', '', $sec);
+                    break;
 
-        $dsn_length = strlen($dsn);
-        $first_colon = strpos($dsn, ':');
-        $second_colon = strpos($dsn, ':', $first_colon + 1);
-        $third_colon = strpos($dsn, ':', $second_colon + 1);
-        $at_sign = strpos($dsn, '@');
-        $first_slash = strpos($dsn, '/');
-        $second_slash = strpos($dsn, '/', $first_slash + 1);
-        $third_slash = strpos($dsn, '/', $second_slash + 1);
+                case 1:
+                    // double slash
+                    break;
 
-        $dbtype = substr($dsn, 0, $first_colon);
-        $dbuser = substr($dsn, $second_slash + 1,
-                $second_colon - $second_slash - 1);
-        $dbpass = substr($dsn, $second_colon + 1, $at_sign - $second_colon - 1);
+                case 2:
+                    $creds_server = explode('@', $sec);
+                    if (strpos($creds_server[0], ':') !== false) {
+                        list($dbuser, $dbpass) = explode(':', $creds_server[0]);
+                    } else {
+                        $dbuser = $creds_server[0];
+                    }
 
+                    if (strpos($creds_server[1], ':') !== false) {
+                        list($dbhost, $dbport) = explode(':', $creds_server[1]);
+                        if (empty($dbhost)) {
+                            $dbhost = 'localhost';
+                        }
+                    } else {
+                        $dbhost = $creds_server[1];
+                    }
+                    break;
 
-        if ($at_sign) {
-            if ($third_slash == 0) {
-                $length = $dsn_length;
-            } else {
-                $length = $third_slash - $at_sign - 1;
+                case 3:
+                    $dbname = $sec;
+                    break;
             }
-
-            $dbhost = substr($dsn, $at_sign + 1, $length);
+            $count++;
         }
 
-        if (empty($dbhost)) {
-            $dbhost = 'localhost';
-        }
-
-        if ($third_slash) {
-            if ($third_colon == 0) {
-                $length = $dsn_length;
-            } else {
-                $length = $third_colon - $third_slash - 1;
-            }
-            $dbname = substr($dsn, $third_slash + 1, $length);
-        } else {
-            $dbname = null;
-        }
-
-        if ($third_colon) {
-            $dbport = substr($dsn, $third_colon + 1);
-        } else {
-            $dbport = null;
-        }
-        /*
-          if ($dbtype == 'mysql') {
-          $dbtype = 'mysqli';
-          }
-         *
-         */
-        return array('dbtype' => $dbtype, 'dbuser' => $dbuser, 'dbpass' => $dbpass, 'dbhost' => $dbhost,
+        $dsn_array = array('dbtype' => $dbtype, 'dbuser' => $dbuser, 'dbpass' => $dbpass, 'dbhost' => $dbhost,
             'dbport' => $dbport, 'dbname' => $dbname);
+        return $dsn_array;
     }
 
     public static function phpwsDSNLoader($dsn, $table_prefix = null)
