@@ -45,7 +45,7 @@ class FakeMDB2Connection
 
     public function parseDSN($dsn)
     {
-        $dbtype = $dbname = $dbuser = $dbpass = $dbhost = $dsport = null;
+        $dbtype = $dbname = $dbuser = $dbpass = $dbhost = $dbport = null;
         $section = explode('/', $dsn);
         $count = 0;
         foreach ($section as $sec) {
