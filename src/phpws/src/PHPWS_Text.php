@@ -159,7 +159,12 @@ class PHPWS_Text
         }
 
         if ($this->use_strip_tags) {
+            $this->allowed_tags .= '<zzz>';
+            $text = preg_replace('/<!--/', '<zzz>', $text);
+            $text = preg_replace('/-->/', '</zzz>', $text);
             $text = strip_tags($text, $this->allowed_tags);
+            $text = preg_replace('@<zzz>@', '<!--', $text);
+            $text = preg_replace('@</zzz>@', '-->', $text);
         }
 
         if ($this->use_breaker) {
