@@ -62,9 +62,9 @@ class PS_Text extends PS_Section {
         }
 
         if ($view_mode) {
-            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content, ENCODE_PARSED_TEXT, false, false, $fix_anchor));
+            return \phpws\PHPWS_Text::parseTag(\phpws\PHPWS_Text::parseOutput($this->content, ENCODE_PARSED_TEXT, false, false, $fix_anchor));
         } else {
-            return PHPWS_Text::decodeText($this->content);
+            return \phpws\PHPWS_Text::decodeText($this->content);
         }
     }
 
