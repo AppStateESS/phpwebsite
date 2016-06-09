@@ -231,7 +231,7 @@ class Branch {
     public static function loadHubDB()
     {
         if (!isset($GLOBALS['PHPWS_DB'])) {
-            PHPWS_DB::loadDB();
+            \phpws\PHPWS_DB::loadDB();
         }
         $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
         $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['tbl_prefix'];
