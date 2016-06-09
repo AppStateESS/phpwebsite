@@ -33,10 +33,6 @@ class Menu {
     public static function showPinned()
     {
         $result = Menu::getPinAllMenus();
-        if (PHPWS_Error::isError($result)) {
-            PHPWS_Error::log($result);
-            return;
-        }
 
         if (empty($result)) {
             return null;
