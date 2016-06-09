@@ -72,12 +72,7 @@ class PHPWS_DB
         \phpws\PHPWS_DB::touchDB();
         if (isset($table)) {
             $result = $this->setTable($table);
-
-            if (\phpws\PHPWS_Error::isError($result)) {
-                \phpws\PHPWS_Error::log($result);
-            }
         }
-        $this->setMode('assoc');
     }
 
     /**
