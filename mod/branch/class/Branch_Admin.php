@@ -12,6 +12,8 @@ define('BRANCH_CONNECT_BAD_DB', 5);
 
 \phpws\PHPWS_Core::initModClass('branch', 'Branch.php');
 
+use \phpws2\Database;
+
 class Branch_Admin
 {
 
@@ -263,7 +265,7 @@ class Branch_Admin
     public function create_core()
     {
         $db = new PHPWS_DB;
-        $loaddb = \PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
+        $loaddb = \PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix, true);
         \Database::phpwsDSNLoader($this->getDSN(), $this->dbprefix);
         if (PHPWS_Error::isError($loaddb)) {
             return $loaddb;
@@ -673,14 +675,14 @@ class Branch_Admin
 
     public function checkConnection()
     {
-        $dsn = \Database::newDSN($this->dbtype, $this->dbuser, $this->dbpass, null, $this->dbhost, $this->dbport);
+        $dsn = Database::newDSN($this->dbtype, $this->dbuser, $this->dbpass, null, $this->dbhost, $this->dbport);
 
         try {
-            $db = \Database::newDB($dsn);
+            $db = Database::newDB($dsn);
         } catch (\PDOException $e) {
-            if ($e->getCode() == 1045) {
                 return BRANCH_NO_CONNECTION;
-            }
+        } catch (\Exception $e) {
+            return BRANCH_NO_CONNECTION;
         }
         $db->loadPDO();
 
