@@ -771,6 +771,9 @@ abstract class Table extends Resource
         $id_column_exists = $this->columnExists('id');
         $this->row_count = 0;
         $query = $this->insertQuery();
+        if (empty(DB::$PDO)) {
+            $this->db->loadPDO();
+        }
         $prep = DB::$PDO->prepare($query);
         foreach ($this->values as $line) {
             foreach ($line as $key => $val) {
