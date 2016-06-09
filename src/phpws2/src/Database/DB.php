@@ -224,10 +224,7 @@ abstract class DB extends \Data
 
     public static function delimit($value)
     {
-        static $db = null;
-        if (empty($db)) {
-            $db = \phpws2\Database::getDB();
-        }
+        $db = \phpws2\Database::getDB();
         $dl = $db->getDelimiter();
         return "$dl$value$dl";
     }
@@ -344,7 +341,8 @@ abstract class DB extends \Data
         if (empty($this->conditional)) {
             $this->setConditional($conditional);
         } else {
-            $new_conditional = new \phpws2\Database\Conditional($this, $this->conditional, $conditional, 'AND');
+            $new_conditional = new \phpws2\Database\Conditional($this,
+                    $this->conditional, $conditional, 'AND');
             $this->setConditional($new_conditional);
         }
     }
@@ -381,7 +379,8 @@ abstract class DB extends \Data
             if (empty($current_conditional)) {
                 $current_conditional = $conditional;
             } else {
-                $current_conditional = new \phpws2\Database\Conditional($this, $current_conditional, $conditional, 'AND');
+                $current_conditional = new \phpws2\Database\Conditional($this,
+                        $current_conditional, $conditional, 'AND');
             }
         }
         $this->setConditional($current_conditional);
@@ -465,7 +464,9 @@ abstract class DB extends \Data
     {
         $hash = md5($this->dsn->getPDOString());
         if (!isset(self::$pdo_stack[$hash])) {
-            self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(), $this->dsn->getUsername(), $this->dsn->getPassword(), array(
+            self::$pdo_stack[$hash] = new \PDO($this->dsn->getPDOString(),
+                    $this->dsn->getUsername(), $this->dsn->getPassword(),
+                    array(
                 \PDO::ATTR_PERSISTENT => DB_PERSISTENT_CONNECTION, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         }
         self::$PDO = self::$pdo_stack[$hash];
@@ -937,7 +938,8 @@ abstract class DB extends \Data
     {
         $operator = $operator ? $operator : '=';
         $conditional = $this->createConditional($left, $right, $operator);
-        return $this->joinResources($left->getResource(), $right->getResource(), $conditional, $type);
+        return $this->joinResources($left->getResource(), $right->getResource(),
+                        $conditional, $type);
     }
 
     /**
@@ -1704,7 +1706,8 @@ abstract class DB extends \Data
             if (method_exists($value, '__toString')) {
                 $value = (string) $value;
             } else {
-                trigger_error(t('Database quoting failed on %s object, missing __toString', get_class($value)), E_USER_ERROR);
+                trigger_error(t('Database quoting failed on %s object, missing __toString',
+                                get_class($value)), E_USER_ERROR);
             }
         }
 
