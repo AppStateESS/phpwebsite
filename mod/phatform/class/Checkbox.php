@@ -71,7 +71,7 @@ class PHAT_Checkbox extends PHAT_Element {
             }
 
             $option_value = $optionValues[$i];
-            $element = new Form_CheckBox('PHAT_' . $label . '[' . $i . ']', $option_value);
+            $element = new Form_Checkbox('PHAT_' . $label . '[' . $i . ']', $option_value);
             $element->setMatch($match);
             $id = preg_replace('/\W/', '', $option_value) . $i;
             $element->setId($id);

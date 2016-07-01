@@ -318,7 +318,7 @@ class PHAT_Element extends PHPWS_Item {
                 if(isset($this->_optionValues[$i]) && (isset($this->_value[$i]) && $this->_optionValues[$i] == $this->_value[$i])) {
                     $check = $i;
                 }
-                $element = new Form_CheckBox("PHAT_ElementDefault[$i]", $i);
+                $element = new Form_Checkbox("PHAT_ElementDefault[$i]", $i);
                 $element->setMatch($check);
                 $optionRow['OPTION_DEFAULT'] = $element->get();
             }   else {
@@ -327,7 +327,7 @@ class PHAT_Element extends PHPWS_Item {
                     $check = $i;
                 }
 
-                $element = new Form_CheckBox('PHAT_ElementDefault', $i);
+                $element = new Form_Checkbox('PHAT_ElementDefault', $i);
                 $element->setMatch($check);
                 $optionRow['OPTION_DEFAULT'] = $element->get();
             }

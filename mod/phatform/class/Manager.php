@@ -595,7 +595,7 @@ class PHPWS_Manager {
 
                 $rowTags['ROW_CLASS'] = $row_class;
                 if($makeForm) {
-                    $ele = new Form_CheckBox('PHPWS_MAN_ITEMS[]', $item['id']);
+                    $ele = new Form_Checkbox('PHPWS_MAN_ITEMS[]', $item['id']);
                     $rowTags['SELECT'] = $ele->get();
                 }
 
