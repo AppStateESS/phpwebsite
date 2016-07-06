@@ -27,7 +27,7 @@ class PhoneNumber extends \Variable\NumberString
 
     public function get()
     {
-        $value = parent::get();
+        return $this->__toString();
     }
 
     public function formatNumber($format)
