@@ -1824,8 +1824,8 @@ abstract class DB extends \Data
         if (!class_exists($class_name)) {
             throw new \Exception(t('Unknown class'));
         }
-        if (!is_subclass_of($class_name, '\Resource')) {
-            throw new \Exception(t('Class must be of type Resource'));
+        if (!is_subclass_of($class_name, '\phpws2\Resource')) {
+            throw new \Exception(t('Class must be of type phpws2\Resource'));
         }
     }
 
