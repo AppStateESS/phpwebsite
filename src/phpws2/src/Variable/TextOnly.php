@@ -9,7 +9,11 @@ namespace phpws2\Variable;
  */
 class TextOnly extends \Variable\String
 {
-
+    /**
+     * Text without html tags
+     * @param type $value
+     * @param type $varname
+     */
     public function __construct($value = null, $varname = null)
     {
         // No tags allowed
