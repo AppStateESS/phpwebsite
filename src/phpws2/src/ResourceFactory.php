@@ -2,7 +2,6 @@
 
 namespace phpws2;
 
-
 /**
  * Description of ResourceFactory
  *
@@ -93,7 +92,8 @@ class ResourceFactory
     {
         $id = $resource->getId();
         if (empty($id)) {
-            throw new \Exception(t('Id not set in Resource "%s"', get_class($resource)));
+            throw new \Exception(t('Id not set in Resource "%s"',
+                    get_class($resource)));
         }
         return $id;
     }
@@ -111,7 +111,8 @@ class ResourceFactory
         }
         $db = \phpws2\Database::newDB();
         $tbl = $db->addTable($table_name);
-        $db->addConditional($tbl->getFieldConditional('id', self::pullId($resource)));
+        $db->addConditional($tbl->getFieldConditional('id',
+                        self::pullId($resource)));
         return $db->delete();
     }
 
@@ -119,6 +120,25 @@ class ResourceFactory
     {
         $vars = $resource->getStringVars();
         return json_encode($vars);
+    }
+
+    /**
+     * Receives an array of variables, creates a resource, changes variables to toString
+     * results, and returns array.
+     * 
+     * @param array $resource_array
+     * @param string $class_name : Class used to instantiate objects
+     * @return type
+     */
+    public static function makeResourceStringArray(array $resource_array, $class_name)
+    {
+        foreach ($resource_array as $row) {
+            $obj = new $class_name;
+            $obj->setVars($row);
+            $object_stack[] = $obj->getStringVars();
+        }
+        $result = json_encode($object_stack);
+        return $result;
     }
 
 }
