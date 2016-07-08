@@ -11,7 +11,7 @@ require_once PHPWS_SOURCE_DIR . 'src/phpws2/config/String.php';
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class String extends \Variable
+class String extends \phpws2\Variable
 {
     /**
      * Contains the form types that can be created from this object
