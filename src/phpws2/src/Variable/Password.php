@@ -13,8 +13,9 @@ class Password extends String {
 
     private $salt;
 
-    public function __construct()
+    public function __construct($value = null, $varname = null)
     {
+        parent::__construct($value, $varname);
         $this->salt = \randomString();
     }
 
