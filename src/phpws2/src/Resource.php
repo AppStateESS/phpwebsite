@@ -114,7 +114,7 @@ abstract class Resource extends \Data {
     {
         $vars = $this->getVars();
         foreach ($vars as $variable) {
-            if ($variable instanceof \Variable) {
+            if ($variable instanceof \phpws2\Variable) {
                 if ($variable->getIsTableColumn()) {
                     $dts[$variable->getVarname()] = $variable->loadDatatype($table);
                 }
