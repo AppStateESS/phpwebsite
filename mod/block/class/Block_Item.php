@@ -164,8 +164,8 @@ class Block_Item {
     {
         $edit = $opt = null;
         if (Current_User::allow('block', 'edit_block', $this->id)) {
-            $img = '<i class="fa fa-edit" title="' . dgettext('block',
-                            'Edit block') . '"></i>';
+            $img = '<button class="btn btn-default"><i class="fa fa-pencil" title="' . dgettext('block',
+                'Edit block') . '"></i> Edit</button>';
             $edit = PHPWS_Text::secureLink($img, 'block',
                             array('block_id' => $this->id,
                         'action' => 'edit'));
@@ -184,8 +184,8 @@ class Block_Item {
                                 TRUE);
                 $js_var['QUESTION'] = dgettext('block',
                         'Are you sure you want to remove this block from this page?');
-                $js_var['LINK'] = "<i class='fa fa-remove-circle' title='" . dgettext('block',
-                                'Remove block from page') . "'></i>";
+                $js_var['LINK'] = "<button class='btn btn-default'><i class='fa fa-minus-circle' aria-hidden='true' title='" . dgettext('block',
+                                'Remove block from page') . "'></i> Remove</button>";
 
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
