@@ -571,7 +571,7 @@ EOF;
             $db = \phpws2\Database::getDB();
             $tbl = $db->addTable('settings');
             $setting = $tbl->getDatatype('setting');
-            $new_setting = new \phpws2\Database\Datatype\Text($tbl, 'settings');
+            $new_setting = new \phpws2\Database\Datatype\Text($tbl, 'setting');
             $new_setting->setIsNull(true);
             $tbl->alter($setting, $new_setting);
 
