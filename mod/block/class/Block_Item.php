@@ -11,7 +11,7 @@ class Block_Item {
     public $id = 0;
     public $key_id = 0;
     public $title = null;
-    public $content = null;
+    public $content = '';
     public $file_id = 0;
     public $hide_title = 0;
     public $hide_narrow = 0;
