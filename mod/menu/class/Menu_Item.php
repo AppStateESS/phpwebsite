@@ -442,6 +442,10 @@ class Menu_Item {
      */
     public function view($admin = false)
     {
+        $links = $this->displayLinks($admin);
+        if (empty($links)) {
+            return null;
+        }
         $key = Key::getCurrent();
         if ($key && $key->isDummy(true)) {
             return;
@@ -475,7 +479,7 @@ class Menu_Item {
         }
 
         $tpl['TITLE'] = $this->getTitle();
-        $tpl['LINKS'] = $this->displayLinks($admin);
+        $tpl['LINKS'] = $links;
         $tpl['MENU_ID'] = sprintf('menu-%s', $this->id);
         $content = PHPWS_Template::process($tpl, 'menu', $file, true);
 
