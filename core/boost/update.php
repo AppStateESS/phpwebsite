@@ -581,6 +581,21 @@ EOF;
 + Fixed: settings table value made is null.
 </pre>
 EOF;
+        case version_compare($version, '2.9.2', '<'):
+            $db = \phpws2\Database::getDB();
+            $tbl = $db->addTable('phpws_key_register');
+            $c1 = $db->createConditional($tbl->getField('module'), 'categories');
+            $c2 = $db->createConditional($tbl->getField('module'), 'comments');
+            $c3 = $db->createConditional($c1, $c2, 'or');
+            $db->addConditional($c3);
+            $db->delete();
+            
+            $content[] = <<<EOF
+<pre>2.9.2 changes
+--------------------
++ Removed deprecated unregisters
+</pre>
+EOF;
     }
     return true;
 }
