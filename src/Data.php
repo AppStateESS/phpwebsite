@@ -486,7 +486,7 @@ namespace phpws2;
         $vars = $this->getVars();
         $form = new \phpws2\Form;
         foreach ($vars as $parameter) {
-            if ($parameter instanceof \Variable) {
+            if ($parameter instanceof \phpws2\Variable) {
                 if ($parameter->getVarname() == 'id') {
                     $input = $parameter->getInput();
                     $input->setId('resource-id');

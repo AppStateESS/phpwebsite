@@ -318,7 +318,7 @@ abstract class Variable extends \Data {
                 break;
 
             default:
-                $class_name = 'Form\Input\\' . ucfirst($this->input_type);
+                $class_name = '\phpws2\Form\Input\\' . ucfirst($this->input_type);
                 $input = new $class_name($this->varname, $this->value, $this->getLabel());
                 $input->setId($this->varname);
         }
