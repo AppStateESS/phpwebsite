@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
@@ -35,7 +35,8 @@ function logMessage($message, $filename)
     $log_path = LOG_DIRECTORY . $filename;
     $message = strftime('[' . LOG_TIME_FORMAT . ']', time()) . trim($message) . "\n";
     if (error_log($message, 3, $log_path)) {
-        chmod($log_path, LOG_PERMISSION);
+        // We shouldn't be chmod'ing anything....
+        //chmod($log_path, LOG_PERMISSION);
         return true;
     } else {
         trigger_error("Could not write $filename file. Check error directory setting and file permissions.",
