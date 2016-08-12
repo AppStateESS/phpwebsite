@@ -191,7 +191,7 @@ class PulseFactory extends \ResourceFactory
             }
         }
         if ($error_occurred) {
-            throw new \Exception\PulseException('One or more errors occurred during schedule execution.');
+            throw new Exception\PulseException('One or more errors occurred during schedule execution.');
         } else {
             return $schedules_completed;
         }

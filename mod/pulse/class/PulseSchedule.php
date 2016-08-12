@@ -49,7 +49,7 @@ class PulseSchedule extends \Resource
      * @var string
      */
     protected $class_method;
-    
+
     /**
      * Time after which the process should begin
      * @var integer
@@ -79,7 +79,7 @@ class PulseSchedule extends \Resource
      * @var string
      */
     protected $hash;
-    
+
     /**
      * If true, a schedule will be set to a HOLD status after an error.
      * @var boolen
@@ -97,7 +97,7 @@ class PulseSchedule extends \Resource
         $this->active = new \Variable\Bool(true, 'active');
         $this->class_method = new \Variable\Alphanumeric(null, 'class_method');
         $this->class_method->setLimit(100);
-        $this->class_name = new \Variable\Alphanumeric(null, 'class_name');
+        $this->class_name = new \Variable\String(null, 'class_name');
         $this->class_name->setLimit(100);
         $this->end_time = new \Variable\Integer(0, 'end_time');
         $this->hash = new \Variable\Hash(null, 'hash');
@@ -107,7 +107,7 @@ class PulseSchedule extends \Resource
         $this->interim = new \Variable\Integer(60, 'interim');
         $this->module = new \Variable\Alphanumeric(null, 'module');
         $this->module->setLimit(50);
-        $this->name = new \Variable\Alphanumeric(null, 'name');
+        $this->name = new \Variable\String(null, 'name');
         $this->name->setLimit(100);
         $this->required_file = new \Variable\File(null, 'required_file');
         $this->execute_after = new \Variable\Integer(0, 'execute_after');
@@ -153,7 +153,7 @@ class PulseSchedule extends \Resource
     {
         return $this->hash->get();
     }
-    
+
     public function getHoldOnError()
     {
         return $this->hold_on_error->get();
@@ -187,7 +187,7 @@ class PulseSchedule extends \Resource
             return strftime($format, $this->execute_after->get());
         }
     }
-    
+
     public function getStatus()
     {
         return $this->status->get();
@@ -257,7 +257,7 @@ class PulseSchedule extends \Resource
     {
         $this->hold_on_error->set($hold);
     }
-    
+
     /**
      * Number of minutes between each scheduled operation
      * @param integer $interim
@@ -284,8 +284,8 @@ class PulseSchedule extends \Resource
     }
 
     /**
-     * When the next scheduled event will begin. 
-     * 
+     * When the next scheduled event will begin.
+     *
      * @param integer $execute_after
      */
     public function setExecuteAfter($execute_after)
@@ -316,7 +316,7 @@ class PulseSchedule extends \Resource
     /**
      * Returns the number of minutes it took to complete an event. This method
      * must be run prior to the execute_after reset.
-     * 
+     *
      * @return integer
      * @throws \Exception
      */

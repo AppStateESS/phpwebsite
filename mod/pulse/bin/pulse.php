@@ -54,13 +54,17 @@ function process($arguments)
     }
     include_config_file($file_directory);
     chdir(PHPWS_SOURCE_DIR);
-    
+
     // Helps with Security include
     $_SERVER['REQUEST_URI'] = 'pulse.php';
-    
+    $_SERVER['HTTP_HOST'] = 'localhost';
+
+    require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
     require_once PHPWS_SOURCE_DIR . 'src/Bootstrap.php';
-    require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
+    //require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
+    require_once PHPWS_SOURCE_DIR . 'src/phpws/config/defines.php';
     require_once PHPWS_SOURCE_DIR . 'mod/pulse/class/PulseController.php';
+
     try {
         $request = new \Request('index.php', Request::GET);
         if (!empty($hash)) {
@@ -71,11 +75,13 @@ function process($arguments)
         }
         if (!empty($module)) {
             $request->setVar('schedule_module', $module);
+            $_REQUEST['module'] = $module;
         }
         \pulse\PulseController::runSchedules($request);
     } catch (\Exception $e) {
         echo "Error:\n";
         echo $e->getMessage();
+        print_r($e);
         echo "\n\n";
     }
 }
@@ -85,15 +91,15 @@ function print_help()
     echo <<<EOF
 
 Runs schedules ready to be executed.
-    
+
 Usage: pulse.php -f directory/to/phpwebsite/config/file
-    
+
 Commands:
 -f      Path to phpWebSite installation's database configuration file.
 -H      Hash of schedule to run (if used, name and module are ignored)
 -n      Name of schedule(s) to run
 -m      Name of module to run. Only schedules of this module will be called.
-    
+
 If hash, name, and module are not set, all schedules will be run.
 If not run as ROOT or APACHE, logs will not be written and you will get an error.
 \n
