@@ -1,19 +1,5 @@
 <?php
-// Detect phpWebSite
-if (file_exists('../config/core/config.php')) {
-    define('PHPWEBSITE', true);
-
-    require_once('../config/core/config.php');
-    require_once(PHPWS_SOURCE_DIR . 'src/Bootstrap.php');
-
-    if (isset($_SERVER['PHP_AUTH_USER'])) {
-        require_once(PHPWS_SOURCE_DIR . 'mod/users/class/Current_User.php');
-        Current_User::loginUser(preg_replace(PHPWS_SHIBB_USER_AUTH, '', $_SERVER['PHP_AUTH_USER']));
-    }
-
-    PHPWS_unBootstrap();
-}
-
+require_once('../config/core/config.php');
 // Build new URL
 require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 $redirect = preg_replace('/secure\/?$/', '', \Server::getSiteUrl());
