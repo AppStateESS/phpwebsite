@@ -1,14 +1,6 @@
 <?php
+require_once('../config/core/config.php');
 
-// Detect phpWebSite
-if(file_exists('../config/core/config.php')) {
-    define('PHPWEBSITE', true);
-
-    require_once('../config/core/config.php');
-    require_once(PHPWS_SOURCE_DIR . 'src/Bootstrap.php');
-
-    session_name(md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
-}
 session_start();
 unset($_SESSION);
 session_destroy();
