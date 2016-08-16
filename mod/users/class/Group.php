@@ -6,7 +6,8 @@
  * @author Matt McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-class PHPWS_Group {
+class PHPWS_Group
+{
 
     public $id = NULL;
     public $name = NULL;
@@ -88,6 +89,10 @@ class PHPWS_Group {
         $db->addWhere('group_id', $this->getId());
         $db->addColumn('member_id');
         $result = $db->select('col');
+        if (empty($result)) {
+            $result = array();
+        }
+
         $this->setMembers($result);
     }
 
@@ -253,7 +258,8 @@ class PHPWS_Group {
         return true;
     }
 
-    public function allow($module, $permission = NULL, $item_id = NULL, $itemname = NULL)
+    public function allow($module, $permission = NULL, $item_id = NULL,
+            $itemname = NULL)
     {
         \phpws\PHPWS_Core::initModClass('users', 'Permission.php');
 
@@ -327,4 +333,3 @@ class PHPWS_Group {
     }
 
 }
-
