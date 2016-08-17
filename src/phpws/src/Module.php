@@ -406,7 +406,7 @@ class PHPWS_Module
             \phpws\PHPWS_Error::log($result);
             return false;
         }
-        return version_compare($result['version'], $this->getVersion(), '<');
+        return version_compare(trim($result['version']), $this->getVersion(), '<');
     }
 
     public function isFullMod()
