@@ -952,7 +952,7 @@ class Layout
 
         $template['METATAGS'] = Layout::getMetaTags($page_metatags);
         if ($page_metatags) {
-            $template['PAGE_TITLE'] = $page_metatags['page_title'] . PAGE_TITLE_DIVIDER . $_SESSION['Layout_Settings']->getPageTitle(true);
+            $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
         } else {
             $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
         }
