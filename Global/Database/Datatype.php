@@ -2,4 +2,7 @@
 
 namespace Database;
 
-class Datatype extends \phpws2\Database\Datatype{}
+abstract class Datatype extends \phpws2\Database\Datatype
+{
+    protected function loadDefault(){}
+}
