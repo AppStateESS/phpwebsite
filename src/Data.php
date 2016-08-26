@@ -356,7 +356,7 @@ abstract class Data
             if (!property_exists($this, $key)) {
                 throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
             }
-            if (!$this->isPrivate($key) && (is_a($this->$key, '\phpws2\Variable') || is_a($this->$key, 'Variable'))) {
+            if (!$this->isPrivate($key) && is_a($this->$key, '\phpws2\Variable')) {
                 if (!is_null($value)) {
                     $this->$key->set($value);
                 }

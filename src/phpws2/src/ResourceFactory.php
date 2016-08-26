@@ -62,7 +62,7 @@ class ResourceFactory
         // Need to unset the id or the primary key will not increment
         unset($vars['id']);
         foreach ($vars as $name => $value) {
-            if (is_a($value, '\phpws2\Variable') || is_a($value, 'Variable')) {
+            if (is_a($value, '\phpws2\Variable')) {
                 if ($value->getIsTableColumn()) {
                     $tbl->addValue($name, $value);
                 }
