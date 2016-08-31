@@ -213,7 +213,7 @@ class PHPWS_Group
             foreach ($members as $member) {
                 $db->addValue('group_id', $this->getId());
                 $db->addValue('member_id', $member);
-                PHPWS_Error::logIfError($db->insert());
+                $db->insert();
                 $db->resetValues();
             }
         }

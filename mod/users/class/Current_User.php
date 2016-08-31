@@ -408,9 +408,6 @@ final class Current_User {
         $db = new PHPWS_DB('users');
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
-        if (PHPWS_Error::isError($result)) {
-            return $result;
-        }
 
         if ($result == false) {
             if (PHPWS_Error::logIfError($user->setUsername($username))) {

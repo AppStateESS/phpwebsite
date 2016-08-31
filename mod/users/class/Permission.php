@@ -7,7 +7,8 @@
  * @author Matt McNaney <mcnaney at gmail dot com>
  * @package User Module
  */
-class Users_Permission {
+class Users_Permission
+{
 
     public $permissions = NULL;
     public $groups = NULL;
@@ -95,7 +96,8 @@ class Users_Permission {
         }
     }
 
-    public function allow($module, $subpermission = NULL, $item_id = 0, $itemname = NULL)
+    public function allow($module, $subpermission = NULL, $item_id = 0,
+            $itemname = NULL)
     {
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
@@ -160,6 +162,9 @@ class Users_Permission {
     public function loadPermission($module)
     {
         $groups = $this->groups;
+        if (empty($groups)) {
+            throw new \Exception('User lacks a permission group');
+        }
 
         $permTable = Users_Permission::getPermissionTableName($module);
 
@@ -170,9 +175,7 @@ class Users_Permission {
 
         $permDB = new PHPWS_DB($permTable);
 
-        if (!empty($groups)) {
-            $permDB->addWhere('group_id', $groups, 'in');
-        }
+        $permDB->addWhere('group_id', $groups, 'in');
 
         $permResult = $permDB->select();
 
@@ -295,7 +298,8 @@ class Users_Permission {
         return implode('', array($module, '_permissions'));
     }
 
-    public static function setPermissions($group_id, $module, $level, $subpermissions = NULL)
+    public static function setPermissions($group_id, $module, $level,
+            $subpermissions = NULL)
     {
         if (empty($group_id) || !is_numeric($group_id)) {
             return false;
@@ -405,20 +409,16 @@ class Users_Permission {
         foreach ($result as $group) {
             if ($group['user_id']) {
                 if ($group['permission_level'] == RESTRICTED_PERMISSION) {
-                    $glist['restricted']['all'][] =
-                            $glist['restricted']['users'][] = $group;
+                    $glist['restricted']['all'][] = $glist['restricted']['users'][] = $group;
                 } else {
-                    $glist['unrestricted']['users'][] =
-                            $glist['unrestricted']['all'][] = $group;
+                    $glist['unrestricted']['users'][] = $glist['unrestricted']['all'][] = $group;
                 }
                 $glist['permitted']['users'][] = $group;
             } else {
                 if ($group['permission_level'] == RESTRICTED_PERMISSION) {
-                    $glist['restricted']['groups'][] =
-                            $glist['restricted']['all'][] = $group;
+                    $glist['restricted']['groups'][] = $glist['restricted']['all'][] = $group;
                 } else {
-                    $glist['unrestricted']['groups'][] =
-                            $glist['unrestricted']['all'][] = $group;
+                    $glist['unrestricted']['groups'][] = $glist['unrestricted']['all'][] = $group;
                 }
                 $glist['permitted']['groups'][] = $group;
             }
@@ -527,4 +527,3 @@ class Users_Permission {
     }
 
 }
-

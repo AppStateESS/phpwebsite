@@ -19,7 +19,8 @@ if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
     define('ALLOWED_USERNAME_CHARACTERS' . '\w');
 }
 
-class PHPWS_User {
+class PHPWS_User
+{
 
     public $id = 0;
     public $username = null;
@@ -126,11 +127,7 @@ class PHPWS_User {
         }
 
         $result = $DB->select('one');
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        } else {
-            return (bool) $result;
-        }
+        return (bool) $result;
     }
 
     public function isDuplicateUsername($username, $id = 0)
@@ -143,11 +140,7 @@ class PHPWS_User {
 
         $result = $DB->select('one');
 
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        } else {
-            return (bool) $result;
-        }
+        return (bool) $result;
     }
 
     public function isDuplicateGroup($name, $id = 0)
@@ -159,11 +152,7 @@ class PHPWS_User {
         }
 
         $result = $DB->select('one');
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        } else {
-            return (bool) $result;
-        }
+        return (bool) $result;
     }
 
     public function isDuplicateEmail()
@@ -178,11 +167,7 @@ class PHPWS_User {
             $DB->addWhere('id', $this->id, '!=');
         }
         $result = $DB->select('one');
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        } else {
-            return (bool) $result;
-        }
+        return (bool) $result;
     }
 
     public function setUsername($username)
@@ -483,7 +468,8 @@ class PHPWS_User {
         return $this->_permission->allowedItem($module, $item_id, $itemname);
     }
 
-    public function allow($module, $subpermission = null, $item_id = null, $itemname = null, $verify = false)
+    public function allow($module, $subpermission = null, $item_id = null,
+            $itemname = null, $verify = false)
     {
         if (!$this->isUser() || !isset($this->_permission)) {
             return false;
@@ -505,7 +491,8 @@ class PHPWS_User {
     /**
      * Crutch function for versions prior to 0.x
      */
-    public function allow_access($itemName, $subpermission = null, $item_id = null)
+    public function allow_access($itemName, $subpermission = null,
+            $item_id = null)
     {
         return $this->allow($itemName, $subpermission, $item_id);
     }
@@ -520,35 +507,25 @@ class PHPWS_User {
             $newUser = false;
         }
 
-
         $result = ($this->isDuplicateUsername($this->username, $this->id) ||
                 $this->isDuplicateDisplayName($this->username, $this->id) ||
                 $this->isDuplicateUsername($this->display_name, $this->id) ||
                 $this->isDuplicateDisplayName($this->display_name, $this->id)) ? true : false;
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        }
 
         if ($result == true) {
-            return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users', 'save');
+            throw new \Exception('Display name or user name is a duplicate of another user');
         }
 
         $result = $this->isDuplicateEmail();
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        }
 
         if ($result == true) {
-            return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'save');
+            throw new \Exception('Email address is a duplicate of another user');
         }
 
         $result = $this->isDuplicateGroup($this->username, $this->id);
-        if (PHPWS_Error::logIfError($result)) {
-            return $result;
-        }
 
         if ($result == true) {
-            return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'save');
+            throw new \Exception('User name is a duplicate of a current group');
         }
 
         if (empty($this->display_name)) {
@@ -568,10 +545,6 @@ class PHPWS_User {
 
         $db = new PHPWS_DB('users');
         $result = $db->saveObject($this);
-
-        if (PHPWS_Error::logIfError($result)) {
-            return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
-        }
 
         if ($this->authorize > 0) {
             if ($this->authorize == PHPWS_Settings::get('users', 'local_script')) {
@@ -647,15 +620,14 @@ class PHPWS_User {
         $group->setName($this->getUsername());
         $group->setUserId($this->getId());
         $group->setActive($this->isActive());
-        $result = $group->save();
-
-        if (PHPWS_Error::logIfError($result)) {
-            PHPWS_Error::log($result);
-            $this->kill();
-            return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
-        } else {
+        try {
+            $result = $group->save();
             $this->_user_group = $group->id;
             return true;
+        } catch (\Exception $e) {
+            $this->kill();
+            \phpws2\Error::log($ex);
+            throw new \Exception('Failed creating user groups. User save failed.');
         }
     }
 
@@ -666,11 +638,6 @@ class PHPWS_User {
         $db->addColumn('id');
         $result = $db->select('one');
 
-        if (PHPWS_Error::logIfError($result)) {
-            PHPWS_Error::log($result);
-            return PHPWS_Error::get(USER_ERROR, 'users', 'updateGroup');
-        }
-
         if (empty($result)) {
             $group = new PHPWS_Group;
             $group->setUserId($this->id);
@@ -680,13 +647,14 @@ class PHPWS_User {
 
         $group->setName($this->getUsername());
         $group->setActive($this->isActive());
-
-        $result = $group->save();
-        if (PHPWS_Error::logIfError($result)) {
-            $this->kill();
-            return PHPWS_Error::get(USER_ERROR, 'users', 'updateGroup');
-        } else {
+        
+        try {
+            $result = $group->save();
             return true;
+        } catch (Exception $ex) {
+            $this->kill();
+            \phpws2\Error::log($ex);
+            throw new \Exception('Failed updating user groups. User save failed.');
         }
     }
 
@@ -705,8 +673,7 @@ class PHPWS_User {
         if (PHPWS_Error::logIfError($result)) {
             return $result;
         } elseif (!isset($result)) {
-            return PHPWS_Error::get(USER_ERR_MISSING_GROUP, 'users',
-                            'getUserGroup', $this->getId());
+            throw new \Exception('User does not have a user group');
         } else {
             return $result;
         }
@@ -844,7 +811,8 @@ class PHPWS_User {
                 $dvars['ADDRESS'] = PHPWS_Text::linkAddress('users',
                                 array('action' => 'admin', 'command' => 'mortalize_user', 'user_id' => $this->id),
                                 1);
-                $dvars['LINK'] = sprintf('<i class="fa fa-cloud" title="%s"></i>', dgettext('users', 'Deity'));
+                $dvars['LINK'] = sprintf('<i class="fa fa-cloud" title="%s"></i>',
+                        dgettext('users', 'Deity'));
                 $links[] = javascript('confirm', $dvars);
             } else {
                 $dvars['QUESTION'] = dgettext('users',
@@ -852,7 +820,8 @@ class PHPWS_User {
                 $dvars['ADDRESS'] = PHPWS_Text::linkAddress('users',
                                 array('action' => 'admin', 'command' => 'deify_user', 'user_id' => $this->id),
                                 1);
-                $dvars['LINK'] = sprintf('<i class="fa fa-male" title="%s"></i>', dgettext('users', 'Mortal'));
+                $dvars['LINK'] = sprintf('<i class="fa fa-male" title="%s"></i>',
+                        dgettext('users', 'Mortal'));
                 $links[] = javascript('confirm', $dvars);
             }
         }
@@ -964,4 +933,3 @@ class PHPWS_User {
     }
 
 }
-

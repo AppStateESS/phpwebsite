@@ -688,30 +688,40 @@ class User_Action
 
         switch ($command) {
             case 'login':
-                if (!Current_User::isLogged() && isset($_POST['phpws_username']) && isset($_POST['phpws_password'])) {
-                    $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
-                    // here
+                try {
+                    if (!Current_User::isLogged() && isset($_POST['phpws_username']) && isset($_POST['phpws_password'])) {
+                        $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
 
-                    if (!$result) {
-                        $title = dgettext('users', 'Login page');
-                        $message = dgettext('users', 'Username and password combination not found.');
-                        $content = User_Form::loginPage();
-                    } elseif (PHPWS_Error::isError($result)) {
-                        if (preg_match('/L\d/', $result->code)) {
-                            $title = dgettext('users', 'Sorry');
-                            $content = $result->getMessage();
-                            $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'), dgettext('users', 'Contact the site administrator'));
+                        if (!$result) {
+                            $title = dgettext('users', 'Login page');
+                            $message = dgettext('users', 'Username and password combination not found.');
+                            $content = User_Form::loginPage();
+                        } elseif (PHPWS_Error::isError($result)) {
+                            if (preg_match('/L\d/', $result->code)) {
+                                $title = dgettext('users', 'Sorry');
+                                $content = $result->getMessage();
+                                $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'), dgettext('users', 'Contact the site administrator'));
+                            } else {
+                                PHPWS_Error::log($result);
+                                $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
+                            }
                         } else {
-                            PHPWS_Error::log($result);
-                            $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
+                            Current_User::getLogin();
+                            \phpws\PHPWS_Core::returnToBookmark();
                         }
                     } else {
-                        Current_User::getLogin();
-                        \phpws\PHPWS_Core::returnToBookmark();
+                        \phpws\PHPWS_Core::errorPage('403');
                     }
-                } else {
-                    \phpws\PHPWS_Core::errorPage('403');
+                } catch (Exception $ex) {
+                    \phpws2\Error::log($ex);
+                    $content = <<<EOF
+<h2>We're sorry...</h2>
+<p>Something is problematic with your user account. Please contact the maintainers of this site and report the problem.</p>
+EOF;
+                    \Layout::add($content);
+                    return;
                 }
+               
                 break;
 
             // This is used by auth scripts if they need to return the user to
