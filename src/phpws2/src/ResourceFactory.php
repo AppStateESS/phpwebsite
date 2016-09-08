@@ -124,21 +124,21 @@ class ResourceFactory
 
     /**
      * Receives an array of variables, creates a resource, changes variables to toString
-     * results, and returns array.
+     * results, and returns and array of those results.
      * 
      * @param array $resource_array
      * @param string $class_name : Class used to instantiate objects
-     * @return type
+     * @return array
      */
     public static function makeResourceStringArray(array $resource_array, $class_name)
     {
+        $object_stack = array();
         foreach ($resource_array as $row) {
             $obj = new $class_name;
             $obj->setVars($row);
             $object_stack[] = $obj->getStringVars();
         }
-        $result = json_encode($object_stack);
-        return $result;
+        return $object_stack;
     }
 
 }
