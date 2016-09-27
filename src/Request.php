@@ -454,15 +454,18 @@ class Request extends \Data
      * echo $new_r->getCurrentToken();
      * // prints "Beta"
      * </code>
-     *
+     * @deprecated Use shiftCommand
      * @return \Request
      */
     public function getNextRequest()
     {
         $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
 
-        return new Request(
+        $request = new Request(
                 $url, $this->getMethod(), $this->getRequestVars(), $this->getRawData(), $this->getAccept());
+        $request->setPostVars($this->postVars);
+        $request->setGetVars($this->getVars);
+        return $request;
     }
 
     /**
@@ -544,7 +547,7 @@ class Request extends \Data
 
     public function setGetVars($get)
     {
-        $this->get = $get;
+        $this->getVars = $get;
     }
     
     public function pullPostVar($name)
@@ -557,7 +560,7 @@ class Request extends \Data
     
     public function pullGetVar($name)
     {
-        if (!isset($this->postVars[$name])) {
+        if (!isset($this->getVars[$name])) {
             throw new \phpws2\Exception\ValueNotSet();
         }
         return $this->getVars[$name];
