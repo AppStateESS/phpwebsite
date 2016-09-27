@@ -20,7 +20,7 @@ class Bool extends \Variable {
      * @var string
      */
     protected $input_type = 'checkbox';
-    protected $column_type = 'smallint';
+    protected $column_type = 'boolean';
 
     /**
      * Checks if value is a boolean

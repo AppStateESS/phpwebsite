@@ -9,8 +9,15 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Float extends \Variable
+class Float extends \phpws2\Variable
 {
+    /**
+    /* We use decimal instead of float as it is used
+    /* in mysql and pgsql.
+     * If you must use float, overwrite the column_type
+     * @var string
+     */
+    protected $column_type = 'decimal';
 
     /**
      * Checks to see if value is a float.
