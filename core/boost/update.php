@@ -596,6 +596,16 @@ EOF;
 + Removed deprecated unregisters
 </pre>
 EOF;
+            
+        case version_compare($version, '2.10.0', '<'):
+            $content[] = <<<EOF
+<pre>2.10.0 changes
+--------------------
++ Expanded Request functionality
++ Fixed makeResourcestringArray in ResourceFactory
++ Changed all "new \Variable calls" to "new \phpws2\Variable"
+</pre>
+EOF;
     }
     return true;
 }
