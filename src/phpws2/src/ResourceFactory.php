@@ -124,7 +124,7 @@ class ResourceFactory
 
     /**
      * Receives an array of variables, creates a resource, changes variables to toString
-     * results, and returns and array of those results.
+     * results, and returns an array of those results.
      * 
      * @param array $resource_array
      * @param string $class_name : Class used to instantiate objects
