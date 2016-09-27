@@ -609,7 +609,7 @@ class Request extends \Data
         if ($test_isset && !$this->postVarIsset($varname)) {
             return false;
         }
-        return filter_var($this->pullPostVar($varname), FILTER_SANITIZE_NUMBER_INT);
+        return filter_var($this->pullPostVar($varname), FILTER_VALIDATE_INT);
     }
     
     public function pullGetString($varname, $test_isset=false)
@@ -635,6 +635,6 @@ class Request extends \Data
         if ($test_isset && !$this->getVarIsset($varname)) {
             return false;
         }
-        return filter_var($this->pullGetVar($varname), FILTER_SANITIZE_NUMBER_INT);
+        return filter_var($this->pullGetVar($varname), FILTER_VALIDATE_INT);
     }
 }
