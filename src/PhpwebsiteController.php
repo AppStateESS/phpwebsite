@@ -49,7 +49,10 @@ class PhpwebsiteController implements Controller
             $module = $this->determineCurrentModule($request);
             if ($module) {
                 $this->beforeRun($request, $this);
-                $response = $module->execute($request->getNextRequest());
+                //$response = $module->execute($request->getNextRequest());
+                // I don't believe the above is required. No one uses getNextRequest
+                $response = $module->execute($request);
+                
                 $this->renderResponse($request, $response);
                 $this->afterRun($request, $response);
                 if ($response instanceof \phpws2\Http\RedirectResponse) {
