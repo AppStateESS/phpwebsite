@@ -583,36 +583,36 @@ class Request extends \Data
         return $this->postVarIsset($name) ? $this->pullPostVar($name) : false;
     }
     
-    public static function pullPostString($varname)
+    public function pullPostString($varname)
     {
         return trim(strip_tags(filter_var($this->pullPostVar($varname),
                                 FILTER_SANITIZE_STRING,
                                 FILTER_FLAG_NO_ENCODE_QUOTES)));
     }
 
-    public static function pullPostBoolean($varname)
+    public function pullPostBoolean($varname)
     {
         return filter_var($this->pullPostVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
 
-    public static function pullPostInteger($varname)
+    public function pullPostInteger($varname)
     {
         return filter_var($this->pullPostVar($varname), FILTER_SANITIZE_NUMBER_INT);
     }
     
-    public static function pullGetString($varname)
+    public function pullGetString($varname)
     {
         return trim(strip_tags(filter_var($this->pullGetVar($varname),
                                 FILTER_SANITIZE_STRING,
                                 FILTER_FLAG_NO_ENCODE_QUOTES)));
     }
 
-    public static function pullGetBoolean($varname)
+    public function pullGetBoolean($varname)
     {
         return filter_var($this->pullGetVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
     
-    public static function pullGetInteger($varname)
+    public function pullGetInteger($varname)
     {
         return filter_var($this->pullGetVar($varname), FILTER_SANITIZE_NUMBER_INT);
     }
