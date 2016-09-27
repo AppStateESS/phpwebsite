@@ -55,7 +55,7 @@ abstract class Controller implements \Controller {
             case \Request::OPTIONS:
                 $response = $this->options($request);
                 break;
-            case REQUEST::PATCH:
+            case \Request::PATCH:
                 $response = $this->patch($request);
                 break;
             default:
