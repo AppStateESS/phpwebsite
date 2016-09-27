@@ -583,37 +583,55 @@ class Request extends \Data
         return $this->postVarIsset($name) ? $this->pullPostVar($name) : false;
     }
     
-    public function pullPostString($varname)
+    public function pullPostString($varname, $test_isset=false)
     {
+        if ($test_isset && !$this->postVarIsset($varname)) {
+            return false;
+        }
         return trim(strip_tags(filter_var($this->pullPostVar($varname),
                                 FILTER_SANITIZE_STRING,
                                 FILTER_FLAG_NO_ENCODE_QUOTES)));
     }
 
-    public function pullPostBoolean($varname)
+    public function pullPostBoolean($varname, $test_isset=false)
     {
+        if ($test_isset && !$this->postVarIsset($varname)) {
+            return null;
+        }
         return filter_var($this->pullPostVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
 
-    public function pullPostInteger($varname)
+    public function pullPostInteger($varname, $test_isset=false)
     {
+        if ($test_isset && !$this->postVarIsset($varname)) {
+            return false;
+        }
         return filter_var($this->pullPostVar($varname), FILTER_SANITIZE_NUMBER_INT);
     }
     
-    public function pullGetString($varname)
+    public function pullGetString($varname, $test_isset=false)
     {
+        if ($test_isset && !$this->getVarIsset($varname)) {
+            return false;
+        }
         return trim(strip_tags(filter_var($this->pullGetVar($varname),
                                 FILTER_SANITIZE_STRING,
                                 FILTER_FLAG_NO_ENCODE_QUOTES)));
     }
 
-    public function pullGetBoolean($varname)
+    public function pullGetBoolean($varname, $test_isset=false)
     {
+        if ($test_isset && !$this->getVarIsset($varname)) {
+            return null;
+        }
         return filter_var($this->pullGetVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
     
-    public function pullGetInteger($varname)
+    public function pullGetInteger($varname, $test_isset=false)
     {
+        if ($test_isset && !$this->getVarIsset($varname)) {
+            return false;
+        }
         return filter_var($this->pullGetVar($varname), FILTER_SANITIZE_NUMBER_INT);
     }
 }
