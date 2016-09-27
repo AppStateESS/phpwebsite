@@ -102,6 +102,18 @@ class Request extends \Data
      * @var string
      */
     private $last_command;
+    
+    /**
+     * Holds array of GET values only
+     * @var array
+     */
+    private $getVars;
+    
+    /**
+     * Holds array of POST values only
+     * @var array
+     */
+    private $postVars;
 
     /**
      * Builds the current page request object.
@@ -114,6 +126,9 @@ class Request extends \Data
      */
     public function __construct($url, $method, array $vars = null, $data = null, Http\Accept $accept = null)
     {
+        $this->getVars = array();
+        $this->postVars = array();
+        
         $this->setUrl($url);
         $this->setMethod($method);
 
@@ -268,8 +283,18 @@ class Request extends \Data
         return $this->method == self::PUT;
     }
 
-    // TODO: Add isX methods for Delete, Head, Options, Patch
-    //
+    public function isPatch()
+    {
+        return $this->method == self::PATCH;
+    }
+
+    public function isDelete()
+    {
+        return $this->method == self::DELETE;
+    }
+    
+    
+    
     public function setVars(array $vars)
     {
         $this->vars = $vars;
@@ -508,4 +533,87 @@ class Request extends \Data
         return $this->last_command;
     }
 
+    /**
+     * Set the "post" variable. These are set 
+     * @param array $post
+     */
+    public function setPostVars($post)
+    {
+        $this->postVars = $post;
+    }
+
+    public function setGetVars($get)
+    {
+        $this->get = $get;
+    }
+    
+    public function pullPostVar($name)
+    {
+        if (!isset($this->postVars[$name])) {
+            throw new \phpws2\Exception\ValueNotSet();
+        }
+        return $this->postVars[$name];
+    }
+    
+    public function pullGetVar($name)
+    {
+        if (!isset($this->postVars[$name])) {
+            throw new \phpws2\Exception\ValueNotSet();
+        }
+        return $this->getVars[$name];
+    }
+    
+    public function postVarIsset($name)
+    {
+        return isset($this->postVars[$name]);
+    }
+    
+    public function getVarIsset($name)
+    {
+        return isset($this->getVars[$name]);
+    }
+    
+    public function pullGetVarIfSet($name)
+    {
+        return $this->getVarIsset($name) ? $this->pullGetVar($name) : false;
+    }
+
+    public function pullPostVarIfSet($name)
+    {
+        return $this->postVarIsset($name) ? $this->pullPostVar($name) : false;
+    }
+    
+    public static function pullPostString($varname)
+    {
+        return trim(strip_tags(filter_var($this->pullPostVar($varname),
+                                FILTER_SANITIZE_STRING,
+                                FILTER_FLAG_NO_ENCODE_QUOTES)));
+    }
+
+    public static function pullPostBoolean($varname)
+    {
+        return filter_var($this->pullPostVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
+
+    public static function pullPostInteger($varname)
+    {
+        return filter_var($this->pullPostVar($varname), FILTER_SANITIZE_NUMBER_INT);
+    }
+    
+    public static function pullGetString($varname)
+    {
+        return trim(strip_tags(filter_var($this->pullGetVar($varname),
+                                FILTER_SANITIZE_STRING,
+                                FILTER_FLAG_NO_ENCODE_QUOTES)));
+    }
+
+    public static function pullGetBoolean($varname)
+    {
+        return filter_var($this->pullGetVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
+    
+    public static function pullGetInteger($varname)
+    {
+        return filter_var($this->pullGetVar($varname), FILTER_SANITIZE_NUMBER_INT);
+    }
 }

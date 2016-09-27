@@ -5,7 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Server {
+class Server
+{
 
     private static $REQUEST_SINGLETON;
 
@@ -28,6 +29,10 @@ class Server {
 
             self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data,
                     $accept);
+            if (isset($_POST)) {
+                self::$REQUEST_SINGLETON->setPostVars($_POST);
+            }
+            self::$REQUEST_SINGLETON->setGetVars($_GET);
         }
         return self::$REQUEST_SINGLETON;
     }
@@ -179,7 +184,8 @@ class Server {
      * @param boolean $with_directory
      * @return string
      */
-    public static function getSiteUrl($with_http = true, $with_directory = true, $end_slash = true)
+    public static function getSiteUrl($with_http = true, $with_directory = true,
+            $end_slash = true)
     {
         if (!isset($_SERVER['HTTP_HOST'])) {
             throw new \Exception('$_SERVER[HTTP_HOST] superglobal does not exist');
@@ -221,4 +227,3 @@ class Server {
     }
 
 }
-
