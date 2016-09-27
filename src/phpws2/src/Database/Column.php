@@ -36,7 +36,7 @@ abstract class Column extends Alias {
         if (!\phpws2\Database\DB::allowed($name)) {
             throw new \Exception(t('Bad column name'));
         }
-        $this->name = new \Variable\Attribute($name, 'name');
+        $this->name = new \phpws2\Variable\Attribute($name, 'name');
         $this->resource = $resource;
         if ($check_existence && !$this->resource->columnExists($name)) {
             throw new \Exception(t('Column "%s" does not exist in %s "%s"',

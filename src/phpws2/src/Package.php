@@ -31,8 +31,8 @@ abstract class Package {
 
     public function __construct($title, $version)
     {
-        $this->title = new \Variable\String($title, 'title');
-        $this->version = new \Variable\Version($version, 'version');
+        $this->title = new \phpws2\Variable\String($title, 'title');
+        $this->version = new \phpws2\Variable\Version($version, 'version');
     }
 
     public function disableTableCreation()

@@ -39,17 +39,17 @@ class Value extends Column
     {
         switch (\gettype($value)) {
             case 'string':
-                $this->value = new \Variable\String($value, $this->name);
+                $this->value = new \phpws2\Variable\String($value, $this->name);
                 return true;
                 break;
 
             case 'integer':
-                $this->value = new \Variable\Integer($value, $this->name);
+                $this->value = new \phpws2\Variable\Integer($value, $this->name);
                 return true;
                 break;
 
             case 'double':
-                $this->value = new \Variable\Double($value, $this->name);
+                $this->value = new \phpws2\Variable\Double($value, $this->name);
                 return true;
                 break;
 
@@ -69,7 +69,7 @@ class Value extends Column
                     //if ($value instanceof \Variable) {
                     $this->value = $value;
                     //} elseif (method_exists($value, '__toString')) {
-                    //$this->value = new \Variable\String($value->__toString(), $this->name);
+                    //$this->value = new \phpws2\Variable\String($value->__toString(), $this->name);
                 } else {
                     throw new \Exception(t('Unacceptable value type (%s)', gettype($value)));
                 }
@@ -77,7 +77,7 @@ class Value extends Column
                 break;
 
             case 'array':
-                $this->value = new \Variable\String(serialize($value), $this->name);
+                $this->value = new \phpws2\Variable\String(serialize($value), $this->name);
                 return true;
                 break;
 

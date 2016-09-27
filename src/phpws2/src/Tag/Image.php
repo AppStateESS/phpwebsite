@@ -74,7 +74,7 @@ class Image extends \Tag {
 
     public function setDirectory($directory)
     {
-        $this->directory = new \Variable\File($directory);
+        $this->directory = new \phpws2\Variable\File($directory);
     }
 
     public function getSrc()

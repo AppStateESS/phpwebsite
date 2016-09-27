@@ -72,9 +72,9 @@ class Modal {
     public function __construct($id, $content = null, $title = null)
     {
         self::$modal_started = true;
-        $this->id = new \Variable\Attribute($id, 'id');
-        $this->title = new \Variable\TextOnly($title, 'title');
-        $this->content = new \Variable\String($content, 'content');
+        $this->id = new \phpws2\Variable\Attribute($id, 'id');
+        $this->title = new \phpws2\Variable\TextOnly($title, 'title');
+        $this->content = new \phpws2\Variable\String($content, 'content');
     }
 
     public function setContent($content)

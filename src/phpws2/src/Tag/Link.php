@@ -26,12 +26,12 @@ class Link extends \Tag {
     public function setHref($href)
     {
         if (preg_match('/^mailto:/i', $href)) {
-            $this->href = new \Variable\Email($href);
+            $this->href = new \phpws2\Variable\Email($href);
         } elseif ($href == '#' || strtolower($href) == 'javascript:void(0)') {
             $this->voidHref();
             $this->href = 'javascript:void(0)';
         } else {
-            $this->href = new \Variable\Url($href);
+            $this->href = new \phpws2\Variable\Url($href);
         }
     }
 

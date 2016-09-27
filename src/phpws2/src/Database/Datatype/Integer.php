@@ -18,14 +18,15 @@ namespace phpws2\Database\Datatype;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Integer extends \phpws2\Database\Datatype {
+class Integer extends \phpws2\Database\Datatype
+{
 
     /**
      * Loads an integer variable into the default parameter.
      */
     protected function loadDefault()
     {
-        $this->default = new \Variable\Integer(null, 'default');
+        $this->default = new \phpws2\Variable\Integer(null, 'default');
         $this->default->allowNull(true);
     }
 

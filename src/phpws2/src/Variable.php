@@ -408,7 +408,7 @@ abstract class Variable extends \Data {
      */
     public function setColumnType($col_type)
     {
-        $col = new \Variable\Attribute($col_type, 'column_type');
+        $col = new \phpws2\Variable\Attribute($col_type, 'column_type');
         $this->column_type = $col->__toString();
     }
 

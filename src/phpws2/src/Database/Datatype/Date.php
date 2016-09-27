@@ -19,7 +19,7 @@ class Date extends \phpws2\Database\Datatype {
      */
     protected function loadDefault()
     {
-        $this->default = new \Variable\Date(null, 'default');
+        $this->default = new \phpws2\Variable\Date(null, 'default');
         $this->default->allowNull(true);
     }
 

@@ -169,7 +169,7 @@ class Arr extends \Variable
      * $animals[] = array('id'=>11, 'title'=>'bird');
      * $animals[] = array('id'=>4, 'title'=>'lizard');
      *
-     * $indexed = new \Variable\Arr($animals);
+     * $indexed = new \phpws2\Variable\Arr($animals);
      * $indexed->indexByColumn('id', true);
      *
      * var_dump($indexed->get());

@@ -230,7 +230,7 @@ abstract class Datatype extends \Data
         } elseif ($this->default instanceof \Variable) {
             $this->default->set($value);
         } else {
-            $this->default = new \Variable\String((string) $value);
+            $this->default = new \phpws2\Variable\String((string) $value);
         }
         return $this;
     }

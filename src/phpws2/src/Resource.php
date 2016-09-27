@@ -29,7 +29,7 @@ abstract class Resource extends \Data {
      */
     public function __construct()
     {
-        $this->id = new \Variable\Integer(0, 'id');
+        $this->id = new \phpws2\Variable\Integer(0, 'id');
         $this->id->setInputType('hidden');
         $this->addHiddenVariable('table');
     }

@@ -174,8 +174,8 @@ class Tag extends \Data
         if (is_numeric($value)) {
             $value = (string) $value;
         }
-        $oName = new \Variable\Attribute($name, 'dataNameAttribute');
-        $oValue = new \Variable\String($value, 'dataValueAttribute');
+        $oName = new \phpws2\Variable\Attribute($name, 'dataNameAttribute');
+        $oValue = new \phpws2\Variable\String($value, 'dataValueAttribute');
         $this->data[$oName->get()] = $oValue->get();
     }
 
@@ -197,7 +197,7 @@ class Tag extends \Data
      */
     protected function setTagType($tag_type)
     {
-        $this->tag_type = new \Variable\Attribute($tag_type, 'tag_type');
+        $this->tag_type = new \phpws2\Variable\Attribute($tag_type, 'tag_type');
     }
 
     /**
@@ -353,7 +353,7 @@ class Tag extends \Data
      */
     public function setId($id)
     {
-        $this->id = new \Variable\Attribute($id);
+        $this->id = new \phpws2\Variable\Attribute($id);
     }
 
     /**

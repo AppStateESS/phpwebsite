@@ -22,7 +22,7 @@ namespace phpws2;
 class PackageManager {
     public static function loadPackage($module)
     {
-        $moduleObj = new \Variable\Attribute($module);
+        $moduleObj = new \phpws2\Variable\Attribute($module);
         $file_path = 'Module/' . $moduleObj->get() . '/Setup/Package.php';
         $class_name = $moduleObj->get() . '\Setup\Package';
         if (!is_file($file_path)) {

@@ -169,8 +169,8 @@ abstract class Module extends \Data implements \Controller
      */
     public function __construct()
     {
-        $this->title = new \Variable\Attribute(null, 'title');
-        $this->proper_name = new \Variable\TextOnly(null, 'proper_name');
+        $this->title = new \phpws2\Variable\Attribute(null, 'title');
+        $this->proper_name = new \phpws2\Variable\TextOnly(null, 'proper_name');
     }
 
     public function execute(\Request $request)

@@ -180,7 +180,7 @@ class Pager
 
     public function setId($id)
     {
-        $attr = new \Variable\Attribute($id);
+        $attr = new \phpws2\Variable\Attribute($id);
         $this->id = $attr->get();
     }
 

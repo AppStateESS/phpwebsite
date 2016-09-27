@@ -61,7 +61,7 @@ class Table extends \phpws2\Database\Table
 
     public function renameField(\phpws2\Database\Field $field, $new_name)
     {
-        $update_name = new \Variable\Attribute($new_name, 'update_name');
+        $update_name = new \phpws2\Variable\Attribute($new_name, 'update_name');
         $sql[] = 'ALTER TABLE';
         $sql[] = $this->getFullName();
         $sql[] = 'RENAME COLUMN';
@@ -85,7 +85,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
                 $this->db->getDatabaseName() . '\'';
 
         if (isset($column_name)) {
-            $column = new \Variable\Attribute($column_name);
+            $column = new \phpws2\Variable\Attribute($column_name);
             $sql_query .= ' AND information_schema.columns.column_name=\'' .
                     $column->get() . '\'';
         }

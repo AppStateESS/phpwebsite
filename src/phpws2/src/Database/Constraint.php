@@ -29,7 +29,7 @@ abstract class Constraint {
 
     public function setName($name)
     {
-        $this->name = new \Variable\Attribute($name);
+        $this->name = new \phpws2\Variable\Attribute($name);
     }
 
     public function getName()

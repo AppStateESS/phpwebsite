@@ -56,7 +56,7 @@ class Integer extends \phpws2\Database\Datatype {
      */
     protected function loadDefault()
     {
-        $this->default = new \Variable\Integer(null, 'default');
+        $this->default = new \phpws2\Variable\Integer(null, 'default');
         $this->default->allowNull(true);
     }
 

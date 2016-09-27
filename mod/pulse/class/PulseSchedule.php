@@ -94,25 +94,25 @@ class PulseSchedule extends \Resource
 
     public function __construct()
     {
-        $this->active = new \Variable\Bool(true, 'active');
-        $this->class_method = new \Variable\Alphanumeric(null, 'class_method');
+        $this->active = new \phpws2\Variable\Bool(true, 'active');
+        $this->class_method = new \phpws2\Variable\Alphanumeric(null, 'class_method');
         $this->class_method->setLimit(100);
-        $this->class_name = new \Variable\String(null, 'class_name');
+        $this->class_name = new \phpws2\Variable\String(null, 'class_name');
         $this->class_name->setLimit(100);
-        $this->end_time = new \Variable\Integer(0, 'end_time');
-        $this->hash = new \Variable\Hash(null, 'hash');
+        $this->end_time = new \phpws2\Variable\Integer(0, 'end_time');
+        $this->hash = new \phpws2\Variable\Hash(null, 'hash');
         $this->hash->allowNull(true);
         $this->hash->setLimit(64);
-        $this->hold_on_error = new \Variable\Bool(0, 'hold_on_error');
-        $this->interim = new \Variable\Integer(60, 'interim');
-        $this->module = new \Variable\Alphanumeric(null, 'module');
+        $this->hold_on_error = new \phpws2\Variable\Bool(0, 'hold_on_error');
+        $this->interim = new \phpws2\Variable\Integer(60, 'interim');
+        $this->module = new \phpws2\Variable\Alphanumeric(null, 'module');
         $this->module->setLimit(50);
-        $this->name = new \Variable\String(null, 'name');
+        $this->name = new \phpws2\Variable\String(null, 'name');
         $this->name->setLimit(100);
-        $this->required_file = new \Variable\File(null, 'required_file');
-        $this->execute_after = new \Variable\Integer(0, 'execute_after');
-        $this->start_time = new \Variable\Integer(0, 'start_time');
-        $this->status = new \Variable\Integer(PULSE_STATUS_AWAKE, 'status');
+        $this->required_file = new \phpws2\Variable\File(null, 'required_file');
+        $this->execute_after = new \phpws2\Variable\Integer(0, 'execute_after');
+        $this->start_time = new \phpws2\Variable\Integer(0, 'start_time');
+        $this->status = new \phpws2\Variable\Integer(PULSE_STATUS_AWAKE, 'status');
         parent::__construct();
     }
 
