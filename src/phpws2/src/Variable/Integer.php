@@ -9,7 +9,7 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Integer extends \Variable {
+class Integer extends \phpws2\Variable {
 
     /**
      * By default, integer variables cannot be null

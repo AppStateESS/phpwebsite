@@ -11,7 +11,7 @@ namespace phpws2\Variable;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Attribute extends \Variable\String {
+class Attribute extends \phpws2\Variable\String {
 
     protected $regexp_match = '/^([a-z_:])([\w\.\-:])*$/i';
 

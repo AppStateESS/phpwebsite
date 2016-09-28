@@ -7,7 +7,7 @@ namespace phpws2\Variable;
  *
  * @author matt
  */
-class File extends \Variable\String {
+class File extends \phpws2\Variable\String {
 
     protected $input_type = 'file';
 

@@ -11,7 +11,7 @@ namespace phpws2\Variable;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @todo Added a shift and unshift function with associative properties
  */
-class Arr extends \Variable
+class Arr extends \phpws2\Variable
 {
     /**
      * Arr can use checkbox and select on form export
