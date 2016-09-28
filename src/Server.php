@@ -26,11 +26,28 @@ class Server
             $vars = $_REQUEST;
             $data = file_get_contents('php://input');
             $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
-
             self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data,
                     $accept);
-            if (isset($_POST)) {
-                self::$REQUEST_SINGLETON->setPostVars($_POST);
+            
+            $dataValues = array();
+            parse_str($data, $dataValues);
+            
+            switch ($method) {
+                case 'PATCH':
+                    self::$REQUEST_SINGLETON->setPatchVars($dataValues);
+                    break;
+                
+                case 'DELETE':
+                    self::$REQUEST_SINGLETON->setDeleteVars($dataValues);
+                    break;
+                
+                case 'PUT':
+                    self::$REQUEST_SINGLETON->setPutVars($dataValues);
+                    break;
+                
+                case 'POST':
+                    self::$REQUEST_SINGLETON->setPostVars($dataValues);
+                    break;
             }
             self::$REQUEST_SINGLETON->setGetVars($_GET);
         }
