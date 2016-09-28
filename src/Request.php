@@ -102,18 +102,36 @@ class Request extends \Data
      * @var string
      */
     private $last_command;
-    
+
     /**
      * Holds array of GET values only
      * @var array
      */
     private $getVars;
-    
+
     /**
      * Holds array of POST values only
      * @var array
      */
     private $postVars;
+
+    /**
+     * Holds array of PATCH values only
+     * @var array
+     */
+    private $patchVars;
+
+    /**
+     * Holds array of DELETE values only
+     * @var array
+     */
+    private $deleteVars;
+
+    /**
+     * Holds array of PUT values only
+     * @var array
+     */
+    private $putVars;
 
     /**
      * Builds the current page request object.
@@ -124,11 +142,12 @@ class Request extends \Data
      *                    Form data)
      * @param $accept Http\Accept
      */
-    public function __construct($url, $method, array $vars = null, $data = null, Http\Accept $accept = null)
+    public function __construct($url, $method, array $vars = null, $data = null,
+            Http\Accept $accept = null)
     {
         $this->getVars = array();
         $this->postVars = array();
-        
+
         $this->setUrl($url);
         $this->setMethod($method);
 
@@ -292,9 +311,7 @@ class Request extends \Data
     {
         return $this->method == self::DELETE;
     }
-    
-    
-    
+
     public function setVars(array $vars)
     {
         $this->vars = $vars;
@@ -380,7 +397,8 @@ class Request extends \Data
      */
     public function setMethod($method)
     {
-        if (in_array($method, array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
+        if (in_array($method,
+                        array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
             $this->method = $method;
         } else {
             throw new \Exception(t('Unknown state type'));
@@ -462,7 +480,8 @@ class Request extends \Data
         $url = preg_replace('@^/[^/]*@', '', $this->getUrl());
 
         $request = new Request(
-                $url, $this->getMethod(), $this->getRequestVars(), $this->getRawData(), $this->getAccept());
+                $url, $this->getMethod(), $this->getRequestVars(),
+                $this->getRawData(), $this->getAccept());
         $request->setPostVars($this->postVars);
         $request->setGetVars($this->getVars);
         return $request;
@@ -537,19 +556,42 @@ class Request extends \Data
     }
 
     /**
-     * Set the "post" variable. These are set 
      * @param array $post
      */
-    public function setPostVars($post)
+    public function setPostVars($vars)
     {
-        $this->postVars = $post;
+        $this->postVars = $vars;
     }
 
-    public function setGetVars($get)
+    /**
+     * @param array $vars
+     */
+    public function setPatchVars($vars)
     {
-        $this->getVars = $get;
+        $this->patchVars = $vars;
     }
-    
+
+    /**
+     * @param array $vars
+     */
+    public function setPutVars($vars)
+    {
+        $this->putVars = $vars;
+    }
+
+    /**
+     * @param array $vars
+     */
+    public function setDeleteVars($vars)
+    {
+        $this->deleteVars = $vars;
+    }
+
+    public function setGetVars($vars)
+    {
+        $this->getVars = $vars;
+    }
+
     public function pullPostVar($name)
     {
         if (!isset($this->postVars[$name])) {
@@ -557,7 +599,31 @@ class Request extends \Data
         }
         return $this->postVars[$name];
     }
-    
+
+    public function pullPatchVar($name)
+    {
+        if (!isset($this->patchVars[$name])) {
+            throw new \phpws2\Exception\ValueNotSet();
+        }
+        return $this->patchVars[$name];
+    }
+
+    public function pullPutVar($name)
+    {
+        if (!isset($this->putVars[$name])) {
+            throw new \phpws2\Exception\ValueNotSet();
+        }
+        return $this->putVars[$name];
+    }
+
+    public function pullDeleteVar($name)
+    {
+        if (!isset($this->postVars[$name])) {
+            throw new \phpws2\Exception\ValueNotSet();
+        }
+        return $this->deleteVars[$name];
+    }
+
     public function pullGetVar($name)
     {
         if (!isset($this->getVars[$name])) {
@@ -565,76 +631,199 @@ class Request extends \Data
         }
         return $this->getVars[$name];
     }
-    
+
     public function postVarIsset($name)
     {
         return isset($this->postVars[$name]);
     }
-    
+
+    public function patchVarIsset($name)
+    {
+        return isset($this->patchVars[$name]);
+    }
+
+    public function putVarIsset($name)
+    {
+        return isset($this->putVars[$name]);
+    }
+
+    public function deleteVarIsset($name)
+    {
+        return isset($this->deleteVars[$name]);
+    }
+
     public function getVarIsset($name)
     {
         return isset($this->getVars[$name]);
-    }
-    
-    public function pullGetVarIfSet($name)
-    {
-        return $this->getVarIsset($name) ? $this->pullGetVar($name) : false;
     }
 
     public function pullPostVarIfSet($name)
     {
         return $this->postVarIsset($name) ? $this->pullPostVar($name) : false;
     }
-    
-    public function pullPostString($varname, $test_isset=false)
+
+    public function pullPatchVarIfSet($name)
+    {
+        return $this->patchVarIsset($name) ? $this->pullPatchVar($name) : false;
+    }
+
+    public function pullPutVarIfSet($name)
+    {
+        return $this->putVarIsset($name) ? $this->pullPutVar($name) : false;
+    }
+
+    public function pullDeleteVarIfSet($name)
+    {
+        return $this->deleteVarIsset($name) ? $this->pullDeleteVar($name) : false;
+    }
+
+    public function pullGetVarIfSet($name)
+    {
+        return $this->getVarIsset($name) ? $this->pullGetVar($name) : false;
+    }
+
+    public function pullPostString($varname, $test_isset = false)
     {
         if ($test_isset && !$this->postVarIsset($varname)) {
             return false;
         }
-        return trim(strip_tags(filter_var($this->pullPostVar($varname),
-                                FILTER_SANITIZE_STRING,
-                                FILTER_FLAG_NO_ENCODE_QUOTES)));
+
+        return $this->pullString($this->pullPostVar($varname));
     }
 
-    public function pullPostBoolean($varname, $test_isset=false)
+    public function pullPutString($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->putVarIsset($varname)) {
+            return false;
+        }
+
+        return $this->pullString($this->pullPutVar($varname));
+    }
+
+    public function pullPatchString($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->patchVarIsset($varname)) {
+            return false;
+        }
+
+        return $this->pullString($this->pullPatchVar($varname));
+    }
+
+    public function pullDeleteString($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->deleteVarIsset($varname)) {
+            return false;
+        }
+
+        return $this->pullString($this->pullDeleteVar($varname));
+    }
+
+    public function pullGetString($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->getVarIsset($varname)) {
+            return false;
+        }
+
+        return $this->pullString($this->pullGetVar($varname));
+    }
+
+    
+    public function pullPostBoolean($varname, $test_isset = false)
     {
         if ($test_isset && !$this->postVarIsset($varname)) {
             return null;
         }
-        return filter_var($this->pullPostVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return $this->pullBoolean($this->pullPostVar($varname));
     }
 
-    public function pullPostInteger($varname, $test_isset=false)
+    public function pullPutBoolean($varname, $test_isset = false)
     {
-        if ($test_isset && !$this->postVarIsset($varname)) {
-            return false;
+        if ($test_isset && !$this->putVarIsset($varname)) {
+            return null;
         }
-        return filter_var($this->pullPostVar($varname), FILTER_VALIDATE_INT);
-    }
-    
-    public function pullGetString($varname, $test_isset=false)
-    {
-        if ($test_isset && !$this->getVarIsset($varname)) {
-            return false;
-        }
-        return trim(strip_tags(filter_var($this->pullGetVar($varname),
-                                FILTER_SANITIZE_STRING,
-                                FILTER_FLAG_NO_ENCODE_QUOTES)));
+        return $this->pullBoolean($this->pullPutVar($varname));
     }
 
-    public function pullGetBoolean($varname, $test_isset=false)
+    public function pullPatchBoolean($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->patchVarIsset($varname)) {
+            return null;
+        }
+        return $this->pullBoolean($this->pullPatchVar($varname));
+    }
+
+    public function pullDeleteBoolean($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->deleteVarIsset($varname)) {
+            return null;
+        }
+        return $this->pullBoolean($this->pullDeleteVar($varname));
+    }
+
+    public function pullGetBoolean($varname, $test_isset = false)
     {
         if ($test_isset && !$this->getVarIsset($varname)) {
             return null;
         }
-        return filter_var($this->pullGetVar($varname), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return $this->pullBoolean($this->pullGetVar($varname));
     }
+
     
-    public function pullGetInteger($varname, $test_isset=false)
+    public function pullPostInteger($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->postVarIsset($varname)) {
+            return false;
+        }
+        return $this->pullInteger($this->pullPostVar($varname));
+    }
+
+    public function pullPutInteger($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->putVarIsset($varname)) {
+            return false;
+        }
+        return $this->pullInteger($this->pullPutVar($varname));
+    }
+
+    public function pullPatchInteger($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->patchVarIsset($varname)) {
+            return false;
+        }
+        return $this->pullInteger($this->pullPatchVar($varname));
+    }
+
+    public function pullDeleteInteger($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->deleteVarIsset($varname)) {
+            return false;
+        }
+        return $this->pullInteger($this->pullDeleteVar($varname));
+    }
+
+    public function pullGetInteger($varname, $test_isset = false)
     {
         if ($test_isset && !$this->getVarIsset($varname)) {
             return false;
         }
-        return filter_var($this->pullGetVar($varname), FILTER_VALIDATE_INT);
+        return $this->pullInteger($this->pullGetVar($varname));
     }
+
+    private function pullString($value)
+    {
+        return trim(strip_tags(filter_var($value, FILTER_SANITIZE_STRING,
+                                FILTER_FLAG_NO_ENCODE_QUOTES)));
+    }
+
+    private function pullBoolean($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN,
+                FILTER_NULL_ON_FAILURE);
+    }
+
+    private function pullInteger($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_INT);
+    }
+    
 }
