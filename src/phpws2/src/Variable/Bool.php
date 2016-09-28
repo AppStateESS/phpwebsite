@@ -9,7 +9,8 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Bool extends \Variable {
+class Bool extends \phpws2\Variable
+{
 
     /**
      * @var boolean
@@ -24,12 +25,17 @@ class Bool extends \Variable {
 
     /**
      * Checks if value is a boolean
+     * This method is NOT used by set(). See below.
      * @param boolean $value
      * @return boolean
      */
     protected function verifyValue($value)
     {
-        return is_bool($value);
+        if ($this->isTrue($value) || $this->isFalse($value)) {
+            return true;
+        } else {
+            throw new \Exception('Value is not boolean');
+        }
     }
 
     public function defineAsPHP()
@@ -60,10 +66,42 @@ class Bool extends \Variable {
     {
         return $this->value ? 1 : 0;
     }
-    
+
     public function __toString()
     {
         return $this->value ? '1' : '0';
+    }
+
+    private function isTrue($value)
+    {
+        static $truism = array('1', 1, 'true', true, 'yes');
+
+        return in_array($value, $truism, true);
+    }
+
+    private function isFalse($value)
+    {
+        static $falsehood = array('0', 0, 'false', false, 'no');
+
+        return in_array($value, $falsehood, true);
+    }
+
+    /**
+     * Because of the interesting way php defines booleans,
+     * the parent set method needed to be overwritten.
+     * 
+     * @param mixed $value
+     * @return boolean
+     */
+    public function set($value)
+    {
+        if ($this->isTrue($value)) {
+            return parent::set(true);
+        } elseif ($this->isFalse($value)) {
+            return parent::set(false);
+        } else {
+            throw new \Exception('Value is not boolean');
+        }
     }
 
 }
