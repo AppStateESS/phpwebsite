@@ -294,7 +294,7 @@ abstract class Data
      * @param boolean $return_null If true, return variables with NULL values
      * @return array
      */
-    public function getVars($return_null = false)
+    public function getVars($return_null = false, $hide=null)
     {
         $vars = get_object_vars($this);
         unset($vars['allowed_variables']);
@@ -311,7 +311,14 @@ abstract class Data
         if (!empty($this->allowed_variables)) {
             $vars = array_intersect_key($vars, $this->allowed_variables);
         }
-
+        
+        if (is_string($hide)) {
+            $hide = array($hide);
+        }
+        $hide = array_flip($hide);
+        if (is_array($hide) && !empty($hide)) {
+            $vars = array_diff_key($vars, $hide);
+        }
         if (!empty($this->hidden_variables)) {
             $vars = array_diff_key($vars, $this->hidden_variables);
         }
@@ -324,9 +331,9 @@ abstract class Data
      * @return array
      * @throws \Exception
      */
-    public function getStringVars()
+    public function getStringVars($return_null=false, $hide=null)
     {
-        $vars = $this->getVars();
+        $vars = $this->getVars($return_null, $hide);
 
         if (empty($vars)) {
             throw new \Exception(t('No variables returned from Data object'));
