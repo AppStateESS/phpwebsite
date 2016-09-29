@@ -134,7 +134,7 @@ class ForeignKey extends Constraint implements TableCreateConstraint {
         $sql[] = 'ALTER TABLE';
         $sql[] = $this->source_table->getFullName();
         $sql[] = 'ADD';
-        $sql[] = $this->__toString();
+        $sql[] = $this->getConstraintString();
         $query = implode(' ', $sql);
         $this->source_table->db->query($query);
     }
