@@ -214,7 +214,8 @@ abstract class Data
     public function debugToString()
     {
         if (!method_exists($this, '__toString')) {
-            throw new \Exception(t('Class "%s" does not contain a __toString method', get_class($this)));
+            throw new \Exception(t('Class "%s" does not contain a __toString method',
+                    get_class($this)));
         }
         if (function_exists('xdebug_var_dump')) {
             // xdebug adds <pre> tags
@@ -232,15 +233,18 @@ abstract class Data
     private function checkVariableName($variable_name)
     {
         if (!is_string($variable_name)) {
-            throw new \Exception(t('Variable name expects a string not a %s', gettype($variable_name)));
+            throw new \Exception(t('Variable name expects a string not a %s',
+                    gettype($variable_name)));
         }
 
         if (preg_match('/\W/', $variable_name)) {
-            throw new \Exception(t('Illegally formatted variable name "%s"', $variable_name));
+            throw new \Exception(t('Illegally formatted variable name "%s"',
+                    $variable_name));
         }
 
         if (!property_exists($this, $variable_name)) {
-            throw new \Exception(t('Variable name "%s" not found in object', $variable_name));
+            throw new \Exception(t('Variable name "%s" not found in object',
+                    $variable_name));
         }
     }
 
@@ -294,7 +298,7 @@ abstract class Data
      * @param boolean $return_null If true, return variables with NULL values
      * @return array
      */
-    public function getVars($return_null = false, $hide=null)
+    public function getVars($return_null = false, $hide = null)
     {
         $vars = get_object_vars($this);
         unset($vars['allowed_variables']);
@@ -311,13 +315,17 @@ abstract class Data
         if (!empty($this->allowed_variables)) {
             $vars = array_intersect_key($vars, $this->allowed_variables);
         }
-        
-        if (is_string($hide)) {
-            $hide = array($hide);
-        }
-        $hide = array_flip($hide);
-        if (is_array($hide) && !empty($hide)) {
-            $vars = array_diff_key($vars, $hide);
+
+        if (!empty($hide)) {
+            if (is_string($hide)) {
+                $hide = array($hide);
+            } elseif (!is_array($hide)) {
+                throw new \Exception('Hide parameter must be a string or an array');
+            }
+            $hide = array_flip($hide);
+            if (is_array($hide)) {
+                $vars = array_diff_key($vars, $hide);
+            }
         }
         if (!empty($this->hidden_variables)) {
             $vars = array_diff_key($vars, $this->hidden_variables);
@@ -331,7 +339,7 @@ abstract class Data
      * @return array
      * @throws \Exception
      */
-    public function getStringVars($return_null=false, $hide=null)
+    public function getStringVars($return_null = false, $hide = null)
     {
         $vars = $this->getVars($return_null, $hide);
 
@@ -361,7 +369,8 @@ abstract class Data
     {
         foreach ($vars as $key => $value) {
             if (!property_exists($this, $key)) {
-                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
+                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
+                        $key, get_class($this)));
             }
             if (!$this->isPrivate($key) && is_a($this->$key, '\phpws2\Variable')) {
                 if (!is_null($value)) {
@@ -374,7 +383,8 @@ abstract class Data
                 } elseif ($this->isProtected($key)) {
                     $this->$key = $value;
                 } else {
-                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s', $key, get_class($this)));
+                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
+                            $key, get_class($this)));
                 }
             } else {
                 $this->$key = $value;
@@ -444,7 +454,8 @@ abstract class Data
         }
 
         if (!is_writable(dirname($file_path))) {
-            throw new \Exception(t('Cannot write file to directory "%s"', dirname($file_path) . '/'));
+            throw new \Exception(t('Cannot write file to directory "%s"',
+                    dirname($file_path) . '/'));
         }
 
         $vars = $this->getVars();
