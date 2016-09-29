@@ -35,6 +35,9 @@ abstract class Datatype extends \Data
     protected $is_null = false;
     protected $table = null;
     protected $check = null;
+    
+    protected $is_primary_key = false;
+    protected $is_unique = false;
 
     /**
      * Size of datatype. Used with character types, floats, etc.
@@ -309,6 +312,26 @@ abstract class Datatype extends \Data
     public function getSize()
     {
         return $this->size;
+    }
+    
+    public function setIsPrimaryKey($key)
+    {
+        $this->is_primary_key = (bool)$key;
+    }
+    
+    public function setIsUnique($key)
+    {
+        $this->is_unique = (bool)$key;
+    }
+    
+    public function getIsPrimaryKey()
+    {
+        return $this->is_primary_key;
+    }
+    
+    public function getIsUnique()
+    {
+        return $this->is_unique;
     }
 
 }
