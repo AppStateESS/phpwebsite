@@ -130,13 +130,13 @@ class ResourceFactory
      * @param string $class_name : Class used to instantiate objects
      * @return array
      */
-    public static function makeResourceStringArray(array $resource_array, $class_name)
+    public static function makeResourceStringArray(array $resource_array, $class_name, $hide=null)
     {
         $object_stack = array();
         foreach ($resource_array as $row) {
             $obj = new $class_name;
             $obj->setVars($row);
-            $object_stack[] = $obj->getStringVars();
+            $object_stack[] = $obj->getStringVars(false, $hide);
         }
         return $object_stack;
     }
