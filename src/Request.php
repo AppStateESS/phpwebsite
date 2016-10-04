@@ -727,7 +727,6 @@ class Request extends \Data
         return $this->pullString($this->pullGetVar($varname));
     }
 
-    
     public function pullPostBoolean($varname, $test_isset = false)
     {
         if ($test_isset && !$this->postVarIsset($varname)) {
@@ -768,7 +767,6 @@ class Request extends \Data
         return $this->pullBoolean($this->pullGetVar($varname));
     }
 
-    
     public function pullPostInteger($varname, $test_isset = false)
     {
         if ($test_isset && !$this->postVarIsset($varname)) {
@@ -825,5 +823,28 @@ class Request extends \Data
     {
         return filter_var($value, FILTER_VALIDATE_INT);
     }
-    
+
+    public function listVars()
+    {
+        $varlist['GET'] = $this->getVars;
+        switch ($this->method) {
+            case self::DELETE:
+                $varlist['DELETE'] = $this->deleteVars;
+                break;
+
+            case self::PATCH:
+                $varlist['PATCH'] = $this->patchVars;
+                break;
+
+            case self::POST:
+                $varlist['POST'] = $this->postVars;
+                break;
+
+            case self::PUT:
+                $varlist['PUT'] = $this->putVars;
+                break;
+        }
+        return $varlist;
+    }
+
 }
