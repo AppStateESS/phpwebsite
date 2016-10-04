@@ -230,7 +230,7 @@ function MenuAdmin() {
                         }
 
                         $('#menu-template option').removeAttr('selected');
-                        $('#menu-template option[value="' + data.template + '"]').attr('selected', 'selected');
+                        $('#menu-template option[value="' + data.template + '"]')[0].selected = true;
                         t.input.setAssocPage(data.assoc_key);
                         t.input.setAssocImageThumbnail(data.assoc_image_thumbnail);
                         if (data.assoc_image_thumbnail.length > 0) {

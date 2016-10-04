@@ -823,6 +823,7 @@ EOF;
         $theme_menu_templates = PHPWS_File::listDirectories(PHPWS_Template::getTplDir('menu') . 'menu_layout/');
 
         $menu_tpls[] = '<optgroup label="' . t('Menu module templates') . '">';
+        unset($main_menu_templates[array_search('admin', $main_menu_templates)]);
         foreach ($main_menu_templates as $menu_tpl) {
             if ($first_menu_template == $menu_tpl) {
                 $selected = ' selected="selected"';
@@ -832,7 +833,7 @@ EOF;
             $menu_tpls[] = "<option value='$menu_tpl'$selected>$menu_tpl</option>";
         }
         $menu_tpls[] = '</optgroup>';
-
+        
         if (!empty($theme_menu_templates)) {
             $menu_tpls[] = '<optgroup label="' . t('Theme templates') . '">';
             foreach ($theme_menu_templates as $menu_tpl) {
