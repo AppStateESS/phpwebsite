@@ -357,7 +357,7 @@ abstract class Table extends Resource
         if (!$this->db->allowed($column_name)) {
             throw new \Exception(t('Improper column name: "%s"', $column_name));
         }
-        if ($value instanceof \Variable) {
+        if ($value instanceof \phpws2\Variable) {
             $value = $value->toDatabase();
         }
         $db_value = new Value($this, $column_name, $value);

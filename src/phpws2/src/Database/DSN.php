@@ -62,41 +62,41 @@ class DSN extends \Data {
      */
     public function __construct($database_type, $username, $password = null, $database_name = null, $host = null, $port = null)
     {
-        $this->database_type = \Variable::factory('string', $database_type,
+        $this->database_type = \phpws2\Variable::factory('string', $database_type,
                         'database_type');
         $this->database_type->setLimit(12);
         $this->database_type->setLabel(t('Database type'));
         $this->database_type->wordCharactersOnly();
 
-        $this->database_name = \Variable::factory('string', $database_name,
+        $this->database_name = \phpws2\Variable::factory('string', $database_name,
                         'database_name');
         $this->database_name->setLimit(58);
         $this->database_name->setLabel(t('Database name'));
         $this->database_name->wordCharactersOnly();
 
-        $this->username = \Variable::factory('string', $username, 'username');
+        $this->username = \phpws2\Variable::factory('string', $username, 'username');
         $this->username->setLimit(255);
         $this->username->setLabel(t('Database user name'));
         $this->username->wordCharactersOnly();
 
-        $this->password = \Variable::factory('string', $password, 'password');
+        $this->password = \phpws2\Variable::factory('string', $password, 'password');
         $this->password->setLimit(255);
         $this->password->setLabel(t('Database password'));
         $this->password->setInputType('password');
 
-        $this->table_prefix = \Variable::factory('string', null, 'table_prefix');
+        $this->table_prefix = \phpws2\Variable::factory('string', null, 'table_prefix');
         $this->table_prefix->allowNull(true);
         $this->table_prefix->setLimit(5);
         $this->table_prefix->setLabel(t('Table prefix'));
         $this->table_prefix->wordCharactersOnly();
 
-        $this->host = \Variable::factory('string', null, 'host');
+        $this->host = \phpws2\Variable::factory('string', null, 'host');
         $this->host->setLimit(255);
         $this->host->setLabel('Database host');
         $this->host->allowNull(true);
         $this->host->set($host);
 
-        $this->port = \Variable::factory('integer', null, 'port');
+        $this->port = \phpws2\Variable::factory('integer', null, 'port');
         $this->port->setLabel('Database port');
         $this->port->setRange('1', '65535');
         $this->port->allowNull(true);

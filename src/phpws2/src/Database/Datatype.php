@@ -19,12 +19,12 @@ abstract class Datatype extends \Data
 
     /**
      * Default value of data type
-     * @var \Variable
+     * @var \phpws2\Variable
      */
     protected $default = null;
 
     /**
-     * @var \Variable Value of data type.
+     * @var \phpws2\Variable Value of data type.
      */
     protected $value = null;
 
@@ -95,7 +95,7 @@ abstract class Datatype extends \Data
             throw new \Exception(\t('Unknown class name "%s"', $class_name));
         }
         $object = new $datatype_name($table, $name);
-        if ($object->default instanceof \Variable) {
+        if ($object->default instanceof \phpws2\Variable) {
             $object->setDefault($value);
         }
         return $object;
@@ -135,7 +135,7 @@ abstract class Datatype extends \Data
 
     public function setName($name)
     {
-        $this->name = \Variable::factory('alphanumeric', $name);
+        $this->name = \phpws2\Variable::factory('alphanumeric', $name);
     }
 
     public function getName()
@@ -225,12 +225,12 @@ abstract class Datatype extends \Data
     public function setDefault($value)
     {
         if (is_null($value)) {
-            if ($this->default instanceof \Variable) {
+            if ($this->default instanceof \phpws2\Variable) {
                 $this->default->set(null);
             } else {
                 $this->default = null;
             }
-        } elseif ($this->default instanceof \Variable) {
+        } elseif ($this->default instanceof \phpws2\Variable) {
             $this->default->set($value);
         } else {
             $this->default = new \phpws2\Variable\String((string) $value);

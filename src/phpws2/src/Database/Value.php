@@ -66,7 +66,7 @@ class Value extends Column
                  * someone puts in
                  */
                 if (is_string_like($value)) {
-                    //if ($value instanceof \Variable) {
+                    //if ($value instanceof \phpws2\Variable) {
                     $this->value = $value;
                     //} elseif (method_exists($value, '__toString')) {
                     //$this->value = new \phpws2\Variable\String($value->__toString(), $this->name);

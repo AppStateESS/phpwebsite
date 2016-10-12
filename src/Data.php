@@ -109,9 +109,9 @@ abstract class Data
     {
         $class_name = get_class($value);
 
-        if ($value instanceof \Variable\Bool) {
+        if ($value instanceof \phpws2\Variable\Bool) {
             $object_value = $value->get() ? 'TRUE' : 'FALSE';
-        } elseif ($value instanceof \Variable) {
+        } elseif ($value instanceof \phpws2\Variable) {
             $object_value = $value->get();
         } else {
             $variables = get_object_vars($value);
