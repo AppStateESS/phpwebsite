@@ -1,20 +1,25 @@
 <?php
 namespace phpws2\Exception;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- * Description of ValueNotSet
+ * Exception thrown when a variable is not set.
+ * First parameter is the name of the variable
  *
- * @author matt
+ * @author mcnaneym@appstate.edu
  */
 class ValueNotSet extends \Exception
 {
-    public function __construct()
+    public $varname;
+    
+    public function __construct($varname=null)
     {
-        parent::__construct('Value not set', 1);
+        if (is_string($varname)) {
+            $this->varname = $varname;
+            $message = 'Value not set: ' . $this->varname;
+        } else {
+            $message = 'Value not set';
+        }
+            parent::__construct($message);
+            
     }
 }
