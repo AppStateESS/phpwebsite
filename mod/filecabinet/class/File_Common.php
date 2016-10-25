@@ -164,10 +164,12 @@ class File_Common
             switch ($_FILES[$var_name]['error']) {
                 case UPLOAD_ERR_INI_SIZE:
                     $this->_errors[] = PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
+                    throw new \Exception('Upload error: File size too large.');
                     break;
 
                 case UPLOAD_ERR_FORM_SIZE:
                     $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array(self::humanReadable($this->_max_size)));
+                    throw new \Exception('Upload error: File size greater than max form upload.');
                     return false;
                     break;
 
@@ -177,12 +179,14 @@ class File_Common
                         return true;
                     } else {
                         $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
+                        throw new \Exception('Missing file.');
                         return false;
                     }
                     break;
 
                 case UPLOAD_ERR_NO_TMP_DIR:
                     $this->_errors[] = PHPWS_Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                    throw new \Exception('Upload error: No temp directory.');
                     return false;
             }
         }
@@ -193,6 +197,7 @@ class File_Common
 
         if (PHPWS_Error::isError($this->_upload)) {
             $this->_errors[] = $this->_upload();
+            throw new \Exception('Upload error:');
             return false;
         }
 
@@ -220,6 +225,7 @@ class File_Common
 
             if (!PHPWS_File::checkMimeType($file_vars['tmp_name'], $file_vars['ext'])) {
                 $this->_errors[] = PHPWS_Error::get(FC_FILE_TYPE_MISMATCH, 'filecabinet', 'File_Common::importPost', $file_vars['ext'] . ':' . PHPWS_File::getMimeType($file_vars['tmp_name']));
+                throw new \Exception('Upload error: Bad file type.');
                 return false;
             }
 
