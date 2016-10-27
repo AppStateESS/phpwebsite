@@ -72,7 +72,7 @@ class Form extends Tag {
     public function __construct()
     {
         parent::__construct('form');
-        $this->action = \Server::getCurrentUrl();
+        $this->action = \Canopy\Server::getCurrentUrl();
         static $default_id = 1;
         $this->setId('form-' . $default_id);
         $default_id++;
@@ -157,7 +157,7 @@ class Form extends Tag {
      */
     public function addInput($type, $name, $value = null, $label = null)
     {
-        if (!is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
+        if (!\Canopy\String::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
             throw new \Exception(t('Improperly formatted input name: %s', $name));
         }
 
@@ -179,7 +179,7 @@ class Form extends Tag {
      */
     public function addChoice($type, $name, $value = null)
     {
-        if (!is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
+        if (!\Canopy\String::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
             throw new \Exception(t('Improperly formatted choice name: %s', $name));
         }
 
@@ -472,7 +472,7 @@ class Form extends Tag {
     public function setAction($action)
     {
         if (!preg_match('/^http(s)?:/i', $action)) {
-            $action = \Server::getSiteUrl() . $action;
+            $action = \Canopy\Server::getSiteUrl() . $action;
         }
         $this->action = $action;
     }

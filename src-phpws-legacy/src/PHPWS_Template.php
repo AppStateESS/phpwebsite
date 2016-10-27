@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,4 +22,4 @@
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/src/Template.php';
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/Template.php';

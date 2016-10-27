@@ -94,7 +94,8 @@ class Error {
         if (defined('PHPWS_DSN')) {
             $message = str_replace(PHPWS_DSN, '-- DSN removed --', $message);
         }
-        logMessage($message, 'error.log');
+
+        \Canopy\Log::logMessage($message, 'error.log');
     }
 
     /**

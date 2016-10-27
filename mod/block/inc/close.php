@@ -7,8 +7,8 @@ Block::show();
 
 if (Current_User::allow('block')) {
 
-    $key = Key::getCurrent();
-    if (Key::checkKey($key) && javascriptEnabled()) {
+    $key = \Canopy\Key::getCurrent();
+    if (\Canopy\Key::checkKey($key) && javascriptEnabled()) {
         javascript('jquery');
         javascript('ckeditor');
         $js_address = PHPWS_SOURCE_HTTP . 'mod/block/javascript/addblock/script.js';

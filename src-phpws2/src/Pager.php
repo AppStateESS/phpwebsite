@@ -118,7 +118,7 @@ class Pager
     {
         javascript('jquery');
 
-        $request = \Server::getCurrentRequest();
+        $request = \Canopy\Server::getCurrentRequest();
         if ($request->isVar('sort_by') && $request->isVar('direction')) {
             $column = $request->getVar('sort_by');
             $direction = $request->getVar('direction');

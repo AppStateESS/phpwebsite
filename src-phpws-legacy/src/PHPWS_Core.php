@@ -257,7 +257,7 @@ class PHPWS_Core
      */
     public static function getHttp()
     {
-        return \Server::getHttp();
+        return \Canopy\Server::getHttp();
     }
 
     /**
@@ -620,7 +620,7 @@ class PHPWS_Core
      */
     public static function getHomeHttp($with_http = true, $with_directory = true, $with_slash = true)
     {
-        $url = \Server::getSiteUrl($with_http, $with_directory);
+        $url = \Canopy\Server::getSiteUrl($with_http, $with_directory);
         if ($with_slash && !preg_match('/\/$/', $url)) {
             $url .= '/';
         }
@@ -674,7 +674,7 @@ class PHPWS_Core
      */
     public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
-        return \Server::getCurrentUrl($relative, $use_redirect);
+        return \Canopy\Server::getCurrentUrl($relative, $use_redirect);
     }
 
     /**
@@ -756,8 +756,8 @@ class PHPWS_Core
      */
     public static function trackAuthentication($message)
     {
-        $url = \Server::getCurrentUrl(false, false);
-        $request = \Server::getCurrentRequest();
+        $url = \Canopy\Server::getCurrentUrl(false, false);
+        $request = \Canopy\Server::getCurrentRequest();
         if ($request->isPost()) {
             $type = 'POST';
         } else {

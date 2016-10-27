@@ -9,7 +9,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Settings extends \Data
+class Settings extends \Canopy\Data
 {
 
     public $variables;

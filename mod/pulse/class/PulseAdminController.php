@@ -46,7 +46,7 @@ class PulseAdminController extends \Http\Controller
         switch ($cmd) {
             case 'toggleAllow':
                 \Settings::set('pulse', 'allow_web_access', (\Settings::get('pulse', 'allow_web_access') - 1) * -1);
-                $response = new \Http\SeeOtherResponse(\Server::getSiteUrl() . 'pulse/admin/');
+                $response = new \Http\SeeOtherResponse(\Canopy\Server::getSiteUrl() . 'pulse/admin/');
                 break;
         }
         return $response;

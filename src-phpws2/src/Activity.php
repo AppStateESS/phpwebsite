@@ -46,7 +46,7 @@ class Activity extends \Resource {
             $activity->user_id = \User\Current::getUserId();
         }
         try {
-            $activity->ip_address = \Server::getUserIp();
+            $activity->ip_address = \Canopy\Server::getUserIp();
         } catch (Exception $e) {
             $activity->ip_address = '0.0.0.0';
             \Error::log($e);

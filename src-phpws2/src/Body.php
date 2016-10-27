@@ -9,7 +9,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Body extends \Data {
+class Body extends \Canopy\Data {
     /**
      * Array of sessions for display
      * @var array

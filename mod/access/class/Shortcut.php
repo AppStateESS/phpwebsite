@@ -40,7 +40,7 @@ class Access_Shortcut
     public function loadGet()
     {
         $url = explode(':', $this->url);
-        $request = \Server::getCurrentRequest();
+        $request = \Canopy\Server::getCurrentRequest();
         $module = array_shift($url);
         $request->setVar('module', $module);
         $request->setModule($module);

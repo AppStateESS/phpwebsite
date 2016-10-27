@@ -2,7 +2,7 @@
 
 function Phpws2Loader($class_name)
 {
-    // Class name must start with the 'phpws\' namespace. If not, we pass and hope another autoloader can help
+    // Class name must start with the 'phpws2\' namespace. If not, we pass and hope another autoloader can help
     // This is faster than searching the n-element $not_found array, so we'll fail faster by checking this before searching the array
     if(substr($class_name, 0, strlen('phpws2\\')) !== 'phpws2\\'){
         return false;

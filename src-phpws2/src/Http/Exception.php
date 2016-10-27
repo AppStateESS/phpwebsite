@@ -14,7 +14,7 @@ abstract class Exception extends \Exception
     public final function __construct(\Request $request = null, \Exception $previous = null)
     {
         if(is_null($request)) {
-            $request = \Server::getCurrentRequest();
+            $request = \Canopy\Server::getCurrentRequest();
         }
 
         $response = $this->createResponse($request, $previous);

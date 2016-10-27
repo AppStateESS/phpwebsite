@@ -9,7 +9,7 @@ namespace phpws2\Database;
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Datatype extends \Data
+abstract class Datatype extends \Canopy\Data
 {
     /**
      * The name of the datatype/column name

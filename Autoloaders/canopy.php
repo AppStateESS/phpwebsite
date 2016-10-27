@@ -2,21 +2,22 @@
 
 function CanopyLoader($class_name)
 {
+    if(substr($class_name, 0, strlen('Canopy\\')) !== 'Canopy\\'){
+        return false;
+    }
+
     static $not_found = array();
     if (in_array($class_name, $not_found)) {
         return;
     }
 
-    $class_array = explode('\\', $class_name);
-    $class_dir = array_shift($class_array);
+    $file_path = PHPWS_SOURCE_DIR . 'src/' . str_replace('\\', '/', str_replace('Canopy\\', '', $class_name)) . '.php';
 
-    $base_dir = PHPWS_SOURCE_DIR . "src/$class_dir/autoload.php";
-
-    if (is_file($base_dir)) {
-        require_once $base_dir;
+    if (is_readable($file_path)) {
+        require_once $file_path;
         return true;
     } else {
-        $not_found[] = $class_name;
         return false;
+        $not_found[] = $class_name;
     }
 }

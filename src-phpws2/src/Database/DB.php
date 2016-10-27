@@ -14,7 +14,7 @@ if (!defined('DB_PERSISTENT_CONNECTION')) {
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class DB extends \Data
+abstract class DB extends \Canopy\Data
 {
 
     /**

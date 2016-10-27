@@ -41,7 +41,7 @@ class Cabinet
         if (!$this->authenticate()) {
             Current_User::disallow();
         }
-        require_once PHPWS_SOURCE_DIR . 'src/phpws/src/Security.php';
+        require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/Security.php';
         if ($this->loadFileManager()) {
             Layout::nakedDisplay($this->file_manager->admin(), null, false);
         } else {
@@ -1367,4 +1367,3 @@ class Cabinet
     }
 
 }
-

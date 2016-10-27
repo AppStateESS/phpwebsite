@@ -9,7 +9,7 @@ namespace phpws2\Database;
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Alias extends \Data {
+abstract class Alias extends \Canopy\Data {
 
     /**
      * Pseudonym used for an expression or query

@@ -11,7 +11,7 @@ class Menu_Admin
 
     public function main()
     {
-        $request = \Server::getCurrentRequest();
+        $request = \Canopy\Server::getCurrentRequest();
         $title = $content = $message = NULL;
 
         \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
@@ -350,7 +350,7 @@ class Menu_Admin
             return;
         }
 
-        $options[] = '<option value="" selected disabled>' . t('Move link to menu below...') . '</option>';
+        $options[] = '<option value="" selected disabled>' . \Canopy\Translation::t('Move link to menu below...') . '</option>';
         foreach ($result as $menu) {
             extract($menu);
             $options[] = "<option value='$id'>$title</option>";
@@ -793,23 +793,23 @@ class Menu_Admin
             $tpl['first_menu'] = null;
         }
 
-        $vars['delete'] = t('Delete');
-        $vars['confirm_delete'] = t('Confirm deletion');
+        $vars['delete'] = \Canopy\Translation::t('Delete');
+        $vars['confirm_delete'] = \Canopy\Translation::t('Confirm deletion');
         $vars['first_menu_id'] = $first_menu_id;
         $vars['authkey'] = \Current_User::getAuthKey();
-        $vars['blank_title'] = t('Title must not be blank');
-        $vars['title_error'] = t('Make sure you have filled in the required inputs.');
-        $vars['url_error'] = t('Please enter a url or choose a PageSmith page.');
-        $vars['delete_menu_message'] = t('Are you sure you want to delete this menu and links?');
-        $vars['edit'] = t('Edit');
-        $vars['title_error'] = t('Please enter a menu title');
+        $vars['blank_title'] = \Canopy\Translation::t('Title must not be blank');
+        $vars['title_error'] = \Canopy\Translation::t('Make sure you have filled in the required inputs.');
+        $vars['url_error'] = \Canopy\Translation::t('Please enter a url or choose a PageSmith page.');
+        $vars['delete_menu_message'] = \Canopy\Translation::t('Are you sure you want to delete this menu and links?');
+        $vars['edit'] = \Canopy\Translation::t('Edit');
+        $vars['title_error'] = \Canopy\Translation::t('Please enter a menu title');
 
         if (PHPWS_Settings::get('menu', 'display_type')) {
             $vars['pin_all'] = null;
             $vars['pin_some'] = null;
         } else {
-            $vars['pin_all'] = t('Shown on all pages');
-            $vars['pin_some'] = t('Shown on some pages');
+            $vars['pin_all'] = \Canopy\Translation::t('Shown on all pages');
+            $vars['pin_some'] = \Canopy\Translation::t('Shown on some pages');
         }
 
         $jvar = json_encode($vars);
@@ -822,7 +822,7 @@ EOF;
         $main_menu_templates = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
         $theme_menu_templates = PHPWS_File::listDirectories(PHPWS_Template::getTplDir('menu') . 'menu_layout/');
 
-        $menu_tpls[] = '<optgroup label="' . t('Menu module templates') . '">';
+        $menu_tpls[] = '<optgroup label="' . \Canopy\Translation::t('Menu module templates') . '">';
         unset($main_menu_templates[array_search('admin', $main_menu_templates)]);
         foreach ($main_menu_templates as $menu_tpl) {
             if ($first_menu_template == $menu_tpl) {
@@ -833,9 +833,9 @@ EOF;
             $menu_tpls[] = "<option value='$menu_tpl'$selected>$menu_tpl</option>";
         }
         $menu_tpls[] = '</optgroup>';
-        
+
         if (!empty($theme_menu_templates)) {
-            $menu_tpls[] = '<optgroup label="' . t('Theme templates') . '">';
+            $menu_tpls[] = '<optgroup label="' . \Canopy\Translation::t('Theme templates') . '">';
             foreach ($theme_menu_templates as $menu_tpl) {
                 if ($first_menu_template == $menu_tpl) {
                     $selected = ' selected="selected"';

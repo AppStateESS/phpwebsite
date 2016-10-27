@@ -22,4 +22,4 @@
 /**
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
-require_once PHPWS_SOURCE_DIR . 'src/phpws/src/Mail.php';
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/Mail.php';

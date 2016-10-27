@@ -172,7 +172,7 @@ class Layout
         }
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
-    
+
     public static function removeJSHeader($index)
     {
         unset($GLOBALS['Layout_JS'][$index]);
@@ -913,8 +913,8 @@ class Layout
         $page_metatags = null;
 
         $theme = Layout::getCurrentTheme();
-        $key = Key::getCurrent();
-        if (Key::checkKey($key, false)) {
+        $key = \Canopy\Key::getCurrent();
+        if (\Canopy\Key::checkKey($key, false)) {
             $page_metatags = Layout::getMetaPage($key->id);
 
             if (PHPWS_Error::isError($page_metatags)) {
@@ -1058,8 +1058,8 @@ class Layout
 
     public static function showKeyStyle()
     {
-        $key = Key::getCurrent();
-        if (!Key::checkKey($key)) {
+        $key = \Canopy\Key::getCurrent();
+        if (!\Canopy\Key::checkKey($key)) {
             return NULL;
         }
         $style = Layout::getKeyStyle($key->id);
@@ -1081,8 +1081,8 @@ class Layout
         if (!PHPWS_Settings::get('layout', 'use_key_summaries')) {
             return;
         }
-        $key = Key::getCurrent();
-        if (!Key::checkKey($key, false)) {
+        $key = \Canopy\Key::getCurrent();
+        if (!\Canopy\Key::checkKey($key, false)) {
             return NULL;
         }
         if (!empty($key->summary)) {
@@ -1093,4 +1093,3 @@ class Layout
     }
 
 }
-

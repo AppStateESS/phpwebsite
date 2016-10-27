@@ -42,10 +42,11 @@ if (!\phpws\PHPWS_Core::checkBranch()) {
 \phpws\PHPWS_Core::checkOverpost();
 \phpws\PHPWS_Core::setLastPost();
 Language::setLocale(Settings::get('Global', 'language'));
-loadTimeZone();
 
-$request = \Server::getCurrentRequest();
-$controller = new PhpwebsiteController();
+\Canopy\Log::loadTimeZone();
+
+$request = \Canopy\Server::getCurrentRequest();
+$controller = new \Canopy\PhpwebsiteController();
 $controller->execute($request);
 
 /**

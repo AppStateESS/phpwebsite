@@ -12,7 +12,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Variable extends \Data {
+abstract class Variable extends \Canopy\Data {
 
     /**
      * The variable's value
@@ -75,7 +75,7 @@ abstract class Variable extends \Data {
     protected $allowed_inputs = array();
 
     protected $datatype;
-    
+
     protected $is_table_column = true;
 
     /**
@@ -502,10 +502,10 @@ abstract class Variable extends \Data {
     {
         $this->is_table_column = (bool)$allow;
     }
-    
+
     public function getIsTableColumn()
     {
         return $this->is_table_column;
     }
-    
+
 }

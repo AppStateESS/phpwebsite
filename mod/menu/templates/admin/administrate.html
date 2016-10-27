@@ -1,5 +1,5 @@
-<button class="btn btn-success" id="create-menu" style="margin-bottom:1em"><?php echo t('Create menu');?></button>
-<?php if (\Current_User::isDeity()): ?><a href="<?php echo $reset_menu_link?>" class="btn btn-warning" id="reset-menu" style="margin-bottom:1em"><?php echo t('Reset menu and link order');?></a><?php endif; ?>
+<button class="btn btn-success" id="create-menu" style="margin-bottom:1em"><?php echo \Canopy\Translation::t('Create menu');?></button>
+<?php if (\Current_User::isDeity()): ?><a href="<?php echo $reset_menu_link?>" class="btn btn-warning" id="reset-menu" style="margin-bottom:1em"><?php echo \Canopy\Translation::t('Reset menu and link order');?></a><?php endif; ?>
 <div class="clearfix"></div>
 <div id="menu-list">
     <div id="menu-select">
@@ -11,9 +11,9 @@
     </div>
 </div>
 <div id="menu-admin">
-    <button class="btn btn-default" id="edit-menu"><?php echo t('Edit menu');?></button>
-    <button class="btn btn-success" id="add-link"><?php echo t('Add link');?></button>
-    <button class="btn btn-danger" id="delete-menu"><?php echo t('Delete menu');?></button>
+    <button class="btn btn-default" id="edit-menu"><?php echo \Canopy\Translation::t('Edit menu');?></button>
+    <button class="btn btn-success" id="add-link"><?php echo \Canopy\Translation::t('Add link');?></button>
+    <button class="btn btn-danger" id="delete-menu"><?php echo \Canopy\Translation::t('Delete menu');?></button>
     <?php if ($pin_all):?><button class="btn <?php echo $pin_button_class?>" id="pinned-button"><?php echo $pin_all;?></button><?php endif;?>
     <hr />
     <div id="menu-admin-area" style="position:relative">
@@ -25,30 +25,30 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="warning alert alert-danger"></div>
-                <form id="link-edit-form">
+                <form id="link-edit-form">t('
                     <div class="form-group">
-                        <label for="form-title"><?php echo t('Title');?></label>
+                        <label for="form-title"><?php echo \Canopy\Translation::t('Title');?></label>
                         <input type="text" name="title" value="" id="form-title" class="form-control" />
                     </div>
                     <div class="current-association"><strong>Current url:</strong> <a target="_blank" href=""></a></div>
                     <div class="form-group form-url-group">
-                        <label for="form-url"><?php echo t('Url');?></label>
+                        <label for="form-url"><?php echo \Canopy\Translation::t('Url');?></label>
                         <input type="text" name="url" value="" id="form-url" class="form-control" placeholder="http://address.com" />
                     </div>
                     <div class="form-group form-key-group">
-                        <div class="text-center"><strong>- <?php echo t('or')?> -</strong></div>
-                        <label for="form-url"><?php echo t('PageSmith page');?></label>
+                        <div class="text-center"><strong>- <?php echo \Canopy\Translation::t('or')?> -</strong></div>
+                        <label for="form-url"><?php echo \Canopy\Translation::t('PageSmith page');?></label>
                         <select name="key_select" class="form-control" id="form-key-select">
                         </select>
-                        <p>* <?php echo t('Page already associated to a menu');?></p>
+                        <p>* <?php echo \Canopy\Translation::t('Page already associated to a menu');?></p>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <select class="form-control" id="move-to-menu"></select>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo t('Close')?></button>
-                <button type="button" id="form-link-save" class="btn btn-primary"><?php echo t('Save')?></button>
-                <button type="button" id="form-link-delete" class="btn btn-danger"><?php echo t('Delete')?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo \Canopy\Translation::t('Close')?></button>
+                <button type="button" id="form-link-save" class="btn btn-primary"><?php echo \Canopy\Translation::t('Save')?></button>
+                <button type="button" id="form-link-delete" class="btn btn-danger"><?php echo \Canopy\Translation::t('Delete')?></button>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">
-                    <?php echo t('Edit menu')?>
+                    <?php echo \Canopy\Translation::t('Edit menu')?>
                 </h3>
             </div>
             <div class="modal-body">
@@ -68,34 +68,34 @@
                     <input type='hidden' name='command' value='post_menu' />
                     <input type='hidden' name='menu_id' id='menu-id' value='' />
                     <div class="form-group">
-                        <label for="menu-title"><?php echo t('Menu title');?></label>
+                        <label for="menu-title"><?php echo \Canopy\Translation::t('Menu title');?></label>
                         <input type="text" name="title" value="" id="menu-title" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="menu-template"><?php echo t('Menu template');?></label>
+                        <label for="menu-template"><?php echo \Canopy\Translation::t('Menu template');?></label>
                         <select name="template" id="menu-template" class="form-control">
                             <?php echo $templates?>
                         </select>
                     </div>
-                    <fieldset><legend><?php echo t('Association')?></legend>
+                    <fieldset><legend><?php echo \Canopy\Translation::t('Association')?></legend>
                         <div class="form-group">
-                            <label for="menu-associated-page"><?php echo t('Page');?></label>
+                            <label for="menu-associated-page"><?php echo \Canopy\Translation::t('Page');?></label>
                             <select name="assoc_key" id="menu-associated-page" class="form-control">
                             </select>
-                            <p style="font-style:italic"><small>* <?php echo t('Pages already associated to a menu may not be selected.');?></small></p>
+                            <p style="font-style:italic"><small>* <?php echo \Canopy\Translation::t('Pages already associated to a menu may not be selected.');?></small></p>
                         </div>
                         <div class="form-group">
-                            <label for="menu-associated-url"><?php echo t('URL');?></label>
+                            <label for="menu-associated-url"><?php echo \Canopy\Translation::t('URL');?></label>
                             <input type="text" name="assoc_url" id="menu-associated-url" class="form-control" placeholder="http://address.com" />
-                            <p style="font-style:italic"><small>* <?php echo t('Using a URL prevents display of drop down and side menu.');?></small></p>
+                            <p style="font-style:italic"><small>* <?php echo \Canopy\Translation::t('Using a URL prevents display of drop down and side menu.');?></small></p>
                         </div>
                         <div class="form-group">
-                            <h4><?php echo t('Image');?></h4>
-                            <label for="menu-associated-image"><?php echo t('Upload');?></label>
+                            <h4><?php echo \Canopy\Translation::t('Image');?></h4>
+                            <label for="menu-associated-image"><?php echo \Canopy\Translation::t('Upload');?></label>
                             <input type="file" name="assoc_image" id="menu-associated-image" class="form-control" />
                             <?php if(!empty($carousel)): ?>
-                            <p style='text-align:center'><?php echo t('or')?></p>
-                            <label for="carousel-slide"><?php echo t('Copy Carousel slide');?></label>
+                            <p style='text-align:center'><?php echo \Canopy\Translation::t('or')?></p>
+                            <label for="carousel-slide"><?php echo \Canopy\Translation::t('Copy Carousel slide');?></label>
                             <select class="form-control" id="carousel-slide" name="carousel_slide">
                                 <option></option>
                                 <?php echo $carousel?>
@@ -105,11 +105,11 @@
                         </div>
                     </fieldset>
                 </form>
-                <button class='btn btn-danger' id='clear-image'><?php echo t('Clear image')?></button>
+                <button class='btn btn-danger' id='clear-image'><?php echo \Canopy\Translation::t('Clear image')?></button>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo t('Close')?></button>
-                <button type="button" id="form-menu-save" class="btn btn-primary"><?php echo t('Save')?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo \Canopy\Translation::t('Close')?></button>
+                <button type="button" id="form-menu-save" class="btn btn-primary"><?php echo \Canopy\Translation::t('Save')?></button>
             </div>
         </div>
     </div>

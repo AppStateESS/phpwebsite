@@ -2,7 +2,7 @@
 require_once('../config/core/config.php');
 // Build new URL
 require_once PHPWS_SOURCE_DIR . 'src/Server.php';
-$redirect = preg_replace('/secure\/?$/', '', \Server::getSiteUrl());
+$redirect = preg_replace('/secure\/?$/', '', \Canopy\Server::getSiteUrl());
 ?>
 <html>
     <head>

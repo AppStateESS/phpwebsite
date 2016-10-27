@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * Class to assist with _SERVER super globals.
@@ -25,26 +26,26 @@ class Server
             $method = $_SERVER['REQUEST_METHOD'];
             $vars = $_REQUEST;
             $data = file_get_contents('php://input');
-            $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
-            self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data,
+            $accept = new \phpws2\Http\Accept($_SERVER['HTTP_ACCEPT']);
+            self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data,
                     $accept);
-            
+
             $dataValues = array();
             parse_str($data, $dataValues);
-            
+
             switch ($method) {
                 case 'PATCH':
                     self::$REQUEST_SINGLETON->setPatchVars($dataValues);
                     break;
-                
+
                 case 'DELETE':
                     self::$REQUEST_SINGLETON->setDeleteVars($dataValues);
                     break;
-                
+
                 case 'PUT':
                     self::$REQUEST_SINGLETON->setPutVars($dataValues);
                     break;
-                
+
                 case 'POST':
                     self::$REQUEST_SINGLETON->setPostVars($dataValues);
                     break;

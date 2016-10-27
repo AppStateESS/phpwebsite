@@ -32,7 +32,7 @@ EOF;
 
     public function printFolderFiles()
     {
-        $request = \Server::getCurrentRequest();
+        $request = \Canopy\Server::getCurrentRequest();
         $show_thumbnail = ($request->isVar('thumbnail') && $request->getVar('thumbnail') == 1);
         $files = $this->getFolderFileList('images');
         foreach ($files as $k => $f) {

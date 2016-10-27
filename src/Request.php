@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -11,7 +12,7 @@
  * either a GET (requesting a view or response), a POST (submission of information
  * leading to change in the system), or a PUT (creation of a new item n the system).
  */
-class Request extends \Data
+class Request extends Data
 {
 
     /**
@@ -143,7 +144,7 @@ class Request extends \Data
      * @param $accept Http\Accept
      */
     public function __construct($url, $method, array $vars = null, $data = null,
-            Http\Accept $accept = null)
+            \phpws2\Http\Accept $accept = null)
     {
         $this->getVars = array();
         $this->postVars = array();
@@ -161,7 +162,7 @@ class Request extends \Data
         // @todo I am a bit worried about the default here; in fact, it should
         // probably not be allowed to be null at all.
         if (is_null($accept))
-            $accept = new Http\Accept('text/html');
+            $accept = new \phpws2\Http\Accept('text/html');
         $this->setAccept($accept);
         $this->buildCommands();
     }
@@ -436,7 +437,7 @@ class Request extends \Data
      * Sets the Accept object
      * @param $accept Http\Accept The Accept object for this request
      */
-    public function setAccept(Http\Accept $accept)
+    public function setAccept(\phpws2\Http\Accept $accept)
     {
         $this->accept = $accept;
     }

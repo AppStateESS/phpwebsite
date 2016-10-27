@@ -22,7 +22,7 @@ class Menu {
         $db = new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
         $db->loadClass('menu', 'Menu_Item.php');
-        Key::restrictView($db, 'menu');
+        \Canopy\Key::restrictView($db, 'menu');
         return $db->getObjects('Menu_Item');
     }
 
@@ -61,7 +61,7 @@ class Menu {
                 \PHPWS_Text::secureLink('<span class="fa fa-cog"></span> Administrate menus',
                         'menu', array('command' => 'list')));
 
-        $key = \Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
         $link_list = self::getLinkList();
 
         if ($key && !$key->isDummy(true)) {
@@ -79,7 +79,7 @@ class Menu {
                         MiniAdmin::add('menu',
                                 '<a href="javascript:void(0)" data-key-id="' . $key->id
                                 . '" data-menu-id="' . $menu_id
-                                . '" id="menu-remove-page"><span class="fa fa-times"></span> ' . t('Remove from %s',
+                                . '" id="menu-remove-page"><span class="fa fa-times"></span> ' . \Canopy\Translation::t('Remove from %s',
                                         $menu_title) . '</a>');
                         $found = true;
                     }
@@ -100,7 +100,7 @@ class Menu {
 
         $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-add-page" data-key-id="'
                 . $key->id . '">';
-        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . t('Add link to menu') . '</option>';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . \Canopy\Translation::t('Add link to menu') . '</option>';
         foreach ($menus as $menu) {
             $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
         }
@@ -125,7 +125,7 @@ class Menu {
 
         $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-unpin-page" data-key-id="'
                 . $key->id . '">';
-        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . t('Remove menu') . '</option>';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . \Canopy\Translation::t('Remove menu') . '</option>';
         $menu_found = false;
         foreach ($menus as $menu) {
             if (in_array($menu['id'], $ignore)) {
@@ -159,7 +159,7 @@ class Menu {
         $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-pin-page" data-key-id="'
                 . $key->id . '">';
         $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' .
-                t('Show menu here') . '</option>';
+                \Canopy\Translation::t('Show menu here') . '</option>';
         $menu_found = false;
         foreach ($menus as $menu) {
             if (!in_array($menu['id'], $ignore)) {
@@ -213,7 +213,7 @@ class Menu {
                 81);
         $seen = array();
 
-        $key = Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
         if (empty($key) || empty($key->title) || empty($key->url)) {
             return;
         }
@@ -222,7 +222,7 @@ class Menu {
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
         $db->loadClass('menu', 'Menu_Item.php');
-        Key::restrictView($db, 'menu');
+        \Canopy\Key::restrictView($db, 'menu');
         $result = $db->getObjects('Menu_Item');
 
         if (PHPWS_Error::isError($result)) {
@@ -367,7 +367,7 @@ class Menu {
             return false;
         }
 
-        $key = new Key($key_id);
+        $key = new \Canopy\Key($key_id);
 
         if ($key->isDummy()) {
             return false;
@@ -421,7 +421,7 @@ class Menu {
                         $k->getField('id'), '='), 'left');
         $m->addOrderBy($m->getField('queue'));
 
-        $key = \Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
         if ($key && $key->id) {
             $current_key_id = $key->id;
         } else {
@@ -487,7 +487,7 @@ class Menu {
      */
     private static function getCurrentActiveMenu()
     {
-        $key = \Key::getCurrent(true);
+        $key = \Canopy\Key::getCurrent(true);
         if (empty($key) || $key->isDummy(true)) {
             return -1;
         } elseif ($key->isHomeKey()) {
@@ -517,4 +517,3 @@ class Menu {
     }
 
 }
-

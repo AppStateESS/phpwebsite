@@ -46,7 +46,10 @@ if (DISPLAY_ERRORS) {
 }
 
 /* * * Include a bunch of function ** */
+
 require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
+
+/*
 require_once PHPWS_SOURCE_DIR . 'src/Data.php';
 require_once PHPWS_SOURCE_DIR . 'src/Server.php';
 require_once PHPWS_SOURCE_DIR . 'src/Http.php';
@@ -62,6 +65,7 @@ require_once PHPWS_SOURCE_DIR . 'src/Response.php';
 require_once PHPWS_SOURCE_DIR . 'src/String.php';
 require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
 require_once PHPWS_SOURCE_DIR . 'src/Security.php';
+*/
 
 /* * * Exception Handler ** */
 require_once PHPWS_SOURCE_DIR . 'src-phpws2/src/Error.php';

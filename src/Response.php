@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * Description
@@ -10,7 +11,7 @@ class Response
     protected $code;
     protected $view;
 
-    public function __construct(View $view=null, $code = 200)
+    public function __construct(\phpws2\View $view=null, $code = 200)
     {
         $this->view = $view;
         $this->code = $code;
@@ -23,7 +24,7 @@ class Response
 
     public function getPhrase()
     {
-        return get_status_text($this->getCode());
+        return Http::get_status_text($this->getCode());
     }
 
     public function getHttpVersion()
@@ -48,4 +49,3 @@ class Response
         $this->view = $view;
     }
 }
-

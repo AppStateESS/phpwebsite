@@ -15,7 +15,7 @@ function showFP()
     if ($db->isTableColumn('deleted')) {
         $db->addWhere('deleted', 0);
     }
-    Key::restrictView($db, 'pagesmith');
+    \Canopy\Key::restrictView($db, 'pagesmith');
     $db->loadClass('pagesmith', 'PS_Page.php');
     $result = $db->getObjects('PS_Page');
     if (!PHPWS_Error::logIfError($result) && !empty($result)) {

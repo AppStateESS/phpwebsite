@@ -228,7 +228,7 @@ class Head {
         $headers = array();
         $headers['page_title'] = $this->getPageTitle();
         $headers['keywords'] = $this->getKeywords();
-        //$headers['base'] = '<base href="' . \Server::getHttp() . $_SERVER['HTTP_HOST'] . preg_replace("/index.*/", "", $_SERVER['PHP_SELF']) . '" />';
+        //$headers['base'] = '<base href="' . \Canopy\Server::getHttp() . $_SERVER['HTTP_HOST'] . preg_replace("/index.*/", "", $_SERVER['PHP_SELF']) . '" />';
         $headers['base'] = '<base href="' . SHARED_ASSETS . '" />';
 
 

@@ -44,7 +44,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Tag extends \Data
+class Tag extends \Canopy\Data
 {
     /**
      * Tag type (e.g. p, b, div, etc.)
@@ -228,7 +228,7 @@ class Tag extends \Data
                     continue;
                 }
 
-                if (is_string_like($param)) {
+                if (\Canopy\String::is_string_like($param)) {
                     $param = htmlentities($param, ENT_COMPAT);
                     $data[] = sprintf('%s="%s"', $pname, $param);
                 } elseif (is_bool($param)) {
@@ -398,7 +398,7 @@ class Tag extends \Data
         if (is_bool($text)) {
             $text = $text ? 1 : 0;
         }
-        if (!is_string_like($text)) {
+        if (!\Canopy\String::is_string_like($text)) {
             throw new \Exception(t('setText received a %s variable, not a string parameter', gettype($text)));
         }
         $this->text = (string) $text;

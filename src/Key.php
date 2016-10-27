@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * Small class to help modules plug in features from other modules
@@ -152,7 +153,7 @@ class Key
 
     public function loadViewGroups()
     {
-        $db = new PHPWS_DB('phpws_key_view');
+        $db = new \phpws\PHPWS_DB('phpws_key_view');
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
@@ -174,7 +175,7 @@ class Key
 
     public function loadEditGroups()
     {
-        $db = new PHPWS_DB('phpws_key_edit');
+        $db = new \phpws\PHPWS_DB('phpws_key_edit');
         $db->addWhere('key_id', $this->id);
         $db->addColumn('group_id');
         $result = $db->select('col');
@@ -240,7 +241,7 @@ class Key
 
     public function init()
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
 
         $result = $db->loadObject($this);
 
@@ -283,7 +284,7 @@ class Key
 
         $this->update_date = time();
 
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
 
         if (!$this->id) {
             $db->addWhere('module', $this->module);
@@ -314,20 +315,20 @@ class Key
             return false;
         }
 
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
         $db->addValue('restricted', $this->restricted);
         if (\phpws\PHPWS_Error::logIfError($db->saveObject($this))) {
             return false;
         }
 
-        $view_db = new PHPWS_DB('phpws_key_view');
+        $view_db = new \phpws\PHPWS_DB('phpws_key_view');
         $view_db->addWhere('key_id', $this->id);
         $result = $view_db->delete();
         if (\phpws\PHPWS_Error::isError($result)) {
             return $result;
         }
 
-        $edit_db = new PHPWS_DB('phpws_key_edit');
+        $edit_db = new \phpws\PHPWS_DB('phpws_key_edit');
         $edit_db->addWhere('key_id', $this->id);
         $result = $edit_db->delete();
         if (\phpws\PHPWS_Error::isError($result)) {
@@ -382,7 +383,7 @@ class Key
 
     public function setTitle($title)
     {
-        $this->title = PHPWS_Text::condense($title);
+        $this->title = \phpws\PHPWS_Text::condense($title);
     }
 
     public function setSummary($summary)
@@ -398,7 +399,7 @@ class Key
         }
 
         if ($local) {
-            PHPWS_Text::makeRelative($url, false);
+            \phpws\PHPWS_Text::makeRelative($url, false);
         }
         $this->url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
@@ -466,7 +467,7 @@ class Key
     public function delete()
     {
         $all_is_well = true;
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
@@ -663,7 +664,7 @@ class Key
 
     public function modulesInUse()
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
         $db->addColumn('module');
         $db->addColumn('modules.proper_name');
         $db->addWhere('module', 'modules.title');
@@ -734,7 +735,7 @@ class Key
     public function unregister()
     {
         $success = true;
-        $db = new PHPWS_DB('phpws_key_register');
+        $db = new \phpws\PHPWS_DB('phpws_key_register');
         $db->addColumn('module');
         $result = $db->select('col');
         if (empty($result)) {
@@ -768,7 +769,7 @@ class Key
 
     public static function registerModule($module)
     {
-        $db = new PHPWS_DB('phpws_key_register');
+        $db = new \phpws\PHPWS_DB('phpws_key_register');
         $db->addValue('module', $module);
         return $db->insert();
     }
@@ -785,7 +786,7 @@ class Key
     {
         $error_free = true;
 
-        $db1 = new PHPWS_DB('phpws_key');
+        $db1 = new \phpws\PHPWS_DB('phpws_key');
         $db1->addWhere('module', $module);
         $result = $db1->getObjects('Key');
         if (\phpws\PHPWS_Error::isError($result)) {
@@ -801,7 +802,7 @@ class Key
             }
         }
 
-        $db2 = new PHPWS_DB('phpws_key_register');
+        $db2 = new \phpws\PHPWS_DB('phpws_key_register');
         $db2->addWhere('module', $module);
         $result = $db2->delete();
         if (\phpws\PHPWS_Error::isError($result)) {
@@ -813,7 +814,7 @@ class Key
 
     public static function getAllIds($module)
     {
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
         $db->addColumn('id');
         $db->addWhere('module', $module);
         return $db->select('col');
@@ -825,7 +826,7 @@ class Key
         if (empty($item_name)) {
             $item_name = $module;
         }
-        $db = new PHPWS_DB('phpws_key');
+        $db = new \phpws\PHPWS_DB('phpws_key');
         $db->addWhere('item_id', (int) $item_id);
         $db->addWhere('module', $module);
         $db->addWhere('item_name', $item_name);

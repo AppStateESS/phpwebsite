@@ -11,7 +11,7 @@ namespace phpws2\Database;
  * @subpackage DB
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Conditional extends \Data {
+class Conditional extends \Canopy\Data {
 
     /**
      * Left side of the conditional
@@ -63,7 +63,7 @@ class Conditional extends \Data {
 
     private function testSide($side)
     {
-        if (is_object($side) && !is_string_like($side)) {
+        if (is_object($side) && !\Canopy\String::is_string_like($side)) {
             throw new \Exception('Conditional variable received a variable type it can not use');
         }
     }
@@ -100,7 +100,7 @@ class Conditional extends \Data {
             case 'object':
                 if (method_exists($value, 'stringAsConditional')) {
                     return $value->stringAsConditional();
-                } elseif (is_string_like($value)) {
+                } elseif (\Canopy\String::is_string_like($value)) {
                     return $this->db->quote($value->__toString());
                 } else {
                     throw new \Exception(t('Could not use object variable in a query comparison'));

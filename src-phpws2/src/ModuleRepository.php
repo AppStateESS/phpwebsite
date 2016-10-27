@@ -26,7 +26,7 @@ final class ModuleRepository
     protected function __construct()
     {
         $this->modules = array();
-        $this->modules[] = new \GlobalModule();
+        $this->modules[] = new \Canopy\GlobalModule();
 
         $this->loadSiteModules();
     }
@@ -83,14 +83,14 @@ final class ModuleRepository
 
     protected function loadCompatibilityModule(array $values)
     {
-        $module = new \CompatibilityModule;
+        $module = new \Canopy\CompatibilityModule;
         $module->setVars($values);
         $module->loadData();
         $module->setDeprecated(1);
         return $module;
     }
 
-    public function setCurrentModule(\Module $module)
+    public function setCurrentModule(\Canopy\Module $module)
     {
         $this->currentModule = $module;
     }

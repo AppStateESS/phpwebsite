@@ -127,7 +127,7 @@ abstract class Controller implements \Controller {
     public function getView($data, \Request $request = null)
     {
         if (is_null($request)) {
-            $request = \Server::getCurrentRequest();
+            $request = \Canopy\Server::getCurrentRequest();
         }
 
         $iter = $request->getAccept()->getIterator();

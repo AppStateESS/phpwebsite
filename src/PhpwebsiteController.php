@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /*
  * Main controller class for phpWebSite.  Implements Controller, so it can be
@@ -35,7 +36,7 @@ class PhpwebsiteController implements Controller
              */
             $this->loadModuleInits();
 
-            $session = Session::getInstance();
+            $session = \phpws2\Session::getInstance();
 
             /**
              * Moved from Bootstrap, eventually to be deprecated
@@ -52,7 +53,7 @@ class PhpwebsiteController implements Controller
                 //$response = $module->execute($request->getNextRequest());
                 // I don't believe the above is required. No one uses getNextRequest
                 $response = $module->execute($request);
-                
+
                 $this->renderResponse($request, $response);
                 $this->afterRun($request, $response);
                 if ($response instanceof \phpws2\Http\RedirectResponse) {
@@ -71,7 +72,7 @@ class PhpwebsiteController implements Controller
         \phpws\PHPWS_Core::pushUrlHistory();
     }
 
-    protected function determineCurrentModule(\Request $request)
+    protected function determineCurrentModule(Request $request)
     {
         // Try the Old Fashioned Way first
         if ($request->isVar('module')) {
@@ -111,7 +112,7 @@ class PhpwebsiteController implements Controller
         return $module;
     }
 
-    private function renderResponse(\Request $request, \Response $response)
+    private function renderResponse(Request $request, Response $response)
     {
         // Temporary until proper error pages are fully implemented
         // @todo customizable, editable error pages that don't dump a bunch of
@@ -163,21 +164,21 @@ class PhpwebsiteController implements Controller
         }
     }
 
-    private function beforeRun(\Request $request, $controller)
+    private function beforeRun(Request $request, $controller)
     {
         foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->beforeRun($request, $controller);
         }
     }
 
-    private function runTime(\Request $request)
+    private function runTime(Request $request)
     {
         foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->runTime($request);
         }
     }
 
-    private function afterRun(\Request $request, \Response &$response)
+    private function afterRun(Request $request, Response &$response)
     {
         foreach (\phpws2\ModuleRepository::getInstance()->getActiveModules() as $mod) {
             $mod->afterRun($request, $response);

@@ -19,5 +19,4 @@
  * MA 02110-1301  USA
  */
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/src/Module.php';
-
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/Module.php';
