@@ -11,9 +11,15 @@ namespace phpws2\Exception;
 class WrongType extends \Exception
 {
 
-    public function __construct()
+    public function __construct($varname, $var)
     {
-        parent::__construct('Unexpected variable type');
+        $type = gettype($var);
+        if ($type === 'object') {
+            $classname = get_class($var);
+            $type = "Object $classname";
+        }
+        $message = "Unexpected variable type '$type' for variable '$varname'";
+        parent::__construct($message);
     }
 
 }
