@@ -17,6 +17,9 @@ class Decimal extends Float
      */
     protected function verifyValue($value)
     {
+        // mysql returns strings so "1" fails
+        // the below is the work around
+        $value = $value + 0.0;
         if (!is_float($value)) {
             throw new \Exception(t('Value is not a decimal. Type:' . gettype($value)));
         }

@@ -596,7 +596,7 @@ class Request extends Data
     public function pullPostVar($name)
     {
         if (!isset($this->postVars[$name])) {
-            throw new \phpws2\Exception\ValueNotSet();
+            throw new \phpws2\Exception\ValueNotSet($name);
         }
         return $this->postVars[$name];
     }
@@ -604,7 +604,7 @@ class Request extends Data
     public function pullPatchVar($name)
     {
         if (!isset($this->patchVars[$name])) {
-            throw new \phpws2\Exception\ValueNotSet();
+            throw new \phpws2\Exception\ValueNotSet($name);
         }
         return $this->patchVars[$name];
     }
@@ -612,7 +612,7 @@ class Request extends Data
     public function pullPutVar($name)
     {
         if (!isset($this->putVars[$name])) {
-            throw new \phpws2\Exception\ValueNotSet();
+            throw new \phpws2\Exception\ValueNotSet($name);
         }
         return $this->putVars[$name];
     }
@@ -620,7 +620,7 @@ class Request extends Data
     public function pullDeleteVar($name)
     {
         if (!isset($this->postVars[$name])) {
-            throw new \phpws2\Exception\ValueNotSet();
+            throw new \phpws2\Exception\ValueNotSet($name);
         }
         return $this->deleteVars[$name];
     }
@@ -628,7 +628,7 @@ class Request extends Data
     public function pullGetVar($name)
     {
         if (!isset($this->getVars[$name])) {
-            throw new \phpws2\Exception\ValueNotSet();
+            throw new \phpws2\Exception\ValueNotSet($name);
         }
         return $this->getVars[$name];
     }
@@ -689,7 +689,7 @@ class Request extends Data
             return false;
         }
 
-        return $this->pullString($this->pullPostVar($varname));
+        return $this->filterString($this->pullPostVar($varname));
     }
 
     public function pullPutString($varname, $test_isset = false)
@@ -698,7 +698,7 @@ class Request extends Data
             return false;
         }
 
-        return $this->pullString($this->pullPutVar($varname));
+        return $this->filterString($this->pullPutVar($varname));
     }
 
     public function pullPatchString($varname, $test_isset = false)
@@ -707,7 +707,7 @@ class Request extends Data
             return false;
         }
 
-        return $this->pullString($this->pullPatchVar($varname));
+        return $this->filterString($this->pullPatchVar($varname));
     }
 
     public function pullDeleteString($varname, $test_isset = false)
@@ -716,7 +716,7 @@ class Request extends Data
             return false;
         }
 
-        return $this->pullString($this->pullDeleteVar($varname));
+        return $this->filterString($this->pullDeleteVar($varname));
     }
 
     public function pullGetString($varname, $test_isset = false)
@@ -725,7 +725,7 @@ class Request extends Data
             return false;
         }
 
-        return $this->pullString($this->pullGetVar($varname));
+        return $this->filterString($this->pullGetVar($varname));
     }
 
     public function pullPostBoolean($varname, $test_isset = false)
@@ -733,7 +733,7 @@ class Request extends Data
         if ($test_isset && !$this->postVarIsset($varname)) {
             return null;
         }
-        return $this->pullBoolean($this->pullPostVar($varname));
+        return $this->filterBoolean($this->pullPostVar($varname));
     }
 
     public function pullPutBoolean($varname, $test_isset = false)
@@ -741,7 +741,7 @@ class Request extends Data
         if ($test_isset && !$this->putVarIsset($varname)) {
             return null;
         }
-        return $this->pullBoolean($this->pullPutVar($varname));
+        return $this->filterBoolean($this->pullPutVar($varname));
     }
 
     public function pullPatchBoolean($varname, $test_isset = false)
@@ -749,7 +749,7 @@ class Request extends Data
         if ($test_isset && !$this->patchVarIsset($varname)) {
             return null;
         }
-        return $this->pullBoolean($this->pullPatchVar($varname));
+        return $this->filterBoolean($this->pullPatchVar($varname));
     }
 
     public function pullDeleteBoolean($varname, $test_isset = false)
@@ -757,7 +757,7 @@ class Request extends Data
         if ($test_isset && !$this->deleteVarIsset($varname)) {
             return null;
         }
-        return $this->pullBoolean($this->pullDeleteVar($varname));
+        return $this->filterBoolean($this->pullDeleteVar($varname));
     }
 
     public function pullGetBoolean($varname, $test_isset = false)
@@ -765,7 +765,7 @@ class Request extends Data
         if ($test_isset && !$this->getVarIsset($varname)) {
             return null;
         }
-        return $this->pullBoolean($this->pullGetVar($varname));
+        return $this->filterBoolean($this->pullGetVar($varname));
     }
 
     public function pullPostInteger($varname, $test_isset = false)
@@ -773,7 +773,7 @@ class Request extends Data
         if ($test_isset && !$this->postVarIsset($varname)) {
             return false;
         }
-        return $this->pullInteger($this->pullPostVar($varname));
+        return $this->filterInteger($this->pullPostVar($varname));
     }
 
     public function pullPutInteger($varname, $test_isset = false)
@@ -781,7 +781,7 @@ class Request extends Data
         if ($test_isset && !$this->putVarIsset($varname)) {
             return false;
         }
-        return $this->pullInteger($this->pullPutVar($varname));
+        return $this->filterInteger($this->pullPutVar($varname));
     }
 
     public function pullPatchInteger($varname, $test_isset = false)
@@ -789,7 +789,7 @@ class Request extends Data
         if ($test_isset && !$this->patchVarIsset($varname)) {
             return false;
         }
-        return $this->pullInteger($this->pullPatchVar($varname));
+        return $this->filterInteger($this->pullPatchVar($varname));
     }
 
     public function pullDeleteInteger($varname, $test_isset = false)
@@ -797,7 +797,7 @@ class Request extends Data
         if ($test_isset && !$this->deleteVarIsset($varname)) {
             return false;
         }
-        return $this->pullInteger($this->pullDeleteVar($varname));
+        return $this->filterInteger($this->pullDeleteVar($varname));
     }
 
     public function pullGetInteger($varname, $test_isset = false)
@@ -805,24 +805,117 @@ class Request extends Data
         if ($test_isset && !$this->getVarIsset($varname)) {
             return false;
         }
-        return $this->pullInteger($this->pullGetVar($varname));
+        return $this->filterInteger($this->pullGetVar($varname));
     }
 
-    private function pullString($value)
+    public function pullPostFloat($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->postVarIsset($varname)) {
+            return false;
+        }
+        return $this->filterFloat($this->pullPostVar($varname));
+    }
+
+    public function pullPatchFloat($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->patchVarIsset($varname)) {
+            return false;
+        }
+        return $this->filterFloat($this->pullPatchVar($varname));
+    }
+
+    public function pullPutFloat($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->putVarIsset($varname)) {
+            return false;
+        }
+        return $this->filterFloat($this->pullPutVar($varname));
+    }
+
+    public function pullDeleteFloat($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->deleteVarIsset($varname)) {
+            return false;
+        }
+        return $this->filterFloat($this->pullDeleteVar($varname));
+    }
+
+    public function pullGetFloat($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->getVarIsset($varname)) {
+            return false;
+        }
+        return $this->filterFloat($this->pullGetVar($varname));
+    }
+
+    /**
+     * Returns a SANITIZED filtered string.
+     * @param mixed $value
+     * @return string
+     */
+    private function filterString($value)
     {
         return trim(strip_tags(filter_var($value, FILTER_SANITIZE_STRING,
                                 FILTER_FLAG_NO_ENCODE_QUOTES)));
     }
 
-    private function pullBoolean($value)
+    /**
+     * Tests value to see if value is boolean. Null is returned
+     * if it is not, true/false otherwise.
+     * @param mixed $value
+     * @return mixed true/false or null if not boolean
+     */
+    private function filterBoolean($value)
     {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN,
                 FILTER_NULL_ON_FAILURE);
     }
 
-    private function pullInteger($value)
+    /**
+     * Returns integer if is such, false if not an integer
+     * @param mixed $value
+     * @return integer
+     */
+    private function filterInteger($value)
     {
         return filter_var($value, FILTER_VALIDATE_INT);
+    }
+
+    /**
+     * Returns float if is such, false if not an float.
+     * Be aware the filter will say 1 is a float. The actual
+     * is_float php function will return false on 1. 
+     * @param mixed $value
+     * @return float
+     */
+    private function filterFloat($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_FLOAT);
+    }
+
+    public function pullPostVars()
+    {
+        return $this->postVars;
+    }
+
+    public function pullGetVars()
+    {
+        return $this->getVars;
+    }
+
+    public function pullPatchVars()
+    {
+        return $this->patchVars;
+    }
+
+    public function pullPutVars()
+    {
+        return $this->putVars;
+    }
+
+    public function pullDeleteVars()
+    {
+        return $this->deleteVars;
     }
 
     public function listVars()

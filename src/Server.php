@@ -33,6 +33,8 @@ class Server
             $dataValues = array();
             parse_str($data, $dataValues);
 
+            $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
+            
             switch ($method) {
                 case 'PATCH':
                     self::$REQUEST_SINGLETON->setPatchVars($dataValues);
@@ -47,7 +49,11 @@ class Server
                     break;
 
                 case 'POST':
-                    self::$REQUEST_SINGLETON->setPostVars($dataValues);
+                    if (strpos($content_type, 'multipart/form-data') !== false) {
+                        self::$REQUEST_SINGLETON->setPostVars($_POST);
+                    } else {
+                        self::$REQUEST_SINGLETON->setPostVars($dataValues);
+                    }
                     break;
             }
             self::$REQUEST_SINGLETON->setGetVars($_GET);

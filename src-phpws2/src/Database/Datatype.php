@@ -71,8 +71,8 @@ abstract class Datatype extends \Canopy\Data
      */
     public static function factory(Table $table, $name, $type, $value = null)
     {
-        $engine = $table->db->getDatabaseType();
-        if ($engine == 'mysqli') {
+        $engine = (string)$table->db->getDatabaseType();
+        if ($engine === 'mysqli') {
             $engine = 'mysql';
         }
         $alltypes = $table->getDatatypeList();
