@@ -151,7 +151,7 @@ class Pager
     {
         javascript('jquery');
         $source_http = PHPWS_SOURCE_HTTP;
-        $header = "<script type='text/javascript' src='{$source_http}src/phpws2/templates/Pager/pager.js'></script>";
+        $header = "<script type='text/javascript' src='{$source_http}src-phpws2/templates/Pager/pager.js'></script>";
         \Layout::addJSHeader($header);
     }
 
@@ -452,7 +452,7 @@ class Pager
     protected function getJavascript()
     {
         $source_http = PHPWS_SOURCE_HTTP;
-        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}src/phpws2/templates/Pager/pager.js'></script>");
+        \Layout::addJSHeader("<script type='text/javascript' src='{$source_http}src-phpws2/templates/Pager/pager.js'></script>");
     }
 
     public function getJson()
@@ -603,7 +603,7 @@ EOF;
     public function getPageLimit()
     {
         $rows_per_page = $this->rows_per_page;
-        
+
         $limits[] = 10;
         $limits[] = 25;
         $limits[] = 50;

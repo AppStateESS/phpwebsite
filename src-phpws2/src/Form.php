@@ -735,7 +735,7 @@ class Form extends Tag {
     {
         javascript('jquery');
         \Layout::addJSHeader("<script type='text/javascript' src='" .
-                PHPWS_SOURCE_HTTP . "src/phpws2/templates/Form/required.js'></script>");
+                PHPWS_SOURCE_HTTP . "src-phpws2/templates/Form/required.js'></script>");
     }
 
     private function pushAllowedClass($allowed, $class_name)

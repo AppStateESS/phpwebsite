@@ -9,8 +9,8 @@ namespace phpws;
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-require_once PHPWS_SOURCE_DIR . 'src/phpws/src/DB/DB_Group_In.php';
-require_once PHPWS_SOURCE_DIR . 'src/phpws/src/DB/PHPWS_DB_Where.php';
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/DB/DB_Group_In.php';
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/DB/PHPWS_DB_Where.php';
 
 // Changing LOG_DB to true will cause ALL DB traffic to get logged
 // This can log can get very large, very fast. DO NOT enable it

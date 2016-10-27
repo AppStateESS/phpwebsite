@@ -24,7 +24,7 @@ class HtmlErrorView extends \Template {
         $this->code = $vars['code'];
 
         parent::__construct($vars,
-                PHPWS_SOURCE_DIR . 'src/phpws2/templates/Http/HtmlError.html', false);
+                PHPWS_SOURCE_DIR . 'src-phpws2/templates/Http/HtmlError.html', false);
     }
 
     public function render()
@@ -38,4 +38,3 @@ class HtmlErrorView extends \Template {
     }
 
 }
-

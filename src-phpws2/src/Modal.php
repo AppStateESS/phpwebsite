@@ -211,7 +211,7 @@ class Modal {
             }
         }
 
-        $template = new \Template($tpl, PHPWS_SOURCE_DIR . 'src/phpws2/templates/Modal/modal.html');
+        $template = new Template($tpl, PHPWS_SOURCE_DIR . 'src-phpws2/templates/Modal/modal.html');
         return $template->render();
     }
 

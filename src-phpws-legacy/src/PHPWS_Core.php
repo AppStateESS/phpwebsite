@@ -111,16 +111,11 @@ class PHPWS_Core
      */
     public static function initCoreClass($file)
     {
-        $classFile = PHPWS_SOURCE_DIR . 'src/phpws/src/' . $file;
-        $orLookHere = PHPWS_SOURCE_DIR . 'src/' . $file;
+        $classFile = PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/' . $file;
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            if (!is_file($orLookHere)) {
-                throw new \Exception(t('Core class file not found: %s', $classFile));
-            } else {
-                require_once $orLookHere;
-            }
+            throw new \Exception('Core class file not found: ' . $classFile);
         } else {
             require_once $classFile;
         }
@@ -361,13 +356,13 @@ class PHPWS_Core
             } elseif (is_readable($hub_config)) {
                 return $hub_config;
             }
-            $file = PHPWS_SOURCE_DIR . 'src/phpws/config/' . $file;
+            $file = PHPWS_SOURCE_DIR . 'src-phpws-legacy/config/' . $file;
         } else {
             $file = PHPWS_SOURCE_DIR . "mod/$module/conf/$file";
         }
 
         if (!is_file($file)) {
-            throw new \Exception(t('getConfigFile could not find file: %s', $file));
+            throw new \Exception('getConfigFile could not find file: ' . $file);
         }
 
         return $file;
@@ -794,4 +789,3 @@ EOF;
 }
 
 // End of core class
-

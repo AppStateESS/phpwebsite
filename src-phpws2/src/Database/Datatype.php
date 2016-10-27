@@ -35,7 +35,7 @@ abstract class Datatype extends \Data
     protected $is_null = false;
     protected $table = null;
     protected $check = null;
-    
+
     protected $is_primary_key = false;
     protected $is_unique = false;
 
@@ -84,8 +84,8 @@ abstract class Datatype extends \Data
             throw new \Exception(\t('Unknown data type "%s"', $type));
         }
         $class_name = ucwords($alltypes[$type]);
-        $class_file = PHPWS_SOURCE_DIR . "src/phpws2/src/Database/Datatype/$class_name.php";
-        $engine_file = PHPWS_SOURCE_DIR . "src/phpws2/src/Database/Engine/$engine/Datatype/$class_name.php";
+        $class_file = PHPWS_SOURCE_DIR . "src-phpws2/src/Database/Datatype/$class_name.php";
+        $engine_file = PHPWS_SOURCE_DIR . "src-phpws2/src/Database/Engine/$engine/Datatype/$class_name.php";
 
         if (is_file($engine_file)) {
             $datatype_name = "\phpws2\Database\Engine\\$engine\Datatype\\$class_name";
@@ -313,22 +313,22 @@ abstract class Datatype extends \Data
     {
         return $this->size;
     }
-    
+
     public function setIsPrimaryKey($key)
     {
         $this->is_primary_key = (bool)$key;
     }
-    
+
     public function setIsUnique($key)
     {
         $this->is_unique = (bool)$key;
     }
-    
+
     public function getIsPrimaryKey()
     {
         return $this->is_primary_key;
     }
-    
+
     public function getIsUnique()
     {
         return $this->is_unique;

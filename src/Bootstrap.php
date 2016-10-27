@@ -27,7 +27,7 @@ if (file_exists(PHPWS_HOME_DIR . 'config/phpws/defines.php')) {
 } elseif (file_exists(PHPWS_SOURCE_DIR . 'config/phpws/defines.php')) {
     require_once(PHPWS_SOURCE_DIR . 'config/phpws/defines.php');
 } else {
-    require_once(PHPWS_SOURCE_DIR . 'src/phpws/config/defines.php');
+    require_once(PHPWS_SOURCE_DIR . 'src-phpws-legacy/config/defines.php');
 }
 
 /* * *
@@ -64,9 +64,11 @@ require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
 require_once PHPWS_SOURCE_DIR . 'src/Security.php';
 
 /* * * Exception Handler ** */
-set_exception_handler(array('phpws2\Error', 'exceptionHandler'));
+require_once PHPWS_SOURCE_DIR . 'src-phpws2/src/Error.php';
+set_exception_handler(array('\phpws2\Error', 'exceptionHandler'));
+
 if (ERRORS_AS_EXCEPTION) {
-    set_error_handler(array('phpws2\Error', 'errorHandler'));
+    set_error_handler(array('\phpws2\Error', 'errorHandler'));
 }
 
 function PHPWS_unBootstrap()

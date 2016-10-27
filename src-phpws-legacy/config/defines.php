@@ -32,7 +32,7 @@ define('ERROR_PAGE_TEMPLATE', 'default.html');
  * error page.
  * Default: false
  */
-define('DISPLAY_ERRORS', false);
+define('DISPLAY_ERRORS', true);
 
 /**
  * If true and DISPLAY_ERRORS and ERRORS_AS_EXCEPTION are true, PHP warnings
@@ -40,7 +40,7 @@ define('DISPLAY_ERRORS', false);
  * Note: these notices may not be seen with ERRORS_AS_EXCEPTION as false.
  * Default: false.
  */
-define('SHOW_ALL_ERRORS', false);
+define('SHOW_ALL_ERRORS', true);
 
 /**
  * If true, errors produced by the system will be changed to exceptions. This should
@@ -323,4 +323,3 @@ if (!defined('ALLOW_SCRIPT_TAGS')) {
  *  </Location>
  */
 //define('COSIGN_LOGOUT_URL', 'http://cosign.example.com/cosign-bin/logout');
-
