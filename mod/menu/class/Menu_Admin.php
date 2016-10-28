@@ -403,7 +403,7 @@ class Menu_Admin
         $menu->assoc_url = null;
         $menu->assoc_key = 0;
         if ($assoc_key) {
-            $key = new \Key($assoc_key);
+            $key = new \Canopy\Key($assoc_key);
             if ($key->module == 'pagesmith') {
                 $db = \Database::newDB();
                 $t1 = $db->addTable('access_shortcuts');

@@ -192,7 +192,7 @@ class Search
         $db->delete();
         $db->reset();
 
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
 
         $db->addValue('key_id', $key->id);
         $db->addValue('module', $key->module);

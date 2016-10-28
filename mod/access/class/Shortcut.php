@@ -97,7 +97,7 @@ class Access_Shortcut
             if ($key_id === false) {
                 throw new \Exception('Access shortcut missing a key id', 2);
             } else {
-                $key = new \Key($key_id);
+                $key = new \Canopy\Key($key_id);
                 $this->setUrl($key->module, $key->url);
             }
         }

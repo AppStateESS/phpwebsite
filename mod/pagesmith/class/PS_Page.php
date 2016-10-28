@@ -507,7 +507,7 @@ class PS_Page
         $db->addWhere('id', $this->id);
         $db->addValue('deleted', 0);
         $result = $db->update();
-        $key = new \Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $key->active = 1;
         $key->save();
     }
@@ -537,7 +537,7 @@ class PS_Page
             if (PHPWS_Error::logIfError($result)) {
                 return false;
             }
-            $key = new \Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             $key->active = 0;
             $key->save();
             $key->unregister();
