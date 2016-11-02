@@ -20,7 +20,12 @@
  */
 
 /**
+ * List of autoloaders that will be registered when Canopy starts up.
+ * The array keys are file names (without the .php extension), and the values
+ * are the function names within those files.
+ *
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
+ * @package Canopy
  */
 $autoloaders = array(
     'composer' => '',

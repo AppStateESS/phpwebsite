@@ -20,7 +20,13 @@
  */
 
 /**
+ * Legacy Autoloader
+ * Responsible for loading old core PHPWS classes and old module classes
+ *
+ * This should look for classes in /core/class and /mod/<modname>/class. We hope?
+ *
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
+ * @package Canopy
  */
 function LegacyLoader($class_name)
 {
