@@ -18,46 +18,48 @@ class Server
      */
     public static function getCurrentRequest()
     {
-        if (is_null(self::$REQUEST_SINGLETON)) {
-            if (strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE) {
-                self::forwardInfo();
-            }
-            $url = self::getCurrentUrl();
-            $method = $_SERVER['REQUEST_METHOD'];
-            $vars = $_REQUEST;
-            $data = file_get_contents('php://input');
-            $accept = new \phpws2\Http\Accept($_SERVER['HTTP_ACCEPT']);
-            self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data,
-                    $accept);
-
-            $dataValues = array();
-            parse_str($data, $dataValues);
-
-            $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
-            
-            switch ($method) {
-                case 'PATCH':
-                    self::$REQUEST_SINGLETON->setPatchVars($dataValues);
-                    break;
-
-                case 'DELETE':
-                    self::$REQUEST_SINGLETON->setDeleteVars($dataValues);
-                    break;
-
-                case 'PUT':
-                    self::$REQUEST_SINGLETON->setPutVars($dataValues);
-                    break;
-
-                case 'POST':
-                    if (strpos($content_type, 'multipart/form-data') !== false) {
-                        self::$REQUEST_SINGLETON->setPostVars($_POST);
-                    } else {
-                        self::$REQUEST_SINGLETON->setPostVars($dataValues);
-                    }
-                    break;
-            }
-            self::$REQUEST_SINGLETON->setGetVars($_GET);
+        if (!is_null(self::$REQUEST_SINGLETON)) {
+            return self::$REQUEST_SINGLETON;
         }
+
+        if (strpos($_SERVER['REQUEST_URI'], $_SERVER['PHP_SELF']) === FALSE) {
+            self::forwardInfo();
+        }
+        $url = self::getCurrentUrl();
+        $method = $_SERVER['REQUEST_METHOD'];
+        $vars = $_REQUEST;
+        $data = file_get_contents('php://input');
+        $accept = new \phpws2\Http\Accept($_SERVER['HTTP_ACCEPT']);
+        self::$REQUEST_SINGLETON = new Request($url, $method, $vars, $data,
+                $accept);
+
+        $dataValues = array();
+        parse_str($data, $dataValues);
+
+        $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
+
+        switch ($method) {
+            case 'PATCH':
+                self::$REQUEST_SINGLETON->setPatchVars($dataValues);
+                break;
+
+            case 'DELETE':
+                self::$REQUEST_SINGLETON->setDeleteVars($dataValues);
+                break;
+
+            case 'PUT':
+                self::$REQUEST_SINGLETON->setPutVars($dataValues);
+                break;
+
+            case 'POST':
+                if (strpos($content_type, 'multipart/form-data') !== false) {
+                    self::$REQUEST_SINGLETON->setPostVars($_POST);
+                } else {
+                    self::$REQUEST_SINGLETON->setPostVars($dataValues);
+                }
+                break;
+        }
+
         return self::$REQUEST_SINGLETON;
     }
 
