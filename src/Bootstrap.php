@@ -13,9 +13,12 @@
  * http://www.php.net/manual/en/mbstring.installation.php
  */
 
+/*
+ * NB: This is redundant, it happens in index.php
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
 }
+*/
 
 if (extension_loaded('mbstring')) {
     mb_internal_encoding('UTF-8');
@@ -45,29 +48,10 @@ if (DISPLAY_ERRORS) {
     error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
 }
 
-/* * * Include a bunch of function ** */
-
+// Include the autoloaders
 require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';
 
-/*
-require_once PHPWS_SOURCE_DIR . 'src/Data.php';
-require_once PHPWS_SOURCE_DIR . 'src/Server.php';
-require_once PHPWS_SOURCE_DIR . 'src/Http.php';
-require_once PHPWS_SOURCE_DIR . 'src/Log.php';
-require_once PHPWS_SOURCE_DIR . 'src/Key.php';
-require_once PHPWS_SOURCE_DIR . 'src/Controller.php';
-require_once PHPWS_SOURCE_DIR . 'src/PhpwebsiteController.php';
-require_once PHPWS_SOURCE_DIR . 'src/Module.php';
-require_once PHPWS_SOURCE_DIR . 'src/CompatibilityModule.php';
-require_once PHPWS_SOURCE_DIR . 'src/GlobalModule.php';
-require_once PHPWS_SOURCE_DIR . 'src/Request.php';
-require_once PHPWS_SOURCE_DIR . 'src/Response.php';
-require_once PHPWS_SOURCE_DIR . 'src/String.php';
-require_once PHPWS_SOURCE_DIR . 'src/Translation.php';
-require_once PHPWS_SOURCE_DIR . 'src/Security.php';
-*/
-
-/* * * Exception Handler ** */
+/*** Exception Handler ***/
 require_once PHPWS_SOURCE_DIR . 'src-phpws2/src/Error.php';
 set_exception_handler(array('\phpws2\Error', 'exceptionHandler'));
 
