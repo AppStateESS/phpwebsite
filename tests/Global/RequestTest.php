@@ -5,7 +5,7 @@
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
-use \Request;
+use \Canopy\Request;
 
 class RequestTest extends PHPUnit_Framework_TestCase
 {
@@ -35,7 +35,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertSanitizedResult('///herp//////////mcderp', '/herp/mcderp');
         $this->assertSanitizedResult('/////////this', '/this');
 
-        // Repeated slashes consolidation followed by trailing/preceding 
+        // Repeated slashes consolidation followed by trailing/preceding
         // slash modification
         $this->assertSanitizedResult('herp//////mcderp', '/herp/mcderp');
         $this->assertSanitizedResult('this/////', '/this');
@@ -68,4 +68,3 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($r->getUrl(), $pre);
     }
 }
-
