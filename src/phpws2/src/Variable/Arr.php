@@ -47,6 +47,14 @@ class Arr extends \phpws2\Variable
         }
     }
 
+    public function get() {
+        if ($this->value = '' || $this->value === null) {
+            return array();
+        } else {
+            return $this->value;
+        }
+    }
+    
     /**
      *
      * @param boolean $with_key
@@ -264,7 +272,9 @@ class Arr extends \phpws2\Variable
      */
     public function set($value)
     {
-        if (!is_array($value) && is_string($value)) {
+        if ($value === null) {
+            $value = array();
+        } elseif (!is_array($value) && is_string($value)) {
             if (preg_match('/^a:\d{1,}:/', $value)) {
                 $value = unserialize($value);
             }
