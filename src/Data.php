@@ -296,6 +296,7 @@ abstract class Data
      * variables.
      *
      * @param boolean $return_null If true, return variables with NULL values
+     * @param string|array Variables to ignore/not return
      * @return array
      */
     public function getVars($return_null = false, $hide = null)

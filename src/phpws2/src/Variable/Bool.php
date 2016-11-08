@@ -13,11 +13,6 @@ class Bool extends \phpws2\Variable
 {
 
     /**
-     * @var boolean
-     */
-    protected $null_allowed = false;
-
-    /**
      * @var string
      */
     protected $input_type = 'checkbox';
@@ -99,6 +94,8 @@ class Bool extends \phpws2\Variable
             return parent::set(true);
         } elseif ($this->isFalse($value)) {
             return parent::set(false);
+        } elseif ($this->allow_null && $value === null) {
+            return parent::set(null);
         } else {
             throw new \Exception('Value is not boolean');
         }
