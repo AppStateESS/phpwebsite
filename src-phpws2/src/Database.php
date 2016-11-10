@@ -65,7 +65,7 @@ class Database
                     Database::phpwsDSNLoader(PHPWS_DSN, $tbl_prefix);
                     $dsn = self::$default_dsn;
                 } else {
-                    throw new \Exception(t('Default DSN not set.'));
+                    throw new \Exception(Translation::t('Default DSN not set.'));
                 }
             } else {
                 $dsn = self::$default_dsn;
@@ -204,7 +204,7 @@ class Database
         $port = null;
 
         if (!is_file($filename)) {
-            throw new \Exception(t('DSN file does not exist: %s', $filename));
+            throw new \Exception(Translation::t('DSN file does not exist: %s', $filename));
         }
         include $filename;
 
