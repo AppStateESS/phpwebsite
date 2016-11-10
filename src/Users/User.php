@@ -12,24 +12,30 @@ class User {
 
     private $isDeity;
 
-    private $authenticationMethod;
-    private $authorizationMethod;
+    private $authenticationMethodName;
+    private $authorizationMethodName;
 
     private $lastLoginTime;
     private $loginCount;
 
-    private $createdOn;
-    private $modifiedOn;
+    private $createdOnTime;
+    private $lastModifiedTime;
 
 
-    public function __construct($username, $email, $fullName, $authenticationMethod, $authorizationMethod, $isDeity) {
+    public function __construct($username, $email, $fullName, AuthenticationMethod $authenticationMethod, AuthorizationMethod $authorizationMethod, $isDeity) {
         $this->id = null;
         $this->username = $username;
         $this->email = $email;
         $this->fullName = $fullName;
-        $this->$authenticationMethod = $authenticationMethod;
-        $this->authorizationMethod = $authorizationMethod;
+
+        $this->authenticationMethodName = $authenticationMethod->getName();
+        $this->authorizationMethodName = $authorizationMethod->getName();
         $this->isDeity = $isDeity;
+
+        $this->lastLoginTime = null;
+        $this->loginCount = 0;
+        $this->createdOnTime = time();
+        $this->lastModifiedTime = time();
     }
 
     public function getId(){
@@ -60,11 +66,19 @@ class User {
         return $this->lastLoginTime;
     }
 
-    public function getCreatedOn(){
-        return $this->createdOn;
+    public function getCreatedOnTime(){
+        return $this->createdOnTime;
     }
 
-    public function getModifiedOn(){
-        return $this->modifiedOn;
+    public function getLastModifiedTime(){
+        return $this->lastModifiedTime;
+    }
+
+    public function getAuthenticationMethodName(){
+        return $this->authenticationMethodName;
+    }
+
+    public function getAuthorizationMethodName(){
+        return $this->authorizationMethodName;
     }
 }
