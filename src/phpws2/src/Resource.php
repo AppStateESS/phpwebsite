@@ -23,6 +23,12 @@ abstract class Resource extends \Data
      * @var string
      */
     protected $table;
+    
+    /**
+     *
+     * @var array
+     */
+    protected $no_save;
 
     /**
      * Plugs in default Variable objects
@@ -31,7 +37,9 @@ abstract class Resource extends \Data
     {
         $this->id = new \phpws2\Variable\Integer(0, 'id');
         $this->id->setInputType('hidden');
+        $this->no_save = array();
         $this->addHiddenVariable('table');
+        $this->addHiddenVariable('no_save');
     }
 
     /**
@@ -52,6 +60,20 @@ abstract class Resource extends \Data
     {
         $post_vars = $request->getRequestVars();
         $this->setVars($post_vars);
+    }
+    
+    public function doNotSave($var)
+    {
+        if (is_array($var)) {
+            $this->no_save = array_merge($this->no_save, $var);
+        } else {
+            $this->no_save[] = $var;
+        }
+    }
+    
+    public function getSaveVars($return_null = false)
+    {
+        return parent::getVars($return_null, $this->no_save);
     }
 
     /**
@@ -74,6 +96,7 @@ abstract class Resource extends \Data
             throw new \Exception('Resource missing variables');
         }
         unset($variable_names[array_search('table', $variable_names)]);
+        unset($variable_names[array_search('no_save', $variable_names)]);
         unset($variable_names[array_search('parent', $variable_names)]);
 
         if (!empty($ignore) && is_array($ignore)) {
