@@ -1788,6 +1788,8 @@ abstract class DB extends \Data
      */
     public function selectAsResources($class_name)
     {
+        $object_stack = null;
+        
         $this->isResourceClass($class_name);
         $this->loadSelectStatement();
         while ($row = $this->fetch()) {
