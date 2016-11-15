@@ -64,6 +64,21 @@ class UserStatus {
         return $this->user;
     }
 
+    public function login(User $user){
+        $this->user = $user;
+        $_SESSION['CanopyUser'] = $user->getId();
+    }
+
+
+    public function logout(){
+        $localUser = $this->user;
+
+        unset($_SESSION['CanopyUser']);
+        $this->clear();
+
+        return $localUser;
+    }
+
     /**
      * Clears the User object and drops the reference to the singleton. This forces
      * the UserStatus object to be recreated on the next call to getInstance(), which

@@ -4,42 +4,46 @@ namespace Canopy\Users;
 
 class User {
 
-    private $id;
+    protected $id;
 
-    private $username;
-    private $email;
-    private $fullName;
+    protected $username;
+    protected $email;
+    protected $full_name;
 
-    private $isDeity;
+    protected $is_deity;
 
-    private $authenticationMethodName;
-    private $authorizationMethodName;
+    protected $authentication_method_name;
+    protected $authorization_method_name;
 
-    private $lastLoginTime;
-    private $loginCount;
+    protected $lastLogin_time;
+    protected $login_count;
 
-    private $createdOnTime;
-    private $lastModifiedTime;
+    protected $created_on_time;
+    protected $last_modified_time;
 
 
     public function __construct($username, $email, $fullName, AuthenticationMethod $authenticationMethod, AuthorizationMethod $authorizationMethod, $isDeity) {
         $this->id = null;
         $this->username = $username;
         $this->email = $email;
-        $this->fullName = $fullName;
+        $this->full_name = $fullName;
 
-        $this->authenticationMethodName = $authenticationMethod->getName();
-        $this->authorizationMethodName = $authorizationMethod->getName();
-        $this->isDeity = $isDeity;
+        $this->authentication_method_name = $authenticationMethod->getName();
+        $this->authorization_method_name = $authorizationMethod->getName();
+        $this->is_deity = $isDeity;
 
-        $this->lastLoginTime = null;
-        $this->loginCount = 0;
-        $this->createdOnTime = time();
-        $this->lastModifiedTime = time();
+        $this->last_login_time = null;
+        $this->login_count = 0;
+        $this->created_on_time = time();
+        $this->last_modified_time = time();
     }
 
     public function getId(){
         return $this->id;
+    }
+
+    public function setId($id){
+        $this->id = $id;
     }
 
     public function getUsername(){
@@ -51,34 +55,34 @@ class User {
     }
 
     public function getFullName(){
-        return $this->fullName;
+        return $this->full_name;
     }
 
     public function isDeity(){
-        return $this->isDeity;
+        return $this->is_deity;
     }
 
     public function getLoginCount(){
-        return $this->loginCount;
+        return $this->login_count;
     }
 
     public function getLastLoginTime(){
-        return $this->lastLoginTime;
+        return $this->last_login_time;
     }
 
     public function getCreatedOnTime(){
-        return $this->createdOnTime;
+        return $this->created_on_time;
     }
 
     public function getLastModifiedTime(){
-        return $this->lastModifiedTime;
+        return $this->last_modified_time;
     }
 
     public function getAuthenticationMethodName(){
-        return $this->authenticationMethodName;
+        return $this->authentication_method_name;
     }
 
     public function getAuthorizationMethodName(){
-        return $this->authorizationMethodName;
+        return $this->authorization_method_name;
     }
 }
