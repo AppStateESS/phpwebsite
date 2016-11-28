@@ -300,7 +300,7 @@ Please download 1.2.1.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '2.0.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('menus');
             $tbl->addDataType('queue', 'smallint')->add();
 
@@ -322,7 +322,7 @@ Please download 1.2.1.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '2.0.1', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('menus');
             $tbl->addDataType('assoc_key', 'int')->add();
             $content[] = '<pre>2.0.1 changes
@@ -331,7 +331,7 @@ Please download 1.2.1.</pre>';
 </pre>';
 
         case version_compare($currentVersion, '2.0.2', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('menus');
             $dt = $tbl->addDataType('assoc_url', 'varchar');
             $dt->setIsNull(true);
@@ -350,7 +350,7 @@ Please download 1.2.1.</pre>';
                 }
             }
 
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('menus');
             $dt = $tbl->addDataType('assoc_image', 'varchar');
             $dt->setIsNull(true);

@@ -17,7 +17,8 @@ class Menu_Admin
         \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
         if (!Current_User::allow('menu')) {
-            Current_User::disallow(dgettext('menu', 'User attempted access to Menu administration.'));
+            Current_User::disallow(dgettext('menu',
+                            'User attempted access to Menu administration.'));
             return;
         }
 
@@ -156,19 +157,63 @@ class Menu_Admin
 
     private function updateCharacterLimit(\Request $request)
     {
-        \PHPWS_Settings::set('menu', 'max_link_characters', $request->getVar('limit'));
+        \PHPWS_Settings::set('menu', 'max_link_characters',
+                $request->getVar('limit'));
         \PHPWS_Settings::save('menu');
     }
 
     private function forceShortcut()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t1 = $db->addTable('menu_links');
         $t1->addFieldConditional('url', 'pagesmith/%', 'like');
         $result = $db->select();
-        foreach ($result as $row) {
-            $this->updateLinkShortcut($row);
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                $this->updateLinkShortcut($row);
+            }
         }
+
+        $db2 = \phpws2\Database::newDB();
+        $t2 = $db2->addTable('menus');
+        $t2->addFieldConditional('assoc_url', 'pagesmith/%', 'like');
+        $result = $db2->select();
+        if (!empty($result)) {
+            foreach ($result as $row) {
+                $this->updateMenuShortcut($row);
+            }
+        }
+    }
+
+    private function getKeyword($url)
+    {
+        $db = \phpws2\Database::newDB();
+        $t1 = $db->addTable('access_shortcuts');
+        $t1->addField('keyword');
+        $t1->addFieldConditional('url', $url);
+        $keyword = $db->selectColumn();
+        return $keyword;
+        
+    }
+
+    private function updateMenuShortcut($row)
+    {
+        require_once PHPWS_SOURCE_DIR . 'mod/access/class/Shortcut.php';
+        if (!preg_match('@^pagesmith/\d+@', $row['assoc_url'])) {
+            return;
+        }
+        $url = str_replace('/', ':', $row['assoc_url']);
+        $keyword = $this->getKeyword($url);
+        $menu = new Menu_Item($row['id']);
+        if (empty($keyword)) {
+            $as = new Access_Shortcut;
+            $as->plugShortcut($row['title'], $row['key_id']);
+            $as->save();
+            $keyword = $as->keyword;
+        }
+
+        $menu->assoc_url = './' . $keyword;
+        $menu->save();
     }
 
     private function updateLinkShortcut($row)
@@ -180,11 +225,7 @@ class Menu_Admin
         }
         $url = str_replace('/', ':', $row['url']);
 
-        $db = \Database::newDB();
-        $t1 = $db->addTable('access_shortcuts');
-        $t1->addField('keyword');
-        $t1->addFieldConditional('url', $url);
-        $keyword = $db->selectColumn();
+        $keyword = $this->getKeyword($url);
         $menu_link = new Menu_Link($row['id']);
         if (empty($keyword)) {
             $as = new Access_Shortcut;
@@ -192,6 +233,7 @@ class Menu_Admin
             $as->save();
             $keyword = $as->keyword;
         }
+
         $menu_link->url = './' . $keyword;
         $menu_link->save();
     }
@@ -209,7 +251,7 @@ class Menu_Admin
      */
     private function resetMenu()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $m = $db->addTable('menus');
         $m->addField('id');
         $m->addOrderBy('queue');
@@ -248,7 +290,7 @@ class Menu_Admin
 
     private function reorderLinks($menu_id, $parent_id)
     {
-        $link_db = \Database::newDB();
+        $link_db = \phpws2\Database::newDB();
         $link_table = $link_db->addTable('menu_links');
         $link_table->addField('id');
         $link_table->addField('link_order');
@@ -286,7 +328,7 @@ class Menu_Admin
 
         $children = $this->getAllChildren($link_id);
         if (!empty($children)) {
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $t1 = $db->addTable('menu_links');
             $t1->addFieldConditional('id', $children, 'in');
             $t1->addValue('menu_id', $menu_id);
@@ -305,7 +347,7 @@ class Menu_Admin
             $kids = array();
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t1 = $db->addTable('menu_links');
         $t1->addField('id');
         $t1->addFieldConditional('parent', $id);
@@ -333,7 +375,8 @@ class Menu_Admin
 
     private function changeDisplayType($request)
     {
-        \PHPWS_Settings::set('menu', 'display_type', (int) $request->getVar('display_type'));
+        \PHPWS_Settings::set('menu', 'display_type',
+                (int) $request->getVar('display_type'));
         \PHPWS_Settings::save('menu');
     }
 
@@ -341,7 +384,7 @@ class Menu_Admin
     {
         $menu_id = (int) $request->getVar('menu_id');
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t1 = $db->addTable('menus');
         $t1->addFieldConditional('id', $menu_id, '!=');
         $t1->addOrderBy('title');
@@ -360,7 +403,7 @@ class Menu_Admin
 
     private function pinMenu($request)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('menu_assoc');
         $tbl->addValue('menu_id', (int) $request->getVar('menu_id'));
         $tbl->addValue('key_id', (int) $request->getVar('key_id'));
@@ -369,7 +412,7 @@ class Menu_Admin
 
     private function unpinMenu($request)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('menu_assoc');
         $tbl->addFieldConditional('menu_id', (int) $request->getVar('menu_id'));
         $tbl->addFieldConditional('key_id', (int) $request->getVar('key_id'));
@@ -405,7 +448,7 @@ class Menu_Admin
         if ($assoc_key) {
             $key = new \Key($assoc_key);
             if ($key->module == 'pagesmith') {
-                $db = \Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $t1 = $db->addTable('access_shortcuts');
                 $t1->addFieldConditional('url', 'pagesmith:' . $key->item_id);
                 $t1->addFieldConditional('active', '1');
@@ -424,18 +467,23 @@ class Menu_Admin
             $menu->deleteImage();
 
             $file = $request->getUploadedFileArray('assoc_image');
-            $file_name = randomString(12) . '.' . str_replace('image/', '', $file['type']);
+            $file_name = randomString(12) . '.' . str_replace('image/', '',
+                            $file['type']);
 
-            \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name, false, true);
-            \PHPWS_File::makeThumbnail($file_name, 'images/menu/', 'images/menu/', 200);
+            \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name,
+                    false, true);
+            \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
+                    'images/menu/', 200);
             $menu->setAssocImage('images/menu/' . $file_name);
         } elseif (!empty($carousel)) {
             $menu->deleteImage();
             $ext = \PHPWS_File::getFileExtension($carousel);
             $file_name = randomString(12) . '.' . str_replace('image/', '', $ext);
 
-            \PHPWS_File::fileCopy($carousel, 'images/menu/', $file_name, false, true);
-            \PHPWS_File::makeThumbnail($file_name, 'images/menu/', 'images/menu/', 200);
+            \PHPWS_File::fileCopy($carousel, 'images/menu/', $file_name, false,
+                    true);
+            \PHPWS_File::makeThumbnail($file_name, 'images/menu/',
+                    'images/menu/', 200);
             $menu->setAssocImage('images/menu/' . $file_name);
         }
         $menu->save();
@@ -463,7 +511,7 @@ class Menu_Admin
         $key_id = $request->getVar('key_id');
         $menu_id = $request->getVar('menu_id');
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $ml = $db->addTable('menu_links');
         $ml->addFieldConditional('key_id', $key_id);
         $ml->addFieldConditional('menu_id', $menu_id);
@@ -530,7 +578,7 @@ class Menu_Admin
             $prev_parent = null;
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         if ($next_link) {
             // moved item is not at the end of a list
             if ($move_parent == $next_parent) {
@@ -539,7 +587,8 @@ class Menu_Admin
                     // the link was moved BEFORE another link
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order', $db->addExpression($lorder . ' + 1'));
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional($lorder, $next_link_order, '>=');
                     $ml->addFieldConditional($lorder, $move_link_order, '<');
                     $ml->addFieldConditional('parent', $next_parent);
@@ -549,7 +598,8 @@ class Menu_Admin
                     // the link was moved AFTER another link
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' - 1'));
                     $ml->addFieldConditional($lorder, $next_link_order, '<');
                     $ml->addFieldConditional($lorder, $move_link_order, '>');
                     $ml->addFieldConditional('parent', $next_parent);
@@ -563,7 +613,8 @@ class Menu_Admin
                     // moved to top of list
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order', $db->addExpression($lorder . ' + 1'));
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
                     $move_link->link_order = 1;
@@ -571,14 +622,15 @@ class Menu_Admin
                     // there is a previous link so we number from there
                     $ml = $db->addTable('menu_links');
                     $lorder = $ml->getField('link_order');
-                    $ml->addValue('link_order', $db->addExpression($lorder . ' + 1'));
+                    $ml->addValue('link_order',
+                            $db->addExpression($lorder . ' + 1'));
                     $ml->addFieldConditional($lorder, $prev_link_order, '>');
                     $ml->addFieldConditional('parent', $next_parent);
                     $db->update();
                     $move_link->link_order = $prev_link_order + 1;
                 }
                 // reset links where moved item was
-                $db = \Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $ml = $db->addTable('menu_links');
                 $lorder = $ml->getField('link_order');
                 $ml->addValue('link_order', $db->addExpression($lorder . ' - 1'));
@@ -631,7 +683,7 @@ class Menu_Admin
             $prev_id = 0;
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('menus');
         $queue = $tbl->getField('queue');
 
@@ -693,9 +745,9 @@ class Menu_Admin
 
     private function getUsedKeys()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $db->addTable('menus')->addField('assoc_key', 'key_id');
-        $db2 = \Database::newDB();
+        $db2 = \phpws2\Database::newDB();
         $db2->addTable('menu_links')->addField('key_id');
         $union = new \Database\Union(array($db, $db2));
         $rows = $union->select();
@@ -709,7 +761,7 @@ class Menu_Admin
     private function keySelect()
     {
         $keys = array();
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $key = $db->addTable('phpws_key');
         $key->addOrderBy($key->getField('title'));
         $key->addField('id');
@@ -833,7 +885,7 @@ EOF;
             $menu_tpls[] = "<option value='$menu_tpl'$selected>$menu_tpl</option>";
         }
         $menu_tpls[] = '</optgroup>';
-        
+
         if (!empty($theme_menu_templates)) {
             $menu_tpls[] = '<optgroup label="' . t('Theme templates') . '">';
             foreach ($theme_menu_templates as $menu_tpl) {
@@ -859,7 +911,8 @@ EOF;
         }
 
         if (\Current_User::isDeity()) {
-            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu', array('command' => 'reset_menu'), true);
+            $tpl['reset_menu_link'] = PHPWS_Text::linkAddress('menu',
+                            array('command' => 'reset_menu'), true);
         } else {
             $tpl['reset_menu_link'] = '#';
         }

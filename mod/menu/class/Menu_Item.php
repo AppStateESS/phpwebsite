@@ -54,7 +54,7 @@ class Menu_Item {
         if (!isset($this->id)) {
             return FALSE;
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $m = $db->addTable('menus');
         $k = $db->addTable('phpws_key');
         $k->addField('url');
@@ -234,7 +234,7 @@ class Menu_Item {
         $this->resetdb();
 
         if (!$this->id) {
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('menus', null, false);
             $queue_field = $tbl->getField('queue');
             $db->addExpression('max(' . $queue_field . ')', 'max');
@@ -374,7 +374,7 @@ class Menu_Item {
         $db->delete();
         Layout::purgeBox('menu_' . $this->id);
 
-        $db2 = \Database::newDB();
+        $db2 = \phpws2\Database::newDB();
         $tbl = $db2->addTable('menus');
         $tbl->addFieldConditional('queue', $this->queue, '>');
     }
@@ -405,7 +405,7 @@ class Menu_Item {
         $link->setKeyId($key->id);
         $link->setTitle($key->title);
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t1 = $db->addTable('access_shortcuts');
         $t1->addFieldConditional('url', 'pagesmith:' . $key->item_id);
         $t1->addFieldConditional('active', '1');
