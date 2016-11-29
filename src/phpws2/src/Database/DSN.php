@@ -20,32 +20,32 @@ class DSN extends \Data {
 
     /**
      * Name of the database
-     * @var Variable\String
+     * @var Variable\CanopyString
      */
     protected $database_name;
 
     /**
      * Username that has access to the database
-     * @var Variable\String
+     * @var Variable\CanopyString
      */
     protected $username;
 
     /**
      * Password used to give user name access
-     * @var Variable\String
+     * @var Variable\CanopyString
      */
     protected $password;
 
     /**
      * Host database lives on
-     * @var Variable\String
+     * @var Variable\CanopyString
      */
     protected $host;
 
     /**
      * Character prefix set before table names to allow multiple installations
      * per database.
-     * @var Variable\String
+     * @var Variable\CanopyString
      */
     protected $table_prefix;
 

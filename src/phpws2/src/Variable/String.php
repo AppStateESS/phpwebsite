@@ -11,7 +11,7 @@ require_once PHPWS_SOURCE_DIR . 'src/phpws2/config/String.php';
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class String extends \phpws2\Variable
+class CanopyString extends \phpws2\Variable
 {
     /**
      * Contains the form types that can be created from this object
@@ -126,7 +126,7 @@ class String extends \phpws2\Variable
      */
     public function getJavascript()
     {
-        
+
     }
 
     /**

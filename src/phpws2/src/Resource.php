@@ -108,8 +108,8 @@ abstract class Resource extends \Data
         foreach ($variable_names as $name) {
             $var = $this->$name;
             switch (1) {
-                case is_subclass_of($var, 'phpws2\Variable\String') || is_a($var,
-                        'phpws2\Variable\String'):
+                case is_subclass_of($var, 'phpws2\Variable\CanopyString') || is_a($var,
+                        'phpws2\Variable\CanopyString'):
                     $result = $request->pullPostString($name);
                     $success = $result !== false;
                     break;

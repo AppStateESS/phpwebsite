@@ -35,7 +35,7 @@ abstract class Datatype extends \Data
     protected $is_null = false;
     protected $table = null;
     protected $check = null;
-    
+
     protected $is_primary_key = false;
     protected $is_unique = false;
 
@@ -233,7 +233,7 @@ abstract class Datatype extends \Data
         } elseif ($this->default instanceof \phpws2\Variable) {
             $this->default->set($value);
         } else {
-            $this->default = new \phpws2\Variable\String((string) $value);
+            $this->default = new \phpws2\Variable\CanopyString((string) $value);
         }
         return $this;
     }
@@ -313,22 +313,22 @@ abstract class Datatype extends \Data
     {
         return $this->size;
     }
-    
+
     public function setIsPrimaryKey($key)
     {
         $this->is_primary_key = (bool)$key;
     }
-    
+
     public function setIsUnique($key)
     {
         $this->is_unique = (bool)$key;
     }
-    
+
     public function getIsPrimaryKey()
     {
         return $this->is_primary_key;
     }
-    
+
     public function getIsUnique()
     {
         return $this->is_unique;
