@@ -170,7 +170,11 @@ final class Current_User {
      */
     public static function isDeity()
     {
-        return $_SESSION['User']->isDeity();
+        if(isset($_SESSION['User'])){
+            return $_SESSION['User']->isDeity();
+        }
+
+        return false;
     }
 
     public static function getId()
@@ -588,4 +592,3 @@ final class Current_User {
     }
 
 }
-
