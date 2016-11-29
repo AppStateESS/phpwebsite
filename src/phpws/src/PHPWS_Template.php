@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
