@@ -420,7 +420,7 @@ abstract class Data
     {
         $class = explode('\\', $name);
         foreach ($class as $cl) {
-            $new_class[] = ucfirst(strtolower($cl));
+            $new_class[] = ucfirst($cl);
         }
 
         return implode('\\', $new_class);
