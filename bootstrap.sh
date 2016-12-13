@@ -27,11 +27,8 @@ echo "================"
 echo "==================="
 echo "Installing Packages"
 echo "==================="
-yum -y install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-yum -y install httpd php-cli php-pgsql php-pecl-xdebug php-pdo php \
-    php-mbstring php-common php-mysql php-soap php-gd php-xml php-pecl-apc \
-    mysql-server mysql postgresql-server postgresql phpmyadmin phpPgAdmin \
-    roundcubemail dovecot openoffice.org-headless
+yum -y install http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
+yum -y install httpd php php-cli php-pgsql php-pecl-xdebug php-pdo php-mbstring php-common php-mysql php-soap php-gd php-xml php-pecl-apc mariadb-server mariadb postgresql-server postgresql phpmyadmin phpPgAdmin roundcubemail dovecot openoffice.org-headless
 
 echo "================"
 echo "Setting up MySQL"
@@ -45,10 +42,11 @@ symbolic-links=0
 bind-address=0.0.0.0
 
 [mysqld_safe]
-log-error=/var/log/mysqld.log
-pid-file=/var/run/mysqld/mysqld.pid
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/var/lib/mysql/mysqld.pid
 mySQL
-service mysqld start
+systemctl enable mariadb
+systemctl start mariadb
 mysql -u root <<MySQL
 CREATE DATABASE $DBNAME;
 GRANT ALL ON $DBNAME.* TO $DBUSER@localhost IDENTIFIED BY '$DBPASS';
@@ -68,7 +66,7 @@ host  all        postgres   0.0.0.0/0 trust
 local all        postgres             trust
 pgSQL
 echo "listen_addresses = '*'" >> /var/lib/pgsql/data/postgresql.conf
-service postgresql start
+systemctl start postgresql
 echo -e 'phpwebsite\nphpwebsite' | su - postgres -c 'createuser -SDREP phpwebsite'
 su - postgres -c 'createdb -E utf8 -O phpwebsite phpwebsite'
 
@@ -86,7 +84,7 @@ localhost :
 *         :discard
 TRANSPORT
 postmap /etc/postfix/transport
-service postfix restart
+systemctl restart postfix
 
 echo "=================="
 echo "Setting up Dovecot"
@@ -103,7 +101,7 @@ passdb {
     driver = passwd
 }
 DOVECOT
-service dovecot start
+systemctl start dovecot
 
 echo "===================="
 echo "Setting up RoundCube"
@@ -637,18 +635,13 @@ Listen 80
 LoadModule auth_basic_module modules/mod_auth_basic.so
 LoadModule auth_digest_module modules/mod_auth_digest.so
 LoadModule authn_file_module modules/mod_authn_file.so
-LoadModule authn_alias_module modules/mod_authn_alias.so
 LoadModule authn_anon_module modules/mod_authn_anon.so
 LoadModule authn_dbm_module modules/mod_authn_dbm.so
-LoadModule authn_default_module modules/mod_authn_default.so
 LoadModule authz_host_module modules/mod_authz_host.so
 LoadModule authz_user_module modules/mod_authz_user.so
 LoadModule authz_owner_module modules/mod_authz_owner.so
 LoadModule authz_groupfile_module modules/mod_authz_groupfile.so
 LoadModule authz_dbm_module modules/mod_authz_dbm.so
-LoadModule authz_default_module modules/mod_authz_default.so
-LoadModule ldap_module modules/mod_ldap.so
-LoadModule authnz_ldap_module modules/mod_authnz_ldap.so
 LoadModule include_module modules/mod_include.so
 LoadModule log_config_module modules/mod_log_config.so
 LoadModule logio_module modules/mod_logio.so
@@ -677,16 +670,13 @@ LoadModule substitute_module modules/mod_substitute.so
 LoadModule rewrite_module modules/mod_rewrite.so
 LoadModule proxy_module modules/mod_proxy.so
 LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
-LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
-LoadModule proxy_http_module modules/mod_proxy_http.so
 LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
 LoadModule proxy_connect_module modules/mod_proxy_connect.so
 LoadModule cache_module modules/mod_cache.so
 LoadModule suexec_module modules/mod_suexec.so
-LoadModule disk_cache_module modules/mod_disk_cache.so
-LoadModule cgi_module modules/mod_cgi.so
 LoadModule version_module modules/mod_version.so
 Include conf.d/*.conf
+Include conf.modules.d/*.conf
 User apache
 Group apache
 ServerAdmin root@localhost
@@ -852,7 +842,7 @@ BrowserMatch "^XML Spy" redirect-carefully
 BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
 
 HTTPD
-service httpd start > /dev/null 2>&1
+systemctl start httpd > /dev/null 2>&1
 
 echo "===================="
 echo "Configuring Firewall"

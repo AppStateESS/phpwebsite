@@ -7,8 +7,8 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "centos65"
-  config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-puppet.box"
+  ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+  config.vm.box = "puppetlabs/centos-7.2-64-puppet-enterprise"
   config.vm.provision :shell, :path => "bootstrap.sh"
   config.vm.network :forwarded_port, host: 7970, guest: 80
   config.vm.network :forwarded_port, host: 7971, guest: 3306
