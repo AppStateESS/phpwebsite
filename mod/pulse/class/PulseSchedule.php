@@ -97,7 +97,7 @@ class PulseSchedule extends \Resource
         $this->active = new \phpws2\Variable\Bool(true, 'active');
         $this->class_method = new \phpws2\Variable\Alphanumeric(null, 'class_method');
         $this->class_method->setLimit(100);
-        $this->class_name = new \phpws2\Variable\String(null, 'class_name');
+        $this->class_name = new \phpws2\Variable\CanopyString(null, 'class_name');
         $this->class_name->setLimit(100);
         $this->end_time = new \phpws2\Variable\Integer(0, 'end_time');
         $this->hash = new \phpws2\Variable\Hash(null, 'hash');
@@ -107,7 +107,7 @@ class PulseSchedule extends \Resource
         $this->interim = new \phpws2\Variable\Integer(60, 'interim');
         $this->module = new \phpws2\Variable\Alphanumeric(null, 'module');
         $this->module->setLimit(50);
-        $this->name = new \phpws2\Variable\String(null, 'name');
+        $this->name = new \phpws2\Variable\CanopyString(null, 'name');
         $this->name->setLimit(100);
         $this->required_file = new \phpws2\Variable\File(null, 'required_file');
         $this->execute_after = new \phpws2\Variable\Integer(0, 'execute_after');

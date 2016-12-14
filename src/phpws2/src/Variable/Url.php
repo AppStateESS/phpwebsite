@@ -12,7 +12,7 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Url extends String {
+class Url extends CanopyString {
 
     /**
      * @var string

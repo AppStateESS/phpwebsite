@@ -10,7 +10,7 @@ namespace phpws2\Variable;
  * @todo Expand functionality
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Email extends String {
+class Email extends CanopyString {
 
     /**
      * @var string The type of variable

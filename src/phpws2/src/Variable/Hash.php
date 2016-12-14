@@ -8,7 +8,7 @@ namespace phpws2\Variable;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class Hash extends String
+class Hash extends CanopyString
 {
       protected $regexp_match = '/^\w+$/';
       
