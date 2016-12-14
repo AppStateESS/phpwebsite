@@ -13,10 +13,10 @@ class Password extends String {
 
     private $salt;
 
-    public function __construct($value = null, $varname = null)
+    public function __construct($value = null, $varname = null, $salt=null)
     {
         parent::__construct($value, $varname);
-        $this->salt = \randomString();
+        $this->salt = $salt;
     }
 
     public function __toString()
@@ -29,6 +29,11 @@ class Password extends String {
         return hash('sha256', $this->salt . $this->value);
     }
 
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+    
     public function getSalt()
     {
         return $this->salt;
