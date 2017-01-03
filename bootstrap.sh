@@ -64,6 +64,10 @@ cat << pgSQL > /var/lib/pgsql/data/pg_hba.conf
 local phpwebsite phpwebsite           trust
 host  all        postgres   0.0.0.0/0 trust
 local all        postgres             trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
 pgSQL
 echo "listen_addresses = '*'" >> /var/lib/pgsql/data/postgresql.conf
 systemctl start postgresql
