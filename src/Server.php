@@ -175,6 +175,8 @@ class Server
      */
     public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
+        $address = array();
+        
         if (!$relative) {
             $address[] = self::getSiteUrl();
         }
