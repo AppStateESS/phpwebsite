@@ -9,7 +9,7 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Bool extends \phpws2\Variable
+class Boolean extends \phpws2\Variable
 {
 
     /**
