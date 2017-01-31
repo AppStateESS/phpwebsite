@@ -94,7 +94,7 @@ class PulseSchedule extends \Resource
 
     public function __construct()
     {
-        $this->active = new \phpws2\Variable\Bool(true, 'active');
+        $this->active = new \phpws2\Variable\Boolean(true, 'active');
         $this->class_method = new \phpws2\Variable\Alphanumeric(null, 'class_method');
         $this->class_method->setLimit(100);
         $this->class_name = new \phpws2\Variable\CanopyString(null, 'class_name');
@@ -103,7 +103,7 @@ class PulseSchedule extends \Resource
         $this->hash = new \phpws2\Variable\Hash(null, 'hash');
         $this->hash->allowNull(true);
         $this->hash->setLimit(64);
-        $this->hold_on_error = new \phpws2\Variable\Bool(0, 'hold_on_error');
+        $this->hold_on_error = new \phpws2\Variable\Boolean(0, 'hold_on_error');
         $this->interim = new \phpws2\Variable\Integer(60, 'interim');
         $this->module = new \phpws2\Variable\Alphanumeric(null, 'module');
         $this->module->setLimit(50);
