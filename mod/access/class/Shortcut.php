@@ -14,7 +14,7 @@ class Access_Shortcut
     public $active = 1;
     public $_error = null;
 
-    public function Access_Shortcut($id = 0)
+    public function __construct($id = 0)
     {
         if ($id == 0) {
             return;
