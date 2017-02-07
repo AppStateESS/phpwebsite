@@ -2,7 +2,6 @@
 
 namespace phpws2;
 
-
 /**
  * Abstract class extended by various variables types (Arr, Bool, Date, etc.).
  * Assists with type restrictions, form generation, file configuration creation,
@@ -12,7 +11,8 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Variable extends \Canopy\Data {
+abstract class Variable extends \Canopy\Data
+{
 
     /**
      * The variable's value
@@ -71,11 +71,8 @@ abstract class Variable extends \Canopy\Data {
      * @var array
      */
     protected $types_allowed = null;
-
     protected $allowed_inputs = array();
-
     protected $datatype;
-
     protected $is_table_column = true;
 
     /**
@@ -136,21 +133,29 @@ abstract class Variable extends \Canopy\Data {
     {
         $type = parent::createClassName($type);
 
-        // Cannot have a class named "Array"
-        if ($type == 'Array') {
-            $type = 'Arr';
-        }
-
-        if ($type == 'Boolean') {
-            $type = 'Bool';
+        switch ($type) {
+            case 'Array':
+            case 'Boolean':
+            case 'Date':
+            case 'Decimal':
+            case 'Double':
+            case 'File':
+            case 'Float':
+            case 'Hash':
+            case 'Integer':
+            case 'String':
+                $type = $type . 'Var';
+                break;
         }
 
         $class_name = 'phpws2\\Variable\\' . $type;
         if (class_exists($class_name)) {
             $var = new $class_name($value, $varname);
             // See this method's comment for information on the below
-            if (!empty($var->types_allowed) && !in_array($type, $var->types_allowed)) {
-                throw new \Exception(sprintf('Unknown type "%s" passed to the Factory method in %s object', $class_name, get_class($var)));
+            if (!empty($var->types_allowed) && !in_array($type,
+                            $var->types_allowed)) {
+                throw new \Exception(sprintf('Unknown type "%s" passed to the Factory method in %s object',
+                        $class_name, get_class($var)));
             }
             return $var;
         }
@@ -214,7 +219,8 @@ abstract class Variable extends \Canopy\Data {
                 $this->value = null;
                 return true;
             } else {
-                throw new \Exception(sprintf('%s may not be null', $this->varname));
+                throw new \Exception(sprintf('%s may not be null',
+                        $this->varname));
             }
         }
         try {
@@ -257,7 +263,8 @@ abstract class Variable extends \Canopy\Data {
      */
     public function setLabel($label)
     {
-        $this->label = filter_var($label, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+        $this->label = filter_var($label, FILTER_SANITIZE_STRING,
+                FILTER_FLAG_STRIP_LOW);
     }
 
     /**
@@ -296,8 +303,8 @@ abstract class Variable extends \Canopy\Data {
     public function getInput()
     {
         static $types = array('textarea', 'checkbox', 'color', 'date', 'datetime',
-    'email', 'file', 'hidden', 'month', 'number', 'password', 'radio', 'range',
-    'search', 'select', 'tel', 'text', 'textfield', 'time', 'url', 'week');
+            'email', 'file', 'hidden', 'month', 'number', 'password', 'radio', 'range',
+            'search', 'select', 'tel', 'text', 'textfield', 'time', 'url', 'week');
 
 
         if (!in_array($this->input_type, $types)) {
@@ -306,7 +313,8 @@ abstract class Variable extends \Canopy\Data {
 
         switch ($this->input_type) {
             case 'select':
-                $input = new Form\Choice\Select($this->varname, $this->choices, $this->value);
+                $input = new Form\Choice\Select($this->varname, $this->choices,
+                        $this->value);
                 break;
 
             case 'textarea':
@@ -314,12 +322,14 @@ abstract class Variable extends \Canopy\Data {
                 break;
 
             case 'radio':
-                $input = new Form\Choice\Radio($this->varname, $this->choices, $this->value);
+                $input = new Form\Choice\Radio($this->varname, $this->choices,
+                        $this->value);
                 break;
 
             default:
                 $class_name = '\phpws2\Form\Input\\' . ucfirst($this->input_type);
-                $input = new $class_name($this->varname, $this->value, $this->getLabel());
+                $input = new $class_name($this->varname, $this->value,
+                        $this->getLabel());
                 $input->setId($this->varname);
         }
 
@@ -428,8 +438,10 @@ abstract class Variable extends \Canopy\Data {
     public function setInputType($type)
     {
         $type = strtolower($type);
-        if (!empty($this->allowed_inputs) && !in_array($type, $this->allowed_inputs)) {
-            throw new \Exception(sprintf('Input type "%s" is not allowed for this variable', $type));
+        if (!empty($this->allowed_inputs) && !in_array($type,
+                        $this->allowed_inputs)) {
+            throw new \Exception(sprintf('Input type "%s" is not allowed for this variable',
+                    $type));
         }
         $this->input_type = $type;
     }
@@ -500,7 +512,7 @@ abstract class Variable extends \Canopy\Data {
 
     public function setIsTableColumn($allow)
     {
-        $this->is_table_column = (bool)$allow;
+        $this->is_table_column = (bool) $allow;
     }
 
     public function getIsTableColumn()
