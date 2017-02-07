@@ -26,9 +26,12 @@ class PHPWS_Template extends \HTML_Template_Sigma {
 
     public function __construct($module=NULL, $file=NULL)
     {
-        $this->HTML_Template_Sigma();
-        if (isset($module))
-        $this->setModule($module);
+        //$this->HTML_Template_Sigma();
+        parent::__construct();
+
+        if (isset($module)){
+            $this->setModule($module);
+        }
 
         if (isset($file)){
             $result = $this->setFile($file);
@@ -303,4 +306,3 @@ class PHPWS_Template extends \HTML_Template_Sigma {
         }
     }
 }
-

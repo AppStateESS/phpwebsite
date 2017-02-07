@@ -297,7 +297,7 @@ abstract class Data
      * variables.
      *
      * @param boolean $return_null If true, return variables with NULL values
-     * @param string|array Variables to ignore/not return
+     * @param string|array $hide Variables to ignore/not return
      * @return array
      */
     public function getVars($return_null = false, $hide = null)
@@ -332,7 +332,6 @@ abstract class Data
         if (!empty($this->hidden_variables)) {
             $vars = array_diff_key($vars, $this->hidden_variables);
         }
-
         return $vars;
     }
 
@@ -422,7 +421,7 @@ abstract class Data
     {
         $class = explode('\\', $name);
         foreach ($class as $cl) {
-            $new_class[] = ucfirst(strtolower($cl));
+            $new_class[] = ucfirst($cl);
         }
 
         return implode('\\', $new_class);

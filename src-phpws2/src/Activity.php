@@ -24,7 +24,7 @@ class Activity extends \Resource {
         $this->id = new Variable\Integer(0, 'id');
         $this->class_name = new Variable\Attribute(null, 'class_name');
         $this->resource_id = new Variable\Integer(null, 'resource_id');
-        $this->action = new Variable\String(null, 'action');
+        $this->action = new Variable\CanopyString(null, 'action');
         $this->datestamp = new Variable\Datetime(null, 'datestamp');
         $this->user_id = new Variable\Integer(null, 'user_id');
         $this->ip_address = new Variable\Ip(null, 'ip_address');

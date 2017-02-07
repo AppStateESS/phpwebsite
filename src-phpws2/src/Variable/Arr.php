@@ -13,6 +13,7 @@ namespace phpws2\Variable;
  */
 class Arr extends \phpws2\Variable
 {
+
     /**
      * Arr can use checkbox and select on form export
      * @var array
@@ -44,6 +45,29 @@ class Arr extends \phpws2\Variable
             $this->value[] = $value;
         } else {
             $this->value[$key] = $value;
+        }
+    }
+
+    public function get()
+    {
+        if ($this->value == '' || $this->value === null) {
+            return array();
+        } else {
+            return $this->value;
+        }
+    }
+
+    public function toDatabase()
+    {
+        return $this->__toString();
+    }
+
+    public function __toString()
+    {
+        if ($this->allow_null && $this->isNull()) {
+            return null;
+        } else {
+            return json_encode($this->value);
         }
     }
 
@@ -221,7 +245,8 @@ class Arr extends \phpws2\Variable
      *  on that key.
      * @throws \Exception
      */
-    public function indexByColumn($column_name, $duplicate_allowed = false, $collapse_on = null)
+    public function indexByColumn($column_name, $duplicate_allowed = false,
+            $collapse_on = null)
     {
         $duplicate_allowed = (bool) $duplicate_allowed;
         $new_value = array();
@@ -234,7 +259,8 @@ class Arr extends \phpws2\Variable
             }
 
             if (!isset($val[$column_name])) {
-                throw new \Exception(t('Could not index array by column name "%s"', $column_name));
+                throw new \Exception(t('Could not index array by column name "%s"',
+                        $column_name));
             }
             $index = $val[$column_name];
 
@@ -244,7 +270,8 @@ class Arr extends \phpws2\Variable
 
             if (!empty($collapse_on)) {
                 if (!isset($val[$collapse_on])) {
-                    throw new \Exception(t('Could not collapse on value "%s"', $collapse_on));
+                    throw new \Exception(t('Could not collapse on value "%s"',
+                            $collapse_on));
                 }
                 $val = $val[$collapse_on];
             }
@@ -264,9 +291,13 @@ class Arr extends \phpws2\Variable
      */
     public function set($value)
     {
-        if (!is_array($value) && is_string($value)) {
+        if ($value === null || $value == "") {
+            $value = array();
+        } elseif (!is_array($value) && is_string($value)) {
             if (preg_match('/^a:\d{1,}:/', $value)) {
                 $value = unserialize($value);
+            } else {
+                $value = json_decode($value);
             }
         }
         parent::set($value);

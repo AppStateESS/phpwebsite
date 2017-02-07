@@ -6,7 +6,7 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Color extends String {
+class Color extends CanopyString {
     protected $input_type = 'color';
 
     public function __construct($value, $varname=null)

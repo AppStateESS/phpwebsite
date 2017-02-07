@@ -5,6 +5,6 @@ namespace phpws2\Variable;
  *
  * @author Matt McNaney <mcnaney at gmail dot com>
  */
-class Ip extends String {
+class Ip extends CanopyString {
      protected $regexp_match = '/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/';
 }

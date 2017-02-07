@@ -6,7 +6,7 @@
 
 namespace phpws2\Variable;
 
-class Directory extends \phpws2\Variable\String {
+class Directory extends \phpws2\Variable\CanopyString {
 
     protected $regexp_match = '/^[^|;,!@#$()<>\\"\'`~{}\[\]=+&\^\s\t]+$/i';
 

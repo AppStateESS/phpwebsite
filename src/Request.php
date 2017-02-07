@@ -489,7 +489,8 @@ class Request extends Data
     }
 
     /**
-     * Checks to see the current require was an ajax request
+     * Checks to see the current require was an ajax request by reading the jquery
+     * header. JQUERY required for this.
      * @return boolean
      */
     public static function isAjax()

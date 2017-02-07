@@ -14,6 +14,7 @@ class PhoneNumber extends \phpws2\Variable\NumberString
 {
     private $divider = NUMBER_STRING_DIVIDER;
     private $format_number = false;
+    protected $limit = 30;
 
     /**
      * Strips extra characters

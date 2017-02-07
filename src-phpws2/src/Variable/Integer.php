@@ -22,15 +22,15 @@ class Integer extends \phpws2\Variable {
      * -2147483648;
      * @var integer
      */
-    private $low_range = 0;
+    protected $low_range = 0;
 
     /**
      * Highest range of integer. PHP does not support unsigned integers.
      * @var integer
      */
-    private $high_range = PHP_INT_MAX;
-    private $increment = 1;
-    private $auto_increment = false;
+    protected $high_range = PHP_INT_MAX;
+    protected $increment = 1;
+    protected $auto_increment = false;
     protected $column_type = 'Int';
 
     /**

@@ -25,13 +25,21 @@ abstract class Resource extends \Data
     protected $table;
 
     /**
+     *
+     * @var array
+     */
+    protected $no_save;
+
+    /**
      * Plugs in default Variable objects
      */
     public function __construct()
     {
         $this->id = new \phpws2\Variable\Integer(0, 'id');
         $this->id->setInputType('hidden');
+        $this->no_save = array();
         $this->addHiddenVariable('table');
+        $this->addHiddenVariable('no_save');
     }
 
     /**
@@ -54,6 +62,20 @@ abstract class Resource extends \Data
         $this->setVars($post_vars);
     }
 
+    public function doNotSave($var)
+    {
+        if (is_array($var)) {
+            $this->no_save = array_merge($this->no_save, $var);
+        } else {
+            $this->no_save[] = $var;
+        }
+    }
+
+    public function getSaveVars($return_null = false)
+    {
+        return parent::getVars($return_null, $this->no_save);
+    }
+
     /**
      * Tries to load the current resource with the variables from a POST. Note
      * that if a variable in the POST is present but not in the Resource, an error
@@ -74,6 +96,7 @@ abstract class Resource extends \Data
             throw new \Exception('Resource missing variables');
         }
         unset($variable_names[array_search('table', $variable_names)]);
+        unset($variable_names[array_search('no_save', $variable_names)]);
         unset($variable_names[array_search('parent', $variable_names)]);
 
         if (!empty($ignore) && is_array($ignore)) {
@@ -85,8 +108,8 @@ abstract class Resource extends \Data
         foreach ($variable_names as $name) {
             $var = $this->$name;
             switch (1) {
-                case is_subclass_of($var, 'phpws2\Variable\String') || is_a($var,
-                        'phpws2\Variable\String'):
+                case is_subclass_of($var, 'phpws2\Variable\CanopyString') || is_a($var,
+                        'phpws2\Variable\CanopyString'):
                     $result = $request->pullPostString($name);
                     $success = $result !== false;
                     break;
@@ -112,6 +135,74 @@ abstract class Resource extends \Data
                 case is_subclass_of($var, 'phpws2\Variable\Float') || is_a($var,
                         'phpws2\Variable\Float'):
                     $result = $request->pullPostFloat($name);
+                    $success = $result !== false;
+                    break;
+
+                default:
+                    throw new \Exception('Unknown Variable type');
+            }
+
+            if ($success) {
+                $var->set($result);
+            } else {
+                throw new \phpws2\Exception\WrongType($name, $var);
+            }
+        }
+    }
+
+    /**
+     * Duplicate of loadPostByType but using PUT method
+     * @param \Request $request
+     * @param array $ignore
+     * @throws \Exception
+     * @throws \phpws2\Exception\WrongType
+     */
+    public function loadPutByType(\Request $request, array $ignore = null)
+    {
+        $variable_names = $this->getVariableNames();
+        if (empty($variable_names)) {
+            throw new \Exception('Resource missing variables');
+        }
+        unset($variable_names[array_search('table', $variable_names)]);
+        unset($variable_names[array_search('no_save', $variable_names)]);
+        unset($variable_names[array_search('parent', $variable_names)]);
+
+        if (!empty($ignore) && is_array($ignore)) {
+            foreach ($ignore as $ignore_name) {
+                unset($variable_names[array_search($ignore_name, $variable_names)]);
+            }
+        }
+
+        foreach ($variable_names as $name) {
+            $var = $this->$name;
+            switch (1) {
+                case is_subclass_of($var, 'phpws2\Variable\CanopyString') || is_a($var,
+                        'phpws2\Variable\CanopyString'):
+                    $result = $request->pullPutString($name);
+                    $success = $result !== false;
+                    break;
+
+                case is_subclass_of($var, 'phpws2\Variable\Arr') || is_a($var,
+                        'phpws2\Variable\Arr'):
+                    $result = $request->pullPutString($name);
+                    $success = $result !== false;
+                    break;
+
+                case is_subclass_of($var, 'phpws2\Variable\Bool') || is_a($var,
+                        'phpws2\Variable\Bool'):
+                    $result = $request->pullPutBoolean($name);
+                    $success = $result !== null;
+                    break;
+
+                case is_subclass_of($var, 'phpws2\Variable\Integer') || is_a($var,
+                        'phpws2\Variable\Integer'):
+                    $result = $request->pullPutInteger($name);
+                    $success = $result !== false;
+                    break;
+
+                case is_subclass_of($var, 'phpws2\Variable\Float') || is_a($var,
+                        'phpws2\Variable\Float'):
+                    $result = $request->pullPutFloat($name);
                     $success = $result !== false;
                     break;
 
@@ -224,7 +315,7 @@ abstract class Resource extends \Data
      * @param string|array Variables to ignore/not return
      * @return array
      */
-    public function getVariablesAsValue($return_null=null, $hide=null)
+    public function getVariablesAsValue($return_null = null, $hide = null)
     {
         $vars = $this->getVars($return_null, $hide);
         foreach ($vars as $v) {
@@ -232,5 +323,5 @@ abstract class Resource extends \Data
         }
         return $values;
     }
-    
+
 }

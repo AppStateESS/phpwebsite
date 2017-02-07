@@ -233,7 +233,7 @@ abstract class Datatype extends \Canopy\Data
         } elseif ($this->default instanceof \phpws2\Variable) {
             $this->default->set($value);
         } else {
-            $this->default = new \phpws2\Variable\String((string) $value);
+            $this->default = new \phpws2\Variable\CanopyString((string) $value);
         }
         return $this;
     }

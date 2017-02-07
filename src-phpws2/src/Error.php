@@ -26,7 +26,7 @@ class Error {
      *
      * @param Exception $e
      */
-    public static function exceptionHandler(\Exception $error)
+    public static function exceptionHandler($error)
     {
         self::log($error);
         if (DISPLAY_ERRORS) {
@@ -78,7 +78,7 @@ class Error {
     /**
      * Writes the error message to a log file.
      */
-    public static function log(\Exception $error)
+    public static function log($error)
     {
         try {
             self::logError(self::getErrorInfo($error, LOG_ERROR_STACK));
@@ -104,7 +104,7 @@ class Error {
      * Time stamp handled by logging function
      * @return string
      */
-    private static function getErrorInfo(\Exception $error, $error_stack = true, $xdebug = false)
+    private static function getErrorInfo($error, $error_stack = true, $xdebug = false)
     {
         $file = $error->getFile();
         $line = $error->getLine();
@@ -125,7 +125,7 @@ class Error {
         }
     }
 
-    private static function xdebugTraceString(\Exception $error)
+    private static function xdebugTraceString($error)
     {
         $class = $type = NULL;
         $trace = $error->getTrace();
