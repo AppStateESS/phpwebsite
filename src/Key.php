@@ -22,7 +22,7 @@ if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = null;
 }
 
-class \Canopy\Key
+class Key
 {
 
     // if the id is 0 (zero) then this is a _dummy_ key
