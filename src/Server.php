@@ -30,9 +30,9 @@ class Server
             // The 'Accept' header might not always be set. If not,
             // we'll assume the client wants 'text/html'
             if(isset($_SERVER['HTTP_ACCEPT'])){
-                $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
+                $accept = new \phpws2\Http\Accept($_SERVER['HTTP_ACCEPT']);
             } else {
-                $accept = new Http\Accept('text/html');
+                $accept = new \phpws2\Http\Accept('text/html');
             }
 
             self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data, $accept);
