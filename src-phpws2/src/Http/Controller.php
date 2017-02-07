@@ -22,7 +22,7 @@ abstract class Controller implements \Controller {
 
     private $module;
 
-    public function __construct(\Module $module)
+    public function __construct(\Canopy\Module $module)
     {
         $this->module = $module;
     }
@@ -79,7 +79,7 @@ abstract class Controller implements \Controller {
 
     }
 
-    public function onAfterExecute(\Canopy\Request $request, \Response &$response)
+    public function onAfterExecute(\Canopy\Request $request, \Canopy\Response &$response)
     {
 
     }
