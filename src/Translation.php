@@ -19,6 +19,8 @@ namespace Canopy;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
+ * CURRENTLY DISABLED
+ * 
  * Shorthand function to translate using the Language class. Gets domain
  * from the class passed in the backtrace. IF dgettext is not compiled into PHP
  * the arguments are just returned with sprintf.
@@ -31,8 +33,9 @@ class Translation {
     {
         static $lang = null;
         $args = func_get_args();
-
-        if (!function_exists('dgettext')) {
+        
+        //Translation disabled
+        if (true || !function_exists('dgettext')) {
             if (count($args) > 1) {
                 return call_user_func_array('sprintf', $args);
             } else {

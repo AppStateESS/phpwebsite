@@ -317,7 +317,7 @@ class Form extends Tag {
         }
 
         if (empty($value)) {
-            $value = t('Submit');
+            $value = 'Submit';
         }
         return $this->addInput('submit', $name, $value);
     }

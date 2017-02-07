@@ -149,7 +149,7 @@ abstract class Data
 
             case 'array':
                 $count = count($value);
-                $info = $count > 1 ? t('%s rows', $count) : t('1 row');
+                $info = $count > 1 ? sprintf('%s rows', $count) : '1 row';
                 break;
 
             default:

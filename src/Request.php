@@ -505,7 +505,7 @@ class Request extends Data
             var_dump($_POST);
             $post_vars = ob_get_clean();
         } else {
-            $post_vars = t('Empty');
+            $post_vars = 'Empty';
         }
 
         if (!empty($_GET)) {
@@ -513,7 +513,7 @@ class Request extends Data
             var_dump($_GET);
             $get_vars = ob_get_clean();
         } else {
-            $get_vars = t('Empty');
+            $get_vars = 'Empty';
         }
 
         $content[] = '<h2>$_POST</h2>' . $post_vars;

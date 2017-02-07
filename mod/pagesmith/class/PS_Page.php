@@ -488,7 +488,7 @@ class PS_Page
         $anchor_title = $tpl['ANCHOR'] = preg_replace('/\W/', '-', $this->title);
 
         if (Current_User::allow('pagesmith') && $this->_key->show_after > time()) {
-            $tpl['SHOW_AFTER'] = t('Page hidden until %s', strftime('%F %H:%M', $this->_key->show_after));
+            $tpl['SHOW_AFTER'] = sprintf('Page hidden until %s', strftime('%F %H:%M', $this->_key->show_after));
         }
 
         $tpl['CONTENT'] = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');

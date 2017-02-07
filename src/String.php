@@ -75,25 +75,25 @@ class String {
     {
         switch ($code) {
             case PREG_NO_ERROR:
-                return t('no error');
+                return 'no error';
 
             case PREG_INTERNAL_ERROR:
-                return t('internal PCRE error');
+                return 'internal PCRE error';
 
             case PREG_BACKTRACK_LIMIT_ERROR:
-                return t('backtrack limit error');
+                return 'backtrack limit error';
 
             case PREG_RECURSION_LIMIT_ERROR:
-                return t('recursion limit error');
+                return 'recursion limit error';
 
             case PREG_BAD_UTF8_ERROR:
-                return t('bad UTF-8 error');
+                return 'bad UTF-8 error';
 
             case PREG_BAD_UTF8_OFFSET_ERROR:
-                return t('bad UTF-8 offset error');
+                return 'bad UTF-8 offset error';
 
             default:
-                return t('unknown regular expression error');
+                return 'unknown regular expression error';
         }
     }
 }

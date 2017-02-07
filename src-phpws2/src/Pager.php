@@ -554,7 +554,7 @@ class Pager
      */
     public function getPageSearch()
     {
-        $search = t('Search');
+        $search = 'Search';
 
         if ($this->search_column) {
             $search .= ' : ' . $this->search_columns[$this->search_column];
@@ -622,7 +622,7 @@ EOF;
     public function getPageListing()
     {
         if ($this->total_rows < 1) {
-            return t('No result found');
+            return 'No result found';
         }
         $penultimate = $this->getNumberOfPages() - 1;
         $content[] = '<ul class="pagination">';

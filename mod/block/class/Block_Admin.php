@@ -299,7 +299,7 @@ class Block_Admin
         $template = $form->getTemplate();
         if ($js) {
             if (!empty($block_options)) {
-                $template['ALTERNATIVE'] = t('or create new block below');
+                $template['ALTERNATIVE'] = 'or create new block below';
             }
             $content = PHPWS_Template::process($template, 'block', 'js_edit.tpl');
         } else {
