@@ -33,7 +33,7 @@ class Character extends \phpws2\Database\Datatype {
     public function __construct(\phpws2\Database\Table $table, $name, $length=255)
     {
         parent::__construct($table, $name);
-        $this->size = new \phpws2\Variable\Integer(null, $this->varName());
+        $this->size = new \phpws2\Variable\IntegerVar(null, $this->varName());
         $this->size->setRange(0, 255);
         $this->setSize($length);
         $this->default = new \phpws2\Variable\StringVar(null, $this->varName());

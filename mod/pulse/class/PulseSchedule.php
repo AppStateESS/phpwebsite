@@ -94,25 +94,25 @@ class PulseSchedule extends \Resource
 
     public function __construct()
     {
-        $this->active = new \phpws2\Variable\Boolean(true, 'active');
+        $this->active = new \phpws2\Variable\BooleanVar(true, 'active');
         $this->class_method = new \phpws2\Variable\Alphanumeric(null, 'class_method');
         $this->class_method->setLimit(100);
         $this->class_name = new \phpws2\Variable\StringVar(null, 'class_name');
         $this->class_name->setLimit(100);
-        $this->end_time = new \phpws2\Variable\Integer(0, 'end_time');
+        $this->end_time = new \phpws2\Variable\IntegerVar(0, 'end_time');
         $this->hash = new \phpws2\Variable\Hash(null, 'hash');
         $this->hash->allowNull(true);
         $this->hash->setLimit(64);
-        $this->hold_on_error = new \phpws2\Variable\Boolean(0, 'hold_on_error');
-        $this->interim = new \phpws2\Variable\Integer(60, 'interim');
+        $this->hold_on_error = new \phpws2\Variable\BooleanVar(0, 'hold_on_error');
+        $this->interim = new \phpws2\Variable\IntegerVar(60, 'interim');
         $this->module = new \phpws2\Variable\Alphanumeric(null, 'module');
         $this->module->setLimit(50);
         $this->name = new \phpws2\Variable\StringVar(null, 'name');
         $this->name->setLimit(100);
         $this->required_file = new \phpws2\Variable\File(null, 'required_file');
-        $this->execute_after = new \phpws2\Variable\Integer(0, 'execute_after');
-        $this->start_time = new \phpws2\Variable\Integer(0, 'start_time');
-        $this->status = new \phpws2\Variable\Integer(PULSE_STATUS_AWAKE, 'status');
+        $this->execute_after = new \phpws2\Variable\IntegerVar(0, 'execute_after');
+        $this->start_time = new \phpws2\Variable\IntegerVar(0, 'start_time');
+        $this->status = new \phpws2\Variable\IntegerVar(PULSE_STATUS_AWAKE, 'status');
         parent::__construct();
     }
 

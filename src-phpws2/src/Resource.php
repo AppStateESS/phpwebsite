@@ -35,7 +35,7 @@ abstract class Resource extends \Canopy\Data
      */
     public function __construct()
     {
-        $this->id = new \phpws2\Variable\Integer(0, 'id');
+        $this->id = new \phpws2\Variable\IntegerVar(0, 'id');
         $this->id->setInputType('hidden');
         $this->no_save = array();
         $this->addHiddenVariable('table');

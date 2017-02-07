@@ -44,7 +44,7 @@ class Value extends Column
                 break;
 
             case 'integer':
-                $this->value = new \phpws2\Variable\Integer($value, $this->name);
+                $this->value = new \phpws2\Variable\IntegerVar($value, $this->name);
                 return true;
                 break;
 

@@ -21,12 +21,12 @@ class Activity extends \Resource {
 
     public function __construct()
     {
-        $this->id = new Variable\Integer(0, 'id');
+        $this->id = new Variable\IntegerVar(0, 'id');
         $this->class_name = new Variable\Attribute(null, 'class_name');
-        $this->resource_id = new Variable\Integer(null, 'resource_id');
+        $this->resource_id = new Variable\IntegerVar(null, 'resource_id');
         $this->action = new Variable\StringVar(null, 'action');
         $this->datestamp = new Variable\Datetime(null, 'datestamp');
-        $this->user_id = new Variable\Integer(null, 'user_id');
+        $this->user_id = new Variable\IntegerVar(null, 'user_id');
         $this->ip_address = new Variable\Ip(null, 'ip_address');
         $this->datestamp->stamp();
         parent::__construct();
