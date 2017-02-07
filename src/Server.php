@@ -25,27 +25,34 @@ class Server
             $method = $_SERVER['REQUEST_METHOD'];
             $vars = $_REQUEST;
             $data = file_get_contents('php://input');
-            $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
-            self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data,
-                    $accept);
-            
+
+            // The 'Accept' header might not always be set. If not,
+            // we'll assume the client wants 'text/html'
+            if(isset($_SERVER['HTTP_ACCEPT'])){
+                $accept = new Http\Accept($_SERVER['HTTP_ACCEPT']);
+            } else {
+                $accept = new Http\Accept('text/html');
+            }
+
+            self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data, $accept);
+
             $dataValues = array();
             parse_str($data, $dataValues);
             $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
-            
+
             switch ($method) {
                 case 'PATCH':
                     self::$REQUEST_SINGLETON->setPatchVars($dataValues);
                     break;
-                
+
                 case 'DELETE':
                     self::$REQUEST_SINGLETON->setDeleteVars($dataValues);
                     break;
-                
+
                 case 'PUT':
                     self::$REQUEST_SINGLETON->setPutVars($dataValues);
                     break;
-                
+
                 case 'POST':
                     if (strpos($content_type, 'multipart/form-data') !== false) {
                         self::$REQUEST_SINGLETON->setPostVars($_POST);
@@ -168,6 +175,8 @@ class Server
      */
     public static function getCurrentUrl($relative = true, $use_redirect = true)
     {
+        $address = array();
+        
         if (!$relative) {
             $address[] = self::getSiteUrl();
         }
