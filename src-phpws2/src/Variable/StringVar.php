@@ -2,7 +2,7 @@
 
 namespace phpws2\Variable;
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws2/config/String.php';
+require_once PHPWS_SOURCE_DIR . 'src-phpws2/config/String.php';
 
 /**
  * Variable object for strings
