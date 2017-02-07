@@ -22,11 +22,11 @@ class JS {
     public static function loadGlobal($name)
     {
         if (!preg_match('/[\w\-]/', $name)) {
-            throw new \Exception(t('Bad script name'));
+            throw new \Exception('Bad script name');
         }
         $file_path = PHPWS_SOURCE_DIR . 'lib/Javascript/' . $name . '/config.php';
         if (!is_file($file_path)) {
-            throw new \Exception(t('Script not found'));
+            throw new \Exception('Script not found');
         }
 
         self::loadSingleton();

@@ -209,7 +209,7 @@ abstract class Module extends Data implements Controller
     public function loadDomain()
     {
         if (empty($this->directory)) {
-            throw new \Exception(t('Module directory must be loaded before loadDomain'));
+            throw new \Exception('Module directory must be loaded before loadDomain');
         }
         bindtextdomain($this->title, $this->directory . 'locale/');
     }

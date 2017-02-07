@@ -56,7 +56,7 @@ class Conditional extends \Canopy\Data {
     {
         $operator = strtoupper($operator);
         if (!in_array($operator, self::$allowed_operators)) {
-            throw new \Exception(t('Unknown operator'));
+            throw new \Exception('Unknown operator');
         }
         $this->operator = $operator;
     }
@@ -103,7 +103,7 @@ class Conditional extends \Canopy\Data {
                 } elseif (\Canopy\String::is_string_like($value)) {
                     return $this->db->quote($value->__toString());
                 } else {
-                    throw new \Exception(t('Could not use object variable in a query comparison'));
+                    throw new \Exception('Could not use object variable in a query comparison');
                 }
 
             case 'NULL':

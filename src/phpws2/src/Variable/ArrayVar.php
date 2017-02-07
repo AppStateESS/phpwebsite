@@ -29,7 +29,7 @@ class ArrayVar extends \phpws2\Variable
     protected function verifyValue($value)
     {
         if (!is_array($value)) {
-            throw new \Exception(t('Value is not an array'));
+            throw new \Exception('Value is not an array');
         }
         return true;
     }
@@ -255,7 +255,7 @@ class ArrayVar extends \phpws2\Variable
 
 
             if (!is_array($val)) {
-                throw new \Exception(t('Value of Arr object is not a multidimensional array'));
+                throw new \Exception('Value of Arr object is not a multidimensional array');
             }
 
             if (!isset($val[$column_name])) {
@@ -265,7 +265,7 @@ class ArrayVar extends \phpws2\Variable
             $index = $val[$column_name];
 
             if (!$duplicate_allowed && isset($new_value[$val[$column_name]])) {
-                throw new \Exception(t('Duplicate index value encountered'));
+                throw new \Exception('Duplicate index value encountered');
             }
 
             if (!empty($collapse_on)) {

@@ -58,10 +58,10 @@ class Table extends \phpws2\Database\Table
     public function rename($new_name)
     {
         if (!$this->db->allowed($new_name)) {
-            throw new \Exception(t('Table name is not allowed'));
+            throw new \Exception('Table name is not allowed');
         }
         if ($this->db->tableExists($new_name)) {
-            throw new \Exception(t('Table name already in use'));
+            throw new \Exception('Table name already in use');
         }
 
         $query = 'RENAME TABLE ' . $this->getFullName() . ' TO ' . $new_name;
@@ -154,7 +154,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
     public function getDataType($column_name)
     {
         if (!$this->exists()) {
-            throw new \Exception(t('Cannot get data type, table does not exist'));
+            throw new \Exception('Cannot get data type, table does not exist');
         }
         $schema = $this->getSchema($column_name);
         if (empty($schema)) {

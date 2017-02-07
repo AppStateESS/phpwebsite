@@ -68,7 +68,7 @@ function vsprintf_array($string, array $arr, $join = null)
         $join = "\n";
     }
     if (!is_string($string)) {
-        throw \Exception(t('First parameter is not a string'));
+        throw \Exception('First parameter is not a string');
     }
     foreach ($arr as $values) {
         $rows[] = vsprintf($string, $values);

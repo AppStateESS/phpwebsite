@@ -205,7 +205,7 @@ class Pager
     public function setRowsPerPage($rows)
     {
         if (!is_integer($rows)) {
-            throw new \Exception(t('setTotalItems expected an integer'));
+            throw new \Exception('setTotalItems expected an integer');
         }
         $this->rows_per_page = (int) $rows;
     }
@@ -239,7 +239,7 @@ class Pager
     public function setMaxPageLinks($page_no)
     {
         if (!is_integer($page_no)) {
-            throw new \Exception(t('setMaxPageLinks expects an integer'));
+            throw new \Exception('setMaxPageLinks expects an integer');
         }
         $this->max_page_links = $page_no;
     }
@@ -252,7 +252,7 @@ class Pager
     public function setCurrentPage($page)
     {
         if (!is_integer($page)) {
-            throw new \Exception(t('setCurrentPage integer'));
+            throw new \Exception('setCurrentPage integer');
         }
         $this->current_page = $page;
     }
@@ -336,7 +336,7 @@ class Pager
             $this->sort_direction = SORT_ASC;
         }
         if (empty($this->rows)) {
-            throw new \Exception(t('No rows to set'));
+            throw new \Exception('No rows to set');
         }
         if (!isset($this->headers[$this->sort_column])) {
             throw new \Exception(t('Column name "%s" is not known', $this->sort_column));
@@ -443,7 +443,7 @@ class Pager
     public function populateTemplate()
     {
         if (empty($this->template)) {
-            throw new \Exception(t('Template not set'));
+            throw new \Exception('Template not set');
         }
         $this->template->add('pager_id', $this->getId());
         $this->template->add('pager_javascript', $this->getJavascript());
@@ -514,7 +514,7 @@ class Pager
                 if (is_string($this->callback) || is_array($this->callback)) {
                     $this->rows[$key] = call_user_func($this->callback, $value);
                 } else {
-                    throw new \Exception(t('Unknown callback type'));
+                    throw new \Exception('Unknown callback type');
                 }
             }
         }

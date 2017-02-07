@@ -50,7 +50,7 @@ final class ModuleRepository
         }
         if (count($this->getActiveModules()) == 0) {
             // @todo better exceptions
-            throw new \Exception(t('No active modules installed'));
+            throw new \Exception('No active modules installed');
         }
     }
 

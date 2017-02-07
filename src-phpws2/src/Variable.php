@@ -150,7 +150,7 @@ abstract class Variable extends \Canopy\Data {
             $var = new $class_name($value, $varname);
             // See this method's comment for information on the below
             if (!empty($var->types_allowed) && !in_array($type, $var->types_allowed)) {
-                throw new \Exception(t('Unknown type "%s" passed to the Factory method in %s object', $class_name, get_class($var)));
+                throw new \Exception(sprintf('Unknown type "%s" passed to the Factory method in %s object', $class_name, get_class($var)));
             }
             return $var;
         }
@@ -196,7 +196,7 @@ abstract class Variable extends \Canopy\Data {
     public function getVarname()
     {
         if (empty($this->varname)) {
-            throw new \Exception(t('Variable name not set'));
+            throw new \Exception('Variable name not set');
         } else {
             return $this->varname;
         }
@@ -219,7 +219,7 @@ abstract class Variable extends \Canopy\Data {
         }
         try {
             if (is_object($value)) {
-                throw new \Exception(t('Variable values may not be objects'));
+                throw new \Exception('Variable values may not be objects');
             }
             $this->verifyValue($value);
         } catch (Error $e) {
@@ -245,7 +245,7 @@ abstract class Variable extends \Canopy\Data {
     public function getType()
     {
         if (!$this->type) {
-            throw Error(t('Variable type is not set'));
+            throw Error('Variable type is not set');
         } else {
             return $this->type;
         }
@@ -301,7 +301,7 @@ abstract class Variable extends \Canopy\Data {
 
 
         if (!in_array($this->input_type, $types)) {
-            throw new \Exception(t('Unrecognized form input type'));
+            throw new \Exception('Unrecognized form input type');
         }
 
         switch ($this->input_type) {

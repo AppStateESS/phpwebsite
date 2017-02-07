@@ -21,7 +21,7 @@ class DoubleVar extends FloatVar
     {
         // is_double is just an alias of is_float
         if (!is_float($value)) {
-            throw new \Exception(t('Value is not a double'));
+            throw new \Exception('Value is not a double');
         }
         return true;
     }

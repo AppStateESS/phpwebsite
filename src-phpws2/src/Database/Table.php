@@ -334,12 +334,12 @@ abstract class Table extends Resource
             $value = $this->getValue($column, $value);
         } elseif ($column instanceof Value) {
             if (!$column->inTableStack($this)) {
-                throw new \Exception(t('Value object referenced different table object'));
+                throw new \Exception('Value object referenced different table object');
                 return false;
             }
             $value = $column;
         } else {
-            throw new \Exception(t('Improper parameter'));
+            throw new \Exception('Improper parameter');
         }
         $this->values[$value_key][$value->getName()] = $value;
         return $value;

@@ -84,7 +84,7 @@ abstract class Package {
     public function createTables()
     {
         if (empty($this->tables)) {
-            throw new \Exception(t('No tables to create'));
+            throw new \Exception('No tables to create');
         }
 
         foreach ($this->tables as $tbl) {
@@ -134,7 +134,7 @@ abstract class Package {
     public function dropTables()
     {
         if (empty($this->tables)) {
-            throw new \Exception(t('No tables to drop'));
+            throw new \Exception('No tables to drop');
         }
 
         $tables_drop = array_reverse($this->tables);

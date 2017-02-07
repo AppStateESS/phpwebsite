@@ -23,7 +23,7 @@ class Checkbox extends \phpws2\Form\Choice {
     public function addOptions(array $options)
     {
         if (is_array(current($options))) {
-            throw new \Exception(t('Checkbox choice does not allow multi-dimensional arrays'));
+            throw new \Exception('Checkbox choice does not allow multi-dimensional arrays');
         }
 
         foreach ($options as $value => $label) {

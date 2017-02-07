@@ -111,7 +111,7 @@ class Session extends \Canopy\Data {
     {
         // Check that the session hasn't already been started
         if ($this->started) {
-            throw new \Exception(t('Session has already been started'));
+            throw new \Exception('Session has already been started');
         }
 
         // Generate the session name, if not already set

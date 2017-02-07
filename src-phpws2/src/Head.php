@@ -121,11 +121,11 @@ class Head {
             }
             return;
         } elseif (is_null($value)) {
-            throw new \Exception(t('Missing second parameter'));
+            throw new \Exception('Missing second parameter');
         }
 
         if (!is_string($key) || !is_string($value)) {
-            throw new \Exception(t('Key and value pair must be strings'));
+            throw new \Exception('Key and value pair must be strings');
         }
 
         $this->javascript_vars[$key] = $value;

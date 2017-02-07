@@ -49,10 +49,10 @@ class Table extends \phpws2\Database\Table
     public function rename($new_name)
     {
         if (!$this->db->allowed($new_name)) {
-            throw new \Exception(t('Table name is not allowed'));
+            throw new \Exception('Table name is not allowed');
         }
         if ($this->db->tableExists($new_name)) {
-            throw new \Exception(t('Table name already in use'));
+            throw new \Exception('Table name already in use');
         }
 
         $query = 'ALTER TABLE ' . $this->getFullName() . ' RENAME TO ' . $new_name;
@@ -161,7 +161,7 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $default = null;
 
         if (!$this->exists()) {
-            throw new \Exception(t('Cannot get data type, table does not exist'));
+            throw new \Exception('Cannot get data type, table does not exist');
         }
         $schema = $this->getSchema($column_name);
 

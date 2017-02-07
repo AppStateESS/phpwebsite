@@ -28,7 +28,7 @@ class Group extends \phpws2\Database\Group {
         if ($this->type == GROUP_ROLLUP) {
             $type = ' WITH ROLLUP';
         } elseif ($this->type != GROUP_BASE) {
-            throw new \Exception(t('Unknown group type'));
+            throw new \Exception('Unknown group type');
         }
 
         $fields = implode(',', $this->fields);

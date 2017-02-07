@@ -66,18 +66,18 @@ abstract class Constraint {
     {
         $type = $datatype->getDatatype();
         if ($type == 'blob' || $type == 'text') {
-            throw new \Exception(t('Constraint column may not be a blob'));
+            throw new \Exception('Constraint column may not be a blob');
         }
 
         if (!is_a($datatype, '\phpws2\Database\Datatype')) {
-            throw new \Exception(t('Constraint column is not a data type'));
+            throw new \Exception('Constraint column is not a data type');
         }
     }
 
     public function getSourceTable()
     {
         if (empty($this->source_table)) {
-            throw new \Exception(t('Source table not set'));
+            throw new \Exception('Source table not set');
         }
         return $this->source_table;
     }
@@ -105,7 +105,7 @@ abstract class Constraint {
             if (!$compare_table) {
                 $compare_table = $dt->getTable();
             } elseif ($compare_table !== $dt->getTable()) {
-                throw new \Exception(t('Parameter data types do not have matching tables.'));
+                throw new \Exception('Parameter data types do not have matching tables.');
             }
         }
     }

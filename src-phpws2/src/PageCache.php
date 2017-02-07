@@ -37,7 +37,7 @@ class PageCache extends \Canopy\Data
     public function importContent($filename)
     {
         if (!is_file($filename)) {
-            throw new \Exception(t('File not found'));
+            throw new \Exception('File not found');
         }
         $this->setHtml(file_get_contents($filename));
     }
@@ -45,7 +45,7 @@ class PageCache extends \Canopy\Data
     public function importCSS($filename)
     {
         if (!is_file($filename)) {
-            throw new \Exception(t('File not found'));
+            throw new \Exception('File not found');
         }
         $this->setCss(file_get_contents($filename));
     }

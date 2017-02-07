@@ -402,7 +402,7 @@ class Request extends Data
                         array(self::PUT, self::POST, self::GET, self::DELETE, self::OPTIONS, self::PATCH, self::HEAD))) {
             $this->method = $method;
         } else {
-            throw new \Exception(t('Unknown state type'));
+            throw new \Exception('Unknown state type');
         }
     }
 

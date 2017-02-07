@@ -89,7 +89,7 @@ abstract class Group {
         }
 
         if ($group_type != GROUP_BASE && !$this->allowedType($group_type)) {
-            throw new \Exception(t('This database does not support this type of group by'));
+            throw new \Exception('This database does not support this type of group by');
         }
 
         $this->type = $group_type;
@@ -100,7 +100,7 @@ abstract class Group {
         } elseif ($this->fieldOrExpression($fields)) {
             $this->fields = array($fields);
         } else {
-            throw new \Exception(t('Parameter contained a value that was not a Field or Expression object'));
+            throw new \Exception('Parameter contained a value that was not a Field or Expression object');
         }
     }
 
@@ -142,7 +142,7 @@ abstract class Group {
     public function setGroupType($type)
     {
         if (!$this->allowedType($type)) {
-            throw new \Exception(t('Unknown or unsupported group type'));
+            throw new \Exception('Unknown or unsupported group type');
         }
         $this->type = $type;
     }

@@ -84,7 +84,7 @@ class IntegerVar extends \phpws2\Variable {
         switch ($type) {
             case 'select':
                 if ($this->high_range - $this->low_range > 100000) {
-                    throw new \Exception(t('Range is too high for a select input'));
+                    throw new \Exception('Range is too high for a select input');
                 }
                 $this->setChoices(range($this->low_range, $this->high_range, $this->increment));
                 break;
@@ -101,7 +101,7 @@ class IntegerVar extends \phpws2\Variable {
     {
         $increment = (int) $increment;
         if ($increment == 0) {
-            throw new \Exception(t('Increment cannot be zero'));
+            throw new \Exception('Increment cannot be zero');
         }
         $this->increment = $increment;
         return $this;

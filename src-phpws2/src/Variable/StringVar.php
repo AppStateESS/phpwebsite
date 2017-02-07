@@ -195,7 +195,7 @@ class StringVar extends \phpws2\Variable
     public function randomString($characters = 10)
     {
         if ($characters <= 0) {
-            throw new \Exception(t('Too few characters requested'));
+            throw new \Exception('Too few characters requested');
         }
 
         $word = null;

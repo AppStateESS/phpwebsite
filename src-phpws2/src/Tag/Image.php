@@ -93,7 +93,7 @@ class Image extends \Tag {
     public function setSrc($src)
     {
         if (preg_match('/[^\w\.\/\s:\-~]/', $src)) {
-            throw new \Exception(t('Improperly formatted image src'));
+            throw new \Exception('Improperly formatted image src');
         }
         $this->src = $src;
         if (empty($this->alt)) {
@@ -205,7 +205,7 @@ class Image extends \Tag {
             return true;
         }
         if (empty($this->src)) {
-            trigger_error(t('Src variable is empty'));
+            trigger_error('Src variable is empty');
             return false;
         }
         $dimen = getimagesize($this->directory);

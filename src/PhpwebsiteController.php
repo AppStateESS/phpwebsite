@@ -255,7 +255,7 @@ class PhpwebsiteController implements Controller
             }
         }
         if (empty($this->module_array_active)) {
-            throw new \Exception(t('No active active modules installed'));
+            throw new \Exception('No active active modules installed');
         }
     }
 

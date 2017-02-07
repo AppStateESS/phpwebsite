@@ -215,7 +215,7 @@ abstract class Data
     public function debugToString()
     {
         if (!method_exists($this, '__toString')) {
-            throw new \Exception(t('Class "%s" does not contain a __toString method',
+            throw new \Exception(sprintf('Class "%s" does not contain a __toString method',
                     get_class($this)));
         }
         if (function_exists('xdebug_var_dump')) {
@@ -345,7 +345,7 @@ abstract class Data
         $vars = $this->getVars($return_null, $hide);
 
         if (empty($vars)) {
-            throw new \Exception(t('No variables returned from Data object'));
+            throw new \Exception('No variables returned from Data object');
         }
         foreach ($vars as $key => $val) {
             if (\Canopy\String::is_string_like($val)) {
@@ -356,7 +356,7 @@ abstract class Data
         if (!empty($new_vars)) {
             return $new_vars;
         } else {
-            throw new \Exception(t('No string variable in Data object'));
+            throw new \Exception('No string variable in Data object');
         }
     }
 
@@ -434,7 +434,7 @@ abstract class Data
     public function read($file_path)
     {
         if (!is_file($file_path)) {
-            throw new \Exception(t('Read file not found'));
+            throw new \Exception('Read file not found');
         }
 
         include $file_path;

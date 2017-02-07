@@ -27,7 +27,7 @@ class FloatVar extends \phpws2\Variable
     protected function verifyValue($value)
     {
         if (!is_float($value)) {
-            throw new \Exception(t('Value is not a float'));
+            throw new \Exception('Value is not a float');
         }
         return true;
     }

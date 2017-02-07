@@ -15,7 +15,7 @@ class Union {
     {
         foreach ($db_array as $db) {
             if (!($db instanceof \phpws2\Database\DB)) {
-                throw new \Exception(t('createUnion only accepts \phpws2\Database\DB object arrays'));
+                throw new \Exception('createUnion only accepts \phpws2\Database\DB object arrays');
             }
         }
         $this->db_stack = $db_array;

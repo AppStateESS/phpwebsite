@@ -71,7 +71,7 @@ class DB extends \phpws2\Database\DB
     public function createDatabase($database_name)
     {
         if (!$this->allowedIdentifier($database_name)) {
-            throw new \Exception(t('Improper database name'));
+            throw new \Exception('Improper database name');
         }
 
         return $this->query("CREATE DATABASE $database_name COLLATE " . MYSQL_COLLATE . ' CHARACTER SET ' . MYSQL_CHARACTER_SET);

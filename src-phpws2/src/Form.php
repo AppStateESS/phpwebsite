@@ -208,7 +208,7 @@ class Form extends Tag {
     public function addSelect($name, array $value = null, $label = null)
     {
         if (preg_match('/[^\w\-\[\]]/', $name)) {
-            throw new \Exception(t('Improperly formatted input name'));
+            throw new \Exception('Improperly formatted input name');
         }
         $select = new \phpws2\Form\Choice\Select($name, $value);
         if (!empty($label)) {
@@ -229,7 +229,7 @@ class Form extends Tag {
     public function addMultiple($name, array $value = null, $label = null)
     {
         if (preg_match('/[^\w\-\[\]]/', $name)) {
-            throw new \Exception(t('Improperly formatted input name'));
+            throw new \Exception('Improperly formatted input name');
         }
         $multiple = new \phpws2\Form\Choice\Multiple($name, $value);
         if (!empty($label)) {
@@ -495,11 +495,11 @@ class Form extends Tag {
     {
         $plug = false;
         if (!is_object($object)) {
-            throw new \Exception(t('Variable passed is not an object'));
+            throw new \Exception('Variable passed is not an object');
         }
         $variables = get_object_vars($object);
         if (empty($variables)) {
-            throw new \Exception(t('No public variables were found in object'));
+            throw new \Exception('No public variables were found in object');
         }
 
         foreach ($variables as $var_obj) {
@@ -567,7 +567,7 @@ class Form extends Tag {
                 }
             }
         } else {
-            throw new \Exception(t('No inputs in current Form object'));
+            throw new \Exception('No inputs in current Form object');
         }
         if (!empty($groups)) {
             foreach ($groups as $gname => $g) {
@@ -618,7 +618,7 @@ class Form extends Tag {
     public function plugInput($input)
     {
         if (!$input instanceof \phpws2\Form\Base) {
-            throw new \Exception(t('plugInput only accepts Input and Choice class objects'));
+            throw new \Exception('plugInput only accepts Input and Choice class objects');
         }
         $this->inputs[$input->getName()][] = $input;
     }

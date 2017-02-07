@@ -32,7 +32,7 @@ class CompatibilityModule extends Module implements SettingDefaults {
         $settings = null;
         $file_path = 'mod/' . $this->name . '/inc/settings.php';
         if (!is_file($file_path)) {
-            throw new \Exception(t('Backward module is missing settings.php file'));
+            throw new \Exception('Backward module is missing settings.php file');
         }
 
         include $file_path;

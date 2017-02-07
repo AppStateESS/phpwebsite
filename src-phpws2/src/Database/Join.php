@@ -69,7 +69,7 @@ class Join {
     public function setLeft($resource)
     {
         if (!is_subclass_of($resource, '\phpws2\Database\Resource')) {
-            throw new \Exception(t('Resource object required'));
+            throw new \Exception('Resource object required');
         }
 
         $resource->setJoined(true);
@@ -79,7 +79,7 @@ class Join {
     public function setRight($resource)
     {
         if (!is_subclass_of($resource, '\phpws2\Database\Resource')) {
-            throw new \Exception(t('Join parameters must be SubSelect, Field, or Table objects'));
+            throw new \Exception('Join parameters must be SubSelect, Field, or Table objects');
         }
         $resource->setJoined(true);
         $this->right = $resource;
@@ -102,7 +102,7 @@ class Join {
         } else {
             if ($this->join_type != 'CROSS' && !strstr($this->join_type,
                             'NATURAL')) {
-                throw new \Exception(t('Joins without conditionals require a CROSS or NATURAL join'));
+                throw new \Exception('Joins without conditionals require a CROSS or NATURAL join');
             }
         }
         return $query;

@@ -34,7 +34,7 @@ abstract class Column extends Alias {
     {
         $check_existance = empty($check_existance) ? DATABASE_CHECK_COLUMNS : $check_existance;
         if (!\phpws2\Database\DB::allowed($name)) {
-            throw new \Exception(t('Bad column name'));
+            throw new \Exception('Bad column name');
         }
         $this->name = new \phpws2\Variable\Attribute($name, 'name');
         $this->resource = $resource;

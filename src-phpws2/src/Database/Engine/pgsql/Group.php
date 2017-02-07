@@ -37,7 +37,7 @@ class Group extends \phpws2\Database\Group {
         } elseif ($this->type == GROUP_CUBE) {
             $type = 'CUBE';
         } elseif ($this->type != GROUP_BASE) {
-            throw new \Exception(t('Unknown group type'));
+            throw new \Exception('Unknown group type');
         }
         $fields = implode(',', $this->fields);
         return "GROUP BY $type($fields)";

@@ -36,7 +36,7 @@ class Settings extends \Canopy\Data
             }
             $this->set($module_name, $variable_name, $settings[$variable_name]);
         } else {
-            throw new \Exception(t('Module does not extend SettingDefaults'));
+            throw new \Exception('Module does not extend SettingDefaults');
         }
     }
 

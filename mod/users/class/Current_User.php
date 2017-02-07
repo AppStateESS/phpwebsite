@@ -140,7 +140,7 @@ final class Current_User {
         $auth = Current_User::getAuthorization();
 
         if (empty($auth)) {
-            throw new \Exception(t('Failed to retrieve the current authorization: %s',
+            throw new \Exception(sprintf('Failed to retrieve the current authorization: %s',
                     $_SESSION['User']->auth_script));
         }
 
@@ -566,7 +566,7 @@ final class Current_User {
     {
         $auth_file = USERS_AUTH_PATH . $user->auth_script;
         if (!is_file($auth_file)) {
-            throw new \Exception(t('User authorization file not found: ' . $auth_file));
+            throw new \Exception('User authorization file not found: ' . $auth_file);
         }
         require_once USERS_AUTH_PATH . $user->auth_script;
         $class_name = $user->auth_name . '_authorization';

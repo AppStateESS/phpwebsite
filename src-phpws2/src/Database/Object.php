@@ -144,7 +144,7 @@ abstract class Object extends \Data {
 
         $this->DB = \phpws2\Database::newDB();
         if (empty($this->table_name)) {
-            throw new \Exception(t('Missing table name'));
+            throw new \Exception('Missing table name');
         }
 
         if (!$this->DB->tableExists($this->table_name)) {
@@ -156,7 +156,7 @@ abstract class Object extends \Data {
             if ($primary_index) {
                 $this->primary_key_column = $primary_index;
             } else {
-                throw new \Exception(t('Object could not derive the table primary index'));
+                throw new \Exception('Object could not derive the table primary index');
             }
         }
         $this->primary_key = & $this->{$this->primary_key_column};
@@ -170,7 +170,7 @@ abstract class Object extends \Data {
         $this->loadObjectValues();
 
         if (empty($this->object_values)) {
-            throw new \Exception(t('Object does not contain any values to save'));
+            throw new \Exception('Object does not contain any values to save');
         }
 
         foreach ($this->object_values as $col_name => $val) {
@@ -196,7 +196,7 @@ abstract class Object extends \Data {
         $this->loadDatabase();
         // primary key is loaded by above function
         if (!$this->primary_key) {
-            throw new \Exception(t('Cannot load object without primary key set'));
+            throw new \Exception('Cannot load object without primary key set');
         }
 
         $this->table->addWhere($this->primary_key_column, $this->primary_key);
@@ -217,7 +217,7 @@ abstract class Object extends \Data {
         $this->loadDatabase();
         // primary key is loaded by above function
         if (!$this->primary_key) {
-            throw new \Exception(t('Cannot load object without primary key set'));
+            throw new \Exception('Cannot load object without primary key set');
         }
         $this->table->addWhere($this->primary_key_column, $this->primary_key);
         $this->DB->delete();

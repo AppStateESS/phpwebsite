@@ -50,7 +50,7 @@ class ForeignKey extends Constraint implements TableCreateConstraint {
     public function setColumns($columns)
     {
         if (is_array($columns) && !empty($this->references) && count($this->references) != count($columns)) {
-            throw new \Exception(t('Source columns do not equal reference column count'));
+            throw new \Exception('Source columns do not equal reference column count');
         }
         parent::setColumns($columns);
     }
@@ -60,7 +60,7 @@ class ForeignKey extends Constraint implements TableCreateConstraint {
         $this->check($references);
         if (is_array($references)) {
             if (!empty($this->columns) && count($this->columns) != count($references)) {
-                throw new \Exception(t('Source columns do not equal reference column count'));
+                throw new \Exception('Source columns do not equal reference column count');
             }
             $this->references = $references;
         } else {
@@ -71,7 +71,7 @@ class ForeignKey extends Constraint implements TableCreateConstraint {
     public function setOnUpdate($option)
     {
         if (!$this->correctOption($option)) {
-            throw new \Exception(t('Unknown update reference option'));
+            throw new \Exception('Unknown update reference option');
         }
         $this->on_update = $option;
     }
@@ -79,7 +79,7 @@ class ForeignKey extends Constraint implements TableCreateConstraint {
     public function setOnDelete($option)
     {
         if (!$this->correctOption($option)) {
-            throw new \Exception(t('Unknown delete reference option'));
+            throw new \Exception('Unknown delete reference option');
         }
         $this->on_delete = $option;
     }

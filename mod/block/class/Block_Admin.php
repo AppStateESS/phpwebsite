@@ -355,7 +355,7 @@ class Block_Admin
                 $block->setTitle($title_sub);
                 $block->hide_title = 1;
             } else {
-                $block->setTitle(t('Untitled'));
+                $block->setTitle('Untitled');
                 $block->hide_title = 1;
             }
         }

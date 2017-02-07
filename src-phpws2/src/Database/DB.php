@@ -278,7 +278,7 @@ abstract class DB extends \Canopy\Data
     {
         if (self::$transaction_count == 0) {
             if (empty(self::$PDO)) {
-                throw new \Exception(t('PDO connection is missing'));
+                throw new \Exception('PDO connection is missing');
             }
             self::$transaction_count++;
             return self::$PDO->beginTransaction();
@@ -295,11 +295,11 @@ abstract class DB extends \Canopy\Data
         self::$transaction_count--;
         if (self::$transaction_count == 0) {
             if (empty(self::$PDO)) {
-                throw new \Exception(t('PDO connection is missing'));
+                throw new \Exception('PDO connection is missing');
             }
             return self::$PDO->commit();
         } elseif (self::$transaction_count < 0) {
-            throw new \Exception(t('Transaction not started'));
+            throw new \Exception('Transaction not started');
         }
     }
 
@@ -312,12 +312,12 @@ abstract class DB extends \Canopy\Data
         self::$transaction_count--;
         if (self::$transaction_count == 0) {
             if (empty(self::$PDO)) {
-                throw new \Exception(t('PDO connection is missing'));
+                throw new \Exception('PDO connection is missing');
             }
 
             return self::$PDO->rollBack();
         } elseif (self::$transaction_count < 0) {
-            throw new \Exception(t('Transaction not started'));
+            throw new \Exception('Transaction not started');
         }
     }
 
@@ -370,11 +370,11 @@ abstract class DB extends \Canopy\Data
         $args = func_get_args();
         $current_conditional = null;
         if (empty($args)) {
-            throw new \Exception(t('No arguments sent to stackConditionals'));
+            throw new \Exception('No arguments sent to stackConditionals');
         }
         foreach ($args as $conditional) {
             if (!($conditional instanceof \phpws2\Database\Conditional)) {
-                throw new \Exception(t('Argument sent to stackConditionals was not a Database\Conditional object'));
+                throw new \Exception('Argument sent to stackConditionals was not a Database\Conditional object');
             }
             if (empty($current_conditional)) {
                 $current_conditional = $conditional;
@@ -452,7 +452,7 @@ abstract class DB extends \Canopy\Data
     {
         $this->read($filename);
         if ($this->username->isEmpty()) {
-            throw new \Exception(t('Database configuration data missing from DSN file.'));
+            throw new \Exception('Database configuration data missing from DSN file.');
         }
     }
 
@@ -492,7 +492,7 @@ abstract class DB extends \Canopy\Data
     public function createDatabase($database_name)
     {
         if (!$this->allowedIdentifier($database_name)) {
-            throw new \Exception(t('Improper database name'));
+            throw new \Exception('Improper database name');
         }
 
         return $this->query("CREATE DATABASE $database_name");
@@ -506,10 +506,10 @@ abstract class DB extends \Canopy\Data
     public function dropDatabase($database_name)
     {
         if (!$this->allowedIdentifier($database_name)) {
-            throw new \Exception(t('Improper database name'));
+            throw new \Exception('Improper database name');
         }
         if ($database_name == (string) $this->dsn->database_name) {
-            throw new \Exception(t('May not drop currently connected database'));
+            throw new \Exception('May not drop currently connected database');
         }
 
         return $this->query('DROP DATABASE ' . $database_name);
@@ -582,11 +582,11 @@ abstract class DB extends \Canopy\Data
     public function renameTable($old_name, $new_name)
     {
         if (!$this->inTableStack($old_name)) {
-            throw new \Exception(t('Table does not exist'));
+            throw new \Exception('Table does not exist');
         }
 
         if (!$this->allowed($new_name)) {
-            throw new \Exception(t('Improper new table name'));
+            throw new \Exception('Improper new table name');
         }
         return $this->alterTable($old_name, array('name' => $new_name));
     }
@@ -643,7 +643,7 @@ abstract class DB extends \Canopy\Data
     private function setTablePrefix($tbl_prefix)
     {
         if (preg_match('/\W/', $tbl_prefix)) {
-            throw new \Exception(t('Table prefix contains illegal characters'));
+            throw new \Exception('Table prefix contains illegal characters');
         }
         $this->tbl_prefix = $tbl_prefix;
     }
@@ -724,7 +724,7 @@ abstract class DB extends \Canopy\Data
         $index = !empty($alias) ? $alias : $table_name;
 
         if (isset($this->tables[$index])) {
-            throw new \Exception(t('Duplicate table added'));
+            throw new \Exception('Duplicate table added');
         }
         if (DATABASE_CHECK_TABLE && !$this->tableExists($table_name)) {
             throw new \Exception(t('Table "%s" does not exist', $table_name));
@@ -747,7 +747,7 @@ abstract class DB extends \Canopy\Data
     {
         $index = !empty($alias) ? $alias : $table_name;
         if (!isset($this->tables[$index])) {
-            throw new \Exception(t('Table not added'));
+            throw new \Exception('Table not added');
         } else {
             return $this->tables[$index];
         }
@@ -761,7 +761,7 @@ abstract class DB extends \Canopy\Data
         } elseif ($subselect instanceof SubSelect) {
             $exists = new Exists($subselect, $exists);
         } else {
-            throw new \Exception(t('Existence addition requires a Subselect'));
+            throw new \Exception('Existence addition requires a Subselect');
         }
         $this->addConditional($exists);
     }
@@ -1005,7 +1005,7 @@ abstract class DB extends \Canopy\Data
     public function insert()
     {
         if (empty($this->tables)) {
-            throw new \Exception(t('No tables found'));
+            throw new \Exception('No tables found');
         }
         foreach ($this->tables as $tbl) {
             $rows_affected = $tbl->insert();
@@ -1119,7 +1119,7 @@ abstract class DB extends \Canopy\Data
         extract($data);
 
         if (!isset($columns)) {
-            throw new \Exception(t('Update query missing columns'));
+            throw new \Exception('Update query missing columns');
         }
 
         $query[] = 'UPDATE';
@@ -1217,7 +1217,7 @@ abstract class DB extends \Canopy\Data
     private function checkStatement()
     {
         if (empty($this->pdo_statement)) {
-            throw new \Exception(t('Query statement must be set before fetch'));
+            throw new \Exception('Query statement must be set before fetch');
         }
     }
 
@@ -1419,7 +1419,7 @@ abstract class DB extends \Canopy\Data
         }
 
         if (empty($sources) && empty($modules)) {
-            throw new \Exception(t('No tables or subselects created'));
+            throw new \Exception('No tables or subselects created');
         }
 
         if ($modules) {
@@ -1547,7 +1547,7 @@ abstract class DB extends \Canopy\Data
         }
 
         if (!$fields_present) {
-            throw new \Exception(t('Select did not contain any fields to return'));
+            throw new \Exception('Select did not contain any fields to return');
         }
 
         $query[] = 'FROM';
@@ -1626,7 +1626,7 @@ abstract class DB extends \Canopy\Data
         } elseif ($fields > 1) {
             return $fields;
         } else {
-            throw new \Exception(t('No table fields were found'));
+            throw new \Exception('No table fields were found');
         }
     }
 
@@ -1678,7 +1678,7 @@ abstract class DB extends \Canopy\Data
     public function numRows()
     {
         if (empty($this->module)) {
-            throw new \Exception(t('Missing query module.'));
+            throw new \Exception('Missing query module.');
         }
         return $this->module->numRows();
     }
@@ -1690,7 +1690,7 @@ abstract class DB extends \Canopy\Data
     public function numCols()
     {
         if (empty($this->module)) {
-            throw new \Exception(t('Missing query module.'));
+            throw new \Exception('Missing query module.');
         }
         return $this->module->numCols();
     }
@@ -1717,7 +1717,7 @@ abstract class DB extends \Canopy\Data
             }
             $result = self::$PDO->quote($value);
             if ($result === false) {
-                throw new \Exception(t('Database connection failed'));
+                throw new \Exception('Database connection failed');
             } else {
                 return $result;
             }
@@ -1824,10 +1824,10 @@ abstract class DB extends \Canopy\Data
     private function isResourceClass($class_name)
     {
         if (!class_exists($class_name)) {
-            throw new \Exception(t('Unknown class'));
+            throw new \Exception('Unknown class');
         }
         if (!is_subclass_of($class_name, '\phpws2\Resource')) {
-            throw new \Exception(t('Class must be of type phpws2\Resource'));
+            throw new \Exception('Class must be of type phpws2\Resource');
         }
     }
 

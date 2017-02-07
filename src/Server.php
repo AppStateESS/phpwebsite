@@ -163,7 +163,7 @@ class Server
         if (isset($_SERVER['REMOTE_ADDR'])) {
             return $_SERVER['REMOTE_ADDR'];
         } else {
-            throw new \Exception(t('SERVER REMOTE ADDRESS not set'));
+            throw new \Exception('SERVER REMOTE ADDRESS not set');
         }
     }
 

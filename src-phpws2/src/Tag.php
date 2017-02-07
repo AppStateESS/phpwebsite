@@ -150,7 +150,7 @@ class Tag extends \Canopy\Data
     {
         $vars = func_get_args();
         if (empty($vars)) {
-            throw new \Exception(t('No variables received in addIgnoreVariables'));
+            throw new \Exception('No variables received in addIgnoreVariables');
         }
         foreach ($vars as $v) {
             $this->ignore_variables[] = $v;
@@ -282,7 +282,7 @@ class Tag extends \Canopy\Data
     public function addClass($class)
     {
         if (preg_match('/[^\w\-\s]/', $class)) {
-            throw new \Exception(t('Improper class name'));
+            throw new \Exception('Improper class name');
         }
         $this->class[] = $class;
         return $this;
@@ -326,7 +326,7 @@ class Tag extends \Canopy\Data
         }
 
         if (preg_match('/[^\w\-;\s:!()\/\.]/i', $style)) {
-            throw new \Exception(t('Improperly formatted style settings'));
+            throw new \Exception('Improperly formatted style settings');
         }
         if (!preg_match('/;$/', $style)) {
             $style .= ';';

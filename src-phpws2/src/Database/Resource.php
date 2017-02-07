@@ -176,12 +176,12 @@ abstract class Resource extends Alias
          * Prevents endless recursion
          */
         if ($value === $this->db) {
-            throw new \Exception(t('Embedding the parent DB object in a conditional is forbidden'));
+            throw new \Exception('Embedding the parent DB object in a conditional is forbidden');
             return false;
         }
         if ($column instanceof Conditional) {
             if ($column->table != $this) {
-                throw new \Exception(t('Having object referenced incorrect table object'));
+                throw new \Exception('Having object referenced incorrect table object');
                 return false;
             }
             $having = $column;
@@ -254,7 +254,7 @@ abstract class Resource extends Alias
             $field->showInSelect($show_in_select);
         } elseif ($column_name instanceof Field) {
             if (!$column_name->inTableStack($this)) {
-                throw new \Exception(t('Field object referenced different table object'));
+                throw new \Exception('Field object referenced different table object');
                 return false;
             }
             $field = $column_name;
@@ -262,7 +262,7 @@ abstract class Resource extends Alias
         } elseif ($column_name instanceof Expression || $column_name instanceof SubSelect) {
             $field = $column_name;
         } else {
-            throw new \Exception(t('Improper parameter'));
+            throw new \Exception('Improper parameter');
         }
         $this->fields[] = $field;
 
