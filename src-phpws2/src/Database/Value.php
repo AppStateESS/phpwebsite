@@ -65,7 +65,7 @@ class Value extends Column
                  * This should work for all Variable objects and anything else someone else
                  * someone puts in
                  */
-                if (\Canopy\String::is_string_like($value)) {
+                if (\Canopy\TextString::is_string_like($value)) {
                     //if ($value instanceof \phpws2\Variable) {
                     $this->value = $value;
                     //} elseif (method_exists($value, '__toString')) {

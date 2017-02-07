@@ -63,7 +63,7 @@ class Conditional extends \Canopy\Data {
 
     private function testSide($side)
     {
-        if (is_object($side) && !\Canopy\String::is_string_like($side)) {
+        if (is_object($side) && !\Canopy\TextString::is_string_like($side)) {
             throw new \Exception('Conditional variable received a variable type it can not use');
         }
     }
@@ -100,7 +100,7 @@ class Conditional extends \Canopy\Data {
             case 'object':
                 if (method_exists($value, 'stringAsConditional')) {
                     return $value->stringAsConditional();
-                } elseif (\Canopy\String::is_string_like($value)) {
+                } elseif (\Canopy\TextString::is_string_like($value)) {
                     return $this->db->quote($value->__toString());
                 } else {
                     throw new \Exception('Could not use object variable in a query comparison');

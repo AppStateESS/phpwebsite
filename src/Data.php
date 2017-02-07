@@ -118,7 +118,7 @@ abstract class Data
             $variables = get_object_vars($value);
         }
 
-        if (\Canopy\String::is_string_like($value)) {
+        if (\Canopy\TextString::is_string_like($value)) {
             $to_string = htmlentities($value->__toString());
         }
 
@@ -348,7 +348,7 @@ abstract class Data
             throw new \Exception('No variables returned from Data object');
         }
         foreach ($vars as $key => $val) {
-            if (\Canopy\String::is_string_like($val)) {
+            if (\Canopy\TextString::is_string_like($val)) {
                 $new_vars[$key] = (string) $val;
             }
         }

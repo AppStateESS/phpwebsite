@@ -157,7 +157,7 @@ class Form extends Tag {
      */
     public function addInput($type, $name, $value = null, $label = null)
     {
-        if (!\Canopy\String::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
+        if (!\Canopy\TextString::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
             throw new \Exception(sprintf('Improperly formatted input name: %s', $name));
         }
 
@@ -179,7 +179,7 @@ class Form extends Tag {
      */
     public function addChoice($type, $name, $value = null)
     {
-        if (!\Canopy\String::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
+        if (!\Canopy\TextString::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
             throw new \Exception(sprintf('Improperly formatted choice name: %s', $name));
         }
 

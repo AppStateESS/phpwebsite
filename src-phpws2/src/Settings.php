@@ -29,7 +29,7 @@ class Settings extends \Canopy\Data
     public function loadDefaultSettings($module_name, $variable_name)
     {
         $module = \phpws2\ModuleRepository::getInstance()->getModule($module_name);
-        if ($module instanceof \SettingDefaults) {
+        if ($module instanceof \Canopy\SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!array_key_exists($variable_name, $settings)) {
                 throw new \Exception(sprintf('Unknown setting "%s:%s"', $module_name, $variable_name));

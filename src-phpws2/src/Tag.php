@@ -228,7 +228,7 @@ class Tag extends \Canopy\Data
                     continue;
                 }
 
-                if (\Canopy\String::is_string_like($param)) {
+                if (\Canopy\TextString::is_string_like($param)) {
                     $param = htmlentities($param, ENT_COMPAT);
                     $data[] = sprintf('%s="%s"', $pname, $param);
                 } elseif (is_bool($param)) {
@@ -398,7 +398,7 @@ class Tag extends \Canopy\Data
         if (is_bool($text)) {
             $text = $text ? 1 : 0;
         }
-        if (!\Canopy\String::is_string_like($text)) {
+        if (!\Canopy\TextString::is_string_like($text)) {
             throw new \Exception(sprintf('setText received a %s variable, not a string parameter', gettype($text)));
         }
         $this->text = (string) $text;
