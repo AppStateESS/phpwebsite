@@ -1642,11 +1642,12 @@ class PHPWS_Form
         return $element->get();
     }
 
-    public static function formTextArea($name, $value = null, $rows = DFLT_ROWS, $cols = DFLT_COLS, $label = null)
+    public static function formTextArea($name, $value = null, $rows = DFLT_ROWS, $cols = DFLT_COLS, $label = null, $class = 'form-control')
     {
         $element = new Form_TextArea($name, $value);
         $element->setRows($rows);
         $element->setCols($cols);
+        $element->setClass($class);
         return $element->get();
     }
 
