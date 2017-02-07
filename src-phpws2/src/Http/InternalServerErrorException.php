@@ -9,7 +9,7 @@ namespace phpws2\Http;
 class InternalServerErrorException extends Exception
 {
 
-    protected function createResponse(\Request $request, \Exception $previous = null)
+    protected function createResponse(\Canopy\Request $request, \Exception $previous = null)
     {
         return new InternalServerErrorResponse($request, $previous);
     }

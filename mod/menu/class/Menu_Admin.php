@@ -155,7 +155,7 @@ class Menu_Admin
         Layout::add(PHPWS_ControlPanel::display($template->get()));
     }
 
-    private function updateCharacterLimit(\Request $request)
+    private function updateCharacterLimit(\Canopy\Request $request)
     {
         \PHPWS_Settings::set('menu', 'max_link_characters',
                 $request->getVar('limit'));
@@ -238,7 +238,7 @@ class Menu_Admin
         $menu_link->save();
     }
 
-    private function clearImage(\Request $request)
+    private function clearImage(\Canopy\Request $request)
     {
         $menu = new Menu_Item($request->getVar('menu_id'));
         $menu->deleteImage();
@@ -274,14 +274,14 @@ class Menu_Admin
         }
     }
 
-    private function updateNewLink(\Request $request)
+    private function updateNewLink(\Canopy\Request $request)
     {
         $menu_link = $request->getVar('check') == 'true' ? 1 : 0;
         \PHPWS_Settings::set('menu', 'home_link', $menu_link);
         \PHPWS_Settings::save('menu');
     }
 
-    private function updateLinkIcons(\Request $request)
+    private function updateLinkIcons(\Canopy\Request $request)
     {
         $link_icons = $request->getVar('check') == 'true' ? 1 : 0;
         \PHPWS_Settings::set('menu', 'link_icons', $link_icons);
@@ -497,7 +497,7 @@ class Menu_Admin
         $this->resetMenu();
     }
 
-    private function addKeyLink(\Request $request)
+    private function addKeyLink(\Canopy\Request $request)
     {
         $key_id = $request->getVar('key_id');
         $menu_id = $request->getVar('menu_id');
@@ -506,7 +506,7 @@ class Menu_Admin
         $menu->addLink($key_id, 0);
     }
 
-    private function removeKeyLink(\Request $request)
+    private function removeKeyLink(\Canopy\Request $request)
     {
         $key_id = $request->getVar('key_id');
         $menu_id = $request->getVar('menu_id');
@@ -526,7 +526,7 @@ class Menu_Admin
         }
     }
 
-    private function moveUnder(\Request $request)
+    private function moveUnder(\Canopy\Request $request)
     {
         $move_from = new Menu_Link($request->getVar('move_from'));
         $move_to = new Menu_Link($request->getVar('move_to'));
@@ -540,7 +540,7 @@ class Menu_Admin
         $menu->reorderLinks();
     }
 
-    private function moveLink(\Request $request)
+    private function moveLink(\Canopy\Request $request)
     {
         $move_id = $request->getVar('move_id');
         if ($request->isVar('next_id')) {
@@ -664,7 +664,7 @@ class Menu_Admin
         $move_link->save();
     }
 
-    private function moveMenu(\Request $request)
+    private function moveMenu(\Canopy\Request $request)
     {
         $move_id = $request->getVar('move_id');
         $move_menu = new Menu_Item($move_id);
@@ -720,7 +720,7 @@ class Menu_Admin
         $move_menu->save();
     }
 
-    private function postLink(\Request $request)
+    private function postLink(\Canopy\Request $request)
     {
         $link_id = $menu_id = $title = $url = $key_id = null;
         $s = $request->getRequestVars();

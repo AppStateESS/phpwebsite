@@ -56,7 +56,7 @@ abstract class Resource extends \Data
         return $this->table;
     }
 
-    public function post(\Request $request)
+    public function post(\Canopy\Request $request)
     {
         $post_vars = $request->getRequestVars();
         $this->setVars($post_vars);
@@ -84,12 +84,12 @@ abstract class Resource extends \Data
      * post to be saved.
      * If a variable in the Resource is ignored, the current resource value
      * stays.
-     * @param \Request $request
+     * @param \Canopy\Request $request
      * @param  array $ignore Array of variables to ignore
      * @throws \Exception
      * @throws \phpws2\Exception\WrongType
      */
-    public function loadPostByType(\Request $request, array $ignore = null)
+    public function loadPostByType(\Canopy\Request $request, array $ignore = null)
     {
         $variable_names = $this->getVariableNames();
         if (empty($variable_names)) {
@@ -152,12 +152,12 @@ abstract class Resource extends \Data
 
     /**
      * Duplicate of loadPostByType but using PUT method
-     * @param \Request $request
+     * @param \Canopy\Request $request
      * @param array $ignore
      * @throws \Exception
      * @throws \phpws2\Exception\WrongType
      */
-    public function loadPutByType(\Request $request, array $ignore = null)
+    public function loadPutByType(\Canopy\Request $request, array $ignore = null)
     {
         $variable_names = $this->getVariableNames();
         if (empty($variable_names)) {

@@ -9,7 +9,7 @@ namespace phpws2\Http;
 class MethodNotAllowedException extends Exception
 {
 
-    protected function createResponse(\Request $request, \Exception $previous = null)
+    protected function createResponse(\Canopy\Request $request, \Exception $previous = null)
     {
         return new MethodNotAllowedResponse($request, $previous);
     }

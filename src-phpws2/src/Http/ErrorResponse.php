@@ -13,7 +13,7 @@ abstract class ErrorResponse extends \Canopy\Response
     protected $backtrace;
     protected $exception;
 
-    public function __construct(\Request $request = null, \Exception $previous = null)
+    public function __construct(\Canopy\Request $request = null, \Exception $previous = null)
     {
         if (is_null($request)) {
             $request = \Canopy\Server::getCurrentRequest();

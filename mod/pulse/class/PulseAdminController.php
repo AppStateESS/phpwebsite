@@ -9,7 +9,7 @@ namespace pulse;
 class PulseAdminController extends \Http\Controller
 {
 
-    public function get(\Request $request)
+    public function get(\Canopy\Request $request)
     {
         $data = array();
         $view = $this->getView($data, $request);
@@ -17,7 +17,7 @@ class PulseAdminController extends \Http\Controller
         return $response;
     }
 
-    public function getHtmlView($data, \Request $request)
+    public function getHtmlView($data, \Canopy\Request $request)
     {
         $cmd = $request->shiftCommand();
         if (empty($cmd)) {
@@ -39,7 +39,7 @@ class PulseAdminController extends \Http\Controller
         return $view;
     }
 
-    public function post(\Request $request)
+    public function post(\Canopy\Request $request)
     {
         $cmd = $request->shiftCommand();
 
@@ -53,7 +53,7 @@ class PulseAdminController extends \Http\Controller
         exit;
     }
 
-    public function getJsonView($data, \Request $request)
+    public function getJsonView($data, \Canopy\Request $request)
     {
         $cmd = $request->shiftCommand();
         switch ($cmd) {
@@ -68,7 +68,7 @@ class PulseAdminController extends \Http\Controller
         return parent::getJsonView($data, $request);
     }
 
-    private function pager(\Request $request)
+    private function pager(\Canopy\Request $request)
     {
         \Pager::prepare();
         $template = new \Template;
@@ -87,7 +87,7 @@ class PulseAdminController extends \Http\Controller
         return $template;
     }
 
-    private function listSchedules(\Request $request)
+    private function listSchedules(\Canopy\Request $request)
     {
         $db = \Database::getDB();
         $schedule_table = $db->addTable('pulse_schedule');

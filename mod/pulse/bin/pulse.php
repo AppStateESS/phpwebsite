@@ -66,7 +66,7 @@ function process($arguments)
     require_once PHPWS_SOURCE_DIR . 'mod/pulse/class/PulseController.php';
 
     try {
-        $request = new \Request('index.php', Request::GET);
+        $request = new \Canopy\Request('index.php', Request::GET);
         if (!empty($hash)) {
             $request->setVar('hash', $hash);
         }

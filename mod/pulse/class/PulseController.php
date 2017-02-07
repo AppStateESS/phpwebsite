@@ -9,7 +9,7 @@ namespace pulse;
 class PulseController
 {
 
-    public static function runSchedules(\Request $request)
+    public static function runSchedules(\Canopy\Request $request)
     {
         if ($request->isVar('hash')) {
             $schedule_hash = $request->getVar('hash');

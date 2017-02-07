@@ -32,7 +32,7 @@ abstract class Controller implements \Controller {
         return $this->module;
     }
 
-    public function execute(\Request $request)
+    public function execute(\Canopy\Request $request)
     {
         $this->onBeforeExecute($request);
 
@@ -74,57 +74,57 @@ abstract class Controller implements \Controller {
         return $response;
     }
 
-    public function onBeforeExecute(\Request &$request)
+    public function onBeforeExecute(\Canopy\Request &$request)
     {
 
     }
 
-    public function onAfterExecute(\Request $request, \Response &$response)
+    public function onAfterExecute(\Canopy\Request $request, \Response &$response)
     {
 
     }
 
-    protected function getHtmlView($data, \Request $request)
+    protected function getHtmlView($data, \Canopy\Request $request)
     {
         throw new \phpws2\Http\MethodNotAllowedException($request);
     }
 
-    public function get(\Request $request)
+    public function get(\Canopy\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function head(\Request $request)
+    public function head(\Canopy\Request $request)
     {
 
     }
 
-    public function post(\Request $request)
-    {
-        return new MethodNotAllowedResponse($request);
-    }
-
-    public function put(\Request $request)
+    public function post(\Canopy\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function delete(\Request $request)
+    public function put(\Canopy\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function options(\Request $request)
+    public function delete(\Canopy\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function patch(\Request $request)
+    public function options(\Canopy\Request $request)
     {
         return new MethodNotAllowedResponse($request);
     }
 
-    public function getView($data, \Request $request = null)
+    public function patch(\Canopy\Request $request)
+    {
+        return new MethodNotAllowedResponse($request);
+    }
+
+    public function getView($data, \Canopy\Request $request = null)
     {
         if (is_null($request)) {
             $request = \Canopy\Server::getCurrentRequest();
@@ -153,12 +153,12 @@ abstract class Controller implements \Controller {
         return $view;
     }
 
-    protected function getJsonView($data, \Request $request)
+    protected function getJsonView($data, \Canopy\Request $request)
     {
         return new \View\JsonView($data);
     }
 
-    protected function getXmlView($data, \Request $request)
+    protected function getXmlView($data, \Canopy\Request $request)
     {
         // TODO: Find a nice way to just XML encode anything and provide a
         // default view here.

@@ -132,7 +132,7 @@ class FC_Forms
         exit();
     }
 
-    private function saveFile(\Request $request)
+    private function saveFile(\Canopy\Request $request)
     {
         switch ($request->getVar('ftype')) {
             case DOCUMENT_FOLDER:
@@ -158,12 +158,12 @@ class FC_Forms
         }
     }
 
-    private function printFolderList(\Request $request)
+    private function printFolderList(\Canopy\Request $request)
     {
         echo $this->factory->printFolderList();
     }
 
-    private function saveFolder(\Request $request)
+    private function saveFolder(\Canopy\Request $request)
     {
         $folder_id = $request->getVar('folder_id');
 
@@ -193,12 +193,12 @@ class FC_Forms
         }
     }
 
-    private function printFile(\Request $request)
+    private function printFile(\Canopy\Request $request)
     {
         echo $this->factory->printFile($request->getVar('id'));
     }
 
-    private function deleteFile(\Request $request)
+    private function deleteFile(\Canopy\Request $request)
     {
         if (!Current_User::authorized('filecabinet')) {
             $this->sendErrorHeader('No permissions to delete files');
@@ -229,7 +229,7 @@ class FC_Forms
         $db->delete();
     }
 
-    public function uploadFile(\Request $request)
+    public function uploadFile(\Canopy\Request $request)
     {
         if (Current_User::authorized('filecabinet')) {
             return;

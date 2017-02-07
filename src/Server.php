@@ -35,7 +35,7 @@ class Server
                 $accept = new \phpws2\Http\Accept('text/html');
             }
 
-            self::$REQUEST_SINGLETON = new \Request($url, $method, $vars, $data, $accept);
+            self::$REQUEST_SINGLETON = new \Canopy\Request($url, $method, $vars, $data, $accept);
 
             $dataValues = array();
             parse_str($data, $dataValues);
