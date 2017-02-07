@@ -110,7 +110,7 @@ abstract class Base extends \Tag {
     public function setName($name)
     {
         if (!$this->isProper($name)) {
-            throw new \Exception(t('Improper name "%s"', $name));
+            throw new \Exception(sprintf('Improper name "%s"', $name));
         }
         $this->name = trim($name);
 

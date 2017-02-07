@@ -45,7 +45,7 @@ class Date extends Text {
             }
         }
         if (!preg_match('/\d{4}-\d{2}-\d{2}/', $value)) {
-            throw new \Exception(t('Date format is YYYY-MM-DD: %s', $value));
+            throw new \Exception(sprintf('Date format is YYYY-MM-DD: %s', $value));
         }
         parent::setValue($value);
     }
@@ -58,7 +58,7 @@ class Date extends Text {
     public function setMin($min)
     {
         if (!preg_match('/\d{4}-\d{2}-\d{2}/', $min)) {
-            throw new \Exception(t('Date format is YYYY-MM-DD: %s', $min));
+            throw new \Exception(sprintf('Date format is YYYY-MM-DD: %s', $min));
         }
         $this->min = $min;
     }
@@ -71,7 +71,7 @@ class Date extends Text {
     public function setMax($max)
     {
         if (!preg_match('/\d{4}-\d{2}-\d{2}/', $max)) {
-            throw new \Exception(t('Date format is YYYY-MM-DD: %s', $max));
+            throw new \Exception(sprintf('Date format is YYYY-MM-DD: %s', $max));
         }
         $this->max = $max;
     }

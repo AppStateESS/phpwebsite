@@ -61,7 +61,7 @@ class Join {
         }
 
         if (!in_array($type, $join_types)) {
-            throw new \Exception(t('Unknown join type: %s', $type));
+            throw new \Exception(sprintf('Unknown join type: %s', $type));
         }
         $this->join_type = $type;
     }

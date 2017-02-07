@@ -41,11 +41,11 @@ class IntegerVar extends \phpws2\Variable {
     protected function verifyValue($value)
     {
         if (!is_int($value) && !ctype_digit($value)) {
-            throw new \Exception(t('Variable %s received %s value, not an integer', $this->getVarname(), gettype($value)));
+            throw new \Exception(sprintf('Variable %s received %s value, not an integer', $this->getVarname(), gettype($value)));
         }
 
         if ($value < $this->low_range || $value > $this->high_range) {
-            throw new \Exception(t('Value "%1$s" is outside the allowed range(%2$s - %3$s) of variable "%4$s"', $value, $this->low_range, $this->high_range, $this->getLabel()));
+            throw new \Exception(sprintf('Value "%1$s" is outside the allowed range(%2$s - %3$s) of variable "%4$s"', $value, $this->low_range, $this->high_range, $this->getLabel()));
         }
 
         return true;
@@ -70,7 +70,7 @@ class IntegerVar extends \phpws2\Variable {
         $high_range = (int) $high_range;
 
         if ($low_range > $high_range) {
-            throw new \Exception(t('Low range (%s) is greater than high range (%s)', $low_range, $high_range));
+            throw new \Exception(sprintf('Low range (%s) is greater than high range (%s)', $low_range, $high_range));
         }
 
         $this->low_range = (int) $low_range;

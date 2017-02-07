@@ -98,7 +98,7 @@ class PHPWS_Core
 
         // If the requested file doesn't exist, throw an exception
         if (!is_file($classFile)) {
-            throw new \Exception(t('Module class file not found: %s', $classFile));
+            throw new \Exception(sprintf('Module class file not found: %s', $classFile));
         }
 
         require_once $classFile;
@@ -390,7 +390,7 @@ class PHPWS_Core
         if (!is_file($inc_file)) {
             \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
             if ($exitOnError) {
-                throw new \Exception(t('Could not find inc file to require: %s', $inc_file));
+                throw new \Exception(sprintf('Could not find inc file to require: %s', $inc_file));
             } else {
                 return false;
             }
@@ -415,7 +415,7 @@ class PHPWS_Core
         if (empty($config_file) || !$config_file) {
             \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
             if ($exitOnError) {
-                throw new \Exception(t('Could not find config file to require: %s', $inc_file));
+                throw new \Exception(sprintf('Could not find config file to require: %s', $inc_file));
             } else {
                 return $config_file;
             }

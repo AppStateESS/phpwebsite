@@ -158,7 +158,7 @@ class Form extends Tag {
     public function addInput($type, $name, $value = null, $label = null)
     {
         if (!\Canopy\String::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
-            throw new \Exception(t('Improperly formatted input name: %s', $name));
+            throw new \Exception(sprintf('Improperly formatted input name: %s', $name));
         }
 
         $class_name = 'Form\Input\\' . ucfirst(strtolower($type));
@@ -180,7 +180,7 @@ class Form extends Tag {
     public function addChoice($type, $name, $value = null)
     {
         if (!\Canopy\String::is_string_like($name) || preg_match('/[^\w\-\[\]]/', $name)) {
-            throw new \Exception(t('Improperly formatted choice name: %s', $name));
+            throw new \Exception(sprintf('Improperly formatted choice name: %s', $name));
         }
 
         $class_name = 'Form\Choice\\' . ucfirst(strtolower($type));
@@ -509,7 +509,7 @@ class Form extends Tag {
             }
         }
         if (!$plug) {
-            throw new \Exception(t('None of the current object\'s variables were of subclass "Variable"'));
+            throw new \Exception('None of the current object\'s variables were of subclass "Variable"');
         }
     }
 
@@ -675,7 +675,7 @@ class Form extends Tag {
     public function getInput($name)
     {
         if (!isset($this->inputs[$name])) {
-            throw new \Exception(t('Input "%s" does not exist', $name));
+            throw new \Exception(sprintf('Input "%s" does not exist', $name));
         }
         return $this->inputs[$name];
     }
@@ -693,10 +693,10 @@ class Form extends Tag {
     public function getSingleInput($name)
     {
         if (!isset($this->inputs[$name])) {
-            throw new \Exception(t('Input "%s" does not exist', $name));
+            throw new \Exception(sprintf('Input "%s" does not exist', $name));
         }
         if (count($this->inputs[$name]) > 1) {
-            throw new \Exception(t('Input "%s" contains multiple objects', $name));
+            throw new \Exception(sprintf('Input "%s" contains multiple objects', $name));
         }
         return $this->inputs[$name][0];
     }

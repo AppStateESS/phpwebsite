@@ -31,7 +31,7 @@ class FileVar extends \phpws2\Variable\StringVar {
     public function requireOnce()
     {
         if (!$this->exists()) {
-            throw new \Exception(t('File not found: %s', $this->__toString()));
+            throw new \Exception(sprintf('File not found: %s', $this->__toString()));
         }
 
         require_once $this->value;
@@ -45,11 +45,11 @@ class FileVar extends \phpws2\Variable\StringVar {
     public function unlink()
     {
         if (!$this->exists()) {
-            throw new \Exception(t('File not found: %s', $this->__toString()));
+            throw new \Exception(sprintf('File not found: %s', $this->__toString()));
         }
 
         if (!$this->writable()) {
-            throw new \Exception(t('Permissions insufficient to delete file: %s',
+            throw new \Exception(sprintf('Permissions insufficient to delete file: %s',
                     $this->__toString()));
         }
 

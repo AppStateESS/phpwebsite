@@ -187,7 +187,7 @@ class PHPWS_Template extends \HTML_Template_Sigma {
                 $result = $this->loadTemplateFile($mod_tpl);
                 $used_tpl = & $mod_tpl;
             } else {
-                throw new \Exception(t('Missing template file: %s', $file));
+                throw new \Exception(sprintf('Missing template file: %s', $file));
             }
         }
 

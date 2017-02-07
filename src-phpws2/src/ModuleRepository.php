@@ -64,7 +64,7 @@ final class ModuleRepository
         $title = $values['title'];
         $module_path = PHPWS_SOURCE_DIR . "mod/$title/Module.php";
         if (!is_file($module_path)) {
-            throw new \Exception(t('Module "%s" not found', $title));
+            throw new \Exception(sprintf('Module "%s" not found', $title));
         }
         require_once $module_path;
         $namespace = "$title\\Module";

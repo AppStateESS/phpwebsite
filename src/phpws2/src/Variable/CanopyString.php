@@ -59,19 +59,19 @@ class CanopyString extends \phpws2\Variable
     protected function verifyValue($value)
     {
         if (!$this->allow_empty && strlen($value) == 0) {
-            throw new \Exception(t('Value "%1$s" may not be an empty string', $this->varname));
+            throw new \Exception(sprintf('Value "%1$s" may not be an empty string', $this->varname));
         }
 
         if (!is_string($value)) {
-            throw new \Exception(t('Value "%1$s" is a %2$s, not a string', $this->varname, gettype($value)));
+            throw new \Exception(sprintf('Value "%1$s" is a %2$s, not a string', $this->varname, gettype($value)));
         }
 
         if ($this->limit && strlen($value) > $this->limit) {
-            throw new \Exception(t('%s is over the %s character limit', $this->getLabel(), $this->getLimit()));
+            throw new \Exception(sprintf('%s is over the %s character limit', $this->getLabel(), $this->getLimit()));
         }
 
         if (strlen($value) && isset($this->regexp_match) && !preg_match($this->regexp_match, $value)) {
-            throw new \Exception(t('String variable "%s" is not formatted correctly', $this->getVarName()));
+            throw new \Exception(sprintf('String variable "%s" is not formatted correctly', $this->getVarName()));
         }
 
         return true;
@@ -99,7 +99,7 @@ class CanopyString extends \phpws2\Variable
         }
 
         if (preg_match($match, $test) === false) {
-            throw new \Exception(t('Regular expression error: %s', preg_error_msg(preg_last_error())));
+            throw new \Exception(sprintf('Regular expression error: %s', preg_error_msg(preg_last_error())));
         }
         $this->regexp_match = $match;
     }

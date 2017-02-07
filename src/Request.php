@@ -365,7 +365,7 @@ class Request extends Data
             if (isset($default)) {
                 return $default;
             } else {
-                throw new \Exception(t('Variable "%s" not found', $variable_name));
+                throw new \Exception(sprintf('Variable "%s" not found', $variable_name));
             }
         }
 
@@ -542,7 +542,7 @@ class Request extends Data
     public function getUploadedFileArray($file_name)
     {
         if (!$this->isUploadedFile($file_name)) {
-            throw new \Exception(t('File "%s" was not uploaded', $file_name));
+            throw new \Exception(sprintf('File "%s" was not uploaded', $file_name));
         }
 
         return $_FILES[$file_name];

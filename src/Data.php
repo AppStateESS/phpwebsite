@@ -234,17 +234,17 @@ abstract class Data
     private function checkVariableName($variable_name)
     {
         if (!is_string($variable_name)) {
-            throw new \Exception(t('Variable name expects a string not a %s',
+            throw new \Exception(sprintf('Variable name expects a string not a %s',
                     gettype($variable_name)));
         }
 
         if (preg_match('/\W/', $variable_name)) {
-            throw new \Exception(t('Illegally formatted variable name "%s"',
+            throw new \Exception(sprintf('Illegally formatted variable name "%s"',
                     $variable_name));
         }
 
         if (!property_exists($this, $variable_name)) {
-            throw new \Exception(t('Variable name "%s" not found in object',
+            throw new \Exception(sprintf('Variable name "%s" not found in object',
                     $variable_name));
         }
     }
@@ -370,7 +370,7 @@ abstract class Data
     {
         foreach ($vars as $key => $value) {
             if (!property_exists($this, $key)) {
-                throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
+                throw new \Exception(sprintf('Parameter "%s" does not exist or cannot be set in class %s',
                         $key, get_class($this)));
             }
             if (!$this->isPrivate($key) && is_a($this->$key, '\phpws2\Variable')) {
@@ -384,7 +384,7 @@ abstract class Data
                 } elseif ($this->isProtected($key)) {
                     $this->$key = $value;
                 } else {
-                    throw new \Exception(t('Parameter "%s" does not exist or cannot be set in class %s',
+                    throw new \Exception(sprintf('Parameter "%s" does not exist or cannot be set in class %s',
                             $key, get_class($this)));
                 }
             } else {
@@ -451,11 +451,11 @@ abstract class Data
     public function write($file_path, $allow_overwrite = false)
     {
         if ((!$allow_overwrite && is_file($file_path))) {
-            throw new \Exception(t('Cannot overwrite file at %s', $file_path));
+            throw new \Exception(sprintf('Cannot overwrite file at %s', $file_path));
         }
 
         if (!is_writable(dirname($file_path))) {
-            throw new \Exception(t('Cannot write file to directory "%s"',
+            throw new \Exception(sprintf('Cannot write file to directory "%s"',
                     dirname($file_path) . '/'));
         }
 
@@ -475,7 +475,7 @@ namespace phpws2;
         }
         $content[] = "?>";
         if (!file_put_contents($file_path, implode("\n", $content))) {
-            throw new \Exception(t('Could not write file to %s', $file_path));
+            throw new \Exception(sprintf('Could not write file to %s', $file_path));
         }
         return true;
     }

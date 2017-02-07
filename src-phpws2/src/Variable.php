@@ -157,7 +157,7 @@ abstract class Variable extends \Canopy\Data {
         if (empty($type)) {
             $type = 'NULL';
         }
-        throw new \Exception(t('Unknown Variable type: %s', $type));
+        throw new \Exception(sprintf('Unknown Variable type: %s', $type));
     }
 
     /**
@@ -171,7 +171,7 @@ abstract class Variable extends \Canopy\Data {
             $this->varname = $varname;
             $this->varname_set = true;
         } else {
-            throw new \Exception(t('Improper variable name "%s"', $varname));
+            throw new \Exception(sprintf('Improper variable name "%s"', $varname));
         }
     }
 
@@ -214,7 +214,7 @@ abstract class Variable extends \Canopy\Data {
                 $this->value = null;
                 return true;
             } else {
-                throw new \Exception(t('%s may not be null', $this->varname));
+                throw new \Exception(sprintf('%s may not be null', $this->varname));
             }
         }
         try {
@@ -429,7 +429,7 @@ abstract class Variable extends \Canopy\Data {
     {
         $type = strtolower($type);
         if (!empty($this->allowed_inputs) && !in_array($type, $this->allowed_inputs)) {
-            throw new \Exception(t('Input type "%s" is not allowed for this variable', $type));
+            throw new \Exception(sprintf('Input type "%s" is not allowed for this variable', $type));
         }
         $this->input_type = $type;
     }

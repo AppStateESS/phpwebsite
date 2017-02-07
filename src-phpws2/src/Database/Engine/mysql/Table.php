@@ -158,7 +158,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         }
         $schema = $this->getSchema($column_name);
         if (empty($schema)) {
-            throw new \Exception(t('Unable to retrieve information about column %s', $column_name));
+            throw new \Exception(sprintf('Unable to retrieve information about column %s', $column_name));
         }
         $column_type = $schema['DATA_TYPE'];
         $dt = \phpws2\Database\Datatype::factory($this, $column_name, $column_type);

@@ -24,7 +24,7 @@ class File extends Text {
         }
 
         if (!preg_match('@(\.\w+)|(\w+/\w+[\.\w\-]+)@', $file_type)) {
-            throw new \Exception(t('Unacceptable accept type: %s', $file_type));
+            throw new \Exception(sprintf('Unacceptable accept type: %s', $file_type));
         }
         $this->accepted_array[] = $file_type;
         return $this;

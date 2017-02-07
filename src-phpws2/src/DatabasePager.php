@@ -131,7 +131,7 @@ class DatabasePager extends Pager {
     public function setRowOrder()
     {
         if (!isset($this->table_headers[$this->sort_column])) {
-            throw new \Exception(t('Sort column "%s" not set in DatabasePager',
+            throw new \Exception(sprintf('Sort column "%s" not set in DatabasePager',
                     $this->sort_column));
         }
 
@@ -139,7 +139,7 @@ class DatabasePager extends Pager {
         $field = $this->table_headers[$this->sort_column];
         if (!is_a($field, '\phpws2\Database\Field') && !is_a($field,
                         '\phpws2\Database\Expression')) {
-            throw new \Exception(t('Sort column "%s" is not a Field or Expression object',
+            throw new \Exception(sprintf('Sort column "%s" is not a Field or Expression object',
                     $this->sort_column));
         }
 

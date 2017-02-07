@@ -148,7 +148,7 @@ abstract class Object extends \Data {
         }
 
         if (!$this->DB->tableExists($this->table_name)) {
-            throw new \Exception(sprintf(t('Table does not exist: %s'), $this->table_name));
+            throw new \Exception(sprintf('Table does not exist: %s', $this->table_name));
         }
         $this->table = $this->DB->addTable($this->table_name);
         if (empty($this->primary_key_column)) {

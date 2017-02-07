@@ -65,7 +65,7 @@ abstract class Controller implements \Controller {
 
 
         if (!is_a($response, '\Response')) {
-            throw new \Exception(t("Controller %s did not return a response object for the %s method",
+            throw new \Exception(sprintf("Controller %s did not return a response object for the %s method",
                     get_class($this), $request->getMethod()));
         }
 

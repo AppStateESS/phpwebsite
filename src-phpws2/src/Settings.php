@@ -32,7 +32,7 @@ class Settings extends \Canopy\Data
         if ($module instanceof \SettingDefaults) {
             $settings = $module->getSettingDefaults();
             if (!array_key_exists($variable_name, $settings)) {
-                throw new \Exception(t('Unknown setting "%s:%s"', $module_name, $variable_name));
+                throw new \Exception(sprintf('Unknown setting "%s:%s"', $module_name, $variable_name));
             }
             $this->set($module_name, $variable_name, $settings[$variable_name]);
         } else {

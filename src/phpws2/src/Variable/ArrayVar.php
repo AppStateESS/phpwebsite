@@ -259,7 +259,7 @@ class ArrayVar extends \phpws2\Variable
             }
 
             if (!isset($val[$column_name])) {
-                throw new \Exception(t('Could not index array by column name "%s"',
+                throw new \Exception(sprintf('Could not index array by column name "%s"',
                         $column_name));
             }
             $index = $val[$column_name];
@@ -270,7 +270,7 @@ class ArrayVar extends \phpws2\Variable
 
             if (!empty($collapse_on)) {
                 if (!isset($val[$collapse_on])) {
-                    throw new \Exception(t('Could not collapse on value "%s"',
+                    throw new \Exception(sprintf('Could not collapse on value "%s"',
                             $collapse_on));
                 }
                 $val = $val[$collapse_on];

@@ -90,7 +90,7 @@ class Template implements View
     public function setFile($file)
     {
         if (!is_file($file)) {
-            throw new \Exception(t('Template file not found: %s', $file));
+            throw new \Exception(sprintf('Template file not found: %s', $file));
         }
         $this->file = $file;
     }

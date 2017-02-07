@@ -95,7 +95,7 @@ abstract class Resource extends Alias
         $direction = trim(strtoupper($direction));
 
         if (!in_array($direction, $allowed_directions)) {
-            throw new \Exception(t('Unknown order direction: %s', $direction));
+            throw new \Exception(sprintf('Unknown order direction: %s', $direction));
         }
 
         // If a random call, return the db os specific function call.
@@ -104,7 +104,7 @@ abstract class Resource extends Alias
         }
 
         if (DATABASE_CHECK_COLUMNS && !$this->columnExists($column)) {
-            throw new \Exception(t('Table column "%s" is not known', $column));
+            throw new \Exception(sprintf('Table column "%s" is not known', $column));
         } else {
             if ($column->hasAlias()) {
                 $this->orders[] = $column->getAlias() . " $direction";
@@ -279,11 +279,11 @@ abstract class Resource extends Alias
     public function getField($column_name, $alias = null)
     {
         if (!$this->db->allowed($column_name)) {
-            throw new \Exception(t('Improper column name "%s"', $column_name));
+            throw new \Exception(sprintf('Improper column name "%s"', $column_name));
         }
         $field = new Field($this, $column_name, $alias);
         if (!($field->allowSplat() && $column_name == '*') && (DATABASE_CHECK_COLUMNS && !$this->columnExists($column_name))) {
-            throw new \Exception(t('Column does not exist in %s "%s"', get_class($this), $this->getFullName()));
+            throw new \Exception(sprintf('Column does not exist in %s "%s"', get_class($this), $this->getFullName()));
         }
         return $field;
     }

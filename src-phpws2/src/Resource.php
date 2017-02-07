@@ -50,7 +50,7 @@ abstract class Resource extends \Data
     public function getTable()
     {
         if (empty($this->table)) {
-            throw new \Exception(t('Table not set in Resource object "%s"',
+            throw new \Exception(sprintf('Table not set in Resource object "%s"',
                     get_class($this)));
         }
         return $this->table;

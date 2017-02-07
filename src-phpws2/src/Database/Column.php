@@ -39,7 +39,7 @@ abstract class Column extends Alias {
         $this->name = new \phpws2\Variable\Attribute($name, 'name');
         $this->resource = $resource;
         if ($check_existence && !$this->resource->columnExists($name)) {
-            throw new \Exception(t('Column "%s" does not exist in %s "%s"',
+            throw new \Exception(sprintf('Column "%s" does not exist in %s "%s"',
                     $name, get_class($resource),
                     $this->resource->getFullName(false)));
         }

@@ -187,7 +187,7 @@ class Session extends \Canopy\Data {
         }
 
         if (!isset($this->values[$name])) {
-            throw new \Exception(t('Variable "%s" not set in the Session', $name));
+            throw new \Exception(sprintf('Variable "%s" not set in the Session', $name));
         }
 
         return $this->values[$name];

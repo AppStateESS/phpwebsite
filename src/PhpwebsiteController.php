@@ -205,7 +205,7 @@ class PhpwebsiteController implements Controller
     {
         $module_path = PHPWS_SOURCE_DIR . "mod/$module_title/Module.php";
         if (!is_file($module_path)) {
-            throw new \Exception(t('Module "%s" not found', $module_title));
+            throw new \Exception(sprintf('Module "%s" not found', $module_title));
         }
         require_once $module_path;
         $namespace = "$module_title\\Module";
@@ -227,7 +227,7 @@ class PhpwebsiteController implements Controller
     public function setCurrentModule($module_name)
     {
         if (!isset($this->module_stack[$module_name])) {
-            throw new \Exception(t('Module "%s" not found', $module_name));
+            throw new \Exception(sprintf('Module "%s" not found', $module_name));
         }
         if (!$this->module_stack[$module_name]->isActive()) {
             throw new \Exception('Inactive module accessed');
@@ -283,7 +283,7 @@ class PhpwebsiteController implements Controller
     {
         $module_title = (string) $module_title;
         if (!isset($this->module_stack[$module_title])) {
-            throw new \Exception(t('Module "%s" does not exist', $module_title));
+            throw new \Exception(sprintf('Module "%s" does not exist', $module_title));
         }
         return $this->module_stack[$module_title];
     }

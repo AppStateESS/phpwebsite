@@ -86,7 +86,7 @@ abstract class Choice extends Base {
         }
 
         if (!empty($selection) && (!isset($this->options[$selection]))) {
-            throw new \Exception(t('Selection value "%s" not among current options',
+            throw new \Exception(sprintf('Selection value "%s" not among current options',
                     $selection));
         }
         $this->options[$selection]->setSelection(true);

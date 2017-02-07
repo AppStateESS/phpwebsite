@@ -239,7 +239,7 @@ abstract class Table extends Resource
     public function setName($name)
     {
         if (!$this->db->allowed($name)) {
-            throw new \Exception(t('Improper table name') . ': ' . $name);
+            throw new \Exception('Improper table name' . ': ' . $name);
         }
 
         $this->name = $name;
@@ -270,7 +270,7 @@ abstract class Table extends Resource
     {
         $source_table_name = $constraint->getSourceTable()->getFullName();
         if ($source_table_name != $this->getFullName()) {
-            throw new \Exception(t('Source column table %s does not match current table %s', $source_table_name, $this->getFullName()));
+            throw new \Exception(sprintf('Source column table %s does not match current table %s', $source_table_name, $this->getFullName()));
         }
     }
 
@@ -355,7 +355,7 @@ abstract class Table extends Resource
     public function getValue($column_name, $value = null)
     {
         if (!$this->db->allowed($column_name)) {
-            throw new \Exception(t('Improper column name: "%s"', $column_name));
+            throw new \Exception(sprintf('Improper column name: "%s"', $column_name));
         }
         if ($value instanceof \phpws2\Variable) {
             $value = $value->toDatabase();
@@ -435,7 +435,7 @@ abstract class Table extends Resource
         }
 
         if (empty($this->values)) {
-            throw new \Exception(sprintf(t('No columns to insert in table: %s'), $this->getFullName()));
+            throw new \Exception(sprintf(sprintf('No columns to insert in table: %s'), $this->getFullName()));
         }
         foreach ($this->values as $val_listing) {
             $columns = array();
@@ -667,7 +667,7 @@ abstract class Table extends Resource
     public function insertSelect(DB $db, $column_names = null)
     {
         if ($db === $this->DB) {
-            throw new \Exception(t('The insert select DB object must not be this object\'s current parent'));
+            throw new \Exception('The insert select DB object must not be this object\'s current parent');
         }
 
         $this->insert_select = $db;

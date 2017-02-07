@@ -209,12 +209,12 @@ class Tag extends \Canopy\Data
     {
         $data = array();
         if (empty($this->tag_type)) {
-            trigger_error(t('Tag type not set'), E_USER_ERROR);
+            trigger_error('Tag type not set', E_USER_ERROR);
         }
         $data[] = '<' . $this->tag_type;
         if (empty($this->ignore_variables)) {
             // not an exception to allow debugging from the __toString
-            trigger_error(t('The Tag parent class "%s" failed to call __construct', get_parent_class($this)), E_USER_ERROR);
+            trigger_error(sprintf('The Tag parent class "%s" failed to call __construct', get_parent_class($this)), E_USER_ERROR);
             exit();
         }
 
@@ -236,7 +236,7 @@ class Tag extends \Canopy\Data
                         $data[] = $pname;
                     }
                 } else {
-                    throw new \Exception(t('Unaccepted tag parameter "%s" is of type (%s)', $pname, gettype($param)));
+                    throw new \Exception(sprintf('Unaccepted tag parameter "%s" is of type (%s)', $pname, gettype($param)));
                 }
             }
         }
@@ -399,7 +399,7 @@ class Tag extends \Canopy\Data
             $text = $text ? 1 : 0;
         }
         if (!\Canopy\String::is_string_like($text)) {
-            throw new \Exception(t('setText received a %s variable, not a string parameter', gettype($text)));
+            throw new \Exception(sprintf('setText received a %s variable, not a string parameter', gettype($text)));
         }
         $this->text = (string) $text;
     }

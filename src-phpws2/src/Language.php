@@ -33,7 +33,7 @@ class Language
     {
         $args = func_get_args();
         if (count($args) == 0) {
-            trigger_error(t('Language->translate() expects at least one parameter'), E_USER_ERROR);
+            trigger_error(sprintf('Language->translate() expects at least one parameter'), E_USER_ERROR);
         }
 
         if (is_array($args[0])) {

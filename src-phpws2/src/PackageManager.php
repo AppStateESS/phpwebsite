@@ -26,7 +26,7 @@ class PackageManager {
         $file_path = 'Module/' . $moduleObj->get() . '/Setup/Package.php';
         $class_name = $moduleObj->get() . '\Setup\Package';
         if (!is_file($file_path)) {
-            throw new \Exception(t('Package file does not exist for module "%s"', $module));
+            throw new \Exception(sprintf('Package file does not exist for module "%s"', $module));
         }
         require_once $file_path;
         $package = new $class_name;

@@ -71,7 +71,7 @@ class Value extends Column
                     //} elseif (method_exists($value, '__toString')) {
                     //$this->value = new \phpws2\Variable\CanopyString($value->__toString(), $this->name);
                 } else {
-                    throw new \Exception(t('Unacceptable value type (%s)', gettype($value)));
+                    throw new \Exception(sprintf('Unacceptable value type (%s)', gettype($value)));
                 }
                 return true;
                 break;
@@ -86,7 +86,7 @@ class Value extends Column
                 return true;
                 break;
         }
-        throw new \Exception(t('Unacceptable value type (%s)', gettype($value)));
+        throw new \Exception(sprintf('Unacceptable value type (%s)', gettype($value)));
     }
 
     /**

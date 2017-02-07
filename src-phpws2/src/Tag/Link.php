@@ -81,7 +81,7 @@ class Link extends \Tag {
     'tag');
         $rel = strtolower($rel);
         if (!in_array($rel, $rel_list)) {
-            throw new \Exception(t('Unknown rel type'));
+            throw new \Exception(sprintf('Unknown rel type'));
         }
         $this->rel[] = $rel;
     }

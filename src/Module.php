@@ -184,7 +184,7 @@ abstract class Module extends Data implements Controller
             } else {
                 $type = gettype($controller);
             }
-            throw new \Exception(t('The value [%s] returned by getController was not a Controller.', $type));
+            throw new \Exception(sprintf('The value [%s] returned by getController was not a Controller.', $type));
         }
 
         // TODO: Implement event manager and fire a beforeExecute event

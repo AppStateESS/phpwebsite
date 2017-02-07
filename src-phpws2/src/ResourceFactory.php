@@ -92,7 +92,7 @@ class ResourceFactory
     {
         $id = $resource->getId();
         if (empty($id)) {
-            throw new \Exception(t('Id not set in Resource "%s"',
+            throw new \Exception(sprintf('Id not set in Resource "%s"',
                     get_class($resource)));
         }
         return $id;

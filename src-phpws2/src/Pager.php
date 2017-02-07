@@ -168,7 +168,7 @@ class Pager
     public function setTemplate(Template $template)
     {
         if (!is_file($template->getFile())) {
-            throw new \Exception(t('Could not find template file: %t', $template->getFile()));
+            throw new \Exception(sprintf('Could not find template file: %t', $template->getFile()));
         }
         $this->template = $template;
     }
@@ -339,11 +339,11 @@ class Pager
             throw new \Exception('No rows to set');
         }
         if (!isset($this->headers[$this->sort_column])) {
-            throw new \Exception(t('Column name "%s" is not known', $this->sort_column));
+            throw new \Exception(sprintf('Column name "%s" is not known', $this->sort_column));
         }
 
         if (isset($function_call) && !function_exists($function_call)) {
-            throw new \Exception(t('Function "%s" does not exist', $function_call));
+            throw new \Exception(sprintf('Function "%s" does not exist', $function_call));
         }
         usort($this->rows, call_user_func_array(array('self', 'make_comparer'), array(array($this->sort_column, $this->sort_direction, $function_call))));
     }

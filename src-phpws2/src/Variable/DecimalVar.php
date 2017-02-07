@@ -21,7 +21,7 @@ class DecimalVar extends FloatVar
         // the below is the work around
         $value = $value + 0.0;
         if (!is_float($value)) {
-            throw new \Exception(t('Value is not a decimal. Type:' . gettype($value)));
+            throw new \Exception(sprintf('Value is not a decimal. Type:' . gettype($value)));
         }
         return true;
     }

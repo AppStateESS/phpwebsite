@@ -727,7 +727,7 @@ abstract class DB extends \Canopy\Data
             throw new \Exception('Duplicate table added');
         }
         if (DATABASE_CHECK_TABLE && !$this->tableExists($table_name)) {
-            throw new \Exception(t('Table "%s" does not exist', $table_name));
+            throw new \Exception(sprintf('Table "%s" does not exist', $table_name));
         }
         $table = $this->buildTable($table_name, $alias);
 
@@ -806,7 +806,7 @@ abstract class DB extends \Canopy\Data
         if ($this->inTableStack($table_name)) {
             return $this->tables[$table_name];
         } else {
-            throw new \Exception(t('Table "%s" does not exist', $table_name));
+            throw new \Exception(sprintf('Table "%s" does not exist', $table_name));
         }
     }
 
@@ -1610,7 +1610,7 @@ abstract class DB extends \Canopy\Data
         $fields = array();
         foreach ($this->tables as $tbl) {
             if (\phpws2\Database_CHECK_COLUMNS && !$tbl->columnExists($column_name)) {
-                throw new \Exception(t('Column "%s" not found', $column_name));
+                throw new \Exception(sprintf('Column "%s" not found', $column_name));
             }
             if ($add_to_table) {
                 $fields[] = $tbl->addField($column_name);
@@ -1706,7 +1706,7 @@ abstract class DB extends \Canopy\Data
             if (method_exists($value, '__toString')) {
                 $value = (string) $value;
             } else {
-                trigger_error(t('Database quoting failed on %s object, missing __toString',
+                trigger_error(sprintf('Database quoting failed on %s object, missing __toString',
                                 get_class($value)), E_USER_ERROR);
             }
         }
