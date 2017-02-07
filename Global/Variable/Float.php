@@ -2,4 +2,4 @@
 
 namespace Variable;
 
-class Float extends \phpws2\Variable\Float{}
+class Float extends \phpws2\Variable\FloatVar{}

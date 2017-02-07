@@ -133,8 +133,8 @@ abstract class Resource extends \Canopy\Data
                     $success = $result !== false;
                     break;
 
-                case is_subclass_of($var, 'phpws2\Variable\Float') || is_a($var,
-                        'phpws2\Variable\Float'):
+                case is_subclass_of($var, 'phpws2\Variable\FloatVar') || is_a($var,
+                        'phpws2\Variable\FloatVar'):
                     $result = $request->pullPostFloat($name);
                     $success = $result !== false;
                     break;
@@ -201,8 +201,8 @@ abstract class Resource extends \Canopy\Data
                     $success = $result !== false;
                     break;
 
-                case is_subclass_of($var, 'phpws2\Variable\Float') || is_a($var,
-                        'phpws2\Variable\Float'):
+                case is_subclass_of($var, 'phpws2\Variable\FloatVar') || is_a($var,
+                        'phpws2\Variable\FloatVar'):
                     $result = $request->pullPutFloat($name);
                     $success = $result !== false;
                     break;
