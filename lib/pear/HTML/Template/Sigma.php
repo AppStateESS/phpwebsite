@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Implementation of Integrated Templates API with template 'compilation' added.
  *
@@ -384,10 +385,11 @@ class HTML_Template_Sigma extends PEAR
      *
      * @see   setRoot(), setCacheRoot()
      */
-    function HTML_Template_Sigma($root = '', $cacheRoot = '')
+    public function __construct($root = '', $cacheRoot = '')
     {
         // the class is inherited from PEAR to be able to use $this->setErrorHandling()
-        $this->PEAR();
+        //$this->PEAR();
+        parent::__construct();
         $this->variablesRegExp       = '@' . $this->openingDelimiter . '(' . $this->variablenameRegExp . ')' .
                                        '(:(' . $this->functionnameRegExp . '))?' . $this->closingDelimiter . '@sm';
         $this->removeVariablesRegExp = '@' . $this->openingDelimiter . '\s*(' . $this->variablenameRegExp . ')\s*'
@@ -711,7 +713,7 @@ class HTML_Template_Sigma extends PEAR
      * The function can be used either like setVariable("varname", "value")
      * or with one array $variables["varname"] = "value" given setVariable($variables)
      *
-     * If $value is an array ('key' => 'value', ...) then values from that array 
+     * If $value is an array ('key' => 'value', ...) then values from that array
      * will be assigned to template placeholders of the form {variable.key}, ...
      *
      * @param string|array $variable variable name or array ('varname' => 'value')

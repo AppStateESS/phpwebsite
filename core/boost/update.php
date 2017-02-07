@@ -28,7 +28,8 @@ function core_update(&$content, $version)
                     return false;
                 }
 
-                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>", \phpws\PHPWS_Core::getHomeHttp());
+                $source_http = sprintf("<?php\ndefine('PHPWS_SOURCE_HTTP', '%s');\n?>",
+                        \phpws\PHPWS_Core::getHomeHttp());
                 if (!file_put_contents($config_dir . 'source.php', $source_http)) {
                     $content[] = '<p>Could not create config/core/source.php file.</p>';
                     return false;
@@ -68,9 +69,12 @@ You can delete all settings <strong>except</strong> the following:</p>
 EOT;
             }
             if ($branch = PHPWS_Boost::inBranch(true)) {
-                if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/', $branch->directory . 'javascript/editors/fckeditor', true)) {
+                if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor/',
+                                $branch->directory . 'javascript/editors/fckeditor',
+                                true)) {
                     mkdir($branch->directory . 'images/ckeditor/');
-                    $this->content[] = dgettext('branch', 'Failed to copy FCKeditor to branch.');
+                    $this->content[] = dgettext('branch',
+                            'Failed to copy FCKeditor to branch.');
                 } else {
                     $content[] = 'FCKeditor not copied to branch. Check directory permissions.';
                 }
@@ -212,11 +216,13 @@ UPDATES;
 
         case version_compare($version, '2.3.1', '<'):
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'comments'));
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title',
+                            'comments'));
             $db->delete();
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'comments'));
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
+                            'comments'));
             $db->delete();
 
             $db = \Database::newDB();
@@ -272,11 +278,13 @@ UPDATES;
             }
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('modules')->getFieldConditional('title', 'categories'));
+            $db->setConditional($db->addTable('modules')->getFieldConditional('title',
+                            'categories'));
             $db->delete();
 
             $db = \Database::newDB();
-            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname', 'categories'));
+            $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
+                            'categories'));
             $db->delete();
 
             $content[] = '<pre>Core 2.3.1 Changes
@@ -521,7 +529,8 @@ EOF;
                 $db = \Database::newDB();
                 $t = $db->addTable('settings');
                 $dt_old = $t->getDataType('setting');
-                $dt_new = \Database\Datatype::factory($t, 'settings', 'mediumtext');
+                $dt_new = \Database\Datatype::factory($t, 'settings',
+                                'mediumtext');
                 $dt_new->setIsNull(true);
                 $t->alter($dt_old, $dt_new);
             }
@@ -589,14 +598,14 @@ EOF;
             $c3 = $db->createConditional($c1, $c2, 'or');
             $db->addConditional($c3);
             $db->delete();
-            
+
             $content[] = <<<EOF
 <pre>2.9.2 changes
 --------------------
 + Removed deprecated unregisters
 </pre>
 EOF;
-            
+
         case version_compare($version, '2.10.0', '<'):
             $content[] = <<<EOF
 <pre>2.10.0 changes
@@ -604,6 +613,36 @@ EOF;
 + Expanded Request functionality
 + Fixed makeResourcestringArray in ResourceFactory
 + Changed all "new \Variable calls" to "new \phpws2\Variable"
+</pre>
+EOF;
+
+        case version_compare($version, '2.10.1', '<'):
+            $db = \phpws2\Database::getDB();
+            $tbl = $db->addTable('modules');
+
+            $newdt = new \phpws2\Database\Datatype\Varchar($tbl, 'title', 40);
+            $tbl->alter($tbl->getDataType('title'), $newdt);
+
+            $newdt2 = new \phpws2\Database\Datatype\Varchar($tbl, 'proper_name',
+                    40);
+            $tbl->alter($tbl->getDataType('proper_name'), $newdt2);
+
+            $newdt3 = new \phpws2\Database\Datatype\Varchar($tbl, 'version', 20);
+            $tbl->alter($tbl->getDataType('version'), $newdt3);
+
+            $db->clearTables();
+            $tbl = $db->addTable('registered');
+            $newdt = new \phpws2\Database\Datatype\Varchar($tbl, 'module', 40);
+            $tbl->alter($tbl->getDataType('module'), $newdt);
+
+            $newdt2 = new \phpws2\Database\Datatype\Varchar($tbl,
+                    'registered_to', 40);
+            $tbl->alter($tbl->getDataType('registered_to'), $newdt2);
+            $content[] = <<<EOF
+<pre>2.10.1
+-------------------
++ Update the CHAR columns in modules table to VARCHAR.
++ Update the CHAR columns in registered table to VARCHAR
 </pre>
 EOF;
     }

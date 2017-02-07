@@ -178,7 +178,7 @@ class Menu {
 
     private static function getAssociations($key_id)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('menu_assoc');
         $tbl->addField('menu_id');
         $tbl->addFieldConditional('key_id', $key_id);
@@ -187,7 +187,7 @@ class Menu {
 
     public static function getLinkList()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $menu_links = $db->addTable('menu_links');
         $menu_links->addFieldConditional('key_id', 0, '!=');
         $menus = $db->addTable('menus');
@@ -392,7 +392,7 @@ class Menu {
 
     public static function getMenuListing($include_pin_all = true)
     {
-        $db2 = \Database::newDB();
+        $db2 = \phpws2\Database::newDB();
         $t2 = $db2->addTable('menus');
         $t2->addOrderBy($t2->addField('title'));
         $t2->addField('id');
@@ -412,7 +412,7 @@ class Menu {
             $menu_tpl['home_active'] = 0;
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $m = $db->addTable('menus');
         $k = $db->addTable('phpws_key');
         $k->addField('url');
@@ -493,7 +493,7 @@ class Menu {
         } elseif ($key->isHomeKey()) {
             return 0;
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t = $db->addTable('menu_links');
         $t->addFieldConditional('key_id', $key->id);
         $t->addField('menu_id');
@@ -503,7 +503,7 @@ class Menu {
             return $row['menu_id'];
         }
         // menu link not found, now check menu assoc
-        $db2 = \Database::newDB();
+        $db2 = \phpws2\Database::newDB();
         $t2 = $db2->addTable('menus');
         $t2->addFieldConditional('assoc_key', $key->id);
         $t2->addField('id');

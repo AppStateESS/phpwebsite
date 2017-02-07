@@ -31,6 +31,6 @@ $autoloaders = array(
     'composer' => '',
     'canopy' => 'CanopyLoader',
     'legacy' => 'LegacyLoader',
-    'LegacySrcLoader' => 'LegacySrcLoader',
-    'Phpws2Loader' => 'Phpws2Loader'
+    'Phpws2Loader' => 'Phpws2Loader',
+    'LegacySrcLoader' => 'LegacySrcLoader'
 );

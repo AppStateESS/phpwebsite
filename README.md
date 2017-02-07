@@ -39,6 +39,16 @@ directory is language.php.
 phpWebSite uses UTF-8 character encoding. Some older database versions
 of MySQL (pre 4.1) do not support it.
 
+Docker
+======
+phpWebSite can now be run in a Docker Container!
+
+1. Install Docker Engine as per instructions. * [Docker Install](https://docs.docker.com/engine/installation/)
+2. Install Docker Compose as per instructions. *[Docker Compose Install](https://docs.docker.com/compose/gettingstarted/)
+3. Run docker-compose up -d. ( the d option runs it in the background )
+
+(Depending on your system you may need to add your user to the docker group in order to have the privileges to run the docker-compose command)
+
 Vagrant
 =======
 phpWebSite can now be run in a Vagrant Box!

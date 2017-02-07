@@ -716,10 +716,10 @@ class Calendar_User
         if (!$this->allowSuggestion() || !$this->calendar->schedule->public || Current_User::allow('calendar', 'edit_public') || !PHPWS_Settings::get('calendar', 'allow_submissions')) {
             return null;
         }
-
+        
         return $this->calendar->schedule->addSuggestLink($this->calendar->current_date);
     }
-
+    
     public function todayLink($view)
     {
         $vars['sch_id'] = $this->calendar->schedule->id;

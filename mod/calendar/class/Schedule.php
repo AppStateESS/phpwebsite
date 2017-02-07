@@ -9,8 +9,11 @@ define('CAL_VIEW_SOME', 2); // most will see the open and close details only
 define('CAL_VIEW_LIMIT', 3); // only people given express permission can view
 
 \phpws\PHPWS_Core::requireInc('calendar', 'error_defines.php');
+require_once PHPWS_SOURCE_DIR . 'mod/calendar/class/Admin.php';
+require_once PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php';
 
-class Calendar_Schedule {
+class Calendar_Schedule
+{
 
     /**
      * @var integer
@@ -135,7 +138,8 @@ class Calendar_Schedule {
         return javascript('open_window', $js);
     }
 
-    public function addEventLink($default_date = NULL, $icon = false, $icon_only = false)
+    public function addEventLink($default_date = NULL, $icon = false,
+            $icon_only = false)
     {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
@@ -173,20 +177,32 @@ class Calendar_Schedule {
 
         $suggest_label = dgettext('calendar', 'Suggest event');
 
-        if (javascriptEnabled()) {
-            $vars['address'] = sprintf('index.php?module=calendar&amp;uop=suggest_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
-                    $this->id, $default_date);
-            $vars['link_title'] = $vars['label'] = $suggest_label;
-            $vars['width'] = CALENDAR_SUGGEST_WIDTH;
-            $vars['height'] = CALENDAR_SUGGEST_HEIGHT;
-            return javascript('open_window', $vars);
-        } else {
-            return PHPWS_Text::moduleLink($suggest_label, 'calendar',
-                            array('uop' => 'suggest_event',
-                        'sch_id' => $this->id,
-                        'date' => $default_date)
-            );
-        }
+        $event = new Calendar_Event(0, $this);
+        $suggest_form = Calendar_Admin::event_form($event, true);
+
+        $modal = <<<EOF
+<div class="modal fade" id="suggestEvent" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Suggest event</h4>
+      </div>
+      <div class="modal-body">
+         $suggest_form
+      </div>
+      <div class="modal-footer">
+        <button type="submit" onClick="$('#event_form').submit();" class="btn btn-success">Suggest event</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary" onClick="$('#suggestEvent').modal('show')">Suggest event</button>
+EOF;
+
+        return $modal;
+
     }
 
     /**

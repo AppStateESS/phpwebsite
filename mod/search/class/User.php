@@ -69,8 +69,8 @@ class Search_User {
 
         $template = $form->getTemplate();
 
-        $content = PHPWS_Template::process($template, 'search', 'search_box.tpl');
-        Layout::add($content, 'search', 'search_box');
+        $content = \phpws\PHPWS_Template::process($template, 'search', 'search_box.tpl');
+        \Layout::add($content, 'search', 'search_box');
     }
 
     public static function getModList()
