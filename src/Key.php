@@ -17,12 +17,12 @@ define('KEY_LOGGED_RESTRICTED', 1);
 define('KEY_GROUP_RESTRICTED', 2);
 
 if (!isset($_REQUEST['module'])) {
-    $GLOBALS['PHPWS_Key'] = Key::getHomeKey();
+    $GLOBALS['PHPWS_Key'] = \Canopy\Key::getHomeKey();
 } else {
     $GLOBALS['PHPWS_Key'] = null;
 }
 
-class Key
+class \Canopy\Key
 {
 
     // if the id is 0 (zero) then this is a _dummy_ key
@@ -421,7 +421,7 @@ class Key
     public static function getHomeKey()
     {
         if (!isset($GLOBALS['Home_Key'])) {
-            $key = new Key;
+            $key = new \Canopy\Key;
             $key->id = 0;
             $key->module = $key->item_name = 'home';
             $key->item_id = 0;
@@ -443,7 +443,7 @@ class Key
 
     public static function drop($key_id)
     {
-        $key = new Key($key_id);
+        $key = new \Canopy\Key($key_id);
         return $key->delete();
     }
 
@@ -510,7 +510,7 @@ class Key
             if (isset($_REQUEST['module']) || !$allow_home) {
                 return null;
             } else {
-                return Key::getHomeKey();
+                return \Canopy\Key::getHomeKey();
             }
         } else {
             return $GLOBALS['Current_Flag'];
@@ -523,7 +523,7 @@ class Key
      * it requires a database object to already be started.
      *
      * The user module MUST be active for this function to work.
-     * This Key function cannot be called without it.
+     * This \Canopy\Key function cannot be called without it.
      *
      * If the user is a deity or an unrestricted user, no change will be made
      * to your db object.
@@ -822,7 +822,7 @@ class Key
 
     public static function getKey($module, $item_id, $item_name = null)
     {
-        $key = new Key;
+        $key = new \Canopy\Key;
         if (empty($item_name)) {
             $item_name = $module;
         }

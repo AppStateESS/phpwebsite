@@ -501,7 +501,7 @@ class Users_Permission
      * Although called via Current_User, this functions gives
      * a group with edit permissions the right to edit this item.
      */
-    public static function giveItemPermission($user_id, Key $key)
+    public static function giveItemPermission($user_id, \Canopy\Key $key)
     {
         $user = new PHPWS_User($user_id);
         $groups = $user->getGroups();

@@ -3,7 +3,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-$key = Key::getCurrent();
+$key = \Canopy\Key::getCurrent();
 
 if (empty($key) || $key->isDummy() || $key->restricted) {
     return;

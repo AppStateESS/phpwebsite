@@ -378,7 +378,7 @@ class Layout_Admin
             $vars = $_SESSION['Layout_Settings']->getPageMetaTags($key_id);
             if (empty($vars)) {
                 $vars = $_SESSION['Layout_Settings']->getMetaTags();
-                $key = new Key($key_id);
+                $key = new \Canopy\Key($key_id);
                 $vars['page_title'] = $key->title;
             }
         }

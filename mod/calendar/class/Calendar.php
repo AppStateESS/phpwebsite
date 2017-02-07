@@ -127,7 +127,7 @@ class PHPWS_Calendar {
     public function getScheduleList($mode = 'object')
     {
         $db = new PHPWS_DB('calendar_schedule');
-        Key::restrictView($db);
+        \Canopy\Key::restrictView($db);
         $user_id = Current_User::getId();
 
         if ($user_id) {

@@ -754,7 +754,7 @@ class Calendar_User
     public function view()
     {
         require_once PHPWS_SOURCE_DIR . 'mod/calendar/class/Event.php';
-        $key = new Key($this->calendar->schedule->key_id);
+        $key = new \Canopy\Key($this->calendar->schedule->key_id);
         if (!$key->allowView()) {
             $this->calendar->loadDefaultSchedule();
         }
@@ -1070,7 +1070,7 @@ class Calendar_User
         $db = new PHPWS_DB('calendar_schedule');
         $db->addWhere('show_upcoming', 0, '>');
         $db->addWhere('public', 1);
-        Key::restrictView($db, 'calendar');
+        \Canopy\Key::restrictView($db, 'calendar');
 
         $result = $db->getObjects('Calendar_Schedule');
         if (PHPWS_Error::logIfError($result) || !$result) {

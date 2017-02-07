@@ -46,9 +46,9 @@ class QR
     private function load()
     {
         if ($this->key_id) {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
         } else {
-            $key = Key::getHomeKey();
+            $key = \Canopy\Key::getHomeKey();
         }
 
         $this->url = \phpws\PHPWS_Core::getHomeHttp() . $key->url;

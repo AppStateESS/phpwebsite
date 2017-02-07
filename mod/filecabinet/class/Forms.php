@@ -370,7 +370,7 @@ EOF;
 
     public function pinFolder($key_id)
     {
-        $key = new Key($key_id);
+        $key = new \Canopy\Key($key_id);
 
         $this->cabinet->title = sprintf(dgettext('filecabinet', 'Pin folder to "%s"'), $key->title);
 

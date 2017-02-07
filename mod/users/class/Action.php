@@ -451,7 +451,7 @@ class User_Action
         if (!isset($_GET['key_id'])) {
             echo dgettext('users', 'Missing key information.');
         }
-        $key = new Key((int) $_GET['key_id']);
+        $key = new \Canopy\Key((int) $_GET['key_id']);
 
         if (!Key::checkKey($key, false)) {
             PHPWS_Error::log(USER_BAD_KEY, 'users', 'User_Action::popupPermission', "Key : " . $_GET['key_id']);
@@ -483,7 +483,7 @@ class User_Action
             return;
         }
 
-        $key = new Key((int) $_REQUEST['key_id']);
+        $key = new \Canopy\Key((int) $_REQUEST['key_id']);
 
         if (!Key::checkKey($key, false)) {
             return;

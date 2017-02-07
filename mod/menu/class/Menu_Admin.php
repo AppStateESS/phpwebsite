@@ -732,7 +732,7 @@ class Menu_Admin
             $link->setMenuId($menu_id);
         }
         if (isset($key_id) && $key_id !== '0') {
-            $key = new Key($key_id);
+            $key = new \Canopy\Key($key_id);
             $link->setKeyId($key_id);
             $url = $key->url;
         } else {

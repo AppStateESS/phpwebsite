@@ -344,7 +344,7 @@ EOF;
     public function getKey()
     {
         if (!$this->_key) {
-            $this->_key = new Key($this->key_id);
+            $this->_key = new \Canopy\Key($this->key_id);
         }
 
         return $this->_key;
@@ -583,11 +583,11 @@ EOF;
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             if (PHPWS_Error::isError($key->getError())) {
-                $key = new Key;
+                $key = new \Canopy\Key;
             }
         }
 

@@ -402,7 +402,7 @@ class Signup_Forms {
         $pager->setTemplate('sheet_list.tpl');
         $pager->addRowTags('rowTag');
         $pager->addPageTags($ptags);
-        Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
+        \Canopy\Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
 
         $this->signup->content = $pager->get();
         $this->signup->title = dgettext('signup', 'Signup Sheets');

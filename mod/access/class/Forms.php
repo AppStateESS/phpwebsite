@@ -252,7 +252,7 @@ class Access_Forms {
                 return;
             } else {
                 $shortcut = new Access_Shortcut;
-                $key = new Key($key_id);
+                $key = new \Canopy\Key($key_id);
                 if (!$key->id) {
                     javascript('close_window');
                     return;

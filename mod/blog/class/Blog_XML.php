@@ -54,7 +54,7 @@ class Blog_XML extends MyServer {
         $db = new PHPWS_DB('blog_entries');
         $db->setLimit($limit);
         $db->addOrder('publish_date desc');
-        Key::restrictEdit($db, 'blog', 'edit_blog');
+        \Canopy\Key::restrictEdit($db, 'blog', 'edit_blog');
         $result = $db->getObjects('Blog');
 
         if (PHPWS_Error::logIfError($result)) {

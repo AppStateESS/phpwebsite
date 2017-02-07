@@ -181,7 +181,7 @@ class Search_Admin {
 
     public static function miniAdmin()
     {
-        $key = Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
 
         if (empty($key) || $key->isDummy() || isset($key->_error)) {
             $on_page = FALSE;

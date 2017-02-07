@@ -541,7 +541,7 @@ class PHPWS_Boost
         $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module->title);
         if (is_file($filename)) {
             $content[] = dgettext('boost', 'Registered to Key.');
-            Key::registerModule($module->title);
+            \Canopy\Key::registerModule($module->title);
         }
 
         $content[] = '<br />';

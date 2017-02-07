@@ -93,7 +93,7 @@ class Signup_Sheet {
         $db->addWhere('id', $this->id);
         PHPWS_Error::logIfError($db->delete());
 
-        Key::drop($this->key_id);
+        \Canopy\Key::drop($this->key_id);
 
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->id);
@@ -202,11 +202,11 @@ class Signup_Sheet {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+                $key = new \Canopy\Key;
             }
         }
 
@@ -271,7 +271,7 @@ class Signup_Sheet {
 
     public function flag()
     {
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $key->flag();
     }
 

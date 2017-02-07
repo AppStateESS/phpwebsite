@@ -181,7 +181,7 @@ class Blog_User
         $db->addWhere('expire_date', time(), '>', 'and', 1);
         $db->addWhere('expire_date', 0, '=', 'or', 1);
         $db->setGroupConj(1, 'and');
-        Key::restrictView($db, 'blog');
+        \Canopy\Key::restrictView($db, 'blog');
 
         $total_entries = Blog_User::totalEntries($db);
 
@@ -235,7 +235,7 @@ class Blog_User
             if (!$rss) {
                 if (\phpws\PHPWS_Core::moduleExists('rss')) {
                     \phpws\PHPWS_Core::initModClass('rss', 'RSS.php');
-                    $key = new Key($blog->key_id);
+                    $key = new \Canopy\Key($blog->key_id);
                     RSS::showIcon($key);
                     $rss = true;
                 }

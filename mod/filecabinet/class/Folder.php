@@ -346,11 +346,11 @@ class Folder
     public function saveKey($new_folder = true)
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             if (PHPWS_Error::isError($key->getError())) {
-                $key = new Key;
+                $key = new \Canopy\Key;
             }
         }
 
@@ -388,7 +388,7 @@ class Folder
         if (!$this->key_id) {
             return true;
         }
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         return $key->allowView();
     }
 
@@ -442,7 +442,7 @@ class Folder
         /**
          * Delete the key
          */
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $key->delete();
 
         /**

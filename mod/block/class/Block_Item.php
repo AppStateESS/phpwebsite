@@ -74,7 +74,7 @@ class Block_Item {
 
     public function getKey()
     {
-        $key = new Key('block', 'block', $this->id);
+        $key = new \Canopy\Key('block', 'block', $this->id);
         return $key;
     }
 
@@ -114,11 +114,11 @@ class Block_Item {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
             $key->module = $key->item_name = 'block';
             $key->item_id = $this->id;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
         }
 
         $key->edit_permission = 'edit_block';
@@ -153,7 +153,7 @@ class Block_Item {
             PHPWS_Error::log($result);
         }
 
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $result = $key->delete();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);

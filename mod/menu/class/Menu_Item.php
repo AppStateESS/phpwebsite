@@ -276,7 +276,7 @@ class Menu_Item {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
             $key->module = $key->item_name = 'menu';
             $key->item_id = $this->id;
         } else {

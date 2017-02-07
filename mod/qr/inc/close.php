@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 if (Current_User::isLogged()) {
-    $key = Key::getCurrent(true);
+    $key = \Canopy\Key::getCurrent(true);
     if ($key) {
 
         $qr_func = function($key_id, $size) {

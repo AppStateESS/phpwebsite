@@ -666,7 +666,7 @@ class PHAT_Form extends PHPWS_Item
             $viewTags['TOOLBAR'] = $this->_toolbar();
         }
 
-        $key = new Key($this->_key_id);
+        $key = new \Canopy\Key($this->_key_id);
         $key->flag();
 
         if ($error) {
@@ -1188,14 +1188,14 @@ class PHAT_Form extends PHPWS_Item
     function saveKey()
     {
         if (empty($this->_key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
             $key->setModule('phatform');
             $key->setItemName('form');
             $key->setItemId($this->_id);
             $key->setEditPermission('edit_forms');
             $key->setUrl('index.php?module=phatform&PHAT_MAN_OP=view&PHPWS_MAN_ITEMS[]=' . $this->_id);
         } else {
-            $key = new Key($this->_key_id);
+            $key = new \Canopy\Key($this->_key_id);
         }
 
         if ($this->_anonymous) {
@@ -1292,7 +1292,7 @@ class PHAT_Form extends PHPWS_Item
             PHPWS_DB::dropTable('mod_phatform_form_' . $this->getId());
         }
 
-        Key::drop($this->_key_id);
+        \Canopy\Key::drop($this->_key_id);
         $this->kill();
 
         $_SESSION['PHAT_FormManager']->form = null;

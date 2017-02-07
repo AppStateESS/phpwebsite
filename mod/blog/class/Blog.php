@@ -295,11 +295,11 @@ class Blog {
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             if (PHPWS_Error::isError($key->getError())) {
-                $key = new Key;
+                $key = new \Canopy\Key;
             }
         }
 
@@ -367,7 +367,7 @@ class Blog {
             \phpws\PHPWS_Core::errorPage(404);
         }
 
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
 
         if (!$key->allowView() || !Blog_User::allowView()) {
             Current_User::requireLogin();
@@ -624,7 +624,7 @@ class Blog {
             $all_is_well = false;
         }
 
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $key->delete();
         return $all_is_well;
     }
