@@ -2,4 +2,4 @@
 
 namespace Variable;
 
-class File extends \phpws2\Variable\File{}
+class File extends \phpws2\Variable\FileVar{}

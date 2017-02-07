@@ -109,7 +109,7 @@ class PulseSchedule extends \Resource
         $this->module->setLimit(50);
         $this->name = new \phpws2\Variable\StringVar(null, 'name');
         $this->name->setLimit(100);
-        $this->required_file = new \phpws2\Variable\File(null, 'required_file');
+        $this->required_file = new \phpws2\Variable\FileVar(null, 'required_file');
         $this->execute_after = new \phpws2\Variable\IntegerVar(0, 'execute_after');
         $this->start_time = new \phpws2\Variable\IntegerVar(0, 'start_time');
         $this->status = new \phpws2\Variable\IntegerVar(PULSE_STATUS_AWAKE, 'status');
