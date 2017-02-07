@@ -10,7 +10,7 @@ class HtmlErrorView extends \Template {
 
     protected $code;
 
-    public function __construct(\Canopy\Canopy\Request $request, \phpws2\Http\ErrorResponse $response)
+    public function __construct(\Canopy\Request $request, \phpws2\Http\ErrorResponse $response)
     {
         $vars = array();
         $vars['url'] = $request->getUrl();
