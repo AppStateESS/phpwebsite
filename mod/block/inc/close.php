@@ -7,8 +7,8 @@ Block::show();
 
 if (Current_User::allow('block')) {
 
-    $key = Key::getCurrent();
-    if (Key::checkKey($key) && javascriptEnabled()) {
+    $key = \Canopy\Key::getCurrent();
+    if (\Canopy\Key::checkKey($key) && javascriptEnabled()) {
         javascript('jquery');
         javascript('ckeditor');
         $js_address = PHPWS_SOURCE_HTTP . 'mod/block/javascript/addblock/script.js';
@@ -24,4 +24,3 @@ if (Current_User::allow('block')) {
                 '" data-key-id="'.$key->id.'" id="add-block"><i class="fa fa-plus"></i> Add block here</a>');
     }
 }
-

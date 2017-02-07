@@ -338,7 +338,7 @@ final class Current_User {
 
     public static function permissionMenu()
     {
-        $key = Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
 
         if (empty($key) || $key->isDummy() || empty($key->edit_permission)) {
             return;

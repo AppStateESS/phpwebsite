@@ -41,7 +41,7 @@ class FC_Forms
     }
 
     /**
-     * 
+     *
      * @return void
      */
     private function form()
@@ -82,7 +82,7 @@ class FC_Forms
 
     public function handle()
     {
-        $request = \Server::getCurrentRequest();
+        $request = \Canopy\Server::getCurrentRequest();
         try {
             switch ($request->getVar('ckop')) {
                 case 'form':
@@ -310,7 +310,7 @@ class FC_Forms
 
     /**
      * Saves the $file object to the database depending on the file type. This is because Image, Document and Multimedia
-     * have different save() parameters. 
+     * have different save() parameters.
      * @param mixed $file
      */
     private function saveUploadedFile($file)

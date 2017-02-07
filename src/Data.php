@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * Foundation abstract class for any data type object. Note: for overload to work
@@ -117,7 +118,7 @@ abstract class Data
             $variables = get_object_vars($value);
         }
 
-        if (is_string_like($value)) {
+        if (\Canopy\String::is_string_like($value)) {
             $to_string = htmlentities($value->__toString());
         }
 
@@ -347,7 +348,7 @@ abstract class Data
             throw new \Exception(t('No variables returned from Data object'));
         }
         foreach ($vars as $key => $val) {
-            if (is_string_like($val)) {
+            if (\Canopy\String::is_string_like($val)) {
                 $new_vars[$key] = (string) $val;
             }
         }

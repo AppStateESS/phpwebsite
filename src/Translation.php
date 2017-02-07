@@ -1,6 +1,7 @@
 <?php
+namespace Canopy;
 
-/* 
+/*
  * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
  *
  * This library is free software; you can redistribute it and/or
@@ -24,29 +25,32 @@
  * @return string
  * @see Language::translate()
  */
-function t()
-{
-    static $lang = null;
-    $args = func_get_args();
 
-    if (!function_exists('dgettext')) {
-        if (count($args) > 1) {
-            return call_user_func_array('sprintf', $args);
-        } else {
-            return $args[0];
+class Translation {
+    public static function t()
+    {
+        static $lang = null;
+        $args = func_get_args();
+
+        if (!function_exists('dgettext')) {
+            if (count($args) > 1) {
+                return call_user_func_array('sprintf', $args);
+            } else {
+                return $args[0];
+            }
         }
-    }
-    if (empty($lang)) {
-        $lang = new \Language;
-    }
+        if (empty($lang)) {
+            $lang = new \Language;
+        }
 
-    $r = debug_backtrace();
-    $file_path = $r[0]['file'];
-    if (strstr($file_path, 'mod/')) {
-        $domain = preg_replace('|.*mod/([^/]+)/.*|', '\\1', $file_path);
-    } else {
-        $domain = 'core';
+        $r = debug_backtrace();
+        $file_path = $r[0]['file'];
+        if (strstr($file_path, 'mod/')) {
+            $domain = preg_replace('|.*mod/([^/]+)/.*|', '\\1', $file_path);
+        } else {
+            $domain = 'core';
+        }
+        $lang->setDomain($domain);
+        return $lang->translate($args);
     }
-    $lang->setDomain($domain);
-    return $lang->translate($args);
 }

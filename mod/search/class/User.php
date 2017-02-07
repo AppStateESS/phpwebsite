@@ -59,7 +59,7 @@ class Search_User {
 
         $form->addSelect('mod_title', $mod_list);
 
-        $key = Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
 
         if (!empty($key) && !$key->isDummy()) {
             $form->setMatch('mod_title', $key->module);
@@ -294,9 +294,9 @@ class Search_User {
 
         if ($module) {
             $pager->addWhere('search.module', $module);
-            Key::restrictView($pager->db, $module);
+            \Canopy\Key::restrictView($pager->db, $module);
         } else {
-            Key::restrictView($pager->db);
+            \Canopy\Key::restrictView($pager->db);
         }
 
         $result = $pager->get();

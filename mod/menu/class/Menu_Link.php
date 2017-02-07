@@ -68,7 +68,7 @@ class Menu_Link {
             $db = $this->getDB();
             $db->addWhere('parent', $this->id);
             $db->addOrder('link_order');
-            Key::restrictView($db);
+            \Canopy\Key::restrictView($db);
             $result = $db->getObjects('menu_link');
             if (empty($result)) {
                 return;
@@ -257,7 +257,7 @@ class Menu_Link {
         static $current_parent = array();
 
         $current_link = false;
-        $current_key = Key::getCurrent();
+        $current_key = \Canopy\Key::getCurrent();
         if (!empty($current_key)) {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
@@ -376,4 +376,3 @@ class Menu_Link {
     }
 
 }
-

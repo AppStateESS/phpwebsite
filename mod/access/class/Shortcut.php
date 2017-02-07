@@ -40,7 +40,7 @@ class Access_Shortcut
     public function loadGet()
     {
         $url = explode(':', $this->url);
-        $request = \Server::getCurrentRequest();
+        $request = \Canopy\Server::getCurrentRequest();
         $module = array_shift($url);
         $request->setVar('module', $module);
         $request->setModule($module);
@@ -97,7 +97,7 @@ class Access_Shortcut
             if ($key_id === false) {
                 throw new \Exception('Access shortcut missing a key id', 2);
             } else {
-                $key = new \Key($key_id);
+                $key = new \Canopy\Key($key_id);
                 $this->setUrl($key->module, $key->url);
             }
         }

@@ -338,11 +338,11 @@ class PS_Page
     public function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = new Key;
+            $key = new \Canopy\Key;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             if (PHPWS_Error::isError($key->_error)) {
-                $key = new Key;
+                $key = new \Canopy\Key;
             }
         }
 
@@ -392,7 +392,7 @@ class PS_Page
         \phpws\PHPWS_Core::initModClass('access', 'Shortcut.php');
         \phpws\PHPWS_Core::initModClass('menu', 'Menu.php');
 
-        $key = new Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $shortcut = new Access_Shortcut;
         $shortcut->setUrl($key->module, $key->url);
 
@@ -448,7 +448,7 @@ class PS_Page
     public function loadKey()
     {
         if (empty($this->_key)) {
-            $this->_key = new Key($this->key_id);
+            $this->_key = new \Canopy\Key($this->key_id);
         }
     }
 
@@ -507,7 +507,7 @@ class PS_Page
         $db->addWhere('id', $this->id);
         $db->addValue('deleted', 0);
         $result = $db->update();
-        $key = new \Key($this->key_id);
+        $key = new \Canopy\Key($this->key_id);
         $key->active = 1;
         $key->save();
     }
@@ -522,7 +522,7 @@ class PS_Page
             if (PHPWS_Error::logIfError($result)) {
                 return false;
             }
-            Key::drop($this->key_id);
+            \Canopy\Key::drop($this->key_id);
             $db = new PHPWS_DB('ps_text');
             $db->addWhere('pid', $this->id);
             $result = $db->delete();
@@ -537,7 +537,7 @@ class PS_Page
             if (PHPWS_Error::logIfError($result)) {
                 return false;
             }
-            $key = new \Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
             $key->active = 0;
             $key->save();
             $key->unregister();
@@ -566,12 +566,12 @@ class PS_Page
         $db->delete();
     }
 
-   
-    
+
+
     private function pageLinks(&$tpl)
     {
         $db = new PHPWS_DB('ps_page');
-        
+
         if (version_compare(\PageSmith::getVersion(), '1.10.0', '>=')) {
             $db->addWhere('deleted', 0);
         }
@@ -679,4 +679,3 @@ class PS_Page
     }
 
 }
-

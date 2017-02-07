@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * Controller Interface.  An instance of Controller must be returned by the
@@ -23,5 +24,5 @@ interface Controller
      *
      * @param $request Request The Request Object
      */
-    public function execute(\Request $request);
+    public function execute(Request $request);
 }

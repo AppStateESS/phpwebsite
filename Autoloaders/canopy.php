@@ -1,44 +1,27 @@
 <?php
 
-/*
- * Copyright (C) 2016 Matthew McNaney <mcnaneym@appstate.edu>.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
-
 /**
- * @author Matthew McNaney <mcnaneym at appstate dot edu>
+ * Canopy Autoloader
+ * Looks for core Canopy classes from the \Canopy... namespace and tries to load
+ * them out of the /src... directory.
+ *
+ * This is the autoloader for all new Canopy code moving forward.
+ * @author Jeremy Booker
+ * @package Canopy
  */
 function CanopyLoader($class_name)
 {
-    static $not_found = array();
-    if (in_array($class_name, $not_found)) {
-        return;
+    // Class name must start with the 'Canop\' namespace. If not, we pass and hope another autoloader can help
+    if(substr($class_name, 0, strlen('Canopy\\')) !== 'Canopy\\'){
+        return false;
     }
 
-    $class_array = explode('\\', $class_name);
-    $class_dir = array_shift($class_array);
+    $file_path = PHPWS_SOURCE_DIR . 'src/' . str_replace('\\', '/', str_replace('Canopy\\', '', $class_name)) . '.php';
 
-    $base_dir = PHPWS_SOURCE_DIR . "src/$class_dir/autoload.php";
-
-    if (is_file($base_dir)) {
-        require_once $base_dir;
+    if (is_readable($file_path)) {
+        require_once $file_path;
         return true;
     } else {
-        $not_found[] = $class_name;
         return false;
     }
 }

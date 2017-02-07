@@ -288,7 +288,7 @@ class PS_Forms
                     break;
 
                 case 'text':
-                    $edit_message = t('Click here to edit this content');
+                    $edit_message = \Canopy\Translation::t('Click here to edit this content');
                     $tpl[$name . '_admin'] = " data-page-id=\"$page->id\" data-block-id=\"$section->id\"";
                     break;
             }
@@ -416,4 +416,3 @@ class PS_Forms
     }
 
 }
-

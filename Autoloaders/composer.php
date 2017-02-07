@@ -20,6 +20,10 @@
  */
 
 /**
+ * Load Composer's autoloader, so we can autoload Composer-installed dependencies
+ * from the /vendor directory
+ * 
  * @author Matthew McNaney <mcnaneym at appstate dot edu>
  */
+
 require_once PHPWS_SOURCE_DIR . 'vendor/autoload.php';

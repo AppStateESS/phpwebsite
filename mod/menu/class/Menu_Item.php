@@ -280,7 +280,7 @@ class Menu_Item {
             $key->module = $key->item_name = 'menu';
             $key->item_id = $this->id;
         } else {
-            $key = new Key($this->key_id);
+            $key = new \Canopy\Key($this->key_id);
         }
 
         $key->title = $this->title;
@@ -327,7 +327,7 @@ class Menu_Item {
         $db = new PHPWS_DB('menu_links');
         $db->setDistinct();
         $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
-        Key::restrictView($db);
+        \Canopy\Key::restrictView($db);
         $db->addOrder('link_order');
         $db->setIndexBy('id');
         $data = $db->getObjects('Menu_Link');
@@ -398,7 +398,7 @@ class Menu_Item {
 
     public function addLink($key_id, $parent = 0)
     {
-        $key = new Key($key_id);
+        $key = new \Canopy\Key($key_id);
         $link = new Menu_Link;
 
         $link->setMenuId($this->id);
@@ -446,7 +446,7 @@ class Menu_Item {
         if (empty($links)) {
             return null;
         }
-        $key = Key::getCurrent();
+        $key = \Canopy\Key::getCurrent();
         if ($key && $key->isDummy(true)) {
             return;
         }
@@ -529,4 +529,3 @@ class Menu_Item {
     }
 
 }
-

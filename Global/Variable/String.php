@@ -2,4 +2,4 @@
 
 namespace Variable;
 
-class String extends \phpws2\Variable\CanopyString{}
+class CanopyString extends \phpws2\Variable\CanopyString{}

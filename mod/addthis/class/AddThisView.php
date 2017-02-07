@@ -30,8 +30,8 @@ class AddThisView {
 
     public function view()
     {
-        $key = \Key::getCurrent();
-        if(!\Key::checkKey($key))
+        $key = \Canopy\Key::getCurrent();
+        if(!\Canopy\Key::checkKey($key))
             return;
 
         $tpl = array();
@@ -49,4 +49,3 @@ class AddThisView {
         \Layout::add($content, 'addthis', 'DEFAULT');
     }
 }
-

@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * Class to assist with _SERVER super globals.
@@ -38,6 +39,7 @@ class Server
 
             $dataValues = array();
             parse_str($data, $dataValues);
+
             $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : null;
 
             switch ($method) {

@@ -1,4 +1,5 @@
 <?php
+namespace Canopy;
 
 /**
  * This file should contain any security measures made
