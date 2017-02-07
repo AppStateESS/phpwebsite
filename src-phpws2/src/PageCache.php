@@ -15,12 +15,12 @@ class PageCache extends \Canopy\Data
 
     public function __construct($title = null, $content = null)
     {
-        $this->title = new \phpws2\Variable\CanopyString($title, 'title');
-        $this->html = new \phpws2\Variable\CanopyString($content, 'content');
+        $this->title = new \phpws2\Variable\StringVar($title, 'title');
+        $this->html = new \phpws2\Variable\StringVar($content, 'content');
         $this->html->noLimit();
-        $this->css = new \phpws2\Variable\CanopyString(null, 'css');
+        $this->css = new \phpws2\Variable\StringVar(null, 'css');
         $this->css->noLimit();
-        $this->javascript = new \phpws2\Variable\CanopyString(null, 'javascript');
+        $this->javascript = new \phpws2\Variable\StringVar(null, 'javascript');
         $this->javascript->noLimit();
     }
 

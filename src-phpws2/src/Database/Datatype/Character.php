@@ -36,7 +36,7 @@ class Character extends \phpws2\Database\Datatype {
         $this->size = new \phpws2\Variable\Integer(null, $this->varName());
         $this->size->setRange(0, 255);
         $this->setSize($length);
-        $this->default = new \phpws2\Variable\CanopyString(null, $this->varName());
+        $this->default = new \phpws2\Variable\StringVar(null, $this->varName());
         $this->default->setLimit($length);
         $this->default->allowNull(true);
     }
@@ -46,7 +46,7 @@ class Character extends \phpws2\Database\Datatype {
      */
     protected function loadDefault()
     {
-        $this->default = new \phpws2\Variable\CanopyString(null, 'default');
+        $this->default = new \phpws2\Variable\StringVar(null, 'default');
     }
 
     private function varName()

@@ -9,7 +9,7 @@ namespace phpws2\Variable;
 /**
  * @author matt
  */
-class Password extends CanopyString {
+class Password extends StringVar {
 
     private $salt;
 

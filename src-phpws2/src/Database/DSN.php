@@ -21,32 +21,32 @@ class DSN extends \Canopy\Data {
 
     /**
      * Name of the database
-     * @var Variable\CanopyString
+     * @var Variable\StringVar
      */
     protected $database_name;
 
     /**
      * Username that has access to the database
-     * @var Variable\CanopyString
+     * @var Variable\StringVar
      */
     protected $username;
 
     /**
      * Password used to give user name access
-     * @var Variable\CanopyString
+     * @var Variable\StringVar
      */
     protected $password;
 
     /**
      * Host database lives on
-     * @var Variable\CanopyString
+     * @var Variable\StringVar
      */
     protected $host;
 
     /**
      * Character prefix set before table names to allow multiple installations
      * per database.
-     * @var Variable\CanopyString
+     * @var Variable\StringVar
      */
     protected $table_prefix;
 
@@ -63,35 +63,35 @@ class DSN extends \Canopy\Data {
      */
     public function __construct($database_type, $username, $password = null, $database_name = null, $host = null, $port = null)
     {
-        $this->database_type = \phpws2\Variable::factory('CanopyString', $database_type,
+        $this->database_type = \phpws2\Variable::factory('StringVar', $database_type,
                         'database_type');
         $this->database_type->setLimit(12);
         $this->database_type->setLabel(Translation::t('Database type'));
         $this->database_type->wordCharactersOnly();
 
-        $this->database_name = \phpws2\Variable::factory('CanopyString', $database_name,
+        $this->database_name = \phpws2\Variable::factory('StringVar', $database_name,
                         'database_name');
         $this->database_name->setLimit(58);
         $this->database_name->setLabel(Translation::t('Database name'));
         $this->database_name->wordCharactersOnly();
 
-        $this->username = \phpws2\Variable::factory('CanopyString', $username, 'username');
+        $this->username = \phpws2\Variable::factory('StringVar', $username, 'username');
         $this->username->setLimit(255);
         $this->username->setLabel(Translation::t('Database user name'));
         $this->username->wordCharactersOnly();
 
-        $this->password = \phpws2\Variable::factory('CanopyString', $password, 'password');
+        $this->password = \phpws2\Variable::factory('StringVar', $password, 'password');
         $this->password->setLimit(255);
         $this->password->setLabel(Translation::t('Database password'));
         $this->password->setInputType('password');
 
-        $this->table_prefix = \phpws2\Variable::factory('CanopyString', null, 'table_prefix');
+        $this->table_prefix = \phpws2\Variable::factory('StringVar', null, 'table_prefix');
         $this->table_prefix->allowNull(true);
         $this->table_prefix->setLimit(5);
         $this->table_prefix->setLabel(Translation::t('Table prefix'));
         $this->table_prefix->wordCharactersOnly();
 
-        $this->host = \phpws2\Variable::factory('CanopyString', null, 'host');
+        $this->host = \phpws2\Variable::factory('StringVar', null, 'host');
         $this->host->setLimit(255);
         $this->host->setLabel('Database host');
         $this->host->allowNull(true);

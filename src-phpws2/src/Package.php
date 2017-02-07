@@ -31,7 +31,7 @@ abstract class Package {
 
     public function __construct($title, $version)
     {
-        $this->title = new \phpws2\Variable\CanopyString($title, 'title');
+        $this->title = new \phpws2\Variable\StringVar($title, 'title');
         $this->version = new \phpws2\Variable\Version($version, 'version');
     }
 

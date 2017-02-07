@@ -74,7 +74,7 @@ class Modal {
         self::$modal_started = true;
         $this->id = new \phpws2\Variable\Attribute($id, 'id');
         $this->title = new \phpws2\Variable\TextOnly($title, 'title');
-        $this->content = new \phpws2\Variable\CanopyString($content, 'content');
+        $this->content = new \phpws2\Variable\StringVar($content, 'content');
     }
 
     public function setContent($content)

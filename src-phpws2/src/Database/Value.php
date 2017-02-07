@@ -39,7 +39,7 @@ class Value extends Column
     {
         switch (\gettype($value)) {
             case 'string':
-                $this->value = new \phpws2\Variable\CanopyString($value, $this->name);
+                $this->value = new \phpws2\Variable\StringVar($value, $this->name);
                 return true;
                 break;
 
@@ -69,7 +69,7 @@ class Value extends Column
                     //if ($value instanceof \phpws2\Variable) {
                     $this->value = $value;
                     //} elseif (method_exists($value, '__toString')) {
-                    //$this->value = new \phpws2\Variable\CanopyString($value->__toString(), $this->name);
+                    //$this->value = new \phpws2\Variable\StringVar($value->__toString(), $this->name);
                 } else {
                     throw new \Exception(sprintf('Unacceptable value type (%s)', gettype($value)));
                 }
@@ -77,7 +77,7 @@ class Value extends Column
                 break;
 
             case 'array':
-                $this->value = new \phpws2\Variable\CanopyString(serialize($value), $this->name);
+                $this->value = new \phpws2\Variable\StringVar(serialize($value), $this->name);
                 return true;
                 break;
 

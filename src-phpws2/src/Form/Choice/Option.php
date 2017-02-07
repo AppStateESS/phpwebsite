@@ -59,7 +59,7 @@ class Option extends \Tag {
      */
     public function setOptgroup($optgroup)
     {
-        $str = new \phpws2\Variable\CanopyString($optgroup, 'value');
+        $str = new \phpws2\Variable\StringVar($optgroup, 'value');
         $this->optgroup = $str->getStripped();
     }
 
@@ -86,7 +86,7 @@ class Option extends \Tag {
      */
     public function setValue($value)
     {
-        $str = new \phpws2\Variable\CanopyString(is_numeric($value) ? (string)$value:$value, 'value');
+        $str = new \phpws2\Variable\StringVar(is_numeric($value) ? (string)$value:$value, 'value');
         $this->value = $str->getStripped();
     }
 

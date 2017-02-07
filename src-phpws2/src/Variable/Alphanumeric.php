@@ -10,7 +10,7 @@ namespace phpws2\Variable;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Alphanumeric extends \phpws2\Variable\CanopyString {
+class Alphanumeric extends \phpws2\Variable\StringVar {
 
     protected $regexp_match = '/^[a-z]\w*$/i';
 

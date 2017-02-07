@@ -175,7 +175,7 @@ class Tag extends \Canopy\Data
             $value = (string) $value;
         }
         $oName = new \phpws2\Variable\Attribute($name, 'dataNameAttribute');
-        $oValue = new \phpws2\Variable\CanopyString($value, 'dataValueAttribute');
+        $oValue = new \phpws2\Variable\StringVar($value, 'dataValueAttribute');
         $this->data[$oName->get()] = $oValue->get();
     }
 
