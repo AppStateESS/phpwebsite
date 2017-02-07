@@ -1,31 +1,31 @@
 <?php
+
 namespace phpws;
+
 /**
  *
  * @version $Id$
  * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
-
 \phpws\PHPWS_Core::initCoreClass('jsmin.php');
 
-abstract class Javascript extends \Data {
+abstract class Javascript extends \Canopy\Data
+{
+
     /**
      * @var string
      */
     protected $script_name = null;
+
     /**
      * If true, jquery is initialized
      * @var unknown_type
      */
     protected $use_jquery = true;
-
     protected $head_script = null;
-
     protected $body_script = null;
-
     protected $demo_code = null;
-
     protected $example = null;
 
     /**
@@ -36,15 +36,15 @@ abstract class Javascript extends \Data {
     protected $includes = null;
 
     abstract public function loadDemo();
-    abstract public function prepare();
 
+    abstract public function prepare();
 
     public function setBodyScript($body_script)
     {
         $this->body_script = $body_script;
     }
 
-    public function setHeadScript($head_script, $wrap=false, $jsmin=false)
+    public function setHeadScript($head_script, $wrap = false, $jsmin = false)
     {
         if ($jsmin) {
             $head_script = $this->jsmin($head_script);
@@ -74,7 +74,8 @@ abstract class Javascript extends \Data {
         if (!isset($script_list[$script_name])) {
             $js_path = PHPWS_SOURCE_DIR . 'javascript/' . $script_name . '/factory.php';
             if (!is_file($js_path)) {
-                throw new \PEAR_Exception(dgettext('core', 'Could not find javascript factory file.'));
+                throw new \PEAR_Exception(dgettext('core',
+                        'Could not find javascript factory file.'));
             }
             require_once $js_path;
         }
@@ -110,7 +111,6 @@ abstract class Javascript extends \Data {
         return '<fieldset><legend>' . $this->script_name . '</legend><pre>' . $this->demo_code . '</pre></fieldset>';
     }
 
-
     protected function getDemoExample()
     {
         if (!empty($this->example)) {
@@ -141,7 +141,8 @@ EOF;
         static $jquery_loaded = false;
 
         if (!$jquery_loaded) {
-            $this->addHeadInclude(PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js', true, true);
+            $this->addHeadInclude(PHPWS_SOURCE_HTTP . 'javascript/jquery/jquery.js',
+                    true, true);
             $jquery_loaded = true;
         }
     }
@@ -155,10 +156,11 @@ EOF;
      *                               the script file.
      * @param boolean $prepend : forces the scripts to the front of the head_script array
      */
-    public function addHeadInclude($file_name, $strict_path=false, $prepend=false)
+    public function addHeadInclude($file_name, $strict_path = false,
+            $prepend = false)
     {
         if (!$strict_path) {
-            $file_name =  PHPWS_SOURCE_HTTP . 'javascript/' . $this->script_name . '/' . $file_name;
+            $file_name = PHPWS_SOURCE_HTTP . 'javascript/' . $this->script_name . '/' . $file_name;
         }
 
         if (!$this->currentlyInHead($file_name)) {
@@ -228,7 +230,6 @@ EOF;
     {
         return $this->getBodyScript();
     }
-
 
     public function demo()
     {

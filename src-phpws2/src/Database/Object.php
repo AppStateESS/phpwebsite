@@ -13,43 +13,49 @@ namespace phpws2\Database;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @package phpws2
  * @subpackage DB
- * @see \Data
- * @todo This may be a relic of 1.x. May not be needed. Combine with Resource or
+ * @see \Canopy\Data * @todo This may be a relic of 1.x. May not be needed. Combine with Resource or
  * delete
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Object extends \Data {
+abstract class Object extends \Canopy\Data
+{
 
     /**
      * Reference to the parent object's primary key.
      * @var integer
      */
     private $primary_key = null;
+
     /**
      * Name of the table column housing the primary id
      * @var string
      */
     private $primary_key_column = null;
+
     /**
      * A temporary array of values used in when an object is saved.
      * @var array
      */
     private $object_values = array();
+
     /**
      * The table the object uses for information.
      * @var string
      */
     private $table_name = null;
+
     /**
      * DB object created before operating on object
      * @var object
      */
     private $DB = null;
+
     /**
      * Table object created with database
      * @var object
      */
     private $table = null;
+
     /**
      * An array of foreign keys associated to this item. Should this object be deleted, the
      * corresponding row will as well.
@@ -63,6 +69,7 @@ abstract class Object extends \Data {
      * @var array
      */
     private $foreign_keys = null;
+
     /**
      * If this value is set with an associate array, the foreign keyed value will
      * be updated when this object is updated, but not created.
@@ -73,6 +80,7 @@ abstract class Object extends \Data {
      * @var array
      */
     private $foreign_update = null;
+
     /**
      * Indicates if the current object is new (to be inserted) or old (to be updated).
      * Regardless of action taken on object, this status is retained until reloaded.
@@ -148,7 +156,8 @@ abstract class Object extends \Data {
         }
 
         if (!$this->DB->tableExists($this->table_name)) {
-            throw new \Exception(sprintf('Table does not exist: %s', $this->table_name));
+            throw new \Exception(sprintf('Table does not exist: %s',
+                    $this->table_name));
         }
         $this->table = $this->DB->addTable($this->table_name);
         if (empty($this->primary_key_column)) {

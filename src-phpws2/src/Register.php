@@ -2,14 +2,14 @@
 
 namespace phpws2;
 
-
 /*
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-abstract class Register extends \Data {
+abstract class Register extends \Canopy\Data
+{
 
     /**
      * Module object of module wanting to register to the parent object
@@ -32,4 +32,5 @@ abstract class Register extends \Data {
     {
         $this->registrant = $registrant;
     }
+
 }

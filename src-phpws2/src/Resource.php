@@ -9,7 +9,7 @@ namespace phpws2;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Resource extends \Data
+abstract class Resource extends \Canopy\Data
 {
 
     /**
@@ -89,7 +89,8 @@ abstract class Resource extends \Data
      * @throws \Exception
      * @throws \phpws2\Exception\WrongType
      */
-    public function loadPostByType(\Canopy\Request $request, array $ignore = null)
+    public function loadPostByType(\Canopy\Request $request,
+            array $ignore = null)
     {
         $variable_names = $this->getVariableNames();
         if (empty($variable_names)) {
