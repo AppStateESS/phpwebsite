@@ -2,4 +2,4 @@
 
 namespace Variable;
 
-class Date extends \phpws2\Variable\Date{}
+class Date extends \phpws2\Variable\DateVar{}
