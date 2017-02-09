@@ -49,7 +49,7 @@ class Value extends Column
                 break;
 
             case 'double':
-                $this->value = new \phpws2\Variable\Double($value, $this->name);
+                $this->value = new \phpws2\Variable\DoubleVar($value, $this->name);
                 return true;
                 break;
 
