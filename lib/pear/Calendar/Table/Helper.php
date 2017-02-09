@@ -114,7 +114,7 @@ class Calendar_Table_Helper
      *
      * @access protected
      */
-    function Calendar_Table_Helper(& $calendar, $firstDay=null)
+    public function __construct(& $calendar, $firstDay=null)
     {
         $this->calendar = & $calendar;
         $this->cE = & $calendar->getEngine();
@@ -136,7 +136,7 @@ class Calendar_Table_Helper
      * @return void
      * @access private
      */
-    function setFirstDay()
+    public function setFirstDay()
     {
         $weekDays = $this->cE->getWeekDays(
             $this->calendar->thisYear(),
@@ -165,7 +165,7 @@ class Calendar_Table_Helper
      * @return void
      * @access private
      */
-    function setDaysOfMonth()
+    public function setDaysOfMonth()
     {
         $this->daysOfMonth = $this->daysOfWeek;
         $daysInMonth = $this->cE->getDaysInMonth(
@@ -201,7 +201,7 @@ class Calendar_Table_Helper
      * @access protected
      * @see Calendar_Engine_Interface::getFirstDayOfWeek()
      */
-    function getFirstDay()
+    public function getFirstDay()
     {
         return $this->firstDay;
     }
@@ -212,7 +212,7 @@ class Calendar_Table_Helper
      * @return int
      * @access protected
      */
-    function getDaysOfWeek()
+    public function getDaysOfWeek()
     {
         return $this->daysOfWeek;
     }
@@ -223,7 +223,7 @@ class Calendar_Table_Helper
      * @return int
      * @access protected
      */
-    function getNumWeeks()
+    public function getNumWeeks()
     {
         return $this->numWeeks;
     }
@@ -234,7 +234,7 @@ class Calendar_Table_Helper
      * @return int
      * @access protected
      */
-    function getNumTableDaysInMonth()
+    public function getNumTableDaysInMonth()
     {
         return count($this->daysOfMonth);
     }
@@ -245,7 +245,7 @@ class Calendar_Table_Helper
      * @return int
      * @access protected
      */
-    function getEmptyDaysBefore()
+    public function getEmptyDaysBefore()
     {
         return $this->emptyBefore;
     }
@@ -257,7 +257,7 @@ class Calendar_Table_Helper
      * @return int
      * @access protected
      */
-    function getEmptyDaysAfter()
+    public function getEmptyDaysAfter()
     {
         // Causes bug when displaying more than one month
         //static $index;
@@ -275,7 +275,7 @@ class Calendar_Table_Helper
      * @return int
      * @access protected
      */
-    function getEmptyDaysAfterOffset()
+    public function getEmptyDaysAfterOffset()
     {
         $eAfter = $this->getEmptyDaysAfter();
         return $eAfter - (
@@ -296,7 +296,7 @@ class Calendar_Table_Helper
      *
      * @return int timestamp
      */
-    function getWeekStart($y, $m, $d, $firstDay=1)
+    public function getWeekStart($y, $m, $d, $firstDay=1)
     {
         $dow = $this->cE->getDayOfWeek($y, $m, $d);
         if ($dow > $firstDay) {
