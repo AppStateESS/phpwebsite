@@ -55,7 +55,7 @@ EOF;
 
     public function printFile($id)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t = $db->addTable('images');
         $t->addFieldConditional('id', (int) $id);
         $row = $db->selectOneRow();

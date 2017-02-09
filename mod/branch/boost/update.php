@@ -133,7 +133,7 @@ function branch_update(&$content, $version)
 + Removed javascript directory creation
 </pre>';
         case version_compare($version, '1.3.4', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             if ($db->tableExists('branch_mod_limit')) {
                 $db->addTable('branch_mod_limit')->drop();
             }
@@ -142,7 +142,7 @@ function branch_update(&$content, $version)
 + Remove module limitations on branches.
 </pre>';
         case version_compare($version, '1.3.5', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             if ($db->tableExists('branch_mod_limit')) {
                 $db->addTable('branch_mod_limit')->drop();
             }

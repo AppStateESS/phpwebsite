@@ -180,7 +180,7 @@ class FC_Forms
             return;
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $db->addTable('folders')->addFieldConditional('title', $folder->title);
 
         $result = $db->selectOneRow();
@@ -204,7 +204,7 @@ class FC_Forms
             $this->sendErrorHeader('No permissions to delete files');
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
 
         switch ($request->getVar('ftype')) {
             case DOCUMENT_FOLDER:

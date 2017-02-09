@@ -89,10 +89,10 @@ class PulseAdminController extends \Http\Controller
 
     private function listSchedules(\Canopy\Request $request)
     {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $schedule_table = $db->addTable('pulse_schedule');
 
-        $pager = new \DatabasePager($db);
+        $pager = new \phpws2\DatabasePager($db);
         $pager->setId('schedule-list');
 
         $headers = array(

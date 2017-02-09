@@ -243,7 +243,7 @@ class Branch {
         $prefix = Branch::getHubPrefix();
 
         PHPWS_DB::loadDB($dsn, $prefix);
-        \Database::phpwsDSNLoader($dsn, $prefix);
+        \phpws2\Database::phpwsDSNLoader($dsn, $prefix);
     }
 
     /**
@@ -255,7 +255,7 @@ class Branch {
         if (empty($this->dsn)) {
             return false;
         }
-        \Database::phpwsDSNLoader($this->dsn, $this->prefix);
+        \phpws2\Database::phpwsDSNLoader($this->dsn, $this->prefix);
         return PHPWS_DB::loadDB($this->dsn, $this->prefix, false, false);
     }
 
@@ -268,7 +268,7 @@ class Branch {
             $prefix = $dsn = null;
             extract($GLOBALS['Branch_Temp']);
             PHPWS_DB::loadDB($dsn, $prefix);
-            \Database::phpwsDSNLoader($dsn, $prefix);
+            \phpws2\Database::phpwsDSNLoader($dsn, $prefix);
         } else {
             if (defined('PHPWS_TABLE_PREFIX')) {
                 $prefix = PHPWS_TABLE_PREFIX;
@@ -276,7 +276,7 @@ class Branch {
                 $prefix = null;
             }
             PHPWS_DB::loadDB(PHPWS_DSN, $prefix);
-            \Database::phpwsDSNLoader(PHPWS_DSN, $prefix);
+            \phpws2\Database::phpwsDSNLoader(PHPWS_DSN, $prefix);
         }
     }
 

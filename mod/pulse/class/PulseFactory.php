@@ -30,7 +30,7 @@ class PulseFactory extends \ResourceFactory
      */
     public static function getByName($name, $module = null)
     {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $ps_tbl = $db->addTable('pulse_schedule');
         $ps_tbl->addFieldConditional('name', $name);
         if ($module) {
@@ -119,7 +119,7 @@ class PulseFactory extends \ResourceFactory
 
     public static function pullReadySchedulesByModule($module, $name = null)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('module', $module);
         if (!empty($name)) {
@@ -134,7 +134,7 @@ class PulseFactory extends \ResourceFactory
 
     public static function pullReadySchedulesByName($name)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('name', $name);
         $tbl->addFieldConditional('active', 1);
@@ -146,7 +146,7 @@ class PulseFactory extends \ResourceFactory
 
     public static function pullReadyScheduleByHash($hash)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('hash', $hash);
         $tbl->addFieldConditional('active', 1);
@@ -158,7 +158,7 @@ class PulseFactory extends \ResourceFactory
 
     public static function pullReadySchedules()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('pulse_schedule');
         $tbl->addFieldConditional('active', 1);
         $tbl->addFieldConditional('status', PULSE_STATUS_AWAKE);

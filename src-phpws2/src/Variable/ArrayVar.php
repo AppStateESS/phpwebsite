@@ -118,7 +118,7 @@ class ArrayVar extends \phpws2\Variable
      */
     public function isAssoc()
     {
-        return is_assoc($this->value);
+        return Canopy\is_assoc($this->value);
     }
 
     /**

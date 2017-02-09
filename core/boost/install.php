@@ -2,7 +2,7 @@
 
 function core_install()
 {
-    $db = \Database::getDB();
+    $db = \phpws2\Database::getDB();
     $tbl = $db->addTable('settings');
     $tbl->createPrimaryIndexId();        
 }

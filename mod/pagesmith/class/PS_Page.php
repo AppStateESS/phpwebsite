@@ -130,7 +130,7 @@ class PS_Page
                     } elseif (!empty($section['content'])) {
                         $this->_orphans[$secname] = $section;
                     } else {
-                        $db = \Database::newDB();
+                        $db = \phpws2\Database::newDB();
                         $db->setConditional($db->addTable('ps_text')->getFieldConditional('id', $section['id']));
                         $db->delete();
                     }
@@ -162,7 +162,7 @@ class PS_Page
                     } elseif ($section['type_id'] > 0) {
                         $this->_orphans[$secname] = $section;
                     } else {
-                        $db = \Database::newDB();
+                        $db = \phpws2\Database::newDB();
                         $db->setConditional($db->addTable('ps_block')->getFieldConditional('id', $section['id']));
                         $db->delete();
                     }
@@ -559,7 +559,7 @@ class PS_Page
      */
     private function removeShortcuts()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t1 = $db->addTable('access_shortcuts');
         $shortcut = 'pagesmith:' . $this->id;
         $t1->addFieldConditional('url', $shortcut);

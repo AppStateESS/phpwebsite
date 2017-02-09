@@ -14,7 +14,7 @@ class HashType extends StringVar
       
       public function createRandom($length=32, $confusables=false, $uppercase=false)
       {
-          $this->value = randomString($length, $confusables, $uppercase);
+          $this->value = \Canopy\TextString::randomString($length, $confusables, $uppercase);
       }
       
       public function md5Random()

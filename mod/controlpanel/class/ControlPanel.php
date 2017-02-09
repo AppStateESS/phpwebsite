@@ -480,7 +480,7 @@ class PHPWS_ControlPanel
         if ($delete_links) {
             $link = '<a href="index.php?module=controlpanel&amp;delete_links=0">Turn off link deletion</a>';
             if ($remove_cp_link) {
-                $db = \Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $tbl = $db->addTable('controlpanel_link');
                 $tbl->addFieldConditional('id', $remove_cp_link);
                 $db->delete();

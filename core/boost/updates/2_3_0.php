@@ -22,7 +22,7 @@ function update_core_2_3_0()
 
     if (!empty($result)) {
         Settings::createSettingsTable();
-        $db3 = \Database::newDB();
+        $db3 = \phpws2\Database::newDB();
         $settings = $db3->addTable('settings');
         $db3->delete();
         foreach ($result as $v) {

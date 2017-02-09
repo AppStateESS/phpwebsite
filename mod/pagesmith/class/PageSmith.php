@@ -171,7 +171,7 @@ class PageSmith
                 break;
 
             case 'front_page_toggle':
-                $db = \Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $db->addTable('ps_page')->addValue('front_page', 0);
                 $db->update();
                 $this->loadPage();
@@ -249,7 +249,7 @@ class PageSmith
     
     public static function getVersion()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $tbl = $db->addTable('modules');
         $tbl->addFieldConditional('title', 'pagesmith');
         $tbl->addField('version');
@@ -258,11 +258,11 @@ class PageSmith
     
     private function purgeListing()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $pages = $db->addTable('ps_page');
         $pages->addFieldConditional('deleted', 1);
 
-        $pager = new \DatabasePager($db);
+        $pager = new \phpws2\DatabasePager($db);
         $pager->setId('purge-list');
         $pager->setHeaders(array('title' => 'Title', 'last_updated' => 'Deleted'));
         $tbl_headers['title'] = $pages->getField('title');

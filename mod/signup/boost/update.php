@@ -170,14 +170,14 @@ function signup_update(&$content, $currentVersion)
 -----------------
 + Fixed bad form on moving slot member</pre>';
         case version_compare($currentVersion, '1.3.5', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $sp = $db->addTable('signup_peeps');
             if (!$sp->columnExists('extra1')) {
-                $dt1 = \Database\Datatype::factory($sp, 'extra1', 'varchar');
+                $dt1 = \phpws2\Database\Datatype::factory($sp, 'extra1', 'varchar');
                 $dt1->add();
-                $dt2 = \Database\Datatype::factory($sp, 'extra2', 'varchar');
+                $dt2 = \phpws2\Database\Datatype::factory($sp, 'extra2', 'varchar');
                 $dt2->add();
-                $dt3 = \Database\Datatype::factory($sp, 'extra3', 'varchar');
+                $dt3 = \phpws2\Database\Datatype::factory($sp, 'extra3', 'varchar');
                 $dt3->add();
             }
             $content[] = '<pre>1.3.5 changes
@@ -186,7 +186,7 @@ function signup_update(&$content, $currentVersion)
 </pre>';
 
         case version_compare($currentVersion, '1.3.6', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $dbtype = $db->getDatabaseType();
             if ($dbtype == 'mysql') {
                 $db->query('ALTER TABLE `signup_peeps` MODIFY extra1 VARCHAR(255) DEFAULT NULL');

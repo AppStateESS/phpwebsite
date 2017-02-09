@@ -432,7 +432,7 @@ class User_Form
         $members = $group->getMembers();
 
         if ($members) {
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $ug = $db->addTable('users_groups');
             $ug->addField('id');
             $ug->addField('name');
@@ -742,7 +742,7 @@ class User_Form
     public static function getLikeGroups($name, PHPWS_Group $group)
     {
         $name = preg_replace('/[^\w]/', '', $name);
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $ug = $db->addTable('users_groups');
         $ug->addField('id');
         $ug->addField('name');

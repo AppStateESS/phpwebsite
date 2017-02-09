@@ -652,7 +652,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 </pre>
 EOF;
         case version_compare($version, '2.7.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $t1 = $db->addTable('folders');
             $t1->addValue('module_created', null);
             $db->update();

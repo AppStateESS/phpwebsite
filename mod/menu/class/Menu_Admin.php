@@ -467,7 +467,7 @@ class Menu_Admin
             $menu->deleteImage();
 
             $file = $request->getUploadedFileArray('assoc_image');
-            $file_name = randomString(12) . '.' . str_replace('image/', '',
+            $file_name = \Canopy\TextString::randomString(12) . '.' . str_replace('image/', '',
                             $file['type']);
 
             \PHPWS_File::fileCopy($file['tmp_name'], 'images/menu/', $file_name,
@@ -478,7 +478,7 @@ class Menu_Admin
         } elseif (!empty($carousel)) {
             $menu->deleteImage();
             $ext = \PHPWS_File::getFileExtension($carousel);
-            $file_name = randomString(12) . '.' . str_replace('image/', '', $ext);
+            $file_name = \Canopy\TextString::randomString(12) . '.' . str_replace('image/', '', $ext);
 
             \PHPWS_File::fileCopy($carousel, 'images/menu/', $file_name, false,
                     true);
@@ -749,7 +749,7 @@ class Menu_Admin
         $db->addTable('menus')->addField('assoc_key', 'key_id');
         $db2 = \phpws2\Database::newDB();
         $db2->addTable('menu_links')->addField('key_id');
-        $union = new \Database\Union(array($db, $db2));
+        $union = new \phpws2\Database\Union(array($db, $db2));
         $rows = $union->select();
 
         foreach ($rows as $r) {

@@ -214,17 +214,17 @@ UPDATES;
             $content[] = "<pre>$changes</pre>";
 
         case version_compare($version, '2.3.1', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $db->setConditional($db->addTable('modules')->getFieldConditional('title',
                             'comments'));
             $db->delete();
 
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
                             'comments'));
             $db->delete();
 
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             if ($db->tableExists('comments_items')) {
                 $db->buildTable('comments_items')->drop();
             }
@@ -259,7 +259,7 @@ UPDATES;
                 $db->buildTable('comments_user_ranks_seq')->drop();
             }
 
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             if ($db->tableExists('categories')) {
                 $db->buildTable('categories')->drop();
             }
@@ -276,12 +276,12 @@ UPDATES;
                 $db->buildTable('category_items_seq')->drop();
             }
 
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $db->setConditional($db->addTable('modules')->getFieldConditional('title',
                             'categories'));
             $db->delete();
 
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $db->setConditional($db->addTable('controlpanel_link')->getFieldConditional('itemname',
                             'categories'));
             $db->delete();
@@ -378,7 +378,7 @@ UPDATES;
 </pre>';
 
         case version_compare($version, '2.4.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('modules');
             $tbl->addFieldConditional('title', 'clipboard');
             $db->delete();
@@ -403,7 +403,7 @@ UPDATES;
 EOF;
 
         case version_compare($version, '2.4.1', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $db->addTable('modules')->addFieldConditional('title', 'version');
             $db->delete();
             $content[] = <<<EOF
@@ -426,7 +426,7 @@ EOF;
 EOF;
 
         case version_compare($version, '2.4.2', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $t1 = $db->addTable('settings');
             $indexes = $t1->getIndexes();
             if (empty($indexes)) {
@@ -510,10 +510,10 @@ EOF;
 EOF;
 
         case version_compare($version, '2.8.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $t = $db->addTable('settings');
             $dt_old = $t->getDataType('setting');
-            $dt_update = new \Database\Datatype\Text($t, 'setting');
+            $dt_update = new \phpws2\Database\Datatype\Text($t, 'setting');
             $dt_update->setIsNull(true);
             $t->alter($dt_old, $dt_update);
             $content[] = <<<EOF
@@ -525,10 +525,10 @@ EOF;
 
         case version_compare($version, '2.8.1', '<'):
             if ($db->getDatabaseType() == 'mysql') {
-                $db = \Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $t = $db->addTable('settings');
                 $dt_old = $t->getDataType('setting');
-                $dt_new = \Database\Datatype::factory($t, 'settings',
+                $dt_new = \phpws2\Database\Datatype::factory($t, 'settings',
                                 'mediumtext');
                 $dt_new->setIsNull(true);
                 $t->alter($dt_old, $dt_new);
@@ -540,7 +540,7 @@ EOF;
 </pre>
 EOF;
         case version_compare($version, '2.8.2', '<'):
-            $db = \Database::getDB();
+            $db = \phpws2\Database::getDB();
             $tbl = $db->addTable('settings');
 
             if ($tbl->columnExists('id')) {
@@ -562,7 +562,7 @@ EOF;
 </pre>
 EOF;
         case version_compare($version, '2.9.0', '<'):
-            $db = \Database::getDB();
+            $db = \phpws2\Database::getDB();
             $tbl = $db->addTable('settings');
 
             if (!$tbl->columnExists('id')) {

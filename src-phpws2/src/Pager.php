@@ -192,7 +192,7 @@ class Pager
     public function getId()
     {
         if (empty($this->id)) {
-            $this->id = randomString(12);
+            $this->id = \Canopy\TextString::randomString(12);
         }
         return $this->id;
     }
@@ -283,7 +283,7 @@ class Pager
      */
     public function setHeaders(array $headers)
     {
-        if (is_assoc($headers)) {
+        if (\Canopy\is_assoc($headers)) {
             $this->addSearchColumn($headers);
             $this->headers = $headers;
         } else {

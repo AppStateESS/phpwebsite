@@ -300,7 +300,7 @@ class Layout_Admin
     {
         $current_theme = \Layout::getCurrentTheme();
 
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('layout_box');
         $tbl->addFieldConditional('theme', $current_theme);
         $tbl->addFieldConditional('active', 1);

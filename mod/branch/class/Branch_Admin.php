@@ -266,7 +266,7 @@ class Branch_Admin
     {
         $db = new PHPWS_DB;
         $loaddb = \PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix, true);
-        \Database::phpwsDSNLoader($this->getDSN(), $this->dbprefix);
+        \phpws2\Database::phpwsDSNLoader($this->getDSN(), $this->dbprefix);
         if (PHPWS_Error::isError($loaddb)) {
             return $loaddb;
         }

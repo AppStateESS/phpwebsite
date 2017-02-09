@@ -247,7 +247,7 @@ class PS_Forms
         foreach ($pager->display_rows as $row_id => $page) {
             $keys[$page->key_id] = $row_id;
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $t = $db->addTable('phpws_key');
         $t->addFieldConditional('id', array_keys($keys), 'in');
         $result = $db->select();

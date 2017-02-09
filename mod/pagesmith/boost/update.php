@@ -372,7 +372,7 @@ Fixed bug causing blank editors on edit.</pre>';
 + Pop up width is relative to browser
 </pre>';
         case version_compare($currentVersion, '1.6.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $table = $db->addTable('ps_page');
             $table->addFieldConditional('template', 'art');
             $table->addValue('template', 'banner');
@@ -409,7 +409,7 @@ Fixed bug causing blank editors on edit.</pre>';
 </pre>
 EOF;
         case version_compare($currentVersion, '1.8.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $lb = $db->addTable('layout_box');
             $lb->addFieldConditional('module', 'pagesmith');
             $db->delete();
@@ -420,7 +420,7 @@ EOF;
 </pre>
 EOF;
         case version_compare($currentVersion, '1.9.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $pp = $db->addTable('ps_page');
             $st = $pp->addDataType('show_title', 'smallint');
             $st->add();
@@ -434,7 +434,7 @@ EOF;
 </pre>
 EOF;
         case version_compare($currentVersion, '1.9.1', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $pp = $db->addTable('ps_page');
             if (!$pp->columnExists('hide_title') && $pp->columnExists('show_title')) {
                 $dt = $pp->getField('show_title');
@@ -460,7 +460,7 @@ EOF;
 EOF;
 
         case version_compare($currentVersion, '1.10.0', '<'):
-            $db = \Database::newDB();
+            $db = \phpws2\Database::newDB();
             $t1 = $db->addTable('ps_page');
             $dt = $t1->addDatatype('deleted', 'smallint');
             $dt->setDefault(0);

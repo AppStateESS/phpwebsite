@@ -38,7 +38,7 @@ abstract class FC_Folder_Factory
 
     protected function getFolderFileList($table)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $file_table = $db->addTable($table);
         $file_table->addFieldConditional('folder_id', $this->current_folder_id);
         $file_table->addOrderBy('title', 'asc');
@@ -67,7 +67,7 @@ abstract class FC_Folder_Factory
         if (!$this->ftype) {
             throw new \Exception('Missing folder type');
         }
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $f = $db->addTable('folders');
         $f->addFieldConditional('ftype', $this->ftype);
         $f->addOrderBy('title');
