@@ -54,9 +54,9 @@ class Folder
     public function getPublic()
     {
         if ($this->public_folder) {
-            return dgettext('filecabinet', 'Public');
+            return 'Public';
         } else {
-            return dgettext('filecabinet', 'Private');
+            return 'Private';
         }
     }
 
@@ -64,9 +64,9 @@ class Folder
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
         $vars['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', array('aop' => 'delete_folder', 'folder_id' => $this->id), true);
-        $label = dgettext('filecabinet', 'Delete');
+        $label = 'Delete';
         if ($mode == 'image') {
-            $vars['LINK'] = Icon::show('delete', dgettext('filecabinet', 'Delete'));
+            $vars['LINK'] = Icon::show('delete', 'Delete');
         } else {
             $vars['LINK'] = $label;
         }
@@ -84,15 +84,15 @@ class Folder
             if ($mode == 'title') {
                 $label = $this->title;
             } else {
-                $label = dgettext('filecabinet', 'Edit');
+                $label = 'Edit';
             }
         } else {
-            $label = dgettext('filecabinet', 'Add folder');
+            $label = 'Add folder';
             $vars['aop'] = 'add_folder';
         }
 
         if ($mode == 'image') {
-            $js['label'] = '<i class="fa fa-edit" title="' . dgettext('filecabinet', 'Edit') . '"></i>';
+            $js['label'] = '<i class="fa fa-edit" title="' . 'Edit' . '"></i>';
         } else {
             $js['label'] = & $label;
         }
@@ -118,7 +118,7 @@ class Folder
         $vars['image_id'] = $this->id;
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
         $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-        $js['LINK'] = dgettext('filecabinet', 'Delete');
+        $js['LINK'] = 'Delete';
         $links[] = javascript('confirm', $js);
     }
 
@@ -179,17 +179,17 @@ class Folder
                 $link_var['iop'] = 'upload_image_form';
                 $link_var['fw'] = $force_width;
                 $link_var['fh'] = $force_height;
-                $label = dgettext('filecabinet', 'Add image');
+                $label = 'Add image';
                 break;
 
             case 'document':
                 $link_var['dop'] = 'upload_document_form';
-                $label = dgettext('filecabinet', 'Add document');
+                $label = 'Add document';
                 break;
 
             case 'media':
                 $link_var['mop'] = 'upload_multimedia_form';
-                $label = dgettext('filecabinet', 'Add media');
+                $label = 'Add media';
                 break;
         }
 
@@ -207,7 +207,7 @@ class Folder
                 break;
 
             case 'icon':
-                $vars['label'] = '<i class="fa fa-upload" title="' . dgettext('filecabient', 'Upload') . '"></i>';
+                $vars['label'] = '<i class="fa fa-upload" title="' . 'Upload' . '"></i>';
                 break;
 
             default:
@@ -227,7 +227,7 @@ class Folder
                     'folder_id' => $this->id), true);
         $vars['width'] = 400;
         $vars['height'] = 200;
-        $vars['title'] = $vars['label'] = dgettext('filecabinet', 'Add embedded');
+        $vars['title'] = $vars['label'] = 'Add embedded';
         if ($button) {
             $vars['type'] = 'button';
         }
@@ -251,7 +251,7 @@ class Folder
         if (!$formatted) {
             return $link;
         } else {
-            return sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View folder'), $this->title);
+            return sprintf('<a href="%s" title="%s">%s</a>', $link, 'View folder', $this->title);
         }
     }
 
@@ -494,7 +494,7 @@ class Folder
         if ($this->module_created && isset($mods[$this->module_created])) {
             $tpl['MODULE_CREATED'] = $mods[$this->module_created];
         } else {
-            $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
+            $tpl['MODULE_CREATED'] = 'General';
         }
 
         $tpl['PUBLIC'] = $this->getPublic();

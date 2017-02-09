@@ -194,7 +194,7 @@ class Calendar_Event {
                             array('aop' => 'delete_event',
                         'sch_id' => $this->_schedule->id,
                         'event_id' => $this->id), true);
-            $link = $vars['LINK'] = dgettext('calendar', 'Delete');
+            $link = $vars['LINK'] = 'Delete';
 
             javascript('confirm');
             if ($type == 'icon') {
@@ -207,7 +207,7 @@ EOF;
 EOF;
             }
         } else {
-            return PHPWS_Text::secureLink(dgettext('calendar', 'Delete'),
+            return PHPWS_Text::secureLink('Delete',
                             'calendar',
                             array('aop' => 'delete_event',
                         'sch_id' => $this->_schedule->id,
@@ -397,7 +397,7 @@ EOF;
                     }
                 }
             } else {
-                $tpl['START_TIME'] = dgettext('calendar', 'All day event');
+                $tpl['START_TIME'] = 'All day event';
                 $tpl['END_TIME'] = $this->getStartTime($month_day_mode);
             }
 
@@ -430,7 +430,7 @@ EOF;
             }
             $tpl['DTSTART'] = PHPWS_Time::getDTTime($this->start_time, 'user');
             $tpl['DTEND'] = PHPWS_Time::getDTTime($this->end_time, 'user');
-            $tpl['TO'] = dgettext('calendar', 'to');
+            $tpl['TO'] = 'to';
         }
 
         return $tpl;
@@ -454,7 +454,7 @@ EOF;
         $tpl = $this->tplFormatTime();
 
         if ($this->show_busy && !$this->_schedule->checkPermissions()) {
-            $tpl['SUMMARY'] = dgettext('calendar', 'Busy');
+            $tpl['SUMMARY'] = 'Busy';
             $tpl['DESCRIPTION'] = null;
         } else {
             $tpl['SUMMARY'] = $this->getSummary();
@@ -474,7 +474,7 @@ EOF;
 
 
         if (!empty($this->location)) {
-            $tpl['LOCATION_LABEL'] = dgettext('calendar', 'Location');
+            $tpl['LOCATION_LABEL'] = 'Location';
             $tpl['LOCATION'] = $this->getLocation();
         }
 

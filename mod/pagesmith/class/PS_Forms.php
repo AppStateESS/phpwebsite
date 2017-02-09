@@ -86,7 +86,7 @@ class PS_Forms
 
         $form->addSelect('template_list', $template_list);
         $form->setMatch('template_list', $page->template);
-        $form->addSubmit('change_tpl', dgettext('pagesmith', 'Change template'));
+        $form->addSubmit('change_tpl', 'Change template');
 
         if ($page->id) {
             $form->addHidden('id', $page->id);
@@ -96,7 +96,7 @@ class PS_Forms
             $this->ps->content = dgettext('pagesmith', 'Unable to load page template.');
             return;
         }
-        $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
+        $form->addSubmit('submit', 'Save page');
         $form->setClass('submit', 'btn btn-success');
 
         $page->loadKey();
@@ -121,19 +121,19 @@ class PS_Forms
         $tpl['HIDE_CHECK'] = $page->hide_title ? 'checked="checked"' : null;
 
         if (!empty($page->_orphans)) {
-            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', \phpws\PHPWS_Core::getCurrentUrl(), dgettext('pagesmith', 'Orphans'));
+            $tpl['ORPHAN_LINK'] = sprintf('<a href="%s#orphans">%s</a>', \phpws\PHPWS_Core::getCurrentUrl(), 'Orphans');
             $tpl['ORPHANS'] = $this->listOrphans($page->_orphans);
         }
 
         // We wrap the textarea in a form just so ckeditor will allow use of the "Save" button.
-        $modal = new \Modal('edit-section', '<form><textarea id="block-edit-textarea"></textarea></form>', dgettext('pagesmith', 'Edit text area'));
-        $modal->addButton('<button id="save-page" class="btn btn-success">' . dgettext('pagesmith', 'Save') . '</button>');
+        $modal = new \Modal('edit-section', '<form><textarea id="block-edit-textarea"></textarea></form>', 'Edit text area');
+        $modal->addButton('<button id="save-page" class="btn btn-success">' . 'Save' . '</button>');
 
         $modal->setWidthPercentage(90);
         $tpl['CONTENT_MODAL'] = $modal->__toString();
 
-        $title_modal = new \Modal('edit-title', '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />', dgettext('pagesmith', 'Edit page title'));
-        $title_modal->addButton('<button id="save-title" class="btn btn-success">' . dgettext('pagesmith', 'Save') . '</button>');
+        $title_modal = new \Modal('edit-title', '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />', 'Edit page title');
+        $title_modal->addButton('<button id="save-title" class="btn btn-success">' . 'Save' . '</button>');
         $tpl['TITLE_MODAL'] = $title_modal->__toString();
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'page_form.tpl');
     }
@@ -143,7 +143,7 @@ class PS_Forms
         javascript('jquery');
         javascriptMod('pagesmith', 'delete_orphan');
         $tpl = array();
-        $tpl['TITLE'] = dgettext('pagesmith', 'Orphaned content');
+        $tpl['TITLE'] = 'Orphaned content';
         foreach ($orphans as $orf) {
             $row = array();
             switch ($orf['sectype']) {
@@ -171,7 +171,7 @@ class PS_Forms
                 $row['CONTENT'] = $sec->getContent();
             }
 
-            $row['OPTIONS'] = sprintf('<a href="#" onclick="delete_orphan(\'%s\'); return false">%s</a>', $row['ID'], dgettext('pagesmith', 'Delete orphan'));
+            $row['OPTIONS'] = sprintf('<a href="#" onclick="delete_orphan(\'%s\'); return false">%s</a>', $row['ID'], 'Delete orphan');
             $tpl['orphan-list'][] = $row;
         }
 
@@ -191,13 +191,13 @@ class PS_Forms
         $form->addHidden('aop', 'post_header');
         $form->addHidden('section_name', $section_name);
         $form->addText('header', $content);
-        $form->setLabel('header', dgettext('pagesmith', 'Header'));
+        $form->setLabel('header', 'Header');
         $form->setSize('header', 40);
-        $form->addSubmit(dgettext('pagesmith', 'Update'));
+        $form->addSubmit('Update');
         $tpl = $form->getTemplate();
 
         $tpl['CANCEL'] = javascript('close_window');
-        $this->ps->title = dgettext('pagesmith', 'Edit header');
+        $this->ps->title = 'Edit header';
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'edit_header.tpl');
     }
 
@@ -207,8 +207,8 @@ class PS_Forms
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         \phpws\PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
 
-        $pgtags['ACTION_LABEL'] = dgettext('pagesmith', 'Action');
-        $createText = dgettext('pagesmith', 'New Page');
+        $pgtags['ACTION_LABEL'] = 'Action';
+        $createText = 'New Page';
         $pgtags['NEW'] = "<a href='index.php?module=pagesmith&amp;aop=menu&amp;tab=new' class='button'>$createText/a>";
         if (PHPWS_Settings::get('pagesmith', 'text_only_default')) {
             $pgtags['NEW_PAGE_LINK_URI'] = 'index.php?module=pagesmith&aop=pick_template&tpl=text_only&pid=0&authkey=' . \Current_User::getAuthKey();
@@ -226,14 +226,14 @@ class PS_Forms
         $pager->addRowTags('row_tags');
         $pager->setEmptyMessage(dgettext('pagesmith', 'No pages have been created.'));
         $pager->setSearch('title', 'id');
-        $pager->addSortHeader('id', dgettext('pagesmith', 'Id'));
-        $pager->addSortHeader('title', dgettext('pagesmith', 'Title'));
-        $pager->addSortHeader('create_date', dgettext('pagesmith', 'Created'));
-        $pager->addSortHeader('last_updated', dgettext('pagesmith', 'Updated'));
+        $pager->addSortHeader('id', 'Id');
+        $pager->addSortHeader('title', 'Title');
+        $pager->addSortHeader('create_date', 'Created');
+        $pager->addSortHeader('last_updated', 'Updated');
         $pager->addWhere('parent_page', 0);
         $pager->setDefaultLimit(10);
         $pager->setDefaultOrder('last_updated', 'desc');
-        $this->ps->title = dgettext('pagesmith', 'Pages');
+        $this->ps->title = 'Pages';
         $pager->initialize();
         $this->pullUpdated($pager);
         $this->ps->content = $pager->get();
@@ -278,8 +278,8 @@ class PS_Forms
 
             switch ($section->sectype) {
                 case 'header':
-                    $js['label'] = dgettext('pagesmith', 'Edit header');
-                    $js['link_title'] = dgettext('pagesmith', 'Change header');
+                    $js['label'] = 'Edit header';
+                    $js['link_title'] = 'Change header';
                     $vars['aop'] = 'edit_page_header';
                     $js['width'] = 400;
                     $js['height'] = 200;
@@ -309,7 +309,7 @@ class PS_Forms
     public function pickTemplate()
     {
         Layout::addStyle('pagesmith');
-        $this->ps->title = dgettext('pagesmith', 'Pick a template');
+        $this->ps->title = 'Pick a template';
         $this->loadTemplates();
 
         if (empty($this->tpl_list)) {
@@ -325,7 +325,7 @@ class PS_Forms
             $tpl['page-templates'][] = $pgtpl->pickTpl($this->ps->page->parent_page);
         }
 
-        $tpl['BACK'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Back to style selection'), 'pagesmith', array('aop' => 'menu', 'tab' => 'new'));
+        $tpl['BACK'] = PHPWS_Text::secureLink('Back to style selection', 'pagesmith', array('aop' => 'menu', 'tab' => 'new'));
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_template.tpl');
     }
 
@@ -363,7 +363,7 @@ class PS_Forms
                 'COUNT' => sprintf(dngettext('pagesmith', '%s template', '%s templates', $count), $count));
         }
 
-        $this->ps->title = dgettext('pagesmith', 'Choose a style');
+        $this->ps->title = 'Choose a style';
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'pick_folder.tpl');
     }
 
@@ -372,7 +372,7 @@ class PS_Forms
         $form = new PHPWS_Form('ps-settings');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_settings');
-        $form->addSubmit(dgettext('pagesmith', 'Save'));
+        $form->addSubmit('Save');
 
         $form->addCheck('auto_link', 1);
         $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
@@ -384,18 +384,18 @@ class PS_Forms
 
         $form->addCheck('create_shortcuts', 1);
         $form->setMatch('create_shortcuts', PHPWS_Settings::get('pagesmith', 'create_shortcuts'));
-        $form->setLabel('create_shortcuts', dgettext('pagesmith', 'Create Access shortcuts automatically'));
+        $form->setLabel('create_shortcuts', 'Create Access shortcuts automatically');
 
 
         $form->addTplTag('LENGTH_EXAMPLE', 'pagesmith/2 => index.php?module=pagesmith&uop=view_page&id=2');
 
 
-        $this->ps->title = dgettext('pagesmith', 'PageSmith Settings');
+        $this->ps->title = 'PageSmith Settings';
 
-        $tpl['SHORTEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Shorten all menu links'), 'pagesmith', array('aop' => 'shorten_links'));
+        $tpl['SHORTEN_MENU_LINKS'] = PHPWS_Text::secureLink('Shorten all menu links', 'pagesmith', array('aop' => 'shorten_links'));
         $tpl['SHORTEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop' => 'shorten_links'), true);
 
-        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink(dgettext('pagesmith', 'Lengthen all menu links'), 'pagesmith', array('aop' => 'lengthen_links'));
+        $tpl['LENGTHEN_MENU_LINKS'] = PHPWS_Text::secureLink('Lengthen all menu links', 'pagesmith', array('aop' => 'lengthen_links'));
         $tpl['LENGTHEN_MENU_LINKS_URI'] = PHPWS_Text::linkAddress('pagesmith', array('aop' => 'lengthen_links'), true);
 
         $form->mergeTemplate($tpl);

@@ -5,21 +5,21 @@
  * @version $Id$
  */
 $tabs[] = array('id' => 'content',
-    'title' => dgettext('controlpanel', 'Content'),
+    'title' => 'Content',
     'link' => 'index.php?module=controlpanel',
 );
 
 $tabs[] = array('id' => 'admin',
-    'title' => dgettext('controlpanel', 'Administration'),
+    'title' => 'Administration',
     'link' => 'index.php?module=controlpanel',
 );
 
 $tabs[] = array('id' => 'developer',
-    'title' => dgettext('controlpanel', 'Developer'),
+    'title' => 'Developer',
     'link' => 'index.php?module=controlpanel',
 );
 
 $tabs[] = array('id' => 'unsorted',
-    'title' => dgettext('controlpanel', 'Unsorted'),
+    'title' => 'Unsorted',
     'link' => 'index.php?module=controlpanel',
 );

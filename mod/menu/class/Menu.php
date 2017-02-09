@@ -278,8 +278,7 @@ class Menu {
                     if (!empty($result)) {
                         Menu::walkLinks($result, $content);
                     }
-                    $site['TITLE'] = $menu->getTitle() . ' - ' . dgettext('menu',
-                                    'Site map');
+                    $site['TITLE'] = $menu->getTitle() . ' - Site map';
                     $site['CONTENT'] = implode('', $content);
                     $tpl['site-map'][] = $site;
                 }

@@ -63,23 +63,23 @@ class RSS_Feed
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . dgettext('rss', 'Reset') . '"></i>', 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . 'Reset' . '"></i>', 'rss', $vars);
 
-        $links[] = '<i data-id="' . $this->id . '" class="edit-feed pointer fa fa-edit" title="' . dgettext('rss', 'Edit the feed') . '"></i>';
+        $links[] = '<i data-id="' . $this->id . '" class="edit-feed pointer fa fa-edit" title="' . 'Edit the feed' . '"></i>';
 
         $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
-        $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('rss', 'Delete feed') . '"></i>';
+        $js['LINK'] = '<i class="fa fa-trash-o" title="' . 'Delete feed' . '"></i>';
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' ', $links);
 
         if ($this->display) {
             $vars['command'] = 'turn_off_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'), 'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink('Yes', 'rss', $vars);
         } else {
             $vars['command'] = 'turn_on_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'), 'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink('No', 'rss', $vars);
         }
 
         $hours = floor($this->refresh_time / 3600);

@@ -104,14 +104,14 @@ class PHAT_Radiobutton extends PHAT_Element {
                     'Radiobutton Element Instructions');
         }
 
-        $editTags['BLURB_LABEL'] = dgettext('phatform', 'Associated Text');
+        $editTags['BLURB_LABEL'] = 'Associated Text';
         $editTags['BLURB_INPUT'] = PHPWS_Form::formTextArea('PHAT_ElementBlurb',
                         $this->getBlurb(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
-        $editTags['NAME_LABEL'] = dgettext('phatform', 'Name');
+        $editTags['NAME_LABEL'] = 'Name';
         $editTags['NAME_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementName',
                         $this->getLabel(), PHAT_DEFAULT_SIZE,
                         PHAT_DEFAULT_MAXSIZE);
-        $editTags['OPTIONS_LABEL'] = dgettext('phatform', 'Number of Options');
+        $editTags['OPTIONS_LABEL'] = 'Number of Options';
         $editTags['OPTIONS_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementNumOptions',
                         $numOptions, 5, 3);
 
@@ -123,7 +123,7 @@ class PHAT_Radiobutton extends PHAT_Element {
                             $options, $this->getOptionSet(), FALSE, TRUE);
         }
 
-        $editTags['REQUIRE_LABEL'] = dgettext('phatform', 'Required');
+        $editTags['REQUIRE_LABEL'] = 'Required';
         $editTags['REQUIRE_INPUT'] = PHPWS_Form::formCheckBox('PHAT_ElementRequired',
                         1, $this->isRequired());
         $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform',

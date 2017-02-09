@@ -93,23 +93,23 @@ class PHAT_Textfield extends PHAT_Element {
         }
 
         if(PHAT_SHOW_INSTRUCTIONS) {
-            $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Instructions');
+            $GLOBALS['CNT_phatform']['title'] = 'Instructions';
         }
 
-        $editTags['BLURB_LABEL'] = dgettext('phatform', 'Associated Text');
+        $editTags['BLURB_LABEL'] = 'Associated Text';
         $editTags['BLURB_INPUT'] = PHPWS_Form::formTextArea('PHAT_ElementBlurb', $this->getBlurb(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
-        $editTags['NAME_LABEL'] = dgettext('phatform', 'Name');
+        $editTags['NAME_LABEL'] = 'Name';
         $editTags['NAME_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementName', $this->getLabel(), PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $editTags['SIZE_LABEL'] = dgettext('phatform', 'Size');
+        $editTags['SIZE_LABEL'] = 'Size';
         $editTags['SIZE_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementSize', $this->_size, 5, 3);
-        $editTags['MAXSIZE_LABEL'] = dgettext('phatform', 'Maxsize');
+        $editTags['MAXSIZE_LABEL'] = 'Maxsize';
         $editTags['MAXSIZE_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementMaxsize', $this->_maxsize, 5, 3);
-        $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
+        $editTags['VALUE_LABEL'] = 'Value';
         $editTags['VALUE_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementValue', $this->getValue(), PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $editTags['REQUIRE_LABEL'] = dgettext('phatform', 'Require');
+        $editTags['REQUIRE_LABEL'] = 'Require';
         $editTags['REQUIRE_INPUT'] = PHPWS_Form::formCheckBox('PHAT_ElementRequired', 1, $this->isRequired());
-        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_ElementBack');
-        $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save Textfield'));
+        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit('Back', 'PHAT_ElementBack');
+        $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit('Save Textfield');
 
         $elements[0] .= PHPWS_Template::processTemplate($editTags, 'phatform', 'textfield/edit.tpl');
 

@@ -109,23 +109,23 @@ class PHAT_Textarea extends PHAT_Element {
                     'Textarea Element Instructions');
         }
 
-        $editTags['BLURB_LABEL'] = dgettext('phatform', 'Associated Text');
+        $editTags['BLURB_LABEL'] = 'Associated Text';
         $editTags['BLURB_INPUT'] = PHPWS_Form::formTextArea('PHAT_ElementBlurb',
                         $this->getBlurb(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
-        $editTags['NAME_LABEL'] = dgettext('phatform', 'Name');
+        $editTags['NAME_LABEL'] = 'Name';
         $editTags['NAME_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementName',
                         $this->getLabel(), PHAT_DEFAULT_SIZE,
                         PHAT_DEFAULT_MAXSIZE);
-        $editTags['ROWS_LABEL'] = dgettext('phatform', 'Rows');
+        $editTags['ROWS_LABEL'] = 'Rows';
         $editTags['ROWS_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementRows',
                         $this->_rows, 5, 3);
-        $editTags['COLS_LABEL'] = dgettext('phatform', 'Columns');
+        $editTags['COLS_LABEL'] = 'Columns';
         $editTags['COLS_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementCols',
                         $this->_cols, 5, 3);
-        $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
+        $editTags['VALUE_LABEL'] = 'Value';
         $editTags['VALUE_INPUT'] = PHPWS_Form::formTextArea('PHAT_ElementValue',
                         $this->getValue(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
-        $editTags['REQUIRE_LABEL'] = dgettext('phatform', 'Require');
+        $editTags['REQUIRE_LABEL'] = 'Require';
         $editTags['REQUIRE_INPUT'] = PHPWS_Form::formCheckBox('PHAT_ElementRequired',
                         1, $this->isRequired());
         $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform',
@@ -198,11 +198,11 @@ class PHAT_Textarea extends PHAT_Element {
             if (PHPWS_Error::isError($this->commit())) {
                 return PHPWS_Error::get(PHATFORM_ELEMENT_FAIL, 'phatform',
                                 'PHAT_Textarea::save()',
-                                array(dgettext('phatform', 'Textarea')));
+                                array('Textarea'));
             } else {
                 return sprintf(dgettext('phatform',
                                 'The %s element was saved successfully.'),
-                        dgettext('phatform', 'Textarea'));
+                        'Textarea');
             }
         }
     }

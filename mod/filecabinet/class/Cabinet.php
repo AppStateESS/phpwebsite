@@ -185,14 +185,14 @@ class Cabinet
         switch ($aop) {
             case 'image':
                 $this->panel->setCurrentTab('image');
-                $this->title = dgettext('filecabinet', 'Image folders');
+                $this->title = 'Image folders';
                 $this->loadForms();
                 $this->forms->getFolders(IMAGE_FOLDER);
                 break;
 
             case 'multimedia':
                 $this->panel->setCurrentTab('multimedia');
-                $this->title = dgettext('filecabinet', 'Multimedia folders');
+                $this->title = 'Multimedia folders';
                 $this->loadForms();
                 $this->forms->getFolders(MULTIMEDIA_FOLDER);
                 break;
@@ -292,7 +292,7 @@ class Cabinet
 
             case 'document':
                 $this->panel->setCurrentTab('document');
-                $this->title = dgettext('filecabinet', 'Document folders');
+                $this->title = 'Document folders';
                 $this->loadForms();
                 $this->forms->getFolders(DOCUMENT_FOLDER);
                 break;
@@ -355,7 +355,7 @@ class Cabinet
                 $this->forms->postAllowedFiles();
 
                 $this->message = dgettext('filecabinet', 'File types saved.');
-                $this->title = dgettext('filecabinet', 'Allowed file types');
+                $this->title = 'Allowed file types';
                 $this->content = $this->forms->fileTypes();
                 break;
 
@@ -376,7 +376,7 @@ class Cabinet
                     Current_User::disallow();
                 }
                 $this->loadForms();
-                $this->title = dgettext('filecabinet', 'Settings');
+                $this->title = 'Settings';
                 $this->content = $this->forms->settings();
                 break;
 
@@ -389,7 +389,7 @@ class Cabinet
                     Current_User::disallow();
                 }
                 $this->loadForms();
-                $this->title = dgettext('filecabinet', 'Allowed file types');
+                $this->title = 'Allowed file types';
                 $this->content = $this->forms->fileTypes();
                 break;
 
@@ -552,7 +552,7 @@ class Cabinet
             $next_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($next_img)) {
-                $next_link = Icon::show('next', dgettext('filecabinet', 'Next image'));
+                $next_link = Icon::show('next', 'Next image');
                 $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $next_img[0]->popupAddress(), $next_link);
             }
 
@@ -564,7 +564,7 @@ class Cabinet
             $prev_img = $db->getObjects('PHPWS_Image');
 
             if (!empty($prev_img)) {
-                $prev_link = Icon::show('previous', dgettext('filecabinet', 'Previous image'));
+                $prev_link = Icon::show('previous', 'Previous image');
                 $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $prev_img[0]->popupAddress(), $prev_link);
             }
         }
@@ -599,11 +599,11 @@ class Cabinet
     {
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
-            $this->title = dgettext('filecabinet', 'Create image folder');
+            $this->title = 'Create image folder';
         } elseif ($this->folder->ftype == DOCUMENT_FOLDER) {
-            $this->title = dgettext('filecabinet', 'Create document folder');
+            $this->title = 'Create document folder';
         } else {
-            $this->title = dgettext('filecabinet', 'Create multimedia folder');
+            $this->title = 'Create multimedia folder';
         }
 
         $this->content = $this->forms->editFolder($this->folder);
@@ -619,11 +619,11 @@ class Cabinet
 
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
-            $this->title = dgettext('filecabinet', 'Update image folder');
+            $this->title = 'Update image folder';
         } elseif ($this->folder->ftype == DOCUMENT_FOLDER) {
-            $this->title = dgettext('filecabinet', 'Update document folder');
+            $this->title = 'Update document folder';
         } else {
-            $this->title = dgettext('filecabinet', 'Update multimedia folder');
+            $this->title = 'Update multimedia folder';
         }
 
 
@@ -693,18 +693,18 @@ class Cabinet
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
-        $image_command = array('title' => dgettext('filecabinet', 'Image folders'), 'link' => $link);
-        $document_command = array('title' => dgettext('filecabinet', 'Document folders'), 'link' => $link);
-        $multimedia_command = array('title' => dgettext('filecabinet', 'Multimedia folders'), 'link' => $link);
+        $image_command = array('title' => 'Image folders', 'link' => $link);
+        $document_command = array('title' => 'Document folders', 'link' => $link);
+        $multimedia_command = array('title' => 'Multimedia folders', 'link' => $link);
 
         $tabs['image'] = $image_command;
         $tabs['document'] = $document_command;
         $tabs['multimedia'] = $multimedia_command;
 
         if (Current_User::isDeity()) {
-            $tabs['classify'] = array('title' => dgettext('filecabinet', 'Classify'), 'link' => $link);
-            $tabs['settings'] = array('title' => dgettext('filecabinet', 'Settings'), 'link' => $link);
-            $tabs['file_types'] = array('title' => dgettext('filecabinet', 'File types'), 'link' => $link);
+            $tabs['classify'] = array('title' => 'Classify', 'link' => $link);
+            $tabs['settings'] = array('title' => 'Settings', 'link' => $link);
+            $tabs['file_types'] = array('title' => 'File types', 'link' => $link);
         }
 
         $this->panel = new PHPWS_Panel('filecabinet');
@@ -716,13 +716,13 @@ class Cabinet
     {
         $this->loadFolder();
         if (!$this->folder->id || !$this->folder->public_folder) {
-            $this->title = dgettext('filecabinet', 'Sorry');
+            $this->title = 'Sorry';
             $this->content = dgettext('filecabinet', 'This is a private folder.');
             return;
         }
         if (!$this->folder->allow()) {
             if (Current_User::isLogged()) {
-                $this->title = dgettext('filecabinet', 'Sorry');
+                $this->title = 'Sorry';
                 $this->content = dgettext('filecabinet', 'You do not have permission to view this folder.');
             } else {
                 Current_User::requireLogin();
@@ -896,8 +896,8 @@ class Cabinet
         $form->addHidden('type', $_REQUEST['type']);
         $form->addHidden('id', $_REQUEST['id']);
         $form->addFile('thumbnail');
-        $form->setLabel('thumbnail', dgettext('filecabinet', 'Upload thumbnail'));
-        $form->addSubmit(dgettext('filecabinet', 'Upload'));
+        $form->setLabel('thumbnail', 'Upload thumbnail');
+        $form->addSubmit('Upload');
 
         if ($_REQUEST['type'] == 'mm') {
             \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
@@ -917,7 +917,7 @@ class Cabinet
         }
 
         $tpl['WARNINGS'] = implode('<br />', $warnings);
-        $this->title = dgettext('filecabinet', 'Upload new thumbnail');
+        $this->title = 'Upload new thumbnail';
 
         $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'thumbnail.tpl');
     }
@@ -1222,7 +1222,7 @@ class Cabinet
         if (!empty($folders)) {
             $folders = array(0 => '') + $folders;
             $form->addSelect('move_to_folder', $folders);
-            $form->setLabel('move_to_folder', dgettext('filecabinet', 'Move to folder'));
+            $form->setLabel('move_to_folder', 'Move to folder');
         }
     }
 

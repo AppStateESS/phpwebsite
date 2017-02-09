@@ -235,7 +235,7 @@ EOF;
     {
         $this->loadDemo();
         if (empty($this->demo_code)) {
-            $demo_code = dgettext('core', 'No demo code available');
+            $demo_code = 'No demo code available';
         } else {
             $demo_code = $this->getDemoCode();
         }

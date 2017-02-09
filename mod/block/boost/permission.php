@@ -6,8 +6,8 @@
 
 $use_permissions = TRUE;
 
-$permissions['edit_block'] = dgettext('block', 'Edit block');
-$permissions['delete_block'] = dgettext('block', 'Delete block');
+$permissions['edit_block'] = 'Edit block';
+$permissions['delete_block'] = 'Delete block';
 
 $item_permissions = TRUE;
 

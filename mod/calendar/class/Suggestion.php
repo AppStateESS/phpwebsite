@@ -86,7 +86,7 @@ class Calendar_Suggestion extends Calendar_Event {
                     }
                 }
             } else {
-                $tpl['START_TIME'] =  dgettext('calendar', 'All day event');
+                $tpl['START_TIME'] =  'All day event';
                 $tpl['END_TIME'] = $this->getStartTime($month_day_mode);
             }
 
@@ -103,7 +103,7 @@ class Calendar_Suggestion extends Calendar_Event {
                 $tpl['START_TIME']   = $this->getStartTime(CALENDAR_TIME_FORMAT);
                 $tpl['END_TIME'] = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
             }
-            $tpl['TO'] = dgettext('calendar', 'to');
+            $tpl['TO'] = 'to';
         }
 
 
@@ -121,10 +121,10 @@ class Calendar_Suggestion extends Calendar_Event {
         $vars['suggestion_id'] = $this->id;
 
         $vars['aop'] = 'approve_suggestion';
-        $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Approve'), 'calendar', $vars);
+        $links[] = PHPWS_Text::secureLink('Approve', 'calendar', $vars);
 
         $vars['aop'] = 'disapprove_suggestion';
-        $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Disapprove'), 'calendar', $vars);
+        $links[] = PHPWS_Text::secureLink('Disapprove', 'calendar', $vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;

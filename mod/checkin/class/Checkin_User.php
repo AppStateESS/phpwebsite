@@ -19,16 +19,16 @@ class Checkin_User extends Checkin
         $form->addHidden('uop', 'post_checkin');
 
         $form->addText('first_name', isset($_POST['first_name']) ? trim($_POST['first_name']) : null);
-        $form->setLabel('first_name', dgettext('checkin', 'First name'));
+        $form->setLabel('first_name', 'First name');
         $form->setRequired('first_name');
 
         $form->addText('last_name', isset($_POST['last_name']) ? trim($_POST['last_name']) : null);
-        $form->setLabel('last_name', dgettext('checkin', 'Last name'));
+        $form->setLabel('last_name', 'Last name');
         $form->setRequired('last_name');
 
         if (PHPWS_Settings::get('checkin', 'email')) {
             $form->addText('email', isset($_POST['email']) ? trim($_POST['email']) : null);
-            $form->setLabel('email', dgettext('checkin', 'Email address'));
+            $form->setLabel('email', 'Email address');
             $form->setRequired('email');
         }
 
@@ -36,7 +36,7 @@ class Checkin_User extends Checkin
         if (PHPWS_Settings::get('checkin', 'gender')) {
             $sex = array('male' => 'Male', 'female' => 'Female');
             $form->addRadioAssoc('gender', $sex);
-            $form->addTplTag('GENDER_LABEL', dgettext('checkin', 'Gender'));
+            $form->addTplTag('GENDER_LABEL', 'Gender');
         }
 
         // If birthdate is requested
@@ -48,7 +48,7 @@ class Checkin_User extends Checkin
              */
             $yearsPrior = date('Y', time()) - 1902; // current year - minimum full year (1902)
             $form->dateSelect('birthdate', 0, '%B', $yearsPrior, 0);
-            $form->addTplTag('BIRTHDATE_LABEL', dgettext('checkin', 'Date of birth'));
+            $form->addTplTag('BIRTHDATE_LABEL', 'Date of birth');
         }
 
         $reasons = $this->getReasons();
@@ -59,16 +59,16 @@ class Checkin_User extends Checkin
             $reasons = array_reverse($reasons, true);
 
             $form->addSelect('reason_id', $reasons);
-            $form->setLabel('reason_id', dgettext('checkin', 'Reason for visit'));
+            $form->setLabel('reason_id', 'Reason for visit');
         } else {
             $this->title = 'Sorry, but I cannot check in visitors.';
             $this->content = 'Missing visit reasons.';
             return;
         }
-        $form->addSubmit(dgettext('checkin', 'Check in'));
+        $form->addSubmit('Check in');
 
         $tpl = $form->getTemplate();
-        $this->title = dgettext('checkin', 'Please check in using the form below');
+        $this->title = 'Please check in using the form below';
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'signin.tpl');
         if (!Current_User::isLogged() && PHPWS_Settings::get('checkin', 'collapse_signin')) {
             Layout::collapse();
@@ -101,13 +101,13 @@ class Checkin_User extends Checkin
                 break;
 
             case 'error':
-                $this->title = dgettext('checkin', 'Sorry');
+                $this->title = 'Sorry';
                 $this->content = dgettext('checkin', 'An error is preventing your account to save. Please alert the office.');
                 Layout::metaRoute('index.php', 5);
                 break;
 
             case 'thank':
-                $this->title = dgettext('checkin', 'Thank you');
+                $this->title = 'Thank you';
                 $this->loadReason();
                 $this->content = $this->reason->message;
                 Layout::metaRoute('index.php', 5);
@@ -143,7 +143,7 @@ class Checkin_User extends Checkin
             if (PHPWS_Form::testDate('birthdate')) {
                 $this->visitor->birthdate = PHPWS_Form::getPostedDate('birthdate');
             } else {
-                $this->message[] = dgettext('checkin', 'Please enter a valid birthdate');
+                $this->message[] = 'Please enter a valid birthdate';
             }
         }
 
@@ -152,7 +152,7 @@ class Checkin_User extends Checkin
             if (isset($_POST['gender'])) {
                 $this->visitor->gender = $_POST['gender'];
             } else {
-                $this->message[] = dgettext('checkin', 'Please enter a gender');
+                $this->message[] = 'Please enter a gender';
             }
         }
 

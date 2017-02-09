@@ -185,14 +185,14 @@ class FC_Multimedia_Manager
         $form->addHidden('folder_id', $this->multimedia->folder_id);
 
         $form->addFile('file_name');
-        $form->setLabel('file_name', dgettext('filecabinet', 'Multimedia location'));
+        $form->setLabel('file_name', 'Multimedia location');
 
         $form->addText('title', $this->multimedia->title);
-        $form->setLabel('title', dgettext('filecabinet', 'Title'));
+        $form->setLabel('title', 'Title');
         $form->setClass('title', 'form-control');
 
         $form->addTextArea('description', $this->multimedia->description);
-        $form->setLabel('description', dgettext('filecabinet', 'Description'));
+        $form->setLabel('description', 'Description');
         $form->setClass('description', 'form-control');
 
         if ($this->multimedia->id) {
@@ -200,10 +200,10 @@ class FC_Multimedia_Manager
             $form->addHidden('multimedia_id', $this->multimedia->id);
 
             $form->addText('width', $this->multimedia->width);
-            $form->setLabel('width', dgettext('filecabinet', 'Width'));
+            $form->setLabel('width', 'Width');
 
             $form->addText('height', $this->multimedia->height);
-            $form->setLabel('height', dgettext('filecabinet', 'Height'));
+            $form->setLabel('height', 'Height');
         } else {
             $this->title = 'Upload multimedia';
         }
@@ -215,7 +215,7 @@ class FC_Multimedia_Manager
         $template = $form->getTemplate();
 
         if ($this->multimedia->id) {
-            $template['CURRENT_MULTIMEDIA_LABEL'] = dgettext('filecabinet', 'Current multimedia');
+            $template['CURRENT_MULTIMEDIA_LABEL'] = 'Current multimedia';
             $template['CURRENT_MULTIMEDIA_ICON'] = $this->multimedia->getThumbnail();
             $template['CURRENT_MULTIMEDIA_FILE'] = $this->multimedia->file_name;
             $ow['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop' => 'change_tn',
@@ -227,7 +227,7 @@ class FC_Multimedia_Manager
             $template['EDIT_THUMBNAIL'] = javascript('open_window', $ow);
         }
 
-        $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
+        $template['MAX_SIZE_LABEL'] = 'Maximum file size';
 
         $size_max = Cabinet::getMaxSizes();
         $sys_size = & $size_max['system'];
@@ -284,7 +284,7 @@ class FC_Multimedia_Manager
                 PHPWS_Error::log($result);
                 $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
                 $this->content .= '<br /><strong>' . $result->getMessage() . '</strong>';
-                $this->content .= '<br /><br />' . javascript('close_window', array('value' => dgettext('filecabinet', 'Close this window')));
+                $this->content .= '<br /><br />' . javascript('close_window', array('value' => 'Close this window'));
                 return;
             }
             $this->multimedia->moveToFolder();

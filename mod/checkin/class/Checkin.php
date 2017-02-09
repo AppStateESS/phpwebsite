@@ -158,10 +158,10 @@ class Checkin {
 
     public function getStatusList()
     {
-        $list[0] = dgettext('checkin', 'Available');
-        $list[1] = dgettext('checkin', 'Unavailable');
-        $list[2] = dgettext('checkin', 'Meeting with visitor');
-        $list[3] = dgettext('checkin', 'Send back');
+        $list[0] = 'Available';
+        $list[1] = 'Unavailable';
+        $list[2] = 'Meeting with visitor';
+        $list[3] = 'Send back';
 
         return $list;
     }
@@ -250,7 +250,7 @@ class Checkin {
     public static function timeWaiting($rel)
     {
         if ($rel < 0) {
-            return dgettext('checkin', 'Time error');
+            return 'Time error';
         }
 
         $hours = floor( $rel / 3600);
@@ -270,7 +270,7 @@ class Checkin {
 
         if (!isset($waiting)) {
             if (!$rel) {
-                $waiting[] = dgettext('checkin', 'No meeting');
+                $waiting[] = 'No meeting';
             } else {
                 $waiting[] = dgettext('checkin', '< 1 min.');
             }

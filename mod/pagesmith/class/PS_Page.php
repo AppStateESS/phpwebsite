@@ -224,7 +224,7 @@ class PS_Page
     public function addPageLink($label = null, $icon = false)
     {
         if (empty($label)) {
-            $label = dgettext('pagesmith', 'Add page');
+            $label = 'Add page';
         }
 
         if ($icon) {
@@ -244,9 +244,9 @@ class PS_Page
         $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars, true);
         $js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
         if ($icon) {
-            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('pagesmith', 'Delete') . '"></i>';
+            $js['LINK'] = '<i class="fa fa-trash-o" title="' . 'Delete' . '"></i>';
         } else {
-            $js['LINK'] = dgettext('pagesmith', 'Delete');
+            $js['LINK'] = 'Delete';
         }
         return javascript('confirm', $js);
     }
@@ -257,10 +257,10 @@ class PS_Page
         $vars['aop'] = 'edit_page';
 
         if ($icon) {
-            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith', 'Edit') . '"></i>';
+            $label = '<i class="fa fa-edit" title="' . 'Edit' . '"></i>';
             return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
         } elseif (empty($label)) {
-            $label = '<i class="fa fa-edit" title="' . dgettext('pagesmith', 'Edit') . '"></i> ' . dgettext('pagesmith', 'Edit');
+            $label = '<i class="fa fa-edit" title="' . 'Edit' . '"></i> ' . 'Edit';
             return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null, null, 'btn btn-primary');
         }
     }
@@ -268,18 +268,18 @@ class PS_Page
     public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
-            $label = '<i class="fa fa-flag" title="%s"></i> ' . dgettext('pagesmith', 'Remove as front page');
+            $label = '<i class="fa fa-flag" title="%s"></i> ' . 'Remove as front page';
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', dgettext('pagesmith', 'Remove as front page'));
+                $label = sprintf('<i class="fa fa-flag" title="%s"></i>', 'Remove as front page');
             }
-            $title = dgettext('pagesmith', 'Click to remove as front page');
+            $title = 'Click to remove as front page';
             $vars['fp'] = 0;
         } else {
-            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . dgettext('pagesmith', 'Show as home page');
+            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . 'Show as home page';
             if ($icon) {
-                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>', dgettext('pagesmith', 'Show as home page'));
+                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>', 'Show as home page');
             }
-            $title = dgettext('pagesmith', 'Click to display on front page');
+            $title = 'Click to display on front page';
             $vars['fp'] = 1;
         }
 
@@ -469,7 +469,7 @@ class PS_Page
     {
         Layout::addStyle('pagesmith');
         if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
-            MiniAdmin::add('pagesmith', $this->editLink(dgettext('pagesmith', 'Edit this page')));
+            MiniAdmin::add('pagesmith', $this->editLink('Edit this page'));
             MiniAdmin::add('pagesmith', $this->frontPageToggle());
         }
         $this->loadTemplate();
@@ -495,7 +495,7 @@ class PS_Page
         $this->pageLinks($tpl);
         if (PHPWS_Settings::get('pagesmith', 'back_to_top')) {
             $tpl['BACK_TO_TOP'] = sprintf('<a href="%s#%s">%s</a>', \phpws\PHPWS_Core::getCurrentUrl(), $anchor_title, '<i class="fa fa-arrow-circle-up"></i> ' .
-                    dgettext('pagesmith', 'Back to top'));
+                    'Back to top');
         }
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'page_frame.tpl');
         return $content;
@@ -604,7 +604,7 @@ class PS_Page
 
         foreach ($pages as $page_no => $id) {
             if ($page_no == 0 && $prev_page) {
-                $link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . dgettext('pagesmith', 'Previous'), 'pagesmith', array('id' => $prev_page));
+                $link = new PHPWS_Link('<span>&lt;&lt;</span>&#160;' . 'Previous', 'pagesmith', array('id' => $prev_page));
                 $links[] = $link->get();
             }
 
@@ -623,7 +623,7 @@ class PS_Page
         }
 
         if ($next_page) {
-            $link->setLabel(dgettext('pagesmith', 'Next') . '&#160;<span>&gt;&gt;</span>');
+            $link->setLabel('Next' . '&#160;<span>&gt;&gt;</span>');
             $link->setValue('id', $next_page);
             $links[] = $link->get();
         }

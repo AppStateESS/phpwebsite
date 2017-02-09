@@ -488,7 +488,7 @@ class Signup {
                 if (empty($this->message)) {
                     \phpws\PHPWS_Core::home();
                 }
-                $this->title = dgettext('signup', 'Signup');
+                $this->title = 'Signup';
                 break;
 
             case 'signup_sheet':
@@ -501,7 +501,7 @@ class Signup {
                     if ($this->saveUnregistered()) {
                         $this->forwardMessage(dgettext('signup',
                                         'You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application.'),
-                                dgettext('signup', 'Thank you'));
+                                'Thank you');
                         $this->sendMessage();
                     } else {
                         $this->loadForm('user_signup');
@@ -572,13 +572,13 @@ class Signup {
         if (PHPWS_Error::logIfError($previous)) {
             $this->forwardMessage(dgettext('signup',
                             'An error occurred when trying to save your application.'),
-                    dgettext('signup', 'Sorry'));
+                    'Sorry');
             $this->sendMessage();
             return false;
         } elseif ($previous) {
             $this->forwardMessage(dgettext('signup',
                             'You cannot signup for more than one slot.'),
-                    dgettext('signup', 'Sorry'));
+                    'Sorry');
             $this->sendMessage();
             return false;
         }
@@ -603,7 +603,7 @@ class Signup {
                 $peep->delete();
                 $this->forwardMessage(dgettext('signup',
                                 'There is a problem with our email server. Please try again later.'),
-                        dgettext('signup', 'Sorry'));
+                        'Sorry');
                 $this->sendMessage();
                 return false;
             } else {
@@ -630,7 +630,7 @@ class Signup {
                     $peep->last_name, $peep->email);
         }
 
-        $subject = dgettext('signup', 'Signup confirmation');
+        $subject = 'Signup confirmation';
 
         if (!empty($sheet->contact_email)) {
             $reply_to = $from = $sheet->contact_email;
@@ -679,8 +679,8 @@ class Signup {
             $_SESSION['Email_Applicants']['search'] = @ $_REQUEST['search'];
             $vars['aop'] = 'send_email';
             Layout::metaRoute(PHPWS_Text::linkAddress('signup', $vars, true), 1);
-            $this->title = dgettext('signup', 'Sending emails');
-            $this->content = dgettext('signup', 'Please wait');
+            $this->title = 'Sending emails';
+            $this->content = 'Please wait';
             return;
         }
 
@@ -696,7 +696,7 @@ class Signup {
         $this->loadSheet($email_session['sheet_id']);
 
         if (!$this->sheet->id) {
-            $this->title = dgettext('signup', 'Sorry');
+            $this->title = 'Sorry';
             $this->content = dgettext('signup',
                     'Unable to send emails. Signup sheet does not exist.');
             \phpws\PHPWS_Core::killSession('Email_Applicants');
@@ -717,12 +717,12 @@ class Signup {
 
         $result = $db->select('col');
         if (empty($result)) {
-            $this->title = dgettext('signup', 'Emails not sent');
+            $this->title = 'Emails not sent';
             $this->content = dgettext('signup',
                     'Signup sheet did not contain any applicants.');
             return;
         } elseif (PHPWS_Error::logIfError($result)) {
-            $this->title = dgettext('signup', 'Emails not sent');
+            $this->title = 'Emails not sent';
             $this->content = dgettext('signup',
                     'An error occurred when pulling applicants.');
             return;
@@ -738,7 +738,7 @@ class Signup {
         $vars['sheet_id'] = $this->sheet->id;
         $link = PHPWS_Text::linkAddress('signup', $vars, true);
 
-        $this->title = dgettext('signup', 'Emails sent');
+        $this->title = 'Emails sent';
         $this->content = dgettext('signup', 'Returning to applicant listing.');
         Layout::metaRoute($link, 5);
         \phpws\PHPWS_Core::killSession('Email_Applicants');
@@ -751,10 +751,10 @@ class Signup {
         $link = 'index.php?module=signup&aop=menu';
 
         if (Current_User::isUnrestricted('signup')) {
-            $tags['new'] = array('title' => dgettext('signup', 'New'),
+            $tags['new'] = array('title' => 'New',
                 'link' => $link);
         }
-        $tags['list'] = array('title' => dgettext('signup', 'List'),
+        $tags['list'] = array('title' => 'List',
             'link' => $link);
         $this->panel->quickSetTabs($tags);
     }
@@ -957,7 +957,7 @@ class Signup {
         if (!$this->peep->id ||
                 $this->peep->hashcheck != $hash ||
                 $this->peep->timeout < time()) {
-            $this->title = dgettext('signup', 'Sorry');
+            $this->title = 'Sorry';
             $this->content = dgettext('signup',
                     'Your application could not be verified. If over a hour has passed since you applied, you may want to try again.');
             return;
@@ -966,7 +966,7 @@ class Signup {
 
             if ($slots_filled && isset($slots_filled[$this->slot->id])) {
                 if ($this->slot->openings <= $slots_filled[$this->slot->id]) {
-                    $this->title = dgettext('signup', 'Sorry');
+                    $this->title = 'Sorry';
                     $content[] = dgettext('signup',
                             'This slot filled up before you could confirm your application.');
                     $content[] = dgettext('signup',
@@ -983,7 +983,7 @@ class Signup {
 
             $this->peep->registered = 1;
             if (PHPWS_Error::logIfError($this->peep->save())) {
-                $this->title = dgettext('signup', 'Sorry');
+                $this->title = 'Sorry';
                 $this->content = dgettext('signup',
                         'A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator.');
                 return;
@@ -1030,7 +1030,7 @@ class Signup {
 
             $tpl->setCurrentBlock('slot');
             $tpl->setData(array('SLOT_TITLE' => $slot->title,
-                'PRINT' => dgettext('signup', 'Print page')));
+                'PRINT' => 'Print page'));
             $tpl->parseCurrentBlock();
         }
 
@@ -1050,10 +1050,10 @@ class Signup {
 
         $result = $db->getObjects('Signup_Peep');
 
-        $sub1[] = dgettext('signup', 'firstname');
-        $sub1[] = dgettext('signup', 'lastname');
-        $sub1[] = dgettext('signup', 'phone');
-        $sub1[] = dgettext('signup', 'email');
+        $sub1[] = 'firstname';
+        $sub1[] = 'lastname';
+        $sub1[] = 'phone';
+        $sub1[] = 'email';
 
         if (!empty($this->sheet->extra1)) {
             $sub1[] = $this->sheet->extra1;
@@ -1131,14 +1131,14 @@ class Signup {
             }
         }
 
-        $template['NAME_LABEL'] = dgettext('signup', 'Name');
-        $template['PHONE_LABEL'] = dgettext('signup', 'Phone');
-        $template['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
-        $template['EMAIL_LABEL'] = dgettext('signup', 'Email');
-        $template['REPORT_TITLE'] = dgettext('signup', 'Applicant Listing');
+        $template['NAME_LABEL'] = 'Name';
+        $template['PHONE_LABEL'] = 'Phone';
+        $template['ORGANIZATION_LABEL'] = 'Organization';
+        $template['EMAIL_LABEL'] = 'Email';
+        $template['REPORT_TITLE'] = 'Applicant Listing';
         $template['SHEET_TITLE'] = $this->sheet->title;
         $template['PRINT'] = sprintf('<input type="button" id="print" value="%s" onclick="print_page()" />',
-                dgettext('signup', 'Print'));
+                'Print');
 
         echo PHPWS_Template::process($template, 'signup', 'print_applicants.tpl');
         exit();

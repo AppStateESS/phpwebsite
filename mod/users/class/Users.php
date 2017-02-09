@@ -812,7 +812,7 @@ class PHPWS_User
                                 array('action' => 'admin', 'command' => 'mortalize_user', 'user_id' => $this->id),
                                 1);
                 $dvars['LINK'] = sprintf('<i class="fa fa-cloud" title="%s"></i>',
-                        dgettext('users', 'Deity'));
+                        'Deity');
                 $links[] = javascript('confirm', $dvars);
             } else {
                 $dvars['QUESTION'] = dgettext('users',
@@ -821,7 +821,7 @@ class PHPWS_User
                                 array('action' => 'admin', 'command' => 'deify_user', 'user_id' => $this->id),
                                 1);
                 $dvars['LINK'] = sprintf('<i class="fa fa-male" title="%s"></i>',
-                        dgettext('users', 'Mortal'));
+                        'Mortal');
                 $links[] = javascript('confirm', $dvars);
             }
         }
@@ -834,18 +834,18 @@ class PHPWS_User
                 $linkVar['command'] = 'deactivateUser';
                 $template['ACTIVE'] = PHPWS_Text::secureLink(dgettext('users',
                                         'Yes'), 'users', $linkVar, null,
-                                dgettext('users', 'Deactivate this user'));
+                                'Deactivate this user');
             } else {
-                $template['ACTIVE'] = dgettext('users', 'Yes');
+                $template['ACTIVE'] = 'Yes';
             }
         } else {
             if (!$this->deity) {
                 $linkVar['command'] = 'activateUser';
                 $template['ACTIVE'] = PHPWS_Text::secureLink(dgettext('users',
                                         'No'), 'users', $linkVar, null,
-                                dgettext('users', 'Activate this user'));
+                                'Activate this user');
             } else {
-                $template['ACTIVE'] = dgettext('users', 'No');
+                $template['ACTIVE'] = 'No';
             }
         }
 
@@ -853,7 +853,7 @@ class PHPWS_User
         $logged = $this->getLastLogged('%Y/%m/%d %H:%M');
 
         if (empty($logged)) {
-            $template['LAST_LOGGED'] = dgettext('users', 'Never');
+            $template['LAST_LOGGED'] = 'Never';
         } else {
             $template['LAST_LOGGED'] = $logged;
         }

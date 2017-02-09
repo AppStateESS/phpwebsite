@@ -419,7 +419,7 @@ class PHPWS_ControlPanel
     public static function panelLink($fly_out = false)
     {
         Layout::addStyle('controlpanel', 'panel_link.css');
-        $reg_link = PHPWS_Text::quickLink(dgettext('controlpanel', 'Control Panel'), 'controlpanel', array('command' => 'panel_view'));
+        $reg_link = PHPWS_Text::quickLink('Control Panel', 'controlpanel', array('command' => 'panel_view'));
 
         if (!$fly_out) {
             return $reg_link->get();

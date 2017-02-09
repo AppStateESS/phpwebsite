@@ -161,7 +161,7 @@ class Checkin_Staff {
     public function row_tags()
     {
         if ($this->filter_type == 0x0) {    // if no filters are selected
-            $tpl['FILTER_INFO'] = dgettext('checkin', 'None');
+            $tpl['FILTER_INFO'] = 'None';
         } else {
             $filterInfo = array();
             if ($this->filter_type & LAST_NAME_BITMASK) {$filterInfo[] = 'Last Name';}

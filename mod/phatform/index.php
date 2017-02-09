@@ -59,7 +59,7 @@ if(isset($_REQUEST['PHAT_REPORT_OP'])) {
 function check_session() {
     if(!isset($_SESSION['PHAT_FormManager']->form)) {
         $info = sprintf('<p style="text-align : center; margin: 50% auto">%s</p>',
-        dgettext('phatform', 'Session timeout'),
+        'Session timeout',
         dgettext('phatform', 'We are sorry, but your session timed out. You will need to click the Back button on your browser to return to the previous page.'));
         echo Layout::wrap($info);
         exit();

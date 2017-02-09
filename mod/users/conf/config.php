@@ -25,9 +25,9 @@ define('UNRESTRICTED_PERMISSION', 2);
 define('RESTRICTED_PERMISSION', 1);
 define('NO_PERMISSION', 0);
 
-define('FULL_PERM_NAME', dgettext('users', 'Unrestricted'));
-define('PART_PERM_NAME', dgettext('users', 'Restricted'));
-define('NO_PERM_NAME', dgettext('users', 'None'));
+define('FULL_PERM_NAME', 'Unrestricted');
+define('PART_PERM_NAME', 'Restricted');
+define('NO_PERM_NAME', 'None');
 
 /**
  * reg exp characters to strip from username default is '\w'
@@ -49,7 +49,7 @@ define('USERNAME_LENGTH', 3);
 define('DISPLAY_NAME_LENGTH', 4);
 define('GROUPNAME_LENGTH', 4);
 
-define('LOGIN_BUTTON', dgettext('users', 'Login'));
+define('LOGIN_BUTTON', 'Login');
 define('USER_SIGNUP_QUESTION', dgettext('users', 'Want to join?'));
 
 // phpWebSite uses Pear's graphic confirmation class

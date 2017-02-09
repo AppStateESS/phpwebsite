@@ -74,7 +74,7 @@ class PiwikTracker extends Tracker
         $form->setRequired('piwik_url');
 
         $form->addText('piwik_id', $this->getPiwikId());
-        $form->setLabel('piwik_id', dgettext('analytics', 'Piwik Site ID'));
+        $form->setLabel('piwik_id', 'Piwik Site ID');
         $form->setRequired('piwik_id');
     }
 

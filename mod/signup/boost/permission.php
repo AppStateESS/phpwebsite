@@ -6,6 +6,6 @@
 
 $use_permissions = true;
 
-$permissions['edit_sheet'] = dgettext('signup', 'Edit sheets');
+$permissions['edit_sheet'] = 'Edit sheets';
 
 $item_permissions = true;

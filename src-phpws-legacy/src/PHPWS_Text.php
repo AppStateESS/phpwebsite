@@ -525,7 +525,7 @@ class PHPWS_Text
      *
      *
      * ex: $vars = array('op' => 'create_topic', 'forum' => $this->id);
-     * ex: $str = dgettext('phpwsbb', 'Submit a new topic');
+     * ex: $str = 'Submit a new topic';
      * ex: $result = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars);
      * ex: <a href="index.php?module=phpwsbb&amp;op=create_topic&amp;forum=15" title="Submit a new topic" class="phpws_button"><span>Submit a new topic</span></a>
      *
@@ -612,7 +612,7 @@ class PHPWS_Text
      *
      *
      * ex: $vars = array('op' => 'create_topic', 'forum' => $this->id);
-     * ex: $str = dgettext('phpwsbb', 'Submit a new topic');
+     * ex: $str = 'Submit a new topic';
      * ex: $result = PHPWS_Text::moduleButton($str, 'phpwsbb', $vars);
      * ex: <a href="index.php?module=phpwsbb&amp;op=create_topic&amp;forum=15" title="Submit a new topic" class="phpws_button"><span>Submit a new topic</span></a>
      *

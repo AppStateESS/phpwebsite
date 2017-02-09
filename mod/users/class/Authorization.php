@@ -48,7 +48,7 @@ abstract class User_Authorization {
     public function __construct(PHPWS_User $user)
     {
         $this->user = $user;
-        $this->login_link_label = dgettext('users', 'Click here to log in');
+        $this->login_link_label = 'Click here to log in';
     }
 
     public function showLoginForm()
@@ -65,7 +65,7 @@ abstract class User_Authorization {
     public function getView()
     {
         $link = $this->login_link;
-        $text = dgettext('users', 'Log in');
+        $text = 'Log in';
         return <<<EOF
         <a class = "btn btn-default" href = "$link">
         <i class = "fa fa-user"></i> $text
@@ -95,7 +95,7 @@ EOF;
     {
         if ($this->logout_link) {
             return sprintf('<a href="%s"><span class="fa fa-sign-out"></span> %s</a>', $this->logout_link,
-                    dgettext('users', 'Log Out'));
+                    'Log Out');
         } else {
             return null;
         }

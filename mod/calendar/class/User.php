@@ -111,11 +111,11 @@ class Calendar_User
                     $day_number = $duration_day - $current_day + 1;
                     switch ($day_number) {
                         case 1:
-                            $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'First day'), $day_number);
+                            $details['DAY_NUMBER'] = sprintf('First day', $day_number);
                             break;
 
                         case ($current_day < 1):
-                            $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Last day'), $day_number);
+                            $details['DAY_NUMBER'] = sprintf('Last day', $day_number);
                             break;
 
                         default:
@@ -127,7 +127,7 @@ class Calendar_User
                 if (!isset($hour_list[$hour])) {
                     $hour_list[$hour] = 1;
                     if ($hour == -1) {
-                        $details['HOUR'] = dgettext('calendar', 'All day');
+                        $details['HOUR'] = 'All day';
                     } else {
                         $details['HOUR'] = strftime('%l %p', mktime($hour));
                     }
@@ -160,7 +160,7 @@ class Calendar_User
         $template = $this->viewLinks('day');
 
         if (!$this->getDaysEvents($startdate, $tpl)) {
-            $template['MESSAGE'] = dgettext('calendar', 'No events on this day');
+            $template['MESSAGE'] = 'No events on this day';
         }
 
         $template['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
@@ -172,7 +172,7 @@ class Calendar_User
         $template['DOWNLOAD'] = $this->downloadLink($startdate, $enddate);
 
         if ($this->calendar->schedule->id && $this->calendar->schedule->checkPermissions()) {
-            $label = dgettext('calendar', 'Add event');
+            $label = 'Add event';
             $template['ADD_EVENT'] = '<button class="add-event btn btn-success" data-view="day" data-schedule-id="' .
                     $this->calendar->schedule->id . '" data-date="' . ($this->calendar->current_date) .
                     '"><i class="fa fa-plus"></i> ' . $label . '</button>';
@@ -210,9 +210,9 @@ class Calendar_User
         $template = $this->event->getTpl();
 
         if ($js) {
-            $template['CLOSE_WINDOW'] = javascript('close_window', array('value' => dgettext('calendar', 'Close')));
+            $template['CLOSE_WINDOW'] = javascript('close_window', array('value' => 'Close'));
         } else {
-            $template['BACK_LINK'] = PHPWS_Text::backLink(dgettext('calendar', 'Back'));
+            $template['BACK_LINK'] = PHPWS_Text::backLink('Back');
         }
 
         $template['DOWNLOAD'] = $this->eventDownloadLink($this->event->id);
@@ -272,21 +272,21 @@ class Calendar_User
                 }
 
                 if (!$this->allowSuggestion()) {
-                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->title = 'Sorry';
                     $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
                     break;
                 }
 
                 \phpws\PHPWS_Core::initModClass('calendar', 'Admin.php');
                 $this->loadSuggestion();
-                $this->title = dgettext('calendar', 'Suggest event');
+                $this->title = 'Suggest event';
                 $this->content = Calendar_Admin::event_form($this->event, true);
                 break;
 
             case 'post_suggestion':
                 if (!$this->postSuggestion()) {
                     \phpws\PHPWS_Core::initModClass('calendar', 'Admin.php');
-                    $this->title = dgettext('calendar', 'Suggest event');
+                    $this->title = 'Suggest event';
                     $this->content = Calendar_Admin::event_form($this->event, true);
                 }
                 break;
@@ -295,14 +295,14 @@ class Calendar_User
                 if (!empty($_GET['sdate']) && !empty($_GET['edate']) && $this->calendar->schedule->allowICalDownload()) {
                     $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
                 } else {
-                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->title = 'Sorry';
                     $this->content = dgettext('calendar', 'Schedule unavailable.');
                 }
 
                 break;
 
                 if ((!$this->calendar->schedule->public && !$this->calendar->schedule->checkPermissions() ) || ( $this->calendar->schedule->public && (PHPWS_Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) || empty($_GET['sdate']) || empty($_GET['edate']) || !$this->calendar->schedule->id) {
-                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->title = 'Sorry';
                     $this->content = dgettext('calendar', 'Schedule unavailable.');
                 } else {
 
@@ -313,7 +313,7 @@ class Calendar_User
                 if ($this->calendar->schedule->allowICalDownload()) {
                     $this->calendar->schedule->exportEvent($_GET['event_id']);
                 } else {
-                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->title = 'Sorry';
                     $this->content = dgettext('calendar', 'Schedule unavailable.');
                 }
 
@@ -649,7 +649,7 @@ class Calendar_User
             }
 
             if (!$this->allowSuggestion()) {
-                $this->title = dgettext('calendar', 'Sorry');
+                $this->title = 'Sorry';
                 $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
                 return true;
             }
@@ -665,7 +665,7 @@ class Calendar_User
                     Layout::nakedDisplay('Event suggestion failed to save. Try again later.');
                     exit();
                 } else {
-                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->title = 'Sorry';
                     $this->content = dgettext('calendar', 'Unable to save your event suggestion.');
                     return true;
                 }
@@ -676,7 +676,7 @@ class Calendar_User
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->title = dgettext('calendar', 'Event saved');
+                    $this->title = 'Event saved';
                     $this->content = dgettext('calendar', 'An administrator will review your submission. Thank you.');
                     return true;
                 }
@@ -690,7 +690,7 @@ class Calendar_User
     {
         $vars['aop'] = 'reset_cache';
         $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
-        MiniAdmin::add('calendar', PHPWS_Text::secureLink(dgettext('calendar', 'Reset cache'), 'calendar', $vars));
+        MiniAdmin::add('calendar', PHPWS_Text::secureLink('Reset cache', 'calendar', $vars));
     }
 
     public function schedulePick()
@@ -706,7 +706,7 @@ class Calendar_User
         $form->addHidden('date', $this->calendar->current_date);
         $form->addSelect('sch_id', $schedules);
         $form->setMatch('sch_id', $this->calendar->schedule->id);
-        $form->addSubmit('go', dgettext('calendar', 'Change schedule'));
+        $form->addSubmit('go', 'Change schedule');
         $tpl = $form->getTemplate();
         return $tpl['START_FORM'] . $tpl['SCH_ID'] . $tpl['GO'] . $tpl['END_FORM'];
     }
@@ -733,16 +733,16 @@ class Calendar_User
         switch ($view) {
             case 'grid':
             case 'list':
-                $view_name = dgettext('calendar', 'This month');
+                $view_name = 'This month';
                 break;
 
             case 'week':
-                $view_name = dgettext('calendar', 'This week');
+                $view_name = 'This week';
                 break;
 
             case 'event':
             case 'day':
-                $view_name = dgettext('calendar', 'Today');
+                $view_name = 'Today';
         }
 
         return PHPWS_Text::moduleLink($view_name, 'calendar', $vars, null, null, 'btn btn-default');
@@ -820,7 +820,7 @@ class Calendar_User
                 break;
 
             default:
-                $this->content = dgettext('calendar', 'Incorrect option');
+                $this->content = 'Incorrect option';
                 break;
         }
 
@@ -887,25 +887,25 @@ class Calendar_User
             $oMonth = $this->calendar->getMonth();
             $left_arrow_time = $oMonth->prevMonth('timestamp');
             $right_arrow_time = $oMonth->nextMonth('timestamp');
-            $left_link_title = dgettext('calendar', 'Previous month');
-            $right_link_title = dgettext('calendar', 'Next month');
+            $left_link_title = 'Previous month';
+            $right_link_title = 'Next month';
         }
 
         if ($current_view == 'grid') {
-            //$links['GRID'] = dgettext('calendar', 'Grid');
+            //$links['GRID'] = 'Grid';
         } else {
             $vars['view'] = 'grid';
-            $glink = new PHPWS_Link(dgettext('calendar', 'Month Grid'), 'calendar', $vars);
+            $glink = new PHPWS_Link('Month Grid', 'calendar', $vars);
             $glink->setNoFollow($no_follow);
             $glink->addClass('btn btn-default');
             $links['GRID'] = $glink->get();
         }
 
         if ($current_view == 'list') {
-            //$links['LIST'] = dgettext('calendar', 'Month');
+            //$links['LIST'] = 'Month';
         } else {
             $vars['view'] = 'list';
-            $glink = new PHPWS_Link(dgettext('calendar', 'Month list'), 'calendar', $vars);
+            $glink = new PHPWS_Link('Month list', 'calendar', $vars);
             $glink->addClass('btn btn-default');
             $glink->setNoFollow($no_follow);
             $links['LIST'] = $glink->get();
@@ -916,11 +916,11 @@ class Calendar_User
             $oWeek = $this->calendar->getWeek();
             $left_arrow_time = $oWeek->prevWeek('timestamp');
             $right_arrow_time = $oWeek->nextWeek('timestamp');
-            $left_link_title = dgettext('calendar', 'Previous week');
-            $right_link_title = dgettext('calendar', 'Next week');
+            $left_link_title = 'Previous week';
+            $right_link_title = 'Next week';
         } else {
             $vars['view'] = 'week';
-            $wlink = new PHPWS_Link(dgettext('calendar', 'Week'), 'calendar', $vars);
+            $wlink = new PHPWS_Link('Week', 'calendar', $vars);
             $wlink->setNoFollow($no_follow);
             $wlink->addClass('btn btn-default');
             $links['WEEK'] = $wlink->get();
@@ -931,13 +931,13 @@ class Calendar_User
             $oDay = new Calendar_Day($this->calendar->int_year, $this->calendar->int_month, $this->calendar->int_day);
             $left_arrow_time = $oDay->prevDay('timestamp');
             $right_arrow_time = $oDay->nextDay('timestamp');
-            $left_link_title = dgettext('calendar', 'Previous day');
-            $right_link_title = dgettext('calendar', 'Next day');
+            $left_link_title = 'Previous day';
+            $right_link_title = 'Next day';
 
-            $links['DAY_LINK'] = dgettext('calendar', 'Day');
+            $links['DAY_LINK'] = 'Day';
         } else {
             $vars['view'] = 'day';
-            $dlink = new PHPWS_Link(dgettext('calendar', 'Day'), 'calendar', $vars);
+            $dlink = new PHPWS_Link('Day', 'calendar', $vars);
             $dlink->addClass('btn btn-default');
             $dlink->setNoFollow($no_follow);
             $links['DAY_LINK'] = $dlink->get();
@@ -1035,7 +1035,7 @@ class Calendar_User
         if ($this->calendar->schedule->checkPermissions()) {
             $main_tpl['ADD_EVENT'] = '<button class="add-event btn btn-success" data-view="week" data-schedule-id="' .
                     $this->calendar->schedule->id . '" data-date="' . ($this->calendar->current_date) .
-                    '"><i class="fa fa-plus"></i> ' . dgettext('calendar', 'Add event') . '</button>';
+                    '"><i class="fa fa-plus"></i> ' . 'Add event' . '</button>';
         }
 
         $tpl->setData($main_tpl);
@@ -1134,7 +1134,7 @@ class Calendar_User
         }
 
         if (!empty($upcoming)) {
-            $ftpl['TITLE'] = dgettext('calendar', 'Upcoming events');
+            $ftpl['TITLE'] = 'Upcoming events';
             $ftpl['CONTENT'] = implode("\n", $upcoming);
             return PHPWS_Template::process($ftpl, 'calendar', 'user_main.tpl');
         } else {

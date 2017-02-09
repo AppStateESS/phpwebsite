@@ -6,8 +6,8 @@
 
 $use_permissions = TRUE;
 
-$permissions['remove_tab'] = dgettext('controlpanel', 'Remove Tab');
-$permissions['add_tab']    = dgettext('controlpanel', 'Add Tab');
-$permissions['move_link']  = dgettext('controlpanel', 'Move Link');
+$permissions['remove_tab'] = 'Remove Tab';
+$permissions['add_tab']    = 'Add Tab';
+$permissions['move_link']  = 'Move Link';
 
 $itemPermissions = FALSE;

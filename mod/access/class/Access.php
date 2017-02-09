@@ -42,7 +42,7 @@ class Access
         // If the command is empty, that means no tabs were set
         // In this case, an admin with full rights needs to log in
         if (empty($command)) {
-            $title = dgettext('access', 'Sorry');
+            $title = 'Sorry';
             $content = dgettext('access', 'Access needs a higher administrator\'s attention before you may use it.');
         } else {
             switch ($command) {
@@ -80,7 +80,7 @@ class Access
                     break;
                 case 'deny_allow':
                     \phpws\PHPWS_Core::initModClass('access', 'Forms.php');
-                    $title = dgettext('access', 'Denys and Allows');
+                    $title = 'Denys and Allows';
                     $content = Access_Forms::denyAllowForm();
                     break;
 
@@ -93,12 +93,12 @@ class Access
                             Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
                         }
                     }
-                    Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
+                    Access::sendMessage('Shortcut deleted', 'shortcuts');
                     break;
 
                 case 'shortcuts':
                     \phpws\PHPWS_Core::initModClass('access', 'Forms.php');
-                    $title = dgettext('access', 'Shortcuts');
+                    $title = 'Shortcuts';
                     $content = Access_Forms::shortcuts();
                     break;
 
@@ -144,7 +144,7 @@ class Access
 
                 case 'htaccess':
                     if (Current_User::isDeity()) {
-                        $title = dgettext('access', 'htaccess');
+                        $title = 'htaccess';
                         $content = Access::htaccess();
                     } else {
                         Current_User::disallow();
@@ -258,7 +258,7 @@ class Access
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
-            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', 'Close window');
         } else {
             $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
             $content[] = dgettext('access', 'You can access this item with the following link:');
@@ -266,7 +266,7 @@ class Access
             $content[] = $url;
             $js['location'] = $url;
             javascript('close_refresh', $js);
-            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" return false" />', dgettext('access', 'Close window'));
+            $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" return false" />', 'Close window');
         }
         $tpl['CONTENT'] = implode('<br />', $content);
 
@@ -364,7 +364,7 @@ class Access
 
     public static function shortcut(\Canopy\Key $key)
     {
-        $modal = new Modal('access-shortcut', null, dgettext('access', 'Shortcuts'));
+        $modal = new Modal('access-shortcut', null, 'Shortcuts');
         $modal->sizeSmall();
         $button = '<button class="btn btn-success" id="save-shortcut">Save</button>';
         $modal->addButton($button);
@@ -374,7 +374,7 @@ class Access
         \Layout::includeJavascript('mod/access/javascript/access.min.js');
 
         $link = '<a href="javascript:void(0)" data-authkey="' . \Current_User::getAuthKey() .
-                '" data-key="' . $key->id . '" id="add-shortcut">' . dgettext('access', 'Shortcut') . '</a>';
+                '" data-key="' . $key->id . '" id="add-shortcut">' . 'Shortcut' . '</a>';
         MiniAdmin::add('access', $link);
     }
 
@@ -384,7 +384,7 @@ class Access
         $link['link'] = 'index.php?module=access';
 
         if (MOD_REWRITE_ENABLED) {
-            $link['title'] = dgettext('access', 'Shortcuts');
+            $link['title'] = 'Shortcuts';
             $tabs['shortcuts'] = $link;
         }
 
@@ -774,7 +774,7 @@ class Access
         if ($base_needed) {
             if (is_writable('.htaccess')) {
                 $vars['command'] = 'add_rewritebase';
-                $tpl['OPTION'] = PHPWS_Text::secureLink(dgettext('access', 'Add RewriteBase'), 'access', $vars);
+                $tpl['OPTION'] = PHPWS_Text::secureLink('Add RewriteBase', 'access', $vars);
             } else {
                 $tpl['OPTION'] = dgettext('access', 'Your .htaccess file is not writable. A RewriteBase cannot be added.');
             }

@@ -92,7 +92,7 @@ class OpenWebAnalyticsTracker extends Tracker
         $form->setRequired('owa_url');
 
         $form->addText('owa_site_id', $this->getOwaSiteId());
-        $form->setLabel('owa_site_id', dgettext('analytics', 'Open Web Analytics Site ID'));
+        $form->setLabel('owa_site_id', 'Open Web Analytics Site ID');
         $form->setRequired('owa_site_id');
 
         $form->addCheck('owa_track_page_view', 1);

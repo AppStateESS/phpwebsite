@@ -66,13 +66,13 @@ class Analytics
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
 
         $pager = new DBPager('analytics_tracker', 'GenericTracker');
-        $pager->addSortHeader('name', dgettext('analytics', 'Name'));
-        $pager->addSortHeader('type', dgettext('analytics', 'Type'));
-        $pager->addSortHeader('active', dgettext('analytics', 'Active'));
+        $pager->addSortHeader('name', 'Name');
+        $pager->addSortHeader('type', 'Type');
+        $pager->addSortHeader('active', 'Active');
 
         $pageTags = array();
-        $pageTags['ACTION'] = dgettext('analytics', 'Action');
-        $pageTags['ACCOUNT'] = dgettext('analytics', 'Account ID');
+        $pageTags['ACTION'] = 'Action';
+        $pageTags['ACCOUNT'] = 'Account ID';
 
         $pager->setModule('analytics');
         $pager->setTemplate('list.tpl');
@@ -91,7 +91,7 @@ class Analytics
         $form = new PHPWS_Form('tracker');
         $form->addHidden('module', 'analytics');
         $form->addHidden('command', 'create');
-        $form->addSubmit('submit', dgettext('analytics', 'Next'));
+        $form->addSubmit('submit', 'Next');
 
         $classes = TrackerFactory::getAvailableClasses();
         $trackers = array();
@@ -99,7 +99,7 @@ class Analytics
             $trackers[$class] = $class;
         }
         $form->addSelect('tracker', $trackers);
-        $form->setLabel('tracker', dgettext('analytics', 'Tracker'));
+        $form->setLabel('tracker', 'Tracker');
         $form->setRequired('tracker');
 
         $tpl = $form->getTemplate();
@@ -161,7 +161,7 @@ class Analytics
         $form = new PHPWS_Form('tracker');
         $form->addHidden('module', 'analytics');
         $form->addHidden('command', 'save_tracker');
-        $form->addSubmit('submit', dgettext('analytics', 'Save Tracker'));
+        $form->addSubmit('submit', 'Save Tracker');
 
         if(isset($_REQUEST['tracker'])) {
             $form->addHidden('tracker', $_REQUEST['tracker']);
@@ -172,16 +172,16 @@ class Analytics
         }
 
         $form->addText('name', $tracker->getName());
-        $form->setLabel('name', dgettext('analytics', 'Friendly Name'));
+        $form->setLabel('name', 'Friendly Name');
         $form->setRequired('name');
 
         $form->addCheck('active', 1);
         $form->setMatch('active', $tracker->isActive());
-        $form->setLabel('active', dgettext('analytics', 'Currently Active'));
+        $form->setLabel('active', 'Currently Active');
 
         $form->addCheck('disable_if_logged', 1);
         $form->setMatch('disable_if_logged', $tracker->getDisableIfLogged());
-        $form->setLabel('disable_if_logged', dgettext('analytics', 'Disable Analytics if a user is logged in'));
+        $form->setLabel('disable_if_logged', 'Disable Analytics if a user is logged in');
 
         $tracker->addForm($form);
 
@@ -198,8 +198,8 @@ class Analytics
         
         $link = PHPWS_Text::linkAddress('analytics', null, false, false, true, false);
 
-        $tabs['list'] = array('title' => dgettext('analytics', 'List Trackers'), 'link' => $link);
-        $tabs['new']  = array('title' => dgettext('analytics', 'New Tracker'),   'link' => $link);
+        $tabs['list'] = array('title' => 'List Trackers', 'link' => $link);
+        $tabs['new']  = array('title' => 'New Tracker',   'link' => $link);
 
         $panel = new PHPWS_Panel('analyticsPanel');
         $panel->enableSecure();

@@ -21,7 +21,7 @@ class Blog_User
     {
         $vars['action'] = 'admin';
         $vars['tab'] = 'list';
-        MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Blog list'), 'blog', $vars));
+        MiniAdmin::add('blog', PHPWS_Text::secureLink('Blog list', 'blog', $vars));
     }
 
     public static function main()
@@ -249,14 +249,14 @@ class Blog_User
         $page_vars['action'] = 'view';
         if ($page > 1) {
             $page_vars['page'] = $page - 1;
-            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Previous page'), 'blog', $page_vars);
+            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink('Previous page', 'blog', $page_vars);
             if ($limit + $offset < $total_entries) {
                 $page_vars['page'] = $page + 1;
-                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
+                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink('Next page', 'blog', $page_vars);
             }
         } elseif ($limit + $offset < $total_entries) {
             $page_vars['page'] = 2;
-            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
+            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink('Next page', 'blog', $page_vars);
         }
 
         $tpl['ENTRIES'] = implode('', $list);
@@ -267,7 +267,7 @@ class Blog_User
             Blog_User::miniAdminList();
             $vars['action'] = 'admin';
             $vars['command'] = 'new';
-            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'), 'blog', $vars);
+            $link[] = PHPWS_Text::secureLink('Add new blog', 'blog', $vars);
             MiniAdmin::add('blog', $link);
         }
 
@@ -287,7 +287,7 @@ class Blog_User
             $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
         }
 
-        $tpl['PAST_TITLE'] = dgettext('blog', 'Previous blog entries');
+        $tpl['PAST_TITLE'] = 'Previous blog entries';
         $content = PHPWS_Template::process($tpl, 'blog', 'past_view.tpl');
         Layout::add($content, 'blog', 'previous_entries');
     }
@@ -327,7 +327,7 @@ class Blog_User
             $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
         }
 
-        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', dgettext('blog', 'Recent blog entries'));
+        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', 'Recent blog entries');
         $content = PHPWS_Template::process($tpl, 'blog', 'recent_view.tpl');
         Layout::add($content, 'blog', 'recent_entries');
     }

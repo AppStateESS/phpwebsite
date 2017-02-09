@@ -153,7 +153,7 @@ class PHPWS_Image extends File_Common
             if ($thumbnail) {
                 $values['label'] = $this->getThumbnail();
             } else {
-                $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'View full image'));
+                $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP, 'View full image');
             }
         }
 
@@ -224,7 +224,7 @@ class PHPWS_Image extends File_Common
         if ($linked && !empty($this->url)) {
             if ($this->url == 'folder') {
                 $link = $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
-                $image_tag = sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'), $image_tag);
+                $image_tag = sprintf('<a href="%s" title="%s">%s</a>', $link, 'View all images in folder', $image_tag);
             } else {
                 $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
             }
@@ -240,7 +240,7 @@ class PHPWS_Image extends File_Common
         }
         $thumbpath = $this->thumbnailPath();
         if (!is_file($thumbpath)) {
-            return dgettext('filecabinet', 'No image found');
+            return 'No image found';
         }
 
         $dimensions = getimagesize($thumbpath);
@@ -264,7 +264,7 @@ class PHPWS_Image extends File_Common
         if ($linked && !empty($this->url)) {
             if ($this->url == 'folder') {
                 $link = $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
-                $image_tag = sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'), $image_tag);
+                $image_tag = sprintf('<a href="%s" title="%s">%s</a>', $link, 'View all images in folder', $image_tag);
             } else {
                 $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
             }
@@ -384,7 +384,7 @@ class PHPWS_Image extends File_Common
         if ($icon) {
             $jsvars['label'] = Icon::show('edit');
         } else {
-            $jsvars['label'] = dgettext('filecabinet', 'Edit');
+            $jsvars['label'] = 'Edit';
         }
         return javascript('open_window', $jsvars);
     }
@@ -401,7 +401,7 @@ class PHPWS_Image extends File_Common
         if ($icon) {
             $js['LINK'] = Icon::show('delete');
         } else {
-            $js['LINK'] = dgettext('filecabinet', 'Delete');
+            $js['LINK'] = 'Delete';
         }
         return javascript('confirm', $js);
     }
@@ -515,7 +515,7 @@ EOF;
             $tpl['ICON'] = $this->getManagerIcon($fmanager);
             $links[] = $this->getJSView(false);
         } else {
-            $tpl['ICON'] = dgettext('filecabinet', 'Image missing');
+            $tpl['ICON'] = 'Image missing';
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
@@ -546,16 +546,16 @@ EOF;
         $vars['file_type'] = 1;
 
         if (!$fmanager->force_resize) {
-            $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Use original image'), 'filecabinet', $vars);
+            $choices[] = PHPWS_Text::secureLink('Use original image', 'filecabinet', $vars);
         }
 
         $vars['file_type'] = 7;
-        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize image maintaining aspect'), 'filecabinet', $vars);
+        $choices[] = PHPWS_Text::secureLink('Resize image maintaining aspect', 'filecabinet', $vars);
 
         $vars['file_type'] = 9;
-        $choices[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Resize and crop excess'), 'filecabinet', $vars);
+        $choices[] = PHPWS_Text::secureLink('Resize and crop excess', 'filecabinet', $vars);
 
-        $choices[] = sprintf('<a href="#" onclick="slider(%s); return false;">%s</a>', $this->id, dgettext('filecabinet', 'Cancel'));
+        $choices[] = sprintf('<a href="#" onclick="slider(%s); return false;">%s</a>', $this->id, 'Cancel');
 
         $tpl['CHOICES'] = implode('</li><li>', $choices);
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/resize.tpl');

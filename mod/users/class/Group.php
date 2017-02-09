@@ -302,7 +302,7 @@ class PHPWS_Group
 
         $linkVar['command'] = 'edit_group';
         $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i>', 'users',
-                        $linkVar, NULL, dgettext('users', 'Edit Group'));
+                        $linkVar, NULL, 'Edit Group');
 
         $linkVar['command'] = 'setGroupPermissions';
         $links[] = PHPWS_Text::secureLink('<i class="fa fa-key" title="' . dgettext('users',

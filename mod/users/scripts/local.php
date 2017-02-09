@@ -42,7 +42,7 @@ class local_authorization extends User_Authorization {
 
     public function getView()
     {
-        $text = dgettext('users', 'Sign in');
+        $text = 'Sign in';
         return <<<EOF
 <a id = "sign-in" data-toggle = "modal" href = "#user-login-modal"><i class = "fa fa-user"></i> $text</a>
 <div id="user-signin">

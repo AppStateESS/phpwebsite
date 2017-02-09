@@ -20,8 +20,8 @@ class Boost_Form
     {
         $link = 'index.php?module=boost&amp;action=admin';
 
-        $core_links['title'] = dgettext('boost', 'Core Modules');
-        $other_links['title'] = dgettext('boost', 'Other Modules');
+        $core_links['title'] = 'Core Modules';
+        $other_links['title'] = 'Other Modules';
 
         $other_links['link'] = $core_links['link'] = $link;
 
@@ -65,12 +65,12 @@ class Boost_Form
                     $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
                 }
             } else {
-                $link_title = dgettext('boost', 'Check');
+                $link_title = 'Check';
             }
 
             if ($core_file->isAbout()) {
                 $address = PHPWS_Text::linkAddress('boost', array('action' => 'aboutView', 'aboutmod' => $core_file->title), true);
-                $aboutView = array('label' => dgettext('boost', 'About'), 'address' => $address);
+                $aboutView = array('label' => 'About', 'address' => $address);
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
 
@@ -80,28 +80,28 @@ class Boost_Form
             if (ini_get('allow_url_fopen')) {
                 $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
             } else {
-                $template['LATEST'] = dgettext('boost', 'Check disabled');
+                $template['LATEST'] = 'Check disabled';
             }
 
             if (version_compare($core_db->version, $core_file->version, '<')) {
                 if ($core_file->checkDependency()) {
                     if ($allow_update) {
                         $link_command['action'] = 'update_core';
-                        $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Update'), 'boost', $link_command);
+                        $core_links[] = PHPWS_Text::secureLink('Update', 'boost', $link_command);
                     } else {
-                        $core_links[] = dgettext('boost', 'Update');
+                        $core_links[] = 'Update';
                     }
                     $tpl['WARNING'] = dgettext('boost', 'The Core requires updating! You should do so before any modules.');
                     $core_update_needed = true;
                 } else {
                     $link_command['action'] = 'show_dependency';
-                    $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Missing dependency'), 'boost', $link_command);
+                    $core_links[] = PHPWS_Text::secureLink('Missing dependency', 'boost', $link_command);
                 }
 
                 $template['VERSION'] = sprintf('%s &gt; %s', $core_db->version, $core_file->version);
                 $template['COMMAND'] = implode(' | ', $core_links);
             } else {
-                $template['COMMAND'] = dgettext('boost', 'None');
+                $template['COMMAND'] = 'None';
             }
 
 
@@ -112,10 +112,10 @@ class Boost_Form
             $modList = array_diff($dir_mods, $core_mods);
         }
 
-        $tpl['TITLE_LABEL'] = dgettext('boost', 'Module Title');
-        $tpl['COMMAND_LABEL'] = dgettext('boost', 'Commands');
-        $tpl['ABOUT_LABEL'] = dgettext('boost', 'More information');
-        $tpl['VERSION_LABEL'] = dgettext('boost', 'Current version');
+        $tpl['TITLE_LABEL'] = 'Module Title';
+        $tpl['COMMAND_LABEL'] = 'Commands';
+        $tpl['ABOUT_LABEL'] = 'More information';
+        $tpl['VERSION_LABEL'] = 'Current version';
 
         if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
             $tpl['WARNING'] = dgettext('boost', 'WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
@@ -156,23 +156,23 @@ class Boost_Form
                         $link_title = sprintf(dgettext('boost', '%s - New'), $link_title);
                     }
                 } else {
-                    $link_title = dgettext('boost', 'Check');
+                    $link_title = 'Check';
                 }
 
                 $link_command['action'] = 'check';
                 if (ini_get('allow_url_fopen')) {
                     $template['LATEST'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
                 } else {
-                    $template['LATEST'] = dgettext('boost', 'Check disabled');
+                    $template['LATEST'] = 'Check disabled';
                 }
             }
 
             if (!$mod->isInstalled()) {
                 if ($mod->checkDependency()) {
-                    $link_title = dgettext('boost', 'Install');
+                    $link_title = 'Install';
                     $link_command['action'] = 'install';
                 } else {
-                    $link_title = dgettext('boost', 'Missing dependency');
+                    $link_title = 'Missing dependency';
                     $link_command['action'] = 'show_dependency';
                 }
 
@@ -198,10 +198,10 @@ class Boost_Form
                         if ($title == 'boost' && !$core_update_needed) {
                             $tpl['WARNING'] = dgettext('boost', 'Boost requires updating! You should do so before any other module!');
                         }
-                        $link_title = dgettext('boost', 'Update');
+                        $link_title = 'Update';
                         $link_command['action'] = 'update';
                     } else {
-                        $link_title = dgettext('boost', 'Missing dependency');
+                        $link_title = 'Missing dependency';
                         $link_command['action'] = 'show_dependency';
                     }
                     if ($allow_update) {
@@ -220,7 +220,7 @@ class Boost_Form
                     if ($dependents = $mod->isDependedUpon()) {
                         $link_command['action'] = 'show_depended_upon';
                         $depend_warning = sprintf(dgettext('boost', 'This module is depended upon by: %s'), implode(', ', $dependents));
-                        $links[] = PHPWS_Text::secureLink(dgettext('boost', 'Depended upon'), 'boost', $link_command, NULL, $depend_warning);
+                        $links[] = PHPWS_Text::secureLink('Depended upon', 'boost', $link_command, NULL, $depend_warning);
                     } else {
                         $links[] = PHPWS_Boost::uninstallLink($title);
                     }
@@ -229,14 +229,14 @@ class Boost_Form
 
             if ($mod->isAbout()) {
                 $address = PHPWS_Text::linkAddress('boost', array('action' => 'aboutView', 'aboutmod' => $mod->title), true);
-                $aboutView = array('label' => dgettext('boost', 'About'), 'address' => $address);
+                $aboutView = array('label' => 'About', 'address' => $address);
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
 
             if (!empty($links)) {
                 $template['COMMAND'] = implode(' | ', $links);
             } else {
-                $template['COMMAND'] = dgettext('boost', 'None');
+                $template['COMMAND'] = 'None';
             }
 
             $tpl['mod-row'][] = $template;
@@ -246,13 +246,13 @@ class Boost_Form
         $tpl['OLD_MODS'] = Boost_Form::oldModList();
 
         if (ini_get('allow_url_fopen')) {
-            $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'boost', array('action' => 'check_all', 'tab' => $type));
+            $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink('Check all', 'boost', array('action' => 'check_all', 'tab' => $type));
         } else {
             $tpl['CHECK_FOR_UPDATES'] = dgettext('boost', 'Server configuration prevents version checking.');
         }
 
 
-        $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
+        $tpl['LATEST_LABEL'] = 'Latest version';
 
         $release_version = \phpws\PHPWS_Core::releaseVersion();
         $tpl['PHPWS_VERSION'] = $release_version;

@@ -363,28 +363,28 @@ class Checkin_Admin extends Checkin
     {
         $link = 'index.php?module=checkin';
 
-        $tabs['waiting'] = array('title' => dgettext('checkin', 'Waiting'),
+        $tabs['waiting'] = array('title' => 'Waiting',
             'link' => $link);
 
         if (Current_User::allow('checkin', 'assign_visitors')) {
-            $tabs['assign'] = array('title' => dgettext('checkin', 'Assignment'),
+            $tabs['assign'] = array('title' => 'Assignment',
                 'link' => $link);
         }
 
 
         if (Current_User::allow('checkin', 'settings')) {
-            $tabs['staff'] = array('title' => dgettext('checkin', 'Staff'),
+            $tabs['staff'] = array('title' => 'Staff',
                 'link' => $link);
 
-            $tabs['reasons'] = array('title' => dgettext('checkin', 'Reasons'),
+            $tabs['reasons'] = array('title' => 'Reasons',
                 'link' => $link);
 
-            $tabs['settings'] = array('title' => dgettext('checkin', 'Settings'),
+            $tabs['settings'] = array('title' => 'Settings',
                 'link' => $link);
         }
 
         if (PHPWS_Settings::get('checkin', 'staff_see_reports') || Current_User::allow('checkin', 'assign_visitors')) {
-            $tabs['report'] = array('title' => dgettext('checkin', 'Report'),
+            $tabs['report'] = array('title' => 'Report',
                 'link' => $link);
         }
 
@@ -398,14 +398,14 @@ class Checkin_Admin extends Checkin
         Layout::addStyle('checkin');
         javascriptMod('checkin', 'send_note');
         javascriptMod('checkin', 'reassign', array('authkey' => Current_User::getAuthKey()));
-        $this->title = dgettext('checkin', 'Assignment');
+        $this->title = 'Assignment';
         $this->loadVisitorList(null, true);
         $this->loadStaffList(true);
 
         // id and name only for drop down menu
         $staff_list = $this->getStaffList(false, true, true);
         $staff_list = array_reverse($staff_list, true);
-        $staff_list[0] = dgettext('checkin', 'Unassigned');
+        $staff_list[0] = 'Unassigned';
         $staff_list[-1] = dgettext('checkin', '-- Move visitor --');
         $staff_list = array_reverse($staff_list, true);
 
@@ -418,7 +418,7 @@ class Checkin_Admin extends Checkin
         // unassigned visitors
 
         $staff = new Checkin_Staff;
-        $staff->display_name = dgettext('checkin', 'Unassigned');
+        $staff->display_name = 'Unassigned';
 
         $row['VISITORS'] = $this->listVisitors($staff, $staff_list);
         $row['COLOR'] = '#ffffff';
@@ -452,16 +452,16 @@ class Checkin_Admin extends Checkin
         }
         ksort($tpl['rows']);
 
-        $tpl['VISITORS_LABEL'] = dgettext('checkin', 'Visitors');
-        $tpl['DISPLAY_NAME_LABEL'] = dgettext('checkin', 'Staff name');
-        $tpl['TIME_WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+        $tpl['VISITORS_LABEL'] = 'Visitors';
+        $tpl['DISPLAY_NAME_LABEL'] = 'Staff name';
+        $tpl['TIME_WAITING_LABEL'] = 'Time waiting';
 
         $tpl['HIDE_PANEL'] = $this->hidePanelLink();
         $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
-        $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=assign">%s</a>', dgettext('checkin', 'Refresh'));
+        $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=assign">%s</a>', 'Refresh');
         // UNASSIGN_ALL and AUTO_ASSIGN are links for testing functionality of automatic visitor assignment.
-        //$tpl['UNASSIGN_ALL'] = sprintf('<a href="index.php?module=checkin&aop=unassignAll">%s</a>', dgettext('checkin', 'Unassign All')); // For testing purposes only
-        //$tpl['AUTO_ASSIGN'] = sprintf('<a href="index.php?module=checkin&aop=auto_assign">%s</a>', dgettext('checkin', 'Auto Assign'));   // For testing purposes only
+        //$tpl['UNASSIGN_ALL'] = sprintf('<a href="index.php?module=checkin&aop=unassignAll">%s</a>', 'Unassign All'); // For testing purposes only
+        //$tpl['AUTO_ASSIGN'] = sprintf('<a href="index.php?module=checkin&aop=auto_assign">%s</a>', 'Auto Assign');   // For testing purposes only
 
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitors.tpl');
         Layout::metaRoute('index.php?module=checkin&aop=assign', PHPWS_Settings::get('checkin', 'assign_refresh'));
@@ -505,9 +505,9 @@ class Checkin_Admin extends Checkin
     {
         if (PHPWS_Cookie::read('checkin_hide_sidebar') || $this->use_sidebar == false) {
             $this->use_sidebar = false;
-            return PHPWS_Text::moduleLink(dgettext('checkin', 'Show sidebar'), 'checkin', array('aop' => 'show_sidebar'));
+            return PHPWS_Text::moduleLink('Show sidebar', 'checkin', array('aop' => 'show_sidebar'));
         } else {
-            return PHPWS_Text::moduleLink(dgettext('checkin', 'Hide sidebar'), 'checkin', array('aop' => 'hide_sidebar'));
+            return PHPWS_Text::moduleLink('Hide sidebar', 'checkin', array('aop' => 'hide_sidebar'));
         }
     }
 
@@ -515,16 +515,16 @@ class Checkin_Admin extends Checkin
     {
         if (PHPWS_Cookie::read('checkin_hide_panel') || $this->use_panel == false) {
             $this->use_panel = false;
-            return PHPWS_Text::moduleLink(dgettext('checkin', 'Show panel'), 'checkin', array('aop' => 'show_panel'));
+            return PHPWS_Text::moduleLink('Show panel', 'checkin', array('aop' => 'show_panel'));
         } else {
-            return PHPWS_Text::moduleLink(dgettext('checkin', 'Hide panel'), 'checkin', array('aop' => 'hide_panel'));
+            return PHPWS_Text::moduleLink('Hide panel', 'checkin', array('aop' => 'hide_panel'));
         }
     }
 
     public function listVisitors($staff, $staff_list)
     {
         if (empty($this->visitor_list[$staff->id])) {
-            return dgettext('checkin', 'No visitors waiting');
+            return 'No visitors waiting';
         }
         $vis_list = $this->visitor_list[$staff->id];
         unset($staff_list[$staff->id]);
@@ -535,7 +535,7 @@ class Checkin_Admin extends Checkin
 
         $row['NAME_LABEL'] = dgettext('checkin', 'Name / Reason / Note');
         $row['WAITING_LABEL'] = dgettext('checkin', 'Time arrived/waiting');
-        $row['ACTION_LABEL'] = dgettext('checkin', 'Action');
+        $row['ACTION_LABEL'] = 'Action';
         return PHPWS_Template::process($row, 'checkin', 'queue.tpl');
     }
 
@@ -543,7 +543,7 @@ class Checkin_Admin extends Checkin
     {
         Layout::addStyle('checkin');
         javascriptMod('checkin', 'send_note');
-        $this->title = dgettext('checkin', 'Waiting list');
+        $this->title = 'Waiting list';
 
         if (!$this->current_staff) {
             $this->content = dgettext('checkin', 'You are not a staff member.');
@@ -583,19 +583,19 @@ class Checkin_Admin extends Checkin
 
         if ($small_view) {
             $tpl['REDUCE'] = 'small-view';
-            $tpl['CLOSE'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', dgettext('checkin', 'Close'));
+            $tpl['CLOSE'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', 'Close');
             Layout::metaRoute('index.php?module=checkin&aop=small_wait', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         } else {
             $tpl['HIDE_PANEL'] = $this->hidePanelLink();
             $tpl['HIDE_SIDEBAR'] = $this->hideSidebarLink();
             $tpl['SMALL_VIEW'] = $this->smallViewLink();
-            $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=waiting">%s</a>', dgettext('checkin', 'Refresh'));
+            $tpl['REFRESH'] = sprintf('<a href="index.php?module=checkin&tab=waiting">%s</a>', 'Refresh');
             Layout::metaRoute('index.php?module=checkin&aop=waiting', PHPWS_Settings::get('checkin', 'waiting_refresh'));
         }
 
 
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name / Notes');
-        $tpl['WAITING_LABEL'] = dgettext('checkin', 'Time waiting');
+        $tpl['WAITING_LABEL'] = 'Time waiting';
         $tpl['SENDBANK'] = 'what what';
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'waiting.tpl');
     }
@@ -604,7 +604,7 @@ class Checkin_Admin extends Checkin
     {
         $vars['aop'] = 'small_wait';
         $js['address'] = PHPWS_Text::linkAddress('checkin', $vars, true);
-        $js['label'] = dgettext('checkin', 'Small view');
+        $js['label'] = 'Small view';
         $js['width'] = '640';
         $js['height'] = '480';
         return javascript('open_window', $js);
@@ -670,21 +670,21 @@ class Checkin_Admin extends Checkin
     {
         $vars['aop'] = 'unavailable';
         $vars['staff_id'] = $this->current_staff->id;
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Make unavailable'), 'checkin', $vars, null, dgettext('checkin', 'Click to make unavailable for meeting'), 'unavailable-button action-button');
+        return PHPWS_Text::secureLink('Make unavailable', 'checkin', $vars, null, 'Click to make unavailable for meeting', 'unavailable-button action-button');
     }
 
     public function sendBackLink()
     {
         $vars['aop'] = 'sendback';
         $vars['staff_id'] = $this->current_staff->id;
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Send back'), 'checkin', $vars, null, dgettext('checkin', sprintf('Click to send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
+        return PHPWS_Text::secureLink('Send back', 'checkin', $vars, null, dgettext('checkin', sprintf('Click to send back %s for meeting', $this->current_visitor->firstname)), 'sendback-button action-button');
     }
 
     public function availableLink()
     {
         $vars['aop'] = 'available';
         $vars['staff_id'] = $this->current_staff->id;
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Make available'), 'checkin', $vars, null, dgettext('checkin', 'Click to make available for meeting'), 'available-button action-button');
+        return PHPWS_Text::secureLink('Make available', 'checkin', $vars, null, 'Click to make available for meeting', 'available-button action-button');
     }
 
     public function startMeetingLink()
@@ -707,7 +707,7 @@ class Checkin_Admin extends Checkin
 
         $page_tags['ADD_STAFF'] = $this->addStaffLink();
         //$page_tags['STAFF_NOTE'] = dgettext('checkin', 'Note: Staff members with no filters will not have visitors automatically assigned to them.');
-        $page_tags['FILTER_LABEL'] = dgettext('checkin', 'Filter');
+        $page_tags['FILTER_LABEL'] = 'Filter';
 
         $pager = new DBPager('checkin_staff', 'Checkin_Staff');
         $pager->setTemplate('staff.tpl');
@@ -716,11 +716,11 @@ class Checkin_Admin extends Checkin
         $pager->setEmptyMessage(dgettext('checkin', 'No staff found.'));
         $pager->addPageTags($page_tags);
         $pager->joinResult('user_id', 'users', 'id', 'display_name');
-        $pager->addSortHeader('lname_filter', dgettext('checkin', 'Filter'));
-        $pager->addSortHeader('display_name', dgettext('checkin', 'Staff name'));
-        $pager->addSortHeader('view_order', dgettext('checkin', 'Order'));
+        $pager->addSortHeader('lname_filter', 'Filter');
+        $pager->addSortHeader('display_name', 'Staff name');
+        $pager->addSortHeader('view_order', 'Order');
 
-        $this->title = dgettext('checkin', 'Staff');
+        $this->title = 'Staff';
         $this->content = $pager->get();
     }
 
@@ -735,16 +735,16 @@ class Checkin_Admin extends Checkin
             $script_add = '<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/checkin/javascript/search_user/script.js"></script>';
             \Layout::addJSHeader($script_add);
 
-            $this->title = dgettext('checkin', 'Add staff member');
+            $this->title = 'Add staff member';
             $form->addText('username');
-            $form->setLabel('username', dgettext('checkin', 'Staff user name'));
-            $form->addSubmit(dgettext('checkin', 'Add staff'));
+            $form->setLabel('username', 'Staff user name');
+            $form->addSubmit('Add staff');
         } else {
-            $this->title = dgettext('checkin', 'Edit staff member');
+            $this->title = 'Edit staff member';
             $form->addHidden('staff_id', $this->staff->id);
             $form->addTplTag('USERNAME', $this->staff->display_name);
-            $form->addTplTag('USERNAME_LABEL', dgettext('checkin', 'Staff user name'));
-            $form->addSubmit(dgettext('checkin', 'Update staff'));
+            $form->addTplTag('USERNAME_LABEL', 'Staff user name');
+            $form->addSubmit('Update staff');
         }
 
         // array of values to use with setMatch()
@@ -757,7 +757,7 @@ class Checkin_Admin extends Checkin
         // Add checkbox for "Last Name" filter
         $form->addCheck('last_name', 'yes');
         $form->setMatch('last_name', $checks['last_name']);
-        $form->setLabel('last_name', dgettext('checkin', 'Last Name'));
+        $form->setLabel('last_name', 'Last Name');
         $form->addText('last_name_filter', $this->staff->lname_filter);
         $form->setLabel('last_name_filter', dgettext('checkin', 'Example: a,b,ca-cf,d'));
 
@@ -766,7 +766,7 @@ class Checkin_Admin extends Checkin
         if (!empty($reasons)) {
             $form->addCheck('reason', 'yes');
             $form->setMatch('reason', $checks['reason']);
-            $form->setLabel('reason', dgettext('checkin', 'Reason'));
+            $form->setLabel('reason', 'Reason');
             $form->addMultiple('reason_filter', $reasons);
             $form->setMatch('reason_filter', $this->staff->_reasons);
         }
@@ -775,7 +775,7 @@ class Checkin_Admin extends Checkin
         if (PHPWS_Settings::get('checkin', 'gender')) {
             $form->addCheck('gender', 'yes');
             $form->setMatch('gender', $checks['gender']);
-            $form->setLabel('gender', dgettext('checkin', 'Gender'));
+            $form->setLabel('gender', 'Gender');
             $form->addSelect('gender_filter', array('male' => 'Male', 'female' => 'Female'));
             $form->setMatch('gender_filter', $this->staff->gender_filter);
         }
@@ -785,7 +785,7 @@ class Checkin_Admin extends Checkin
             javascript('datepicker');
             $form->addCheck('birthdate', 'yes');
             $form->setMatch('birthdate', $checks['birthdate']);
-            $form->setLabel('birthdate', dgettext('checkin', 'Birthdate'));
+            $form->setLabel('birthdate', 'Birthdate');
 
             // Fill the date picker with the current filter start date if it is set
             if (isset($this->staff->birthdate_filter_start)) {
@@ -809,7 +809,7 @@ class Checkin_Admin extends Checkin
         }
 
         $tpl = $form->getTemplate();
-        $tpl['FILTER_LEGEND'] = dgettext('checkin', 'Visitor filter');
+        $tpl['FILTER_LEGEND'] = 'Visitor filter';
         $tpl['STAFF_NOTE'] = dgettext('checkin', 'Note: Staff members with no filters will not have visitors automatically assigned to them.');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'edit_staff.tpl');
     }
@@ -819,18 +819,18 @@ class Checkin_Admin extends Checkin
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         \phpws\PHPWS_Core::initModClass('checkin', 'Reasons.php');
 
-        $pt['MESSAGE_LABEL'] = dgettext('checkin', 'Submission message');
-        $pt['ADD_REASON'] = PHPWS_Text::secureLink(dgettext('checkin', 'Add reason'), 'checkin', array('aop' => 'edit_reason'));
+        $pt['MESSAGE_LABEL'] = 'Submission message';
+        $pt['ADD_REASON'] = PHPWS_Text::secureLink('Add reason', 'checkin', array('aop' => 'edit_reason'));
 
         $pager = new DBPager('checkin_reasons', 'Checkin_Reasons');
         $pager->setModule('checkin');
         $pager->setTemplate('reasons.tpl');
         $pager->addPageTags($pt);
-        $pager->addSortHeader('id', dgettext('checkin', 'Id'));
-        $pager->addSortHeader('summary', dgettext('checkin', 'Summary'));
+        $pager->addSortHeader('id', 'Id');
+        $pager->addSortHeader('summary', 'Summary');
         $pager->addRowTags('rowTags');
 
-        $this->title = dgettext('checkin', 'Reasons');
+        $this->title = 'Reasons';
         $this->content = $pager->get();
     }
 
@@ -845,19 +845,19 @@ class Checkin_Admin extends Checkin
 
         $form->addText('summary', $reason->summary);
         $form->setSize('summary', 40);
-        $form->setLabel('summary', dgettext('checkin', 'Summary'));
+        $form->setLabel('summary', 'Summary');
         $form->setRequired('summary');
 
         $form->addTextArea('message', $reason->message);
         $form->setRequired('message');
-        $form->setLabel('message', dgettext('checkin', 'Completion message'));
+        $form->setLabel('message', 'Completion message');
 
         if ($reason->id) {
-            $this->title = dgettext('checkin', 'Update reason');
-            $form->addSubmit('go', dgettext('checkin', 'Update'));
+            $this->title = 'Update reason';
+            $form->addSubmit('go', 'Update');
         } else {
-            $this->title = dgettext('checkin', 'Add new reason');
-            $form->addSubmit('go', dgettext('checkin', 'Add'));
+            $this->title = 'Add new reason';
+            $form->addSubmit('go', 'Add');
         }
         $template = $form->getTemplate();
         $this->content = PHPWS_Template::process($template, 'checkin', 'edit_reason.tpl');
@@ -865,7 +865,7 @@ class Checkin_Admin extends Checkin
 
     public function settings()
     {
-        $this->title = dgettext('checkin', 'Settings');
+        $this->title = 'Settings';
         javascript('jquery');
         $form = new PHPWS_Form('settings');
         $form->addHidden('module', 'checkin');
@@ -876,7 +876,7 @@ class Checkin_Admin extends Checkin
 
         $form->addCheck('staff_see_reports', 1);
         $form->setMatch('staff_see_reports', PHPWS_Settings::get('checkin', 'staff_see_reports'));
-        $form->setLabel('staff_see_reports', dgettext('checkin', 'Staff can see reports'));
+        $form->setLabel('staff_see_reports', 'Staff can see reports');
 
         $form->addText('assign_refresh', PHPWS_Settings::get('checkin', 'assign_refresh'));
         $form->setSize('assign_refresh', '3');
@@ -887,32 +887,32 @@ class Checkin_Admin extends Checkin
         $form->setLabel('waiting_refresh', dgettext('checkin', 'Waiting page refresh rate (in seconds)'));
 
         $form->addCheck('collapse_signin', 1);
-        $form->setLabel('collapse_signin', dgettext('checkin', 'Hide sidebar for visitors'));
+        $form->setLabel('collapse_signin', 'Hide sidebar for visitors');
         $form->setMatch('collapse_signin', PHPWS_Settings::get('checkin', 'collapse_signin'));
 
         $form->addCheck('unassigned_seen', 1);
-        $form->setLabel('unassigned_seen', dgettext('checkin', 'Staff see unassigned visitors'));
+        $form->setLabel('unassigned_seen', 'Staff see unassigned visitors');
         $form->setMatch('unassigned_seen', PHPWS_Settings::get('checkin', 'unassigned_seen'));
 
         $form->addCheck('sendback', 1);
-        $form->setLabel('sendback', dgettext('checkin', 'Use send back button'));
+        $form->setLabel('sendback', 'Use send back button');
         $form->setMatch('sendback', PHPWS_Settings::get('checkin', 'sendback'));
 
         $form->addCheck('email', 1);
-        $form->setLabel('email', dgettext('checkin', 'Request email address'));
+        $form->setLabel('email', 'Request email address');
         $form->setMatch('email', PHPWS_Settings::get('checkin', 'email'));
 
         // Checkbox for requesting gender when checking in
         $form->addCheck('gender', 1);
-        $form->setLabel('gender', dgettext('checkin', 'Request gender'));
+        $form->setLabel('gender', 'Request gender');
         $form->setMatch('gender', PHPWS_Settings::get('checkin', 'gender'));
 
         // Checkbox for requesting birthdate when checking in
         $form->addCheck('birthdate', 1);
-        $form->setLabel('birthdate', dgettext('checkin', 'Request date of birth'));
+        $form->setLabel('birthdate', 'Request date of birth');
         $form->setMatch('birthdate', PHPWS_Settings::get('checkin', 'birthdate'));
 
-        $form->addSubmit(dgettext('checkin', 'Save settings'));
+        $form->addSubmit('Save settings');
         $tpl = $form->getTemplate();
 
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'setting.tpl');
@@ -971,7 +971,7 @@ class Checkin_Admin extends Checkin
 
     public function addStaffLink()
     {
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Add staff member'), 'checkin', array('aop' => 'edit_staff'));
+        return PHPWS_Text::secureLink('Add staff member', 'checkin', array('aop' => 'edit_staff'));
     }
 
     public function searchUsers()
@@ -1042,7 +1042,7 @@ class Checkin_Admin extends Checkin
         } else {
             @$user_name = $_POST['username'];
             if (empty($user_name) || !Current_User::allowUsername($user_name)) {
-                $this->message = dgettext('checkin', 'Please try another user name');
+                $this->message = 'Please try another user name';
                 return false;
             }
 
@@ -1155,20 +1155,20 @@ class Checkin_Admin extends Checkin
     public function assignmentLink()
     {
         $vars['aop'] = 'assign';
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Assignment page'), 'checkin', $vars);
+        return PHPWS_Text::secureLink('Assignment page', 'checkin', $vars);
     }
 
     public function waitingLink()
     {
         $vars['aop'] = 'waiting';
-        return PHPWS_Text::secureLink(dgettext('checkin', 'Waiting page'), 'checkin', $vars);
+        return PHPWS_Text::secureLink('Waiting page', 'checkin', $vars);
     }
 
     public function menu()
     {
         $tpl['WAITING'] = $this->waitingLink();
         $tpl['ASSIGN_PAGE'] = $this->assignmentLink();
-        $tpl['TITLE'] = dgettext('checkin', 'Checkin Menu');
+        $tpl['TITLE'] = 'Checkin Menu';
         $content = PHPWS_Template::process($tpl, 'checkin', 'menu.tpl');
         Layout::add($content, 'checkin', 'checkin-admin');
     }
@@ -1252,7 +1252,7 @@ class Checkin_Admin extends Checkin
         \phpws\PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $visitor = new Checkin_Visitor($_GET['vis_id']);
         if (!$visitor->id) {
-            $this->content = dgettext('checkin', 'Visitor not found');
+            $this->content = 'Visitor not found';
             return;
         }
 
@@ -1262,7 +1262,7 @@ class Checkin_Admin extends Checkin
         $db->addOrder('arrival_time');
         $result = $db->getObjects('Checkin_Visitor');
         if (empty($result)) {
-            $this->content = dgettext('checkin', 'Visitor not found');
+            $this->content = 'Visitor not found';
             return;
         }
         $count = $total_wait = $total_spent = 0;
@@ -1298,12 +1298,12 @@ class Checkin_Admin extends Checkin
             $average_wait = 0;
         }
 
-        $tpl['STAFF_LABEL'] = dgettext('checkin', 'Staff');
+        $tpl['STAFF_LABEL'] = 'Staff';
         $tpl['REASON_LABEL'] = dgettext('checkin', 'Reason/Note');
-        $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
-        $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
-        $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
-        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'visitor_report', 'print' => 1, 'vis_id' => $visitor->id));
+        $tpl['WAITED_LABEL'] = 'Waited';
+        $tpl['SPENT_LABEL'] = 'Visited';
+        $tpl['ARRIVAL_LABEL'] = 'Arrived';
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink('Print view', 'checkin', array('aop' => 'visitor_report', 'print' => 1, 'vis_id' => $visitor->id));
 
         $tpl['NAME_NOTE'] = dgettext('checkin', 'Please note: if a visitor typed in a different or misspelled name, they may not appear on this list. Also, different people may have the same name.');
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'visitor_report.tpl');
@@ -1378,10 +1378,10 @@ class Checkin_Admin extends Checkin
         $tpl['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
 
         $tpl['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
-        $tpl['WAITED_LABEL'] = dgettext('checkin', 'Waited');
-        $tpl['SPENT_LABEL'] = dgettext('checkin', 'Visited');
-        $tpl['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
-        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'month_report', 'print' => '1', 'staff_id' => $staff->id, 'date' => $start_date));
+        $tpl['WAITED_LABEL'] = 'Waited';
+        $tpl['SPENT_LABEL'] = 'Visited';
+        $tpl['ARRIVAL_LABEL'] = 'Arrived';
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink('Print view', 'checkin', array('aop' => 'month_report', 'print' => '1', 'staff_id' => $staff->id, 'date' => $start_date));
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'monthly_report.tpl');
     }
 
@@ -1395,30 +1395,30 @@ class Checkin_Admin extends Checkin
         $form->addHidden('aop', 'report');
 
         // Single day report
-        $form->addTplTag('DAY_LABEL', dgettext('checkin', 'All visits on'));
+        $form->addTplTag('DAY_LABEL', 'All visits on');
         $form->addText('day_date', strftime('%m/%d/%Y', $today));
         $form->setExtra('day_date', 'class="datepicker"');
         $form->setSize('day_date', 10);
-        $form->addSubmit('day_submit', dgettext('checkin', 'View Report'));
+        $form->addSubmit('day_submit', 'View Report');
 
         // Timespan report
-        $form->addTplTag('TIMESPAN_LABEL', dgettext('checkin', 'All visits between'));
+        $form->addTplTag('TIMESPAN_LABEL', 'All visits between');
         $form->addText('timespan_start', strftime('%m/%d/%Y', $today));
         $form->setExtra('timespan_start', 'class="datepicker"');
         $form->setSize('timespan_start', 10);
         $form->addText('timespan_end', strftime('%m/%d/%Y', $tomorrow));
         $form->setExtra('timespan_end', 'class="datepicker"');
         $form->setSize('timespan_end', 10);
-        $form->addSubmit('timespan_submit', dgettext('checkin', 'View Report'));
+        $form->addSubmit('timespan_submit', 'View Report');
 
         // Single visitor report
-        $form->addTplTag('VISITOR_LABEL', dgettext('checkin', 'All visits by'));
+        $form->addTplTag('VISITOR_LABEL', 'All visits by');
         $form->addText('visitor_name');
-        $form->addSubmit('visitor_submit', dgettext('checkin', 'View Report'));
+        $form->addSubmit('visitor_submit', 'View Report');
 
         // All visitor report
-        $form->addTplTag('ALL_VISITORS_LABEL', dgettext('checkin', 'All visits by all visitors'));
-        $form->addSubmit('all_visitors_submit', dgettext('checkin', 'View Report'));
+        $form->addTplTag('ALL_VISITORS_LABEL', 'All visits by all visitors');
+        $form->addSubmit('all_visitors_submit', 'View Report');
 
         // Reason report
         $reasons = $this->getReasons();
@@ -1429,9 +1429,9 @@ class Checkin_Admin extends Checkin
             $reasons = array_reverse($reasons, true);
 
             $form->addSelect('reason_select', $reasons);
-            $form->addTplTag('REASON_LABEL', dgettext('checkin', 'All visits for'));
+            $form->addTplTag('REASON_LABEL', 'All visits for');
         }
-        $form->addSubmit('reason_submit', dgettext('checkin', 'View Report'));
+        $form->addSubmit('reason_submit', 'View Report');
 
         $tpl = $form->getTemplate();
         javascript('datepicker');
@@ -1451,8 +1451,8 @@ class Checkin_Admin extends Checkin
         $form->addHidden('aop', 'report');
         $form->addText('cdate', $current_date);
         $form->setExtra('cdate', 'class="datepicker"');
-        $form->setLabel('cdate', dgettext('checkin', 'Visitor day'));
-        $form->addSubmit('daily_report', dgettext('checkin', 'Daily visit summary'));
+        $form->setLabel('cdate', 'Visitor day');
+        $form->addSubmit('daily_report', 'Daily visit summary');
         $form->setSize('cdate', 10);
 
 
@@ -1469,15 +1469,15 @@ class Checkin_Admin extends Checkin
 
         $form->addText('visitor_name', $name);
         $form->setLabel('visitor_name', 'Visitor name');
-        $form->addSubmit('summary_report', dgettext('checkin', 'Summary report'));
+        $form->addSubmit('summary_report', 'Summary report');
 
 
         $tpl = $form->getTemplate();
         javascript('datepicker');
 
 
-        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate));
-        $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop' => 'repeats', 'date' => $udate));
+        $tpl['PRINT_LINK'] = PHPWS_Text::secureLink('Print view', 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate));
+        $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink('Repeat visits', 'checkin', array('aop' => 'repeats', 'date' => $udate));
 
         $this->content = PHPWS_Template::process($tpl, 'checkin', 'report.tpl');
     }
@@ -1510,14 +1510,14 @@ class Checkin_Admin extends Checkin
             $form->addText('cdate', $current_date);
             $form->setExtra('cdate', 'class="datepicker"');
             $form->addHidden('aop', 'report');
-            $form->setLabel('cdate', dgettext('checkin', 'Date'));
-            $form->addSubmit('daily_report', dgettext('checkin', 'Go'));
+            $form->setLabel('cdate', 'Date');
+            $form->addSubmit('daily_report', 'Go');
             $tpl = $form->getTemplate();
             javascript('datepicker');
 
 
-            $tpl['PRINT_LINK'] = PHPWS_Text::secureLink(dgettext('checkin', 'Print view'), 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate, 'daily_report' => 1));
-            $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink(dgettext('checkin', 'Repeat visits'), 'checkin', array('aop' => 'repeats', 'date' => $udate));
+            $tpl['PRINT_LINK'] = PHPWS_Text::secureLink('Print view', 'checkin', array('aop' => 'report', 'print' => 1, 'udate' => $udate, 'daily_report' => 1));
+            $tpl['REPEAT_VISITS'] = PHPWS_Text::moduleLink('Repeat visits', 'checkin', array('aop' => 'repeats', 'date' => $udate));
         }
 
         $tObj = new PHPWS_Template('checkin');
@@ -1526,7 +1526,7 @@ class Checkin_Admin extends Checkin
         $this->loadStaffList();
         $reasons = $this->getReasons();
         if (empty($reasons)) {
-            $reasons[0] = dgettext('checkin', 'No reason');
+            $reasons[0] = 'No reason';
         }
 
         \phpws\PHPWS_Core::initModClass('checkin', 'Visitors.php');
@@ -1541,9 +1541,9 @@ class Checkin_Admin extends Checkin
         foreach ($this->staff_list as $staff) {
             $row = array();
             $row['NAME_LABEL'] = dgettext('checkin', 'Name, Reason, & Note');
-            $row['WAITED_LABEL'] = dgettext('checkin', 'Waited');
-            $row['SPENT_LABEL'] = dgettext('checkin', 'Visited');
-            $row['ARRIVAL_LABEL'] = dgettext('checkin', 'Arrived');
+            $row['WAITED_LABEL'] = 'Waited';
+            $row['SPENT_LABEL'] = 'Visited';
+            $row['ARRIVAL_LABEL'] = 'Arrived';
             $average_wait = $total_wait = $count = $total_spent = $total_visit = 0;
             if (isset($visitors[$staff->id])) {
                 foreach ($visitors[$staff->id] as $vis) {
@@ -1553,7 +1553,7 @@ class Checkin_Admin extends Checkin
                     if (isset($reasons[$vis->reason])) {
                         $reason = $reasons[$vis->reason];
                     } else {
-                        $reason = '<em>' . dgettext('checkin', 'System missing reason') . '</em>';
+                        $reason = '<em>' . 'System missing reason' . '</em>';
                     }
 
                     $tObj->setCurrentBlock('subrow');
@@ -1584,13 +1584,13 @@ class Checkin_Admin extends Checkin
                 }
             } else {
                 $tObj->setCurrentBlock('message');
-                $tObj->setData(array('NOBODY' => dgettext('checkin', 'No visitors seen')));
+                $tObj->setData(array('NOBODY' => 'No visitors seen'));
                 $tObj->parseCurrentBlock();
             }
 
             $tObj->setCurrentBlock('row');
             $link = new PHPWS_Link($staff->display_name, 'checkin', array('aop' => 'month_report', 'staff_id' => $staff->id, 'date' => $udate), true);
-            $link->setTitle(dgettext('checkin', 'See monthly totals'));
+            $link->setTitle('See monthly totals');
             $row['DISPLAY_NAME'] = $link->get();
             $row['VISITORS_SEEN'] = sprintf(dgettext('checkin', 'Visitors seen: %s'), $count);
             if ($count) {
@@ -1666,7 +1666,7 @@ class Checkin_Admin extends Checkin
         $form->addHidden('date', $end_date);
         $form->addSelect('visit_query', array(2 => 2, 4 => 4, 6 => 6, 8 => 8, 10 => 10));
         $form->setMatch('visit_query', $limit);
-        $form->addSubmit('go', dgettext('checkin', 'Visits greater to or equal to'));
+        $form->addSubmit('go', 'Visits greater to or equal to');
 
         $tpl = $form->getTemplate();
 
@@ -1705,7 +1705,7 @@ class Checkin_Admin extends Checkin
         }
         $form->addText('visitor_name', $name);
         $form->setLabel('visitor_name', 'Visitor name');
-        $form->addSubmit(dgettext('checkin', 'Summary report'));
+        $form->addSubmit('Summary report');
 
         $db = new PHPWS_DB('checkin_staff');
         $db->addColumn('checkin_staff.id');
@@ -1714,7 +1714,7 @@ class Checkin_Admin extends Checkin
         $db->setIndexBy('id');
         $db->addOrder('users.display_name desc');
         $assigned = $db->select('col');
-        $assigned[0] = dgettext('checkin', 'Show all');
+        $assigned[0] = 'Show all';
         $assigned = array_reverse($assigned, true);
 
         $form->addSelect('assigned', $assigned);

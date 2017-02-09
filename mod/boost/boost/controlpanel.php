@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-$link[] = array('label' => dgettext('boost', 'Boost'),
+$link[] = array('label' => 'Boost',
     'restricted' => TRUE,
     'url' => 'index.php?module=boost&amp;action=admin',
     'description' => dgettext('boost',

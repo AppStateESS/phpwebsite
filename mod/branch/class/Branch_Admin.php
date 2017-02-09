@@ -148,7 +148,7 @@ class Branch_Admin
                     if ($new_branch) {
                         if ($this->branch->createDirectories()) {
                             $this->setCreateStep(3);
-                            $this->title = dgettext('branch', 'Create branch directories');
+                            $this->title = 'Create branch directories';
                             $this->message[] = dgettext('branch', 'Branch created successfully.');
                             $this->install_branch_core();
                         } else {
@@ -199,7 +199,7 @@ class Branch_Admin
         \phpws\PHPWS_Core::initCoreClass('File.php');
         $content = array();
 
-        $this->title = dgettext('branch', 'Install branch core');
+        $this->title = 'Install branch core';
 
         $dsn = $this->getDSN();
         if (empty($dsn)) {
@@ -397,7 +397,7 @@ class Branch_Admin
         // Load branch database
         PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix, false, false);
 
-        $this->title = dgettext('branch', 'Installing core modules');
+        $this->title = 'Installing core modules';
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
 
@@ -467,10 +467,10 @@ class Branch_Admin
     {
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=branch&amp;command=new';
-        $newCommand = array('title' => dgettext('branch', 'New'), 'link' => $newLink);
+        $newCommand = array('title' => 'New', 'link' => $newLink);
 
         $listLink = 'index.php?module=branch&amp;command=list';
-        $listCommand = array('title' => dgettext('branch', 'List'), 'link' => $listLink);
+        $listCommand = array('title' => 'List', 'link' => $listLink);
 
         $tabs['new'] = &$newCommand;
         $tabs['list'] = &$listCommand;
@@ -597,30 +597,30 @@ class Branch_Admin
         $form->addHidden('command', 'post_basic');
 
         if ($branch->id) {
-            $this->title = dgettext('branch', 'Edit branch');
+            $this->title = 'Edit branch';
             $form->addHidden('branch_id', $this->branch->id);
-            $form->addSubmit('submit', dgettext('branch', 'Update'));
+            $form->addSubmit('submit', 'Update');
         } else {
-            $this->title = dgettext('branch', 'Create branch information');
+            $this->title = 'Create branch information';
             $form->addSubmit('submit', dgettext('branch', 'Continue...'));
         }
 
         $form->addText('branch_name', $branch->branch_name);
-        $form->setLabel('branch_name', dgettext('branch', 'Branch name'));
+        $form->setLabel('branch_name', 'Branch name');
 
         $form->addText('directory', $branch->directory);
         $form->setSize('directory', 50);
-        $form->setLabel('directory', dgettext('branch', 'Full directory path'));
+        $form->setLabel('directory', 'Full directory path');
 
         $form->addText('url', $branch->url);
         $form->setSize('url', 50);
-        $form->setLabel('url', dgettext('branch', 'URL'));
+        $form->setLabel('url', 'URL');
 
         $form->addText('site_hash', $branch->site_hash);
         $form->setSize('site_hash', 40);
-        $form->setLabel('site_hash', dgettext('branch', 'ID hash'));
+        $form->setLabel('site_hash', 'ID hash');
         $template = $form->getTemplate();
-        $template['BRANCH_LEGEND'] = dgettext('branch', 'Branch specifications');
+        $template['BRANCH_LEGEND'] = 'Branch specifications';
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
     }
 
@@ -629,43 +629,43 @@ class Branch_Admin
      */
     public function edit_db($force = false)
     {
-        $this->title = dgettext('branch', 'Setup branch database');
+        $this->title = 'Setup branch database';
         $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_db');
         $form->addHidden('force', (int) $force);
 
         $form->addCheck('createdb', $this->createdb);
-        $form->setLabel('createdb', dgettext('branch', 'Create new database'));
+        $form->setLabel('createdb', 'Create new database');
 
         $form->addSelect('dbtype', $this->db_list);
         $form->setMatch('dbtype', $this->dbtype);
-        $form->setLabel('dbtype', dgettext('branch', 'Database syntax'));
+        $form->setLabel('dbtype', 'Database syntax');
 
         $form->addText('dbname', $this->dbname);
-        $form->setLabel('dbname', dgettext('branch', 'Database name'));
+        $form->setLabel('dbname', 'Database name');
 
         $form->addText('dbuser', $this->dbuser);
-        $form->setLabel('dbuser', dgettext('branch', 'Permission user'));
+        $form->setLabel('dbuser', 'Permission user');
 
         $form->addPassword('dbpass', $this->dbpass);
         $form->allowValue('dbpass');
-        $form->setLabel('dbpass', dgettext('branch', 'User password'));
+        $form->setLabel('dbpass', 'User password');
 
         $form->addText('dbprefix', $this->dbprefix);
-        $form->setLabel('dbprefix', dgettext('branch', 'Table prefix'));
+        $form->setLabel('dbprefix', 'Table prefix');
         $form->setSize('dbprefix', 5, 5);
 
         $form->addText('dbhost', $this->dbhost);
-        $form->setLabel('dbhost', dgettext('branch', 'Database Host'));
+        $form->setLabel('dbhost', 'Database Host');
         $form->setSize('dbhost', 40);
 
         $form->addText('dbport', $this->dbport);
-        $form->setLabel('dbport', dgettext('branch', 'Connection Port'));
+        $form->setLabel('dbport', 'Connection Port');
 
-        $form->addTplTag('DB_LEGEND', dgettext('branch', 'Database information'));
+        $form->addTplTag('DB_LEGEND', 'Database information');
 
-        $form->addSubmit('plug', dgettext('branch', 'Use hub values'));
+        $form->addSubmit('plug', 'Use hub values');
         $form->addSubmit('submit', dgettext('branch', 'Continue...'));
 
         $template = $form->getTemplate();
@@ -732,7 +732,7 @@ class Branch_Admin
         }
 
         if (preg_match('/\W/', $this->dbprefix)) {
-            $content[] = dgettext('branch', 'Table prefix must be alphanumeric characters or underscores only');
+            $content[] = 'Table prefix must be alphanumeric characters or underscores only';
             $result = false;
         }
 
@@ -793,10 +793,10 @@ class Branch_Admin
      */
     public function listBranches()
     {
-        $page_tags['BRANCH_NAME_LABEL'] = dgettext('branch', 'Branch name');
-        $page_tags['DIRECTORY_LABEL'] = dgettext('branch', 'Directory');
-        $page_tags['URL_LABEL'] = dgettext('branch', 'Url');
-        $page_tags['ACTION_LABEL'] = dgettext('branch', 'Action');
+        $page_tags['BRANCH_NAME_LABEL'] = 'Branch name';
+        $page_tags['DIRECTORY_LABEL'] = 'Directory';
+        $page_tags['URL_LABEL'] = 'Url';
+        $page_tags['ACTION_LABEL'] = 'Action';
 
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('branch_sites', 'Branch');
@@ -806,7 +806,7 @@ class Branch_Admin
         $pager->addToggle('class="toggle1"');
         $pager->addRowTags('getTpl');
         $pager->setSearch('branch_name');
-        $this->title = dgettext('branch', 'Branch List');
+        $this->title = 'Branch List';
         $this->content = $pager->get();
     }
 

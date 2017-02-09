@@ -236,7 +236,7 @@ class Block_Item {
         if (Current_User::allow('block', 'edit_block', $this->id)) {
             $vars['action'] = 'edit';
             $links[] = PHPWS_Text::secureLink(Icon::show('edit',
-                                    dgettext('block', 'Edit')), 'block', $vars);
+                                    'Edit'), 'block', $vars);
             if ($this->allPinned()) {
                 $vars['action'] = 'remove';
                 $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag' title='" . dgettext('block',
@@ -270,10 +270,10 @@ class Block_Item {
             $template['ACTION'] = ' ';
         }
         if (empty($this->title)) {
-            $template['TITLE'] = '<em>' . dgettext('block', 'Untitled') . '</em>';
+            $template['TITLE'] = '<em>' . 'Untitled' . '</em>';
         }
         if (empty($this->content)) {
-            $template['CONTENT'] = '<em>' . dgettext('block', 'Empty') . '</em>';
+            $template['CONTENT'] = '<em>' . 'Empty' . '</em>';
         } else {
             $template['CONTENT'] = $this->summarize();
         }

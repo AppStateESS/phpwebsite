@@ -113,30 +113,30 @@ class FC_Image_Manager
 
         if ($this->image->id) {
             $form->addHidden('image_id', $this->image->id);
-            $this->title = dgettext('filecabinet', 'Update image');
+            $this->title = 'Update image';
         } else {
-            $this->title = dgettext('filecabinet', 'Upload image');
+            $this->title = 'Upload image';
         }
 
         $form->addFile('file_name');
         $form->setClass('file_name', 'form-control');
         $form->setSize('file_name', 30);
         $form->setMaxFileSize($this->max_size);
-        $form->setLabel('file_name', dgettext('filecabinet', 'Image location'));
+        $form->setLabel('file_name', 'Image location');
 
         $form->addText('title', $this->image->title);
-        $form->setLabel('title', dgettext('filecabinet', 'Title'));
+        $form->setLabel('title', 'Title');
         $form->setClass('title', 'form-control');
 
                 $form->addTextArea('description', $this->image->description);
         $form->setRows('description', 8);
         $form->setCols('description', 45);
-        $form->setLabel('description', dgettext('filecabinet', 'Description'));
+        $form->setLabel('description', 'Description');
         
         if ($this->image->folder_id) {
             $folder = new Folder($this->image->folder_id);
             if ($folder->public_folder) {
-                $link_choice['folder'] = dgettext('filecabinet', 'Link to image folder');
+                $link_choice['folder'] = 'Link to image folder';
             }
         }
 
@@ -156,7 +156,7 @@ class FC_Image_Manager
 
             if (!empty($resizes)) {
                 $form->addSelect('resize', $resizes);
-                $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));
+                $form->setLabel('resize', 'Resize image if over');
             }
         }
 
@@ -185,23 +185,23 @@ class FC_Image_Manager
         }
 
         if (!empty($this->image->id)) {
-            $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
+            $form->addSubmit('submit', 'Update');
         } else {
-            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
+            $form->addSubmit('submit', 'Upload');
         }
         $form->setClass('submit', 'btn btn-primary');
 
         $template = $form->getTemplate();
 
-        $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="javascript:window.close()" />', dgettext('filecabinet', 'Cancel'));
+        $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="javascript:window.close()" />', 'Cancel');
 
         if ($this->image->id) {
-            $template['CURRENT_IMAGE_LABEL'] = dgettext('filecabinet', 'Current image');
+            $template['CURRENT_IMAGE_LABEL'] = 'Current image';
             $template['CURRENT_IMAGE'] = $this->image->getJSView(TRUE);
             $template['SIZE'] = sprintf('%s x %s', $this->image->width, $this->image->height);
         }
-        $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
-        $template['MAX_DIMENSION_LABEL'] = dgettext('filecabinet', 'Maximum image dimension');
+        $template['MAX_SIZE_LABEL'] = 'Maximum file size';
+        $template['MAX_DIMENSION_LABEL'] = 'Maximum image dimension';
 
         $template['MAX_DIMENSION'] = $this->max_width;
 

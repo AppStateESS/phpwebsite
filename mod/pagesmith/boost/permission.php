@@ -7,6 +7,6 @@
 $use_permissions  = true;
 $item_permissions = true;
 
-$permissions['edit_page']   = dgettext('pagesmith', 'Edit page');
-$permissions['delete_page'] = dgettext('pagesmith', 'Delete page');
+$permissions['edit_page']   = 'Edit page';
+$permissions['delete_page'] = 'Delete page';
 $permissions['settings'] = dgettext('pagesmith', 'Change settings (Unrestricted only)');

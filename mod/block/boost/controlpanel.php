@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-$link[] = array('label'       => dgettext('block', 'Block'),
+$link[] = array('label'       => 'Block',
                 'restricted'  => TRUE,
                 'url'         =>
                 'index.php?module=block&amp;tab=list',

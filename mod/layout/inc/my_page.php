@@ -27,7 +27,7 @@ function my_page()
 
     switch ($lo_command) {
         case 'user_form':
-            $title = dgettext('layout', 'Display settings');
+            $title = 'Display settings';
             $content = Layout_User_Settings::user_form();
             break;
 
@@ -60,8 +60,8 @@ class Layout_User_Settings {
         if ($css) {
             $form->addSelect('alternate', $css);
             $form->setMatch('alternate', PHPWS_Cookie::read('layout_style'));
-            $form->setLabel('alternate', dgettext('layout', 'Available styles'));
-            $form->addSubmit(dgettext('layout', 'Save settings'));
+            $form->setLabel('alternate', 'Available styles');
+            $form->addSubmit('Save settings');
         } else {
             $blank = dgettext('layout', 'No alternate style sheets available.');
             return $blank;

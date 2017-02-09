@@ -12,7 +12,7 @@ class Signup_Forms {
         switch ($type) {
             case 'new':
                 if (Current_User::isRestricted('signup')) {
-                    $this->signup->title   = dgettext('signup', 'Sorry');
+                    $this->signup->title   = 'Sorry';
                     $this->signup->content = dgettext('signup', 'You do not have permission for this action.');
                     return;
                 }
@@ -76,24 +76,24 @@ class Signup_Forms {
         }
 
         $form->addText('subject', $email['subject']);
-        $form->setLabel('subject', dgettext('signup', 'Subject'));
+        $form->setLabel('subject', 'Subject');
         $form->setSize('subject', 30);
 
         $form->addText('from', $email['from']);
-        $form->setLabel('from', dgettext('signup', 'From'));
+        $form->setLabel('from', 'From');
         $form->setSize('from', 30);
         
         $form->addTextArea('message', $email['message']);
-        $form->setLabel('message', dgettext('signup', 'Message'));
+        $form->setLabel('message', 'Message');
         $form->setCols('message', 50);
 
-        $form->addSubmit(dgettext('signup', 'Send emails'));
+        $form->addSubmit('Send emails');
 
         $tpl = $form->getTemplate();
         
         if (!empty($_REQUEST['search'])) {
             $tpl['WARNING_LABEL'] = dgettext('signup','Note:');
-            $tpl['WARNING'] = dgettext('signup', 'This email will only go out to the people specified by the prior search');
+            $tpl['WARNING'] = 'This email will only go out to the people specified by the prior search';
         }
 
         $this->signup->title = sprintf(dgettext('signup', 'Email %s applicants'), $this->signup->sheet->title);
@@ -109,28 +109,28 @@ class Signup_Forms {
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_peep');
         if ($peep->id) {
-            $form->addSubmit(dgettext('signup', 'Update'));
+            $form->addSubmit('Update');
             $form->addHidden('peep_id', $peep->id);
-            $this->signup->title = dgettext('signup', 'Update applicant');
+            $this->signup->title = 'Update applicant';
         } else {
-            $form->addSubmit(dgettext('signup', 'Add'));
-            $this->signup->title = dgettext('signup', 'Add applicant');
+            $form->addSubmit('Add');
+            $this->signup->title = 'Add applicant';
         }
 
         $form->addHidden('sheet_id', $this->signup->sheet->id);
         $form->addHidden('slot_id', $this->signup->slot->id);
 
         $form->addText('first_name', $peep->first_name);
-        $form->setLabel('first_name', dgettext('signup', 'First name'));
+        $form->setLabel('first_name', 'First name');
 
         $form->addText('last_name', $peep->last_name);
-        $form->setLabel('last_name', dgettext('signup', 'Last name'));
+        $form->setLabel('last_name', 'Last name');
 
         $form->addText('email', $peep->email);
-        $form->setLabel('email', dgettext('signup', 'Email address'));
+        $form->setLabel('email', 'Email address');
 
         $form->addText('phone', $peep->getPhone());
-        $form->setLabel('phone', dgettext('signup', 'Phone number'));
+        $form->setLabel('phone', 'Phone number');
 
         if (!empty($this->signup->sheet->extra1)) {
             $form->addText('extra1', $peep->extra1);
@@ -150,7 +150,7 @@ class Signup_Forms {
 
         $tpl = $form->getTemplate();
 
-        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" />', dgettext('signup', 'Close'));
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" />', 'Close');
         $tpl['CLOSE'] = javascript('close_refresh', array('use_link'=>1));
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_peep.tpl');
@@ -166,25 +166,25 @@ class Signup_Forms {
         if ($this->signup->slot->id) {
             $this->signup->title = sprintf(dgettext('signup', 'Update %s slot'), $this->signup->sheet->title);
             $form->addHidden('slot_id', $this->signup->slot->id);
-            $form->addSubmit(dgettext('signup', 'Update'));
+            $form->addSubmit('Update');
         } else {
             $this->signup->title = sprintf(dgettext('signup', 'Add slot to %s'), $this->signup->sheet->title);
-            $form->addSubmit(dgettext('signup', 'Add'));
+            $form->addSubmit('Add');
         }
 
         $form->addText('title', $this->signup->slot->title);
         $form->setSize('title', 40);
-        $form->setLabel('title', dgettext('signup', 'Title'));
+        $form->setLabel('title', 'Title');
 
         $form->addText('openings', $this->signup->slot->openings);
         $form->setSize('openings', 5);
-        $form->setLabel('openings', dgettext('signup', 'Number of openings'));
+        $form->setLabel('openings', 'Number of openings');
 
         $tpl = $form->getTemplate();
 
         javascript('close_refresh', array('use_link'=>1));
         $tpl['CLEAR'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
-        dgettext('signup', 'Close'));
+        'Close');
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
     }
@@ -218,21 +218,21 @@ class Signup_Forms {
             $search = null;
         }
         $form->addText('search', $search);
-        $form->setLabel('search', dgettext('signup', 'Search slots'));
+        $form->setLabel('search', 'Search slots');
         $tpl = $form->getTemplate();
 
         $vars['aop'] = 'edit_slot_popup';
         $vars['sheet_id'] = $this->signup->sheet->id;
         $vars['slot_id'] = 0;
         $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $js['label'] = dgettext('signup', 'Add slot');
+        $js['label'] = 'Add slot';
         $tpl['ADD_SLOT'] = javascript('open_window', $js);
 
         $vars['aop'] = 'reset_slot_order';
-        $tpl['RESET'] = PHPWS_Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
+        $tpl['RESET'] = PHPWS_Text::secureLink('Reset order', 'signup', $vars);
 
         $vars['aop'] = 'alpha_order';
-        $tpl['ALPHA'] = PHPWS_Text::secureLink(dgettext('signup', 'Alphabetic order'), 'signup', $vars);
+        $tpl['ALPHA'] = PHPWS_Text::secureLink('Alphabetic order', 'signup', $vars);
 
         $slots = $this->signup->sheet->getAllSlots(false, $search);
 
@@ -257,48 +257,48 @@ class Signup_Forms {
         $form->addHidden('aop', 'post_sheet');
         if ($sheet->id) {
             $form->addHidden('sheet_id', $sheet->id);
-            $form->addSubmit(dgettext('signup', 'Update'));
-            $this->signup->title = dgettext('signup', 'Update signup sheet');
+            $form->addSubmit('Update');
+            $this->signup->title = 'Update signup sheet';
             $form->addTplTag('EDIT_SLOT', $this->signup->sheet->editSlotLink());
         } else {
-            $form->addSubmit(dgettext('signup', 'Create'));
-            $this->signup->title = dgettext('signup', 'Create signup sheet');
+            $form->addSubmit('Create');
+            $this->signup->title = 'Create signup sheet';
         }
 
         $form->addText('title', $sheet->title);
-        $form->setLabel('title', dgettext('signup', 'Title'));
+        $form->setLabel('title', 'Title');
 
         $form->addTextArea('description', $sheet->description);
-        $form->setLabel('description', dgettext('signup', 'Description'));
+        $form->setLabel('description', 'Description');
 
         $form->addText('contact_email', $sheet->contact_email);
-        $form->setLabel('contact_email', dgettext('signup', 'Contact email'));
+        $form->setLabel('contact_email', 'Contact email');
 
         $form->addCheck('multiple', 1);
         $form->setMatch('multiple', $sheet->multiple);
-        $form->setLabel('multiple', dgettext('signup', 'Allow multiple signups'));
+        $form->setLabel('multiple', 'Allow multiple signups');
 
         // Functionality not finished. Hide for now.
         /*
         $form->addText('start_time', $sheet->getStartTime());
-        $form->setLabel('start_time', dgettext('signup', 'Start signup'));
+        $form->setLabel('start_time', 'Start signup');
         */
 
         $form->addText('extra1', $sheet->extra1);
         $form->setSize('extra1', 40);
-        $form->setLabel('extra1', dgettext('signup', 'Extra information 1'));
+        $form->setLabel('extra1', 'Extra information 1');
 
         $form->addText('extra2', $sheet->extra2);
         $form->setSize('extra2', 40);
-        $form->setLabel('extra2', dgettext('signup', 'Extra information 2'));
+        $form->setLabel('extra2', 'Extra information 2');
 
         $form->addText('extra3', $sheet->extra3);
         $form->setSize('extra3', 40);
-        $form->setLabel('extra3', dgettext('signup', 'Extra information 3'));
+        $form->setLabel('extra3', 'Extra information 3');
 
         $form->addText('end_time', $sheet->getEndTime());
         $form->setClass('end_time', 'datepicker');
-        $form->setLabel('end_time', dgettext('signup', 'Close signup'));
+        $form->setLabel('end_time', 'Close signup');
 
         $js_vars['type'] = 'text_clock';
         $js_vars['form_name'] = 'signup_sheet';
@@ -329,17 +329,17 @@ class Signup_Forms {
         $pager->setModule('signup');
         $pager->setTemplate('applicants.tpl');
         $pager->addRowTags('rowtags');
-        $pager->addSortHeader('phone', dgettext('signup', 'Phone'));
-        $pager->addSortHeader('last_name', dgettext('signup', 'Last name'));
-        $pager->addSortHeader('first_name', dgettext('signup', 'First name'));
-        $pager->addSortHeader('email', dgettext('signup', 'Email'));
+        $pager->addSortHeader('phone', 'Phone');
+        $pager->addSortHeader('last_name', 'Last name');
+        $pager->addSortHeader('first_name', 'First name');
+        $pager->addSortHeader('email', 'Email');
 
         $vars['sheet_id'] = $this->signup->sheet->id;
         $vars['aop'] = 'csv_applicants';
-        $page_tags['CSV'] = PHPWS_Text::secureLink(dgettext('signup', 'CSV file'), 'signup', $vars);
+        $page_tags['CSV'] = PHPWS_Text::secureLink('CSV file', 'signup', $vars);
 
         $vars['aop'] = 'slot_listing';
-        $js['label'] = dgettext('signup', 'Slot listing');
+        $js['label'] = 'Slot listing';
         $js['menubar'] = 'yes';
         $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
         $page_tags['SLOT_LISTING'] = javascript('open_window', $js);
@@ -359,7 +359,7 @@ class Signup_Forms {
             $vars['orderby_dir'] = $pager->orderby_dir;
         }
 
-        $js['label'] = dgettext('signup', 'Print list');
+        $js['label'] = 'Print list';
         $js['width'] = '1024';
         $js['height'] = '768';
         $js['menubar'] = 'yes';
@@ -367,9 +367,9 @@ class Signup_Forms {
         $page_tags['PRINT'] = javascript('open_window', $js);
 
         $vars['aop'] = 'email_applicants';
-        $page_tags['EMAIL'] = PHPWS_Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars, null, "Email all people in the search results");
+        $page_tags['EMAIL'] = PHPWS_Text::secureLink('Email', 'signup', $vars, null, "Email all people in the search results");
 
-        $page_tags['EXTRA_LABEL'] = dgettext('signup', 'Extra details');
+        $page_tags['EXTRA_LABEL'] = 'Extra details';
         
         // Add a link that takes the user back to the signup sheets page, skipping all the re-sorts
         $vars['aop'] = 'menu';
@@ -391,9 +391,9 @@ class Signup_Forms {
 
     public function listSignup()
     {
-        $ptags['TITLE_HEADER'] = dgettext('signup', 'Title');
-        $ptags['START_TIME_HEADER'] = dgettext('signup', 'Start Time');
-        $ptags['END_TIME_HEADER'] = dgettext('signup', 'End Time');
+        $ptags['TITLE_HEADER'] = 'Title';
+        $ptags['START_TIME_HEADER'] = 'Start Time';
+        $ptags['END_TIME_HEADER'] = 'End Time';
 
         \phpws\PHPWS_Core::initModClass('signup', 'Sheet.php');
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
@@ -405,7 +405,7 @@ class Signup_Forms {
         \Canopy\Key::restrictEdit($pager->db, 'signup', 'edit_sheet');
 
         $this->signup->content = $pager->get();
-        $this->signup->title = dgettext('signup', 'Signup Sheets');
+        $this->signup->title = 'Signup Sheets';
     }
 
     public function userSignup()
@@ -422,7 +422,7 @@ class Signup_Forms {
         }
 
         if ($sheet->end_time < time()) {
-            $this->signup->title = dgettext('signup', 'Sorry');
+            $this->signup->title = 'Sorry';
             $this->signup->content = dgettext('signup', 'We are no longer accepting applications.');
             return;
         }
@@ -431,7 +431,7 @@ class Signup_Forms {
         $slots_filled = $sheet->totalSlotsFilled();
 
         if (empty($slots)) {
-            $this->signup->title = dgettext('signup', 'Sorry');
+            $this->signup->title = 'Sorry';
             $this->signup->content = dgettext('signup', 'There is a problem with this signup sheet. Please check back later.');
             return;
         }
@@ -460,28 +460,28 @@ class Signup_Forms {
         } else {
             $form = new PHPWS_Form('slots');
             $form->useFieldset();
-            $form->setLegend(dgettext('signup', 'Signup form'));
+            $form->setLegend('Signup form');
             $form->addHidden('module', 'signup');
             $form->addHidden('uop', 'slot_signup');
             $form->addHidden('sheet_id', $this->signup->sheet->id);
 
             $form->addSelect('slot_id', $options);
-            $form->setLabel('slot_id', dgettext('signup', 'Available slots'));
+            $form->setLabel('slot_id', 'Available slots');
             $form->setMatch('slot_id', $peep->slot_id);
 
             $form->addText('first_name', $peep->first_name);
-            $form->setLabel('first_name', dgettext('signup', 'First name'));
+            $form->setLabel('first_name', 'First name');
 
             $form->addText('last_name', $peep->last_name);
-            $form->setLabel('last_name', dgettext('signup', 'Last name'));
+            $form->setLabel('last_name', 'Last name');
 
             $form->addText('email', $peep->email);
             $form->setSize('email', 30);
-            $form->setLabel('email', dgettext('signup', 'Email address'));
+            $form->setLabel('email', 'Email address');
 
             $form->addText('phone', $peep->getPhone());
             $form->setSize('phone', 15);
-            $form->setLabel('phone', dgettext('signup', 'Phone number'));
+            $form->setLabel('phone', 'Phone number');
 
             if (!empty($this->signup->sheet->extra1)) {
                 $form->addText('extra1', $peep->extra1);
@@ -498,7 +498,7 @@ class Signup_Forms {
                 $form->setLabel('extra3', $this->signup->sheet->extra3);
             }
 
-            $form->addSubmit(dgettext('signup', 'Submit'));
+            $form->addSubmit('Submit');
 
             $tpl = $form->getTemplate();
         }

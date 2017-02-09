@@ -24,7 +24,7 @@ USER_ERR_BAD_VAR          => dgettext('users', 'Invalid variable name.'),
 USER_ERR_USER_NOT_SAVED   => dgettext('users', 'Unable to save user information.'),
 USER_ERR_BAD_GROUP_NAME   => dgettext('users', 'Improperly formatted group name.'),
 USER_ERR_GROUP_DNE        => dgettext('users', 'Group does not exist.'),
-USER_ERR_MISSING_GROUP    => dgettext('users', 'User is missing their permission group'),
+USER_ERR_MISSING_GROUP    => 'User is missing their permission group',
 USER_ERR_FAIL_ON_SUBPERM  => dgettext('users', 'Module tried to detect a non-existent permission.'),
 USER_ERR_NO_EMAIL         => dgettext('users', 'User\'s email address is missing.'),
 USER_ERR_BAD_EMAIL        => dgettext('users', 'User\'s email address is missing or malformed.'),
@@ -39,5 +39,5 @@ USER_NOT_ACTIVE           => dgettext('users', 'Your account has been deactivate
 USER_BAD_KEY              => dgettext('users', 'Unable to load key.'),
 USER_NOT_FOUND            => dgettext('users', 'Could not find user.'),
 USER_DEACTIVATED          => dgettext('users', 'User account deactivated.'),
-USER_PASSWORD_BLANK       => dgettext('users', 'Password was blank')
+USER_PASSWORD_BLANK       => 'Password was blank'
 );

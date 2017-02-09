@@ -105,7 +105,7 @@ class Signup_Slot {
     {
         $vars['aop'] = 'add_slot_peep';
         $vars['slot_id'] = $this->id;
-        $jsadd['label'] = dgettext('signup', 'Add applicant');
+        $jsadd['label'] = 'Add applicant';
         $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
         $jsadd['width'] = 300;
         $jsadd['height'] = 470;
@@ -118,7 +118,7 @@ class Signup_Slot {
 
         $vars['aop'] = 'edit_slot_popup';
         $links[] = javascript('open_window',
-                array('label' => dgettext('signup', 'Edit Slot'),
+                array('label' => 'Edit Slot',
             'address' => PHPWS_Text::linkAddress('signup', $vars, true)));
 
         if ($this->_filled < $this->openings) {
@@ -130,17 +130,17 @@ class Signup_Slot {
             $jsconf['QUESTION'] = dgettext('signup',
                     'Are you certain you want to delete this slot?');
             $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
-            $jsconf['LINK'] = dgettext('signup', 'Delete slot');
+            $jsconf['LINK'] = 'Delete slot';
             $links[] = javascript('confirm', $jsconf);
         }
 
         if ($this->s_order > 1) {
             $vars['aop'] = 'move_top';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Top'),
+            $links[] = PHPWS_Text::secureLink('Top',
                             'signup', $vars);
 
             $vars['aop'] = 'move_up';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'),
+            $links[] = PHPWS_Text::secureLink('Up',
                             'signup', $vars);
         }
 
@@ -150,11 +150,11 @@ class Signup_Slot {
         $slot_count = $db->select('one');
         if ($this->s_order < $slot_count) {
             $vars['aop'] = 'move_down';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'),
+            $links[] = PHPWS_Text::secureLink('Down',
                             'signup', $vars);
 
             $vars['aop'] = 'move_bottom';
-            $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Bottom'),
+            $links[] = PHPWS_Text::secureLink('Bottom',
                             'signup', $vars);
         }
 
@@ -228,22 +228,22 @@ class Signup_Slot {
                     $form->addHidden('aop', 'move_peep');
                     $form->addHidden('peep_id', $peep->id);
                     $form->addSelect('mv_slot', $options);
-                    $form->addSubmit(dgettext('signup', 'Go'));
+                    $form->addSubmit('Go');
                     $tmptpl = $form->getTemplate();
                     $subtpl['MOVE'] = $tmptpl['START_FORM'] . $tmptpl['MV_SLOT'] . $tmptpl['SUBMIT'] . $tmptpl['END_FORM'];
                 } else {
-                    $subtpl['MOVE'] = dgettext('signup', 'Other slots full');
+                    $subtpl['MOVE'] = 'Other slots full';
                 }
 
                 $tpl['peep-row'][] = $subtpl;
             }
 
-            $tpl['NAME_LABEL'] = dgettext('signup', 'Name');
-            $tpl['EMAIL_LABEL'] = dgettext('signup', 'Email');
-            $tpl['PHONE_LABEL'] = dgettext('signup', 'Phone');
-            $tpl['ACTION_LABEL'] = dgettext('signup', 'Action');
-            $tpl['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
-            $tpl['MOVE_LABEL'] = dgettext('signup', 'Move');
+            $tpl['NAME_LABEL'] = 'Name';
+            $tpl['EMAIL_LABEL'] = 'Email';
+            $tpl['PHONE_LABEL'] = 'Phone';
+            $tpl['ACTION_LABEL'] = 'Action';
+            $tpl['ORGANIZATION_LABEL'] = 'Organization';
+            $tpl['MOVE_LABEL'] = 'Move';
             $tpl['EXTRA1_LABEL'] = 'Extra info';
 
             return PHPWS_Template::process($tpl, 'signup', 'peeps.tpl');
@@ -268,7 +268,7 @@ class Signup_Slot {
 
         javascript('close_refresh', array('use_link' => 1));
         $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="closeWindow(); return false" />',
-                dgettext('signup', 'Close'));
+                'Close');
         return $tpl;
     }
 

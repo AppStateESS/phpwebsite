@@ -216,7 +216,7 @@ EOF;
             if ($thumbnail) {
                 $values['label'] = $this->getThumbnail();
             } else {
-                $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'View full image'));
+                $values['label'] = sprintf('<img src="%smod/filecabinet/img/viewmag+.png" title="%s" />', PHPWS_SOURCE_HTTP, 'View full image');
             }
         }
 
@@ -250,9 +250,9 @@ EOF;
         $jsvars['window_name'] = 'edit_link';
 
         if ($icon) {
-            $jsvars['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit multimedia file'));
+            $jsvars['label'] = Icon::show('edit', 'Edit multimedia file');
         } else {
-            $jsvars['label'] = dgettext('filecabinet', 'Edit');
+            $jsvars['label'] = 'Edit';
         }
         return javascript('open_window', $jsvars);
     }
@@ -274,7 +274,7 @@ EOF;
         if ($icon) {
             $js['LINK'] = Icon::show('delete');
         } else {
-            $js['LINK'] = dgettext('filecabinet', 'Delete');
+            $js['LINK'] = 'Delete';
         }
 
         return javascript('confirm', $js);

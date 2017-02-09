@@ -76,7 +76,7 @@ class Cabinet_Form
                 break;
         }
 
-        $pagetags['ITEM_LABEL'] = dgettext('filecabinet', 'Items');
+        $pagetags['ITEM_LABEL'] = 'Items';
 
         $form = new PHPWS_Form('folder-search');
         $form->setMethod('get');
@@ -85,7 +85,7 @@ class Cabinet_Form
         $form->addHidden('ftype', $folder->ftype);
         $folder_search = isset($_GET['folder_search']) ? $_GET['folder_search'] : null;
         $form->addText('folder_search', $folder_search);
-        $form->addSubmit(dgettext('filecabinet', 'Search folders for file'));
+        $form->addSubmit('Search folders for file');
         $search_tpl = $form->getTemplate();
 
         $pagetags['FILE_SEARCH'] = $search_tpl['START_FORM'] . $search_tpl['FOLDER_SEARCH'] . $search_tpl['SUBMIT'] . $search_tpl['END_FORM'];
@@ -102,8 +102,8 @@ class Cabinet_Form
             }
         }
 
-        $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
-        $pager->addSortHeader('public_folder', dgettext('filecabinet', 'Public'));
+        $pager->addSortHeader('title', 'Title');
+        $pager->addSortHeader('public_folder', 'Public');
         $pager->setModule('filecabinet');
         $pager->setTemplate('Forms/folder_list.tpl');
         $pager->addPageTags($pagetags);
@@ -120,7 +120,7 @@ class Cabinet_Form
      */
     public function classifyFileList()
     {
-        $this->cabinet->title = dgettext('filecabinet', 'Classify files');
+        $this->cabinet->title = 'Classify files';
 
         $classify_dir = $this->cabinet->getClassifyDir();
 
@@ -151,30 +151,30 @@ class Cabinet_Form
         $image_folders = Cabinet::listFolders(IMAGE_FOLDER, true);
         if (!empty($image_folders)) {
             $form->addSelect('image_folders', $image_folders);
-            $form->addSubmit('image_force', dgettext('filecabinet', 'Put all checked images here'));
+            $form->addSubmit('image_force', 'Put all checked images here');
         }
 
         $document_folders = Cabinet::listFolders(DOCUMENT_FOLDER, true);
         if (!empty($document_folders)) {
             $form->addSelect('document_folders', $document_folders);
-            $form->addSubmit('document_force', dgettext('filecabinet', 'Put all checked documents here'));
+            $form->addSubmit('document_force', 'Put all checked documents here');
         }
 
         $media_folders = Cabinet::listFolders(MULTIMEDIA_FOLDER, true);
         if (!empty($media_folders)) {
             $form->addSelect('media_folders', $media_folders);
-            $form->addSubmit('media_force', dgettext('filecabinet', 'Put all checked media here'));
+            $form->addSubmit('media_force', 'Put all checked media here');
         }
 
 
         $options['classify'] = dgettext('filecabinet', '-- Pick option --');
-        $options['classify_file'] = dgettext('filecabinet', 'Classify checked');
-        $options['delete_incoming'] = dgettext('filecabinet', 'Delete checked');
+        $options['classify_file'] = 'Classify checked';
+        $options['delete_incoming'] = 'Delete checked';
 
         $form->addSelect('process_checked', $options);
         $tpl = $form->getTemplate();
 
-        $js_vars['value'] = dgettext('filecabinet', 'Go');
+        $js_vars['value'] = 'Go';
         $js_vars['select_id'] = 'classify_file_list_aop';
         $js_vars['action_match'] = 'delete_incoming';
         $js_vars['message'] = dgettext('filecabinet', 'Are you sure you wish to delete these files?');
@@ -193,26 +193,26 @@ class Cabinet_Form
 
             if (!$this->cabinet->fileTypeAllowed($file)) {
                 $rowtpl['ERROR'] = ' class="error"';
-                $rowtpl['MESSAGE'] = dgettext('filecabinet', 'File type not allowed');
+                $rowtpl['MESSAGE'] = 'File type not allowed';
             } elseif (!PHPWS_File::checkMimeType($classify_dir . $file)) {
                 if (!is_readable($classify_dir . $file)) {
                     $rowtpl['ERROR'] = ' class="error"';
-                    $rowtpl['MESSAGE'] = dgettext('filecabinet', 'File is unreadable');
+                    $rowtpl['MESSAGE'] = 'File is unreadable';
                 } else {
                     $rowtpl['ERROR'] = ' class="error"';
-                    $rowtpl['MESSAGE'] = dgettext('filecabinet', 'Unknown or mismatched mime type');
+                    $rowtpl['MESSAGE'] = 'Unknown or mismatched mime type';
                 }
             } else {
                 $rowtpl['CHECK'] = sprintf('<input type="checkbox" id="%s" name="file_list[]" value="%s" />', $id, $file);
                 $rowtpl['ERROR'] = $rowtpl['MESSAGE'] = null;
                 $vars['aop'] = 'classify_file';
-                $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Classify'), 'filecabinet', $vars);
+                $links[] = PHPWS_Text::secureLink('Classify', 'filecabinet', $vars);
             }
 
             $vars['aop'] = 'delete_incoming';
             $cnf_js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this file?');
             $cnf_js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $cnf_js['LINK'] = dgettext('filecabinet', 'Delete');
+            $cnf_js['LINK'] = 'Delete';
             $links[] = javascript('confirm', $cnf_js);
 
             $rowtpl['ACTION'] = implode(' | ', $links);
@@ -220,9 +220,9 @@ class Cabinet_Form
             $tpl['file-list'][] = $rowtpl;
         }
 
-        $tpl['FILENAME_LABEL'] = dgettext('filecabinet', 'File name');
-        $tpl['FILETYPE_LABEL'] = dgettext('filecabinet', 'File type');
-        $tpl['ACTION_LABEL'] = dgettext('filecabinet', 'Action');
+        $tpl['FILENAME_LABEL'] = 'File name';
+        $tpl['FILETYPE_LABEL'] = 'File type';
+        $tpl['ACTION_LABEL'] = 'Action';
 
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'Forms/classify_list.tpl');
     }
@@ -242,19 +242,19 @@ class Cabinet_Form
         }
 
         $form->addTextField('title', $folder->title);
-        $form->setLabel('title', dgettext('filecabinet', 'Title'));
+        $form->setLabel('title', 'Title');
         $form->setClass('title', 'form-control');
 
         if ($folder->ftype == DOCUMENT_FOLDER) {
             $form->addRadio('public_folder', array(0, 1));
-            $form->setLabel('public_folder', array(dgettext('filecabinet', 'Indirect links'),
-                dgettext('filecabinet', 'Direct links')));
+            $form->setLabel('public_folder', array('Indirect links',
+                'Direct links'));
         }
         $form->setMatch('public_folder', $folder->public_folder);
         if ($folder->ftype == IMAGE_FOLDER) {
             $resizes = Cabinet::getResizes(0, true);
             $form->addSelect('max_image_dimension', $resizes);
-            $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image upload dimension'));
+            $form->setLabel('max_image_dimension', 'Maximum image upload dimension');
             $form->setMatch('max_image_dimension', $folder->max_image_dimension);
             $form->setClass('max_image_dimension', 'form-control');
         }
@@ -306,7 +306,7 @@ class Cabinet_Form
             $operation = 'dop';
             $label = _('Add document');
             $command = 'upload_document_form';
-            $pager->addSortHeader('downloaded', sprintf('<abbr title="%s">%s</abbr>', dgettext('filecabinet', 'Downloaded'), dgettext('filecabinet', 'DL')));
+            $pager->addSortHeader('downloaded', sprintf('<abbr title="%s">%s</abbr>', 'Downloaded', 'DL'));
         } elseif ($folder->ftype = MULTIMEDIA_FOLDER) {
             \phpws\PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
             $pager = new DBPager('multimedia', 'PHPWS_Multimedia');
@@ -341,7 +341,7 @@ EOF;
 
         if ($this->cabinet->panel) {
             $pagetags['BACK'] = PHPWS_Text::moduleLink('<i class="fa fa-reply"></i> ' .
-                            dgettext('filecabinet', 'Back to folder list'), 'filecabinet', array('tab' => $this->cabinet->panel->getCurrentTab()), null, null, 'btn btn-default');
+                            'Back to folder list', 'filecabinet', array('tab' => $this->cabinet->panel->getCurrentTab()), null, null, 'btn btn-default');
         }
 
         if (!empty($links)) {
@@ -349,7 +349,7 @@ EOF;
         }
 
         $pagetags['MODAL'] = $this->getModal();
-        $pagetags['ACTION_LABEL'] = dgettext('filecabinet', 'Action');
+        $pagetags['ACTION_LABEL'] = 'Action';
 
         $pager->setLimitList($limits);
 
@@ -359,10 +359,10 @@ EOF;
         $pager->setModule('filecabinet');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags');
-        $pager->addSortHeader('title', dgettext('filecabinet', 'Title'));
-        $pager->addSortHeader('file_name', dgettext('filecabinet', 'File name'));
-        $pager->addSortHeader('file_type', dgettext('filecabinet', 'File type'));
-        $pager->addSortHeader('size', dgettext('filecabinet', 'Size'));
+        $pager->addSortHeader('title', 'Title');
+        $pager->addSortHeader('file_name', 'File name');
+        $pager->addSortHeader('file_type', 'File type');
+        $pager->addSortHeader('size', 'Size');
 
         $pager->setEmptyMessage(dgettext('filecabinet', 'Folder is empty.'));
         $this->cabinet->content = $pager->get();
@@ -391,11 +391,11 @@ EOF;
         $form->addHidden('aop', 'pin_folder');
         $form->addHidden('key_id', $key_id);
         $form->addSelect('folder_id', $result);
-        $form->setLabel('folder_id', dgettext('filecabinet', 'Folder'));
-        $form->addSubmit('submit', dgettext('filecabinet', 'Pin folder'));
+        $form->setLabel('folder_id', 'Folder');
+        $form->addSubmit('submit', 'Pin folder');
         $tpl = $form->getTemplate();
 
-        $tpl['CANCEL'] = javascript('close_window', array('value' => dgettext('filecabinet', 'Cancel')));
+        $tpl['CANCEL'] = javascript('close_window', array('value' => 'Cancel'));
 
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'Forms/pin_folder.tpl');
     }
@@ -408,20 +408,20 @@ EOF;
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'save_settings');
 
-        $form->addTplTag('DOCUMENT_SETTINGS', dgettext('filecabinet', 'Document settings'));
-        $form->addTplTag('IMAGE_SETTINGS', dgettext('filecabinet', 'Image settings'));
-        $form->addTplTag('MULTIMEDIA_SETTINGS', dgettext('filecabinet', 'Multimedia settings'));
+        $form->addTplTag('DOCUMENT_SETTINGS', 'Document settings');
+        $form->addTplTag('IMAGE_SETTINGS', 'Image settings');
+        $form->addTplTag('MULTIMEDIA_SETTINGS', 'Multimedia settings');
 
         $form->addText('base_doc_directory', PHPWS_Settings::get('filecabinet', 'base_doc_directory'));
         $form->setSize('base_doc_directory', '50');
-        $form->setLabel('base_doc_directory', dgettext('filecabinet', 'Base document directory'));
+        $form->setLabel('base_doc_directory', 'Base document directory');
 
         $form->addCheckBox('autofloat', 1);
         $form->setMatch('autofloat', PHPWS_Settings::get('filecabinet', 'autofloat'));
-        $form->setLabel('autofloat', dgettext('filecabinet', 'Float new images under 300px to the right of content'));
+        $form->setLabel('autofloat', 'Float new images under 300px to the right of content');
 
         $form->addText('max_image_dimension', PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
-        $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image pixel dimension'));
+        $form->setLabel('max_image_dimension', 'Maximum image pixel dimension');
         $form->setSize('max_image_dimension', 4, 4);
 
         $form->addText('max_image_size', $sizes['image']);
@@ -445,7 +445,7 @@ EOF;
         $form->setSize('max_pinned_documents', 3, 3);
 
         $form->addText('crop_threshold', PHPWS_Settings::get('filecabinet', 'crop_threshold'));
-        $form->setLabel('crop_threshold', dgettext('filecabinet', 'Crop pixel threshold'));
+        $form->setLabel('crop_threshold', 'Crop pixel threshold');
         $form->setSize('crop_threshold', 4, 4);
 
         $form->addCheck('use_ffmpeg', 1);
@@ -453,22 +453,22 @@ EOF;
 
         $form->addCheck('caption_images', 1);
         $form->setMatch('caption_images', PHPWS_Settings::get('filecabinet', 'caption_images'));
-        $form->setLabel('caption_images', dgettext('filecabinet', 'Caption images'));
+        $form->setLabel('caption_images', 'Caption images');
 
         $form->addCheck('allow_direct_links', 1);
         $form->setMatch('allow_direct_links', PHPWS_Settings::get('filecabinet', 'allow_direct_links'));
-        $form->setLabel('allow_direct_links', dgettext('filecabinet', 'Allow direct links to documents'));
+        $form->setLabel('allow_direct_links', 'Allow direct links to documents');
 
         $form->addCheck('force_thumbnail_dimensions', 1);
         $form->setMatch('force_thumbnail_dimensions', PHPWS_Settings::get('filecabinet', 'force_thumbnail_dimensions'));
-        $form->setLabel('force_thumbnail_dimensions', dgettext('filecabinet', 'Force thumbnail dimensions on display'));
+        $form->setLabel('force_thumbnail_dimensions', 'Force thumbnail dimensions on display');
 
         $form->addCheck('popup_image_navigation', 1);
         $form->setMatch('popup_image_navigation', PHPWS_Settings::get('filecabinet', 'popup_image_navigation'));
-        $form->setLabel('popup_image_navigation', dgettext('filecabinet', 'Popup images allow folder navigation'));
+        $form->setLabel('popup_image_navigation', 'Popup images allow folder navigation');
 
         $form->addText('max_thumbnail_size', PHPWS_Settings::get('filecabinet', 'max_thumbnail_size'));
-        $form->setLabel('max_thumbnail_size', dgettext('filecabinet', 'Maximum thumbnail pixel dimension'));
+        $form->setLabel('max_thumbnail_size', 'Maximum thumbnail pixel dimension');
         $form->setSize('max_thumbnail_size', 3, 3);
 
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
@@ -476,37 +476,37 @@ EOF;
             $form->setDisabled('use_ffmpeg');
             $form->setLabel('use_ffmpeg', dgettext('filecabinet', 'Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)'));
         } else {
-            $form->setLabel('use_ffmpeg', dgettext('filecabinet', 'Enable FFMpeg thumbnails'));
+            $form->setLabel('use_ffmpeg', 'Enable FFMpeg thumbnails');
         }
 
-        $form->addTplTag('CLASSIFY_SETTINGS', dgettext('filecabinet', 'Classify settings'));
+        $form->addTplTag('CLASSIFY_SETTINGS', 'Classify settings');
         $form->addText('ffmpeg_directory', $ffmpeg_directory);
-        $form->setLabel('ffmpeg_directory', dgettext('filecabinet', 'FFMpeg directory'));
+        $form->setLabel('ffmpeg_directory', 'FFMpeg directory');
         $form->setSize('ffmpeg_directory', 40);
 
         if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
             $form->addText('classify_directory', PHPWS_Settings::get('filecabinet', 'classify_directory'));
-            $form->setLabel('classify_directory', dgettext('filecabinet', 'Incoming classify directory'));
+            $form->setLabel('classify_directory', 'Incoming classify directory');
             $form->setSize('classify_directory', 50, 255);
         }
 
-        $form->addRadioAssoc('jcaro_type', array(0 => dgettext('filecabinet', 'Horizontal'),
-            1 => dgettext('filecabinet', 'Vertical')));
+        $form->addRadioAssoc('jcaro_type', array(0 => 'Horizontal',
+            1 => 'Vertical'));
         $form->setMatch('jcaro_type', (int) PHPWS_Settings::get('filecabinet', 'vertical_folder'));
 
         $num = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8);
         $form->addSelect('number_visible', $num);
         $form->setMatch('number_visible', PHPWS_Settings::get('filecabinet', 'number_visible'));
-        $form->setLabel('number_visible', dgettext('filecabinet', 'Number of thumbnails visible'));
+        $form->setLabel('number_visible', 'Number of thumbnails visible');
 
-        $form->addSubmit(dgettext('filecabinet', 'Save settings'));
+        $form->addSubmit('Save settings');
         $tpl = $form->getTemplate();
 
-        $tpl['CAROUSEL'] = dgettext('filecabinet', 'Carousel defaults');
-        $tpl['SYSTEM_SIZE'] = dgettext('filecabinet', 'System upload limits');
-        $tpl['SYSTEM_LABEL'] = dgettext('filecabinet', 'Server upload limit');
-        $tpl['FORM_LABEL'] = dgettext('filecabinet', 'Form upload limit');
-        $tpl['ABSOLUTE_LABEL'] = dgettext('filecabinet', 'Absolute upload limit');
+        $tpl['CAROUSEL'] = 'Carousel defaults';
+        $tpl['SYSTEM_SIZE'] = 'System upload limits';
+        $tpl['SYSTEM_LABEL'] = 'Server upload limit';
+        $tpl['FORM_LABEL'] = 'Form upload limit';
+        $tpl['ABSOLUTE_LABEL'] = 'Absolute upload limit';
 
         $tpl['MAX_SYSTEM_SIZE'] = File_Common::humanReadable($sizes['system']);
         $tpl['MAX_FORM_SIZE'] = File_Common::humanReadable($sizes['form']);
@@ -519,7 +519,7 @@ Do not run this process unless you are sure it will fix download problems.
 If you are sure, type Y-E-S below.'),
                 'address' => $link->getAddress(),
                 'value_name' => 'confirm',
-                'link' => dgettext('filecabinet', 'Reindex document directories')
+                'link' => 'Reindex document directories'
             );
             $tpl['FIX_DIRECTORIES'] = javascript('prompt', $js);
         }
@@ -530,7 +530,7 @@ If you are sure, type Y-E-S below.'),
     public function classifyFile($files)
     {
         $tpl = null;
-        $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
+        $this->cabinet->title = 'Classify Files';
         $classify_dir = $this->cabinet->getClassifyDir();
 
         if (empty($classify_dir) || !is_dir($classify_dir)) {
@@ -576,22 +576,22 @@ If you are sure, type Y-E-S below.'),
 
             $form->addSelect("folder[$count]", $folders);
             $form->setTag("folder[$count]", 'folder');
-            $form->setLabel("folder[$count]", dgettext('filecabinet', 'Folder'));
+            $form->setLabel("folder[$count]", 'Folder');
 
             $form->addText("file_title[$count]", $file);
-            $form->setLabel("file_title[$count]", dgettext('filecabinet', 'Title'));
+            $form->setLabel("file_title[$count]", 'Title');
             $form->setTag("file_title[$count]", 'file_title');
             $form->setSize("file_title[$count]", 40);
 
             $form->addTextarea("file_description[$count]");
-            $form->setLabel("file_description[$count]", dgettext('filecabinet', 'Description'));
+            $form->setLabel("file_description[$count]", 'Description');
             $form->setTag("file_description[$count]", 'file_description');
 
-            $form->addSubmit('submit', dgettext('filecabinet', 'Classify files'));
+            $form->addSubmit('submit', 'Classify files');
             $subtpl = $form->getTemplate();
             $subtpl['HIDDEN'] = sprintf('<input type="hidden" name="file_count[%s]" value="%s" />', $count, $file);
             $subtpl['FILE_NAME'] = $file;
-            $subtpl['FILE_NAME_LABEL'] = dgettext('filecabinet', 'File name');
+            $subtpl['FILE_NAME_LABEL'] = 'File name';
 
             unset($subtpl['START_FORM']);
             unset($subtpl['END_FORM']);
@@ -647,7 +647,7 @@ If you are sure, type Y-E-S below.'),
         }
 
         $form->useRowRepeat();
-        $form->addSubmit(dgettext('filecabinet', 'Save allowed files'));
+        $form->addSubmit('Save allowed files');
         $tpl = $form->getTemplate();
 
         $tpl['CHECK_IMAGES'] = javascript('check_all', array('checkbox_name' => 'allowed_images'));
@@ -678,7 +678,7 @@ If you are sure, type Y-E-S below.'),
     public function saveSettings()
     {
         if (empty($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Default document directory may not be blank');
+            $errors[] = 'Default document directory may not be blank';
         } elseif (!is_dir($_POST['base_doc_directory'])) {
             $errors[] = dgettext('filecabinet', 'Document directory does not exist.');
         } elseif (!is_writable($_POST['base_doc_directory'])) {

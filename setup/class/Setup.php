@@ -33,7 +33,7 @@ class Setup
 
     public function __construct()
     {
-        include 'src-phpws-legacy/src/version.php';
+        include PHPWS_SOURCE_DIR . 'src-phpws-legacy/version.php';
         $this->phpws_version = $version;
         if (isset($_REQUEST['step'])) {
             $this->setStep($_REQUEST['step']);
@@ -94,7 +94,7 @@ class Setup
                                 'Permission Help') . '</a>';
             }
         }
-        $this->title = dgettext('core', 'Create Configuration File');
+        $this->title = 'Create Configuration File';
     }
 
     /**
@@ -256,10 +256,9 @@ class Setup
         try {
             $checkConnection = $this->testDBConnect();
         } catch (\Exception $e) {
+            $message = $e->getMessage();
             // tests for missing database in mysql and postgresql
-            if ( (preg_match('@42000@', $e->getMessage()) &&
-                    preg_match('@1049@', $e->getMessage())) ||
-                    preg_match('@08006@', $e->getMessage())) {
+            if (preg_match('@(42000|1049|08006)@', $message)) {
                 $checkConnection = -1;
             } else {
                 throw $e;
@@ -496,41 +495,41 @@ class Setup
         if (isset($this->messages['dbname'])) {
             $formTpl['DBNAME_ERR'] = $this->messages['dbname'];
         }
-        $formTpl['TITLE'] = dgettext('core', 'Database configuration');
+        $formTpl['TITLE'] = 'Database configuration';
         $form->addSelect('dbtype', $databases);
         $form->setMatch('dbtype', $this->getConfigSet('dbtype'));
-        $form->setLabel('dbtype', dgettext('core', 'Database Type'));
+        $form->setLabel('dbtype', 'Database Type');
 
         $form->addText('dbuser', $this->getConfigSet('dbuser'));
         $form->setSize('dbuser', 20);
-        $form->setLabel('dbuser', dgettext('core', 'Database User'));
+        $form->setLabel('dbuser', 'Database User');
 
         $form->addPassword('dbpass', $this->getConfigSet('dbpass'));
         $form->allowValue('dbpass');
         $form->setSize('dbpass', 20);
-        $form->setLabel('dbpass', dgettext('core', 'Database Password'));
+        $form->setLabel('dbpass', 'Database Password');
 
         $form->addText('dbprefix', $this->getConfigSet('dbprefix'));
         $form->setSize('dbprefix', 5, 5);
-        $form->setLabel('dbprefix', dgettext('core', 'Table prefix'));
+        $form->setLabel('dbprefix', 'Table prefix');
 
         $form->addText('dbhost', $this->getConfigSet('dbhost'));
         $form->setSize('dbhost', 20);
-        $form->setLabel('dbhost', dgettext('core', 'Host Specification'));
+        $form->setLabel('dbhost', 'Host Specification');
 
         $form->addText('dbport', $this->getConfigSet('dbport'));
         $form->setSize('dbport', 6);
-        $form->setLabel('dbport', dgettext('core', 'Host Specification Port'));
+        $form->setLabel('dbport', 'Host Specification Port');
 
         $form->addText('dbname', $this->getConfigSet('dbname'));
         $form->setSize('dbname', 20);
-        $form->setLabel('dbname', dgettext('core', 'Database Name'));
+        $form->setLabel('dbname', 'Database Name');
 
         $form->mergeTemplate($formTpl);
 
-        $form->addSubmit('default_submit', dgettext('core', 'Continue'));
+        $form->addSubmit('default_submit', 'Continue');
         $this->content = $this->createForm($form, 'databaseConfig.tpl');
-        $this->title = dgettext('core', 'Configure phpWebSite');
+        $this->title = 'Configure phpWebSite';
         $this->display();
     }
 
@@ -586,7 +585,7 @@ class Setup
             $this->content[] = dgettext('core',
                     'phpWebSite depends on sessions to move data between pages.');
             $this->content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>',
-                    DEFAULT_LANGUAGE, dgettext('core', 'Sessions Help'));
+                    DEFAULT_LANGUAGE, 'Sessions Help');
             $this->content[] = sprintf(dgettext('core',
                             'If you think your sessions are working properly, %syou can click here return to the beginning%s.'),
                     '<a href="index.php">', '</a>');
@@ -655,18 +654,18 @@ class Setup
         $form = new PHPWS_Form;
         $form->addHidden('step', 5);
         $form->addText('username', $_SESSION['User']->username);
-        $form->setLabel('username', dgettext('users', 'Username'));
+        $form->setLabel('username', 'Username');
 
         $form->addText('email', $_SESSION['User']->email);
-        $form->setLabel('email', dgettext('users', 'Email'));
+        $form->setLabel('email', 'Email');
 
         $form->addPassword('pass1');
-        $form->setLabel('pass1', dgettext('users', 'Password'));
+        $form->setLabel('pass1', 'Password');
 
         $form->addPassword('pass2');
-        $form->setLabel('pass2', dgettext('users', 'Confirm'));
-        $form->addSubmit(dgettext('core', 'Create my account'));
-        $this->title = dgettext('core', 'Please create your new user account');
+        $form->setLabel('pass2', 'Confirm');
+        $form->addSubmit('Create my account');
+        $this->title = 'Please create your new user account';
         $this->content[] = $this->createForm($form, 'new_user.html');
         $this->display();
     }
@@ -819,54 +818,54 @@ class Setup
 
         $test['pear_files']['pass'] = is_file('vendor/autoload.php');
         $test['pear_files']['fail'] = 'Install composer and run it in the root of your installation directory.';
-        $test['pear_files']['name'] = dgettext('core', 'Composer installed');
+        $test['pear_files']['name'] = 'Composer installed';
         $test['pear_files']['crit'] = true;
 
         $test['gd']['pass'] = extension_loaded('gd');
         $test['gd']['fail'] = sprintf(dgettext('core',
                         'You need to compile the %sGD image library%s into PHP.'),
                 '<a href="http://www.libgd.org/Main_Page">', '</a>');
-        $test['gd']['name'] = dgettext('core', 'GD graphic libraries installed');
+        $test['gd']['name'] = 'GD graphic libraries installed';
         $test['gd']['crit'] = true;
 
         $test['image_dir']['pass'] = is_dir('images/') && is_writable('images/');
         $test['image_dir']['fail'] = sprintf(dgettext('core',
                         '%s directory does not exist or is not writable.'),
                 PHPWS_SOURCE_DIR . 'images/');
-        $test['image_dir']['name'] = dgettext('core', 'Image directory ready');
+        $test['image_dir']['name'] = 'Image directory ready';
         $test['image_dir']['crit'] = true;
 
         $test['conf']['pass'] = is_dir('config/core/') && is_writable('config/core/');
         $test['conf']['fail'] = sprintf(dgettext('core',
                         '%s directory does not exist or is not writable.'),
                 PHPWS_SOURCE_DIR . 'config/core/');
-        $test['conf']['name'] = dgettext('core', 'Config directory ready');
+        $test['conf']['name'] = 'Config directory ready';
         $test['conf']['crit'] = true;
 
         $test['file_dir']['pass'] = is_dir('files/') && is_writable('files/');
         $test['file_dir']['fail'] = sprintf(dgettext('core',
                         '%s directory does not exist or is not writable.'),
                 PHPWS_SOURCE_DIR . 'files/');
-        $test['file_dir']['name'] = dgettext('core', 'File directory ready');
+        $test['file_dir']['name'] = 'File directory ready';
         $test['file_dir']['crit'] = true;
 
         $test['log_dir']['pass'] = is_dir('logs/') && is_writable('logs/');
         $test['log_dir']['fail'] = sprintf(dgettext('core',
                         '%s directory does not exist or is not writable.'),
                 PHPWS_SOURCE_DIR . 'logs/');
-        $test['log_dir']['name'] = dgettext('core', 'Log directory ready');
+        $test['log_dir']['name'] = 'Log directory ready';
         $test['log_dir']['crit'] = true;
 
         $test['ffmpeg']['pass'] = is_file('/usr/bin/ffmpeg');
         $test['ffmpeg']['fail'] = dgettext('core',
                 'You do not appear to have ffmpeg installed. File Cabinet will not be able to create thumbnail images from uploaded videos');
-        $test['ffmpeg']['name'] = dgettext('core', 'FFMPEG installed');
+        $test['ffmpeg']['name'] = 'FFMPEG installed';
         $test['ffmpeg']['crit'] = false;
 
         $test['mime_type']['pass'] = function_exists('finfo_open') || function_exists('mime_content_type') || !ini_get('safe_mode');
         $test['mime_type']['fail'] = dgettext('core',
                 'Unable to detect MIME file type. You will need to compile finfo_open into PHP.');
-        $test['mime_type']['name'] = dgettext('core', 'MIME file type detection');
+        $test['mime_type']['name'] = 'MIME file type detection';
         $test['mime_type']['crit'] = true;
 
         if (preg_match('/-/', PHP_VERSION)) {
@@ -880,7 +879,7 @@ class Setup
         $test['php_version']['fail'] = sprintf(dgettext('core',
                         'Your server must run PHP version 5.1.0 or higher. You are running version %s.'),
                 $phpversion);
-        $test['php_version']['name'] = dgettext('core', 'PHP 5 version check');
+        $test['php_version']['name'] = 'PHP 5 version check';
         $test['php_version']['crit'] = true;
 
         $memory_limit = (int) ini_get('memory_limit');
@@ -890,19 +889,19 @@ class Setup
                 'Your PHP memory limit is less than 8MB. You may encounter problems with the script at this level.');
         $test['memory']['fail'] .= dgettext('core',
                 'We suggest raising the limit in your php.ini file or uncommenting the "ini_set(\'memory_limit\', \'10M\');" line in your config/core/config.php file after installation.');
-        $test['memory']['name'] = dgettext('core', 'Memory limit exceeded');
+        $test['memory']['name'] = 'Memory limit exceeded';
         $test['memory']['crit'] = false;
 
         $test['globals']['pass'] = !(bool) ini_get('register_globals');
         $test['globals']['fail'] = dgettext('core',
                 'You have register_globals enabled. You should disable it.');
-        $test['globals']['name'] = dgettext('core', 'Register globals disabled');
+        $test['globals']['name'] = 'Register globals disabled';
         $test['globals']['crit'] = false;
 
         $test['magic_quotes']['pass'] = !get_magic_quotes_gpc() && !get_magic_quotes_runtime();
         $test['magic_quotes']['fail'] = dgettext('core',
                 'Magic quotes is enabled. Please disable it in your php.ini file.');
-        $test['magic_quotes']['name'] = dgettext('core', 'Magic quotes disabled');
+        $test['magic_quotes']['name'] = 'Magic quotes disabled';
         $test['magic_quotes']['crit'] = true;
 
         foreach ($test as $test_section => $val) {
@@ -961,7 +960,7 @@ class Setup
                         $this->content[] = dgettext('core',
                                 'Core modules installed successfully.');
                         $this->content[] = sprintf('<a href="index.php?step=4">%s</a>',
-                                dgettext('core', 'Click to continue'));
+                                'Click to continue');
                     }
                 }
                 break;

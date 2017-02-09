@@ -352,7 +352,7 @@ class PHPWS_Calendar {
         if (!$this->schedule->id) {
             $this->loadDefaultSchedule();
             if (!$this->schedule->id) {
-                $this->schedule->title = dgettext('calendar', 'General');
+                $this->schedule->title = 'General';
             }
         }
 

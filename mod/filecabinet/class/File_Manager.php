@@ -202,10 +202,10 @@ class FC_File_Manager
             $title = dgettext('filecabinet', 'Add a image, an image folder, or a randomly changing image');
         } elseif (in_array(FC_DOCUMENT, $this->lock_type)) {
             $placeholder_file = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/file_type/document200.png';
-            $title = dgettext('filecabinet', 'Add a document or a document folder');
+            $title = 'Add a document or a document folder';
         } elseif (in_array(FC_MEDIA, $this->lock_type)) {
             $placeholder_file = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/file_manager/file_type/media200.png';
-            $title = dgettext('filecabinet', 'Add a video or sound file');
+            $title = 'Add a video or sound file';
         }
 
         // Determine placeholder display size
@@ -264,7 +264,7 @@ class FC_File_Manager
     // Copy of image manager's getClearLink
     public function clearLink()
     {
-        $js_vars['label'] = dgettext('filecabinet', 'Clear file');
+        $js_vars['label'] = 'Clear file';
         $js_vars['id'] = $this->session_id;
         $js_vars['img'] = str_replace("'", "\'", $this->placeHolder());
 
@@ -324,7 +324,7 @@ class FC_File_Manager
     {
         /*
           if (empty($label)) {
-          $label   = dgettext('filecabinet', 'Edit file');
+          $label   = 'Edit file';
           }
           return '<input type="button" value="' . $label . '" onclick="edit_file()" />';
          */
@@ -332,11 +332,11 @@ class FC_File_Manager
         $js['height'] = 600;
         $js['id'] = 'edit-file';
         if (empty($label)) {
-            $js['label'] = dgettext('filecabinet', 'Edit file');
+            $js['label'] = 'Edit file';
         } else {
             $js['label'] = $label;
         }
-        $js['title'] = dgettext('filecabinet', 'Edit the current file');
+        $js['title'] = 'Edit the current file';
         $js['address'] = $this->editAddress();
         $js['window_name'] = 'edit_file';
         return javascript('open_window', $js);
@@ -358,11 +358,11 @@ class FC_File_Manager
     public function startView()
     {
         Layout::addStyle('filecabinet');
-        $document_img = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/document200.png" title="%s"/>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Add a document or a document folder'));
+        $document_img = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/document200.png" title="%s"/>', PHPWS_SOURCE_HTTP, 'Add a document or a document folder');
 
         $image_img = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/image200.png" title="%s"/>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Add a image, an image folder, or a randomly changing image'));
 
-        $media_img = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/media200.png" title="%s"/>', PHPWS_SOURCE_HTTP, dgettext('filecabinet', 'Add a video or sound file'));
+        $media_img = sprintf('<img src="%smod/filecabinet/img/file_manager/file_type/media200.png" title="%s"/>', PHPWS_SOURCE_HTTP, 'Add a video or sound file');
 
         $vars = $this->linkInfo();
         $vars['fop'] = 'fm_folders';
@@ -379,11 +379,11 @@ class FC_File_Manager
         $tpl['MEDIA_ICON'] = & $media;
         $tpl['IMAGE_ICON'] = & $image;
 
-        $tpl['DOC_LABEL'] = dgettext('filecabinet', 'Documents');
-        $tpl['IMG_LABEL'] = dgettext('filecabinet', 'Images');
-        $tpl['MED_LABEL'] = dgettext('filecabinet', 'Media');
+        $tpl['DOC_LABEL'] = 'Documents';
+        $tpl['IMG_LABEL'] = 'Images';
+        $tpl['MED_LABEL'] = 'Media';
 
-        $tpl['INSTRUCTION'] = dgettext('filecabinet', 'Choose the type of file you wish to add');
+        $tpl['INSTRUCTION'] = 'Choose the type of file you wish to add';
         $tpl['CLOSE'] = javascript('close_window');
 
         return PHPWS_Template::process($tpl, 'filecabinet', 'file_manager/start_view.tpl');
@@ -406,7 +406,7 @@ class FC_File_Manager
             } else {
                 $icon_name = 'document80_bw.png';
             }
-            $document_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s" />', PHPWS_SOURCE_HTTP, $icon_name, dgettext('filecabinet', 'View document folders'));
+            $document_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s" />', PHPWS_SOURCE_HTTP, $icon_name, 'View document folders');
 
             if ($force_type) {
                 $tpl['DOCUMENT_ICON'] = & $document_img;
@@ -423,7 +423,7 @@ class FC_File_Manager
             } else {
                 $icon_name = 'image80_bw.png';
             }
-            $image_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>', PHPWS_SOURCE_HTTP, $icon_name, dgettext('filecabinet', 'View image folders'));
+            $image_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>', PHPWS_SOURCE_HTTP, $icon_name, 'View image folders');
 
             if ($force_type) {
                 $tpl['IMAGE_ICON'] = & $image_img;
@@ -440,7 +440,7 @@ class FC_File_Manager
             } else {
                 $icon_name = 'media80_bw.png';
             }
-            $media_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>', PHPWS_SOURCE_HTTP, $icon_name, dgettext('filecabinet', 'View media folders'));
+            $media_img = sprintf('<img src="%s/mod/filecabinet/img/file_manager/file_type/%s" title="%s"/>', PHPWS_SOURCE_HTTP, $icon_name, 'View media folders');
 
             if ($force_type) {
                 $tpl['MEDIA_ICON'] = & $media_img;
@@ -554,19 +554,19 @@ class FC_File_Manager
                 $img1 = 'folder_random.png';
                 $img2 = 'thumbnails.png';
                 $img3 = 'lightbox.png';
-                $img1_alt = dgettext('filecabinet', 'Random image icon');
-                $img2_alt = dgettext('filecabinet', 'Thumbnail icon');
-                $img3_alt = dgettext('filecabinet', 'Lightbox icon');
+                $img1_alt = 'Random image icon';
+                $img2_alt = 'Thumbnail icon';
+                $img3_alt = 'Lightbox icon';
 
                 if (!$this->reserved_folder) {
                     if ($this->current_folder->public_folder) {
                         $altvars['id'] = $this->current_folder->id;
                         $altvars['fop'] = 'pick_file';
                         $altvars['file_type'] = FC_IMAGE_RANDOM;
-                        $not_allowed = dgettext('filecabinet', 'Action not allowed');
+                        $not_allowed = 'Action not allowed';
 
                         if (!$this->lock_type || in_array(FC_IMAGE_RANDOM, $this->lock_type)) {
-                            $img1_title = dgettext('filecabinet', 'Show a random image from this folder');
+                            $img1_title = 'Show a random image from this folder';
                             $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
                             $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
 
@@ -585,7 +585,7 @@ class FC_File_Manager
                                 $tpl['ALT_HIGH2'] = ' alt-high';
                             }
 
-                            $img2_title = dgettext('filecabinet', 'Show block of thumbnails');
+                            $img2_title = 'Show block of thumbnails';
                             $image2 = sprintf($image_string, $img_dir . $img2, $img2_title, $img2_alt);
 
                             $form = new PHPWS_Form('carousel-options');
@@ -594,20 +594,20 @@ class FC_File_Manager
                             $form->addHidden($altvars);
                             $form->addHidden('module', 'filecabinet');
 
-                            $form->addRadioAssoc('direction', array(0 => dgettext('filecabinet', 'Horizontal'), 1 => dgettext('filecabinet', 'Vertical')));
+                            $form->addRadioAssoc('direction', array(0 => 'Horizontal', 1 => 'Vertical'));
                             $match = $this->file_assoc->vertical;
                             $form->setMatch('direction', $match);
 
                             $num = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8);
                             $form->addSelect('num_visible', $num);
-                            $form->setLabel('num_visible', dgettext('filecabinet', 'Number shown'));
+                            $form->setLabel('num_visible', 'Number shown');
                             $form->setMatch('num_visible', $this->file_assoc->num_visible);
 
-                            $form->addSubmit('go', dgettext('filecabinet', 'Go'));
+                            $form->addSubmit('go', 'Go');
                             $subtpl = $form->getTemplate();
-                            $subtpl['DIRECTION_DESC'] = dgettext('filecabinet', 'Carousel direction');
+                            $subtpl['DIRECTION_DESC'] = 'Carousel direction';
                             $subtpl['LINK'] = sprintf('<a href="#" onclick="return carousel_pick();">%s</a>', $image2);
-                            $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
+                            $subtpl['CANCEL'] = 'Cancel';
                             $tpl['ALT2'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/carousel_pick.tpl');
                         } else {
                             $image2 = sprintf($image_string, $img_dir . $img2, $not_allowed, $img2_alt);
@@ -621,7 +621,7 @@ class FC_File_Manager
                                 $tpl['ALT_HIGH3'] = ' alt-high';
                             }
 
-                            $img3_title = dgettext('filecabinet', 'Show lightbox slideshow');
+                            $img3_title = 'Show lightbox slideshow';
                             $image3 = sprintf($image_string, $img_dir . $img3, $img3_title, $img3_alt);
 
                             $altvars['file_type'] = FC_IMAGE_LIGHTBOX;
@@ -631,20 +631,20 @@ class FC_File_Manager
                             $form->addHidden($altvars);
                             $form->addHidden('module', 'filecabinet');
 
-                            $form->addRadioAssoc('direction', array(0 => dgettext('filecabinet', 'Horizontal'), 1 => dgettext('filecabinet', 'Vertical')));
+                            $form->addRadioAssoc('direction', array(0 => 'Horizontal', 1 => 'Vertical'));
                             $match = $this->file_assoc->vertical;
                             $form->setMatch('direction', $match);
 
                             $num = array(3 => 3, 6 => 6, 9 => 9, 12 => 12, 15 => 15, 18 => 18, 21 => 21, 99 => 'unlimited');
                             $form->addSelect('num_visible', $num);
-                            $form->setLabel('num_visible', dgettext('filecabinet', 'Number shown'));
+                            $form->setLabel('num_visible', 'Number shown');
                             $form->setMatch('num_visible', $this->file_assoc->num_visible);
 
-                            $form->addSubmit('go', dgettext('filecabinet', 'Go'));
+                            $form->addSubmit('go', 'Go');
                             $subtpl = $form->getTemplate();
-                            $subtpl['DIRECTION_DESC'] = dgettext('filecabinet', 'Thumbnail direction');
+                            $subtpl['DIRECTION_DESC'] = 'Thumbnail direction';
                             $subtpl['LINK'] = sprintf('<a href="#" onclick="return lightbox_pick();">%s</a>', $image3);
-                            $subtpl['CANCEL'] = dgettext('filecabinet', 'Cancel');
+                            $subtpl['CANCEL'] = 'Cancel';
 
                             $tpl['ALT3'] = PHPWS_Template::process($subtpl, 'filecabinet', 'file_manager/lightbox_pick.tpl');
                         } else {
@@ -674,7 +674,7 @@ class FC_File_Manager
                 $file_type = FC_DOCUMENT;
 
                 $img1 = 'all_files.png';
-                $img1_alt = dgettext('filecabinet', 'All files icon');
+                $img1_alt = 'All files icon';
 
                 if ($this->current_folder->public_folder) {
                     if (!$this->lock_type || in_array(FC_DOCUMENT_FOLDER, $this->lock_type)) {
@@ -683,7 +683,7 @@ class FC_File_Manager
                         $altvars['fop'] = 'pick_file';
                         $altvars['file_type'] = FC_DOCUMENT_FOLDER;
 
-                        $img1_title = dgettext('filecabinet', 'Show all files in the folder');
+                        $img1_title = 'Show all files in the folder';
                         $image1 = sprintf($image_string, $img_dir . $img1, $img1_title, $img1_alt);
 
                         $tpl['ALT1'] = PHPWS_Text::secureLink($image1, 'filecabinet', $altvars);
@@ -692,7 +692,7 @@ class FC_File_Manager
                             $tpl['ALT_HIGH1'] = ' alt-high';
                         }
                     } else {
-                        $not_allowed = dgettext('filecabinet', 'Action not allowed');
+                        $not_allowed = 'Action not allowed';
                         $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);
                         $tpl['ALT1'] = $image1;
                         $tpl['ALT_HIGH1'] = ' no-use';
@@ -730,7 +730,7 @@ class FC_File_Manager
                 $tpl['items'][] = $stpl;
             }
         } else {
-            $not_allowed = dgettext('filecabinet', 'No files in folder');
+            $not_allowed = 'No files in folder';
             if (isset($tpl['ALT1'])) {
 
                 $image1 = sprintf($image_string, $img_dir . $img1, $not_allowed, $img1_alt);

@@ -34,8 +34,8 @@ class MiniAdmin {
         }
         $modlist = \phpws\PHPWS_Core::getModuleNames();
 
-        $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
-        $tpl['MINIADMIN_TITLE_ALT'] = dgettext('miniadmin', 'Administrate');
+        $tpl['MINIADMIN_TITLE'] = 'MiniAdmin';
+        $tpl['MINIADMIN_TITLE_ALT'] = 'Administrate';
 
         if (isset($GLOBALS['MiniAdmin'])) {
             foreach ($GLOBALS['MiniAdmin'] as $module => $links) {

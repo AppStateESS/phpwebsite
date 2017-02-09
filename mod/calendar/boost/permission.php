@@ -13,5 +13,5 @@ $permissions['settings']            = dgettext('calendar', 'Change module settin
 $permissions['edit_public']         = dgettext('calendar', 'Create/Edit public schedule');
 
 // Creation of private schedules handled by calendar settings
-$permissions['edit_private']        = dgettext('calendar', 'Edit private schedule');
+$permissions['edit_private']        = 'Edit private schedule';
 $permissions['delete_schedule']     = dgettext('calendar', 'Delete schedules (unrestricted only)');

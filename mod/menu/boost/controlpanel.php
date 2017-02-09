@@ -4,10 +4,10 @@
  * @version $Id$
  */
 
-$link[] = array('label'       => dgettext('menu', 'Menu'),
+$link[] = array('label'       => 'Menu',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=menu',
-		'description' => dgettext('menu', 'Controls the layout and positioning of your menus.'),
+		'description' => 'Controls the layout and positioning of your menus.',
 		'image'       => 'menu.png',
 		'tab'         => 'content'
 		);

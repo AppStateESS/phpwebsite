@@ -21,7 +21,7 @@ function my_page()
 
     $user = $_SESSION['User'];
 
-    $template['TITLE'] = dgettext('users', 'Change my Settings');
+    $template['TITLE'] = 'Change my Settings';
     switch ($subcommand) {
         case 'updateSettings':
             if (isset($_GET['save'])) {
@@ -73,10 +73,10 @@ class User_Settings {
         if (Current_User::allow('users') || $user->display_name == $user->username) {
             $form->addText('display_name', $user->display_name);
             $form->setClass('display_name', 'form-control');
-            $form->setLabel('display_name', dgettext('users', 'Display Name'));
+            $form->setLabel('display_name', 'Display Name');
         } else {
             $form->addTplTag('DISPLAY_NAME_LABEL',
-                    dgettext('users', 'Display Name'));
+                    'Display Name');
             $tpl['DISPLAY_NAME'] = javascript('slider',
                     array('link' => $user->display_name,
                 'id' => 'name-info',
@@ -91,10 +91,10 @@ class User_Settings {
             $form->addPassword('password2');
             $form->setAutoComplete('password2');
             $form->setClass('password2', 'form-control');
-            $form->setTitle('password2', dgettext('users', 'Password confirm'));
-            $form->setLabel('password1', dgettext('users', 'Password'));
+            $form->setTitle('password2', 'Password confirm');
+            $form->setLabel('password1', 'Password');
         } else {
-            $tpl['PASSWORD1_LABEL'] = dgettext('users', 'Password');
+            $tpl['PASSWORD1_LABEL'] = 'Password';
             $tpl['PASSWORD1'] = javascript('slider',
                     array('link' => dgettext('users',
                         'Why can\'t I change my password?'),
@@ -105,7 +105,7 @@ class User_Settings {
 
         $form->addText('email', $user->getEmail());
         $form->setSize('email', 40);
-        $form->setLabel('email', dgettext('users', 'Email Address'));
+        $form->setLabel('email', 'Email Address');
         $form->setClass('email', 'form-control');
 
         if (isset($tpl)) {
@@ -134,7 +134,7 @@ class User_Settings {
         }
 
         $form->addSelect('timezone', $timezones);
-        $form->setLabel('timezone', dgettext('users', 'Time Zone'));
+        $form->setLabel('timezone', 'Time Zone');
         $form->setMatch('timezone', $user_tz);
         $form->setClass('timezone', 'form-control');
 
@@ -146,7 +146,7 @@ class User_Settings {
 
         $form->addCheckbox('dst', 1);
         $form->setMatch('dst', $dst);
-        $form->setLabel('dst', dgettext('users', 'Use Daylight Savings Time'));
+        $form->setLabel('dst', 'Use Daylight Savings Time');
 
         if (isset($_POST['cp'])) {
             $cp = (int) $_POST['cp'];
@@ -161,12 +161,12 @@ class User_Settings {
                 if (PHPWS_Cookie::read('remember_me')) {
                     $form->setMatch('remember_me', 1);
                 }
-                $form->setLabel('remember_me', dgettext('users', 'Remember me'));
+                $form->setLabel('remember_me', 'Remember me');
             }
         }
 
         $form->addHidden('userId', $user->getId());
-        $form->addSubmit('submit', dgettext('users', 'Update my information'));
+        $form->addSubmit('submit', 'Update my information');
         $form->setClass('submit', 'btn btn-primary');
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
@@ -177,7 +177,7 @@ class User_Settings {
                 $form->addSelect('language', $languages);
                 $form->setClass('language', 'form-control');
                 $form->setLabel('language',
-                        dgettext('users', 'Language preference'));
+                        'Language preference');
                 if (isset($_COOKIE['phpws_default_language'])) {
                     $language = preg_replace('/\W/', '',
                             $_COOKIE['phpws_default_language']);
@@ -194,9 +194,9 @@ class User_Settings {
             }
         }
 
-        $template['ACCT_INFO'] = dgettext('users', 'Account Information');
-        $template['LOCAL_INFO'] = dgettext('users', 'Localization');
-        $template['PREF'] = dgettext('users', 'Preferences');
+        $template['ACCT_INFO'] = 'Account Information';
+        $template['LOCAL_INFO'] = 'Localization';
+        $template['PREF'] = 'Preferences';
 
         return PHPWS_Template::process($template, 'users',
                         'my_page/user_setting.tpl');

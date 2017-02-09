@@ -35,7 +35,7 @@ $boostPanel->enableSecure();
 Boost_Form::setTabs($boostPanel);
 
 $vars = array('action' => 'admin', 'tab' => $boostPanel->getCurrentTab());
-$backToBoost = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost'),
+$backToBoost = PHPWS_Text::secureLink('Return to Boost',
                 'boost', $vars);
 
 switch ($_REQUEST['action']) {
@@ -97,7 +97,7 @@ switch ($_REQUEST['action']) {
             $content[] = $backToBoost . '<br />';
         } else {
             $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow(); return false" value="%s" /></p>',
-                    dgettext('boost', 'Close window'));
+                    'Close window');
         }
         $content[] = Boost_Action::updateModule($_REQUEST['opmod']);
         break;
@@ -115,7 +115,7 @@ switch ($_REQUEST['action']) {
 if ($js) {
     javascript('close_refresh', array('use_link' => true));
     $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow(); return false" value="%s" /></p>',
-            dgettext('boost', 'Close window'));
+            'Close window');
     Layout::nakedDisplay(implode('', $content));
 } else {
     $boostPanel->setContent(implode('', $content));

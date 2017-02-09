@@ -291,13 +291,13 @@ class PHAT_Element extends PHPWS_Item {
         $elements[0] = '<input type="hidden" name="module" value="phatform" /><input type="hidden" name="PHAT_EL_OP" value="SaveElementOptions" />';
 
         if(PHAT_SHOW_INSTRUCTIONS) {
-            $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Option Instructions');
+            $GLOBALS['CNT_phatform']['title'] = 'Option Instructions';
         }
 
-        $editTags['NUMBER_LABEL'] = dgettext('phatform', 'Option');
-        $editTags['INPUT_LABEL'] = dgettext('phatform', 'Text');
-        $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
-        $editTags['DEFAULT_LABEL'] = dgettext('phatform', 'Default');
+        $editTags['NUMBER_LABEL'] = 'Option';
+        $editTags['INPUT_LABEL'] = 'Text';
+        $editTags['VALUE_LABEL'] = 'Value';
+        $editTags['DEFAULT_LABEL'] = 'Default';
 
         $editTags['OPTIONS'] = '';
         $rowClass = NULL;
@@ -359,9 +359,9 @@ class PHAT_Element extends PHPWS_Item {
         $element = new Form_Checkbox('PHAT_ElementUseText', 1);
         $element->setMatch($check);
 
-        $editTags['USE_TEXT_CHECK'] = dgettext('phatform', 'Use option text as values') . ': ' . $element->get();
-        $editTags['SAVE_OPTION_SET'] = dgettext('phatform', 'Save option set as') . ': ' . PHPWS_Form::formTextField('PHAT_SaveOptionSet', $setName, PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
+        $editTags['USE_TEXT_CHECK'] = 'Use option text as values' . ': ' . $element->get();
+        $editTags['SAVE_OPTION_SET'] = 'Save option set as' . ': ' . PHPWS_Form::formTextField('PHAT_SaveOptionSet', $setName, PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit('Back', 'PHAT_OptionBack');
         $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save ' . $properName));
 
         $elements[0] .= PHPWS_Template::processTemplate($editTags, 'phatform', 'element/optionList.tpl');

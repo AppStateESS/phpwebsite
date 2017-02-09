@@ -91,8 +91,8 @@ class PageSmith
                 $this->resetUndoSession(0);
                 $this->loadPage();
                 if (!$this->page->id) {
-                    $this->title = dgettext('pagesmith', 'Sorry');
-                    $this->content = dgettext('pagesmith', 'Page not found');
+                    $this->title = 'Sorry';
+                    $this->content = 'Page not found';
                     break;
                 }
                 $this->loadForms();
@@ -204,7 +204,7 @@ class PageSmith
                     Current_User::disallow();
                 }
                 $this->postSettings();
-                $this->message = dgettext('pagesmith', 'Settings saved');
+                $this->message = 'Settings saved';
                 $this->loadForms();
                 $this->forms->settings();
                 break;
@@ -383,10 +383,10 @@ class PageSmith
         $this->panel = new PHPWS_Panel('pagesmith');
 
         $link = 'index.php?module=pagesmith&amp;aop=menu';
-        $tabs['list'] = array('title' => dgettext('pagesmith', 'List'), 'link' => $link);
+        $tabs['list'] = array('title' => 'List', 'link' => $link);
         if (Current_User::isUnrestricted('pagesmith') && Current_User::allow('pagesmith', 'settings')) {
-            $tabs['settings'] = array('title' => dgettext('pagesmith', 'Settings'), 'link' => $link);
-            $tabs['purge'] = array('title' => dgettext('pagesmith', 'Purge'), 'link' => $link);
+            $tabs['settings'] = array('title' => 'Settings', 'link' => $link);
+            $tabs['purge'] = array('title' => 'Purge', 'link' => $link);
         }
 
         $this->panel->quickSetTabs($tabs);

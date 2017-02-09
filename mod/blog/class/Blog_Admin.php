@@ -52,12 +52,12 @@ class Blog_Admin
                     return;
                 }
 
-                $title = dgettext('blog', 'Update Blog Entry');
+                $title = 'Update Blog Entry';
                 $content = Blog_Form::edit($blog);
                 break;
 
             case 'new':
-                $title = dgettext('blog', 'New Blog Entry');
+                $title = 'New Blog Entry';
                 $content = Blog_Form::edit($blog);
                 break;
 
@@ -69,12 +69,12 @@ class Blog_Admin
                 break;
 
             case 'list':
-                $title = dgettext('blog', 'Blog Entries');
+                $title = 'Blog Entries';
                 $content = Blog_Admin::entry_list();
                 break;
 
             case 'menu_submit_link':
-                Menu::pinLink(dgettext('blog', 'Submit entry'),
+                Menu::pinLink('Submit entry',
                         'index.php?module=blog&action=user&action=submit');
                 \phpws\PHPWS_Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
                 break;
@@ -96,7 +96,7 @@ class Blog_Admin
                 break;
 
             case 'post_entry':
-                $title = dgettext('blog', 'Blog Archive');
+                $title = 'Blog Archive';
                 $panel->setCurrentTab('list');
                 $blog->post_entry();
 
@@ -147,7 +147,7 @@ class Blog_Admin
                 }
 
                 if (Current_User::isDeity() && isset($_POST['purge_confirm'])) {
-                    $title = dgettext('blog', 'Purge Blog Entries');
+                    $title = 'Purge Blog Entries';
                     $content = Blog_Admin::confirmPurge($_POST['purge_date']);
                     break;
                 }
@@ -160,7 +160,7 @@ class Blog_Admin
                     return;
                 }
                 $panel->setCurrentTab('settings');
-                $title = dgettext('blog', 'Blog Settings');
+                $title = 'Blog Settings';
                 $content = Blog_Form::settings();
                 break;
 
@@ -282,14 +282,14 @@ class Blog_Admin
         \phpws\PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
         $listLink = 'index.php?module=blog&amp;action=admin';
-        $listCommand = array('title' => dgettext('blog', 'List'), 'link' => $listLink);
+        $listCommand = array('title' => 'List', 'link' => $listLink);
 
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
         }
 
         if (Current_User::allow('blog', 'settings')) {
-            $tabs['settings'] = array('title' => dgettext('blog', 'Settings'),
+            $tabs['settings'] = array('title' => 'Settings',
                 'link' => 'index.php?module=blog&amp;action=admin');
         }
 
@@ -301,8 +301,8 @@ class Blog_Admin
     public static function entry_list()
     {
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
-        $pageTags['SUMMARY'] = dgettext('blog', 'Summary');
-        $pageTags['ACTION'] = dgettext('blog', 'Action');
+        $pageTags['SUMMARY'] = 'Summary';
+        $pageTags['ACTION'] = 'Action';
         $pageTags['ADD'] = PHPWS_Text::secureLink(
                         'Create new blog entry', 'blog',
                         array('action' => 'admin', 'command' => 'new'), null,
@@ -313,10 +313,10 @@ class Blog_Admin
         $pageTags['ADD_TEXT'] = 'Create new blog entry';
 
         $pager = new DBPager('blog_entries', 'Blog');
-        $pager->addSortHeader('title', dgettext('blog', 'Title'));
-        $pager->addSortHeader('create_date', dgettext('blog', 'Creation'));
-        $pager->addSortHeader('publish_date', dgettext('blog', 'Publish'));
-        $pager->addSortHeader('expire_date', dgettext('blog', 'Expire'));
+        $pager->addSortHeader('title', 'Title');
+        $pager->addSortHeader('create_date', 'Creation');
+        $pager->addSortHeader('publish_date', 'Publish');
+        $pager->addSortHeader('expire_date', 'Expire');
 
         $pager->setModule('blog');
         $pager->setTemplate('list.tpl');

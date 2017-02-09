@@ -135,8 +135,8 @@ class Checkin_Visitor {
         addslashes($this->getName()));
         $js['address']  = PHPWS_Text::linkAddress('checkin', array('aop'=>'remove_visitor',
                                                                    'visitor_id'=> $this->id));
-        $js['link']     = dgettext('checkin', 'Remove');
-        $js['title']    = dgettext('checkin', 'Remove visitor from checkin');
+        $js['link']     = 'Remove';
+        $js['title']    = 'Remove visitor from checkin';
         return javascript('confirm', $js);
     }
 
@@ -151,9 +151,9 @@ class Checkin_Visitor {
         $tpl = $form->getTemplate();
         $tpl['NOTE'] = $this->note;
 
-        $tpl['NOTE_LINK'] = dgettext('checkin', 'Note');
-        $tpl['BUTTON'] = dgettext('checkin', 'Send');
-        $tpl['CLOSE'] = dgettext('checkin', 'Close');
+        $tpl['NOTE_LINK'] = 'Note';
+        $tpl['BUTTON'] = 'Send';
+        $tpl['CLOSE'] = 'Close';
         $tpl['TITLE'] = sprintf('Note: %s %s', $this->firstname,$this->lastname);
         return PHPWS_Template::process($tpl, 'checkin', 'note.tpl');
     }
@@ -204,7 +204,7 @@ class Checkin_Visitor {
         if (isset($reasons[$this->reason])) {
             return $reasons[$this->reason];
         } else {
-            return dgettext('checkin', 'Reason unknown');
+            return 'Reason unknown';
         }
     }
 

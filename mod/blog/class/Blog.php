@@ -229,7 +229,7 @@ class Blog {
     public function relativeExpireDate($type = BLOG_VIEW_DATE_FORMAT)
     {
         if (!$this->expire_date) {
-            return dgettext('blog', 'No expiration');
+            return 'No expiration';
         } else {
             return strftime($type, PHPWS_Time::getServerTime($this->expire_date));
         }
@@ -250,7 +250,7 @@ class Blog {
                 $this->author = Current_User::getDisplayName();
             } elseif (empty($this->author)) {
                 $this->author_id = 0;
-                $this->author = dgettext('blog', 'Anonymous');
+                $this->author = 'Anonymous';
             }
         }
 
@@ -259,7 +259,7 @@ class Blog {
             $this->updater = Current_User::getDisplayName();
         } elseif (empty($this->updater)) {
             $this->updater_id = 0;
-            $this->updater = dgettext('blog', 'Anonymous');
+            $this->updater = 'Anonymous';
         }
 
         $this->update_date = time();
@@ -323,7 +323,7 @@ class Blog {
 
     public function getViewLink($bare = false)
     {
-        $link = new PHPWS_Link(dgettext('blog', 'View'), 'blog',
+        $link = new PHPWS_Link('View', 'blog',
                 array('id' => $this->id));
         $link->rewrite = MOD_REWRITE_ENABLED;
 
@@ -343,13 +343,13 @@ class Blog {
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
         $template['IMAGE'] = $this->getFile($this->thumbnail);
 
-        $template['POSTED_BY'] = dgettext('blog', 'Posted by');
-        $template['POSTED_ON'] = dgettext('blog', 'Posted at');
-        $template['PUBLISHED'] = dgettext('blog', 'Published');
+        $template['POSTED_BY'] = 'Posted by';
+        $template['POSTED_ON'] = 'Posted at';
+        $template['PUBLISHED'] = 'Published';
         if ($this->author_id) {
             $template['AUTHOR'] = $this->author;
         } else {
-            $template['AUTHOR'] = dgettext('blog', 'Anonymous');
+            $template['AUTHOR'] = 'Anonymous';
         }
 
         return PHPWS_Template::process($template, 'blog', 'view_full.tpl');
@@ -381,9 +381,9 @@ class Blog {
         $template['TITLE_NO_LINK'] = $this->title;
 
         if ($this->publish_date > time()) {
-            $template['UNPUBLISHED'] = dgettext('blog', 'Unpublished');
+            $template['UNPUBLISHED'] = 'Unpublished';
         } elseif ($this->expire_date && $this->expire_date < time()) {
-            $template['UNPUBLISHED'] = dgettext('blog', 'Expired');
+            $template['UNPUBLISHED'] = 'Expired';
         }
 
         $template['LOCAL_DATE'] = $this->getPublishDate();
@@ -396,7 +396,7 @@ class Blog {
                 $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
             } else {
                 if (!empty($entry)) {
-                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(Icon::get('chevron-circle-down') . '&nbsp;' . dgettext('blog', 'Read more'), 'blog',
+                    $template['READ_MORE'] = PHPWS_Text::rewriteLink(Icon::get('chevron-circle-down') . '&nbsp;' . 'Read more', 'blog',
                                     array('id' => $this->id), null, 'Read more of this entry', 'btn btn-default');
                 }
                 $template['SUMMARY'] = PHPWS_Text::parseTag($summary);
@@ -432,14 +432,14 @@ class Blog {
         // Check setting for showing when the entry was posted
 
         if (PHPWS_Settings::get('blog', 'show_posted_by')) {
-            $template['POSTED_BY'] = dgettext('blog', 'By');
+            $template['POSTED_BY'] = 'By';
             $template['AUTHOR'] = $this->author;
         }
 
         // Check settings for showing the author of the entry
         if (PHPWS_Settings::get('blog', 'show_posted_date')) {
-            $template['PUBLISHED'] = dgettext('blog', 'Published');
-            $template['POSTED_ON'] = dgettext('blog', 'Posted on');
+            $template['PUBLISHED'] = 'Published';
+            $template['POSTED_ON'] = 'Posted on';
             $template['PUBLISHED_DATE'] = $this->getPublishDateShort();
         }
 
@@ -476,7 +476,7 @@ class Blog {
                         'edit_blog', $this->id, 'entry')) {
 
             $link['command'] = 'edit';
-            $icon = Icon::show('edit', dgettext('blog', 'Edit blog entry'));
+            $icon = Icon::show('edit', 'Edit blog entry');
             $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
         }
 
@@ -496,12 +496,12 @@ class Blog {
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
                 $icon = Icon::show('flag',
-                                dgettext('blog', 'Remove from front page'));
+                                'Remove from front page');
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
                 $icon = Icon::show('flag-alt',
-                                dgettext('blog', 'Force to front page'));
+                                'Force to front page');
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }
@@ -509,7 +509,7 @@ class Blog {
         if (isset($list)) {
             $response = implode(' ', $list);
         } else {
-            $response = dgettext('blog', 'No action');
+            $response = 'No action';
         }
         return $response;
     }
@@ -649,7 +649,7 @@ class Blog {
         if ($this->expire_date) {
             $row['expiration date'] = strftime('%c', $this->expire_date);
         } else {
-            $row['expiration date'] = dgettext('blog', 'None');
+            $row['expiration date'] = 'None';
         }
         return $row;
     }

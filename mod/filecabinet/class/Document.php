@@ -182,7 +182,7 @@ class PHPWS_Document extends File_Common
     private function accessLink()
     {
         javascriptMod('filecabinet', 'document_access');
-        $icon = Icon::show('forbidden', dgettext('filecabinet', 'Access'));
+        $icon = Icon::show('forbidden', 'Access');
         $link = <<<EOF
 <a style="cursor:pointer" id="f{$this->id}" class="access-link">$icon</a>
 EOF;
@@ -262,9 +262,9 @@ EOF;
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('filecabinet', 'Delete document') . '"></i>';
+            $js['LINK'] = '<i class="fa fa-trash-o" title="' . 'Delete document' . '"></i>';
         } else {
-            $js['LINK'] = dgettext('filecabinet', 'Delete');
+            $js['LINK'] = 'Delete';
         }
 
         return javascript('confirm', $js);
@@ -288,9 +288,9 @@ EOF;
         $js['height'] = 500;
 
         if ($icon) {
-            $js['label'] = Icon::show('edit', dgettext('filecabinet', 'Edit document'));
+            $js['label'] = Icon::show('edit', 'Edit document');
         } else {
-            $js['label'] = dgettext('filecabinet', 'Edit');
+            $js['label'] = 'Edit';
         }
         return javascript('open_window', $js);
     }
@@ -316,7 +316,7 @@ EOF;
         }
         $tpl['TYPE'] = $this->getFileType(true);
         $tpl['DESCRIPTION'] = $this->getDescription();
-        $tpl['DOWNLOAD'] = dgettext('filecabinet', 'Download file');
+        $tpl['DOWNLOAD'] = 'Download file';
         if ($return_tpl) {
             return $tpl;
         } else {

@@ -354,7 +354,7 @@ final class Current_User {
                 Layout::add($content, 'users', 'permissions');
             } else {
                 $links[] = Current_User::popupPermission($key->id,
-                                sprintf(dgettext('users', 'Set permissions'),
+                                sprintf('Set permissions',
                                         $key->title));
                 MiniAdmin::add('users', $links);
             }
@@ -364,7 +364,7 @@ final class Current_User {
     public static function popupPermission($key_id, $label = null, $mode = null)
     {
         if (empty($label)) {
-            $label = dgettext('users', 'Permission');
+            $label = 'Permission';
         } else {
             $label = strip_tags($label, '<i>');
         }

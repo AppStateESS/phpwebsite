@@ -108,7 +108,7 @@ class Calendar_Schedule
         $vars['js'] = 1;
 
         if (empty($label)) {
-            $label = dgettext('calendar', 'Download iCal events');
+            $label = 'Download iCal events';
         }
 
         if ($icon) {
@@ -125,7 +125,7 @@ class Calendar_Schedule
         $vars['js'] = 1;
 
         if (empty($label)) {
-            $label = dgettext('calendar', 'Upload iCal events');
+            $label = 'Upload iCal events';
         }
         if ($icon) {
             $label = Icon::show('upload');
@@ -151,13 +151,13 @@ class Calendar_Schedule
             $add_label = '<i class="fa fa-plus"></i> ' . dgettext('calendar',
                             'Add event');
         } else {
-            $add_label = dgettext('calendar', 'Add event');
+            $add_label = 'Add event';
         }
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
                     $this->id, $default_date);
-            $vars['link_title'] = dgettext('calendar', 'Add event');
+            $vars['link_title'] = 'Add event';
             $vars['label'] = $add_label;
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
@@ -175,7 +175,7 @@ class Calendar_Schedule
             $default_date = PHPWS_Time::getUserTime();
         }
 
-        $suggest_label = dgettext('calendar', 'Suggest event');
+        $suggest_label = 'Suggest event';
 
         $event = new Calendar_Event(0, $this);
         $suggest_form = Calendar_Admin::event_form($event, true);
@@ -279,49 +279,49 @@ EOF;
         $form->addHidden('sch_id', $this->id);
 
         $form->addText('title', $this->title);
-        $form->setLabel('title', dgettext('calendar', 'Title'));
+        $form->setLabel('title', 'Title');
         $form->setSize('title', 40);
 
         $form->addTextArea('summary', $this->summary);
-        $form->setLabel('summary', dgettext('calendar', 'Summary'));
+        $form->setLabel('summary', 'Summary');
         $form->useEditor('summary');
 
         if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
             if (Current_User::allow('calendar', 'edit_public')) {
                 $form->addRadio('public', array(0, 1));
                 $form->setLabel('public',
-                        array(dgettext('calendar', 'Private'),
-                    dgettext('calendar', 'Public')));
+                        array('Private',
+                    'Public'));
                 $form->setMatch('public', (int) $this->public);
             } else {
-                $form->addTplTag('PUBLIC', dgettext('calendar', 'Private'));
+                $form->addTplTag('PUBLIC', 'Private');
                 $form->addHidden('public', 0);
             }
         } else {
-            $form->addTplTag('PUBLIC', dgettext('calendar', 'Public'));
+            $form->addTplTag('PUBLIC', 'Public');
             $form->addHidden('public', 1);
         }
 
-        $upcoming[0] = dgettext('calendar', 'Do not show upcoming events');
-        $upcoming[1] = dgettext('calendar', 'Show upcoming week');
-        $upcoming[2] = dgettext('calendar', 'Show next two weeks');
-        $upcoming[3] = dgettext('calendar', 'Show upcoming month');
+        $upcoming[0] = 'Do not show upcoming events';
+        $upcoming[1] = 'Show upcoming week';
+        $upcoming[2] = 'Show next two weeks';
+        $upcoming[3] = 'Show upcoming month';
 
         $form->addSelect('show_upcoming', $upcoming);
         $form->setLabel('show_upcoming',
-                dgettext('calendar', 'Show upcoming events'));
+                'Show upcoming events');
         $form->setMatch('show_upcoming', $this->show_upcoming);
 
-        $form->addSubmit(dgettext('calendar', 'Save'));
+        $form->addSubmit('Save');
 
         $template = $form->getTemplate();
 
         if (isset($_REQUEST['js'])) {
             $template['CLOSE'] = javascript('close_window',
-                    array('value' => dgettext('calendar', 'Cancel')));
+                    array('value' => 'Cancel'));
         }
 
-        $template['PUBLIC_LABEL'] = dgettext('calendar', 'Availability');
+        $template['PUBLIC_LABEL'] = 'Availability';
         return PHPWS_Template::process($template, 'calendar',
                         'admin/forms/edit_schedule.tpl');
     }
@@ -483,22 +483,22 @@ EOF;
                                         'Make default public'), 'calendar',
                                 $link_vars);
             } else {
-                $links[] = dgettext('calendar', 'Default public');
+                $links[] = 'Default public';
             }
         }
 
         if (!empty($links)) {
             $tags['ADMIN'] = implode(' ', $links);
         } else {
-            $tags['ADMIN'] = dgettext('calendar', 'None');
+            $tags['ADMIN'] = 'None';
         }
 
         $tags['TITLE'] = $this->getViewLink();
 
         if ($this->public) {
-            $tags['AVAILABILITY'] = dgettext('calendar', 'Public');
+            $tags['AVAILABILITY'] = 'Public';
         } else {
-            $tags['AVAILABILITY'] = dgettext('calendar', 'Private');
+            $tags['AVAILABILITY'] = 'Private';
         }
         return $tags;
     }

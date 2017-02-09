@@ -5,8 +5,8 @@
  */
 
 $errors = array(
-LAYOUT_SESSION_NOT_SET   => dgettext('layout', 'Layout session not set'),
-LAYOUT_NO_CONTENT        => dgettext('layout', 'Layout did not receive any data for display'),
+LAYOUT_SESSION_NOT_SET   => 'Layout session not set',
+LAYOUT_NO_CONTENT        => 'Layout did not receive any data for display',
 LAYOUT_NO_THEME          => dgettext('layout', 'Unable to receive theme information.'),
 LAYOUT_BAD_JS_DATA       => dgettext('layout', 'Data was not an array.'),
 LAYOUT_JS_FILE_NOT_FOUND => dgettext('layout', 'Javascript file was not found.'),

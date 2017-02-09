@@ -25,12 +25,12 @@ class Boost_Action {
         }
         $version_info = PHPWS_Text::tagXML($full_xml_array);
 
-        $template['LOCAL_VERSION_LABEL'] = dgettext('boost', 'Local version');
+        $template['LOCAL_VERSION_LABEL'] = 'Local version';
         $template['LOCAL_VERSION'] = $module->getVersion();
         $template['STABLE_VERSION_LABEL'] = dgettext('boost',
                 'Current stable version');
         if (!isset($version_info['VERSION'])) {
-            $template['STABLE_VERSION'] = dgettext('boost', 'Source XML error');
+            $template['STABLE_VERSION'] = 'Source XML error';
             $version_info['VERSION'] = $module->getVersion();
         } else {
             $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
@@ -38,31 +38,31 @@ class Boost_Action {
         }
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
-            $template['CHANGES_LABEL'] = dgettext('boost', 'Changes');
+            $template['CHANGES_LABEL'] = 'Changes';
             $template['CHANGES'] = '<pre>' . htmlspecialchars($version_info['CHANGES']) . '</pre>';
             $template['UPDATE_AVAILABLE'] = dgettext('boost',
                             'An update is available!') . '<br />';
-            $template['UPDATE_PATH_LABEL'] = dgettext('boost', 'Download here');
+            $template['UPDATE_PATH_LABEL'] = 'Download here';
             $template['UPDATE_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';
-            $template['MD5_LABEL'] = dgettext('boost', 'MD5 Sum');
+            $template['MD5_LABEL'] = 'MD5 Sum';
             $template['MD5'] = $version_info['MD5SUM'];
 
             if (isset($version_info['DEPENDENCY'][0]['MODULE'])) {
-                $template['DEPENDENCY_LABEL'] = dgettext('boost', 'Dependencies');
-                $template['DEP_TITLE_LABEL'] = dgettext('boost', 'Module title');
+                $template['DEPENDENCY_LABEL'] = 'Dependencies';
+                $template['DEP_TITLE_LABEL'] = 'Module title';
                 $template['DEP_VERSION_LABEL'] = dgettext('boost',
                         'Version required');
-                $template['DEP_STATUS_LABEL'] = dgettext('boost', 'Status');
+                $template['DEP_STATUS_LABEL'] = 'Status';
 
                 foreach ($version_info['DEPENDENCY'][0]['MODULE'] as $dep_mod) {
                     $check_mod = new PHPWS_Module($dep_mod['TITLE'], false);
 
                     if ($check_mod->_error) {
-                        $status = dgettext('boost', 'Not installed');
+                        $status = 'Not installed';
                         $row['DEP_STATUS_CLASS'] = 'red';
                     } elseif (version_compare($check_mod->version,
                                     $dep_mod['VERSION'], '<')) {
-                        $status = dgettext('boost', 'Needs upgrading');
+                        $status = 'Needs upgrading';
                         $row['DEP_STATUS_CLASS'] = 'red';
                     } else {
                         $status = dgettext('boost', 'Passed!');
@@ -71,7 +71,7 @@ class Boost_Action {
                     $row['DEP_TITLE'] = $dep_mod['PROPERNAME'];
                     $row['DEP_VERSION'] = $dep_mod['VERSION'];
                     $row['DEP_ADDRESS'] = sprintf('<a href="%s">%s</a>',
-                            $dep_mod['URL'], dgettext('boost', 'Download'));
+                            $dep_mod['URL'], 'Download');
                     $row['DEP_STATUS'] = $status;
                     $template['dependent-mods'][] = $row;
                 }
@@ -80,7 +80,7 @@ class Boost_Action {
             $template['NO_UPDATE'] = dgettext('boost', 'No update required.');
         }
 
-        $template['TITLE'] = dgettext('boost', 'Module') . ': ' . $module->getProperName(TRUE);
+        $template['TITLE'] = 'Module' . ': ' . $module->getProperName(TRUE);
         return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
     }
 
@@ -108,7 +108,7 @@ class Boost_Action {
     public function updateCore()
     {
         \phpws\PHPWS_Core::initModClass('boost', 'Boost.php');
-        $content[] = dgettext('boost', 'Updating core');
+        $content[] = 'Updating core';
 
         require_once PHPWS_SOURCE_DIR . 'core/boost/update.php';
 
@@ -187,11 +187,11 @@ class Boost_Action {
         $template['TITLE'] = sprintf(dgettext('boost', '%s Module Dependencies'),
                 $module->getProperName());
 
-        $template['MODULE_NAME_LABEL'] = dgettext('boost', 'Module Needed');
-        $template['VERSION_NEEDED_LABEL'] = dgettext('boost', 'Version required');
-        $template['CURRENT_VERSION_LABEL'] = dgettext('boost', 'Current Version');
-        $template['URL_LABEL'] = dgettext('boost', 'Module Web Site');
-        $template['STATUS_LABEL'] = dgettext('boost', 'Status');
+        $template['MODULE_NAME_LABEL'] = 'Module Needed';
+        $template['VERSION_NEEDED_LABEL'] = 'Version required';
+        $template['CURRENT_VERSION_LABEL'] = 'Current Version';
+        $template['URL_LABEL'] = 'Module Web Site';
+        $template['STATUS_LABEL'] = 'Status';
 
         foreach ($depend['MODULE'] as $module) {
             $pass = TRUE;
@@ -206,7 +206,7 @@ class Boost_Action {
                 $tpl['CURRENT_VERSION'] = $mod_obj->getVersion();
             } else {
                 $pass = FALSE;
-                $tpl['CURRENT_VERSION'] = dgettext('boost', 'Not installed');
+                $tpl['CURRENT_VERSION'] = 'Not installed';
             }
 
             if ($pass && version_compare($module['VERSION'],
@@ -215,12 +215,12 @@ class Boost_Action {
             }
 
             $tpl['URL'] = sprintf('<a href="%s" target="_blank">%s</a>',
-                    $module['URL'], dgettext('boost', 'More info'));
+                    $module['URL'], 'More info');
 
             if ($pass) {
                 $tpl['STATUS_GOOD'] = dgettext('boost', 'Passed!');
             } else {
-                $tpl['STATUS_BAD'] = dgettext('boost', 'Failed');
+                $tpl['STATUS_BAD'] = 'Failed';
             }
             $template['module-row'][] = $tpl;
         }

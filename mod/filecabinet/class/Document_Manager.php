@@ -88,7 +88,7 @@ class FC_Document_Manager
                         $message .= '<a href="' . \phpws\PHPWS_Core::getHomeHttp() . $shortcut->keyword . '">' . \phpws\PHPWS_Core::getHomeHttp() . $shortcut->keyword . '</a>';
                     }
                 } else {
-                    $message = dgettext('filecabinet', 'File not found');
+                    $message = 'File not found';
                     // not really a success but prevents a repost prompt
                     $success = true;
                 }
@@ -121,20 +121,20 @@ class FC_Document_Manager
         $form->addHidden('folder_id', $this->folder->id);
 
         $form->addFile('file_name');
-        $form->setLabel('file_name', dgettext('filecabinet', 'Document location'));
+        $form->setLabel('file_name', 'Document location');
 
         $form->addText('title', $this->document->title);
-        $form->setLabel('title', dgettext('filecabinet', 'Title'));
+        $form->setLabel('title', 'Title');
         $form->setClass('title', 'form-control');
 
         $form->addSubmit('upload', 'Upload document');
         $form->setClass('upload', 'btn btn-primary');
         
         if ($this->document->id) {
-            $this->title = dgettext('filecabinet', 'Update file');
+            $this->title = 'Update file';
             $form->addHidden('document_id', $this->document->id);
         } else {
-            $this->title = dgettext('filecabinet', 'Upload new file');
+            $this->title = 'Upload new file';
         }
 
         if ($this->document->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
@@ -144,11 +144,11 @@ class FC_Document_Manager
         $template = $form->getTemplate();
 
         if ($this->document->id) {
-            $template['CURRENT_DOCUMENT_LABEL'] = dgettext('filecabinet', 'Current document');
+            $template['CURRENT_DOCUMENT_LABEL'] = 'Current document';
             $template['CURRENT_DOCUMENT_ICON'] = $this->document->getIconView();
             $template['CURRENT_DOCUMENT_FILE'] = $this->document->file_name;
         }
-        $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
+        $template['MAX_SIZE_LABEL'] = 'Maximum file size';
 
         $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
 
@@ -194,7 +194,7 @@ class FC_Document_Manager
             $result = $this->document->save();
             if (PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
-                $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
+                $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', 'Close this window');
                 Layout::nakedDisplay($content);
                 exit();
             }

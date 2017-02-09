@@ -108,7 +108,7 @@ class Signup_Sheet {
     {
         $vars['aop'] = 'edit_slots';
         $vars['sheet_id']  = $this->id;
-        return PHPWS_Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
+        return PHPWS_Text::moduleLink('Edit slots', 'signup', $vars);
     }
 
     public function getAllSlots($bare=false, $search=null)
@@ -158,11 +158,11 @@ class Signup_Sheet {
         if (Current_User::allow('signup', 'edit_sheet', $this->id, 'sheet')) {
             if (Current_User::isUnrestricted('signup')) {
                 $vars['aop']  = 'edit_sheet';
-                $links[] = PHPWS_Text::secureLink(\Icon::show('edit', dgettext('signup', 'Edit')), 'signup', $vars);
+                $links[] = PHPWS_Text::secureLink(\Icon::show('edit', 'Edit'), 'signup', $vars);
             }
 
             $vars['aop']  = 'edit_slots';
-            $links[] = PHPWS_Text::secureLink(\Icon::show('th-list', dgettext('signup', 'Slots')), 'signup', $vars);
+            $links[] = PHPWS_Text::secureLink(\Icon::show('th-list', 'Slots'), 'signup', $vars);
 
             if (Current_User::isUnrestricted('signup')) {
                 $links[] = Current_User::popupPermission($this->key_id,null, 'icon');
@@ -170,7 +170,7 @@ class Signup_Sheet {
         }
 
         $vars['aop'] = 'report';
-        $links[] = PHPWS_Text::secureLink(\Icon::show('file-text', dgettext('signup', 'Report')), 'signup', $vars);
+        $links[] = PHPWS_Text::secureLink(\Icon::show('file-text', 'Report'), 'signup', $vars);
 
         if (Current_User::isUnrestricted('signup')) {
             $vars['aop'] = 'delete_sheet';

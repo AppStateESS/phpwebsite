@@ -62,7 +62,7 @@ class Image extends Tag {
     public function setSrc($src)
     {
         if (preg_match('/[^\w\.\/\s:\-~]/', $src)) {
-            throw new \PEAR_Exception(dgettext('core', 'Improperly formated image src'));
+            throw new \PEAR_Exception('Improperly formated image src');
         }
         $this->src = $src;
     }
@@ -103,7 +103,7 @@ class Image extends Tag {
     public function loadDimensions()
     {
         if (empty($this->src)) {
-            trigger_error(dgettext('core', 'Src variable is empty'));
+            trigger_error('Src variable is empty');
             return false;
         }
         $src_location = str_replace(array(PHPWS_SOURCE_HTTP,PHPWS_HOME_HTTP)

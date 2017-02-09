@@ -115,8 +115,8 @@ EOF;
     public function prepare()
     {
         $event_name = $this->checkbox_class . '-checkall';
-        $uncheck_name = dgettext('core', 'Uncheck all');
-        $check_name = dgettext('core', 'Check all');
+        $uncheck_name = 'Uncheck all';
+        $check_name = 'Check all';
 
         $head = <<<EOF
 \$(document).ready(function() {

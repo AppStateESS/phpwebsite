@@ -5,7 +5,7 @@
  */
 
 
-$link[] = array('label'       => dgettext('calendar', 'Calendar'),
+$link[] = array('label'       => 'Calendar',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=calendar&amp;aop=schedules',
 		'description' => dgettext('calendar', 'Create events and schedules.'),

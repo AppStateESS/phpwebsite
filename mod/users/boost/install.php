@@ -117,11 +117,11 @@ function userForm(&$user, $errors=NULL){
     $form->addPassword('password1');
     $form->addPassword('password2');
 
-    $form->setLabel('username', dgettext('users', 'Username'));
-    $form->setLabel('password1', dgettext('users', 'Password'));
-    $form->setLabel('email', dgettext('users', 'Email'));
+    $form->setLabel('username', 'Username');
+    $form->setLabel('password1', 'Password');
+    $form->setLabel('email', 'Email');
 
-    $form->addSubmit('go', dgettext('users', 'Add User'));
+    $form->addSubmit('go', 'Add User');
 
     $template = $form->getTemplate();
 
@@ -146,7 +146,7 @@ function createLocalAuthScript()
      * 
      */
     $db = new PHPWS_DB('users_auth_scripts');
-    $db->addValue('display_name', dgettext('users', 'Local'));
+    $db->addValue('display_name', 'Local');
     $db->addValue('filename', 'local.php');
     $authorize_id = $db->insert();
 

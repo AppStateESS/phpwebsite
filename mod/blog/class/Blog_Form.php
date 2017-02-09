@@ -26,20 +26,20 @@ class Blog_Form
 
         if ($blog->id) {
             $form->addHidden('blog_id', $blog->id);
-            $form->addSubmit('submit', dgettext('blog', 'Update entry'));
+            $form->addSubmit('submit', 'Update entry');
         } else {
-            $form->addSubmit('submit', dgettext('blog', 'Add entry'));
+            $form->addSubmit('submit', 'Add entry');
         }
 
-        $link_choices['none'] = dgettext('blog', 'No link and ignore image link setting');
-        $link_choices['default'] = dgettext('blog', 'No link but allow image link setting');
-        $link_choices['readmore'] = dgettext('blog', 'Link to read more');
-        $link_choices['parent'] = dgettext('blog', 'Link resized image to parent');
-        $link_choices['url'] = dgettext('blog', 'Link the url below');
+        $link_choices['none'] = 'No link and ignore image link setting';
+        $link_choices['default'] = 'No link but allow image link setting';
+        $link_choices['readmore'] = 'Link to read more';
+        $link_choices['parent'] = 'Link resized image to parent';
+        $link_choices['url'] = 'Link the url below';
 
         $form->addText('title', $blog->title);
         $form->setSize('title', 40);
-        $form->setLabel('title', dgettext('blog', 'Title'));
+        $form->setLabel('title', 'Title');
         $form->setRequired('title');
 
         $form->addTextArea('summary', $blog->getSummaryAndEntry(false));
@@ -48,7 +48,7 @@ class Blog_Form
         }
         $form->setRows('summary', '10');
         $form->setCols('summary', '60');
-        $form->setLabel('summary', dgettext('blog', 'Content'));
+        $form->setLabel('summary', 'Content');
 
         javascript('datetimepicker', null, false, true, true);
         
@@ -69,7 +69,7 @@ class Blog_Form
         if ($blog->_error) {
             $template['MESSAGE'] = implode('<br />', $blog->_error);
         }
-        $template['REMINDER'] = dgettext('blog', 'Add a horizontal rule to separate content into summary and body');
+        $template['REMINDER'] = 'Add a horizontal rule to separate content into summary and body';
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 
@@ -82,16 +82,16 @@ class Blog_Form
 
         $form->addText('blog_limit', PHPWS_Settings::get('blog', 'blog_limit'));
         $form->setSize('blog_limit', 2, 2);
-        $form->setLabel('blog_limit', dgettext('blog', 'Entries shown per page'));
+        $form->setLabel('blog_limit', 'Entries shown per page');
         $form->addCssClass('blog_limit', 'form-control');
 
         $form->addText('past_entries', PHPWS_Settings::get('blog', 'past_entries'));
-        $form->setLabel('past_entries', dgettext('blog', 'Previous entries shown'));
+        $form->setLabel('past_entries', 'Previous entries shown');
         $form->setSize('past_entries', 2, 2);
         $form->addCssClass('past_entries', 'form-control');
         // Show/hide posted on date
         $form->addCheck('show_posted_date', 1);
-        $form->setLabel('show_posted_date', dgettext('blog', 'Show the date the post was made'));
+        $form->setLabel('show_posted_date', 'Show the date the post was made');
         $form->setMatch('show_posted_date', PHPWS_Settings::get('blog', 'show_posted_date'));
 
         // Show/hide posted by user full name
@@ -100,19 +100,19 @@ class Blog_Form
         $form->setMatch('show_posted_by', PHPWS_Settings::get('blog', 'show_posted_by'));
 
         $form->addCheck('simple_image', 1);
-        $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));
+        $form->setLabel('simple_image', 'Use Image Manager');
         $form->setMatch('simple_image', PHPWS_Settings::get('blog', 'simple_image'));
 
         $form->addCheck('mod_folders_only', 1);
-        $form->setLabel('mod_folders_only', dgettext('blog', 'Hide general image folders'));
+        $form->setLabel('mod_folders_only', 'Hide general image folders');
         $form->setMatch('mod_folders_only', PHPWS_Settings::get('blog', 'mod_folders_only'));
 
         $form->addCheck('home_page_display', 1);
-        $form->setLabel('home_page_display', dgettext('blog', 'Show blog on home page'));
+        $form->setLabel('home_page_display', 'Show blog on home page');
         $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
 
         $form->addCheck('logged_users_only', 1);
-        $form->setLabel('logged_users_only', dgettext('blog', 'Logged user view only'));
+        $form->setLabel('logged_users_only', 'Logged user view only');
         $form->setMatch('logged_users_only', PHPWS_Settings::get('blog', 'logged_users_only'));
 
         \phpws\PHPWS_Core::initModClass('users', 'Action.php');
@@ -127,17 +127,17 @@ class Blog_Form
             }
 
             $form->addMultiple('view_only', $groups);
-            $form->setLabel('view_only', dgettext('blog', 'Limit blog to specific groups'));
+            $form->setLabel('view_only', 'Limit blog to specific groups');
             $form->setMatch('view_only', $group_match);
             $form->addCssClass('view_only', 'form-control');
         }
 
-        $show[0] = dgettext('blog', 'Do not show');
-        $show[1] = dgettext('blog', 'Only on home page');
-        $show[2] = dgettext('blog', 'Always');
+        $show[0] = 'Do not show';
+        $show[1] = 'Only on home page';
+        $show[2] = 'Always';
 
         $form->addSelect('show_recent', $show);
-        $form->setLabel('show_recent', dgettext('blog', 'Show recent entries'));
+        $form->setLabel('show_recent', 'Show recent entries');
         $form->setMatch('show_recent', PHPWS_Settings::get('blog', 'show_recent'));
         $form->addCssClass('show_recent', 'form-control');
 
@@ -155,13 +155,13 @@ class Blog_Form
         $form->setLabel('comment_script', dgettext('blog', 'Paste in your comment code here (e.g. Disqus, Livefyre, Facebook, etc.)'));
         $form->addCssClass('comment_script', 'form-control');
 
-        $form->addSubmit(dgettext('blog', 'Save settings'));
+        $form->addSubmit('Save settings');
         if (Current_User::isDeity()) {
             $date_script = javascript('datetimepicker', array('format' => 'Y/m/d', 'timepicker' => false, 'id' => 'phpws_form_purge_date'), false, true, true);
             $form->addText('purge_date', date('Y/m/d', time() - 31536000));
-            $form->setLabel('purge_date', dgettext('blog', 'Purge all entries before this date'));
+            $form->setLabel('purge_date', 'Purge all entries before this date');
             $form->addCssClass('purge_date', 'form-control datetimepicker');
-            $form->addSubmit('purge_confirm', dgettext('blog', 'Confirm purge'));
+            $form->addSubmit('purge_confirm', 'Confirm purge');
             $form->setClass('purge_confirm', 'btn btn-danger');
         } else {
             $date_script = null;
@@ -172,13 +172,13 @@ class Blog_Form
         $template['date_script'] = $date_script;
 
         if (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-            $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog', array('action' => 'admin', 'command' => 'menu_submit_link'));
+            $template['MENU_LINK'] = PHPWS_Text::secureLink('Clip for menu', 'blog', array('action' => 'admin', 'command' => 'menu_submit_link'));
         }
 
-        $template['VIEW_LABEL'] = dgettext('blog', 'View');
-        $template['SUBMISSION_LABEL'] = dgettext('blog', 'Submission');
-        $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');
-        $template['COMMENTS_LABEL'] = dgettext('blog', 'Commenting');
+        $template['VIEW_LABEL'] = 'View';
+        $template['SUBMISSION_LABEL'] = 'Submission';
+        $template['PAST_NOTE'] = 'Set to zero to prevent display';
+        $template['COMMENTS_LABEL'] = 'Commenting';
 
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');
     }

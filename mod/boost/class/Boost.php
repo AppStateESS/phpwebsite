@@ -144,7 +144,7 @@ class PHPWS_Boost
                 $this->setStatus($title, BOOST_START);
             }
 
-            $content[] = dgettext('boost', 'Installing') . ' - ' . $mod->getProperName();
+            $content[] = 'Installing' . ' - ' . $mod->getProperName();
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
                 $content[] = dgettext('boost', 'Importing SQL install file.');
@@ -269,8 +269,8 @@ class PHPWS_Boost
             }
 
             // H 0120
-            $content[] = dgettext('boost', 'Uninstalling') . ' - ' . $mod->getProperName();
-            // $content[] = '<b>' . dgettext('boost', 'Uninstalling') . ' - ' . $mod->getProperName() .'</b>';
+            $content[] = 'Uninstalling' . ' - ' . $mod->getProperName();
+            // $content[] = '<b>' . 'Uninstalling' . ' - ' . $mod->getProperName() .'</b>';
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
                 $uninstall_file = $mod->getDirectory() . 'boost/uninstall.sql';
@@ -413,7 +413,7 @@ class PHPWS_Boost
                 $this->setStatus($title, BOOST_START);
             }
 
-            $content[] = dgettext('boost', 'Updating') . ' - ' . $mod->getProperName();
+            $content[] = 'Updating' . ' - ' . $mod->getProperName();
             $result = $this->onUpdate($mod, $content);
 
             if ($result === true) {
@@ -456,7 +456,7 @@ class PHPWS_Boost
             $filesDir = $homeDir . 'files/' . $mod->title;
             if (!is_dir($filesDir)) {
                 $content[] = dgettext('boost', 'Creating files directory for module.');
-                $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $filesDir);
+                $this->addLog($mod->title, 'Created directory' . ' ' . $filesDir);
                 mkdir($filesDir);
             }
         }
@@ -464,7 +464,7 @@ class PHPWS_Boost
         if ($mod->isImageDir()) {
             $imageDir = $homeDir . 'images/' . $mod->title;
             if (!is_dir($imageDir)) {
-                $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $imageDir);
+                $this->addLog($mod->title, 'Created directory' . ' ' . $imageDir);
                 $content[] = dgettext('boost', 'Creating image directory for module.');
                 mkdir($imageDir);
             }
@@ -809,7 +809,7 @@ class PHPWS_Boost
 
     public static function addLog($module, $message)
     {
-        $message = dgettext('boost', 'Module') . ' - ' . $module . ' : ' . $message;
+        $message = 'Module' . ' - ' . $module . ' : ' . $message;
         \phpws\PHPWS_Core::log($message, 'boost.log');
     }
 
@@ -1025,7 +1025,7 @@ class PHPWS_Boost
         $js['question'] .= '\n' . sprintf(dgettext('boost', 'If sure, please type the name of the module below: %s'), $module);
         $js['address'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
         $js['value_name'] = 'confirm';
-        $js['link'] = dgettext('boost', 'Uninstall');
+        $js['link'] = 'Uninstall';
         return javascript('prompt', $js);
     }
 

@@ -16,7 +16,7 @@ class Access_Forms {
         }
 
         $modal = new Modal('access-shortcut', null,
-                dgettext('access', 'Shortcuts'));
+                'Shortcuts');
         $modal->sizeSmall();
         $button = '<button class="btn btn-success" id="save-shortcut">Save</button>';
         $modal->addButton($button);
@@ -39,11 +39,11 @@ class Access_Forms {
 
         $options['none'] = '';
         if (Current_User::allow('access', 'admin_options')) {
-            $options['active'] = dgettext('access', 'Activate');
-            $options['deactive'] = dgettext('access', 'Deactivate');
+            $options['active'] = 'Activate';
+            $options['deactive'] = 'Deactivate';
         }
 
-        $options['delete'] = dgettext('access', 'Delete');
+        $options['delete'] = 'Delete';
         $form->addSelect('list_action', $options);
 
         $page_tags = $form->getTemplate();
@@ -67,13 +67,13 @@ class Access_Forms {
 
         $page_tags['MENU_WARNING'] = dgettext('menu',
                 'This change is irreversable. Please backup menu_links prior to running it.');
-        $page_tags['URL_LABEL'] = dgettext('access', 'Url');
+        $page_tags['URL_LABEL'] = 'Url';
         $page_tags['ACTIVE_LABEL'] = dgettext('access', 'Active?');
-        $page_tags['ACTION_LABEL'] = dgettext('access', 'Action');
+        $page_tags['ACTION_LABEL'] = 'Action';
         $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all',
                 array('checkbox_name' => 'shortcut[]'));
 
-        $js_vars['value'] = dgettext('access', 'Go');
+        $js_vars['value'] = 'Go';
         $js_vars['select_id'] = $form->getId('list_action');
         $js_vars['action_match'] = 'delete';
         $js_vars['message'] = dgettext('access',
@@ -105,7 +105,7 @@ class Access_Forms {
                 PHPWS_Settings::get('access', 'allow_deny_enabled'));
         $form->setLabel('allow_deny_enabled',
                 dgettext('access', 'Allow/Deny enabled'));
-        $form->addSubmit('go', dgettext('access', 'Go'));
+        $form->addSubmit('go', 'Go');
 
         $result = Access::getAllowDeny();
         if (PHPWS_Error::isError($result)) {
@@ -115,23 +115,23 @@ class Access_Forms {
         $form->addText('allow_address');
         $form->addText('deny_address');
         $form->addSubmit('add_allow_address',
-                dgettext('access', 'Add allowed IP'));
-        $form->addSubmit('add_deny_address', dgettext('access', 'Add denied IP'));
+                'Add allowed IP');
+        $form->addSubmit('add_deny_address', 'Add denied IP');
 
         $db = new PHPWS_DB('access_allow_deny');
         $result = $db->getObjects('Access_Allow_Deny');
 
         $options['none'] = dgettext('access', '-- Choose option --');
-        $options['active'] = dgettext('access', 'Activate');
-        $options['deactive'] = dgettext('access', 'Deactivate');
-        $options['delete'] = dgettext('access', 'Delete');
+        $options['active'] = 'Activate';
+        $options['deactive'] = 'Deactivate';
+        $options['delete'] = 'Delete';
 
         if (PHPWS_Settings::get('access', 'allow_all')) {
             $allow_all = TRUE;
-            $options['allow_all'] = dgettext('access', 'Do not allow all');
+            $options['allow_all'] = 'Do not allow all';
         } else {
             $allow_all = FALSE;
-            $options['allow_all'] = dgettext('access', 'Allow all');
+            $options['allow_all'] = 'Allow all';
         }
 
         $form->addSelect('allow_action', $options);
@@ -140,10 +140,10 @@ class Access_Forms {
 
         if (PHPWS_Settings::get('access', 'deny_all')) {
             $deny_all = TRUE;
-            $options['deny_all'] = dgettext('access', 'Do not deny all');
+            $options['deny_all'] = 'Do not deny all';
         } else {
             $deny_all = FALSE;
-            $options['deny_all'] = dgettext('access', 'Deny all');
+            $options['deny_all'] = 'Deny all';
         }
         $form->addSelect('deny_action', $options);
 
@@ -159,7 +159,7 @@ class Access_Forms {
                     'You have "Deny all" enabled. All rows below will be ignored.');
         }
 
-        $js_vars['value'] = dgettext('access', 'Go');
+        $js_vars['value'] = 'Go';
         $js_vars['action_match'] = 'delete';
         $js_vars['message'] = dgettext('access',
                 'Are you sure you want to delete the checked ips?');
@@ -182,13 +182,13 @@ class Access_Forms {
                     'No allowed ip addresses found.');
         } else {
             foreach ($result as $allow_deny) {
-                $action = PHPWS_Text::secureLink(dgettext('access', 'Delete'),
+                $action = PHPWS_Text::secureLink('Delete',
                                 'access',
                                 array('ad_id' => $allow_deny->id, 'command' => 'delete_allow_deny'));
                 if ($allow_deny->active) {
-                    $active = dgettext('access', 'Yes');
+                    $active = 'Yes';
                 } else {
-                    $active = dgettext('access', 'No');
+                    $active = 'No';
                 }
 
                 if ($allow_deny->allow_or_deny) {
@@ -224,10 +224,10 @@ class Access_Forms {
         $template['CHECK_ALL_DENY'] = javascript('check_all',
                 array('checkbox_name' => 'denys'));
         $template['ACTIVE_LABEL'] = dgettext('access', 'Active?');
-        $template['ALLOW_TITLE'] = dgettext('access', 'Allowed IPs');
-        $template['DENY_TITLE'] = dgettext('access', 'Denied IPs');
-        $template['ACTION_LABEL'] = dgettext('access', 'Action');
-        $template['IP_ADDRESS_LABEL'] = dgettext('access', 'IP Address');
+        $template['ALLOW_TITLE'] = 'Allowed IPs';
+        $template['DENY_TITLE'] = 'Denied IPs';
+        $template['ACTION_LABEL'] = 'Action';
+        $template['IP_ADDRESS_LABEL'] = 'IP Address';
         $template['WARNING'] = dgettext('access',
                 'Remember to "Update" your access file when finished changing IP rules.');
 
@@ -281,7 +281,7 @@ class Access_Forms {
         }
 
         $keyword = $form->addTextField('keyword', $shortcut->keyword)->setRequired();
-        $keyword->setPlaceholder(dgettext('access', 'Type in a keyword'));
+        $keyword->setPlaceholder('Type in a keyword');
         $tpl = $form->getInputStringArray();
 
         $template = new \Template($tpl);
