@@ -14,7 +14,7 @@ if (Current_User::allow('block')) {
         $js_address = PHPWS_SOURCE_HTTP . 'mod/block/javascript/addblock/script.js';
         Layout::addJSHeader('<script src="'.$js_address.'" type="text/javascript"></script>', 'addblock');
 
-        $modal = new \Modal('block-form-modal', '<div id="block-form-dialog"></div>', 'Add block here');
+        $modal = new \phpws2\Modal('block-form-modal', '<div id="block-form-dialog"></div>', 'Add block here');
         $modal->sizeLarge();
         $save_button = '<button class="btn btn-success" id="save-block">Save</button>';
         $modal->addButton($save_button);
