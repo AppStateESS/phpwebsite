@@ -4,7 +4,7 @@
  * @version $Id$
  */
 
-include 'src/phpws/version.php';
+include 'src-phpws-legacy/src/version.php';
 
 $content[] = "<b>Welcome to the phpWebSite $version</b><br />
 

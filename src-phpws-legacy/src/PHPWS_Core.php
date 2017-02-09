@@ -459,26 +459,26 @@ class PHPWS_Core
         switch ($code) {
             case '400':
                 header('HTTP/1.0 400 Bad Request');
-                include PHPWS_SOURCE_DIR . 'src/phpws/resources/400.html';
+                include PHPWS_SOURCE_DIR . 'src-phpws-legacy/resources/400.html';
                 break;
 
             case '403':
                 header('HTTP/1.0 403 Forbidden');
-                include PHPWS_SOURCE_DIR . 'src/phpws/resources/403.html';
+                include PHPWS_SOURCE_DIR . 'src-phpws-legacy/resources/403.html';
                 break;
 
             case '404':
                 header('HTTP/1.0 404 Not Found');
-                include PHPWS_SOURCE_DIR . 'src/phpws/resources/404.html';
+                include PHPWS_SOURCE_DIR . 'src-phpws-legacy/resources/404.html';
                 break;
 
             case 'overpost':
-                include PHPWS_SOURCE_DIR . 'src/phpws/resources/overpost.html';
+                include PHPWS_SOURCE_DIR . 'src-phpws-legacy/resources/overpost.html';
                 break;
 
             default:
                 header('HTTP/1.1 503 Service Unavailable');
-                include PHPWS_SOURCE_DIR . 'src/phpws/resources/error_page.html';
+                include PHPWS_SOURCE_DIR . 'src-phpws-legacy/resources/error_page.html';
                 break;
         }
         exit();
@@ -632,7 +632,7 @@ class PHPWS_Core
      */
     public static function releaseVersion()
     {
-        include PHPWS_SOURCE_DIR . 'src/phpws/version.php';
+        include PHPWS_SOURCE_DIR . 'src-phpws-legacy/version.php';
         return $version;
     }
 

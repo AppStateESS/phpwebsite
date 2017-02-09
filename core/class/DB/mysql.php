@@ -1,3 +1,3 @@
 <?php
 
-require_once PHPWS_SOURCE_DIR . 'src/phpws/DB/mysql.php';
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/DB/mysql.php';

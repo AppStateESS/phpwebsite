@@ -168,7 +168,7 @@ class PHPWS_DB
         $result = \phpws\PHPWS_Core::initCoreClass('DB/' . $type . '.php');
         if ($result == false) {
             \phpws\PHPWS_DB::logDB(_('Failed to connect.'));
-            \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', '\phpws\PHPWS_DB::loadDB', PHPWS_SOURCE_DIR . 'src/phpws/DB/' . $type . '.php');
+            \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', '\phpws\PHPWS_DB::loadDB', PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/DB/' . $type . '.php');
             \phpws\PHPWS_Core::errorPage();
         }
 

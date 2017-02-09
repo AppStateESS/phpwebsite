@@ -62,7 +62,7 @@ function process($arguments)
     require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
     require_once PHPWS_SOURCE_DIR . 'src/Bootstrap.php';
     //require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
-    require_once PHPWS_SOURCE_DIR . 'src/phpws/config/defines.php';
+    require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/config/defines.php';
     require_once PHPWS_SOURCE_DIR . 'mod/pulse/class/PulseController.php';
 
     try {

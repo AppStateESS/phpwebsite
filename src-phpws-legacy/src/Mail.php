@@ -4,11 +4,11 @@ namespace phpws;
 
 /**
  * Frontend class for Pear's Mail class.
- * Settings are in src/phpws/config/Mail.php
+ * Settings are in src-phpws-legacy/config/Mail.php
  *
  * Usage:
  *
- * require_once 'src/phpws/Mail.php';
+ * require_once 'src-phpws-legacy/src/Mail.php';
  *
  * // All addresses can contain a proper name or just the address itself
  *
