@@ -284,7 +284,7 @@ class Access_Forms {
         $keyword->setPlaceholder('Type in a keyword');
         $tpl = $form->getInputStringArray();
 
-        $template = new \Template($tpl);
+        $template = new \phpws2\Template($tpl);
         $template->setModuleTemplate('access', 'shortcut_menu.tpl');
         $content = $template->render();
         return $content;

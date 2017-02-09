@@ -62,7 +62,7 @@ class Pager
 
     /**
      * Template object
-     * @var \Template
+     * @var \phpws2\Template
      */
     protected $template;
     protected $sort_column;

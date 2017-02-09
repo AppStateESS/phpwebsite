@@ -25,7 +25,7 @@ class FC_Documents extends FC_Folder_Factory
     public function printFolderFiles()
     {
         $files = $this->getFolderFileList('documents');
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('filecabinet', 'FC_Forms/document_files.html');
         if (empty($files)) {
             return null;
@@ -44,7 +44,7 @@ class FC_Documents extends FC_Folder_Factory
         if (empty($row)) {
             return null;
         }
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('filecabinet', 'FC_Forms/document_view.html');
         $template->add('title', $row['title']);
         $template->add('filepath', './filecabinet/' . $row['id']);

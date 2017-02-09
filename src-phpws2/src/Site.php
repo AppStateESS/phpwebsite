@@ -7,7 +7,7 @@ namespace phpws2;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Site extends \Resource {
+class Site extends \phpws2\Resource {
     /**
      * Site objects live in the sites table
      * @var string

@@ -409,7 +409,7 @@ class PS_Forms
         $script = PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/purge/script.js';
         \Pager::prepare();
         \Layout::addJSHeader("<script type='text/javascript' src='$script'><script>");
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('pagesmith', 'purge.html');
         $this->ps->title = 'Purge deleted pages';
         $this->ps->content = $template->get();

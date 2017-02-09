@@ -48,7 +48,7 @@ class MiniAdmin {
             }
             $tpl['module_links'] = $module_links;
         }
-        $template = new \Template($tpl);
+        $template = new \phpws2\Template($tpl);
         $template->setModuleTemplate('miniadmin', MINIADMIN_TEMPLATE);
         $content = $template->get();
         Layout::set($content, 'miniadmin', 'mini_admin');

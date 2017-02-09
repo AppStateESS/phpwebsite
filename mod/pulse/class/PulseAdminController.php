@@ -45,7 +45,7 @@ class PulseAdminController extends \Http\Controller
 
         switch ($cmd) {
             case 'toggleAllow':
-                \Settings::set('pulse', 'allow_web_access', (\Settings::get('pulse', 'allow_web_access') - 1) * -1);
+                \phpws2\Settings::set('pulse', 'allow_web_access', (\phpws2\Settings::get('pulse', 'allow_web_access') - 1) * -1);
                 $response = new \Http\SeeOtherResponse(\Canopy\Server::getSiteUrl() . 'pulse/admin/');
                 break;
         }
@@ -71,9 +71,9 @@ class PulseAdminController extends \Http\Controller
     private function pager(\Canopy\Request $request)
     {
         \Pager::prepare();
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('pulse', 'pager.html');
-        if (\Settings::get('pulse', 'allow_web_access')) {
+        if (\phpws2\Settings::get('pulse', 'allow_web_access')) {
             $template->add('button_class', 'btn-success');
             $template->add('button_status', 'Web Access Allowed');
             $template->add('button_icon', 'fa-check');

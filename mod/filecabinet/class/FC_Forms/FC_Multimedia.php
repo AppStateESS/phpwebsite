@@ -22,7 +22,7 @@ class FC_Multimedia extends FC_Folder_Factory
     public function printFolderFiles()
     {
         $files = $this->getFolderFileList('multimedia');
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('filecabinet', 'FC_Forms/multimedia_files.html');
         if (empty($files)) {
             return null;

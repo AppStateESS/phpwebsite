@@ -6,7 +6,7 @@ namespace phpws2\View;
  * TODO: This should all be handled in templates that are 100% user-editable.
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
-class HtmlErrorView extends \Template {
+class HtmlErrorView extends \phpws2\Template {
 
     protected $code;
 

@@ -10,7 +10,7 @@ abstract class FC_Folder_Factory
 {
     /**
      *
-     * @var \Template
+     * @var \phpws2\Template
      */
     protected $template;
     protected $folders;
@@ -31,7 +31,7 @@ abstract class FC_Folder_Factory
     protected function loadTemplate()
     {
         $modal = new \Modal('edit-file-form');
-        $this->template = new \Template();
+        $this->template = new \phpws2\Template();
         $this->template->setModuleTemplate('filecabinet', 'FC_Forms/folders.html');
         $this->template->add('modal', $modal->get());
     }

@@ -149,7 +149,7 @@ class Menu_Admin
         if (!empty($message)) {
             $tpl['message'] = $message;
         }
-        $template = new \Template($tpl);
+        $template = new \phpws2\Template($tpl);
         $template->setModuleTemplate('menu', 'admin/main.html');
 
         Layout::add(PHPWS_ControlPanel::display($template->get()));
@@ -814,7 +814,7 @@ class Menu_Admin
         //commenting out for now. problem clearing select dropdown
         //javascript('select2');
 
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('menu', 'admin/administrate.html');
         $first_menu_pin_all = 0;
         $first_menu_template = null;

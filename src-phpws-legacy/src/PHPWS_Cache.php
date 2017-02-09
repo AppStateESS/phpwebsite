@@ -43,7 +43,7 @@ class PHPWS_Cache {
         }
 
         $cache = PHPWS_Cache::initCache($lifetime);
-        $key .= SITE_HASH . \Settings::get('Global', 'language');
+        $key .= SITE_HASH . \phpws2\Settings::get('Global', 'language');
         return $cache->get(md5($key));
     }
 
@@ -56,7 +56,7 @@ class PHPWS_Cache {
 
     public static function remove($key)
     {
-        $key .= SITE_HASH . \Settings::get('Global', 'language');
+        $key .= SITE_HASH . \phpws2\Settings::get('Global', 'language');
         $cache = PHPWS_Cache::initCache();
         return $cache->remove(md5($key));
     }
@@ -75,7 +75,7 @@ class PHPWS_Cache {
      */
     public static function save($key, $content)
     {
-        $key .= SITE_HASH . \Settings::get('Global', 'language');
+        $key .= SITE_HASH . \phpws2\Settings::get('Global', 'language');
         if (!PHPWS_Cache::isEnabled()) {
             return;
         }

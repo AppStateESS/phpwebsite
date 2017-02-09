@@ -8,7 +8,7 @@ require_once PHPWS_SOURCE_DIR . 'mod/pulse/inc/defines.php';
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PulseSchedule extends \Resource
+class PulseSchedule extends \phpws2\Resource
 {
     protected $id;
 

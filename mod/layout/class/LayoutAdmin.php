@@ -330,7 +330,7 @@ class Layout_Admin
             $listing[$box['theme_var']][$box['box_order']] = array('id' => $box['id'], 'name' => $box_name);
         }
         //var_dump($listing);exit;
-        $template = new \Template(array('rows' => $listing, 'move_select' => $move_select));
+        $template = new \phpws2\Template(array('rows' => $listing, 'move_select' => $move_select));
         $template->setModuleTemplate('layout', 'box_move.html');
 
         echo $template->get();

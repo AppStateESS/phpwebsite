@@ -453,7 +453,7 @@ class Menu {
 
             $menu_tpl['menus'][] = self::getCategoryViewLine($menu, $active);
         }
-        $template = new \Template($menu_tpl);
+        $template = new \phpws2\Template($menu_tpl);
         \Layout::addJSHeader("<script type='text/javascript' src='" .
                 PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",
                 81);
@@ -463,7 +463,7 @@ class Menu {
 
     private static function getCategoryViewLine($menu, $active)
     {
-        $template = new \Template();
+        $template = new \phpws2\Template();
         $line = array('active' => $active, 'title' => $menu->title, 'assoc_key' => $menu->assoc_key);
         if ($menu->assoc_key || !empty($menu->assoc_url)) {
             $line['assoc_url'] = $menu->getAssocUrl();

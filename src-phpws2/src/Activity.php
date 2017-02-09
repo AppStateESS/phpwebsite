@@ -8,7 +8,7 @@ namespace phpws2;
  *
  * @author Matt McNaney <mcnaney at gmail dot com>
  */
-class Activity extends \Resource {
+class Activity extends \phpws2\Resource {
 
     protected $id;
     protected $class_name;
@@ -51,7 +51,7 @@ class Activity extends \Resource {
             $activity->ip_address = '0.0.0.0';
             \Error::log($e);
         }
-        \ResourceFactory::saveResource($activity);
+        \phpws2\ResourceFactory::saveResource($activity);
     }
 
 }

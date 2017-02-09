@@ -43,7 +43,7 @@ EOF;
             }
             $files[$k]['filepath'] = './' . $filepath;
         }
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('filecabinet', 'FC_Forms/image_files.html');
         if (empty($files)) {
             return null;
@@ -62,7 +62,7 @@ EOF;
         if (empty($row)) {
             return null;
         }
-        $template = new \Template;
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('filecabinet', 'FC_Forms/image_view.html');
         $template->add('title', $row['title']);
         $template->add('alt', $row['alt']);

@@ -19,7 +19,7 @@ if (Current_User::isLogged()) {
         $tpl_vars['large'] = $qr_func($key->id, 8);
         $tpl_vars['xlarge'] = $qr_func($key->id, 12);
 
-        $tpl = new \Template($tpl_vars);
+        $tpl = new \phpws2\Template($tpl_vars);
         $tpl->setModuleTemplate('qr', 'modal.html');
         $content = $tpl->get();
         $modal = new Modal('qr-modal', $content, 'QR Codes (click to download)');

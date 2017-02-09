@@ -14,7 +14,7 @@ class ResourceFactory
      * Loads a Resource from the database according to table_name.
      * If table_name is not entered, Resource is checked for a table name
      * If resource is not found in table, the resource will just be as it was passed.
-     * @param \Resource $resource
+     * @param \phpws2\Resource $resource
      * @param integer $id Id of resource in table
      * @param string $table_name
      * @throws \Exception
@@ -45,7 +45,7 @@ class ResourceFactory
     /**
      * Saves a resource in the database.
      *
-     * @param \Resource $resource
+     * @param \phpws2\Resource $resource
      * @param string $table_name
      */
     public static function saveResource(Resource $resource, $table_name = null)
@@ -84,7 +84,7 @@ class ResourceFactory
     /**
      * Attempts to extract the required id from a resource, throwing an exception if id
      * is null.
-     * @param \Resource $resource
+     * @param \phpws2\Resource $resource
      * @return integer
      * @throws \Exception
      */
@@ -100,7 +100,7 @@ class ResourceFactory
 
     /**
      * Removes a resource from its table.
-     * @param \Resource $resource
+     * @param \phpws2\Resource $resource
      * @param string $table_name Not required if in Resource->table
      * @return integer Number of rows deleted.
      */
