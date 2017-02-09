@@ -571,7 +571,7 @@ class PHPWS_Boost
                 $content[] = dgettext('boost', 'Module\'s settings removed successfully.');
             }
 
-            if (Key::unregisterModule($module->title)) {
+            if (\Canopy\Key::unregisterModule($module->title)) {
                 $content[] = dgettext('boost', 'Key unregistration successful.');
             } else {
                 $content[] = dgettext('boost', 'Some key unregistrations were unsuccessful. Check your logs.');

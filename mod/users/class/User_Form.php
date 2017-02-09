@@ -1078,7 +1078,7 @@ class User_Form
     /**
      * Creates the permission menu template
      */
-    public static function permissionMenu(Key $key, $popbox = FALSE)
+    public static function permissionMenu(\Canopy\Key $key, $popbox = FALSE)
     {
         $edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
         if (PHPWS_Error::isError($edit_groups)) {

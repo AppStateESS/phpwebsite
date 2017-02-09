@@ -8,7 +8,7 @@
  */
 
 
-function search_unregister_key(Key $key)
+function search_unregister_key(\Canopy\Key $key)
 {
     if (empty($key->id)) {
         return FALSE;

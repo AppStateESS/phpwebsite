@@ -451,7 +451,7 @@ class Users_Permission
         return $inputs;
     }
 
-    public static function postViewPermissions(Key $key)
+    public static function postViewPermissions(\Canopy\Key $key)
     {
         if (!isset($_POST['view_permission'])) {
             return;
@@ -467,7 +467,7 @@ class Users_Permission
         }
     }
 
-    public static function postEditPermissions(Key $key)
+    public static function postEditPermissions(\Canopy\Key $key)
     {
         if (!isset($_POST['edit_groups']) || !is_array($_POST['edit_groups'])) {
             return;

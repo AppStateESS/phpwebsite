@@ -362,7 +362,7 @@ class Access
         }
     }
 
-    public static function shortcut(Key $key)
+    public static function shortcut(\Canopy\Key $key)
     {
         $modal = new Modal('access-shortcut', null, dgettext('access', 'Shortcuts'));
         $modal->sizeSmall();

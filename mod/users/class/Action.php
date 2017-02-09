@@ -468,7 +468,7 @@ class User_Action
         Layout::nakedDisplay($content, null, true);
     }
 
-    public static function getPermissionForm(Key $key)
+    public static function getPermissionForm(\Canopy\Key $key)
     {
         if (Current_User::isUnrestricted($key->module) && Current_User::allow($key->module, $key->edit_permission)) {
             $tpl = User_Form::permissionMenu($key, true);

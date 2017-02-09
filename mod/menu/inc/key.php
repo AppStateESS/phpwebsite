@@ -8,7 +8,7 @@
  */
 
 
-function menu_unregister_key(Key $key)
+function menu_unregister_key(\Canopy\Key $key)
 {
     \phpws\PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 
