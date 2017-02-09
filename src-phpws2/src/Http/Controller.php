@@ -18,7 +18,7 @@ namespace phpws2\Http;
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Controller implements \Controller {
+abstract class Controller implements \Canopy\Controller {
 
     private $module;
 
@@ -37,25 +37,25 @@ abstract class Controller implements \Controller {
         $this->onBeforeExecute($request);
 
         switch ($request->getMethod()) {
-            case \Request::GET:
+            case \Canopy\Request::GET:
                 $response = $this->get($request);
                 break;
-            case \Request::HEAD:
+            case \Canopy\Request::HEAD:
                 $response = $this->head($request);
                 break;
-            case \Request::POST:
+            case \Canopy\Request::POST:
                 $response = $this->post($request);
                 break;
-            case \Request::PUT:
+            case \Canopy\Request::PUT:
                 $response = $this->put($request);
                 break;
-            case \Request::DELETE:
+            case \Canopy\Request::DELETE:
                 $response = $this->delete($request);
                 break;
-            case \Request::OPTIONS:
+            case \Canopy\Request::OPTIONS:
                 $response = $this->options($request);
                 break;
-            case \Request::PATCH:
+            case \Canopy\Request::PATCH:
                 $response = $this->patch($request);
                 break;
             default:

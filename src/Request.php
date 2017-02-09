@@ -474,7 +474,7 @@ class Request extends Data
      * // prints "Beta"
      * </code>
      * @deprecated Use shiftCommand
-     * @return \Request
+     * @return \Canopy\Request
      */
     public function getNextRequest()
     {

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Unit Test for \Request
+ * Unit Test for \Canopy\Request
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
-use \Request;
+use \Canopy\Request;
 
 class RequestTest extends PHPUnit_Framework_TestCase
 {

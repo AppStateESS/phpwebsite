@@ -14,7 +14,7 @@ class Server
     /**
      * For now, the Request object is global. Eventually it will be swapped out
      * for a framework version.
-     * @return \Request
+     * @return \Canopy\Request
      */
     public static function getCurrentRequest()
     {
