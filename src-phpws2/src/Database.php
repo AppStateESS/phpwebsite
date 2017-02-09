@@ -65,7 +65,7 @@ class Database
                     Database::phpwsDSNLoader(PHPWS_DSN, $tbl_prefix);
                     $dsn = self::$default_dsn;
                 } else {
-                    throw new \Exception(\Canopy\Translation::t('Default DSN not set.'));
+                    throw new \Exception('Default DSN not set.');
                 }
             } else {
                 $dsn = self::$default_dsn;

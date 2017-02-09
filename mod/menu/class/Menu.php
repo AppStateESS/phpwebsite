@@ -100,7 +100,7 @@ class Menu {
 
         $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-add-page" data-key-id="'
                 . $key->id . '">';
-        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . \Canopy\Translation::t('Add link to menu') . '</option>';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>Add link to menu</option>';
         foreach ($menus as $menu) {
             $choice[] = '<option value="' . $menu['id'] . '">' . $menu['title'] . '</option>';
         }
@@ -125,7 +125,7 @@ class Menu {
 
         $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-unpin-page" data-key-id="'
                 . $key->id . '">';
-        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' . \Canopy\Translation::t('Remove menu') . '</option>';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>Remove menu</option>';
         $menu_found = false;
         foreach ($menus as $menu) {
             if (in_array($menu['id'], $ignore)) {
@@ -158,8 +158,7 @@ class Menu {
 
         $choice[] = '<div class="input-group-sm" style="margin-bottom : 5px"><select class="form-control" name="menu_id" id="menu-pin-page" data-key-id="'
                 . $key->id . '">';
-        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>' .
-                \Canopy\Translation::t('Show menu here') . '</option>';
+        $choice[] = '<option value="0" disabled="disabled" selected="selected"><i class="fa fa-caret-down"></i>Show menu here</option>';
         $menu_found = false;
         foreach ($menus as $menu) {
             if (!in_array($menu['id'], $ignore)) {
