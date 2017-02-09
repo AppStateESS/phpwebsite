@@ -1326,7 +1326,7 @@ class DBPager
         unset($values['go']);
 
 
-        $form = new \Form($id);
+        $form = new \phpws2\Form($id);
         $form->useGetMethod();
         $form->addClass('form-inline');
         $form->setAction('index.php');

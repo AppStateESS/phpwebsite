@@ -161,7 +161,7 @@ class Form extends Tag {
             throw new \Exception(sprintf('Improperly formatted input name: %s', $name));
         }
 
-        $class_name = 'Form\Input\\' . ucfirst(strtolower($type));
+        $class_name = '\phpws2\Form\Input\\' . ucfirst(strtolower($type));
         $input = new $class_name($name, $value);
         if (isset($label)) {
             $input->setLabel($label);
