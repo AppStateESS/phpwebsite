@@ -1765,7 +1765,7 @@ abstract class DB extends \Canopy\Data
     public function __destruct()
     {
         if (self::$transaction_count != 0) {
-            \Error::logError('DB object destructed with incomplete transactions');
+            \phpws2\Error::logError('DB object destructed with incomplete transactions');
         }
         self::disconnect();
     }
