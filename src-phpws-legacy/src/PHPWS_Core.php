@@ -448,7 +448,7 @@ class PHPWS_Core
         } else {
             $message = '{HUB} ' . $message;
         }
-        logMessage($message, $filename);
+        \Canopy\Log::logMessage($message, $filename);
     }
 
     /**
