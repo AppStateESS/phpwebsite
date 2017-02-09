@@ -41,7 +41,6 @@ if (!\phpws\PHPWS_Core::checkBranch()) {
 }
 \phpws\PHPWS_Core::checkOverpost();
 \phpws\PHPWS_Core::setLastPost();
-Language::setLocale(Settings::get('Global', 'language'));
 
 \Canopy\Log::loadTimeZone();
 
