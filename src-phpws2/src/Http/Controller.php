@@ -155,7 +155,7 @@ abstract class Controller implements \Canopy\Controller {
 
     protected function getJsonView($data, \Canopy\Request $request)
     {
-        return new \View\JsonView($data);
+        return new \phpws2\View\JsonView($data);
     }
 
     protected function getXmlView($data, \Canopy\Request $request)

@@ -35,7 +35,7 @@ class PulseAdminController extends \Http\Controller
         }
 
         $panel = $template->get();
-        $view = new \View\HtmlView(\PHPWS_ControlPanel::display($panel));
+        $view = new \phpws2\View\HtmlView(\PHPWS_ControlPanel::display($panel));
         return $view;
     }
 

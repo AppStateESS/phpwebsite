@@ -5,7 +5,7 @@ namespace phpws2\View;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class HtmlView implements \View {
+class HtmlView implements \phpws2\View {
 
     private $content;
 

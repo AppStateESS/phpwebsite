@@ -7,7 +7,7 @@ namespace phpws2\View;
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
-class NullView implements \View
+class NullView implements \phpws2\View
 {
     public function __construct()
     {

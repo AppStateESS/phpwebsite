@@ -126,13 +126,13 @@ class PS_Forms
         }
 
         // We wrap the textarea in a form just so ckeditor will allow use of the "Save" button.
-        $modal = new \Modal('edit-section', '<form><textarea id="block-edit-textarea"></textarea></form>', 'Edit text area');
+        $modal = new \phpws2\Modal('edit-section', '<form><textarea id="block-edit-textarea"></textarea></form>', 'Edit text area');
         $modal->addButton('<button id="save-page" class="btn btn-success">' . 'Save' . '</button>');
 
         $modal->setWidthPercentage(90);
         $tpl['CONTENT_MODAL'] = $modal->__toString();
 
-        $title_modal = new \Modal('edit-title', '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />', 'Edit page title');
+        $title_modal = new \phpws2\Modal('edit-title', '<input class="form-control" type="text" id="page-title-input" name="page_title" value="" />', 'Edit page title');
         $title_modal->addButton('<button id="save-title" class="btn btn-success">' . 'Save' . '</button>');
         $tpl['TITLE_MODAL'] = $title_modal->__toString();
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'page_form.tpl');

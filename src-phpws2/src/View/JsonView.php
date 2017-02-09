@@ -14,7 +14,7 @@ namespace phpws2\View;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class JsonView implements \View
+class JsonView implements \phpws2\View
 {
     protected $data;
     protected $options;

@@ -46,7 +46,7 @@ class CompatibilityModule extends Module implements SettingDefaults {
 
     public function getView(Http\AcceptIterator $iter)
     {
-        return new \View\NullView;
+        return new \phpws2\View\NullView;
     }
 
     public function execute(Request $request)
