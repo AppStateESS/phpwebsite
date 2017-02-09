@@ -175,7 +175,7 @@ class Setup
 
         if (empty($_POST['pass1']) || $_POST['pass1'] != $_POST['pass2'] || strlen($_POST['pass1']) < 4) {
             $aiw = false;
-            $this->messages[] = dgettext('core', 'Password is not acceptable.');
+            $this->messages[] = 'Password is not acceptable.';
         } else {
             $_SESSION['User']->setPassword($_POST['pass1']);
         }
@@ -267,7 +267,7 @@ class Setup
 
         if ($checkConnection == 1) {
             // Database already exists and is empty.
-            $this->messages[] = dgettext('core', 'Database found.');
+            $this->messages[] = 'Database found.';
             return true;
         } elseif ($checkConnection == 2) {
             $sub[] = dgettext('core',
@@ -290,7 +290,7 @@ class Setup
         } elseif ($checkConnection == -1) {
             if ($this->createDatabase()) {
                 //Database created successfully, move on to creating core
-                $this->messages[] = dgettext('core', 'Database created.');
+                $this->messages[] = 'Database created.';
                 return true;
             } else {
                 $this->databaseConfig();
@@ -313,7 +313,7 @@ class Setup
             $db = new \PDO($this->getPDODSN(false), $dbuser, $dbpass);
         } catch (\Exception $e) {
             PHPWS_Error::log($e->getMessage());
-            $this->messages[] = dgettext('core', 'Unable to connect.');
+            $this->messages[] = 'Unable to connect.';
             $this->messages[] = dgettext('core',
                     'Check your configuration settings.');
             return false;
@@ -673,7 +673,7 @@ class Setup
     public function createCore()
     {
         require_once('File.php');
-        $this->content[] = dgettext('core', 'Importing core database file.');
+        $this->content[] = 'Importing core database file.';
 
         $db = new PHPWS_DB;
         $result = $db->importFile('core/boost/install.sql');
@@ -1001,9 +1001,9 @@ class Setup
                             'Starting modules installed.');
                     $this->content[] = dgettext('core',
                             'The site should be ready for you to use.');
-                    //                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, dgettext('core', 'Continue to your new site...'));
+                    //                    $this->content[] = sprintf('<a href="%s">%s</a>', PHPWS_SOURCE_HTTP, 'Continue to your new site...');
                     $this->content[] = sprintf('<a href="../">%s</a>',
-                            dgettext('core', 'Continue to your new site...'));
+                            'Continue to your new site...');
                     unset($_SESSION['configSettings']);
                     unset($_SESSION['User']);
                     unset($_SESSION['session_check']);

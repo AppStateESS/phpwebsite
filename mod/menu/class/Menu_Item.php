@@ -152,7 +152,7 @@ class Menu_Item {
     public function post()
     {
         if (empty($_POST['title'])) {
-            $errors[] = dgettext('menu', 'Missing menu title.');
+            $errors[] = 'Missing menu title.';
         } else {
             $this->setTitle($_POST['title']);
         }

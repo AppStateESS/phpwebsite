@@ -245,7 +245,7 @@ class FC_Image_Manager
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->content = dgettext('filecabinet', 'An error occurred when trying to save your image.');
+            $this->content = 'An error occurred when trying to save your image.';
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {

@@ -15,24 +15,24 @@ function users_register($module, &$content)
     $result = Users_Permission::createPermissions($module);
 
     if (is_null($result)){
-        PHPWS_Boost::addLog('users', dgettext('users', 'Permissions file not implemented.'));
-        $content[] =  dgettext('users', 'Permissions file not implemented.');
+        PHPWS_Boost::addLog('users', 'Permissions file not implemented.');
+        $content[] =  'Permissions file not implemented.';
         $no_permissions = TRUE;
     } elseif (PHPWS_Error::isError($result)) {
-        $content[] = dgettext('users', 'Permissions table not created successfully.');
+        $content[] = 'Permissions table not created successfully.';
         PHPWS_Error::log($result);
         return FALSE;
     } else {
-        $content[] = dgettext('users', 'Permissions table created successfully.');
+        $content[] = 'Permissions table created successfully.';
     }
 
     $result = My_Page::registerMyPage($module);
     if (PHPWS_Error::isError($result)){
-        PHPWS_Boost::addLog('users', dgettext('users', 'A problem occurred when trying to register this module to My Page.'));
-        $content[] = dgettext('users', 'A problem occurred when trying to register this module to My Page.');
+        PHPWS_Boost::addLog('users', 'A problem occurred when trying to register this module to My Page.');
+        $content[] = 'A problem occurred when trying to register this module to My Page.';
         return FALSE;
     } elseif ($result != FALSE) {
-        $content[] = dgettext('users', 'My Page registered to Users module.');
+        $content[] = 'My Page registered to Users module.';
     } else {
         $no_my_page = TRUE;
     }

@@ -102,7 +102,7 @@ class Checkin_User extends Checkin
 
             case 'error':
                 $this->title = 'Sorry';
-                $this->content = dgettext('checkin', 'An error is preventing your account to save. Please alert the office.');
+                $this->content = 'An error is preventing your account to save. Please alert the office.';
                 Layout::metaRoute('index.php', 5);
                 break;
 
@@ -158,17 +158,17 @@ class Checkin_User extends Checkin
 
         if (isset($_POST['reason_id'])) {
             if ($_POST['reason_id'] == 0) {
-                $this->message[] = dgettext('checkin', 'Please enter the reason for your visit.');
+                $this->message[] = 'Please enter the reason for your visit.';
             }
             $this->visitor->reason = (int) $_POST['reason_id'];
         }
 
         if (empty($this->visitor->firstname)) {
-            $this->message[] = dgettext('checkin', 'Please enter your first name.');
+            $this->message[] = 'Please enter your first name.';
         }
 
         if (empty($this->visitor->lastname)) {
-            $this->message[] = dgettext('checkin', 'Please enter your last name.');
+            $this->message[] = 'Please enter your last name.';
         }
 
         if (!empty($_POST['email'])) {

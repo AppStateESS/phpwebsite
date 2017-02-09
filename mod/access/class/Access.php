@@ -48,26 +48,26 @@ class Access
             switch ($command) {
                 case 'post_admin':
                     Access::saveAdmin();
-                    Access::sendMessage(dgettext('access', 'Settings saved.'), 'admin');
+                    Access::sendMessage('Settings saved.', 'admin');
                     break;
 
                 case 'restore_default':
                     $source = PHPWS_SOURCE_DIR . 'core/inc/htaccess';
                     $dest = PHPWS_HOME_DIR . '.htaccess';
                     if (copy($source, $dest)) {
-                        Access::sendMessage(dgettext('access', 'Default .htaccess file restored.'), 'update');
+                        Access::sendMessage('Default .htaccess file restored.', 'update');
                     } else {
-                        Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
+                        Access::sendMessage('Unable to restore default .htaccess file.', 'update');
                     }
                     break;
 
                 case 'post_deny_allow':
                     $result = Access::postDenyAllow();
                     if ($result == false) {
-                        Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
+                        Access::sendMessage('IP address was not formatted correctly or not allowed.', 'deny_allow');
                     } elseif (PHPWS_Error::isError($result)) {
                         PHPWS_Error::log($result);
-                        Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
+                        Access::sendMessage('An error occurred.' . ' ' . 'Please check your logs.', 'deny_allow');
                     }
                     Access::sendMessage(NULL, 'deny_allow');
                     break;
@@ -76,7 +76,7 @@ class Access
                     \phpws\PHPWS_Core::initModClass('access', 'Allow_Deny.php');
                     $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                     $allow_deny->delete();
-                    Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
+                    Access::sendMessage('IP address deleted.', 'deny_allow');
                     break;
                 case 'deny_allow':
                     \phpws\PHPWS_Core::initModClass('access', 'Forms.php');
@@ -90,7 +90,7 @@ class Access
                     if (empty($shortcut->_error) && $shortcut->id) {
                         $result = $shortcut->delete();
                         if (PHPWS_Error::isError($result)) {
-                            Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
+                            Access::sendMessage('An error occurred when deleting your shortcut.', 'shortcuts');
                         }
                     }
                     Access::sendMessage('Shortcut deleted', 'shortcuts');
@@ -107,7 +107,7 @@ class Access
                     $message = NULL;
                     $result = Access::postShortcutList();
                     if (PHPWS_Error::isError($result)) {
-                        $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
+                        $message = 'An error occurred.' . ' ' . 'Please check your logs.';
                     }
                     Access::sendMessage($message, 'shortcuts');
                     break;
@@ -257,10 +257,10 @@ class Access
         $result = $shortcut->save();
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
+            $content[] = 'A serious error occurred. Please check your error.log.';
             $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', 'Close window');
         } else {
-            $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
+            $tpl['TITLE'] = 'Access has saved your shortcut.';
             $content[] = dgettext('access', 'You can access this item with the following link:');
             $url = $shortcut->getRewrite(true, false);
             $content[] = $url;
@@ -394,7 +394,7 @@ class Access
         }
 
         if (Current_User::isDeity()) {
-            $link['title'] = dgettext('access', '.htaccess');
+            $link['title'] = '.htaccess';
             $tabs['htaccess'] = $link;
         }
 
@@ -741,7 +741,7 @@ class Access
         $base_needed = false;
 
         if (!is_file('.htaccess')) {
-            $tpl['CURRENT_HTACCESS'] = dgettext('access', 'Your .htaccess file does not exist or is not readable.');
+            $tpl['CURRENT_HTACCESS'] = 'Your .htaccess file does not exist or is not readable.';
         } else {
             $htaccess_contents = file('.htaccess');
             $tpl['CURRENT_HTACCESS'] = implode('', $htaccess_contents);
@@ -755,19 +755,19 @@ class Access
 
                 if (!$base) {
                     if ($current_directory == '' || $current_directory == '/') {
-                        $tpl['BASE_FOUND'] = dgettext('access', 'RewriteBase is not set or needed.');
+                        $tpl['BASE_FOUND'] = 'RewriteBase is not set or needed.';
                     } else {
                         $base_needed = true;
-                        $tpl['BASE_FOUND'] = dgettext('access', 'Your RewriteBase is not set but may be needed.');
+                        $tpl['BASE_FOUND'] = 'Your RewriteBase is not set but may be needed.';
                     }
                 } elseif ($base == $current_directory) {
-                    $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase matches installation directory.');
+                    $tpl['BASE_FOUND'] = 'Current RewriteBase matches installation directory.';
                 } else {
                     $base_needed = true;
-                    $tpl['BASE_FOUND'] = dgettext('access', 'Current RewriteBase does not match the installation directory.');
+                    $tpl['BASE_FOUND'] = 'Current RewriteBase does not match the installation directory.';
                 }
             } else {
-                $tpl['BASE_FOUND'] = dgettext('access', 'Your .htaccess file is not writable.');
+                $tpl['BASE_FOUND'] = 'Your .htaccess file is not writable.';
             }
         }
 
@@ -776,7 +776,7 @@ class Access
                 $vars['command'] = 'add_rewritebase';
                 $tpl['OPTION'] = PHPWS_Text::secureLink('Add RewriteBase', 'access', $vars);
             } else {
-                $tpl['OPTION'] = dgettext('access', 'Your .htaccess file is not writable. A RewriteBase cannot be added.');
+                $tpl['OPTION'] = 'Your .htaccess file is not writable. A RewriteBase cannot be added.';
             }
         }
 

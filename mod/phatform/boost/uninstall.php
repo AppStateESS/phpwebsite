@@ -26,7 +26,7 @@ function phatform_uninstall(&$content) {
                 PHPWS_DB::dropTable($table);
             }
         }
-        $content[] = dgettext('phatform', 'Removed all dynamic Form Generator tables.');
+        $content[] = 'Removed all dynamic Form Generator tables.';
     }
 
     PHPWS_DB::dropTable('mod_phatform_forms');
@@ -37,7 +37,7 @@ function phatform_uninstall(&$content) {
     PHPWS_DB::dropTable('mod_phatform_multiselect');
     PHPWS_DB::dropTable('mod_phatform_radiobutton');
     PHPWS_DB::dropTable('mod_phatform_checkbox');
-    $content[] = dgettext('phatform', 'All Form Generator static tables removed.');
+    $content[] = 'All Form Generator static tables removed.';
 
     return TRUE;
 }

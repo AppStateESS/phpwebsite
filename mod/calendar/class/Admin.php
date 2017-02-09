@@ -71,7 +71,7 @@ class Calendar_Admin
         $page_tags['TITLE_LABEL'] = dgettext('calendar', 'Title / Time / Description');
         $page_tags['LOCATION_LABEL'] = 'Location';
         $page_tags['ACTION_LABEL'] = 'Action';
-        $pager->setEmptyMessage(dgettext('calendar', 'No suggestions to approve.'));
+        $pager->setEmptyMessage('No suggestions to approve.');
         $pager->addPageTags($page_tags);
 
         $this->title = 'Suggested events';
@@ -358,8 +358,8 @@ class Calendar_Admin
                 $linkvar['js'] = 1;
             }
 
-            $source_link = PHPWS_Text::moduleLink(dgettext('calendar', 'Click here if you would prefer to edit the source event.'), 'calendar', $linkvar);
-            $tpl['REPEAT_WARNING'] = dgettext('calendar', 'This is a repeat of another event.') . '<br />' . $source_link;
+            $source_link = PHPWS_Text::moduleLink('Click here if you would prefer to edit the source event.', 'calendar', $linkvar);
+            $tpl['REPEAT_WARNING'] = 'This is a repeat of another event.' . '<br />' . $source_link;
         }
 
         $tpl['SYNC'] = sprintf('<input type="button" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />', 'Sync dates');
@@ -574,7 +574,7 @@ class Calendar_Admin
             case 'delete_schedule':
                 if (Current_User::authorized('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
                     $this->calendar->schedule->delete();
-                    $this->sendMessage(dgettext('calendar', 'Schedule deleted.'), 'aop=schedules');
+                    $this->sendMessage('Schedule deleted.', 'aop=schedules');
                 } else {
                     Current_User::disallow();
                 }
@@ -601,7 +601,7 @@ class Calendar_Admin
                 if (Current_User::isUnrestricted('calendar')) {
                     PHPWS_Settings::set('calendar', 'public_schedule', (int) $_REQUEST['sch_id']);
                     PHPWS_Settings::save('calendar');
-                    $this->message = dgettext('calendar', 'Default public schedule set.');
+                    $this->message = 'Default public schedule set.';
                 }
                 $this->scheduleListing();
                 break;
@@ -685,10 +685,10 @@ class Calendar_Admin
         $error = false;
         if (empty($_FILES['upload_file']['tmp_name'])) {
             $error = true;
-            $content[] = dgettext('calendar', 'Missing filename.');
+            $content[] = 'Missing filename.';
         } elseif ($_FILES['upload_file']['type'] != 'text/calendar') {
             $error = true;
-            $content[] = dgettext('calendar', 'Improper file format.');
+            $content[] = 'Improper file format.';
         }
 
         if (!$error) {
@@ -696,7 +696,7 @@ class Calendar_Admin
 
             if (!is_array($result)) {
                 $error = true;
-                $content[] = dgettext('calendar', 'Unable to parse file for events.');
+                $content[] = 'Unable to parse file for events.';
             } elseif (trim($result[0]) != 'BEGIN:VCALENDAR') {
                 $error = true;
                 $content[] = dgettext('calendar', 'File does not appear to be in iCal/vCal format.');
@@ -704,7 +704,7 @@ class Calendar_Admin
         }
 
         if ($error) {
-            $content[] = $this->calendar->schedule->uploadEventsLink(false, dgettext('calendar', 'Return to upload form...'));
+            $content[] = $this->calendar->schedule->uploadEventsLink(false, 'Return to upload form...');
             $this->title = 'Error';
             $this->content = implode('<br />', $content);
             return;
@@ -805,7 +805,7 @@ class Calendar_Admin
 
                         if (!empty($result)) {
                             if (PHPWS_Error::logIfError($result)) {
-                                $parse_errors[] = dgettext('calendar', 'Error accessing event table.');
+                                $parse_errors[] = 'Error accessing event table.';
                             } else {
                                 $duplicates++;
                             }
@@ -813,7 +813,7 @@ class Calendar_Admin
                             $save = $event->save();
 
                             if (PHPWS_Error::logIfError($save) || !$save) {
-                                $parse_errors[] = dgettext('calendar', 'Error saving new event.');
+                                $parse_errors[] = 'Error saving new event.';
                             } else {
                                 $success++;
                             }
@@ -881,17 +881,17 @@ class Calendar_Admin
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 if (PHPWS_Calendar::isJS()) {
-                    Layout::nakedDisplay(dgettext('calendar', 'An error occurred when saving your event.'));
+                    Layout::nakedDisplay('An error occurred when saving your event.');
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your event.'), 'aop=schedules');
+                    $this->sendMessage('An error occurred when saving your event.', 'aop=schedules');
                 }
             } else {
                 $result = $this->saveRepeat($event);
                 if (PHPWS_Error::isError($result)) {
                     if (PHPWS_Calendar::isJS()) {
                         PHPWS_Error::log($result);
-                        Layout::nakedDisplay(dgettext('calendar', 'An error occurred when trying to repeat an event.'), 'aop=schedules');
+                        Layout::nakedDisplay('An error occurred when trying to repeat an event.', 'aop=schedules');
                         exit();
                     } else {
                         $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.', 'aop=schedules'));
@@ -904,9 +904,9 @@ class Calendar_Admin
 
                 $view = filter_input(INPUT_POST, 'view');
                 if (!empty($view)) {
-                    $this->sendMessage(dgettext('calendar', 'Event saved.'), 'view=' . $view . '&date=' . $event->start_time . '&event_id=' . $event->id . '&sch_id=' . $this->calendar->schedule->id);
+                    $this->sendMessage('Event saved.', 'view=' . $view . '&date=' . $event->start_time . '&event_id=' . $event->id . '&sch_id=' . $this->calendar->schedule->id);
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'Event saved.'), 'aop=schedules');
+                    $this->sendMessage('Event saved.', 'aop=schedules');
                 }
             }
         } else {
@@ -1022,12 +1022,12 @@ class Calendar_Admin
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
                 if (PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), null, false);
+                    $this->sendMessage('An error occurred when saving your schedule.', null, false);
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'An error occurred when saving your schedule.'), 'aop=schedules');
+                    $this->sendMessage('An error occurred when saving your schedule.', 'aop=schedules');
                 }
             } else {
                 if ($this->calendar->schedule->public && ($default_public < 1)) {
@@ -1045,7 +1045,7 @@ class Calendar_Admin
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(dgettext('calendar', 'Schedule saved.'), 'aop=schedules');
+                    $this->sendMessage('Schedule saved.', 'aop=schedules');
                 }
             }
         } else {
@@ -1098,7 +1098,7 @@ class Calendar_Admin
     public function repeatEvent($event)
     {
         if (!$event->id) {
-            $this->content = dgettext('calendar', 'This event does not exist.');
+            $this->content = 'This event does not exist.';
             return;
         }
 
@@ -1311,7 +1311,7 @@ class Calendar_Admin
     public function repeatWeekly(Calendar_Event $event)
     {
         if (!isset($_POST['weekday_repeat']) || !is_array($_POST['weekday_repeat'])) {
-            $this->message = dgettext('calendar', 'You must choose which weekdays to repeat.');
+            $this->message = 'You must choose which weekdays to repeat.';
             return false;
         }
 
@@ -1434,7 +1434,7 @@ class Calendar_Admin
         $pager->addPageTags($page_tags);
         $pager->addRowTags('rowTags');
         $pager->addToggle('class="bgcolor1"');
-        $pager->setEmptyMessage(dgettext('calendar', 'No schedules have been created.'));
+        $pager->setEmptyMessage('No schedules have been created.');
         $pager->addSortHeader('title', 'Title');
         $pager->addSortHeader('public', 'Availability');
 

@@ -73,8 +73,7 @@ EOT;
                                 $branch->directory . 'javascript/editors/fckeditor',
                                 true)) {
                     mkdir($branch->directory . 'images/ckeditor/');
-                    $this->content[] = dgettext('branch',
-                            'Failed to copy FCKeditor to branch.');
+                    $this->content[] = 'Failed to copy FCKeditor to branch.';
                 } else {
                     $content[] = 'FCKeditor not copied to branch. Check directory permissions.';
                 }

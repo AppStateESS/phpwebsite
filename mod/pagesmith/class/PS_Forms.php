@@ -93,7 +93,7 @@ class PS_Forms
         }
 
         if (empty($page->_tpl) || $page->_tpl->error) {
-            $this->ps->content = dgettext('pagesmith', 'Unable to load page template.');
+            $this->ps->content = 'Unable to load page template.';
             return;
         }
         $form->addSubmit('submit', 'Save page');
@@ -166,7 +166,7 @@ class PS_Forms
             \phpws\PHPWS_Core::plugObject($sec, $orf);
 
             if ($empty_content) {
-                $row['CONTENT'] = sprintf('<em>%s</em>', dgettext('pagesmith', 'Empty content. Consider deletion.'));
+                $row['CONTENT'] = sprintf('<em>%s</em>', 'Empty content. Consider deletion.');
             } else {
                 $row['CONTENT'] = $sec->getContent();
             }
@@ -224,7 +224,7 @@ class PS_Forms
         $pager->setModule('pagesmith');
         $pager->setTemplate('page_list.tpl');
         $pager->addRowTags('row_tags');
-        $pager->setEmptyMessage(dgettext('pagesmith', 'No pages have been created.'));
+        $pager->setEmptyMessage('No pages have been created.');
         $pager->setSearch('title', 'id');
         $pager->addSortHeader('id', 'Id');
         $pager->addSortHeader('title', 'Title');
@@ -313,7 +313,7 @@ class PS_Forms
         $this->loadTemplates();
 
         if (empty($this->tpl_list)) {
-            $this->ps->content = dgettext('pagesmith', 'Could not find any page templates. Please check your error log.');
+            $this->ps->content = 'Could not find any page templates. Please check your error log.';
         }
 
         @$fname = $_GET['fname'];
@@ -376,7 +376,7 @@ class PS_Forms
 
         $form->addCheck('auto_link', 1);
         $form->setMatch('auto_link', PHPWS_Settings::get('pagesmith', 'auto_link'));
-        $form->setLabel('auto_link', dgettext('pagesmith', 'Add menu link for new pages.'));
+        $form->setLabel('auto_link', 'Add menu link for new pages.');
 
         $form->addCheck('back_to_top', 1);
         $form->setMatch('back_to_top', PHPWS_Settings::get('pagesmith', 'back_to_top'));

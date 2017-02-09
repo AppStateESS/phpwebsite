@@ -184,9 +184,9 @@ class Search_User {
 
         if (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
-            $template['SEARCH_RESULTS'] = dgettext('search', 'A problem occurred during your search.');
+            $template['SEARCH_RESULTS'] = 'A problem occurred during your search.';
         } elseif (empty($result)) {
-            $template['SEARCH_RESULTS'] = dgettext('search', 'No results found.');
+            $template['SEARCH_RESULTS'] = 'No results found.';
         } else {
             $template['SEARCH_RESULTS'] = $result;
         }

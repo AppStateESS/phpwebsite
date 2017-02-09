@@ -8,7 +8,7 @@
 $link[] = array('label'       => 'Analytics',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=analytics&action=ShowAdminSettings',
-		'description' => dgettext('analytics', 'Integrate web tracking software into your website.'),
+		'description' => 'Integrate web tracking software into your website.',
 		'image'       => 'analytics.png',
 		'tab'         => 'admin'
 		);

@@ -273,7 +273,7 @@ class Calendar_User
 
                 if (!$this->allowSuggestion()) {
                     $this->title = 'Sorry';
-                    $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
+                    $this->content = 'You have exceeded your allowed event submissions.';
                     break;
                 }
 
@@ -296,14 +296,14 @@ class Calendar_User
                     $this->calendar->schedule->exportEvents($_GET['sdate'], $_GET['edate']);
                 } else {
                     $this->title = 'Sorry';
-                    $this->content = dgettext('calendar', 'Schedule unavailable.');
+                    $this->content = 'Schedule unavailable.';
                 }
 
                 break;
 
                 if ((!$this->calendar->schedule->public && !$this->calendar->schedule->checkPermissions() ) || ( $this->calendar->schedule->public && (PHPWS_Settings::get('calendar', 'anon_ical') && Current_User::isLogged()) ) || empty($_GET['sdate']) || empty($_GET['edate']) || !$this->calendar->schedule->id) {
                     $this->title = 'Sorry';
-                    $this->content = dgettext('calendar', 'Schedule unavailable.');
+                    $this->content = 'Schedule unavailable.';
                 } else {
 
                 }
@@ -314,7 +314,7 @@ class Calendar_User
                     $this->calendar->schedule->exportEvent($_GET['event_id']);
                 } else {
                     $this->title = 'Sorry';
-                    $this->content = dgettext('calendar', 'Schedule unavailable.');
+                    $this->content = 'Schedule unavailable.';
                 }
 
                 break;
@@ -605,7 +605,7 @@ class Calendar_User
         }
 
         if (!$events_found) {
-            $tpl->setVariable('MESSAGE', dgettext('calendar', 'No events this month.'));
+            $tpl->setVariable('MESSAGE', 'No events this month.');
         }
         $main_tpl = $this->viewLinks('list');
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0, 0, 0, $month, $day, $year));
@@ -639,8 +639,8 @@ class Calendar_User
 
         if ($this->event->post()) {
             if (\phpws\PHPWS_Core::isPosted()) {
-                $this->title = dgettext('calendar', 'Duplicate suggestion.');
-                $this->content = dgettext('calendar', 'You may try to suggest a different event.');
+                $this->title = 'Duplicate suggestion.';
+                $this->content = 'You may try to suggest a different event.';
                 return true;
             }
 
@@ -650,7 +650,7 @@ class Calendar_User
 
             if (!$this->allowSuggestion()) {
                 $this->title = 'Sorry';
-                $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
+                $this->content = 'You have exceeded your allowed event submissions.';
                 return true;
             }
 
@@ -666,18 +666,18 @@ class Calendar_User
                     exit();
                 } else {
                     $this->title = 'Sorry';
-                    $this->content = dgettext('calendar', 'Unable to save your event suggestion.');
+                    $this->content = 'Unable to save your event suggestion.';
                     return true;
                 }
             } else {
                 if (PHPWS_Calendar::isJS()) {
-                    javascript('alert', array('content' => dgettext('calendar', 'Event submitted for approval.')));
+                    javascript('alert', array('content' => 'Event submitted for approval.'));
                     javascript('close_refresh', array('timeout' => 1, 'refresh' => 0));
                     Layout::nakedDisplay();
                     exit();
                 } else {
                     $this->title = 'Event saved';
-                    $this->content = dgettext('calendar', 'An administrator will review your submission. Thank you.');
+                    $this->content = 'An administrator will review your submission. Thank you.';
                     return true;
                 }
             }
@@ -1020,7 +1020,7 @@ class Calendar_User
         }
 
         if (!$events_found) {
-            $tpl->setVariable('MESSAGE', dgettext('calendar', 'No events this week.'));
+            $tpl->setVariable('MESSAGE', 'No events this week.');
         }
 
         $main_tpl = $this->viewLinks('week');

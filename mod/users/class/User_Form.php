@@ -397,9 +397,9 @@ class User_Form
             $result = User_Form::getLikeGroups($_SESSION['Last_Member_Search'], $group);
             if (isset($result)) {
                 $template['LIKE_GROUPS'] = $result;
-                $template['LIKE_INSTRUCTION'] = dgettext('users', 'Member not found.') . ' ' . dgettext('users', 'Closest matches below.');
+                $template['LIKE_INSTRUCTION'] = 'Member not found.' . ' ' . 'Closest matches below.';
             } else {
-                $template['LIKE_INSTRUCTION'] = dgettext('users', 'Member not found.') . ' ' . dgettext('users', 'No matches found.');
+                $template['LIKE_INSTRUCTION'] = 'Member not found.' . ' ' . 'No matches found.';
             }
         }
 
@@ -452,7 +452,7 @@ class User_Form
             foreach ($result as $row) {
                 extract($row);
                 $vars['member'] = $id;
-                $drop_button = PHPWS_Text::secureLink('Drop', 'users', $vars, NULL, dgettext('users', 'Drop this member from the group.'), 'btn btn-xs btn-danger');
+                $drop_button = PHPWS_Text::secureLink('Drop', 'users', $vars, NULL, 'Drop this member from the group.', 'btn btn-xs btn-danger');
                 if ($user_id) {
                     $name = "$name&nbsp;($display_name)";
                 }
@@ -461,7 +461,7 @@ class User_Form
             $template['NAMES'] = implode("<br />", $rows);
             $content = PHPWS_Template::process($template, 'users', 'forms/memberlist.tpl');
             if (!isset($content)) {
-                $content = dgettext('users', 'No members.');
+                $content = 'No members.';
             }
 
             if (PHPWS_Error::isError($content)) {
@@ -472,7 +472,7 @@ class User_Form
         }
 
         if (!isset($content)) {
-            $content = dgettext('users', 'No members.');
+            $content = 'No members.';
         }
 
         if (PHPWS_Error::isError($content)) {
@@ -614,7 +614,7 @@ class User_Form
     public function deify(PHPWS_User $user)
     {
         if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())) {
-            $content[] = dgettext('users', 'Only another deity can create a deity.');
+            $content[] = 'Only another deity can create a deity.';
         } else {
             $content[] = dgettext('users', 'Are you certain you want this user to have complete control of this web site?');
 
@@ -633,9 +633,9 @@ class User_Form
     public function mortalize(PHPWS_User $user)
     {
         if (!$_SESSION['User']->isDeity()) {
-            $content[] = dgettext('users', 'Only another deity can create a mortal.');
+            $content[] = 'Only another deity can create a mortal.';
         } elseif ($user->getId() == $_SESSION['User']->getId()) {
-            $content[] = dgettext('users', 'A deity can not make themselves mortal.');
+            $content[] = 'A deity can not make themselves mortal.';
         } else {
             $values['user'] = $user->getId();
             $values['action'] = 'admin';
@@ -698,9 +698,9 @@ class User_Form
             $result = User_Form::getLikeGroups($_POST['add_member'], $group);
             if (isset($result)) {
                 $template['LIKE_GROUPS'] = $result;
-                $template['LIKE_INSTRUCTION'] = dgettext('users', 'Members found.');
+                $template['LIKE_INSTRUCTION'] = 'Members found.';
             } else
-                $template['LIKE_INSTRUCTION'] = dgettext('users', 'No matches found.');
+                $template['LIKE_INSTRUCTION'] = 'No matches found.';
         }
     }
 
@@ -775,7 +775,7 @@ class User_Form
             }
 
             $vars['member'] = $member['id'];
-            $link = PHPWS_Text::secureLink('<i class="fa fa-plus"></i> ' . 'Add', 'users', $vars, NULL, dgettext('users', 'Add this user to this group.'), 'btn btn-sm btn-success');
+            $link = PHPWS_Text::secureLink('<i class="fa fa-plus"></i> ' . 'Add', 'users', $vars, NULL, 'Add this user to this group.', 'btn btn-sm btn-success');
 
             $tpl->setCurrentBlock('row');
             if (!empty($member['display_name'])) {
@@ -1130,13 +1130,13 @@ class User_Form
         if ($edit_select) {
             $tpl['EDIT_SELECT'] = $edit_select;
         } else {
-            $tpl['EDIT_SELECT'] = dgettext('users', 'No restricted edit groups found.');
+            $tpl['EDIT_SELECT'] = 'No restricted edit groups found.';
         }
 
         if ($view_select) {
             $tpl['VIEW_SELECT'] = $view_select;
         } else {
-            $tpl['VIEW_SELECT'] = dgettext('users', 'No view groups found.');
+            $tpl['VIEW_SELECT'] = 'No view groups found.';
         }
 
         if ($popbox) {
@@ -1206,7 +1206,7 @@ class User_Form
         $form->addHidden('command', 'post_forgot');
 
         $form->addText('fg_username');
-        $form->setLabel('fg_username', dgettext('users', 'Enter your user name.'));
+        $form->setLabel('fg_username', 'Enter your user name.');
 
         $form->addText('fg_email');
         $form->setSize('fg_email', 40);
@@ -1228,11 +1228,11 @@ class User_Form
         $user = new PHPWS_User((int) $user_id);
 
         if (!$user->id) {
-            return dgettext('users', 'Sorry there is a problem with your account.');
+            return 'Sorry there is a problem with your account.';
         }
 
         if ($user->authorize != 1) {
-            return dgettext('users', 'Sorry but you do not authorize from this site.');
+            return 'Sorry but you do not authorize from this site.';
         }
 
         $form = new PHPWS_Form('reset-password');

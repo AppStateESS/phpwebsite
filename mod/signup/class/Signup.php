@@ -53,7 +53,7 @@ class Signup {
             case 'delete_sheet':
                 $this->loadSheet();
                 $this->sheet->delete();
-                $this->message = dgettext('signup', 'Signup sheet deleted.');
+                $this->message = 'Signup sheet deleted.';
                 $this->loadForm('list');
                 break;
 
@@ -282,7 +282,7 @@ class Signup {
                 }
                 $this->loadSheet();
                 $this->resetSlots($command);
-                $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
+                $this->forwardMessage('Slot order reset.');
                 \phpws\PHPWS_Core::reroute('index.php?module=signup&sheet_id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
                 break;
         }
@@ -357,14 +357,14 @@ class Signup {
     public function postEmail()
     {
         if (!PHPWS_Text::isValidInput($_POST['from'], 'email')) {
-            $errors[] = dgettext('signup', 'Invalid reply address.');
+            $errors[] = 'Invalid reply address.';
         } else {
             $this->email['from'] = & $_POST['from'];
         }
 
         $subject = trim(strip_tags($_POST['subject']));
         if (empty($subject)) {
-            $errors[] = dgettext('signup', 'Please enter a subject.');
+            $errors[] = 'Please enter a subject.';
         } else {
             $this->email['subject'] = & $subject;
         }
@@ -372,7 +372,7 @@ class Signup {
         $message = trim(strip_tags($_POST['message']));
 
         if (empty($message)) {
-            $errors[] = dgettext('signup', 'Please enter a message.');
+            $errors[] = 'Please enter a message.';
         } else {
             $this->email['message'] = & $message;
         }
@@ -739,7 +739,7 @@ class Signup {
         $link = PHPWS_Text::linkAddress('signup', $vars, true);
 
         $this->title = 'Emails sent';
-        $this->content = dgettext('signup', 'Returning to applicant listing.');
+        $this->content = 'Returning to applicant listing.';
         Layout::metaRoute($link, 5);
         \phpws\PHPWS_Core::killSession('Email_Applicants');
     }
@@ -766,16 +766,16 @@ class Signup {
         $this->peep->setLastName($_POST['last_name']);
 
         if (empty($this->peep->first_name)) {
-            $errors[] = dgettext('signup', 'Please enter a first name.');
+            $errors[] = 'Please enter a first name.';
         }
 
         if (empty($this->peep->last_name)) {
-            $errors[] = dgettext('signup', 'Please enter a last name.');
+            $errors[] = 'Please enter a last name.';
         }
 
         if (empty($_POST['email']) || !PHPWS_Text::isValidInput($_POST['email'],
                         'email')) {
-            $errors[] = dgettext('signup', 'Unsuitable email address.');
+            $errors[] = 'Unsuitable email address.';
         } else {
             $this->peep->email = trim($_POST['email']);
         }
@@ -795,7 +795,7 @@ class Signup {
             $errors[] = dgettext('signup',
                     'Please enter a contact phone number.');
         } else if (!$validPhone) {
-            $errors[] = dgettext('signup', 'Unsuitable phone number.');
+            $errors[] = 'Unsuitable phone number.';
         } else {
             $this->peep->setPhone($phone);
         }
@@ -838,13 +838,13 @@ class Signup {
         $this->slot->setTitle($_POST['title']);
 
         if (empty($this->slot->title)) {
-            $errors[] = dgettext('signup', 'You must give your slot a title.');
+            $errors[] = 'You must give your slot a title.';
         }
 
         $openings = (int) $_POST['openings'];
 
         if (empty($openings)) {
-            $errors[] = dgettext('signup', 'Please specify an openings amount.');
+            $errors[] = 'Please specify an openings amount.';
         } elseif ($this->slot->id) {
             $db = new PHPWS_DB('signup_peeps');
             $db->addWhere('slot_id', $this->slot->id);
@@ -1169,7 +1169,7 @@ class Signup {
         $openings = $this->slot->currentOpenings();
         if ($openings == $this->slot->openings) {
             if ($this->slot->delete()) {
-                $this->title = dgettext('signup', 'Slot deleted successfully.');
+                $this->title = 'Slot deleted successfully.';
             } else {
                 $this->title = dgettext('signup',
                         'Slot could not be deleted successfully.');

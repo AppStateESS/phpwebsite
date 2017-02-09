@@ -8,7 +8,7 @@ $errors[BOOST_ERR_NOT_MODULE] = dgettext('boost',
         'Object sent to boost was not of the PHPWS_Module class.');
 $errors[BOOST_ERR_NO_INSTALLSQL] = dgettext('boost',
         'Unable to locate SQL import file.');
-$errors[BOOST_NO_MODULES_SET] = dgettext('boost', 'Modules have not been set.');
+$errors[BOOST_NO_MODULES_SET] = 'Modules have not been set.';
 $errors[BOOST_FAILED_PRE94_INSTALL] = dgettext('boost',
         'Failed installation of module.');
 $errors[BOOST_FAILED_PRE94_UPGRADE] = dgettext('boost',

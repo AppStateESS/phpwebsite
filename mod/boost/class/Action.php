@@ -15,13 +15,13 @@ class Boost_Action {
 
         $file = $module->getVersionHttp();
         if (empty($file)) {
-            return dgettext('boost', 'Update check file not found.');
+            return 'Update check file not found.';
         }
 
         $full_xml_array = PHPWS_Text::xml2php($file, 2);
 
         if (empty($full_xml_array)) {
-            return dgettext('boost', 'Update check file not found.');
+            return 'Update check file not found.';
         }
         $version_info = PHPWS_Text::tagXML($full_xml_array);
 
@@ -77,7 +77,7 @@ class Boost_Action {
                 }
             }
         } else {
-            $template['NO_UPDATE'] = dgettext('boost', 'No update required.');
+            $template['NO_UPDATE'] = 'No update required.';
         }
 
         $template['TITLE'] = 'Module' . ': ' . $module->getProperName(TRUE);
@@ -114,7 +114,7 @@ class Boost_Action {
 
         $ver_info = \phpws\PHPWS_Core::getVersionInfo(false);
 
-        $content[] = dgettext('boost', 'Processing update file.');
+        $content[] = 'Processing update file.';
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
@@ -127,7 +127,7 @@ class Boost_Action {
                 $content[] = dgettext('boost',
                         'An error occurred updating the core.');
             } else {
-                $content[] = dgettext('boost', 'Core successfully updated.');
+                $content[] = 'Core successfully updated.';
             }
         } elseif (PHPWS_Error::isError($result)) {
             PHPWS_Error::log($result);
@@ -160,7 +160,7 @@ class Boost_Action {
         $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
         if (empty($dependents)) {
-            return dgettext('boost', 'This module does not have dependents.');
+            return 'This module does not have dependents.';
         }
 
         $template['TITLE'] = sprintf(dgettext('boost', '%s Dependencies'),

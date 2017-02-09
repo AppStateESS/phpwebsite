@@ -63,7 +63,7 @@ class Layout_User_Settings {
             $form->setLabel('alternate', 'Available styles');
             $form->addSubmit('Save settings');
         } else {
-            $blank = dgettext('layout', 'No alternate style sheets available.');
+            $blank = 'No alternate style sheets available.';
             return $blank;
         }
 

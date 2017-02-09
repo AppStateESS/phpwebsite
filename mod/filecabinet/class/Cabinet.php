@@ -321,7 +321,7 @@ class Cabinet
                 if ($this->postTN()) {
                     javascript('close_refresh');
                 } else {
-                    $this->message = dgettext('filecabinet', 'Could not save thumbnail image.');
+                    $this->message = 'Could not save thumbnail image.';
                     $this->changeTN();
                 }
                 break;
@@ -334,10 +334,10 @@ class Cabinet
 
                 if ($this->folder->post()) {
                     if (!$this->folder->save()) {
-                        self::setMessage(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
+                        self::setMessage('Failed to create folder. Please check your logs.');
                     }
                 } else {
-                    self::setMessage(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
+                    self::setMessage('Failed to create folder. Please check your logs.');
                 }
                 if (filter_input(INPUT_POST, 'js') == 1) {
                     javascript('close_refresh');
@@ -354,7 +354,7 @@ class Cabinet
                 $this->loadForms();
                 $this->forms->postAllowedFiles();
 
-                $this->message = dgettext('filecabinet', 'File types saved.');
+                $this->message = 'File types saved.';
                 $this->title = 'Allowed file types';
                 $this->content = $this->forms->fileTypes();
                 break;
@@ -368,7 +368,7 @@ class Cabinet
                 if (is_array($result)) {
                     $this->message = implode('<br />', $result);
                 } else {
-                    $this->message = dgettext('filecabinet', 'Settings saved.');
+                    $this->message = 'Settings saved.';
                 }
 
             case 'settings':
@@ -717,13 +717,13 @@ class Cabinet
         $this->loadFolder();
         if (!$this->folder->id || !$this->folder->public_folder) {
             $this->title = 'Sorry';
-            $this->content = dgettext('filecabinet', 'This is a private folder.');
+            $this->content = 'This is a private folder.';
             return;
         }
         if (!$this->folder->allow()) {
             if (Current_User::isLogged()) {
                 $this->title = 'Sorry';
-                $this->content = dgettext('filecabinet', 'You do not have permission to view this folder.');
+                $this->content = 'You do not have permission to view this folder.';
             } else {
                 Current_User::requireLogin();
             }
@@ -765,7 +765,7 @@ class Cabinet
             $folder = new Folder($folder_id);
 
             if (empty($_POST['file_title'][$key])) {
-                $error[$filename] = dgettext('filecabinet', 'Missing title.');
+                $error[$filename] = 'Missing title.';
             }
 
 // initialize a new file object
@@ -798,7 +798,7 @@ class Cabinet
 // move the file from the incoming directory
             $classify_dir = $this->getClassifyDir();
             if (empty($classify_dir)) {
-                return array(dgettext('filecabinet', 'The web server does not have permission to access files in the classify directory.'));
+                return array('The web server does not have permission to access files in the classify directory.');
             }
             $incoming_file = $classify_dir . $filename;
             $folder_directory = $file_obj->getPath();
@@ -844,7 +844,7 @@ class Cabinet
         $classify_dir = $this->getClassifyDir();
 
         if (empty($classify_dir)) {
-            $this->message = dgettext('filecabinet', 'The web server does not have permission to delete files from the classify directory.');
+            $this->message = 'The web server does not have permission to delete files from the classify directory.';
         }
 
         if (!is_array($file_list)) {
@@ -913,7 +913,7 @@ class Cabinet
         $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
         $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), $thumb, $thumb);
         if ($mm->isVideo()) {
-            $warnings[] = dgettext('filecabinet', 'Image must be a jpeg file.');
+            $warnings[] = 'Image must be a jpeg file.';
         }
 
         $tpl['WARNINGS'] = implode('<br />', $warnings);
@@ -1018,7 +1018,7 @@ class Cabinet
     {
         if (!Current_User::isLogged()) {
             javascript('close_refresh');
-            Layout::nakedDisplay(dgettext('filecabinet', 'Cannot access this page.'));
+            Layout::nakedDisplay('Cannot access this page.');
             exit();
         }
 

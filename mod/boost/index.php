@@ -69,7 +69,7 @@ switch ($_REQUEST['action']) {
             PHPWS_Error::log($result);
             $content[] = dgettext('boost',
                             'An error occurred while installing this module.') .
-                    ' ' . dgettext('boost', 'Please check your error logs.');
+                    ' ' . 'Please check your error logs.';
         } else {
             $content[] = $result;
         }

@@ -9,7 +9,7 @@ function new_account($item)
 {
     if (!PHPWS_User::getUserSetting('new_user_method') > 0) {
 
-        $msg = dgettext('users', 'New user signup is currently disabled.');
+        $msg = 'New user signup is currently disabled.';
         return $msg;
     }
     $signup_vars = array('action'  => 'user',

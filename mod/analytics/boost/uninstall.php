@@ -13,7 +13,7 @@ function analytics_uninstall(&$content)
     PHPWS_DB::dropTable('analytics_tracker_piwik');
     PHPWS_DB::dropTable('analytics_tracker_google');
     PHPWS_DB::dropTable('analytics_tracker');
-    $content[] = dgettext('analytics', 'Analytics tables removed.');
+    $content[] = 'Analytics tables removed.';
     return TRUE;
 }
 

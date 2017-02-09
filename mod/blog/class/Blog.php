@@ -527,7 +527,7 @@ class Blog {
         }
 
         if (empty($_POST['title'])) {
-            $this->_error[] = dgettext('blog', 'Missing title.');
+            $this->_error[] = 'Missing title.';
         } else {
             $this->title = strip_tags($_POST['title']);
         }

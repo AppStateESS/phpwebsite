@@ -75,7 +75,7 @@ class Block_Admin
                 }
 
                 $block->kill();
-                Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
+                Block_Admin::sendMessage('Block deleted.');
                 \phpws\PHPWS_Core::goBack();
                 break;
 

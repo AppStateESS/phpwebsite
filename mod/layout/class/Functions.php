@@ -28,7 +28,7 @@ function check_cookie()
             PHPWS_Cookie::write('cookie_enabled', 'y');
             \phpws\PHPWS_Core::reroute('index.php?cc=1');
         } else {
-            $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
+            $tpl['MESSAGE'] = 'This site requires you to enable cookies on your browser.';
             $message = PHPWS_Template::process($tpl, 'layout', 'no_cookie.tpl');
             Layout::nakedDisplay($message);
         }

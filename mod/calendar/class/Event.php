@@ -544,7 +544,7 @@ EOF;
     public function post($suggested = false)
     {
         if (empty($_POST['summary'])) {
-            $errors[] = dgettext('calendar', 'You must give your event a title.');
+            $errors[] = 'You must give your event a title.';
         } else {
             $this->setSummary($_POST['summary']);
         }

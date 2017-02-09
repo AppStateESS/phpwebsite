@@ -280,7 +280,7 @@ class PHAT_Report {
                 $listTags['SECTION_INFO_LABEL'] = 'Entries';
             }
         } else {
-            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
+            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . 'No entries were found matching your search query.' . '</td></tr>';
         }
 
         if(!isset($_REQUEST['lay_quiet'])) {
@@ -441,11 +441,11 @@ class PHAT_Report {
                 break;
             }
             unset($this->_entries[$entryKey]);
-            $message = dgettext('phatform', 'The form entry was successfully deleted from the database.');
+            $message = 'The form entry was successfully deleted from the database.';
             $this->PHAT_Report();
         } else if(isset($_REQUEST['PHAT_DeleteNo'])) {
             $_REQUEST['PHAT_REPORT_OP'] = 'list';
-            $message = dgettext('phatform', 'No form entry was deleted from the database.');
+            $message = 'No form entry was deleted from the database.';
         }
 
         $GLOBALS['CNT_phatform']['content'] .= $message;

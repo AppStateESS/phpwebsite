@@ -8,7 +8,7 @@
 $link[] = array('label'       => 'File Cabinet',
                 'restricted'  => TRUE,
                 'url'         => 'index.php?module=filecabinet&amp;aop=image',
-                'description' => dgettext('filecabinet', 'Manages images and documents uploaded to your site.'),
+                'description' => 'Manages images and documents uploaded to your site.',
                 'image'       => 'cabinet.png',
                 'tab'         => 'admin'
                 );

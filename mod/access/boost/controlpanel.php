@@ -6,7 +6,7 @@
 $link[] = array('label'       => 'Access',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=access',
-		'description' => dgettext('access', 'Controls the .htaccess file for Apache and creates shortcuts.'),
+		'description' => 'Controls the .htaccess file for Apache and creates shortcuts.',
 		'image'       => 'access.png',
 		'tab'         => 'admin'
 		);

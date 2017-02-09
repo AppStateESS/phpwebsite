@@ -12,7 +12,7 @@ $tabs[] = array('id' => 'my_page',
 $link[] = array('label'       => 'User Administration',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=users&amp;action=admin',
-		'description' => dgettext('users', 'Lets you create and edit users and groups.'),
+		'description' => 'Lets you create and edit users and groups.',
 		'image'       => 'users.png',
 		'tab'         => 'admin'
 		);

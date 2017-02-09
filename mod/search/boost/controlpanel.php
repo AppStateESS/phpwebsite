@@ -7,7 +7,7 @@
 $link[] = array('label'       => 'Search',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=search&amp;tab=keyword',
-		'description' => dgettext('search', 'Administrate and see information on searches.'),
+		'description' => 'Administrate and see information on searches.',
 		'image'       => 'search.png',
 		'tab'         => 'admin'
 		);

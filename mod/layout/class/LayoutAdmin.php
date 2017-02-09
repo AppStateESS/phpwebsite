@@ -113,7 +113,7 @@ class Layout_Admin
                 }
                 Layout::reset();
                 $title = 'Edit Meta Tags';
-                $template['MESSAGE'] = dgettext('layout', 'Meta Tags updated.');
+                $template['MESSAGE'] = 'Meta Tags updated.';
                 $content[] = Layout_Admin::metaForm();
                 break;
 
@@ -247,7 +247,7 @@ class Layout_Admin
         $themeList = Layout_Admin::getThemeList();
         if (PHPWS_Error::isError($themeList)) {
             PHPWS_Error::log($themeList);
-            return dgettext('layout', 'There was a problem reading the theme directories.');
+            return 'There was a problem reading the theme directories.';
         }
 
         $form->addSelect('default_theme', $themeList);
@@ -272,19 +272,19 @@ class Layout_Admin
         $vars['action'] = 'admin';
 
         $template['MOVE_BOXES'] = '<button class="btn btn-primary" id="move-boxes">Move boxes</button>';
-        $template['MOVE_BOXES_DESC'] = dgettext('layout', 'Allows you to shift content to other area of your layout. Movement options depend on the current theme.');
+        $template['MOVE_BOXES_DESC'] = 'Allows you to shift content to other area of your layout. Movement options depend on the current theme.';
 
         $vars['command'] = 'reset_boxes';
         $template['RESET_BOXES'] = PHPWS_Text::secureLink('Reset boxes', 'layout', $vars, null, null, 'btn btn-primary');
-        $template['RESET_DESC'] = dgettext('layout', 'Resets all content back to its original location. Use if problems with Box Move occurred.');
+        $template['RESET_DESC'] = 'Resets all content back to its original location. Use if problems with Box Move occurred.';
 
         $vars['command'] = 'clear_templates';
         $template['CLEAR_TEMPLATES'] = PHPWS_Text::secureLink('Clear templates', 'layout', $vars, null, null, 'btn btn-primary');
-        $template['CLEAR_TEMPLATES_DESC'] = dgettext('layout', 'Removes all files from the current template cache directory. Good to try if your theme is not displaying properly.');
+        $template['CLEAR_TEMPLATES_DESC'] = 'Removes all files from the current template cache directory. Good to try if your theme is not displaying properly.';
 
         $vars['command'] = 'clear_cache';
         $template['CLEAR_CACHE'] = PHPWS_Text::secureLink('Clear cache', 'layout', $vars, null, null, 'btn btn-primary');
-        $template['CLEAR_CACHE_DESC'] = dgettext('layout', 'Clears all Cache Lite files. Good to try if module updates do not display.');
+        $template['CLEAR_CACHE_DESC'] = 'Clears all Cache Lite files. Good to try if module updates do not display.';
 
         javascript('jquery');
         $script = '<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/layout/javascript/move_boxes.js"></script>';

@@ -39,15 +39,15 @@ class Cabinet_Form
                 if (!is_writable($folder->_base_directory)) {
                     switch ($folder->ftype) {
                         case IMAGE_FOLDER:
-                            $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
+                            $this->cabinet->message = 'Your images directory is not writable.';
                             break;
 
                         case DOCUMENT_FOLDER:
-                            $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
+                            $this->cabinet->message = 'Your documents directory is not writable.';
                             break;
 
                         case MULTIMEDIA_FOLDER:
-                            $this->cabinet->message = dgettext('filecabinet', 'Your multimedia directory is not writable.');
+                            $this->cabinet->message = 'Your multimedia directory is not writable.';
                             break;
                     }
                 } else {
@@ -108,7 +108,7 @@ class Cabinet_Form
         $pager->setTemplate('Forms/folder_list.tpl');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags');
-        $pager->setEmptyMessage(dgettext('filecabinet', 'No folders found.'));
+        $pager->setEmptyMessage('No folders found.');
         $pager->addWhere('ftype', $type);
         $pager->setDefaultOrder('title');
         $pager->setAutoSort(false);
@@ -133,14 +133,14 @@ class Cabinet_Form
         $result = PHPWS_File::readDirectory($classify_dir, false, true);
 
         if (empty($result)) {
-            $this->cabinet->content = dgettext('filecabinet', 'The incoming file directory is currently empty.');
+            $this->cabinet->content = 'The incoming file directory is currently empty.';
             return;
         }
 
         sort($result);
 
         if (PHPWS_Error::logIfError($result)) {
-            $this->cabinet->content = dgettext('filecabinet', 'An error occurred when trying to read your incoming file directory.');
+            $this->cabinet->content = 'An error occurred when trying to read your incoming file directory.';
             return;
         }
 
@@ -364,7 +364,7 @@ EOF;
         $pager->addSortHeader('file_type', 'File type');
         $pager->addSortHeader('size', 'Size');
 
-        $pager->setEmptyMessage(dgettext('filecabinet', 'Folder is empty.'));
+        $pager->setEmptyMessage('Folder is empty.');
         $this->cabinet->content = $pager->get();
     }
 
@@ -381,8 +381,8 @@ EOF;
         $db->setIndexBy('id');
         $result = $db->select('col');
         if (empty($result)) {
-            $this->cabinet->title = dgettext('filecabinet', 'Sorry..');
-            $this->cabinet->content = dgettext('filecabinet', 'No public folders are available.');
+            $this->cabinet->title = 'Sorry..';
+            $this->cabinet->content = 'No public folders are available.';
             return;
         }
 
@@ -608,7 +608,7 @@ If you are sure, type Y-E-S below.'),
             $form_template = $form->getTemplate(true, true, $tpl);
             $this->cabinet->content = PHPWS_Template::process($form_template, 'filecabinet', 'Forms/classify_file.tpl');
         } else {
-            $this->cabinet->content = dgettext('filecabinet', 'Unable to classify files.');
+            $this->cabinet->content = 'Unable to classify files.';
         }
     }
 
@@ -680,11 +680,11 @@ If you are sure, type Y-E-S below.'),
         if (empty($_POST['base_doc_directory'])) {
             $errors[] = 'Default document directory may not be blank';
         } elseif (!is_dir($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Document directory does not exist.');
+            $errors[] = 'Document directory does not exist.';
         } elseif (!is_writable($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Unable to write to document directory.');
+            $errors[] = 'Unable to write to document directory.';
         } elseif (!is_readable($_POST['base_doc_directory'])) {
-            $errors[] = dgettext('filecabinet', 'Unable to read document directory.');
+            $errors[] = 'Unable to read document directory.';
         } else {
             $dir = $_POST['base_doc_directory'];
             if (!preg_match('@/$@', $dir)) {
@@ -694,7 +694,7 @@ If you are sure, type Y-E-S below.'),
         }
 
         if (empty($_POST['max_image_dimension']) || $_POST['max_image_dimension'] < 50) {
-            $errors[] = dgettext('filecabinet', 'The max image dimension must be greater than 50 pixels.');
+            $errors[] = 'The max image dimension must be greater than 50 pixels.';
         } else {
             PHPWS_Settings::set('filecabinet', 'max_image_dimension', $_POST['max_image_dimension']);
         }
@@ -704,7 +704,7 @@ If you are sure, type Y-E-S below.'),
         $max_file_upload = preg_replace('/\D/', '', ini_get('upload_max_filesize'));
 
         if (empty($_POST['max_image_size'])) {
-            $errors[] = dgettext('filecabinet', 'You must set a maximum image file size.');
+            $errors[] = 'You must set a maximum image file size.';
         } else {
             $max_image_size = (int) $_POST['max_image_size'];
             if (($max_image_size / 1000000) > ((int) $max_file_upload)) {
@@ -715,7 +715,7 @@ If you are sure, type Y-E-S below.'),
         }
 
         if (empty($_POST['max_document_size'])) {
-            $errors[] = dgettext('filecabinet', 'You must set a maximum document file size.');
+            $errors[] = 'You must set a maximum document file size.';
         } else {
             $max_document_size = (int) $_POST['max_document_size'];
             if (($max_document_size / 1000000) > (int) $max_file_upload) {
@@ -726,7 +726,7 @@ If you are sure, type Y-E-S below.'),
         }
 
         if (empty($_POST['max_multimedia_size'])) {
-            $errors[] = dgettext('filecabinet', 'You must set a maximum multimedia file size.');
+            $errors[] = 'You must set a maximum multimedia file size.';
         } else {
             $max_multimedia_size = (int) $_POST['max_multimedia_size'];
             if (($max_multimedia_size / 1000000) > (int) $max_file_upload) {
@@ -769,9 +769,9 @@ If you are sure, type Y-E-S below.'),
         } else {
             $tn_size = (int) $_POST['max_thumbnail_size'];
             if ($tn_size < 30) {
-                $errors[] = dgettext('filecabinet', 'Thumbnails must be over 30px in size.');
+                $errors[] = 'Thumbnails must be over 30px in size.';
             } elseif ($tn_size > 999) {
-                $errors[] = dgettext('filecabinet', 'Thumbnail size is too large.');
+                $errors[] = 'Thumbnail size is too large.';
             } else {
                 PHPWS_Settings::set('filecabinet', 'max_thumbnail_size', $tn_size);
             }
@@ -787,7 +787,7 @@ If you are sure, type Y-E-S below.'),
             }
             PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', $ffmpeg_dir);
             if (!is_file($ffmpeg_dir . 'ffmpeg')) {
-                $errors[] = dgettext('filecabinet', 'Could not find ffmpeg executable.');
+                $errors[] = 'Could not find ffmpeg executable.';
                 PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
             }
         }
@@ -799,9 +799,9 @@ If you are sure, type Y-E-S below.'),
                     $classify_dir .= '/';
                 }
                 if (!is_dir($classify_dir)) {
-                    $errors[] = dgettext('filecabinet', 'Classify directory could not be found.');
+                    $errors[] = 'Classify directory could not be found.';
                 } elseif (!is_writable($classify_dir)) {
-                    $errors[] = dgettext('filecabinet', 'The web server does not have permissions for the classify directory.');
+                    $errors[] = 'The web server does not have permissions for the classify directory.';
                 } else {
                     PHPWS_Settings::set('filecabinet', 'classify_directory', $classify_dir);
                 }

@@ -11,20 +11,20 @@ function users_unregister($module, &$content){
 
     if (PHPWS_Error::isError($result)) {
 
-        $content[] = dgettext('users', 'Permissions table not removed successfully.');
+        $content[] = 'Permissions table not removed successfully.';
 
         return FALSE;
     } elseif ($result) {
-        $content[] = dgettext('users', 'Permissions table removed successfully.');
+        $content[] = 'Permissions table removed successfully.';
     }
 
     $result = My_Page::unregisterMyPage($module);
     if (PHPWS_Error::isError($result)){
-        PHPWS_Boost::addLog('users', dgettext('users', 'A problem occurred when trying to unregister this module from My Page.'));
-        $content[] = dgettext('users', 'A problem occurred when trying to unregister this module from My Page.');
+        PHPWS_Boost::addLog('users', 'A problem occurred when trying to unregister this module from My Page.');
+        $content[] = 'A problem occurred when trying to unregister this module from My Page.';
         return FALSE;
     } elseif ($result != FALSE) {
-        $content[] = dgettext('users', 'My Page unregistered from Users module.');
+        $content[] = 'My Page unregistered from Users module.';
     }
 
     return TRUE;

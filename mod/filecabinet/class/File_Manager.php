@@ -516,7 +516,7 @@ class FC_File_Manager
         Layout::addStyle('filecabinet');
 
         if (empty($this->current_folder) || empty($this->folder_type)) {
-            javascript('alert', array('content' => dgettext('filecabinet', 'Problem with opening browser page. Closing File Manager window.')));
+            javascript('alert', array('content' => 'Problem with opening browser page. Closing File Manager window.'));
             javascript('close_refresh', array('timeout' => 3, 'refresh' => 0));
             return;
         }
@@ -538,7 +538,7 @@ class FC_File_Manager
             case IMAGE_FOLDER:
                 $js = $link_info;
                 $js['authkey'] = Current_User::getAuthKey();
-                $js['failure_message'] = dgettext('filecabinet', 'Unable to resize image.');
+                $js['failure_message'] = 'Unable to resize image.';
                 $js['confirmation'] = sprintf(dgettext('filecabinet', 'This image is larger than the %s x %s limit. Do you want to resize the image to fit?'), $this->max_width, $this->max_height);
 
                 javascriptMod('filecabinet', 'pick_file', $js);
@@ -708,7 +708,7 @@ class FC_File_Manager
             case MULTIMEDIA_FOLDER:
                 $js = $link_info;
                 $js['authkey'] = Current_User::getAuthKey();
-                $js['failure_message'] = dgettext('filecabinet', 'Unable to resize media.');
+                $js['failure_message'] = 'Unable to resize media.';
                 $js['confirmation'] = sprintf(dgettext('filecabinet', 'This media is larger than the %s x %s limit. Do you want to resize the media to fit?'), $this->max_width, $this->max_height);
 
                 javascriptMod('filecabinet', 'pick_file', $js);
@@ -817,7 +817,7 @@ class FC_File_Manager
             $vars['total_size'] = $total_size;
             javascriptMod('filecabinet', 'update_file', $vars);
         } else {
-            exit(dgettext('filecabinet', 'An error occurred. Please check your logs.'));
+            exit('An error occurred. Please check your logs.');
         }
     }
 

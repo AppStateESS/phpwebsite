@@ -10,6 +10,6 @@ function filecabinet_unregister($module, &$content)
     $db->addValue('module_created', null);
     $db->addWhere('module_created', $module);
     PHPWS_Error::logIfError($db->update());
-    $content[] = dgettext('filecabinet', 'Unregistered from File Cabinet.');
+    $content[] = 'Unregistered from File Cabinet.';
     return true;
 }

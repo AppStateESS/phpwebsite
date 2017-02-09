@@ -64,7 +64,7 @@ class Blog_Admin
             case 'delete':
                 //Blog_Admin::resetCache();
                 $result = $blog->delete();
-                Blog_Admin::setForward(dgettext('blog', 'Blog entry deleted.'),
+                Blog_Admin::setForward('Blog entry deleted.',
                         'list');
                 break;
 
@@ -153,7 +153,7 @@ class Blog_Admin
                 }
 
                 Blog_Admin::postSettings();
-                $message = dgettext('blog', 'Blog settings saved.');
+                $message = 'Blog settings saved.';
             case 'settings':
                 if (!Current_User::allow('blog', 'settings')) {
                     Current_User::disallow();
@@ -167,7 +167,7 @@ class Blog_Admin
             case 'purge_entries':
                 if (Current_User::authorized('blog') && Current_User::isDeity()) {
                     Blog_Admin::purgeEntries($_GET['pd']);
-                    $message = dgettext('blog', 'Blog entries purged.');
+                    $message = 'Blog entries purged.';
                 }
                 $content = Blog_Form::settings();
         }

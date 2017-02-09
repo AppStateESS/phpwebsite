@@ -54,7 +54,7 @@ class RSS_Admin
 
                 if (!$result) {
                     PHPWS_Settings::save('rss');
-                    $result = dgettext('rss', 'Settings saved successfully.');
+                    $result = 'Settings saved successfully.';
                 }
                 $tpl = RSS_Admin::settings();
                 $tpl['MESSAGE'] = &$result;
@@ -89,9 +89,9 @@ class RSS_Admin
                 } else {
                     $result = $channel->save();
                     if (PHPWS_Error::isError($result)) {
-                        RSS_Admin::sendMessage(dgettext('rss', 'An error occurred when saving your channel.'), 'channels');
+                        RSS_Admin::sendMessage('An error occurred when saving your channel.', 'channels');
                     } else {
-                        RSS_Admin::sendMessage(dgettext('rss', 'Channel saved.'), 'channels');
+                        RSS_Admin::sendMessage('Channel saved.', 'channels');
                     }
                 }
                 break;
@@ -252,7 +252,7 @@ class RSS_Admin
             if (PHPWS_Text::isValidInput($_POST['editor'], 'email')) {
                 PHPWS_Settings::set('rss', 'editor', $_POST['editor']);
             } else {
-                $message = dgettext('rss', 'Please check editor email format.');
+                $message = 'Please check editor email format.';
             }
         } else {
             PHPWS_Settings::set('rss', 'editor', '');
@@ -262,7 +262,7 @@ class RSS_Admin
             if (PHPWS_Text::isValidInput($_POST['webmaster'], 'email')) {
                 PHPWS_Settings::set('rss', 'webmaster', $_POST['webmaster']);
             } else {
-                $message = dgettext('rss', 'Please check webmaster email format.');
+                $message = 'Please check webmaster email format.';
             }
         } else {
             PHPWS_Settings::set('rss', 'webmaster', '');
@@ -285,11 +285,11 @@ class RSS_Admin
         $channels = $db->getObjects('RSS_Channel');
 
         if (empty($channels)) {
-            $final_tpl['CONTENT'] = dgettext('rss', 'No channels have been registered.');
+            $final_tpl['CONTENT'] = 'No channels have been registered.';
             return $final_tpl;
         } elseif (PHPWS_Error::isError($channels)) {
             PHPWS_Error::log($channels);
-            $final_tpl['CONTENT'] = dgettext('rss', 'An error occurred when trying to access your RSS channels.');
+            $final_tpl['CONTENT'] = 'An error occurred when trying to access your RSS channels.';
             return $final_tpl;
         }
 
@@ -369,7 +369,7 @@ class RSS_Admin
 
         if (!ini_get('allow_url_fopen')) {
             $tpl['TITLE'] = 'Sorry';
-            $tpl['CONTENT'] = dgettext('rss', 'You must enable allow_url_fopen in your php.ini file.');
+            $tpl['CONTENT'] = 'You must enable allow_url_fopen in your php.ini file.';
             return $tpl;
         }
 

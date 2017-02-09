@@ -156,7 +156,7 @@ class PageSmith
                         break;
 
                     case 0:
-                        $this->message = dgettext('pagesmith', 'Not enough content to create a page.');
+                        $this->message = 'Not enough content to create a page.';
                         $this->loadForms();
                         $this->page->loadSections(true);
                         $this->forms->editPage();
@@ -531,7 +531,7 @@ class PageSmith
                 }
             } else {
                 if (!Current_User::requireLogin()) {
-                    $content = dgettext('pagesmith', 'Restricted page.');
+                    $content = 'Restricted page.';
                 }
             }
             Layout::add($content);

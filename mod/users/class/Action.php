@@ -26,7 +26,7 @@ class User_Action
         $title = $message = $content = null;
 
         if (!Current_User::allow('users')) {
-            PHPWS_User::disallow(dgettext('users', 'Tried to perform an admin function in Users.'));
+            PHPWS_User::disallow('Tried to perform an admin function in Users.');
             return;
         }
 
@@ -121,7 +121,7 @@ class User_Action
                     User_Action::dropAuthorization($_REQUEST['script_id']);
                 } elseif ($command == 'postAuthorization') {
                     User_Action::postAuthorization();
-                    $message = dgettext('users', 'Authorization updated.');
+                    $message = 'Authorization updated.';
                 }
                 $title = 'Authorization';
                 $content = User_Form::authorizationSetup();
@@ -246,10 +246,10 @@ class User_Action
                     if ($_GET['authorize'] == 1 && Current_User::isDeity()) {
                         $user->setDeity(true);
                         $user->save();
-                        User_Action::sendMessage(dgettext('users', 'User deified.'), 'manage_users');
+                        User_Action::sendMessage('User deified.', 'manage_users');
                         break;
                     } else {
-                        User_Action::sendMessage(dgettext('users', 'User remains a lowly mortal.'), 'manage_users');
+                        User_Action::sendMessage('User remains a lowly mortal.', 'manage_users');
                         break;
                     }
                 } else
@@ -267,10 +267,10 @@ class User_Action
                     if ($_GET['authorize'] == 1 && Current_User::isDeity()) {
                         $user->setDeity(false);
                         $user->save();
-                        $content = dgettext('users', 'User transformed into a lowly mortal.') . '<hr />' . User_Form::manageUsers();
+                        $content = 'User transformed into a lowly mortal.' . '<hr />' . User_Form::manageUsers();
                         break;
                     } else {
-                        $content = dgettext('users', 'User remains a deity.') . '<hr />' . User_Form::manageUsers();
+                        $content = 'User remains a deity.' . '<hr />' . User_Form::manageUsers();
                         break;
                     }
                 } else
@@ -300,7 +300,7 @@ class User_Action
                     $user->setApproved(true);
                     if (PHPWS_Error::logIfError($user->save())) {
                         $title = 'Sorry';
-                        $content = dgettext('users', 'An error occurred when trying to save the user. Check your logs.');
+                        $content = 'An error occurred when trying to save the user. Check your logs.';
                         break;
                     }
 
@@ -322,15 +322,15 @@ class User_Action
                     }
 
                     if (isset($_POST['user_id'])) {
-                        User_Action::sendMessage(dgettext('users', 'User updated.'), 'manage_users');
+                        User_Action::sendMessage('User updated.', 'manage_users');
                     } elseif (Current_User::allow('users', 'edit_permissions')) {
                         if (isset($_POST['notify_user'])) {
-                            User_Action::sendMessage(dgettext('users', 'New user created and notified.'), 'setUserPermissions&user_id=' . $user->id);
+                            User_Action::sendMessage('New user created and notified.', 'setUserPermissions&user_id=' . $user->id);
                         } else {
-                            User_Action::sendMessage(dgettext('users', 'New user created.'), 'setUserPermissions&user_id=' . $user->id);
+                            User_Action::sendMessage('New user created.', 'setUserPermissions&user_id=' . $user->id);
                         }
                     } else {
-                        User_Action::sendMessage(dgettext('users', 'User created.'), 'new_user');
+                        User_Action::sendMessage('User created.', 'new_user');
                     }
                 } else {
                     $message = implode('<br />', $result);
@@ -370,9 +370,9 @@ class User_Action
                     $result = $group->save();
 
                     if (PHPWS_Error::logIfError($result)) {
-                        $message = dgettext('users', 'An error occurred when trying to save the group.');
+                        $message = 'An error occurred when trying to save the group.';
                     } else {
-                        $message = dgettext('users', 'Group created.');
+                        $message = 'Group created.';
                     }
                     User_Action::sendMessage($message, 'manage_groups');
                 }
@@ -389,7 +389,7 @@ class User_Action
                 $group->addMember($_REQUEST['member']);
                 $group->save();
                 unset($_SESSION['Last_Member_Search']);
-                User_Action::sendMessage(dgettext('users', 'Member added.'), 'manageMembers&group_id=' . $group->id);
+                User_Action::sendMessage('Member added.', 'manageMembers&group_id=' . $group->id);
                 break;
 
             case 'dropMember':
@@ -402,7 +402,7 @@ class User_Action
                 $group->dropMember($_REQUEST['member']);
                 $group->save();
                 unset($_SESSION['Last_Member_Search']);
-                User_Action::sendMessage(dgettext('users', 'Member removed.'), 'manageMembers&group_id=' . $group->id);
+                User_Action::sendMessage('Member removed.', 'manageMembers&group_id=' . $group->id);
                 break;
 
             case 'update_settings':
@@ -414,7 +414,7 @@ class User_Action
 
                 $result = User_Action::update_settings();
                 if ($result === true) {
-                    $message = dgettext('users', 'User settings updated.');
+                    $message = 'User settings updated.';
                 } else {
                     $message = $result;
                 }
@@ -449,13 +449,13 @@ class User_Action
     public static function popupPermission()
     {
         if (!isset($_GET['key_id'])) {
-            echo dgettext('users', 'Missing key information.');
+            echo 'Missing key information.';
         }
         $key = new \Canopy\Key((int) $_GET['key_id']);
 
         if (!Key::checkKey($key, false)) {
             PHPWS_Error::log(USER_BAD_KEY, 'users', 'User_Action::popupPermission', "Key : " . $_GET['key_id']);
-            echo dgettext('users', 'Unable to set permissions. Bad key data.');
+            echo 'Unable to set permissions. Bad key data.';
             Layout::nakedDisplay(null, null, true);
         }
 
@@ -503,9 +503,9 @@ class User_Action
             Layout::nakedDisplay(javascript('close_refresh', array('refresh' => 0)));
         } else {
             if (PHPWS_Error::logIfError($result)) {
-                $_SESSION['Permission_Message'] = dgettext('users', 'An error occurred.');
+                $_SESSION['Permission_Message'] = 'An error occurred.';
             } else {
-                $_SESSION['Permission_Message'] = dgettext('users', 'Permissions updated.');
+                $_SESSION['Permission_Message'] = 'Permissions updated.';
             }
             \phpws\PHPWS_Core::goBack();
         }
@@ -537,12 +537,12 @@ class User_Action
 
         $result = $user->setUsername($_POST['username']);
         if (PHPWS_Error::isError($result)) {
-            $error['USERNAME_ERROR'] = dgettext('users', 'Please try another user name.');
+            $error['USERNAME_ERROR'] = 'Please try another user name.';
         }
 
         if (!User_Action::testForbidden($user)) {
             $user->username = null;
-            $error['USERNAME_ERROR'] = dgettext('users', 'Please try another user name.');
+            $error['USERNAME_ERROR'] = 'Please try another user name.';
         }
 
         if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))) {
@@ -556,16 +556,16 @@ class User_Action
         }
 
         if (empty($_POST['email'])) {
-            $error['EMAIL_ERROR'] = dgettext('users', 'Missing an email address.');
+            $error['EMAIL_ERROR'] = 'Missing an email address.';
         } else {
             $result = $user->setEmail($_POST['email']);
             if (PHPWS_Error::isError($result)) {
-                $error['EMAIL_ERROR'] = dgettext('users', 'This email address cannot be used.');
+                $error['EMAIL_ERROR'] = 'This email address cannot be used.';
             }
         }
 
         if (!User_Action::confirm()) {
-            $error['CONFIRM_ERROR'] = dgettext('users', 'Confirmation phrase is not correct.');
+            $error['CONFIRM_ERROR'] = 'Confirmation phrase is not correct.';
         }
 
         if (isset($error)) {
@@ -595,7 +595,7 @@ class User_Action
             }
 
             if (($user->_prev_username != $user->username) && (empty($_POST['password1']) || empty($_POST['password2']))) {
-                $error['PASSWORD_ERROR'] = dgettext('users', 'Passwords must be reentered on user name change.');
+                $error['PASSWORD_ERROR'] = 'Passwords must be reentered on user name change.';
             }
         }
 
@@ -694,7 +694,7 @@ class User_Action
 
                         if (!$result) {
                             $title = 'Login page';
-                            $message = dgettext('users', 'Username and password combination not found.');
+                            $message = 'Username and password combination not found.';
                             $content = User_Form::loginPage();
                         } elseif (PHPWS_Error::isError($result)) {
                             if (preg_match('/L\d/', $result->code)) {
@@ -703,7 +703,7 @@ class User_Action
                                 $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'), 'Contact the site administrator');
                             } else {
                                 PHPWS_Error::log($result);
-                                $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
+                                $message = 'A problem occurred when accessing user information. Please try again later.';
                             }
                         } else {
                             Current_User::getLogin();
@@ -738,7 +738,7 @@ EOF;
                     $content = User_Form::resetPassword($user_id, $_GET['auth']);
                 } else {
                     $title = 'Sorry';
-                    $content = dgettext('users', 'Your password request was not found or timed out. Please apply again.');
+                    $content = 'Your password request was not found or timed out. Please apply again.';
                 }
                 break;
 
@@ -748,14 +748,14 @@ EOF;
                     $my_page = new My_Page;
                     $my_page->main();
                 } else {
-                    Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'My Page unavailable to remote users.'), 'my_page'));
+                    Layout::add(PHPWS_ControlPanel::display('My Page unavailable to remote users.', 'my_page'));
                 }
                 break;
 
             case 'signup_user':
                 $title = dgettext('users', 'New Account Sign-up');
                 if (Current_User::isLogged()) {
-                    $content = dgettext('users', 'You already have an account.');
+                    $content = 'You already have an account.';
                     break;
                 }
                 $user = new PHPWS_User;
@@ -770,7 +770,7 @@ EOF;
                 $title = dgettext('users', 'New Account Sign-up');
                 $user_method = PHPWS_User::getUserSetting('new_user_method');
                 if ($user_method == 0) {
-                    Current_User::disallow(dgettext('users', 'New user signup not allowed.'));
+                    Current_User::disallow('New user signup not allowed.');
                     return;
                 }
 
@@ -805,7 +805,7 @@ EOF;
                 }
                 if (User_Action::confirmUser()) {
                     $title = dgettext('users', 'Welcome!');
-                    $content = dgettext('users', 'Your account has been successfully activated. Please log in.');
+                    $content = 'Your account has been successfully activated. Please log in.';
                 } else {
                     $title = 'Sorry';
                     $content = dgettext('users', 'This authentication does not exist.<br />
@@ -827,7 +827,7 @@ EOF;
                 if (ALLOW_CAPTCHA) {
                     \phpws\PHPWS_Core::initCoreClass('Captcha.php');
                     if (!Captcha::verify()) {
-                        $content = dgettext('users', 'Captcha information was incorrect.');
+                        $content = 'Captcha information was incorrect.';
                         $content .= User_Form::forgotForm();
                     } else if (!User_Action::postForgot($content)) {
                         $content .= User_Form::forgotForm();
@@ -850,7 +850,7 @@ EOF;
 
                     case 0:
                         $title = 'Sorry';
-                        $content = dgettext('users', 'A problem occurred when trying to update your password. Please try again later.');
+                        $content = 'A problem occurred when trying to update your password. Please try again later.';
                         break;
 
                     case 1:
@@ -935,25 +935,25 @@ EOF;
                 if ($result) {
                     User_Action::assignDefaultGroup($user);
                     $content[] = dgettext('users', 'Account created successfully!');
-                    $content[] = dgettext('users', 'You will return to the home page in five seconds.');
-                    $content[] = PHPWS_Text::moduleLink(dgettext('users', 'Click here if you are not redirected.'));
+                    $content[] = 'You will return to the home page in five seconds.';
+                    $content[] = PHPWS_Text::moduleLink('Click here if you are not redirected.');
                     Layout::metaRoute();
                 } else {
-                    $content[] = dgettext('users', 'An error occurred when trying to create your account. Please try again later.');
+                    $content[] = 'An error occurred when trying to create your account. Please try again later.';
                 }
                 break;
 
             case CONFIRM_SIGNUP:
                 if (User_Action::saveNewUser($user, false)) {
                     if (User_Action::confirmEmail($user)) {
-                        $content[] = dgettext('users', 'User created successfully. Check your email for your login information.');
+                        $content[] = 'User created successfully. Check your email for your login information.';
                     } else {
                         $result = $user->kill();
                         PHPWS_Error::logIfError($result);
-                        $content[] = dgettext('users', 'There was problem creating your acccount. Check back later.');
+                        $content[] = 'There was problem creating your acccount. Check back later.';
                     }
                 } else {
-                    $content[] = dgettext('users', 'There was problem creating your acccount. Check back later.');
+                    $content[] = 'There was problem creating your acccount. Check back later.';
                 }
         }
 
@@ -1071,7 +1071,7 @@ EOF;
 
     public function badLogin()
     {
-        Layout::add(dgettext('users', 'Username and password refused.'));
+        Layout::add('Username and password refused.');
     }
 
     public static function getGroups($mode = null)
@@ -1113,9 +1113,9 @@ EOF;
         }
 
         if (!isset($_POST['site_contact'])) {
-            $error = dgettext('users', 'You need to set a site contact address.');
+            $error = 'You need to set a site contact address.';
         } elseif (!PHPWS_Text::isValidInput($_POST['site_contact'], 'email')) {
-            $error = dgettext('users', 'Please enter a valid email address as a site contact.');
+            $error = 'Please enter a valid email address as a site contact.';
         }
 
         $settings['site_contact'] = $_POST['site_contact'];
@@ -1234,14 +1234,14 @@ EOF;
     public function postForgot(&$content)
     {
         if (empty($_POST['fg_username']) && empty($_POST['fg_email'])) {
-            $content = dgettext('users', 'You must enter either a username or email address.');
+            $content = 'You must enter either a username or email address.';
             return false;
         }
 
         if (!empty($_POST['fg_username'])) {
             $username = $_POST['fg_username'];
             if (preg_match('/\'|"/', html_entity_decode(strip_tags($username), ENT_QUOTES))) {
-                $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                $content = 'User name not found. Check your spelling or enter an email address instead.';
                 return false;
             }
 
@@ -1253,15 +1253,15 @@ EOF;
             $db->addColumn('authorize');
             $user_search = $db->select('row');
             if (PHPWS_Error::logIfError($user_search)) {
-                $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                $content = 'User name not found. Check your spelling or enter an email address instead.';
                 return false;
             } elseif (empty($user_search)) {
-                $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                $content = 'User name not found. Check your spelling or enter an email address instead.';
                 return false;
             } else {
                 if ($user_search['deity'] && !ALLOW_DEITY_FORGET) {
-                    Security::log(dgettext('users', 'Forgotten password attempt made on a deity account.'));
-                    $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                    Security::log('Forgotten password attempt made on a deity account.');
+                    $content = 'User name not found. Check your spelling or enter an email address instead.';
                     return false;
                 }
 
@@ -1271,33 +1271,33 @@ EOF;
                 }
 
                 if (\phpws\PHPWS_Core::isPosted()) {
-                    $content = dgettext('users', 'Please check your email for a response.');
+                    $content = 'Please check your email for a response.';
                     return true;
                 }
 
                 if (empty($user_search['email'])) {
-                    $content = dgettext('users', 'Your email address is missing from your account. Please contact the site administrators.');
+                    $content = 'Your email address is missing from your account. Please contact the site administrators.';
                     PHPWS_Error::log(USER_ERR_NO_EMAIL, 'users', 'User_Action::postForgot');
                     return true;
                 }
 
                 if (User_Action::emailPasswordReset($user_search['id'], $user_search['email'])) {
-                    $content = dgettext('users', 'We have sent you an email to reset your password.');
+                    $content = 'We have sent you an email to reset your password.';
                     return true;
                 } else {
-                    $content = dgettext('users', 'We are currently unable to send out email reminders. Try again later.');
+                    $content = 'We are currently unable to send out email reminders. Try again later.';
                     return true;
                 }
             }
         } elseif (!empty($_POST['fg_email'])) {
             $email = $_POST['fg_email'];
             if (preg_match('/\'|"/', html_entity_decode(strip_tags($email), ENT_QUOTES))) {
-                $content = dgettext('users', 'Email address not found. Please try again.');
+                $content = 'Email address not found. Please try again.';
                 return false;
             }
 
             if (!PHPWS_Text::isValidInput($email, 'email')) {
-                $content = dgettext('users', 'Email address not found. Please try again.');
+                $content = 'Email address not found. Please try again.';
                 return false;
             }
 
@@ -1306,22 +1306,22 @@ EOF;
             $db->addColumn('username');
             $user_search = $db->select('row');
             if (PHPWS_Error::logIfError($user_search)) {
-                $content = dgettext('users', 'Email address not found. Please try again.');
+                $content = 'Email address not found. Please try again.';
                 return false;
             } elseif (empty($user_search)) {
-                $content = dgettext('users', 'Email address not found. Please try again.');
+                $content = 'Email address not found. Please try again.';
                 return false;
             } else {
                 if (\phpws\PHPWS_Core::isPosted()) {
-                    $content = dgettext('users', 'Please check your email for a response.');
+                    $content = 'Please check your email for a response.';
                     return true;
                 }
 
                 if (User_Action::emailUsernameReminder($user_search['username'], $email)) {
-                    $content = dgettext('users', 'We have sent you an user name reminder. Please check your email and return to log in.');
+                    $content = 'We have sent you an user name reminder. Please check your email and return to log in.';
                     return true;
                 } else {
-                    $content = dgettext('users', 'We are currently unable to send out email reminders. Try again later.');
+                    $content = 'We are currently unable to send out email reminders. Try again later.';
                     return true;
                 }
             }
@@ -1359,7 +1359,7 @@ EOF;
         $message[] = sprintf('%sindex.php?module=users&action=user&command=rp&auth=%s', $url, $hash);
         $message[] = '';
         $message[] = dgettext('users', 'If you did not wish to reset your password, you may ignore this message.');
-        $message[] = dgettext('users', 'You have one hour to respond.');
+        $message[] = 'You have one hour to respond.';
 
         $body = implode("\n", $message);
 
@@ -1490,7 +1490,7 @@ EOF;
 
             $result = Users_Permission::registerPermissions($mod_title, $content);
             if (!$result) {
-                $content[] = dgettext('users', 'No permissions file found.');
+                $content[] = 'No permissions file found.';
                 continue;
             }
         }
@@ -1547,7 +1547,7 @@ EOF;
         $body[] = sprintf(dgettext('users', 'Site address: %s'), \phpws\PHPWS_Core::getHomeHttp());
         $body[] = sprintf(dgettext('users', 'Username: %s'), $user->username);
         $body[] = sprintf(dgettext('users', 'Password: %s'), $password);
-        $body[] = dgettext('users', 'Please change your password immediately after logging in.');
+        $body[] = 'Please change your password immediately after logging in.';
 
         $mail = new PHPWS_Mail;
         $mail->addSendTo($user->email);

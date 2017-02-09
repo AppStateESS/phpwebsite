@@ -403,7 +403,7 @@ class PHAT_FormManager extends PHPWS_Manager
                         $content = $this->form->view();
                     else {
                         $GLOBALS['CNT_phatform']['title'] = $this->form->getLabel();
-                        $content = dgettext('phatform', 'This form is not available for viewing at this time.');
+                        $content = 'This form is not available for viewing at this time.';
                     }
                 }
                 break;

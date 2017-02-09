@@ -405,7 +405,7 @@ EOF;
     public function post()
     {
         if (empty($_POST['title'])) {
-            $this->_error = dgettext('calendar', 'Missing title.');
+            $this->_error = 'Missing title.';
             $this->title = null;
             return false;
         } else {

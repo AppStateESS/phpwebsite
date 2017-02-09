@@ -78,7 +78,7 @@ class FC_Document_Manager
                     $new_keyword = $shortcut->keyword;
                     // if setKeyword returns a false or error, we have them pick a different name
                     if (!$result || PHPWS_Error::isError($result)) {
-                        $message = dgettext('filecabinet', 'Access shortcut name already in use. Please enter another.');
+                        $message = 'Access shortcut name already in use. Please enter another.';
                         $success = false;
                     } else {
                         $shortcut->setUrl('filecabinet', $this->document->getViewLink());
@@ -189,7 +189,7 @@ class FC_Document_Manager
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             javascript('close_refresh', $vars);
-            return dgettext('filecabinet', 'An error occurred when trying to save your document.');
+            return 'An error occurred when trying to save your document.';
         } elseif ($result) {
             $result = $this->document->save();
             if (PHPWS_Error::logIfError($result)) {

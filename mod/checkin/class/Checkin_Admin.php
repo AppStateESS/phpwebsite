@@ -329,7 +329,7 @@ class Checkin_Admin extends Checkin
         }
 
         if (empty($this->content)) {
-            $this->content = dgettext('checkin', 'Command not recognized.');
+            $this->content = 'Command not recognized.';
         }
 
         if ($js) {
@@ -410,7 +410,7 @@ class Checkin_Admin extends Checkin
         $staff_list = array_reverse($staff_list, true);
 
         if (empty($this->staff_list)) {
-            $this->content = dgettext('checkin', 'No staff found.');
+            $this->content = 'No staff found.';
             return;
         }
 
@@ -546,7 +546,7 @@ class Checkin_Admin extends Checkin
         $this->title = 'Waiting list';
 
         if (!$this->current_staff) {
-            $this->content = dgettext('checkin', 'You are not a staff member.');
+            $this->content = 'You are not a staff member.';
             return;
         }
 
@@ -555,7 +555,7 @@ class Checkin_Admin extends Checkin
 
         // No visitors found, load all the visitors that are unassigned.
         if (empty($this->visitor_list)) {
-            $tpl['MESSAGE'] = dgettext('checkin', 'You currently do not have any visitors.');
+            $tpl['MESSAGE'] = 'You currently do not have any visitors.';
             if (PHPWS_Settings::get('checkin', 'unassigned_seen')) {
                 $this->loadVisitorList(0);
                 if (!empty($this->visitor_list)) {
@@ -623,7 +623,7 @@ class Checkin_Admin extends Checkin
                     }
                 }
                 $tpl['UNAVAILABLE'] = $this->unavailableLink();
-                $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently available for meeting.');
+                $tpl['CURRENT_MEETING'] = 'You are currently available for meeting.';
                 $tpl['CURRENT_CLASS'] = 'available';
                 break;
 
@@ -632,7 +632,7 @@ class Checkin_Admin extends Checkin
                     $tpl['SENDBACK'] = $this->sendBackLink();
                 }
                 $tpl['AVAILABLE'] = $this->availableLink();
-                $tpl['CURRENT_MEETING'] = dgettext('checkin', 'You are currently unavailable.');
+                $tpl['CURRENT_MEETING'] = 'You are currently unavailable.';
                 $tpl['CURRENT_CLASS'] = 'unavailable';
                 break;
 
@@ -713,7 +713,7 @@ class Checkin_Admin extends Checkin
         $pager->setTemplate('staff.tpl');
         $pager->setModule('checkin');
         $pager->addRowTags('row_tags');
-        $pager->setEmptyMessage(dgettext('checkin', 'No staff found.'));
+        $pager->setEmptyMessage('No staff found.');
         $pager->addPageTags($page_tags);
         $pager->joinResult('user_id', 'users', 'id', 'display_name');
         $pager->addSortHeader('lname_filter', 'Filter');
@@ -1053,10 +1053,10 @@ class Checkin_Admin extends Checkin
             $db->addColumn('id');
             $result = $db->select('one');
             if (PHPWS_Error::logIfError($result)) {
-                $this->message = dgettext('checkin', 'Problem saving user.');
+                $this->message = 'Problem saving user.';
                 return false;
             } elseif ($result) {
-                $this->message = dgettext('checkin', 'User already is staff member.');
+                $this->message = 'User already is staff member.';
                 return false;
             }
 
@@ -1066,12 +1066,12 @@ class Checkin_Admin extends Checkin
             $db->addColumn('id');
             $user_id = $db->select('one');
             if (PHPWS_Error::logIfError($result)) {
-                $this->message = dgettext('checkin', 'Problem saving user.');
+                $this->message = 'Problem saving user.';
                 return false;
             }
 
             if (!$user_id) {
-                $this->message = dgettext('checkin', 'Could not locate anyone with this user name.');
+                $this->message = 'Could not locate anyone with this user name.';
                 return false;
             }
             $this->loadStaff();
@@ -1088,7 +1088,7 @@ class Checkin_Admin extends Checkin
                 $this->staff->filter_type = $filter;    // parseFilter() checks filter_type, so it needs to be updated early
                 $this->staff->parseFilter($_POST['last_name_filter']);
             } else {
-                $this->message[] = dgettext('checkin', 'Please enter a last name filter.');
+                $this->message[] = 'Please enter a last name filter.';
             }
         } else {
             $this->staff->lname_filter = null;
@@ -1101,7 +1101,7 @@ class Checkin_Admin extends Checkin
             if (!empty($_POST['reason_filter'])) {
                 $this->staff->_reasons = $_POST['reason_filter'];
             } else {
-                $this->message[] = dgettext('checkin', 'Please pick one or more reasons.');
+                $this->message[] = 'Please pick one or more reasons.';
             }
         }
 
@@ -1111,7 +1111,7 @@ class Checkin_Admin extends Checkin
             if (isset($_POST['gender_filter'])) {
                 $this->staff->gender_filter = $_POST['gender_filter'];
             } else {
-                $this->message[] = dgettext('checkin', 'Please choose a gender filter.');
+                $this->message[] = 'Please choose a gender filter.';
             }
         } else {
             $this->staff->gender_filter = null;
@@ -1124,7 +1124,7 @@ class Checkin_Admin extends Checkin
                 $this->staff->birthdate_filter_start = strtotime($_POST['start_date']);
                 $this->staff->birthdate_filter_end = strtotime($_POST['end_date']);
             } else {
-                $this->message[] = dgettext('checkin', 'Please enter a start and end date.');
+                $this->message[] = 'Please enter a start and end date.';
             }
         } else {
             $this->staff->birthdate_filter_start = null;
@@ -1142,11 +1142,11 @@ class Checkin_Admin extends Checkin
         $this->reason->summary = $_POST['summary'];
         $this->reason->message = $_POST['message'];
         if (empty($this->reason->summary)) {
-            $this->message[] = dgettext('checkin', 'Please enter the summary.');
+            $this->message[] = 'Please enter the summary.';
         }
 
         if (empty($this->reason->message)) {
-            $this->message[] = dgettext('checkin', 'Please enter a completion message.');
+            $this->message[] = 'Please enter a completion message.';
         }
 
         return empty($this->message);
@@ -1316,7 +1316,7 @@ class Checkin_Admin extends Checkin
         \phpws\PHPWS_Core::initModClass('checkin', 'Visitors.php');
         $staff = new Checkin_Staff((int) $_GET['staff_id']);
         if (!$staff->id) {
-            $this->content = dgettext('checkin', 'Staff member not found.');
+            $this->content = 'Staff member not found.';
         }
 
         $date = (int) $_GET['date'];
@@ -1333,7 +1333,7 @@ class Checkin_Admin extends Checkin
         $visitors = $db->getObjects('Checkin_Visitor');
         $count = 0;
         if (empty($visitors)) {
-            $this->content = dgettext('checkin', 'This staff member did not meet with any visitors this month.');
+            $this->content = 'This staff member did not meet with any visitors this month.';
             return;
         } else {
             $total_wait = $total_spent = 0;
@@ -1487,7 +1487,7 @@ class Checkin_Admin extends Checkin
         \phpws\PHPWS_Core::initCoreClass('Link.php');
         $this->loadStaffList();
         if (empty($this->staff_list)) {
-            $this->content = dgettext('checkin', 'No staff have been created.');
+            $this->content = 'No staff have been created.';
             return;
         }
         $tpl = array();
@@ -1650,12 +1650,12 @@ class Checkin_Admin extends Checkin
             $t2->addWhere($exp, $limit, '>=');
             $result = $db2->select();
         } catch (PEAR_Exception $e) {
-            $this->content = dgettext('checkin', 'Sorry an error occurred.');
+            $this->content = 'Sorry an error occurred.';
             $db2->logError($e);
             return;
         }
         if (empty($result)) {
-            $this->content = dgettext('checkin', 'No repeat visits within the last month.');
+            $this->content = 'No repeat visits within the last month.';
             return;
         }
 

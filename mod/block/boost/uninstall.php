@@ -11,7 +11,7 @@ function block_uninstall(&$content)
 {
     PHPWS_DB::dropTable('block');
     PHPWS_DB::dropTable('block_pinned');
-    $content[] = dgettext('block', 'Block tables removed.');
+    $content[] = 'Block tables removed.';
     return true;
 }
 

@@ -172,18 +172,18 @@ class RSS_Feed
         }
 
         if (!isset($_POST['address'])) {
-            $error[] = dgettext('rss', 'You must enter an address.');
+            $error[] = 'You must enter an address.';
         } else {
             $address = trim($_POST['address']);
             if (!preg_match('|^https?://|', $address)) {
-                $error[] = dgettext('rss', 'RSS import needs to be an offsite link.');
+                $error[] = 'RSS import needs to be an offsite link.';
             } else {
                 $this->setAddress($address);
             }
         }
 
         if (!$this->loadParser(FALSE)) {
-            $error[] = dgettext('rss', 'Invalid feed address.');
+            $error[] = 'Invalid feed address.';
         }
 
         $item_limit = (int) $_POST['item_limit'];
@@ -201,10 +201,10 @@ class RSS_Feed
         $refresh_time = (int) $_POST['refresh_time'];
 
         if ($refresh_time < 60) {
-            $error[] = dgettext('rss', 'Refresh time is too low. It must be over 60 seconds.');
+            $error[] = 'Refresh time is too low. It must be over 60 seconds.';
             $this->refresh_time = RSS_FEED_REFRESH;
         } elseif ($refresh_time > 2592000) {
-            $error[] = dgettext('rss', 'You should refresh more often than every month.');
+            $error[] = 'You should refresh more often than every month.';
             $this->refresh_time = RSS_FEED_REFRESH;
         } else {
             $this->refresh_time = &$refresh_time;
@@ -260,7 +260,7 @@ class RSS_Feed
                     $count++;
                 }
             } else {
-                $tpl['MESSAGE'] = dgettext('rss', 'Unable to list feed.');
+                $tpl['MESSAGE'] = 'Unable to list feed.';
             }
         }
         $tpl['FEED_LINK'] = &$this->mapped['CHANNEL']['LINK'];

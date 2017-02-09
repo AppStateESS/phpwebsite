@@ -107,7 +107,7 @@ class PHAT_Element extends PHPWS_Item {
         } else if(isset($value)) {
             $this->_value = PHPWS_Text::parseInput($value);
         } else if(PHAT_VALUE_REQUIRED) {
-            $message = dgettext('phatform', 'The value for this element was not set.');
+            $message = 'The value for this element was not set.';
             return PHPWS_Error::get(PHATFORM_VALUE_MISSING, 'phatform', 'PHAT_Element::setValue()');
         } else {
             $this->_value = NULL;
@@ -594,11 +594,11 @@ class PHAT_Element extends PHPWS_Item {
                 if(PHPWS_Error::isError($result)) {
                     return $result;
                 } else {
-                    return dgettext('phatform', 'The element was successfully removed.');
+                    return 'The element was successfully removed.';
                 }
             }
         } else if(isset($_REQUEST['PHAT_No'])) {
-            return dgettext('phatform', 'No element was removed.');;
+            return 'No element was removed.';;
         } else {
             $className = get_class($this);
             $properName = ucfirst(str_ireplace('phat_', '', $className));

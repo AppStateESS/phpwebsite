@@ -270,7 +270,7 @@ class FC_Multimedia_Manager
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
+            $this->content = 'An error occurred when trying to save your multimedia file.';
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
@@ -282,7 +282,7 @@ class FC_Multimedia_Manager
 
             if (PHPWS_Error::isError($result)) {
                 PHPWS_Error::log($result);
-                $this->content = dgettext('filecabinet', 'An error occurred when trying to save your multimedia file.');
+                $this->content = 'An error occurred when trying to save your multimedia file.';
                 $this->content .= '<br /><strong>' . $result->getMessage() . '</strong>';
                 $this->content .= '<br /><br />' . javascript('close_window', array('value' => 'Close this window'));
                 return;

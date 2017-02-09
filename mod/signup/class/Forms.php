@@ -13,7 +13,7 @@ class Signup_Forms {
             case 'new':
                 if (Current_User::isRestricted('signup')) {
                     $this->signup->title   = 'Sorry';
-                    $this->signup->content = dgettext('signup', 'You do not have permission for this action.');
+                    $this->signup->content = 'You do not have permission for this action.';
                     return;
                 }
             case 'edit_sheet':
@@ -213,7 +213,7 @@ class Signup_Forms {
         $form->addHidden('sheet_id', $this->signup->sheet->id);
         if (!empty($_GET['search'])) {
             $search = $_GET['search'];
-            $this->signup->message = dgettext('signup', 'The name you searched for is in these slots.');
+            $this->signup->message = 'The name you searched for is in these slots.';
         } else {
             $search = null;
         }
@@ -241,7 +241,7 @@ class Signup_Forms {
                 $tpl['slot-list'][] = $slot->listTpl();
             }
         } else {
-            $this->signup->message = dgettext('signup', 'No slots found.');
+            $this->signup->message = 'No slots found.';
         }
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');
@@ -311,7 +311,7 @@ class Signup_Forms {
 
         $tpl = $form->getTemplate();
 
-        $tpl['EXTRA_NOTE'] = dgettext('signup', 'Blank extra fields will not appear on signup.');
+        $tpl['EXTRA_NOTE'] = 'Blank extra fields will not appear on signup.';
         // Explain the purpose of the 'extra' fields to the user.
         $tpl['FIELDSET_NOTE'] = dgettext('signup', 'The signup form already asks for the user\'s first and last name, email address, and phone number. <br>If there is any other information you want to ask for, specify it here. These fields are not required.');
 
@@ -423,7 +423,7 @@ class Signup_Forms {
 
         if ($sheet->end_time < time()) {
             $this->signup->title = 'Sorry';
-            $this->signup->content = dgettext('signup', 'We are no longer accepting applications.');
+            $this->signup->content = 'We are no longer accepting applications.';
             return;
         }
 
@@ -432,7 +432,7 @@ class Signup_Forms {
 
         if (empty($slots)) {
             $this->signup->title = 'Sorry';
-            $this->signup->content = dgettext('signup', 'There is a problem with this signup sheet. Please check back later.');
+            $this->signup->content = 'There is a problem with this signup sheet. Please check back later.';
             return;
         }
 

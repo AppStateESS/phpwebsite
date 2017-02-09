@@ -8,6 +8,6 @@ function signup_uninstall(&$content) {
     PHPWS_DB::dropTable('signup_sheet');
     PHPWS_DB::dropTable('signup_peeps');
     PHPWS_DB::dropTable('signup_slots');
-    $content[] = dgettext('signup', 'Signup tables dropped.');
+    $content[] = 'Signup tables dropped.';
     return true;
 }

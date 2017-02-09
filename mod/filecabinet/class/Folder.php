@@ -263,7 +263,7 @@ class Folder
     public function post()
     {
         if (empty($_POST['title'])) {
-            $this->_error = dgettext('filecabinet', 'You must entitle your folder.');
+            $this->_error = 'You must entitle your folder.';
             return false;
         } else {
             $this->setTitle($_POST['title']);

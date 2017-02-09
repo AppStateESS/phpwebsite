@@ -531,7 +531,7 @@ class PHAT_Form extends PHPWS_Item
     function view($edit = FALSE, $error = null)
     {
         if (($this->isHidden() && !$edit) || (!$this->isSaved() && !Current_User::allow('phatform', 'edit_forms'))) {
-            return dgettext('phatform', 'This form is not available for viewing at this time.');
+            return 'This form is not available for viewing at this time.';
         }
 
         $GLOBALS['CNT_phatform']['title'] = $this->getLabel();
@@ -569,7 +569,7 @@ class PHAT_Form extends PHPWS_Item
             $viewTags['BLURB0'] = PHPWS_Text::parseOutput($this->_blurb0, ENCODE_PARSED_TEXT, false, true);
 
             if (!$this->_saved) {
-                $viewTags['WARNING'] = dgettext('phatform', 'The form must be saved before it is available to the public.');
+                $viewTags['WARNING'] = 'The form must be saved before it is available to the public.';
             }
         }
 
@@ -998,7 +998,7 @@ class PHAT_Form extends PHPWS_Item
             return $content;
         } elseif ($_REQUEST['PHAT_Submit']) {
             if (PHATFORM_CAPTCHA && $this->_anonymous && !Current_User::isLogged() && !Captcha::verify()) {
-                javascript('alert', array('content' => dgettext('phatform', 'CAPTCHA word was not correct.')));
+                javascript('alert', array('content' => 'CAPTCHA word was not correct.'));
                 return $this->view(false);
             }
 
@@ -1241,7 +1241,7 @@ class PHAT_Form extends PHPWS_Item
             $sql .= ')';
 
             if (PHPWS_Error::logIfError(PHPWS_DB::query($sql))) {
-                $GLOBALS['CNT_phatform']['message'] = dgettext('phatform', 'Could not save the form. Check error log.');
+                $GLOBALS['CNT_phatform']['message'] = 'Could not save the form. Check error log.';
                 return false;
             }
 
@@ -1621,7 +1621,7 @@ class PHAT_Form extends PHPWS_Item
 
             if (PHPWS_Error::isError($error)) {
                 PHPWS_Error::log($error);
-                javascript('alert', array('content' => dgettext('phatform', 'Failed to archive.')));
+                javascript('alert', array('content' => 'Failed to archive.'));
                 unset($_REQUEST['PHAT_ArchiveConfirm']);
                 unset($error);
                 $_REQUEST['PHAT_FORM_OP'] = 'ArchiveConfirm';

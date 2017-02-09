@@ -349,7 +349,7 @@ class FC_File_Assoc
             $this->_file_path = $image->getPath();
             return $image->getTag();
         } else {
-            return dgettext('filecabinet', 'Folder missing image files.');
+            return 'Folder missing image files.';
         }
     }
 
@@ -366,7 +366,7 @@ class FC_File_Assoc
             if (!Current_User::allow('filecabinet')) {
                 return null;
             } else {
-                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
+                $message = 'Folder is private. Slideshow not available';
             }
         }
         $db = new PHPWS_DB('images');
@@ -374,7 +374,7 @@ class FC_File_Assoc
 
         $result = $db->getObjects('PHPWS_Image');
         if (PHPWS_Error::logIfError($result) || !$result) {
-            return dgettext('filecabinet', 'Folder missing image files.');
+            return 'Folder missing image files.';
         } else {
             foreach ($result as $image) {
                 $tpl['thumbnails'][] = array('IMAGE' => sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail()));
@@ -425,7 +425,7 @@ class FC_File_Assoc
             if (!Current_User::allow('filecabinet')) {
                 return null;
             } else {
-                $message = dgettext('filecabinet', 'Folder is private. Slideshow not available');
+                $message = 'Folder is private. Slideshow not available';
             }
         }
         $db = new PHPWS_DB('images');
@@ -437,7 +437,7 @@ class FC_File_Assoc
 
         $result = $db->getObjects('PHPWS_Image');
         if (PHPWS_Error::logIfError($result) || !$result) {
-            return dgettext('filecabinet', 'Folder missing image files.');
+            return 'Folder missing image files.';
         } else {
             foreach ($result as $image) {
                 $img = sprintf('<a title="%s" href="%s">%s</a>', $image->getTitle(), $image->getPath(), $image->getThumbnail());

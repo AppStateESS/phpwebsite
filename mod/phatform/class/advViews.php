@@ -32,7 +32,7 @@ class advViews {
     function deleteExport() {
         if(isset($_POST['yes'])){
             if(!isset($_REQUEST['EXPORT_filename'])) {
-                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';
+                $content = 'There was a problem deleting the export.' . '<br /><br />';
                 $content .= $this->viewExports();
                 return $content;
             }
@@ -41,7 +41,7 @@ class advViews {
             if(is_file($filename) && unlink($filename)) {
                 $content = dgettext('phatform', 'The phatform export was successfully <b>deleted</b>.') . '<br /><br />';
             } else {
-                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';
+                $content = 'There was a problem deleting the export.' . '<br /><br />';
             }
 
             $content .= $_SESSION['PHAT_advViews']->viewExports();
@@ -80,13 +80,13 @@ class advViews {
         if(is_file($filename)) {
             $fileContent = file($filename);
         } else {
-            $content .= dgettext('phatform', 'Archive file was not found.');
+            $content .= 'Archive file was not found.';
             $content .= $this->viewArchives();
             return $content;
         }
 
         if(empty($fileContent)) {
-            $content .= dgettext('phatform', 'File contained no content.');
+            $content .= 'File contained no content.';
             $content .= $this->viewArchives();
             return $content;
         }
@@ -121,7 +121,7 @@ class advViews {
         }
 
         if(empty($sql)) {
-            $content .= dgettext('phatform', 'File contained no archive to view.');
+            $content .= 'File contained no archive to view.';
             $content .= $this->viewArchives();
             return $content;
         }
@@ -188,7 +188,7 @@ class advViews {
             return $this->readyViewArchive($formId, $newTableName);
 
         } else if(isset($_REQUEST['no'])) {
-            $content .= dgettext('phatform', 'Viewing of archive has been canceled.');
+            $content .= 'Viewing of archive has been canceled.';
             $content .= $this->viewArchives();
             return $content;
 
@@ -199,7 +199,7 @@ class advViews {
             $elements[0] .= PHPWS_Form::formSubmit('Yes', 'yes');
             $elements[0] .= PHPWS_Form::formSubmit('No', 'no');
 
-            $content .= dgettext('phatform', 'In order to view this archive a new table will need to added to your database.') . '<br /><br />';
+            $content .= 'In order to view this archive a new table will need to added to your database.' . '<br /><br />';
             $content .= '<b>' . dgettext('phatform', 'Are you sure you wish to view this archive?') .'</b><br /><br />';
             $content .= PHPWS_Form::makeForm('archive_view', 'index.php', $elements);
             return $content;
@@ -213,7 +213,7 @@ class advViews {
     function deleteArchive() {
         if(isset($_POST['yes'])){
             if(!isset($_REQUEST['ARCHIVE_filename'])) {
-                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';
+                $content = 'There was a problem deleting the archive.' . '<br /><br />';
                 $content .= $this->viewArchives();
                 return $content;
             }
@@ -224,7 +224,7 @@ class advViews {
             if(is_file($filename) && unlink($filename)) {
                 $content = dgettext('phatform', 'The phatform archive was successfully <b>deleted</b>.') . '<br /><br />';
             } else {
-                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';
+                $content = 'There was a problem deleting the archive.' . '<br /><br />';
             }
 
             $content .= $_SESSION['PHAT_advViews']->viewArchives();
@@ -366,7 +366,7 @@ class advViews {
             $listTags['SECTION_INFO_LABEL'] = 'Entries';
             $listTags['LINK_BACK'] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">' . 'Report View' . '</a>';
         } else {
-            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
+            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . 'No entries were found matching your search query.' . '</td></tr>';
         }
 
         $GLOBALS['CNT_phatform']['title'] = 'Existing Exports';
@@ -492,7 +492,7 @@ class advViews {
             $listTags['LINK_BACK'] = '<a href="index.php?module=phatform&amp;PHAT_FORM_OP=report">' . 'Report View' . '</a>';
         } else {
 
-            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
+            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . 'No entries were found matching your search query.' . '</td></tr>';
         }
 
         $GLOBALS['CNT_phatform']['title'] = 'Existing Archives';

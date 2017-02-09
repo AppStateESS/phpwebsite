@@ -5,5 +5,5 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-$errors = array (SU_NO_SHEET_ID => dgettext('signup', 'Slot is missing sheet id.')
+$errors = array (SU_NO_SHEET_ID => 'Slot is missing sheet id.'
 );

@@ -122,7 +122,7 @@ class Boost_Form
         }
 
         if (empty($modList)) {
-            return dgettext('boost', 'No modules available.');
+            return 'No modules available.';
         }
 
         sort($modList);
@@ -248,7 +248,7 @@ class Boost_Form
         if (ini_get('allow_url_fopen')) {
             $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink('Check all', 'boost', array('action' => 'check_all', 'tab' => $type));
         } else {
-            $tpl['CHECK_FOR_UPDATES'] = dgettext('boost', 'Server configuration prevents version checking.');
+            $tpl['CHECK_FOR_UPDATES'] = 'Server configuration prevents version checking.';
         }
 
 
@@ -269,8 +269,8 @@ class Boost_Form
 
         $old_mods = & $GLOBALS['Boost_Old_Mods'];
 
-        $content[] = dgettext('boost', 'The following modules are from an earlier version of phpWebSite and will not function.');
-        $content[] = dgettext('boost', 'Please remove them from the mod directory.');
+        $content[] = 'The following modules are from an earlier version of phpWebSite and will not function.';
+        $content[] = 'Please remove them from the mod directory.';
         foreach ($old_mods as $mod) {
             include sprintf('%smod/%s/conf/boost.php', PHPWS_SOURCE_DIR, $mod);
             $directory = sprintf('%smod/%s/', PHPWS_SOURCE_DIR, $mod);

@@ -16,7 +16,7 @@ class RSS {
         }
 
         if ($reg_file == FALSE) {
-            PHPWS_Boost::addLog($module, dgettext('rss', 'No RSS file found.'));
+            PHPWS_Boost::addLog($module, 'No RSS file found.');
             return FALSE;
         }
 
@@ -30,7 +30,7 @@ class RSS {
             $content[] = dgettext('rss',
                     'RSS file found but no channel information.');
             PHPWS_Boost::addLog($module,
-                    dgettext('rss', 'RSS file found but no channel information.'));
+                    'RSS file found but no channel information.');
         }
 
         $oModule = new PHPWS_Module($module);

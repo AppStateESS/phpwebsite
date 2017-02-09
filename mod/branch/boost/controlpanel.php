@@ -7,7 +7,7 @@
 $link[] = array('label'       => 'Branch',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=branch',
-		'description' => dgettext('branch', 'Install and update branch sites.'),
+		'description' => 'Install and update branch sites.',
 		'image'       => 'branch.png',
 		'tab'         => 'admin'
 		);

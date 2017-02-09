@@ -133,7 +133,7 @@ class PHAT_Textfield extends PHAT_Element {
 
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && ($this->getLabel() != $_REQUEST['PHAT_ElementName']))
         || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
-            $message = dgettext('phatform', 'The name you entered for the Textfield is not valid or is already in use with this form.');
+            $message = 'The name you entered for the Textfield is not valid or is already in use with this form.';
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Checkbox::save()', $_REQUEST['PHAT_ElementName']);
             $error = TRUE;
         }

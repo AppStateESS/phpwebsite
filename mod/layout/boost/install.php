@@ -14,7 +14,7 @@ function layout_install(&$content, $branchInstall=FALSE)
         $db->addValue('default_theme', $default_theme);
         $db->addValue('page_title', $page_title);
         $db->update();
-        $content[] = dgettext('layout', 'Layout settings updated.');
+        $content[] = 'Layout settings updated.';
         return true;
     } else {
         return $error;

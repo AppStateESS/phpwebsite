@@ -6,5 +6,5 @@
 
 $errors = array(
 MENU_MISSING_INFO => dgettext('menu', 'Link is missing a title, url, or menu id.'),
-MENU_MISSING_TPL  => dgettext('menu', 'Unable to locate menu template.')
+MENU_MISSING_TPL  => 'Unable to locate menu template.'
 );

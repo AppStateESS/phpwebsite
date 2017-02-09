@@ -66,7 +66,7 @@ class Search_Admin {
                     \phpws\PHPWS_Core::goBack();
                 }
                 Search_Admin::addParseWord($_REQUEST['keyword']);
-                Search_Admin::sendMessage(dgettext('search', 'Keywords added to admin menu.'), 'keyword');
+                Search_Admin::sendMessage('Keywords added to admin menu.', 'keyword');
                 break;
 
             case 'drop_keyword':

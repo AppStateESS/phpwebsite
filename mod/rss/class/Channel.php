@@ -61,7 +61,7 @@ class RSS_Channel {
         if (isset($_POST['title'])) {
             $this->title = $_POST['title'];
         } else {
-            $errors[] = dgettext('rss', 'You must enter a title.');
+            $errors[] = 'You must enter a title.';
         }
 
         if (isset($_POST['description'])) {

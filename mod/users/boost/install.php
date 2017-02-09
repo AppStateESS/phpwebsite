@@ -32,12 +32,12 @@ function users_install(&$content)
 
         if (PHPWS_Error::isError($deities)) {
             PHPWS_Error::log($deities);
-            $content[] = dgettext('users', 'Could not access hub database.');
+            $content[] = 'Could not access hub database.';
             Branch::restoreBranchDB();
             return FALSE;
         }
         elseif (empty($deities)) {
-            $content[] = dgettext('users', 'Could not find any hub deities.');
+            $content[] = 'Could not find any hub deities.';
             Branch::restoreBranchDB();
             return FALSE;
         } else {
@@ -53,7 +53,7 @@ function users_install(&$content)
                 $result = $auth_db->insert();
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = dgettext('users', 'Unable to copy deity login to branch.');
+                    $content[] = 'Unable to copy deity login to branch.';
                     continue;
                 }
                 unset($deity['password']);
@@ -62,7 +62,7 @@ function users_install(&$content)
 
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = dgettext('users', 'Unable to copy deity users to branch.');
+                    $content[] = 'Unable to copy deity users to branch.';
                     Branch::loadBranchDB();
                     return FALSE;
                 }
@@ -71,7 +71,7 @@ function users_install(&$content)
                 $group_db->addValue('name', $deity['username']);
                 $group_db->addValue('user_id', $result);
                 if (PHPWS_Error::logIfError($group_db->insert())) {
-                    $content[] = dgettext('users', 'Unable to copy deity user group to branch.');
+                    $content[] = 'Unable to copy deity user group to branch.';
                     Branch::loadBranchDB();
                     return FALSE;
                 }
@@ -80,7 +80,7 @@ function users_install(&$content)
                 $auth_db->reset();
                 $user_db->reset();
             }
-            $content[] = dgettext('users', 'Deity users copied to branch.');
+            $content[] = 'Deity users copied to branch.';
         }
         return TRUE;
     }

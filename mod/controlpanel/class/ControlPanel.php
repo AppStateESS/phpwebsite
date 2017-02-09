@@ -65,7 +65,7 @@ class PHPWS_ControlPanel
         }
 
         if (empty($panel->tabs)) {
-            return dgettext('controlpanel', 'No tabs available in the Control Panel.');
+            return 'No tabs available in the Control Panel.';
         }
 
         if (!isset($content) && $current_mod == 'controlpanel') {
@@ -86,7 +86,7 @@ class PHPWS_ControlPanel
         }
 
         if (!isset($panel->tabs[$panel->getCurrentTab()])) {
-            return dgettext('controlpanel', 'An error occurred while accessing the Control Panel.');
+            return 'An error occurred while accessing the Control Panel.';
         }
         $tab = $panel->tabs[$panel->getCurrentTab()];
         $link = str_replace('&amp;', '&', $tab->getLink(false)) . '&tab=' . $tab->id;
@@ -178,7 +178,7 @@ class PHPWS_ControlPanel
         $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($cpFile)) {
-            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel unregisteration file not implemented.'));
+            PHPWS_Boost::addLog($module, 'Control Panel unregisteration file not implemented.');
 
             return FALSE;
         }
@@ -253,7 +253,7 @@ class PHPWS_ControlPanel
             }
         }
 
-        $content[] = dgettext('controlpanel', 'Control Panel links and tabs have been removed.');
+        $content[] = 'Control Panel links and tabs have been removed.';
         PHPWS_ControlPanel::reset();
         return true;
     }
@@ -266,7 +266,7 @@ class PHPWS_ControlPanel
         $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($cpFile)) {
-            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel file not implemented.'));
+            PHPWS_Boost::addLog($module, 'Control Panel file not implemented.');
             return false;
         }
 
@@ -284,13 +284,13 @@ class PHPWS_ControlPanel
                 }
 
                 if (!isset($info['title'])) {
-                    $content[] = dgettext('controlpanel', 'Unable to create tab.') . ' ' . dgettext('controlpanel', 'Missing title.');
+                    $content[] = 'Unable to create tab.' . ' ' . 'Missing title.';
                     continue;
                 }
                 $tab->setTitle($info['title']);
 
                 if (!isset($info['link'])) {
-                    $content[] = dgettext('controlpanel', 'Unable to create tab.') . ' ' . dgettext('controlpanel', 'Missing link.');
+                    $content[] = 'Unable to create tab.' . ' ' . 'Missing link.';
                     continue;
                 }
 
@@ -304,14 +304,14 @@ class PHPWS_ControlPanel
 
                 $result = $tab->save();
                 if (PHPWS_Error::isError($result)) {
-                    $content[] = dgettext('controlpanel', 'An error occurred when trying to save a controlpanel tab.');
+                    $content[] = 'An error occurred when trying to save a controlpanel tab.';
                     PHPWS_Error::log($result);
                     return false;
                 }
             }
             $content[] = sprintf(dgettext('controlpanel', 'Control Panel tabs created for %s.'), $module);
         } else {
-            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel tabs not implemented.'));
+            PHPWS_Boost::addLog($module, 'Control Panel tabs not implemented.');
         }
 
         if (isset($link) && is_array($link)) {
@@ -354,7 +354,7 @@ class PHPWS_ControlPanel
                     continue;
                 } elseif (!isset($result)) {
                     $tab_id = 'unsorted';
-                    PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Unable to load a link into a specified tab.'));
+                    PHPWS_Boost::addLog($module, 'Unable to load a link into a specified tab.');
                 } else {
                     $tab_id = $info['tab'];
                 }
@@ -363,14 +363,14 @@ class PHPWS_ControlPanel
                 $result = $modlink->save();
                 if (PHPWS_Error::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = dgettext('controlpanel', 'There was a problem trying to save a Control Panel link.');
+                    $content[] = 'There was a problem trying to save a Control Panel link.';
                     return false;
                 }
                 $db->resetWhere();
             }
             $content[] = sprintf(dgettext('controlpanel', 'Control Panel links created for %s.'), $module);
         } else {
-            PHPWS_Boost::addLog($module, dgettext('controlpanel', 'No Control Panel links found.'));
+            PHPWS_Boost::addLog($module, 'No Control Panel links found.');
         }
 
         PHPWS_ControlPanel::reset();
