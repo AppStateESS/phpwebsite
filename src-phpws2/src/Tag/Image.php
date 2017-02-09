@@ -6,7 +6,7 @@ namespace phpws2\Tag;
  * @package phpws2
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Image extends \Tag {
+class Image extends \phpws2\Tag {
 
     /**
      * Complete path of image file

@@ -9,7 +9,7 @@ namespace phpws2\Form;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-abstract class Base extends \Tag {
+abstract class Base extends \phpws2\Tag {
 
     /**
      * Name of the form element

@@ -8,7 +8,7 @@ namespace phpws2\Tag;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class Link extends \Tag {
+class Link extends \phpws2\Tag {
 
     protected $href;
     protected $target;

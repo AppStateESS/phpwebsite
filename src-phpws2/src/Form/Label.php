@@ -7,7 +7,7 @@ namespace phpws2\Form;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Label extends \Tag {
+class Label extends \phpws2\Tag {
 
     protected $for;
 

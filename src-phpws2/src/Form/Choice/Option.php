@@ -9,7 +9,7 @@ namespace phpws2\Form\Choice;
  * @subpackage Form
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class Option extends \Tag {
+class Option extends \phpws2\Tag {
 
     /**
      * Indicates the optgroup the current option is part of.
