@@ -20,7 +20,7 @@ namespace phpws;
  * @package
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
-class Icon extends \Tag {
+class Icon extends \phpws2\Tag {
 
     protected $open = true;
     private $type;
