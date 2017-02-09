@@ -64,7 +64,7 @@ abstract class Controller implements \Canopy\Controller {
         }
 
 
-        if (!is_a($response, '\Response')) {
+        if (!is_a($response, '\Canopy\Response')) {
             throw new \Exception(sprintf("Controller %s did not return a response object for the %s method",
                     get_class($this), $request->getMethod()));
         }
