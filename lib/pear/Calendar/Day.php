@@ -100,7 +100,7 @@ class Calendar_Day extends Calendar
      *
      * @access public
      */
-    function Calendar_Day($y, $m, $d)
+    public function __construct($y, $m, $d)
     {
         parent::__construct($y, $m, $d);
     }
@@ -113,7 +113,7 @@ class Calendar_Day extends Calendar
      * @return boolean
      * @access public
      */
-    function build($sDates = array())
+    public function build($sDates = array())
     {
         include_once CALENDAR_ROOT.'Hour.php';
 
@@ -136,7 +136,7 @@ class Calendar_Day extends Calendar
      * @return void
      * @access private
      */
-    function setSelection($sDates)
+    public function setSelection($sDates)
     {
         foreach ($sDates as $sDate) {
             if ($this->year == $sDate->thisYear()
@@ -161,7 +161,7 @@ class Calendar_Day extends Calendar
      * @return void
      * @access private
      */
-    function setFirst($state = true)
+    public function setFirst($state = true)
     {
         $this->first = $state;
     }
@@ -175,7 +175,7 @@ class Calendar_Day extends Calendar
      * @return void
      * @access private
      */
-    function setLast($state = true)
+    public function setLast($state = true)
     {
         $this->last = $state;
     }
@@ -187,7 +187,7 @@ class Calendar_Day extends Calendar
      * @return boolean
      * @access public
      */
-    function isFirst()
+    public function isFirst()
     {
         return $this->first;
     }
@@ -199,7 +199,7 @@ class Calendar_Day extends Calendar
      * @return boolean
      * @access public
      */
-    function isLast()
+    public function isLast()
     {
         return $this->last;
     }
@@ -213,7 +213,7 @@ class Calendar_Day extends Calendar
      * @return void
      * @access private
      */
-    function setEmpty ($state = true)
+    public function setEmpty ($state = true)
     {
         $this->empty = $state;
     }
@@ -224,7 +224,7 @@ class Calendar_Day extends Calendar
      * @return boolean
      * @access public
      */
-    function isEmpty()
+    public function isEmpty()
     {
         return $this->empty;
     }
