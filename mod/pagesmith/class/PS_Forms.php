@@ -407,7 +407,7 @@ class PS_Forms
     {
         javascript('jquery');
         $script = PHPWS_SOURCE_HTTP . 'mod/pagesmith/javascript/purge/script.js';
-        \Pager::prepare();
+        \phpws2\Pager::prepare();
         \Layout::addJSHeader("<script type='text/javascript' src='$script'><script>");
         $template = new \phpws2\Template;
         $template->setModuleTemplate('pagesmith', 'purge.html');

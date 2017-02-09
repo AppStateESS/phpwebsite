@@ -70,7 +70,7 @@ class PulseAdminController extends \Http\Controller
 
     private function pager(\Canopy\Request $request)
     {
-        \Pager::prepare();
+        \phpws2\Pager::prepare();
         $template = new \phpws2\Template;
         $template->setModuleTemplate('pulse', 'pager.html');
         if (\phpws2\Settings::get('pulse', 'allow_web_access')) {
