@@ -267,7 +267,7 @@ class Access_Forms {
             }
         }
 
-        $form = new \Form;
+        $form = new \phpws2\Form;
         $form->setAction('index.php');
         $form->appendCSS('bootstrap');
         $form->setId('shortcut-menu');
