@@ -9,7 +9,7 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class DateTime extends Date {
+class DateTime extends DateVar {
 
     /**
      * Form input should be of datetime type

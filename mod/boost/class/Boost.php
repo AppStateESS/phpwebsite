@@ -187,7 +187,7 @@ class PHPWS_Boost
                 $content[] = dgettext('boost', 'There was a problem in the installation file:');
                 $content[] = '<b>' . $e->getMessage() . '</b>';
                 $content[] = '<br />';
-                \Error::log($e);
+                \phpws2\Error::log($e);
                 $continue = false;
             }
             // in case install changes translate directory

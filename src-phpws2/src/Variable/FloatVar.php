@@ -22,7 +22,7 @@ class FloatVar extends \phpws2\Variable
     /**
      * Checks to see if value is a float.
      * @param float $value
-     * @return boolean | \Error
+     * @return boolean | \phpws2\Error
      */
     protected function verifyValue($value)
     {

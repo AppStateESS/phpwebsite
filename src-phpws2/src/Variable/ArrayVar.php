@@ -24,7 +24,7 @@ class ArrayVar extends \phpws2\Variable
     /**
      * Makes sure value is an array, throws Error exception otherwise.
      * @param array $value
-     * @return boolean | \Error
+     * @return boolean | \phpws2\Error
      */
     protected function verifyValue($value)
     {

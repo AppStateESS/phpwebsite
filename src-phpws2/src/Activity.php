@@ -49,7 +49,7 @@ class Activity extends \phpws2\Resource {
             $activity->ip_address = \Canopy\Server::getUserIp();
         } catch (Exception $e) {
             $activity->ip_address = '0.0.0.0';
-            \Error::log($e);
+            \phpws2\Error::log($e);
         }
         \phpws2\ResourceFactory::saveResource($activity);
     }

@@ -36,7 +36,7 @@ class IntegerVar extends \phpws2\Variable {
     /**
      * Throws Error exception if value is not an integer, true otherwise
      * @param integer $value
-     * @return boolean | \Error
+     * @return boolean | \phpws2\Error
      */
     protected function verifyValue($value)
     {

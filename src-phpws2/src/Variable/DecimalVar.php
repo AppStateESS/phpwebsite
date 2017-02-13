@@ -13,7 +13,7 @@ class DecimalVar extends FloatVar
     /**
      * Checks to see if value is a decimal.
      * @param float $value
-     * @return boolean | \Error
+     * @return boolean | \phpws2\Error
      */
     protected function verifyValue($value)
     {

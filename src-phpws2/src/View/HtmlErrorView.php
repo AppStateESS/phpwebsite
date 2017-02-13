@@ -33,7 +33,7 @@ class HtmlErrorView extends \phpws2\Template {
         if (defined('DISPLAY_ERRORS') && DISPLAY_ERRORS) {
             return parent::render();
         } else {
-            return \Error::errorPage($this->code);
+            return \phpws2\Error::errorPage($this->code);
         }
     }
 

@@ -37,7 +37,7 @@ class JsonErrorView extends JsonView
             $this->displayError($error);
             exit;
         } else {
-            \Error::errorPage($this->data->error->code);
+            \phpws2\Error::errorPage($this->data->error->code);
         }
     }
     
