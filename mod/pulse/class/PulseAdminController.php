@@ -6,7 +6,7 @@ namespace pulse;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-class PulseAdminController extends \Http\Controller
+class PulseAdminController extends \phpws2\Http\Controller
 {
 
     public function get(\Canopy\Request $request)

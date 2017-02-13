@@ -26,7 +26,7 @@ function pulse_update(&$content, $currentVersion)
                 return;
             }
 
-            $db = Database::newDB();
+            $db = \phpws2\Database::newDB();
             $db->begin();
 
             try {

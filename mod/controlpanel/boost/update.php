@@ -147,7 +147,7 @@ function controlpanel_update(&$content, $currentVersion)
         case version_compare($currentVersion, '2.3.3', '<'):
         case version_compare($currentVersion, '2.3.4', '<'):
             $link = new PHPWS_Panel_Link;
-            $db = Database::newDB();
+            $db = \phpws2\Database::newDB();
             $tbl = $db->addTable('controlpanel_link');
             $db->setConditional($tbl->getFieldConditional('itemname',
                             'controlpanel'));

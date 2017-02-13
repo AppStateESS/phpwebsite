@@ -8,7 +8,7 @@
  */
 function update_core_2_3_0()
 {
-    $db = Database::newDB();
+    $db = \phpws2\Database::newDB();
     $dtable = $db->addTable('modules');
     if (!$dtable->columnExists('deprecated')) {
         $deprecated = $dtable->addDataType('deprecated', 'smallint');
@@ -16,7 +16,7 @@ function update_core_2_3_0()
         $deprecated->add();
     }
 
-    $db2 = Database::newDB();
+    $db2 = \phpws2\Database::newDB();
     $db2->addTable('mod_settings');
     $result = $db2->select();
 

@@ -13,7 +13,7 @@ class Cabinet_Form
 
     private function getModal()
     {
-        $modal = new \Modal('folder-form');
+        $modal = new \phpws2\Modal('folder-form');
         $modal->setWidthPercentage(30);
         $modal->addButton('<button class="btn btn-success save-element">' . _('Save') . '</button>');
         return $modal->get();

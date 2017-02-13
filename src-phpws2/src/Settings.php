@@ -86,7 +86,7 @@ class Settings extends \Canopy\Data
     {
         if ($reload || empty(self::$settings)) {
             self::$settings = new Settings;
-            $db = Database::newDB();
+            $db = \phpws2\Database::newDB();
             if (!$db->tableExists('settings')) {
                 self::createSettingsTable();
             }

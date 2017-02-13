@@ -244,7 +244,7 @@ class Block_Admin
             $form->addHidden('key_id', $key_id);
             $form->addHidden('action', 'postJSBlock');
 
-            $pdb = Database::newDB();
+            $pdb = \phpws2\Database::newDB();
             $pdb->addTable('block_pinned');
             $all_pinned = $pdb->select();
 
@@ -257,7 +257,7 @@ class Block_Admin
             }
 
 
-            $db = Database::newDB();
+            $db = \phpws2\Database::newDB();
             $blocks = $db->addTable('block');
             $blocks->addField('id');
             $blocks->addOrderBy($blocks->addField('title'));

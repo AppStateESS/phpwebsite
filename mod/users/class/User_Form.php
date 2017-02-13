@@ -569,7 +569,7 @@ class User_Form
         } else {
             $group_ids = $user->getGroups();
             if ($group_ids) {
-                $db = Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $t1 = $db->addTable('users_groups');
                 $f1 = $t1->addField('name');
                 $c1 = $t1->getFieldConditional('id', $group_ids, 'in');

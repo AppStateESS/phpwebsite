@@ -128,7 +128,7 @@ Please download version 1.1.2.</pre>';
             if ($currentVersion == '1.3.6' && PHPWS_Boost::inBranch()) {
                 moveBlockImages();
             }
-            $db = Database::newDB();
+            $db = \phpws2\Database::newDB();
             $btable = $db->addTable('block');
             $dt = $btable->addDataType('hide_narrow', 'smallint');
             $dt->add();
@@ -172,7 +172,7 @@ function moveBlockImages()
     require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/class/File_Assoc.php';
     require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/class/Cabinet.php';
 
-    $db = Database::newDB();
+    $db = \phpws2\Database::newDB();
     $block = $db->addTable('block');
     $db->setConditional($block->getFieldConditional('file_id', 0, '>'));
     $db->loadSelectStatement();

@@ -33,7 +33,7 @@ final class ModuleRepository
 
     protected function loadSiteModules()
     {
-        $db = Database::newDB();
+        $db = \phpws2\Database::newDB();
         $mods = $db->addTable('modules');
         $mods->addOrderBy($mods->getField('priority'));
         $mods->addFieldConditional('active', 1);

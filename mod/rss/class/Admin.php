@@ -393,7 +393,7 @@ class RSS_Admin
         $template['DISPLAY_LABEL'] = dgettext('rss', 'Display?');
         $template['ACTION_LABEL'] = 'Action';
         $template['REFRESH_TIME_LABEL'] = 'Refresh feed';
-        $modal = new \Modal('rss-modal');
+        $modal = new \phpws2\Modal('rss-modal');
         $modal->addButton('<button class="btn btn-primary" id="save-feed"><i class="fa fa-save"></i> Save</button>');
         $modal_content = RSS_Admin::editFeed();
         $modal->setContent($modal_content);

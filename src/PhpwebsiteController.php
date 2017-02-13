@@ -237,7 +237,7 @@ class PhpwebsiteController implements Controller
 
     public function loadSiteModules()
     {
-        $db = Database::newDB();
+        $db = \phpws2\Database::newDB();
         $mods = $db->addTable('modules');
         $mods->addOrderBy($mods->getField('priority'));
         $db->loadSelectStatement();

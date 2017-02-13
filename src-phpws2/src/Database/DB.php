@@ -355,7 +355,7 @@ abstract class DB extends \Canopy\Data
      *
      * Example:
      * <code>
-     * $db = Database::newDB();
+     * $db = \phpws2\Database::newDB();
      * $t1 = $db->addTable('alpha');
      * $c1 = $t1->getFieldConditional('id', 5);
      * $c2 = $t1->getFieldConditional('name', 'Tom');

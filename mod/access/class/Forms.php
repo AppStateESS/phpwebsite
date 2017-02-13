@@ -15,7 +15,7 @@ class Access_Forms {
             return;
         }
 
-        $modal = new Modal('access-shortcut', null,
+        $modal = new \phpws2\Modal('access-shortcut', null,
                 'Shortcuts');
         $modal->sizeSmall();
         $button = '<button class="btn btn-success" id="save-shortcut">Save</button>';

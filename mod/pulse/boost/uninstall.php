@@ -7,7 +7,7 @@
 function pulse_uninstall(&$content)
 {
     $content[] = 'Dropping schedule table.';
-    $db = Database::newDB();
+    $db = \phpws2\Database::newDB();
     $t1 = $db->addTable('pulse_schedule');
     $t1->drop();
     return true;

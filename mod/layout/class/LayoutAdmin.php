@@ -289,7 +289,7 @@ class Layout_Admin
         javascript('jquery');
         $script = '<script type="text/javascript" src="' . PHPWS_SOURCE_HTTP . 'mod/layout/javascript/move_boxes.js"></script>';
         \Layout::addJSHeader($script, 'moveboxes');
-        $modal = new \Modal('box-move', '', 'Move boxes');
+        $modal = new \phpws2\Modal('box-move', '', 'Move boxes');
         $modal->sizeLarge();
 
         $template['MODAL'] = $modal->get();

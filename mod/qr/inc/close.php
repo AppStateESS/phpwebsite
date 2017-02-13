@@ -22,7 +22,7 @@ if (Current_User::isLogged()) {
         $tpl = new \phpws2\Template($tpl_vars);
         $tpl->setModuleTemplate('qr', 'modal.html');
         $content = $tpl->get();
-        $modal = new Modal('qr-modal', $content, 'QR Codes (click to download)');
+        $modal = new \phpws2\Modal('qr-modal', $content, 'QR Codes (click to download)');
         $modal->sizeLarge();
         Layout::add($modal->get());
 

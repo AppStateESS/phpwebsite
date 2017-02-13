@@ -1361,7 +1361,7 @@ class Calendar_Admin
     public static function eventModal($event)
     {
         $event_form = self::event_form($event);
-        $modal = new \Modal('edit-event', $event_form, 'Edit Event');
+        $modal = new \phpws2\Modal('edit-event', $event_form, 'Edit Event');
         $modal->setWidthPixel(650);
         $modal->addButton('<button class="btn btn-success" id="submit-event">Save</button>');
         return $modal->__toString();
@@ -1423,7 +1423,7 @@ class Calendar_Admin
         $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-file-text"></i> ' . 'Create schedule' . '</button>';
 
         $schedule_form = $this->calendar->schedule->form();
-        $schedule_modal = new \Modal('schedule-modal', $schedule_form, 'Create schedule');
+        $schedule_modal = new \phpws2\Modal('schedule-modal', $schedule_form, 'Create schedule');
         $schedule_modal->sizeLarge();
         $page_tags['SCHEDULE_FORM'] = $schedule_modal->__toString();
         $page_tags['ADMIN_LABEL'] = 'Options';

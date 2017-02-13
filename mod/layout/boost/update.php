@@ -224,7 +224,7 @@ EOF;
 EOF;
         case version_compare($currentVersion, '2.7.0', '<'):
             if (\phpws\PHPWS_Core::moduleExists('block')) {
-                $db = Database::newDB();
+                $db = \phpws2\Database::newDB();
                 $t = $db->addTable('layout_config');
                 $t->addField('header');
                 $t->addField('footer');

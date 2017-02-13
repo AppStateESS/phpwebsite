@@ -678,7 +678,7 @@ class Branch_Admin
         $dsn = Database::newDSN($this->dbtype, $this->dbuser, $this->dbpass, null, $this->dbhost, $this->dbport);
 
         try {
-            $db = Database::newDB($dsn);
+            $db = \phpws2\Database::newDB($dsn);
         } catch (\PDOException $e) {
                 return BRANCH_NO_CONNECTION;
         } catch (\Exception $e) {

@@ -293,7 +293,7 @@ class PageSmith
         $key_id = $this->page->key_id;
 
         $link = new Menu_Link;
-        $db = Database::getDB();
+        $db = \phpws2\Database::getDB();
         $t1 = $db->addTable('menu_links');
         $t1->addFieldConditional('key_id', $key_id);
         $link_result = $db->selectOneRow();
