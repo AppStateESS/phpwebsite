@@ -134,14 +134,14 @@ class Menu_Admin
 
             case 'reset_menu':
                 if (!\Current_User::isDeity() && !\Current_User::authorized('menu')) {
-                    throw new \Http\MethodNotAllowedException;
+                    throw new \phpws2\Http\MethodNotAllowedException;
                 }
                 $this->resetMenu();
                 \phpws\PHPWS_Core::goBack();
                 exit();
 
             default:
-                throw new \Http\MethodNotAllowedException;
+                throw new \phpws2\Http\MethodNotAllowedException;
         }
 
         $tpl['title'] = $title;

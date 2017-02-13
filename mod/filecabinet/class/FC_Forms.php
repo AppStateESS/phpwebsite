@@ -122,7 +122,7 @@ class FC_Forms
                     exit();
 
                 default:
-                    throw new \Http\MethodNotAllowedException('Unknown request');
+                    throw new \phpws2\Http\MethodNotAllowedException('Unknown request');
             }
 
             echo \Layout::wrap($this->getContent(), $this->getTitle(), true);
