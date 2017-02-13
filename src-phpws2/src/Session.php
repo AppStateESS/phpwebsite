@@ -78,7 +78,7 @@ class Session extends \Canopy\Data {
      * Returns the static session object for use.
      *
      * @staticvar Session $session
-     * @return \Session
+     * @return \phpws2\Session
      */
     public static function getInstance()
     {

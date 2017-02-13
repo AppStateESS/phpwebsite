@@ -12,13 +12,13 @@ class Message {
 
     public static function set($message)
     {
-        \Session::getInstance()->message = $message;
+        \phpws2\Session::getInstance()->message = $message;
     }
 
     public static function get()
     {
         if (isset(Session::getInstance()->message)) {
-            $message = \Session::getInstance()->message;
+            $message = \phpws2\Session::getInstance()->message;
         } else {
             $message = null;
         }
