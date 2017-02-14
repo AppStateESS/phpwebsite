@@ -78,10 +78,10 @@ abstract class Datatype extends \Canopy\Data
         $alltypes = $table->getDatatypeList();
         $type = strtolower($type);
         if (empty($type)) {
-            throw new \Exception(\t('Data type was empty'));
+            throw new \Exception('Data type was empty');
         }
         if (!isset($alltypes[$type])) {
-            throw new \Exception(\t('Unknown data type "%s"', $type));
+            throw new \Exception("Unknown data type: $type");
         }
         $class_name = ucwords($alltypes[$type]);
         $class_file = PHPWS_SOURCE_DIR . "src-phpws2/src/Database/Datatype/$class_name.php";
@@ -92,7 +92,7 @@ abstract class Datatype extends \Canopy\Data
         } elseif (is_file($class_file)) {
             $datatype_name = "\phpws2\Database\Datatype\\$class_name";
         } else {
-            throw new \Exception(\t('Unknown class name "%s"', $class_name));
+            throw new \Exception("Unknown class name: $class_name");
         }
         $object = new $datatype_name($table, $name);
         if ($object->default instanceof \phpws2\Variable) {

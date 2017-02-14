@@ -511,7 +511,7 @@ abstract class Table extends Resource
         $columns = \func_get_args();
 
         if (empty($columns)) {
-            throw new \Exception(\t('No values were passed'));
+            throw new \Exception('No values were passed');
         }
         foreach ($columns as $col) {
             if (is_object($col) && ($col instanceof \phpws2\Database\Field || $col instanceof \phpws2\Database\Datatype)) {
@@ -524,7 +524,7 @@ abstract class Table extends Resource
             } elseif (is_string($col)) {
                 $this->primary_key[] = new \phpws2\Database\Field($this, $col, null, false);
             } else {
-                throw new \Exception(\t('Could not use supplied parameters'));
+                throw new \Exception('Could not use supplied parameters');
             }
         }
     }
