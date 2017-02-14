@@ -100,7 +100,7 @@ class PulseSchedule extends \phpws2\Resource
         $this->class_name = new \phpws2\Variable\StringVar(null, 'class_name');
         $this->class_name->setLimit(100);
         $this->end_time = new \phpws2\Variable\IntegerVar(0, 'end_time');
-        $this->hash = new \phpws2\Variable\Hash(null, 'hash');
+        $this->hash = new \phpws2\Variable\HashVar(null, 'hash');
         $this->hash->allowNull(true);
         $this->hash->setLimit(64);
         $this->hold_on_error = new \phpws2\Variable\BooleanVar(0, 'hold_on_error');
