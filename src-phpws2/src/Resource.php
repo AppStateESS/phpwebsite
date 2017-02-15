@@ -109,32 +109,32 @@ abstract class Resource extends \Canopy\Data
         foreach ($variable_names as $name) {
             $var = $this->$name;
             switch (1) {
-                case is_subclass_of($var, 'phpws2\Variable\StringVar') || is_a($var,
-                        'phpws2\Variable\StringVar'):
+                case is_subclass_of($var, '\phpws2\Variable\StringVar') || is_a($var,
+                        '\phpws2\Variable\StringVar'):
                     $result = $request->pullPostString($name);
                     $success = $result !== false;
                     break;
 
-                case is_subclass_of($var, 'phpws2\Variable\Arr') || is_a($var,
-                        'phpws2\Variable\Arr'):
+                case is_subclass_of($var, '\phpws2\Variable\ArrayVar') || is_a($var,
+                        '\phpws2\Variable\ArrayVar'):
                     $result = $request->pullPostString($name);
                     $success = $result !== false;
                     break;
 
-                case is_subclass_of($var, 'phpws2\Variable\Bool') || is_a($var,
-                        'phpws2\Variable\Bool'):
+                case is_subclass_of($var, '\phpws2\Variable\BooleanVar') || is_a($var,
+                        '\phpws2\Variable\BooleanVar'):
                     $result = $request->pullPostBoolean($name);
                     $success = $result !== null;
                     break;
 
-                case is_subclass_of($var, 'phpws2\Variable\Integer') || is_a($var,
-                        'phpws2\Variable\Integer'):
+                case is_subclass_of($var, '\phpws2\Variable\IntegerVar') || is_a($var,
+                        '\phpws2\Variable\IntegerVar'):
                     $result = $request->pullPostInteger($name);
                     $success = $result !== false;
                     break;
 
-                case is_subclass_of($var, 'phpws2\Variable\FloatVar') || is_a($var,
-                        'phpws2\Variable\FloatVar'):
+                case is_subclass_of($var, '\phpws2\Variable\FloatVar') || is_a($var,
+                        '\phpws2\Variable\FloatVar'):
                     $result = $request->pullPostFloat($name);
                     $success = $result !== false;
                     break;
