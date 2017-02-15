@@ -314,13 +314,20 @@ abstract class Resource extends \Canopy\Data
      * Returns the values of the Variables as part of a resource.
      * @param boolean $return_null If true, return variables with NULL values
      * @param string|array Variables to ignore/not return
+     * @param boolean $null_as_empty_string If true, Variable with a NULL value
+     *   return an empty string
      * @return array
      */
-    public function getVariablesAsValue($return_null = null, $hide = null)
+    public function getVariablesAsValue($return_null = null, $hide = null,
+            $null_as_empty_string = false)
     {
         $vars = $this->getVars($return_null, $hide);
         foreach ($vars as $v) {
-            $values[$v->getVarname()] = $v->get();
+            $set_val = $v->get();
+            if ($null_as_empty_string && is_null($set_val)) {
+                $set_val = '';
+            }
+            $values[$v->getVarname()] = $set_val;
         }
         return $values;
     }
