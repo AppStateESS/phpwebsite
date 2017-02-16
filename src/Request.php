@@ -620,7 +620,7 @@ class Request extends Data
 
     public function pullDeleteVar($name)
     {
-        if (!isset($this->postVars[$name])) {
+        if (!isset($this->deleteVars[$name])) {
             throw new \phpws2\Exception\ValueNotSet($name);
         }
         return $this->deleteVars[$name];
