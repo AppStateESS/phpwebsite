@@ -32,7 +32,7 @@ class Http {
     public static function http_response_code($code = NULL)
     {
         if ($code !== NULL) {
-            $text = get_status_text($code);
+            $text = self::get_status_text($code);
             $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
             header($protocol . ' ' . $code . ' ' . $text);
 

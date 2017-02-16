@@ -63,7 +63,7 @@ class Error {
     public static function errorPage($code = 500)
     {
         http_response_code($code);
-        $error_text = get_status_text($code);
+        $error_text = \Canopy\Http::get_status_text($code);
         $default = PHPWS_SOURCE_DIR . 'src-phpws2/templates/Error/Pages/' . ERROR_PAGE_TEMPLATE;
         $error_template = PHPWS_SOURCE_DIR . "src-phpws2/templates/Error/Pages/$code.html";
         $source_http = PHPWS_SOURCE_HTTP;
