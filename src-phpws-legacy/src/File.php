@@ -1,4 +1,5 @@
 <?php
+
 namespace phpws;
 
 /**
@@ -17,7 +18,8 @@ class PHPWS_File
      * @author Matthew McNaney <mcnaney at gmail dot com>
      * @return array directories Array of directories if successful, NULL if nothing found
      */
-    public static function listDirectories($root_dir, $with_root = false, $recursive = false)
+    public static function listDirectories($root_dir, $with_root = false,
+            $recursive = false)
     {
         $directories = NULL;
 
@@ -61,8 +63,9 @@ class PHPWS_File
     /**
      * Cannot set files_only and recursive to true
      */
-    public static function readDirectory($path, $directories_only = false, $files_only = false, $recursive = false, $extensions
-    = null, $indeep = false)
+    public static function readDirectory($path, $directories_only = false,
+            $files_only = false, $recursive = false, $extensions = null,
+            $indeep = false)
     {
         static $first_path = null;
         $listing = null;
@@ -102,7 +105,9 @@ class PHPWS_File
                 }
 
                 if ($recursive) {
-                    $subdir = PHPWS_File::readDirectory($fullpath, $directories_only, false, true, $extensions, true);
+                    $subdir = PHPWS_File::readDirectory($fullpath,
+                                    $directories_only, false, true, $extensions,
+                                    true);
 
                     if (!empty($subdir)) {
                         if (!empty($listing)) {
@@ -140,21 +145,24 @@ class PHPWS_File
      *
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    public static function copy_directory($source_directory, $dest_directory, $overwrite = true, $hidden = false)
+    public static function copy_directory($source_directory, $dest_directory,
+            $overwrite = true, $hidden = false)
     {
         PHPWS_File::appendSlash($source_directory);
         PHPWS_File::appendSlash($dest_directory);
 
         if (!is_dir($dest_directory)) {
             if (!mkdir($dest_directory)) {
-                \phpws\PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
+                \phpws\PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core',
+                        'PHPWS_File::copy_directory', $dest_directory);
                 return false;
             }
             chmod($dest_directory, 0755);
         }
 
         if (!is_writable($dest_directory)) {
-            \phpws\PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_directory);
+            \phpws\PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core',
+                    'PHPWS_File::copy_directory', $dest_directory);
             return false;
         }
 
@@ -165,7 +173,9 @@ class PHPWS_File
 
         foreach ($source_files as $file_name) {
             // ignore directories, cvs, and backups
-            if ($file_name == '.' || $file_name == '..' || $file_name == 'CVS' || preg_match('/~$/', $file_name) || (!$hidden && preg_match('/^\./', $file_name))) {
+            if ($file_name == '.' || $file_name == '..' || $file_name == 'CVS' || preg_match('/~$/',
+                            $file_name) || (!$hidden && preg_match('/^\./',
+                            $file_name))) {
                 continue;
             }
 
@@ -183,15 +193,18 @@ class PHPWS_File
 
                 if (!copy($src_file, $dest_file)) {
                     if ($dest_exists && !is_writable($dest_file)) {
-                        \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::copy_directory', $dest_file);
+                        \phpws\PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core',
+                                'PHPWS_File::copy_directory', $dest_file);
                     } else {
-                        \phpws\PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core', 'PHPWS_File::copy_directory', $dest_file);
+                        \phpws\PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core',
+                                'PHPWS_File::copy_directory', $dest_file);
                     }
                 } else {
                     chmod($dest_file, 0644);
                 }
             } elseif (is_dir($src_file)) {
-                if (!PHPWS_File::copy_directory($source_directory . $file_name . '/', $dest_file . '/')) {
+                if (!PHPWS_File::copy_directory($source_directory . $file_name . '/',
+                                $dest_file . '/')) {
                     return false;
                 }
             }
@@ -205,7 +218,8 @@ class PHPWS_File
         return PHPWS_File::copy_directory($source_dir, $dest_dir);
     }
 
-    public function writeFile($filename, $text, $allowOverwrite = false, $errorReport = false)
+    public function writeFile($filename, $text, $allowOverwrite = false,
+            $errorReport = false)
     {
         if (!$allowOverwrite) {
             if (is_writable($filename)) {
@@ -241,18 +255,21 @@ class PHPWS_File
      * @return   boolean true on success, false on failure
      * @access   public
      */
-    public static function fileCopy($file_origin, $destination_directory, $file_destination, $overwrite, $fatal)
+    public static function fileCopy($file_origin, $destination_directory,
+            $file_destination, $overwrite, $fatal)
     {
         if ($fatal) {
             $fp = fopen($file_origin, 'rb');
 
             if (!$fp) {
-                return \phpws\PHPWS_Error::get(PHPWS_FILE_CANT_READ, 'core', 'PHPWS_File::fileCopy', $file_origin);
+                return \phpws\PHPWS_Error::get(PHPWS_FILE_CANT_READ, 'core',
+                                'PHPWS_File::fileCopy', $file_origin);
             }
 
             $dir_check = is_writable($destination_directory);
             if (!$dir_check) {
-                return \phpws\PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
+                return \phpws\PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core',
+                                'PHPWS_File::fileCopy', $destination_directory);
             }
 
             $dest_file_exists = file_exists($destination_directory . $file_destination);
@@ -261,24 +278,29 @@ class PHPWS_File
                 if ($overwrite) {
                     $fp = is_writable($destination_directory . $file_destination);
                     if (!$fp) {
-                        return \phpws\PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
+                        return \phpws\PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE,
+                                        'core', 'PHPWS_File::fileCopy',
+                                        $destination_directory);
                     }
 
-                    if ($copy_file = copy($file_origin, $destination_directory . $file_destination)) {
+                    if ($copy_file = copy($file_origin,
+                            $destination_directory . $file_destination)) {
                         return true;
                     } else {
                         return false;
                     }
                 }
             } else {
-                if ($copy_file = copy($file_origin, $destination_directory . $file_destination)) {
+                if ($copy_file = copy($file_origin,
+                        $destination_directory . $file_destination)) {
                     return true;
                 } else {
                     return false;
                 }
             }
         } else {
-            if ($copy_file = copy($file_origin, $destination_directory . $file_destination))
+            if ($copy_file = copy($file_origin,
+                    $destination_directory . $file_destination))
                 return true;
             else
                 return false;
@@ -329,7 +351,8 @@ class PHPWS_File
         }
     }
 
-    public static function _writeImageCopy($resampled_image, $dest_dir, $file_type)
+    public static function _writeImageCopy($resampled_image, $dest_dir,
+            $file_type)
     {
         $result = false;
 
@@ -358,7 +381,7 @@ class PHPWS_File
     public function rotateImage($source_dir, $dest_dir, $degrees)
     {
         if (!extension_loaded('gd')) {
-            return false;
+            throw new \Exception('GD image module library is not installed.');
         }
 
         $size = getimagesize($source_dir);
@@ -406,7 +429,8 @@ class PHPWS_File
         $new_width = round($width * ((int) $percentage / 100));
         $new_height = round($height * ((int) $percentage / 100));
 
-        return PHPWS_File::cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin);
+        return PHPWS_File::cropImage($source_dir, $dest_dir, $new_width,
+                        $new_height, $origin);
     }
 
     /**
@@ -421,10 +445,11 @@ class PHPWS_File
      *           bottom-right  = 9
      * percentage : percentage of crop reduction
      */
-    public static function cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin = 5)
+    public static function cropImage($source_dir, $dest_dir, $new_width,
+            $new_height, $origin = 5)
     {
         if (!extension_loaded('gd')) {
-            return false;
+            throw new \Exception('GD image module library is not installed.');
         }
 
         $size = getimagesize($source_dir);
@@ -499,11 +524,13 @@ class PHPWS_File
                 break;
         }
 
-        imagecopyresampled($resampled_image, $source_image, 0, 0, $sx, $sy, $new_width, $new_height, $new_width, $new_height);
+        imagecopyresampled($resampled_image, $source_image, 0, 0, $sx, $sy,
+                $new_width, $new_height, $new_width, $new_height);
 
         imagedestroy($source_image);
 
-        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir, $file_type);
+        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir,
+                        $file_type);
 
         if (!$result) {
             imagedestroy($resampled_image);
@@ -519,7 +546,8 @@ class PHPWS_File
      * Scales an image down to smaller than the max_width and max_height.
      * You cannot scale an image to a higher resolution.
      */
-    public static function scaleImage($source_dir, $dest_dir, $max_width, $max_height)
+    public static function scaleImage($source_dir, $dest_dir, $max_width,
+            $max_height)
     {
 
         if (empty($max_width) || empty($max_height)) {
@@ -527,10 +555,7 @@ class PHPWS_File
         }
 
         if (!extension_loaded('gd')) {
-            if (!dl('gd.so')) {
-                copy(PHPWS_SOURCE_DIR . 'core/img/nogd.png', $dest_dir);
-                return true;
-            }
+            throw new \Exception('GD image module library is not installed.');
         }
 
         $size = getimagesize($source_dir);
@@ -557,7 +582,8 @@ class PHPWS_File
         $new_height = round($height * $diff);
 
         if ($new_width > $max_width || $new_height > $max_height) {
-            $diff = PHPWS_File::getDiff($new_width, $max_width, $new_height, $max_height);
+            $diff = PHPWS_File::getDiff($new_width, $max_width, $new_height,
+                            $max_height);
             $new_width = round($width * $diff);
             $new_height = round($height * $diff);
         }
@@ -571,12 +597,14 @@ class PHPWS_File
         $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
 
 
-        imagecopyresampled($resampled_image, $source_image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+        imagecopyresampled($resampled_image, $source_image, 0, 0, 0, 0,
+                $new_width, $new_height, $width, $height);
 
         imagedestroy($source_image);
 
 
-        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir, $file_type);
+        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir,
+                        $file_type);
 
         if (!$result) {
             imagedestroy($resampled_image);
@@ -610,21 +638,25 @@ class PHPWS_File
     /**
      * Backward compatibility
      */
-    public function resizeImage($source_dir, $dest_dir, $new_width, $new_height, $force_png = false)
+    public function resizeImage($source_dir, $dest_dir, $new_width, $new_height,
+            $force_png = false)
     {
-        return PHPWS_File::scaleImage($source_dir, $dest_dir, $new_width, $new_height);
+        return PHPWS_File::scaleImage($source_dir, $dest_dir, $new_width,
+                        $new_height);
     }
 
     /**
      * Backward compatibility
      */
-    public static function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth = 125, $maxHeight = 125, $replaceFile
-    = false)
+    public static function makeThumbnail($fileName, $directory, $tndirectory,
+            $maxWidth = 125, $maxHeight = 125, $replaceFile = false)
     {
         $source_dir = $directory . $fileName;
-        $new_file = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1', $fileName);
+        $new_file = preg_replace('/\.(jpg|jpeg|gif|png)$/i', '_tn.\\1',
+                $fileName);
         $dest_dir = $tndirectory . $new_file;
-        if (!PHPWS_File::scaleImage($source_dir, $dest_dir, $maxWidth, $maxHeight)) {
+        if (!PHPWS_File::scaleImage($source_dir, $dest_dir, $maxWidth,
+                        $maxHeight)) {
             return false;
         } else {
             $size = getimagesize($dest_dir);
@@ -646,7 +678,8 @@ class PHPWS_File
                 } elseif (is_file($dir . $file)) {
                     $result = unlink($dir . $file);
                     if (!$result) {
-                        \phpws\PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir . $file);
+                        \phpws\PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED,
+                                'core', 'PHPWS_File::rmdir', $dir . $file);
                         return false;
                     }
                 }
@@ -655,7 +688,8 @@ class PHPWS_File
 
             $result = rmdir($dir);
             if (!$result) {
-                \phpws\PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir);
+                \phpws\PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core',
+                        'PHPWS_File::rmdir', $dir);
                 return false;
             }
 
@@ -855,7 +889,8 @@ if (!function_exists('imagerotate')) {
                 for ($y = 0; $y < ($src_y); $y++) {
                     for ($x = 0; $x < ($src_x); $x++) {
                         $color = imagecolorat($image, $x, $y);
-                        imagesetpixel($rotate, $dest_x - $x - 1, $dest_y - $y - 1, $color);
+                        imagesetpixel($rotate, $dest_x - $x - 1,
+                                $dest_y - $y - 1, $color);
                     }
                 }
                 break;
