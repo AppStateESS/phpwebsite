@@ -393,6 +393,7 @@ function Pager(page) {
         this.search_box = data.pager_search;
         this.headers = data.headers;
         this.row_id_column = data.row_id_column;
+        this.total_rows = data.total_rows;
     };
 
     this.setCurrentPage = function(current_page)
@@ -442,6 +443,7 @@ function Pager(page) {
         $('.page-list, #page-list', this.page).html(this.page_listing);
         $('.page-limit', this.page).html(this.page_limit);
         $('.pager-search', this.page).html(this.search_box);
+        $('.pager-total-rows', this.page).html(this.total_rows);
         this.fillHeader();
     };
 
