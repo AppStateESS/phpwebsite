@@ -50,6 +50,15 @@ class StringVar extends \phpws2\Variable
     protected $limit = 0;
     protected $allow_empty = true;
 
+    public function __construct($value = null, $varname = null, $limit=null)
+    {
+        parent::__construct($value, $varname);
+        if ($limit !== null) {
+            $this->setLimit($limit);
+        }
+    }
+    
+    
     /**
      * Checks the string to see it is a string, is under limit, and is formatted
      * correctly (dependent on the regexp_match).
