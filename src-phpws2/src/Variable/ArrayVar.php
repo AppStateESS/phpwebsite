@@ -293,20 +293,23 @@ class ArrayVar extends \phpws2\Variable
     public function set($value)
     {
         if ($value === null || $value == "") {
-            $value = array();
+            $array_value = array();
         } elseif (!is_array($value) && is_string($value)) {
             if (preg_match('/^a:\d{1,}:/', $value)) {
-                $value = unserialize($value);
-            } elseif (strpos($value, ',') !== false) {
-                $value = explode(',', $value);
+                $array_value = unserialize($value);
             } else {
-                $value = json_decode($value);
+                $array_value = json_decode($value);
+                if ($array_value === null && strpos($value, ',') !== false) {
+                    $array_value = explode(',', $value);
+                }
             }
+        } else {
+            $array_value = $value;
         }
-        if (!is_array($value)) {
+        if (!is_array($array_value)) {
             throw new \Exception('Array value could not be set');
         }
-        parent::set($value);
+        parent::set($array_value);
     }
 
 }
