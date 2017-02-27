@@ -286,7 +286,8 @@ class ArrayVar extends \phpws2\Variable
     }
 
     /**
-     * If value is a string, this set will try to unserialize it
+     * If value is a string, this set will try to unserialize, decode,
+     * or explode it
      * @param array|string $value
      */
     public function set($value)
@@ -296,9 +297,14 @@ class ArrayVar extends \phpws2\Variable
         } elseif (!is_array($value) && is_string($value)) {
             if (preg_match('/^a:\d{1,}:/', $value)) {
                 $value = unserialize($value);
+            } elseif (strpos($value, ',') !== false) {
+                $value = explode(',', $value);
             } else {
                 $value = json_decode($value);
             }
+        }
+        if (!is_array($value)) {
+            throw new \Exception('Array value could not be set');
         }
         parent::set($value);
     }
