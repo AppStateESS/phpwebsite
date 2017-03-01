@@ -1,4 +1,5 @@
 <?php
+
 namespace Canopy;
 
 /**
@@ -365,7 +366,8 @@ class Request extends Data
             if (isset($default)) {
                 return $default;
             } else {
-                throw new \Exception(sprintf('Variable "%s" not found', $variable_name));
+                throw new \Exception(sprintf('Variable "%s" not found',
+                        $variable_name));
             }
         }
 
@@ -542,7 +544,8 @@ class Request extends Data
     public function getUploadedFileArray($file_name)
     {
         if (!$this->isUploadedFile($file_name)) {
-            throw new \Exception(sprintf('File "%s" was not uploaded', $file_name));
+            throw new \Exception(sprintf('File "%s" was not uploaded',
+                    $file_name));
         }
 
         return $_FILES[$file_name];
@@ -769,6 +772,52 @@ class Request extends Data
         return $this->filterBoolean($this->pullGetVar($varname));
     }
 
+    public function pullPostArray($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->postVarIsset($varname)) {
+            return null;
+        }
+        
+        return $this->pullPostVar($varname);
+    }
+    
+    public function pullPutArray($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->putVarIsset($varname)) {
+            return null;
+        }
+        
+        return $this->pullPutVar($varname);
+    }
+
+    public function pullDeleteArray($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->deleteVarIsset($varname)) {
+            return null;
+        }
+        
+        return $this->pullDeleteVar($varname);
+    }
+    
+    public function pullPatchArray($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->patchVarIsset($varname)) {
+            return null;
+        }
+        
+        return $this->pullPatchVar($varname);
+    }
+
+    public function pullGetArray($varname, $test_isset = false)
+    {
+        if ($test_isset && !$this->getVarIsset($varname)) {
+            return null;
+        }
+        
+        return $this->pullGetVar($varname);
+    }
+    
+
     public function pullPostInteger($varname, $test_isset = false)
     {
         if ($test_isset && !$this->postVarIsset($varname)) {
@@ -854,7 +903,7 @@ class Request extends Data
      * @param mixed $value
      * @return string
      */
-    private function filterString($value)
+    public function filterString($value)
     {
         return trim(strip_tags(filter_var($value, FILTER_SANITIZE_STRING,
                                 FILTER_FLAG_NO_ENCODE_QUOTES)));
@@ -866,7 +915,7 @@ class Request extends Data
      * @param mixed $value
      * @return mixed true/false or null if not boolean
      */
-    private function filterBoolean($value)
+    public function filterBoolean($value)
     {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN,
                 FILTER_NULL_ON_FAILURE);
@@ -877,7 +926,7 @@ class Request extends Data
      * @param mixed $value
      * @return integer
      */
-    private function filterInteger($value)
+    public function filterInteger($value)
     {
         return filter_var($value, FILTER_VALIDATE_INT);
     }
@@ -889,7 +938,7 @@ class Request extends Data
      * @param mixed $value
      * @return float
      */
-    private function filterFloat($value)
+    public function filterFloat($value)
     {
         return filter_var($value, FILTER_VALIDATE_FLOAT);
     }
