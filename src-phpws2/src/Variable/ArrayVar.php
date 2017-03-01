@@ -292,7 +292,7 @@ class ArrayVar extends \phpws2\Variable
      */
     public function set($value)
     {
-        if ($value === null || $value == "") {
+        if ($value === null || $value == "" || $value == '[]') {
             $array_value = array();
         } elseif (!is_array($value) && is_string($value)) {
             if (preg_match('/^a:\d{1,}:/', $value)) {
