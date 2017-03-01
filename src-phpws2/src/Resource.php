@@ -77,21 +77,45 @@ abstract class Resource extends \Canopy\Data
     }
 
     /**
-     * Tries to load the current resource with the variables from a POST. Note
-     * that if a variable in the POST is present but not in the Resource, an error
+     * Forces a POST loadRequestByType
+     */
+    public function loadPostByType(\Canopy\Request $request,
+            array $ignore = null, array $null_on_failure = null)
+    {
+        $this->loadRequestByType($request, $ignore, $null_on_failure, 'post');
+    }
+
+    /**
+     * Forces a PUT loadRequestByType
+     */
+    public function loadPutByType(\Canopy\Request $request,
+            array $ignore = null, $null_on_failure = null)
+    {
+        $this->loadRequestByType($request, $ignore, $null_on_failure, 'put');
+    }
+
+    /**
+     * Tries to load the current resource with the variables from a request. Note
+     * that if a variable in the request is present but not in the Resource, an error
      * will be thrown. To avoid this, added the variable to the ignore array.
      * The ignore array can also be used if you do not want something from the
      * post to be saved.
      * If a variable in the Resource is ignored, the current resource value
      * stays.
      * @param \Canopy\Request $request
-     * @param  array $ignore Array of variables to ignore
+     * @param array $ignore Array of variables to ignore
+     * @param array $null_on_failure Missing values set these variables to null
+     * @param string force_type Force a type of request method (e.g. post, put, etc.)
      * @throws \Exception
      * @throws \phpws2\Exception\WrongType
      */
-    public function loadPostByType(\Canopy\Request $request,
-            array $ignore = null)
+    private function loadRequestByType(\Canopy\Request $request,
+            array $ignore = null, array $null_on_failure = null,
+            $force_type = null)
     {
+        if ($null_on_failure === null) {
+            $null_on_failure = array();
+        }
         $variable_names = $this->getVariableNames();
         if (empty($variable_names)) {
             throw new \Exception('Resource missing variables');
@@ -106,36 +130,55 @@ abstract class Resource extends \Canopy\Data
             }
         }
 
+        if ($force_type !== null) {
+            $type = ucwords(strtolower($force_type));
+        } else {
+            $type = ucwords(strtolower($request->getMethod()));
+        }
+        $stringPull = "pull{$type}String";
+        $arrayPull = "pull{$type}Array";
+        $boolPull = "pull{$type}Boolean";
+        $integerPull = "pull{$type}Integer";
+        $floatPull = "pull{$type}Float";
+
+        if (!method_exists($request, $stringPull)) {
+            throw new \Exception('Unknown type request method: ' . $type);
+        }
+
         foreach ($variable_names as $name) {
             $var = $this->$name;
             switch (1) {
                 case is_subclass_of($var, '\phpws2\Variable\StringVar') || is_a($var,
                         '\phpws2\Variable\StringVar'):
-                    $result = $request->pullPostString($name);
+                    $result = $request->$stringPull($name, true);
                     $success = $result !== false;
                     break;
 
                 case is_subclass_of($var, '\phpws2\Variable\ArrayVar') || is_a($var,
                         '\phpws2\Variable\ArrayVar'):
-                    $result = $request->pullPostString($name);
+                    $result = $request->$arrayPull($name, true);
+                    if (is_string($result)) {
+                        $result = $request->filterString($result);
+                    }
                     $success = $result !== false;
+
                     break;
 
                 case is_subclass_of($var, '\phpws2\Variable\BooleanVar') || is_a($var,
                         '\phpws2\Variable\BooleanVar'):
-                    $result = $request->pullPostBoolean($name);
+                    $result = $request->$boolPull($name, true);
                     $success = $result !== null;
                     break;
 
                 case is_subclass_of($var, '\phpws2\Variable\IntegerVar') || is_a($var,
                         '\phpws2\Variable\IntegerVar'):
-                    $result = $request->pullPostInteger($name);
+                    $result = $request->$integerPull($name, true);
                     $success = $result !== false;
                     break;
 
                 case is_subclass_of($var, '\phpws2\Variable\FloatVar') || is_a($var,
                         '\phpws2\Variable\FloatVar'):
-                    $result = $request->pullPostFloat($name);
+                    $result = $request->$floatPull($name, true);
                     $success = $result !== false;
                     break;
 
@@ -145,74 +188,8 @@ abstract class Resource extends \Canopy\Data
 
             if ($success) {
                 $var->set($result);
-            } else {
-                throw new \phpws2\Exception\WrongType($name, $var);
-            }
-        }
-    }
-
-    /**
-     * Duplicate of loadPostByType but using PUT method
-     * @param \Canopy\Request $request
-     * @param array $ignore
-     * @throws \Exception
-     * @throws \phpws2\Exception\WrongType
-     */
-    public function loadPutByType(\Canopy\Request $request, array $ignore = null)
-    {
-        $variable_names = $this->getVariableNames();
-        if (empty($variable_names)) {
-            throw new \Exception('Resource missing variables');
-        }
-        unset($variable_names[array_search('table', $variable_names)]);
-        unset($variable_names[array_search('no_save', $variable_names)]);
-        unset($variable_names[array_search('parent', $variable_names)]);
-
-        if (!empty($ignore) && is_array($ignore)) {
-            foreach ($ignore as $ignore_name) {
-                unset($variable_names[array_search($ignore_name, $variable_names)]);
-            }
-        }
-
-        foreach ($variable_names as $name) {
-            $var = $this->$name;
-            switch (1) {
-                case is_subclass_of($var, '\phpws2\Variable\StringVar') || is_a($var,
-                        '\phpws2\Variable\StringVar'):
-                    $result = $request->pullPutString($name);
-                    $success = $result !== false;
-                    break;
-
-                case is_subclass_of($var, '\phpws2\Variable\ArrayVar') || is_a($var,
-                        '\phpws2\Variable\ArrayVar'):
-                    $result = $request->pullPutString($name);
-                    $success = $result !== false;
-                    break;
-
-                case is_subclass_of($var, '\phpws2\Variable\BooleanVar') || is_a($var,
-                        '\phpws2\Variable\BooleanVar'):
-                    $result = $request->pullPutBoolean($name);
-                    $success = $result !== null;
-                    break;
-
-                case is_subclass_of($var, '\phpws2\Variable\IntegerVar') || is_a($var,
-                        '\phpws2\Variable\IntegerVar'):
-                    $result = $request->pullPutInteger($name);
-                    $success = $result !== false;
-                    break;
-
-                case is_subclass_of($var, '\phpws2\Variable\FloatVar') || is_a($var,
-                        '\phpws2\Variable\FloatVar'):
-                    $result = $request->pullPutFloat($name);
-                    $success = $result !== false;
-                    break;
-
-                default:
-                    throw new \Exception('Unknown Variable type');
-            }
-
-            if ($success) {
-                $var->set($result);
+            } elseif (in_array($name, $null_on_failure)) {
+                $var->set(null);
             } else {
                 throw new \phpws2\Exception\WrongType($name, $var);
             }
