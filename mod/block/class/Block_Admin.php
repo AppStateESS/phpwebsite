@@ -249,7 +249,7 @@ class Block_Admin
             $all_pinned = $pdb->select();
 
             if (!empty($all_pinned)) {
-                $pinned = new \phpws2\Variable\Arr($all_pinned);
+                $pinned = new \phpws2\Variable\ArrayVar($all_pinned);
                 $pinned->indexByColumn('block_id', true, 'key_id');
                 $pinned_keys = $pinned->get();
             } else {
