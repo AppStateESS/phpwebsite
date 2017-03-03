@@ -1,6 +1,6 @@
 <?php
 
-class Error extends \phpws\PHPWS_Error
+class PHPWS_Error extends \phpws\PHPWS_Error
 {
 
 }
