@@ -72,7 +72,7 @@ class PHAT_Element extends PHPWS_Item {
      * @example $this->_optionSet = 3;
      * @access  private
      */
-    var $_optionSet = array();
+    var $_optionSet = 0;
 
     /**
      * Sets the blurb for this element
