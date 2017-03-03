@@ -41,7 +41,7 @@ class PHAT_Textarea extends PHAT_Element {
      *
      * @param integer $id database id key for this PHAT_Textarea
      */
-    function PHAT_Textarea($id = NULL)
+    function __construct($id = NULL)
     {
         $this->setTable('mod_phatform_textarea');
         $this->addExclude(array('_optionText', '_optionValues', '_optionSet'));

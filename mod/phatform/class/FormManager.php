@@ -32,7 +32,7 @@ class PHAT_FormManager extends PHPWS_Manager
      *
      * @access public
      */
-    function PHAT_FormManager()
+    function __construct()
     {
         $this->setModule('phatform');
         $this->setRequest('PHAT_MAN_OP');

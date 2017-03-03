@@ -112,7 +112,7 @@ class PHAT_Report {
      *
      *
      */
-    function PHAT_Report($archiveTable=NULL) {
+    function __construct($archiveTable=NULL) {
         if(isset($archiveTable)) {
             $this->archive = $archiveTable;
         }
@@ -460,7 +460,7 @@ class PHAT_Report {
      */
     function getLastEntry() {
         $lastEntry = NULL;
-        $sql = 'SELECT id, user, MAX(updated) FROM ' . $this->getFormTable() . ' GROUP BY user';
+        $sql = 'SELECT id, user, MAX(updated) FROM ' . $this->getFormTable() . ' GROUP BY id, user';
         $result = PHPWS_DB::getAll($sql);
 
         if(sizeof($result) > 0) {

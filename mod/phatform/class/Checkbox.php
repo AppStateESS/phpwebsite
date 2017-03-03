@@ -19,7 +19,7 @@ class PHAT_Checkbox extends PHAT_Element {
      * @param  integer $id The id of the checkbox to be created
      * @access public
      */
-    function PHAT_Checkbox($id = NULL)
+    function __construct($id = NULL)
     {
         $this->setTable('mod_phatform_checkbox');
 

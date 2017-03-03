@@ -24,7 +24,7 @@ class PHAT_Dropbox extends PHAT_Element {
      *
      * @param integer $id database id key for this PHAT_Dropbox
      */
-    function PHAT_Dropbox($id = NULL)
+    function __construct($id = NULL)
     {
         $this->setTable('mod_phatform_dropbox');
 

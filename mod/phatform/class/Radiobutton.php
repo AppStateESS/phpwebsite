@@ -19,7 +19,7 @@ class PHAT_Radiobutton extends PHAT_Element {
      * @param  integer $id The id of the radiobutton to be created
      * @access public
      */
-    function PHAT_Radiobutton($id = NULL)
+    function __construct($id = NULL)
     {
         $this->setTable('mod_phatform_radiobutton');
 

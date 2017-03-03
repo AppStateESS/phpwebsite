@@ -41,7 +41,7 @@ class PHAT_Textfield extends PHAT_Element {
      *
      * @param integer $id database id key for this PHAT_Textfield
      */
-    function PHAT_Textfield($id = NULL) {
+    function __construct($id = NULL) {
         $this->setTable('mod_phatform_textfield');
         $this->addExclude(array('_optionText', '_optionValues', '_optionSet'));
 

@@ -206,7 +206,7 @@ class PHAT_Form extends PHPWS_Item
      * @param  integer $id The database id of the form to construct
      * @access public
      */
-    function PHAT_Form($id = NULL)
+    function __construct($id = NULL)
     {
         $excludeVars = array();
         $excludeVars[] = 'element';

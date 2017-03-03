@@ -28,7 +28,7 @@ class PHAT_Multiselect extends PHAT_Element {
      * @param  integer $id The id of the multiselect to be created
      * @access public
      */
-    function PHAT_Multiselect($id = NULL)
+    function __construct($id = NULL)
     {
         $this->setTable('mod_phatform_multiselect');
 

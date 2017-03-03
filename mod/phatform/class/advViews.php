@@ -19,7 +19,7 @@ class advViews {
     var $pageLimit;
     var $filename;
 
-    function advViews() {
+    function __construct() {
         $this->intAdvViews();
     }
 
