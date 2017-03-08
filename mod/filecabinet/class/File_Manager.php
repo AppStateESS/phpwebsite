@@ -322,7 +322,6 @@ class FC_File_Manager
      */
     public function editLink($label = null)
     {
-exit('sk');
         $js['width'] = 800;
         $js['height'] = 600;
         $js['id'] = 'edit-file';
