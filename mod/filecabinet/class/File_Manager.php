@@ -322,12 +322,7 @@ class FC_File_Manager
      */
     public function editLink($label = null)
     {
-        /*
-          if (empty($label)) {
-          $label   = 'Edit file';
-          }
-          return '<input type="button" value="' . $label . '" onclick="edit_file()" />';
-         */
+exit('sk');
         $js['width'] = 800;
         $js['height'] = 600;
         $js['id'] = 'edit-file';

@@ -42,6 +42,7 @@
     {MOVE_TO_FOLDER}
 </p>
 <!-- END move -->
+<input type="submit" name="submit" value="Upload media file" />
 {END_FORM}
 <br />
 {MAX_SIZE_LABEL}: {MAX_SIZE}

@@ -8,6 +8,7 @@
 
 class FC_Multimedia_Manager
 {
+
     public $multimedia = null;
     public $max_size = 0;
     public $folder = null;
@@ -26,47 +27,58 @@ class FC_Multimedia_Manager
     {
         switch ($_REQUEST['mop']) {
             case 'delete_multimedia':
-                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                if (!$this->folder->id || !Current_User::authorized('filecabinet',
+                                'edit_folders', $this->folder->id, 'folder')) {
                     Current_User::disallow();
                 }
-                $this->loadMultimedia(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
+                $this->loadMultimedia(filter_input(INPUT_GET, 'file_id',
+                                FILTER_VALIDATE_INT));
                 $this->multimedia->delete();
                 \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'post_multimedia_upload':
-                if (!$this->folder->id || !Current_User::authorized('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+                if (!$this->folder->id || !Current_User::authorized('filecabinet',
+                                'edit_folders', $this->folder->id, 'folder')) {
                     Current_User::disallow();
                 }
                 $this->postMultimediaUpload();
-                \PHPWS_Core::goBack();
+                javascript('close_refresh');
+                Layout::nakedDisplay();
                 break;
 
             case 'upload_multimedia_form':
-                if (!Current_User::secured('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                if (!Current_User::secured('filecabinet', 'edit_folders',
+                                $this->multimedia->folder_id, 'folder')) {
                     Current_User::disallow();
                 }
 
-                $this->loadMultimedia(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
+                $this->loadMultimedia(filter_input(INPUT_GET, 'file_id',
+                                FILTER_VALIDATE_INT));
                 if (!$this->multimedia->id) {
-                    $this->multimedia->folder_id = filter_input(INPUT_GET, 'folder_id', FILTER_VALIDATE_INT);
+                    $this->multimedia->folder_id = filter_input(INPUT_GET,
+                            'folder_id', FILTER_VALIDATE_INT);
                 }
                 $this->edit();
-                echo json_encode(array('title' => $this->title, 'content' => $this->content));
+                //echo json_encode(array('title' => $this->title, 'content' => $this->content));
+                echo Layout::wrap($this->content, 'Multimedia Upload', true);
                 exit();
 
             case 'edit_rtmp':
-                if (!Current_User::secured('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                if (!Current_User::secured('filecabinet', 'edit_folders',
+                                $this->multimedia->folder_id, 'folder')) {
                     Current_User::disallow();
                 }
 
-                $this->loadMultimedia(filter_input(INPUT_GET, 'file_id', FILTER_VALIDATE_INT));
+                $this->loadMultimedia(filter_input(INPUT_GET, 'file_id',
+                                FILTER_VALIDATE_INT));
                 $this->editRTMP();
                 echo json_encode(array('title' => $this->title, 'content' => $this->content));
                 exit();
 
             case 'post_rtmp':
-                if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder')) {
+                if (!Current_User::authorized('filecabinet', 'edit_folders',
+                                $this->multimedia->folder_id, 'folder')) {
                     Current_User::disallow();
                 }
 
@@ -87,10 +99,12 @@ class FC_Multimedia_Manager
     {
         $this->multimedia->setTitle(filter_input(INPUT_POST, 'title'));
         if (!$this->multimedia->id) {
-            $this->multimedia->folder_id = filter_input(INPUT_POST, 'folder_id', FILTER_VALIDATE_INT);
+            $this->multimedia->folder_id = filter_input(INPUT_POST, 'folder_id',
+                    FILTER_VALIDATE_INT);
         }
         $this->multimedia->file_name = $_POST['rtmp_file'];
-        $this->multimedia->file_directory = filter_input(INPUT_POST, 'rtmp_server');
+        $this->multimedia->file_directory = filter_input(INPUT_POST,
+                'rtmp_server');
         $this->multimedia->thumbnail = PHPWS_SOURCE_HTTP . 'mod/filecabinet/img/video_generic.jpg';
         $this->multimedia->description = '';
         $this->multimedia->file_type = 'video/rtmp';
@@ -143,7 +157,8 @@ class FC_Multimedia_Manager
 
         $this->title = dgettext('filecabinet', 'Create/Update RTMP Stream');
 
-        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'Forms/rtmp_edit.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'filecabinet',
+                        'Forms/rtmp_edit.tpl');
     }
 
     public function loadMultimedia($multimedia_id = 0)
@@ -160,7 +175,8 @@ class FC_Multimedia_Manager
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
-            $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
+            $this->setMaxSize(PHPWS_Settings::get('filecabinet',
+                            'max_multimedia_size'));
         }
     }
 
@@ -208,7 +224,9 @@ class FC_Multimedia_Manager
             $this->title = 'Upload multimedia';
         }
 
-        if ($this->multimedia->id && Current_User::allow('filecabinet', 'edit_folders', $this->multimedia->folder_id, 'folder', true)) {
+        if ($this->multimedia->id && Current_User::allow('filecabinet',
+                        'edit_folders', $this->multimedia->folder_id, 'folder',
+                        true)) {
             Cabinet::moveToForm($form, $folder);
         }
 
@@ -218,7 +236,8 @@ class FC_Multimedia_Manager
             $template['CURRENT_MULTIMEDIA_LABEL'] = 'Current multimedia';
             $template['CURRENT_MULTIMEDIA_ICON'] = $this->multimedia->getThumbnail();
             $template['CURRENT_MULTIMEDIA_FILE'] = $this->multimedia->file_name;
-            $ow['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop' => 'change_tn',
+            $ow['address'] = PHPWS_Text::linkAddress('filecabinet',
+                            array('aop' => 'change_tn',
                         'type' => 'mm',
                         'id' => $this->multimedia->id), true);
             $ow['label'] = 'Change thumbnail';
@@ -242,17 +261,23 @@ class FC_Multimedia_Manager
         }
 
         if ($max_size >= 1000000) {
-            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dMB (%d bytes)'), floor($max_size / 1000000), $max_size);
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet',
+                            '%dMB (%d bytes)'), floor($max_size / 1000000),
+                    $max_size);
         } elseif ($max_size >= 1000) {
-            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dKB (%d bytes)'), floor($max_size / 1000), $max_size);
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet',
+                            '%dKB (%d bytes)'), floor($max_size / 1000),
+                    $max_size);
         } else {
-            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'),
+                    $max_size);
         }
 
         if ($this->message) {
             $template['ERROR'] = $this->message;
         }
-        $this->content = PHPWS_Template::process($template, 'filecabinet', 'Forms/multimedia_edit.tpl');
+        $this->content = PHPWS_Template::process($template, 'filecabinet',
+                        'Forms/multimedia_edit.tpl');
     }
 
     public function setMaxSize($size)
@@ -284,7 +309,8 @@ class FC_Multimedia_Manager
                 PHPWS_Error::log($result);
                 $this->content = 'An error occurred when trying to save your multimedia file.';
                 $this->content .= '<br /><strong>' . $result->getMessage() . '</strong>';
-                $this->content .= '<br /><br />' . javascript('close_window', array('value' => 'Close this window'));
+                $this->content .= '<br /><br />' . javascript('close_window',
+                                array('value' => 'Close this window'));
                 return;
             }
             $this->multimedia->moveToFolder();
