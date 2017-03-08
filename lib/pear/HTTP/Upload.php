@@ -298,7 +298,7 @@ class HTTP_Upload extends HTTP_Upload_Error
      */
     function __construct($lang = null)
     {
-        $this->HTTP_Upload_Error($lang);
+        parent::__construct($lang);
         if (function_exists('version_compare') &&
             version_compare(phpversion(), '4.1', 'ge'))
         {
@@ -560,7 +560,7 @@ class HTTP_Upload_File extends HTTP_Upload_Error
                               $type = null, $size = null, $error = null, 
                               $lang = null, $chmod = HTTP_UPLOAD_DEFAULT_CHMOD)
     {
-        $this->HTTP_Upload_Error($lang);
+        parent::__construct($lang);
         $ext = null;
 
         if (empty($name) || $size == 0) {
