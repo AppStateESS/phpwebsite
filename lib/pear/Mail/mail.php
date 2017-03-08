@@ -66,7 +66,7 @@ class Mail_mail extends Mail
      *
      * @param array $params Extra arguments for the mail() function.
      */
-    function Mail_mail($params = null)
+     public function __construct($params = null)
     {
         // The other mail implementations accept parameters as arrays.
         // In the interest of being consistent, explode an array into
