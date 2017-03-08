@@ -22,7 +22,7 @@ Version History:
 Developers:
 --------------------------------------------------------------------------
 
-Matt McNaney (mcnaney at gmail dot com)
+Matt McNaney (mcnaneym at appstate dot edu)
 Jeremy Booker
 
 ---------------------
@@ -39,6 +39,7 @@ Mike Wilson
 Ryan Cowan
 Verdon Vaillancourt
 Eloi George
+Tommy de Jesus
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following projects
