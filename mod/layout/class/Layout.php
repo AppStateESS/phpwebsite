@@ -447,7 +447,7 @@ class Layout
     }
 
     public static function getCurrentTheme()
-    {
+    {   Layout::checkSettings();
         return $_SESSION['Layout_Settings']->current_theme;
     }
 
