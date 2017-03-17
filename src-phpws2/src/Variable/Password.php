@@ -7,6 +7,7 @@ namespace phpws2\Variable;
  */
 
 /**
+ * @deprecated Don't use this. Use password_hash with StringVar
  * @author matt
  */
 class Password extends StringVar {
