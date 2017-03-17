@@ -22,7 +22,7 @@ class Decimal extends \phpws2\Database\Datatype
 {
     protected function loadDefault()
     {
-        $this->default = new \phpws2\Variable\Decimal(null, 'default');
+        $this->default = new \phpws2\Variable\DecimalVar(null, 'default');
         $this->default->allowNull(true);
     }
     
