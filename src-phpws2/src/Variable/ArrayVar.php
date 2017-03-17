@@ -65,7 +65,7 @@ class ArrayVar extends \phpws2\Variable
     public function __toString()
     {
         if ($this->allow_null && $this->isNull()) {
-            return null;
+            return '';
         } else {
             return json_encode($this->value);
         }
