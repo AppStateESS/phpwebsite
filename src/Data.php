@@ -87,9 +87,9 @@ abstract class Data
     {
         ob_start();
         if ($html) {
-            include 'phpws2/templates/Debug/Debug-Array.html';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug-Array.html';
         } else {
-            include 'phpws2/templates/Debug/Debug-Array.txt';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug-Array.txt';
         }
         return ob_get_clean();
     }
@@ -99,9 +99,9 @@ abstract class Data
         ob_start();
         $value = ($type == 'string') ? "'$value'" : $value;
         if ($html) {
-            include 'phpws2/templates/Debug/Debug-Default.html';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug-Default.html';
         } else {
-            include 'phpws2/templates/Debug/Debug-Default.txt';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug-Default.txt';
         }
         return ob_get_clean();
     }
@@ -124,9 +124,9 @@ abstract class Data
 
         ob_start();
         if ($html) {
-            include 'phpws2/templates/Debug/Debug-Object.html';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug-Object.html';
         } else {
-            include 'phpws2/templates/Debug/Debug-Object.txt';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug-Object.txt';
         }
         return ob_get_clean();
     }
@@ -192,9 +192,9 @@ abstract class Data
         }
         $debug_output = implode("\n", $row);
         if ($html) {
-            include 'phpws2/templates/Debug/Debug.html';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug.html';
         } else {
-            include 'phpws2/templates/Debug/Debug.txt';
+            include PHPWS_SOURCE_DIR . 'src-phpws2/templates/Debug/Debug.txt';
         }
         exit();
     }
