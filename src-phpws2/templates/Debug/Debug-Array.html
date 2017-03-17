@@ -20,7 +20,7 @@
             <?php foreach ($variables as $subname=>$subvar): ?>
             <tr class="array-variables">
                 <td><?php echo $subname?></td>
-                <td><?php echo \Data::debugValue($subvar)?></td>
+                <td><?php echo \Canopy\Data::debugValue($subvar)?></td>
             </tr>
             <?php endforeach ?>
             <?php endif ?>
