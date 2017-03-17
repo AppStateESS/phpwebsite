@@ -413,7 +413,7 @@ class PHPWS_File
         return $result;
     }
 
-    public function cropPercent($source_dir, $dest_dir, $percentage, $origin = 5)
+    public static function cropPercent($source_dir, $dest_dir, $percentage, $origin = 5)
     {
         if ($percentage > 99) {
             return false;
