@@ -49,6 +49,8 @@ phpWebSite can now be run in a Docker Container!
 
 (Depending on your system you may need to add your user to the docker group in order to have the privileges to run the docker-compose command)
 
+**Remember while setting up phpwebsite that your database location will not be localhost. We are running 3 seperate containers. One for web, one for mysql, and one for postgresql. If you want mysql then the host will be mysql_db otherwise postgres host will be postgres_db.
+
 Vagrant
 =======
 phpWebSite can now be run in a Vagrant Box!
