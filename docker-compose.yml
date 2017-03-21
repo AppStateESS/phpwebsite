@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mysql_db:
+   image: mariadb
+   environment:
+    MYSQL_USER: phpwebsite
+    MYSQL_PASSWORD: phpwebsite
+    MYSQL_DATABASE: phpwebsite
+    MYSQL_ROOT_PASSWORD: phpwebsite
+
+  postgres_db:
+   image: postgres
+   environment:
+    POSTGRES_PASSWORD: phpwebsite
+    POSTGRES_USER: phpwebsite
+    POSTGRES_DB: phpwebsite
+
+  web:
+    build: .
+    ports:
+     - "8080:80"
+    depends_on:
+     - mysql_db
+     - postgres_db
+    volumes:
+     - .:/var/www/html
