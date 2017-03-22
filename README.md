@@ -4,11 +4,14 @@ Welcome to phpWebSite!
 [![Build Status](https://travis-ci.org/AppStateESS/phpwebsite.png?branch=master)](https://travis-ci.org/AppStateESS/phpwebsite)
 
 * [phpWebSite Home](https://phpwebsite.appstate.edu)
-* [phpWebSite Continuous Integration](https://code.appstate.edu/jenkins/job/phpwebsite)
 * [phpWebSite on Github](https://github.com/AppStateESS/phpwebsite)
 
 phpWebSite comes with its own set of Pear files. Most of the time you
 should just use the files included with distribution.
+
+**phpWebsite is now using composer for dependecies. Before using the 
+web installer you will have to install composer and run composer install
+from the project root directory.
 
 After installation you will need to install some content modules.
 
