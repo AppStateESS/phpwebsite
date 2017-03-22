@@ -9,7 +9,7 @@ Welcome to phpWebSite!
 phpWebSite comes with its own set of Pear files. Most of the time you
 should just use the files included with distribution.
 
-**phpWebsite is now using composer for dependecies. Before using the 
+**PhpWebsite is now using composer for dependecies. Before using the 
 web installer you will have to install composer and run composer install
 from the project root directory.
 
