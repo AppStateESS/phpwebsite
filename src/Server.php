@@ -185,7 +185,7 @@ class Server
 
         $self = & $_SERVER['PHP_SELF'];
 
-        if ($use_redirect && isset($_SERVER['REDIRECT_URL'])) {
+        if ($use_redirect && isset($_SERVER['REQUEST_URI'])) {
             // some users reported problems using redirect_url so parsing uri instead
             if ($_SERVER['REQUEST_URI'] != '/') {
                 $root_url = substr($self, 0, strrpos($self, '/'));
