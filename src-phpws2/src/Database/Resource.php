@@ -186,7 +186,7 @@ abstract class Resource extends Alias
             }
             $having = $column;
         } else {
-            $having = $this->getConditional($column, $value, $operator);
+            $having = $this->db->createConditional($column, $value, $operator);
         }
         $having->stack_number = $stack_number;
         $this->having_stack[$stack_number] = $having;
@@ -205,7 +205,7 @@ abstract class Resource extends Alias
         if (!empty($this->having_stack)) {
             foreach ($this->having_stack as $w) {
                 if (!$conjunction) {
-                    $w->disableConjunction();
+                    //$w->disableConjunction();
                     $conjunction = true;
                 }
                 $having_list[] = $w;
