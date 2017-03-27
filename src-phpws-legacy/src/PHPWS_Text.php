@@ -831,7 +831,7 @@ class PHPWS_Text
      */
     public static function xml2php($file, $level = 0)
     {
-        $xml_parser = xml_parser_create();
+        $xml_parser = \xml_parser_create();
         try {
             $contents = file_get_contents($file);
         } catch (Exception $exc) {
