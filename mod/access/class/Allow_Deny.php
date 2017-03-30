@@ -12,7 +12,7 @@ class Access_Allow_Deny {
     public $active        = 0;
     public $_db           = NULL;
 
-    public function Access_Allow_Deny($id=0)
+    public function __construct($id=0)
     {
         if (empty($id)) {
             return;
