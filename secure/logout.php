@@ -10,7 +10,7 @@ session_destroy();
 $shiblocallogout = 'https://' . $_SERVER['HTTP_HOST'] . '/Shibboleth.sso/Logout';
 
 // Our destination, however, not necessarily so figure it out
-$parts = explode('/', $_SERVER['SCRIPT_URL']);
+$parts = explode('/', $_SERVER['SCRIPT_NAME']);
 while(array_pop($parts) != 'secure');
 $destination = 'http://' . $_SERVER['HTTP_HOST'] . implode('/', $parts);
 
