@@ -28,6 +28,12 @@ class Error {
      */
     public static function exceptionHandler($error)
     {
+        // Send exceptions to NewRelic, if available
+        if (extension_loaded('newrelic')) { // Ensure PHP agent is available
+            newrelic_notice_error($error, null);
+        }
+
+
         self::log($error);
         if (DISPLAY_ERRORS) {
             echo '<h1>Unhandled exception:</h1><pre>', self::getErrorInfo($error,
