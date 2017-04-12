@@ -47,7 +47,7 @@ class SettingsView {
 
         $tpl = $form->getTemplate();
 
-        return \PHPWS_Template::process($tpl, 'addthis', 'settings.tpl');
+        return \phpws\PHPWS_Template::process($tpl, 'addthis', 'settings.tpl');
     }
 }
 
