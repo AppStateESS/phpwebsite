@@ -44,7 +44,7 @@ class AddThisView {
             }
         }
 
-        $content = \PHPWS_Template::process($tpl, 'addthis', 'addThis.tpl');
+        $content = \phpws\PHPWS_Template::process($tpl, 'addthis', 'addThis.tpl');
 
         \Layout::add($content, 'addthis', 'DEFAULT');
     }

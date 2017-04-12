@@ -450,7 +450,7 @@ class Menu_Item {
         if ($key && $key->isDummy(true)) {
             return;
         }
-        $theme_tpl_dir = \PHPWS_Template::getTplDir('menu') . 'menu_layout/';
+        $theme_tpl_dir = \phpws\PHPWS_Template::getTplDir('menu') . 'menu_layout/';
         $menu_tpl_dir = PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/';
 
         $theme_path = $theme_tpl_dir . $this->template . '/';
