@@ -299,7 +299,7 @@ class ArrayVar extends \phpws2\Variable
                 $array_value = unserialize($value);
             } else {
                 $array_value = json_decode($value);
-                if ($array_value === null && strpos($value, ',') !== false) {
+                if ($array_value === null) {
                     $array_value = explode(',', $value);
                 }
             }
