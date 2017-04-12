@@ -48,7 +48,7 @@ class FC_Multimedia extends FC_Folder_Factory
             $template = 'filters/media.tpl';
         }
 
-        return \PHPWS_Template::process(array('FILE_PATH' => $row['file_directory'] . $row['file_name']), 'filecabinet', $template);
+        return \phpws\PHPWS_Template::process(array('FILE_PATH' => $row['file_directory'] . $row['file_name']), 'filecabinet', $template);
     }
 
 }
