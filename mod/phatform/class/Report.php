@@ -10,7 +10,8 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Text.php');
  * @author  Steven Levin
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  */
-class PHAT_Report {
+class PHAT_Report
+{
 
     /**
      * Id of the current form to report on
@@ -103,7 +104,6 @@ class PHAT_Report {
      * @access public
      */
     var $pageLimit = NULL;
-
     var $archive = NULL;
 
     /**
@@ -112,8 +112,28 @@ class PHAT_Report {
      *
      *
      */
-    function __construct($archiveTable=NULL) {
-        if(isset($archiveTable)) {
+    function __construct($archiveTable = NULL)
+    {
+        $this->reset();
+    }
+
+    function setArchive($tableName)
+    {
+        $this->archive = $tableName;
+    }
+
+    function getFormTable()
+    {
+        if (isset($this->archive)) {
+            return $this->archive;
+        } else {
+            return 'mod_phatform_form_' . $this->_formId;
+        }
+    }
+
+    private function reset()
+    {
+        if (isset($archiveTable)) {
             $this->archive = $archiveTable;
         }
 
@@ -133,25 +153,14 @@ class PHAT_Report {
         $this->pageLimit = PHAT_ENTRY_LIST_LIMIT;
     }
 
-    function setArchive($tableName) {
-        $this->archive = $tableName;
-    }
-
-    function getFormTable() {
-        if(isset($this->archive)) {
-            return $this->archive;
-        } else {
-            return 'mod_phatform_form_' . $this->_formId;
-        }
-    }
-
     /**
      *
      *
      *
      *
      */
-    function report() {
+    function report()
+    {
         $content = $_SESSION['PHAT_FormManager']->menu();
         $content .= $this->formStats();
         $content .= $this->listEntries();
@@ -165,7 +174,8 @@ class PHAT_Report {
      *
      *
      */
-    function formStats() {
+    function formStats()
+    {
         $statsTags['FORM_NAME'] = $this->_formName;
         $statsTags['COMPLETED_LABEL'] = 'Completed';
         $statsTags['COMPLETED_NUM'] = $this->_completeEntries;
@@ -181,18 +191,20 @@ class PHAT_Report {
 
         $statsTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;lay_quiet=1" target="_blank">' . 'Print' . '</a>';
 
-        if(isset($_REQUEST['ARCHIVE_OP']))
-        $statsTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->archiveBack();
+        if (isset($_REQUEST['ARCHIVE_OP']))
+            $statsTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->archiveBack();
 
         $elements = array();
         $elements[0] = PHPWS_Form::formHidden('PHAT_REPORT_OP', 'export');
         $elements[0] .= PHPWS_Form::formHidden('module', 'phatform');
         $elements[0] .= PHPWS_Form::formSubmit('Export', 'export');
 
-        if(!isset($this->archive))
-        $statsTags['EXPORT'] = PHPWS_Form::makeForm('export_button', 'index.php', $elements);
+        if (!isset($this->archive))
+            $statsTags['EXPORT'] = PHPWS_Form::makeForm('export_button',
+                            'index.php', $elements);
 
-        return PHPWS_Template::processTemplate($statsTags, 'phatform', 'report/stats.tpl');
+        return PHPWS_Template::processTemplate($statsTags, 'phatform',
+                        'report/stats.tpl');
     }
 
     /**
@@ -201,34 +213,35 @@ class PHAT_Report {
      *
      *
      */
-    function listEntries() {
-        if(isset($_REQUEST['PHAT_EntrySearch'])) {
+    function listEntries()
+    {
+        if (isset($_REQUEST['PHAT_EntrySearch'])) {
             $this->_searchQuery = PHPWS_Text::parseInput($_REQUEST['PHAT_EntrySearch']);
             $this->_listFilter = $_REQUEST['PHAT_ListFilter'];
             $this->setEntries();
             $this->pageStart = 0;
             $this->pageSection = 1;
             $this->pageLimit = $_REQUEST['PDA_limit'];
-        } elseif(isset($_REQUEST['PHAT_FullList'])) {
+        } elseif (isset($_REQUEST['PHAT_FullList'])) {
             $this->_searchQuery = NULL;
             $this->_listFilter = 1;
             $this->setEntries();
             $this->pageStart = 0;
             $this->pageSection = 1;
         } else {
-            if(isset($_REQUEST['PDA_start'])) {
+            if (isset($_REQUEST['PDA_start'])) {
                 $this->pageStart = $_REQUEST['PDA_start'];
             } else {
                 $_REQUEST['PDA_start'] = $this->pageStart;
             }
 
-            if(isset($_REQUEST['PDA_section'])) {
+            if (isset($_REQUEST['PDA_section'])) {
                 $this->pageSection = $_REQUEST['PDA_section'];
             } else {
                 $_REQUEST['PDA_section'] = $this->pageSection;
             }
 
-            if(isset($_REQUEST['PDA_limit'])) {
+            if (isset($_REQUEST['PDA_limit'])) {
                 $this->pageLimit = $_REQUEST['PDA_limit'];
             } else {
                 $_REQUEST['PDA_limit'] = $this->pageLimit;
@@ -242,37 +255,42 @@ class PHAT_Report {
         $listTags['ACTION_LABEL'] = 'Action';
 
         $highlight = ' class="bgcolor1"';
-        if(sizeof($this->_entries) > 0) {
-            $data = PHAT_Report::paginateDataArray($this->_entries, 'index.php?module=phatform&amp;PHAT_REPORT_OP=list', $this->pageLimit, TRUE, array('<b>[ ', ' ]</b>'), NULL, 10, TRUE);
+        if (sizeof($this->_entries) > 0) {
+            $data = PHAT_Report::paginateDataArray($this->_entries,
+                            'index.php?module=phatform&amp;PHAT_REPORT_OP=list',
+                            $this->pageLimit, TRUE, array('<b>[ ', ' ]</b>'),
+                            NULL, 10, TRUE);
         }
 
         $count = 1;
-        if(isset($data) && is_array($data[0]) && (sizeof($data[0]) > 0)) {
+        if (isset($data) && is_array($data[0]) && (sizeof($data[0]) > 0)) {
             $listTags['LIST_ITEMS'] = NULL;
-            foreach($data[0] as $entry) {
+            foreach ($data[0] as $entry) {
                 $highlight = null;
                 $rowTags = array();
                 $rowTags['HIGHLIGHT'] = $highlight;
                 $rowTags['ID'] = $entry['id'];
                 $rowTags['USER'] = $entry['user'];
-                $rowTags['UPDATED'] = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $entry['updated']);
+                $rowTags['UPDATED'] = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT,
+                        $entry['updated']);
 
                 $rowTags['VIEW'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . 'View' . '</a>';
 
-                if(!isset($this->archive)) {
+                if (!isset($this->archive)) {
                     $rowTags['EDIT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=edit&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . 'Edit' . '</a>';
                     $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=confirmDelete&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . 'Delete' . '</a>';
                 }
 
-                if ($count%2) {
+                if ($count % 2) {
                     $highlight = ' class="bgcolor1"';
                 }
                 $count ++;
-                $listTags['LIST_ITEMS'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/row.tpl');
+                $listTags['LIST_ITEMS'] .= PHPWS_Template::processTemplate($rowTags,
+                                'phatform', 'report/row.tpl');
             }
 
-            if(!isset($_REQUEST['lay_quiet'])) {
-                if(($this->_totalEntries > $this->pageLimit)) {
+            if (!isset($_REQUEST['lay_quiet'])) {
+                if (($this->_totalEntries > $this->pageLimit)) {
                     $listTags['NAVIGATION_LINKS'] = $data[1];
                 }
 
@@ -283,26 +301,31 @@ class PHAT_Report {
             $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . 'No entries were found matching your search query.' . '</td></tr>';
         }
 
-        if(!isset($_REQUEST['lay_quiet'])) {
-            $filterOptions = array(1=>'All', 2=>'Incomplete', 3=>'Complete');
-            $limitOptions = array(10=>10, 20=>20, 30=>30, 40=>40, 50=>50);
+        if (!isset($_REQUEST['lay_quiet'])) {
+            $filterOptions = array(1 => 'All', 2 => 'Incomplete', 3 => 'Complete');
+            $limitOptions = array(10 => 10, 20 => 20, 30 => 30, 40 => 40, 50 => 50);
 
             $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
             $elements[0] .= PHPWS_Form::formHidden('PHAT_REPORT_OP', 'list');
-            $elements[0] .= PHPWS_Form::formSelect('PHAT_ListFilter', $filterOptions, $this->_listFilter, FALSE, TRUE);
+            $elements[0] .= PHPWS_Form::formSelect('PHAT_ListFilter',
+                            $filterOptions, $this->_listFilter, FALSE, TRUE);
 
-            $elements[0] .= PHPWS_Form::formSelect('PDA_limit', $limitOptions, $this->pageLimit, TRUE);
+            $elements[0] .= PHPWS_Form::formSelect('PDA_limit', $limitOptions,
+                            $this->pageLimit, TRUE);
 
-            if(!$_SESSION['PHAT_FormManager']->form->isAnonymous()) {
-                $elements[0] .= PHPWS_Form::formTextField('PHAT_EntrySearch', $this->_searchQuery, 20, 255);
+            if (!$_SESSION['PHAT_FormManager']->form->isAnonymous()) {
+                $elements[0] .= PHPWS_Form::formTextField('PHAT_EntrySearch',
+                                $this->_searchQuery, 20, 255);
             }
 
             $elements[0] .= PHPWS_Form::formSubmit('Search');
-            $listTags['SEARCH_FORM'] = PHPWS_Form::makeForm('PHAT_SearchEntries', 'index.php', $elements);
+            $listTags['SEARCH_FORM'] = PHPWS_Form::makeForm('PHAT_SearchEntries',
+                            'index.php', $elements);
         }
 
         $GLOBALS['CNT_phatform']['title'] = $_SESSION['PHAT_FormManager']->form->getLabel();
-        return PHPWS_Template::processTemplate($listTags, 'phatform', 'report/list.tpl');
+        return PHPWS_Template::processTemplate($listTags, 'phatform',
+                        'report/list.tpl');
     }
 
     /**
@@ -311,11 +334,12 @@ class PHAT_Report {
      *
      *
      */
-    function view($showLinks = TRUE) {
+    function view($showLinks = TRUE)
+    {
         /* Find the key into the entries array for the selected entry */
-        foreach($this->_entries as $entryKey=>$entryValue) {
-            if($entryValue['id'] == $_REQUEST['PHAT_ENTRY_ID'])
-            break;
+        foreach ($this->_entries as $entryKey => $entryValue) {
+            if ($entryValue['id'] == $_REQUEST['PHAT_ENTRY_ID'])
+                break;
         }
 
         /* Get the data for the selected entry from the database */
@@ -327,58 +351,63 @@ class PHAT_Report {
         $entryTags['ENTRY_DATA'] = NULL;
         /* Step through the entries values and feed them through the entryRow template */
         $toggle = 1;
-        foreach($entry as $key=>$value) {
+        foreach ($entry as $key => $value) {
             $rowTags = array();
-            if($key == 'position') {
+            if ($key == 'position') {
                 continue;
-            } elseif($key == 'updated') {
-                $value = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $value);
+            } elseif ($key == 'updated') {
+                $value = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT,
+                        $value);
             }
 
             $attribute = ' class="bgcolor1" ';
 
             /* Toggle the row colors for better visability */
-            if ($toggle%2) {
+            if ($toggle % 2) {
                 $rowClass = $attribute;
             } else {
                 $rowClass = null;
             }
             $toggle++;
 
-            if(isset($rowClass)) {
+            if (isset($rowClass)) {
                 $rowTags['ROW_CLASS'] = $rowClass;
             }
             $rowTags['ENTRY_LABEL'] = $key;
 
-            if(preg_match('/a:\d+:{/', $value)) {
+            if (preg_match('/a:\d+:{/', $value)) {
                 $rowTags['ENTRY_VALUE'] = implode(', ', unserialize($value));
             } else {
-                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value, ENCODE_PARSED_TEXT, false, true);
+                $rowTags['ENTRY_VALUE'] = PHPWS_Text::parseOutput($value,
+                                ENCODE_PARSED_TEXT, false, true);
             }
 
-            $entryTags['ENTRY_DATA'] .= PHPWS_Template::processTemplate($rowTags, 'phatform', 'report/entryRow.tpl');
+            $entryTags['ENTRY_DATA'] .= PHPWS_Template::processTemplate($rowTags,
+                            'phatform', 'report/entryRow.tpl');
         }
 
-        if(isset($this->archive))
-        $entryTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->getArchiveViewLink();
+        if (isset($this->archive))
+            $entryTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->getArchiveViewLink();
 
-        if($showLinks && !isset($_REQUEST['lay_quiet'])) {
+        if ($showLinks && !isset($_REQUEST['lay_quiet'])) {
             $entryTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $_REQUEST['PHAT_ENTRY_ID'] . '&amp;lay_quiet=1" target="_blank">' . 'Print View' . '</a>';
 
             /* Show the next and/or previous links to step through entries */
-            if($entryKey < sizeof($this->_entries) - 1)
-            $entryTags['NEXT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey+1]['id'] . '">' . 'Next Entry' . '</a>';
+            if ($entryKey < sizeof($this->_entries) - 1)
+                $entryTags['NEXT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey + 1]['id'] . '">' . 'Next Entry' . '</a>';
 
-            if($entryKey > 0)
-            $entryTags['PREVIOUS'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey-1]['id'] . '">' . 'Previous Entry' . '</a>';
+            if ($entryKey > 0)
+                $entryTags['PREVIOUS'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey - 1]['id'] . '">' . 'Previous Entry' . '</a>';
         }
 
         $GLOBALS['CNT_phatform']['title'] = $_SESSION['PHAT_FormManager']->form->getLabel();
         /* Return the entire processed entry */
-        if(isset($_REQUEST['lay_quiet']))
-        echo PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+        if (isset($_REQUEST['lay_quiet']))
+            echo PHPWS_Template::processTemplate($entryTags, 'phatform',
+                    'report/entry.tpl');
         else
-        return PHPWS_Template::processTemplate($entryTags, 'phatform', 'report/entry.tpl');
+            return PHPWS_Template::processTemplate($entryTags, 'phatform',
+                            'report/entry.tpl');
     }
 
     /**
@@ -387,7 +416,8 @@ class PHAT_Report {
      *
      *
      */
-    function edit() {
+    function edit()
+    {
         $_SESSION['PHAT_FormManager']->form->setEditData(TRUE);
         $_SESSION['PHAT_FormManager']->form->setDataId($_REQUEST['PHAT_ENTRY_ID']);
         $_SESSION['PHAT_FormManager']->form->loadUserData();
@@ -400,7 +430,8 @@ class PHAT_Report {
      *
      *
      */
-    function confirmDelete() {
+    function confirmDelete()
+    {
         $hiddens['module'] = 'phatform';
         $hiddens['PHAT_REPORT_OP'] = 'delete';
         $hiddens['PHAT_ENTRY_ID'] = $_REQUEST['PHAT_ENTRY_ID'];
@@ -410,12 +441,16 @@ class PHAT_Report {
 
         $elements[0] = implode("\n", $eles);
 
-        $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you want to delete this entry?');
+        $confirmTags['MESSAGE'] = dgettext('phatform',
+                'Are you sure you want to delete this entry?');
         $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit('No', 'PHAT_DeleteNo');
-        $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes', 'PHAT_DeleteYes');
+        $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes',
+                        'PHAT_DeleteYes');
 
-        $elements[0] .= PHPWS_Template::processTemplate($confirmTags, 'phatform', 'report/deleteConfirm.tpl');
-        $content = PHPWS_Form::makeForm('PHAT_EntryDeleteConfirm', 'index.php', $elements);
+        $elements[0] .= PHPWS_Template::processTemplate($confirmTags,
+                        'phatform', 'report/deleteConfirm.tpl');
+        $content = PHPWS_Form::makeForm('PHAT_EntryDeleteConfirm', 'index.php',
+                        $elements);
         $content .= '<br /><hr /><br />';
         $content .= $this->view(FALSE);
 
@@ -428,22 +463,23 @@ class PHAT_Report {
      *
      *
      */
-    function delete() {
-        if(isset($_REQUEST['PHAT_DeleteYes'])) {
+    function delete()
+    {
+        if (isset($_REQUEST['PHAT_DeleteYes'])) {
             $db = new PHPWS_DB('mod_phatform_form_' . $this->_formId);
-            $db->addWhere('id', (int)$_REQUEST['PHAT_ENTRY_ID']);
+            $db->addWhere('id', (int) $_REQUEST['PHAT_ENTRY_ID']);
             $db->delete();
 
             $_REQUEST['PHAT_REPORT_OP'] = 'list';
             /* Find the key into the entries array for the selected entry */
-            foreach($this->_entries as $entryKey=>$entryValue) {
-                if($entryValue['id'] == $_REQUEST['PHAT_ENTRY_ID'])
-                break;
+            foreach ($this->_entries as $entryKey => $entryValue) {
+                if ($entryValue['id'] == $_REQUEST['PHAT_ENTRY_ID'])
+                    break;
             }
             unset($this->_entries[$entryKey]);
             $message = 'The form entry was successfully deleted from the database.';
-            $this->PHAT_Report();
-        } else if(isset($_REQUEST['PHAT_DeleteNo'])) {
+            $this->reset();
+        } else if (isset($_REQUEST['PHAT_DeleteNo'])) {
             $_REQUEST['PHAT_REPORT_OP'] = 'list';
             $message = 'No form entry was deleted from the database.';
         }
@@ -458,13 +494,15 @@ class PHAT_Report {
      *
      *
      */
-    function getLastEntry() {
+    function getLastEntry()
+    {
         $lastEntry = NULL;
         $sql = 'SELECT id, user, MAX(updated) FROM ' . $this->getFormTable() . ' GROUP BY id, user';
         $result = PHPWS_DB::getAll($sql);
 
-        if(sizeof($result) > 0) {
-            $lastEntry = $result[0]['user'] . ' (' . date(PHPWS_DATE_FORMAT, $result[0]['MAX(updated)']) . ')';
+        if (sizeof($result) > 0) {
+            $lastEntry = $result[0]['user'] . ' (' . date(PHPWS_DATE_FORMAT,
+                            $result[0]['MAX(updated)']) . ')';
         }
 
         return $lastEntry;
@@ -476,20 +514,21 @@ class PHAT_Report {
      *
      *
      */
-    function setEntries() {
+    function setEntries()
+    {
         $sql = 'SELECT id, user, updated FROM ' . $this->getFormTable();
 
 
-        if($this->_searchQuery || $this->_listFilter) {
+        if ($this->_searchQuery || $this->_listFilter) {
             $sql .= ' WHERE';
         }
 
-        if(isset($this->_searchQuery) && ($this->_searchQuery != '')) {
+        if (isset($this->_searchQuery) && ($this->_searchQuery != '')) {
             $sql .= " user LIKE '%" . $this->_searchQuery . "%' AND";
         }
 
-        if($this->_listFilter) {
-            switch($this->_listFilter) {
+        if ($this->_listFilter) {
+            switch ($this->_listFilter) {
                 case '1':
                     $sql .= " position>='-1'";
                     break;
@@ -515,7 +554,8 @@ class PHAT_Report {
      *
      *
      */
-    function setComplete() {
+    function setComplete()
+    {
         $sql = 'SELECT count(id) FROM ' . $this->getFormTable() . " WHERE position='-1'";
         $result = PHPWS_DB::getAll($sql);
         if (PHPWS_Error::isError($result)) {
@@ -530,7 +570,8 @@ class PHAT_Report {
      *
      *
      */
-    function setIncomplete() {
+    function setIncomplete()
+    {
         $sql = 'SELECT count(id) FROM ' . $this->getFormTable() . " WHERE position!='-1'";
         $result = PHPWS_DB::getAll($sql);
         if (PHPWS_Error::isError($result)) {
@@ -540,7 +581,8 @@ class PHAT_Report {
         $this->_incompleteEntries = $result[0]['count(id)'];
     }
 
-    function getEntries() {
+    function getEntries()
+    {
         return $this->_entries;
     }
 
@@ -549,10 +591,12 @@ class PHAT_Report {
      *
      * @access private
      */
-    function _accessDenied() {
+    function _accessDenied()
+    {
         \phpws\PHPWS_Core::errorPage('400');
-    }// END FUNC accessDenied()
+    }
 
+// END FUNC accessDenied()
 
     /**
      *
@@ -560,10 +604,11 @@ class PHAT_Report {
      *
      *
      */
-    function action() {
-        switch($_REQUEST['PHAT_REPORT_OP']) {
+    function action()
+    {
+        switch ($_REQUEST['PHAT_REPORT_OP']) {
             case 'list':
-                if(Current_User::allow('phatform', 'report_view')) {
+                if (Current_User::allow('phatform', 'report_view')) {
                     $content = $this->report();
                 } else {
                     $this->accessDenied();
@@ -571,7 +616,7 @@ class PHAT_Report {
                 break;
 
             case 'edit':
-                if(Current_User::allow('phatform', 'report_edit')) {
+                if (Current_User::allow('phatform', 'report_edit')) {
                     $content = $_SESSION['PHAT_FormManager']->menu() . $this->edit();
                 } else {
                     $this->accessDenied();
@@ -579,7 +624,7 @@ class PHAT_Report {
                 break;
 
             case 'view':
-                if(Current_User::allow('phatform', 'report_view')) {
+                if (Current_User::allow('phatform', 'report_view')) {
                     $content = $_SESSION['PHAT_FormManager']->menu() . $this->view();
                 } else {
                     $this->accessDenied();
@@ -587,7 +632,7 @@ class PHAT_Report {
                 break;
 
             case 'confirmDelete':
-                if(Current_User::allow('phatform', 'report_delete')) {
+                if (Current_User::allow('phatform', 'report_delete')) {
                     $content = $this->confirmDelete();
                 } else {
                     $this->accessDenied();
@@ -595,7 +640,7 @@ class PHAT_Report {
                 break;
 
             case 'delete':
-                if(Current_User::allow('phatform', 'report_delete')) {
+                if (Current_User::allow('phatform', 'report_delete')) {
                     $content = $this->delete();
                 } else {
                     $this->accessDenied();
@@ -603,11 +648,12 @@ class PHAT_Report {
                 break;
 
             case 'export':
-                if(Current_User::allow('phatform', 'report_export')) {
+                if (Current_User::allow('phatform', 'report_export')) {
                     include(PHPWS_SOURCE_DIR . 'mod/phatform/inc/Export.php');
                     $error = export($this->_formId);
-                    if(PHPWS_Error::isError($error)) {
-                        javascript('alert', array('content' => PHPWS_Error::printError($error)));
+                    if (PHPWS_Error::isError($error)) {
+                        javascript('alert',
+                                array('content' => PHPWS_Error::printError($error)));
                         $content = $this->report();
                     }
                 } else {
@@ -616,14 +662,16 @@ class PHAT_Report {
                 break;
         }
 
-        if($content) {
+        if ($content) {
             if (isset($_REQUEST['lay_quiet'])) {
                 Layout::nakedDisplay($content);
             } else {
                 $GLOBALS['CNT_phatform']['content'] = $content;
             }
         }
-    }// END FUNC action()
+    }
+
+// END FUNC action()
 
     /**
      * paginateDataArray
@@ -642,12 +690,15 @@ class PHAT_Report {
      * @return array 0=>string of rows to be displayed, 1=>navigation links for the paginated data, 2=>current section information
      * @access public
      */
-    function paginateDataArray($content, $link_back, $default_limit=10, $make_sections=FALSE, $curr_sec_decor=NULL, $link_class=NULL, $break_point=20, $return_array=FALSE){
+    function paginateDataArray($content, $link_back, $default_limit = 10,
+            $make_sections = FALSE, $curr_sec_decor = NULL, $link_class = NULL,
+            $break_point = 20, $return_array = FALSE)
+    {
 
         if (is_null($curr_sec_decor))
-        $curr_sec_decor = array('<b>[ ', ' ]</b>');
+            $curr_sec_decor = array('<b>[ ', ' ]</b>');
 
-        if(isset($_REQUEST['PDA_limit']) && $_REQUEST['PDA_limit'] > 0){
+        if (isset($_REQUEST['PDA_limit']) && $_REQUEST['PDA_limit'] > 0) {
             $limit = $_REQUEST['PDA_limit'];
         } elseif ($default_limit > 0) {
             $limit = $default_limit;
@@ -655,19 +706,19 @@ class PHAT_Report {
             $limit = 10;
         }
 
-        if(isset($_REQUEST['PDA_start'])){
+        if (isset($_REQUEST['PDA_start'])) {
             $start = $_REQUEST['PDA_start'];
         } else {
             $start = 0;
         }
 
-        if(isset($_REQUEST['PDA_section'])){
+        if (isset($_REQUEST['PDA_section'])) {
             $current_section = $_REQUEST['PDA_section'];
         } else {
             $current_section = 1;
         }
 
-        if(is_array($content)){
+        if (is_array($content)) {
             $numrows = count($content);
             $sections = ceil($numrows / $limit);
             $content_keys = array_keys($content);
@@ -682,11 +733,11 @@ class PHAT_Report {
             }
 
             reset($content_keys);
-            for($x = 0; $x < $start; $x++){
+            for ($x = 0; $x < $start; $x++) {
                 next($content_keys);
             }
-            while((list($content_key, $content_value) = each($content_keys)) && (($item_count < $limit) && (($start + $item_count) < $numrows ))){
-                if($return_array) {
+            while ((list($content_key, $content_value) = each($content_keys)) && (($item_count < $limit) && (($start + $item_count) < $numrows ))) {
+                if ($return_array) {
                     $array_of_items[] = $content[$content_keys[$content_key]];
                 } else {
                     $string_of_items .= $content[$content_keys[$content_key]] . "\n";
@@ -695,31 +746,31 @@ class PHAT_Report {
                 $item_count++;
             }
 
-            if($start == 0){
+            if ($start == 0) {
                 $nav_links = "&#60;&#60;\n";
             } else {
-                $nav_links = "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start - $limit) . "&#38;PDA_section=" . ($current_section - 1). "\"" . $link_class . "\" title=\"&#60;&#60;\">&#60;&#60;</a>\n";
+                $nav_links = "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start - $limit) . "&#38;PDA_section=" . ($current_section - 1) . "\"" . $link_class . "\" title=\"&#60;&#60;\">&#60;&#60;</a>\n";
             }
 
-            if($make_sections && ($sections <= $break_point)){
-                for($x = 1; $x <= $sections; $x++){
-                    if($x == $current_section){
+            if ($make_sections && ($sections <= $break_point)) {
+                for ($x = 1; $x <= $sections; $x++) {
+                    if ($x == $current_section) {
                         $nav_links .= "&#160;" . $curr_sec_decor[0] . $x . $curr_sec_decor[1] . "&#160;\n";
                     } else {
                         $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
                     }
                 }
-            } else if($make_sections && ($sections > $break_point)){
-                for($x = 1; $x <= $sections; $x++){
-                    if($x == $current_section){
+            } else if ($make_sections && ($sections > $break_point)) {
+                for ($x = 1; $x <= $sections; $x++) {
+                    if ($x == $current_section) {
                         $nav_links .= "&#160;" . $curr_sec_decor[0] . $x . $curr_sec_decor[1] . "&#160;\n";
-                    } else if($x == 1 || $x == 2){
+                    } else if ($x == 1 || $x == 2) {
                         $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
-                    } else if(($x == $sections) || ($x == ($sections - 1))){
+                    } else if (($x == $sections) || ($x == ($sections - 1))) {
                         $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
-                    } else if(($current_section == ($x - $pad)) || ($current_section == ($x + $pad))){
+                    } else if (($current_section == ($x - $pad)) || ($current_section == ($x + $pad))) {
                         $nav_links .= "&#160;<b>. . .</b>&#160;";
-                    } else if(($current_section > ($x - $pad)) && ($current_section < ($x + $pad))){
+                    } else if (($current_section > ($x - $pad)) && ($current_section < ($x + $pad))) {
                         $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
                     }
                 }
@@ -727,24 +778,26 @@ class PHAT_Report {
                 $nav_links .= "&#160;&#160;\n";
             }
 
-            if(($start + $limit) >= $numrows){
+            if (($start + $limit) >= $numrows) {
                 $nav_links .= "&#62;&#62;\n";
                 $section_info = ($start + 1) . " - " . ($start + $item_count) . ' ' . 'of' . ' ' . $numrows . "\n";
             } else {
                 $nav_links .= "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start + $limit) . "&#38;PDA_section=" . ($current_section + 1) . "\"" . $link_class . "\" title=\"&#62;&#62;\">&#62;&#62;</a>\n";
-                $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . 'of' . ' ' .$numrows . "\n";
+                $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . 'of' . ' ' . $numrows . "\n";
             }
-
         } else {
             exit("Argument 1 to function paginateDataArray not an array.");
         }
 
 
-        if($return_array) {
-            return array(0=>$array_of_items, 1=>$nav_links, 2=>$section_info);
+        if ($return_array) {
+            return array(0 => $array_of_items, 1 => $nav_links, 2 => $section_info);
         } else {
-            return array("0"=>"$string_of_items", "1"=>"$nav_links", "2"=>"$section_info");
+            return array("0" => "$string_of_items", "1" => "$nav_links", "2" => "$section_info");
         }
-    }// END FUNC paginateDataArray()
+    }
 
-}// END CLASS PHAT_Report
+// END FUNC paginateDataArray()
+}
+
+// END CLASS PHAT_Report
