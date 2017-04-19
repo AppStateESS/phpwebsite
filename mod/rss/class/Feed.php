@@ -24,7 +24,7 @@ class RSS_Feed
     public $_parser = NULL;
     public $mapped = NULL;
 
-    public function RSS_Feed($id = 0)
+    public function __construct($id = 0)
     {
         $this->id = $id;
 
