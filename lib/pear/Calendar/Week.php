@@ -74,7 +74,7 @@ require_once CALENDAR_ROOT.'Calendar.php';
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @link      http://pear.php.net/package/Calendar
  */
-class Calendar_Week extends Calendar
+class Calendar_Weekly extends Calendar
 {
     /**
      * Instance of Calendar_Table_Helper
