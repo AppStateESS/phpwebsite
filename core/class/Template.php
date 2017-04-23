@@ -1,3 +1,3 @@
 <?php
 
-class Template extends \phpws\Template{}
+class Template extends \phpws2\Template{}
