@@ -223,6 +223,7 @@ class FakeMDB2Connection
         }
 
         $columns = $table->getColumns();
+	$mdbColumns = Array();
         foreach ($columns as $key => $col) {
             $row = $col->toArray();
             $row['nativetype'] = $row['type'] = $this->getDBType($col);
