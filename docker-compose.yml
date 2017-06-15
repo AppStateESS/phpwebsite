@@ -2,6 +2,8 @@ version: '3'
 services:
   mysql_db:
    image: mariadb
+   ports:
+   - "4306:3306"
    environment:
     MYSQL_USER: phpwebsite
     MYSQL_PASSWORD: phpwebsite
@@ -10,6 +12,8 @@ services:
 
   postgres_db:
    image: postgres
+   ports:
+   - "6432:5432"
    environment:
     POSTGRES_PASSWORD: phpwebsite
     POSTGRES_USER: phpwebsite
