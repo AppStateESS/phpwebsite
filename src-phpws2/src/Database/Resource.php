@@ -301,6 +301,8 @@ abstract class Resource extends Alias
         if ($operator == null) {
             if (is_array($value)) {
                 $operator = 'IN';
+            } elseif (is_null($value)) {
+                $operator = 'IS';
             } else {
                 $operator = '=';
             }

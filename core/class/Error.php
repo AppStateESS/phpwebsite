@@ -1,6 +1,2 @@
 <?php
-
-class PHPWS_Error extends \phpws\PHPWS_Error
-{
-
-}
+require_once PHPWS_SOURCE_DIR . 'src-phpws-legacy/src/PHPWS_Error.php';

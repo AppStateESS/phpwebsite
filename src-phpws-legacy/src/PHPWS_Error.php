@@ -41,10 +41,13 @@ class PHPWS_Error
      * Replacement functions for PEAR's raiseError function. Prevents
      * strict php 5 errors
      */
-    public static function raiseError($message = null, $code = null, $mode = null, $options = null, $userinfo = null, $error_class = null, $skipmsg = false)
+    public static function raiseError($message = null, $code = null,
+            $mode = null, $options = null, $userinfo = null,
+            $error_class = null, $skipmsg = false)
     {
         $pear = \phpws\PHPWS_Error::getPear();
-        return $pear->raiseError($message, $code, $mode, $options, $userinfo, $error_class, $skipmsg);
+        return $pear->raiseError($message, $code, $mode, $options, $userinfo,
+                        $error_class, $skipmsg);
     }
 
     public static function logIfError($item)
@@ -57,16 +60,17 @@ class PHPWS_Error
         }
     }
 
-    public static function get($value, $module, $funcName = NULL, $extraInfo = NULL)
+    public static function get($value, $module, $funcName = NULL,
+            $extraInfo = NULL)
     {
-        $current_language = \phpws2\Language::getLocale();
-        \phpws2\Language::setLocale(DEFAULT_LANGUAGE);
         if (empty($module)) {
-            return \phpws\PHPWS_Error::get(PHPWS_NO_MODULE, 'core', '\phpws\PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+            return \phpws\PHPWS_Error::get(PHPWS_NO_MODULE, 'core',
+                            '\phpws\PHPWS_Error::get',
+                            'Value: ' . $value . ', Function: ' . $funcName);
         }
 
         try {
-            $errorFile = \phpws\PHPWS_Core::getConfigFile($module, 'ErrorCodeDefines.php');
+            $errorFile = \phpws\PHPWS_Core::getConfigFile($module, 'error.php');
         } catch (\Exception $e) {
             $errorFile = null;
         }
@@ -74,7 +78,7 @@ class PHPWS_Error
         if (empty($errorFile)) {
             // Error file not found in local config directory. Checking inc/ source directory
             if ($module == 'core') {
-                $errorFile = PHPWS_SOURCE_DIR . 'core/inc/error.php';
+                $errorFile = PHPWS_SOURCE_DIR . 'src-phpws-legacy/config/ErrorCodeDefines.php';
             } else {
                 $errorFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/inc/error.php';
             }
@@ -85,7 +89,8 @@ class PHPWS_Error
                     echo _('Core could not locate its error.php file.');
                     die;
                 }
-                return \phpws\PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', '\phpws\PHPWS_Error::get', 'Module: ' . $module);
+                return \phpws\PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core',
+                                '\phpws\PHPWS_Error::get', 'Module: ' . $module);
             }
         }
 
@@ -124,18 +129,20 @@ class PHPWS_Error
             }
         }
 
-        $error = \phpws\PHPWS_Error::raiseError($message, $value, NULL, NULL, implode('', $fullError));
-        \phpws2\Language::setLocale($current_language);
+        $error = \phpws\PHPWS_Error::raiseError($message, $value, NULL, NULL,
+                        implode('', $fullError));
         return $error;
     }
 
-    public static function log($value, $module = NULL, $funcName = NULL, $extraInfo = NULL)
+    public static function log($value, $module = NULL, $funcName = NULL,
+            $extraInfo = NULL)
     {
         if ((bool) PHPWS_LOG_ERRORS == FALSE) {
             return;
         }
         if (!\phpws\PHPWS_Error::isError($value)) {
-            $error = \phpws\PHPWS_Error::get($value, $module, $funcName, $extraInfo);
+            $error = \phpws\PHPWS_Error::get($value, $module, $funcName,
+                            $extraInfo);
         } else {
             $error = $value;
         }
