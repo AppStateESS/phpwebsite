@@ -28,3 +28,4 @@ services:
      - postgres_db
     volumes:
      - .:/var/www/html
+    tty: true
