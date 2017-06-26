@@ -453,7 +453,7 @@ class User_Action
         }
         $key = new \Canopy\Key((int) $_GET['key_id']);
 
-        if (!Key::checkKey($key, false)) {
+        if (!\Canopy\Key::checkKey($key, false)) {
             PHPWS_Error::log(USER_BAD_KEY, 'users', 'User_Action::popupPermission', "Key : " . $_GET['key_id']);
             echo 'Unable to set permissions. Bad key data.';
             Layout::nakedDisplay(null, null, true);
@@ -485,7 +485,7 @@ class User_Action
 
         $key = new \Canopy\Key((int) $_REQUEST['key_id']);
 
-        if (!Key::checkKey($key, false)) {
+        if (!\Canopy\Key::checkKey($key, false)) {
             return;
         }
 
