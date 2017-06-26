@@ -86,6 +86,15 @@ abstract class Resource extends \Canopy\Data
     }
 
     /**
+     * Forces a PATCH loadRequestByType
+     */
+    public function loadPatchByType(\Canopy\Request $request,
+            array $ignore = null, array $null_on_failure = null)
+    {
+        $this->loadRequestByType($request, $ignore, $null_on_failure, 'patch');
+    }
+
+    /**
      * Forces a PUT loadRequestByType
      */
     public function loadPutByType(\Canopy\Request $request,
