@@ -1,6 +1,6 @@
 <div class="box">
     <div class="btn-group-wrap">
-        <div class="view-links btn-group">{VIEW_LINKS}<br />{SUGGEST}</div>
+        <div class="view-links btn-group">{today}{DAY_LINK}{WEEK}{GRID}{LIST}<br />{SUGGEST}</div>
     </div>
     <div class="align-center smaller">{SCHEDULE_PICK}</div>
 </div>

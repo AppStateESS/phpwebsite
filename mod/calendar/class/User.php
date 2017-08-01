@@ -206,7 +206,7 @@ class Calendar_User
         if (!$this->event->id) {
             \phpws\PHPWS_Core::errorPage('404');
         }
-
+        
         $template = $this->event->getTpl();
 
         if ($js) {
@@ -216,7 +216,9 @@ class Calendar_User
         }
 
         $template['DOWNLOAD'] = $this->eventDownloadLink($this->event->id);
-        $template['VIEW_LINKS'] = $this->viewLinks('event');
+        $viewLinks = $this->viewLinks('event');
+        $template = array_merge($template, $viewLinks);
+        //$template['VIEW_LINKS'] = $viewLinks;
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
     }
 
