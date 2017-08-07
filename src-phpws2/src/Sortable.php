@@ -11,6 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
+ * This class assists with sorting items within a table.
+ * 
  * @author Matthew McNaney <mcnaney at gmail dot com>
  *
  * @license http://opensource.org/licenses/lgpl-3.0.html
@@ -50,6 +52,8 @@ class Sortable
      * @var \phpws2\Database\Table
      */
     private $tbl;
+    
+    private $start_count = 1;
 
     public function __construct($table_name, $sort_column)
     {
@@ -76,6 +80,11 @@ class Sortable
         $this->sort_column = $column;
     }
 
+    public function startAtZero()
+    {
+        $this->start_count = 0;
+    }
+    
     private function getDB($anchor = true)
     {
         $db = Database::getDB();
@@ -101,7 +110,7 @@ class Sortable
         extract($this->getDB());
         $tbl->addField('id');
         $tbl->addOrderBy($tbl->getField($this->sort_column));
-        $count = 1;
+        $count = $this->start_count;
         while ($id = $db->selectColumn()) {
             $this->updateSort($count, $id);
             $count++;
@@ -129,7 +138,7 @@ class Sortable
         $tbl->addOrderBy($tbl->addField($this->sort_column));
         $tbl->addField('id');
         $result = $db->select();
-        $count = 0;
+        $count = $this->start_count - 1;
         foreach ($result as $row) {
             $id = $row['id'];
             $sort = $row[$this->sort_column];
