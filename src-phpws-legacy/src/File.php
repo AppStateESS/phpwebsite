@@ -817,7 +817,7 @@ class PHPWS_File
         }
     }
 
-    public function getVbType($ext)
+    public static function getVbType($ext)
     {
         $ext = trim(strtolower($ext));
         if (strpos($ext, '.')) {
