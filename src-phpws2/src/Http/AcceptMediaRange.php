@@ -21,7 +21,12 @@ class AcceptMediaRange
 
     public function __construct($contentType, $priority, $params)
     {
-        list($this->type, $this->subtype) = explode(self::TYPESEP, $contentType);
+        if ($contentType !== self::WILDCARD) {
+            list($this->type, $this->subtype) = explode(self::TYPESEP, $contentType);
+        } else {
+            $this->type = self::WILDCARD;
+            $this->subtype = self::WILDCARD;
+        }
         $this->priority    = $priority;
         $this->params      = $params;
     }
