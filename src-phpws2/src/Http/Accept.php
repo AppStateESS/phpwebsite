@@ -30,7 +30,7 @@ class Accept
         $this->mediaRanges = array();
         foreach(explode(',', $acceptStr) as $mediaRange) {
             $acceptParams = explode(';', $mediaRange);
-            $contentType = array_shift($acceptParams);
+            $contentType = trim(array_shift($acceptParams));
             $priority = -1.0;
             $params = array();
 
