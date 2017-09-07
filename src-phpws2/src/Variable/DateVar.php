@@ -17,6 +17,9 @@ class DateVar extends IntegerVar {
      * @var string
      */
     protected $format = '%F';
+    
+    // If true, 0 or null will be returned as 1969-12-31
+    protected $printEmpty = true;
 
     public function getInput()
     {
@@ -28,6 +31,11 @@ class DateVar extends IntegerVar {
     public function addTime($time)
     {
         $this->set($this->value + $time);
+    }
+    
+    public function setPrintEmpty($printEmpty)
+    {
+        $this->printEmpty = (bool)$printEmpty;
     }
 
     /**
@@ -48,7 +56,11 @@ class DateVar extends IntegerVar {
 
     public function __toString()
     {
-        return strftime($this->format, $this->value);
+        if (empty($this->value) && !$this->printEmpty) {
+            return '';
+        } else {
+            return strftime($this->format, $this->value);
+        }
     }
 
     public function stamp()
