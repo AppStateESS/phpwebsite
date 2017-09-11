@@ -10,7 +10,7 @@ CKEDITOR.dialog.add('imageDialog', function(editor) {
                 elements: [
                     {
                         type: 'iframe',
-                        src: editor.config.RootPath + 'index.php?module=filecabinet&ckop=form&ftype=1',
+                        src: './index.php?module=filecabinet&ckop=form&ftype=1',
                         width: 1024, height: 600 - (CKEDITOR.env.ie ? 10 : 0)
                     }
                 ]
