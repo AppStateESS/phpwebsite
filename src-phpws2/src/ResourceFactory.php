@@ -47,6 +47,7 @@ class ResourceFactory
      *
      * @param \phpws2\Resource $resource
      * @param string $table_name
+     * @return Resource
      */
     public static function saveResource(Resource $resource, $table_name = null)
     {
