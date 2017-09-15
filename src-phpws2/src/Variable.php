@@ -498,7 +498,7 @@ abstract class Variable extends \Canopy\Data
         }
         $dt = $table->addDataType($this->varname, $this->column_type);
 
-        if (isset($this->value)) {
+        if (isset($this->value) && $dt->getDefault() !== null) {
             $dt->setDefault($this->toDatabase());
         } else {
             $dt->setDefault(null);

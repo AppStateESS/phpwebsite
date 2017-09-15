@@ -267,7 +267,7 @@ abstract class Resource extends \Canopy\Data
      */
     public function getVariablesAsDatatypes(\phpws2\Database\Table $table)
     {
-        $vars = $this->getVars();
+        $vars = $this->getSaveVars();
         foreach ($vars as $variable) {
             if ($variable instanceof \phpws2\Variable) {
                 if ($variable->getIsTableColumn()) {
