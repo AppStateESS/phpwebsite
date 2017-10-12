@@ -363,6 +363,13 @@ class PHPWS_Form
     }
 
     /**
+     * Get all elements
+     */
+    public function getAllElements(){
+        return $this->_elements;
+    }
+
+    /**
      * Removes an element from the form
      */
     public function dropElement($name)
