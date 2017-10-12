@@ -21,7 +21,7 @@ function update_core_2_3_0()
     $result = $db2->select();
 
     if (!empty($result)) {
-        Settings::createSettingsTable();
+        \phpws2\Settings::createSettingsTable();
         $db3 = \phpws2\Database::newDB();
         $settings = $db3->addTable('settings');
         $db3->delete();
