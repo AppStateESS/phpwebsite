@@ -9,15 +9,16 @@ namespace phpws2\Variable;
  * @subpackage Variable
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
-class DateVar extends IntegerVar {
+class DateVar extends IntegerVar
+{
 
     protected $input_type = 'date';
+
     /**
      * Output format. Based on strftime.
      * @var string
      */
     protected $format = '%F';
-    
     // If true, 0 or null will be returned as 1969-12-31
     protected $printEmpty = true;
 
@@ -32,10 +33,10 @@ class DateVar extends IntegerVar {
     {
         $this->set($this->value + $time);
     }
-    
+
     public function setPrintEmpty($printEmpty)
     {
-        $this->printEmpty = (bool)$printEmpty;
+        $this->printEmpty = (bool) $printEmpty;
     }
 
     /**
@@ -56,16 +57,25 @@ class DateVar extends IntegerVar {
 
     public function __toString()
     {
-        if (empty($this->value) && !$this->printEmpty) {
-            return '';
-        } else {
-            return strftime($this->format, $this->value);
-        }
+        return $this->get($this->format);
     }
 
     public function stamp()
     {
         $this->set(time());
+    }
+
+    public function get($format = null)
+    {
+        if (empty($this->value) && !$this->printEmpty) {
+            return '';
+        } else {
+            if (empty($format)) {
+                return $this->value;
+            } else {
+                return strftime($format, $this->value);
+            }
+        }
     }
 
 }
