@@ -13,6 +13,7 @@ require_once PHPWS_SOURCE_DIR . 'src-phpws2/config/String.php';
  */
 class StringVar extends \phpws2\Variable
 {
+
     /**
      * Contains the form types that can be created from this object
      * @var array
@@ -50,15 +51,15 @@ class StringVar extends \phpws2\Variable
     protected $limit = 0;
     protected $allow_empty = true;
 
-    public function __construct($value = null, $varname = null, $limit=null)
+    public function __construct($value = null, $varname = null, $limit = null)
     {
         parent::__construct($value, $varname);
+        $this->allowed_tags = array();
         if ($limit !== null) {
             $this->setLimit($limit);
         }
     }
-    
-    
+
     /**
      * Checks the string to see it is a string, is under limit, and is formatted
      * correctly (dependent on the regexp_match).
@@ -68,19 +69,24 @@ class StringVar extends \phpws2\Variable
     protected function verifyValue($value)
     {
         if (!$this->allow_empty && strlen($value) == 0) {
-            throw new \Exception(sprintf('Value "%1$s" may not be an empty string', $this->varname));
+            throw new \Exception(sprintf('Value "%1$s" may not be an empty string',
+                    $this->varname));
         }
 
         if (!is_string($value)) {
-            throw new \Exception(sprintf('Value "%1$s" is a %2$s, not a string', $this->varname, gettype($value)));
+            throw new \Exception(sprintf('Value "%1$s" is a %2$s, not a string',
+                    $this->varname, gettype($value)));
         }
 
         if ($this->limit && strlen($value) > $this->limit) {
-            throw new \Exception(sprintf('%s is over the %s character limit', $this->getLabel(), $this->getLimit()));
+            throw new \Exception(sprintf('%s is over the %s character limit',
+                    $this->getLabel(), $this->getLimit()));
         }
 
-        if (strlen($value) && isset($this->regexp_match) && !preg_match($this->regexp_match, $value)) {
-            throw new \Exception(sprintf('String variable "%s" is not formatted correctly', $this->getVarName()));
+        if (strlen($value) && isset($this->regexp_match) && !preg_match($this->regexp_match,
+                        $value)) {
+            throw new \Exception(sprintf('String variable "%s" is not formatted correctly',
+                    $this->getVarName()));
         }
 
         return true;
@@ -108,7 +114,8 @@ class StringVar extends \phpws2\Variable
         }
 
         if (preg_match($match, $test) === false) {
-            throw new \Exception(sprintf('Regular expression error: %s', preg_error_msg(preg_last_error())));
+            throw new \Exception(sprintf('Regular expression error: %s',
+                    preg_error_msg(preg_last_error())));
         }
         $this->regexp_match = $match;
     }
@@ -135,7 +142,7 @@ class StringVar extends \phpws2\Variable
      */
     public function getJavascript()
     {
-
+        
     }
 
     /**
@@ -151,18 +158,55 @@ class StringVar extends \phpws2\Variable
     /**
      * Receives an array or individual parameters and adds them to the allowed
      * tags stack.
+     * 
+     * Accepted parameters:
+     * $tags = array('p', 'strong', 'em');
+     * $foo->addAllowedTags($tags);
+     * 
+     * or
+     * 
+     * $foo->addAllowedTags('p', 'strong', 'em');
+     * 
+     * or 
+     * 
+     * $foo->addAllowedTags('p,strong,em');
      */
     public function addAllowedTags()
     {
         $args = func_get_args();
-        if (is_array($args[0])) {
-            $args = $args[0];
+        
+        $prepare = function(&$str) {
+            $str = strtolower(trim($str));
+        };
+        
+        foreach($args as $tag) {
+            if (is_array($tag)) {
+                array_walk($tag, $prepare);
+                $this->allowed_tags = array_merge($this->allowed_tags, $tag);
+            } elseif (strpos($tag, ',') !== false) {
+                $this->addAllowedTags(explode(',', $tag));
+            } else {
+                $prepare($tag);
+                if (!empty($tag)) {
+                    $this->allowed_tags[] = $tag;
+                }
+            }
         }
-        if (empty($args)) {
-            $this->allowed_tags = true;
-        } else {
-            $this->allowed_tags = '<' . implode('><', $args) . '>';
+        
+        $this->allowed_tags = array_unique($this->allowed_tags);
+    }
+
+    public function getAllowedTags()
+    {
+        return $this->allowed_tags;
+    }
+    
+    public function getStripTagsString()
+    {
+        if (empty($this->allowed_tags)) {
+            return null;
         }
+        return '<' . implode('><', $this->allowed_tags) . '>';
     }
 
     /**
@@ -178,12 +222,7 @@ class StringVar extends \phpws2\Variable
         if (!$this->allowed_tags) {
             return $this->value;
         } else {
-            if (is_string($this->allowed_tags)) {
-                $tags = & $this->allowed_tags;
-            } else {
-                $tags = null;
-            }
-            return strip_tags($this->value, $tags);
+            return strip_tags($this->value, $this->getStripTagsString());
         }
     }
 
