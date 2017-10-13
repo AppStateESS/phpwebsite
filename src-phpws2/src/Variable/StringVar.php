@@ -178,7 +178,9 @@ class StringVar extends \phpws2\Variable
         $prepare = function(&$str) {
             $str = strtolower(trim($str));
         };
-        
+        if (empty($args)) {
+            return;
+        }
         foreach($args as $tag) {
             if (is_array($tag)) {
                 array_walk($tag, $prepare);
