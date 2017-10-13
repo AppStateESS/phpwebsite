@@ -9,24 +9,17 @@ namespace phpws2\Variable;
  */
 class TextOnly extends \phpws2\Variable\StringVar
 {
-    /**
-     * Text without html tags
-     * @param type $value
-     * @param type $varname
-     */
-    public function __construct($value = null, $varname = null)
-    {
-        // No tags allowed
-        $this->addAllowedTags(null);
-        parent::__construct($value, $varname);
-    }
-
     public function set($value)
     {
         if (preg_match('/<\/?[^>]+>/i', $value)) {
             throw new \Exception('Tags are not permitted in TextOnly');
         }
         parent::set($value);
+    }
+    
+    public function addAllowedTags()
+    {
+        throw new \Exception('Tags are not permitted in TextOnly');
     }
 
 }
