@@ -291,11 +291,9 @@ define('FORCE_EDITOR', true);
 /* * ********************** Captcha Settings ****************** */
 /**
  * Determines if you want to use captcha and if so which version.
- * phpWebSite ships with freecap by default which is supplied by
- * http://www.puremango.co.uk/
  */
 define('ALLOW_CAPTCHA', true);
-define('CAPTCHA_NAME', 'freecap');
+define('CAPTCHA_NAME', 'recaptcha');
 
 /**
  * If true, <script> tags can be submitted by a user who has scripting permissions.
