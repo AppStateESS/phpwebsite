@@ -57,7 +57,7 @@ class DateVar extends IntegerVar
 
     public function __toString()
     {
-        return $this->get($this->format);
+        return (string)$this->get($this->format);
     }
 
     public function stamp()
