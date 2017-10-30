@@ -14,6 +14,7 @@
 
 class Cabinet
 {
+
     public $title = null;
     public $message = null;
     public $content = null;
@@ -116,7 +117,8 @@ class Cabinet
             $itemname = $_GET['itn'];
         }
 
-        $this->file_manager = new FC_File_Manager($module, $itemname, $_GET['fid']);
+        $this->file_manager = new FC_File_Manager($module, $itemname,
+                $_GET['fid']);
         if (isset($_GET['mw'])) {
             $this->file_manager->max_width = (int) $_GET['mw'];
         }
@@ -198,7 +200,8 @@ class Cabinet
                 break;
 
             case 'add_folder':
-                if (!Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
+                if (!Current_User::allow('filecabinet', 'edit_folders', null,
+                                null, true)) {
                     Current_User::disallow();
                 }
                 $javascript = true;
@@ -272,7 +275,8 @@ class Cabinet
                 break;
 
             case 'delete_folder':
-                if (!Current_User::authorized('filecabinet', 'delete_folders', null, null, true)) {
+                if (!Current_User::authorized('filecabinet', 'delete_folders',
+                                null, null, true)) {
                     Current_User::disallow();
                 }
                 $this->loadFolder();
@@ -410,7 +414,8 @@ class Cabinet
         $template['CONTENT'] = &$this->content;
 
         if ($javascript) {
-            $main = PHPWS_Template::process($template, 'filecabinet', 'javascript.tpl');
+            $main = PHPWS_Template::process($template, 'filecabinet',
+                            'javascript.tpl');
             Layout::nakedDisplay($main);
         } else {
             $main = PHPWS_Template::process($template, 'filecabinet', 'main.tpl');
@@ -425,19 +430,20 @@ class Cabinet
         require_once 'HTTP/Download.php';
         \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
-        $document = new PHPWS_Document($document_id);
         if (empty($document->id)) {
             $message = 'Document id:' . $document_id;
             if (!empty($_SERVER['HTTP_REFERER'])) {
                 $message .= ' request from ' . $_SERVER['HTTP_REFERER'];
             }
-            PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $message);
-            Error::errorPage('404');
+            PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet',
+                    'Cabinet_Action::download', $message);
+            \phpws2\Error::errorPage('404');
         }
 
         $folder = new Folder($document->folder_id);
         if (!$folder->allow()) {
-            $content = dgettext('filecabinet', 'Sorry, the file you requested is off limits.');
+            $content = dgettext('filecabinet',
+                    'Sorry, the file you requested is off limits.');
             Layout::add($content);
             return;
         }
@@ -450,13 +456,14 @@ class Cabinet
             if (!empty($_SERVER['HTTP_REFERER'])) {
                 $message .= ' request from ' . $_SERVER['HTTP_REFERER'];
             }
-            PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $message);
+            PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet',
+                    'Cabinet_Action::download', $message);
             Error::errorPage('404');
         }
         $file_name = preg_replace('/[^\w]/', '-', $document->getTitle());
         $file_name = preg_replace('/-{2,}/', '-', $file_name);
         $file_name = preg_replace('/-$/', '', $file_name);
-        $file_name.= '.' . $document->getExtension();
+        $file_name .= '.' . $document->getExtension();
         $document->downloaded++;
         $document->save();
         $dl = new HTTP_Download;
@@ -519,7 +526,8 @@ class Cabinet
         $folder = new Folder($image->folder_id);
 
         if (!$folder->allow()) {
-            $content = dgettext('filecabinet', 'Sorry, the file you requested is off limits.');
+            $content = dgettext('filecabinet',
+                    'Sorry, the file you requested is off limits.');
             Layout::add($content);
             return;
         }
@@ -536,7 +544,8 @@ class Cabinet
                 $image->height = FC_MAX_IMAGE_POPUP_HEIGHT;
                 $image->width = $image->width * $ratio;
             }
-            $tpl['IMAGE'] = sprintf('<a href="%s">%s</a>', $image->getPath(), $image->getTag());
+            $tpl['IMAGE'] = sprintf('<a href="%s">%s</a>', $image->getPath(),
+                    $image->getTag());
         } else {
             $tpl['IMAGE'] = $image->getTag();
         }
@@ -553,7 +562,9 @@ class Cabinet
 
             if (!empty($next_img)) {
                 $next_link = Icon::show('next', 'Next image');
-                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $next_img[0]->popupAddress(), $next_link);
+                $tpl['NEXT'] = sprintf('<a id="next-link" href="%s%s">%s</a>',
+                        \phpws\PHPWS_Core::getHomeHttp(),
+                        $next_img[0]->popupAddress(), $next_link);
             }
 
             $db->resetWhere();
@@ -565,7 +576,9 @@ class Cabinet
 
             if (!empty($prev_img)) {
                 $prev_link = Icon::show('previous', 'Previous image');
-                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>', \phpws\PHPWS_Core::getHomeHttp(), $prev_img[0]->popupAddress(), $prev_link);
+                $tpl['PREV'] = sprintf('<a id="prev-link" href="%s%s">%s</a>',
+                        \phpws\PHPWS_Core::getHomeHttp(),
+                        $prev_img[0]->popupAddress(), $prev_link);
             }
         }
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
@@ -581,7 +594,8 @@ class Cabinet
 
         $folder = new Folder($multimedia->folder_id);
         if (!$folder->allow()) {
-            $content = dgettext('filecabinet', 'Sorry, the file you requested is off limits.');
+            $content = dgettext('filecabinet',
+                    'Sorry, the file you requested is off limits.');
             Layout::add($content);
             return;
         }
@@ -591,7 +605,8 @@ class Cabinet
         $tpl['DESCRIPTION'] = $multimedia->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
 
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'multimedia_view.tpl');
+        $content = PHPWS_Template::process($tpl, 'filecabinet',
+                        'multimedia_view.tpl');
         Layout::nakedDisplay($content);
     }
 
@@ -613,7 +628,8 @@ class Cabinet
 
     public function editFolder($js)
     {
-        if (!Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
+        if (!Current_User::allow('filecabinet', 'edit_folders',
+                        $this->folder->id, 'folder')) {
             Current_User::disallow();
         }
 
@@ -742,7 +758,8 @@ class Cabinet
             \phpws\PHPWS_Core::errorPage('404');
         }
 
-        $this->title = sprintf('%s - %s', $this->folder->title, $this->folder->getPublic());
+        $this->title = sprintf('%s - %s', $this->folder->title,
+                $this->folder->getPublic());
         $this->loadForms();
         $this->forms->folderContents($this->folder);
     }
@@ -805,8 +822,11 @@ class Cabinet
 
 
             if (!@rename($incoming_file, $folder_directory)) {
-                $errors[$filename] = sprintf(dgettext('filecabinet', 'Could not move file "%s" to "%s" folder directory.'), $filename, $folder->title);
-                PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyFiles', $folder_directory);
+                $errors[$filename] = sprintf(dgettext('filecabinet',
+                                'Could not move file "%s" to "%s" folder directory.'),
+                        $filename, $folder->title);
+                PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet',
+                        'Cabinet::classifyFiles', $folder_directory);
                 continue;
             }
 
@@ -865,9 +885,11 @@ class Cabinet
 
         $sizes['system'] = & $sys_size;
         $sizes['form'] = & $form->max_file_size;
-        $sizes['document'] = PHPWS_Settings::get('filecabinet', 'max_document_size');
+        $sizes['document'] = PHPWS_Settings::get('filecabinet',
+                        'max_document_size');
         $sizes['image'] = PHPWS_Settings::get('filecabinet', 'max_image_size');
-        $sizes['multimedia'] = PHPWS_Settings::get('filecabinet', 'max_multimedia_size');
+        $sizes['multimedia'] = PHPWS_Settings::get('filecabinet',
+                        'max_multimedia_size');
         $sizes['absolute'] = ABSOLUTE_UPLOAD_LIMIT;
 
         return $sizes;
@@ -911,7 +933,8 @@ class Cabinet
 
         $tpl['CLOSE'] = javascript('close_window');
         $thumb = PHPWS_Settings::get('filecabinet', 'max_thumbnail_size');
-        $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), $thumb, $thumb);
+        $warnings[] = sprintf(dgettext('filecabinet',
+                        'Max thumbnail size : %sx%s.'), $thumb, $thumb);
         if ($mm->isVideo()) {
             $warnings[] = 'Image must be a jpeg file.';
         }
@@ -919,7 +942,8 @@ class Cabinet
         $tpl['WARNINGS'] = implode('<br />', $warnings);
         $this->title = 'Upload new thumbnail';
 
-        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'thumbnail.tpl');
+        $this->content = PHPWS_Template::process($tpl, 'filecabinet',
+                        'thumbnail.tpl');
     }
 
     public function postTN()
@@ -953,7 +977,8 @@ class Cabinet
         }
 
         $image->write();
-        $image->resize($image->file_directory . $image->file_name, $image->getMaxWidth(), $image->getMaxHeight(), true);
+        $image->resize($image->file_directory . $image->file_name,
+                $image->getMaxWidth(), $image->getMaxHeight(), true);
 
         if ($obj->_classtype == 'multimedia') {
             $obj->thumbnail = $image->file_name;
@@ -1158,11 +1183,13 @@ class Cabinet
     public static function getResizes($max_width = 0, $add_default = false)
     {
         if (!$max_width) {
-            $max_width = PHPWS_Settings::get('filecabinet', 'max_image_dimension');
+            $max_width = PHPWS_Settings::get('filecabinet',
+                            'max_image_dimension');
         }
 
         if ($add_default) {
-            $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'), PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+            $resizes[0] = sprintf(dgettext('filecabinet', 'Default (%spx)'),
+                    PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         switch (1) {
@@ -1230,11 +1257,14 @@ class Cabinet
     {
         if (isset($_POST['file_list'])) {
             if (isset($_POST['image_force'])) {
-                $this->classifyIntoFolder($_POST['image_folders'], $_POST['file_list']);
+                $this->classifyIntoFolder($_POST['image_folders'],
+                        $_POST['file_list']);
             } elseif (isset($_POST['document_force'])) {
-                $this->classifyIntoFolder($_POST['document_folders'], $_POST['file_list']);
+                $this->classifyIntoFolder($_POST['document_folders'],
+                        $_POST['file_list']);
             } elseif (isset($_POST['media_force'])) {
-                $this->classifyIntoFolder($_POST['media_folders'], $_POST['file_list']);
+                $this->classifyIntoFolder($_POST['media_folders'],
+                        $_POST['file_list']);
             } elseif ($_POST['process_checked'] == 'classify_file') {
                 $this->loadForms();
                 if (!empty($_POST['file_list'])) {
@@ -1290,7 +1320,8 @@ class Cabinet
         foreach ($files as $filename) {
             $path = $classify_dir . $filename;
             $ext = PHPWS_File::getFileExtension($filename);
-            if ($this->fileTypeAllowed($path, $type) && PHPWS_File::checkMimeType($path) && in_array($ext, $allowed_types)) {
+            if ($this->fileTypeAllowed($path, $type) && PHPWS_File::checkMimeType($path) && in_array($ext,
+                            $allowed_types)) {
                 $file_obj = new $class_name;
                 $file_obj->folder_id = $folder->id;
                 $file_obj->setFilename($filename);
@@ -1299,7 +1330,8 @@ class Cabinet
                 $folder_directory = $file_obj->getPath();
 
                 if (!@rename($path, $folder_directory)) {
-                    PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyIntoFolder', $folder_directory);
+                    PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet',
+                            'Cabinet::classifyIntoFolder', $folder_directory);
                     continue;
                 }
 
