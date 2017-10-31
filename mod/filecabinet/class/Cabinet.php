@@ -430,6 +430,7 @@ class Cabinet
         require_once 'HTTP/Download.php';
         \phpws\PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
+        $document = new PHPWS_Document($document_id);
         if (empty($document->id)) {
             $message = 'Document id:' . $document_id;
             if (!empty($_SERVER['HTTP_REFERER'])) {
