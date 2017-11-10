@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Setup class controls the first-time installation of phpwebsite
+ * Setup class controls the first-time installation of Canopy
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
@@ -271,7 +271,7 @@ class Setup
             return true;
         } elseif ($checkConnection == 2) {
             $sub[] = dgettext('core',
-                    'PhpWebSite was able to connect, but the database already contained tables.');
+                    'Canopy was able to connect, but the database already contained tables.');
             if ($this->getConfigSet('dbprefix')) {
                 $sub[] = dgettext('core',
                         'Since you set a table prefix, you may force an installation into this database.');
@@ -279,7 +279,7 @@ class Setup
                         'Click the link below to continue or change your connection settings.');
                 $sub[] = sprintf('<a href="index.php?step=7">%s</a>',
                         dgettext('core',
-                                'I want to install phpWebSite in this database.'));
+                                'I want to install Canopy in this database.'));
             } else {
                 $sub[] = dgettext('core',
                         'Create a new database, remove all tables from the database you want to use, or use table prefixing.');
@@ -457,12 +457,12 @@ class Setup
         $databases = array('mysql' => 'MySQL', 'pgsql' => 'PostgreSQL');
 
         $formTpl['DBTYPE_DEF'] = dgettext('core',
-                'phpWebSite supports MySQL and PostgreSQL. Choose the type your server currently is running.');
+                'Canopy supports MySQL and PostgreSQL. Choose the type your server currently is running.');
 
         $formTpl['DBUSER_DEF'] = dgettext('core',
-                        'This is the user name that phpWebSite will use to access its database.')
+                        'This is the user name that Canopy will use to access its database.')
                 . ' <br /><i>' . dgettext('core',
-                        'Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
+                        'Note: it is a good idea to give each Canopy installation its own user.') . '</i>';
         if (isset($this->messages['dbuser'])) {
             $formTpl['DBUSER_ERR'] = $this->messages['dbuser'];
         }
@@ -475,13 +475,13 @@ class Setup
 
 
         $formTpl['DBPREF_DEF'] = dgettext('core',
-                'If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
+                'If you are installing Canopy in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
         if (isset($this->messages['dbpref'])) {
             $formTpl['DBPREF_ERR'] = $this->messages['dbpref'];
         }
 
         $formTpl['DBHOST_DEF'] = dgettext('core',
-                        'If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
+                        'If your database is on the same server as your Canopy installation, leave this as &#x22;localhost&#x22;.')
                 . '<br />' . dgettext('core',
                         'Otherwise, enter the ip or dns to the database server.');
 
@@ -489,7 +489,7 @@ class Setup
                 'If your host specification requires access via a specific port, enter it here.');
 
         $formTpl['DBNAME_DEF'] = dgettext('core',
-                        'The database\'s name into which you are installing phpWebSite.')
+                        'The database\'s name into which you are installing Canopy.')
                 . '<br /><i>' . dgettext('core',
                         'Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
         if (isset($this->messages['dbname'])) {
@@ -529,7 +529,7 @@ class Setup
 
         $form->addSubmit('default_submit', 'Continue');
         $this->content = $this->createForm($form, 'databaseConfig.tpl');
-        $this->title = 'Configure phpWebSite';
+        $this->title = 'Configure Canopy';
         $this->display();
     }
 
@@ -549,7 +549,7 @@ class Setup
         $tpl = new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', true);
         if (!isset($title)) {
-            $title = sprintf(dgettext('core', 'phpWebSite %s Setup'), $version);
+            $title = sprintf(dgettext('core', 'Canopy %s Setup'), $version);
         }
 
         if ($forward && AUTO_FORWARD) {
@@ -583,7 +583,7 @@ class Setup
         // step > 2; check for session
         if (!isset($_SESSION['session_check'])) {
             $this->content[] = dgettext('core',
-                    'phpWebSite depends on sessions to move data between pages.');
+                    'Canopy depends on sessions to move data between pages.');
             $this->content[] = sprintf('<a href="help/sessions.%s.txt">%s</a>',
                     DEFAULT_LANGUAGE, 'Sessions Help');
             $this->content[] = sprintf(dgettext('core',
@@ -603,7 +603,7 @@ class Setup
             switch ($this->testDBConnect(PHPWS_DSN)) {
                 case '2':
                     $this->content[] = dgettext('core',
-                            'phpWebSite configuration file and database have been found. We are assuming your installation is complete.');
+                            'Canopy configuration file and database have been found. We are assuming your installation is complete.');
                     $this->content[] = dgettext('core',
                             'You should move or delete the setup directory.');
                     $this->content[] = dgettext('core',
@@ -615,7 +615,7 @@ class Setup
 
                 case '-1':
                     $this->content[] = dgettext('core',
-                            'The phpWebSite configuration file exists but it\'s specified database does not.');
+                            'The Canopy configuration file exists but it\'s specified database does not.');
                     $this->content[] = dgettext('core',
                             'Create the database set in the config file or delete the config file.');
                     $this->title = dgettext('core',
@@ -625,7 +625,7 @@ class Setup
 
                 case '0':
                     $this->content[] = dgettext('core',
-                            'The phpWebSite configuration file exists but we could not connect to it\'s specified database.');
+                            'The Canopy configuration file exists but we could not connect to it\'s specified database.');
                     $this->content[] = dgettext('core',
                             'Check your dsn settings or delete the config file.');
                     $this->title = dgettext('core',
@@ -753,7 +753,7 @@ class Setup
     {
         $this->content[] = '<hr />';
         $this->content[] = dgettext('core',
-                        'Installation of phpWebSite is complete.') . '<br />';
+                        'Installation of Canopy is complete.') . '<br />';
         $this->content[] = dgettext('core',
                         'If you experienced any error messages, check your error.log file.') . '<br />';
         if (CHECK_DIRECTORY_PERMISSIONS) {
@@ -811,7 +811,7 @@ class Setup
 
         $test['session_auto_start']['pass'] = !(bool) ini_get('session.auto_start'); // need 0
         $test['session_auto_start']['fail'] = dgettext('core',
-                'session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file.');
+                'session.auto_start must be set to 0 for Canopy to work. Please review your php.ini file.');
         $test['session_auto_start']['name'] = dgettext('core',
                 'Session auto start disabled');
         $test['session_auto_start']['crit'] = true;
@@ -919,7 +919,7 @@ class Setup
 
         if (!$allow_install) {
             $this->title = dgettext('core',
-                    'Cannot install phpWebSite because of the following reasons:');
+                    'Cannot install Canopy because of the following reasons:');
             $this->content = '<ul>' . PHPWS_Text::tag_implode('li', $crit) . '</ul>';
             $this->display();
         } else {

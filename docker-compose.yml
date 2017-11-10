@@ -5,19 +5,19 @@ services:
    ports:
    - "4306:3306"
    environment:
-    MYSQL_USER: phpwebsite
-    MYSQL_PASSWORD: phpwebsite
-    MYSQL_DATABASE: phpwebsite
-    MYSQL_ROOT_PASSWORD: phpwebsite
+    MYSQL_USER: canopy
+    MYSQL_PASSWORD: canopy
+    MYSQL_DATABASE: canopy
+    MYSQL_ROOT_PASSWORD: canopy
 
   postgres_db:
-   image: postgres
+   image: postgres:9.6
    ports:
    - "6432:5432"
    environment:
-    POSTGRES_PASSWORD: phpwebsite
-    POSTGRES_USER: phpwebsite
-    POSTGRES_DB: phpwebsite
+    POSTGRES_PASSWORD: canopy
+    POSTGRES_USER: canopy
+    POSTGRES_DB: canopy
 
   web:
     build: .
