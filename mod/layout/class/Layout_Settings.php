@@ -193,7 +193,7 @@ class Layout_Settings {
         $this->_extra_styles = null;
         $this->_style_sheets = null;
         $directory = sprintf('themes/%s/', $this->current_theme);
-        @$cookie = PHPWS_Cookie::read('layout_style');
+        @$cookie =  \phpws\PHPWS_Cookie::read('layout_style');
 
         for ($i = 1; $i < 20; $i++) {
             if (isset($themeVars['style_sheet_' . $i])) {

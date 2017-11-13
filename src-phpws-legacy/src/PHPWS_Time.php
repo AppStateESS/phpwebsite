@@ -143,12 +143,12 @@ class PHPWS_Time {
 	 */
 	public static function getUserTZ()
 	{
-		$user_tz = PHPWS_Cookie::read('user_tz');
+		$user_tz =  \phpws\PHPWS_Cookie::read('user_tz');
 
 		if (!isset($user_tz)) {
 			return PHPWS_Time::getServerTZ();
 		} else {
-			$user_dst = PHPWS_Cookie::read('user_dst');
+			$user_dst =  \phpws\PHPWS_Cookie::read('user_dst');
 			if (!isset($user_dst)) {
 				return $user_tz;
 			} else {

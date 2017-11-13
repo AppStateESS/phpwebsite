@@ -495,7 +495,7 @@ final class Current_User {
             return false;
         }
 
-        $remember = PHPWS_Cookie::read('remember_me');
+        $remember =  \phpws\PHPWS_Cookie::read('remember_me');
         if (!$remember) {
             return false;
         }

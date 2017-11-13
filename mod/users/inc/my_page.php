@@ -130,7 +130,7 @@ class User_Settings {
         if (isset($_REQUEST['timezone'])) {
             $user_tz = $_REQUEST['timezone'];
         } else {
-            $user_tz = PHPWS_Cookie::read('user_tz');
+            $user_tz =  \phpws\PHPWS_Cookie::read('user_tz');
         }
 
         $form->addSelect('timezone', $timezones);
@@ -141,7 +141,7 @@ class User_Settings {
         if (isset($_REQUEST['dst']) && $_REQUEST['timezone'] != 'server') {
             $dst = $_REQUEST['dst'];
         } else {
-            $dst = PHPWS_Cookie::read('user_dst');
+            $dst =  \phpws\PHPWS_Cookie::read('user_dst');
         }
 
         $form->addCheckbox('dst', 1);
@@ -151,7 +151,7 @@ class User_Settings {
         if (isset($_POST['cp'])) {
             $cp = (int) $_POST['cp'];
         } else {
-            $cp = (int) PHPWS_Cookie::read('user_cp');
+            $cp = (int)  \phpws\PHPWS_Cookie::read('user_cp');
         }
 
         if (Current_User::allowRememberMe()) {
@@ -210,27 +210,27 @@ class User_Settings {
         }
 
         if ($_POST['timezone'] == 'server') {
-            PHPWS_Cookie::delete('user_tz');
-            PHPWS_Cookie::delete('user_dst');
+             \phpws\PHPWS_Cookie::delete('user_tz');
+             \phpws\PHPWS_Cookie::delete('user_dst');
             return;
         } else {
-            PHPWS_Cookie::write('user_tz', strip_tags($_POST['timezone']));
+             \phpws\PHPWS_Cookie::write('user_tz', strip_tags($_POST['timezone']));
         }
 
 
         if (isset($_POST['dst'])) {
-            PHPWS_Cookie::write('user_dst', 1);
+             \phpws\PHPWS_Cookie::write('user_dst', 1);
         } else {
-            PHPWS_Cookie::delete('user_dst');
+             \phpws\PHPWS_Cookie::delete('user_dst');
         }
     }
 
     public static function setCP()
     {
         if (isset($_POST['cp'])) {
-            PHPWS_Cookie::write('user_cp', 1);
+             \phpws\PHPWS_Cookie::write('user_cp', 1);
         } else {
-            PHPWS_Cookie::delete('user_cp');
+             \phpws\PHPWS_Cookie::delete('user_cp');
         }
     }
 
@@ -253,10 +253,10 @@ class User_Settings {
                 $remember['username'] = $_SESSION['User']->username;
                 $remember['password'] = $password;
                 $time_to_live = time() + (86400 * REMEMBER_ME_LIFE);
-                PHPWS_Cookie::write('remember_me', serialize($remember),
+                 \phpws\PHPWS_Cookie::write('remember_me', serialize($remember),
                         $time_to_live);
             } else {
-                PHPWS_Cookie::delete('remember_me');
+                 \phpws\PHPWS_Cookie::delete('remember_me');
             }
         }
     }

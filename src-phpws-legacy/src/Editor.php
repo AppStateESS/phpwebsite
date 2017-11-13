@@ -102,7 +102,7 @@ class Editor {
 
     public static function getUserType()
     {
-        if ($user_type = PHPWS_Cookie::read('phpws_editor')) {
+        if ($user_type =  \phpws\PHPWS_Cookie::read('phpws_editor')) {
             if ($user_type == 'none') {
                 return null;
             }
@@ -114,7 +114,7 @@ class Editor {
             if (Editor::isType($user_type)) {
                 return $user_type;
             } else {
-                PHPWS_Cookie::delete('phpws_editor');
+                 \phpws\PHPWS_Cookie::delete('phpws_editor');
             }
         }
 

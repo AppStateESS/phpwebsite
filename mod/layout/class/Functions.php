@@ -22,10 +22,10 @@ function javascript($directory, $data = NULL, $base = null, $wrap_header = false
 
 function check_cookie()
 {
-    $cookie = PHPWS_Cookie::read('cookie_enabled');
+    $cookie =  \phpws\PHPWS_Cookie::read('cookie_enabled');
     if (!$cookie) {
         if (!isset($_GET['cc'])) {
-            PHPWS_Cookie::write('cookie_enabled', 'y');
+             \phpws\PHPWS_Cookie::write('cookie_enabled', 'y');
             \phpws\PHPWS_Core::reroute('index.php?cc=1');
         } else {
             $tpl['MESSAGE'] = 'This site requires you to enable cookies on your browser.';

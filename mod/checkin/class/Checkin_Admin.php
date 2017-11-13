@@ -162,19 +162,19 @@ class Checkin_Admin extends Checkin
                 break;
 
             case 'hide_panel':
-                PHPWS_Cookie::write('checkin_hide_panel', 1);
+                 \phpws\PHPWS_Cookie::write('checkin_hide_panel', 1);
                 \phpws\PHPWS_Core::goBack();
                 break;
 
             case 'show_panel':
-                PHPWS_Cookie::delete('checkin_hide_panel');
+                 \phpws\PHPWS_Cookie::delete('checkin_hide_panel');
                 \phpws\PHPWS_Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->assign();
                 break;
 
             case 'hide_sidebar':
-                PHPWS_Cookie::write('checkin_hide_sidebar', 1);
+                 \phpws\PHPWS_Cookie::write('checkin_hide_sidebar', 1);
                 \phpws\PHPWS_Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->use_sidebar = false;
@@ -182,7 +182,7 @@ class Checkin_Admin extends Checkin
                 break;
 
             case 'show_sidebar':
-                PHPWS_Cookie::delete('checkin_hide_sidebar');
+                 \phpws\PHPWS_Cookie::delete('checkin_hide_sidebar');
                 \phpws\PHPWS_Core::goBack();
                 $this->panel->setCurrentTab('assign');
                 $this->assign();
