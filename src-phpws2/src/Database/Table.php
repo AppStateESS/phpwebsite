@@ -23,6 +23,7 @@ define('VERIFY_COLUMNS', true);
  */
 abstract class Table extends Resource
 {
+
     const default_foreign_key_name = 'default_foreign_key';
 
     /**
@@ -148,7 +149,8 @@ abstract class Table extends Resource
 
     abstract public function constraintTypeAfterName();
 
-    abstract public function alter(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new);
+    abstract public function alter(\phpws2\Database\Datatype $old,
+            \phpws2\Database\Datatype $new);
 
     /**
      * Serializes the primary key in the current table. This is a one time method
@@ -169,7 +171,8 @@ abstract class Table extends Resource
      * @param \phpws2\Database\Field $field Field to change
      * @param string $new_name Name to change field to.
      */
-    abstract public function renameField(\phpws2\Database\Field $field, $new_name);
+    abstract public function renameField(\phpws2\Database\Field $field,
+            $new_name);
 
     /**
      * Return the type of database column the current column is.
@@ -218,6 +221,11 @@ abstract class Table extends Resource
     abstract public function getLastPearSequence();
 
     abstract public function getPrimaryKeySequenceName();
+
+    /**
+     * Creates a Pear sequence table based of MDB2 query
+     */
+    abstract protected function createPearSequenceTable();
 
     /**
      * @param string $name Name of the table
@@ -270,8 +278,27 @@ abstract class Table extends Resource
     {
         $source_table_name = $constraint->getSourceTable()->getFullName();
         if ($source_table_name != $this->getFullName()) {
-            throw new \Exception(sprintf('Source column table %s does not match current table %s', $source_table_name, $this->getFullName()));
+            throw new \Exception(sprintf('Source column table %s does not match current table %s',
+                    $source_table_name, $this->getFullName()));
         }
+    }
+
+    /**
+     * Gets the max id of a table. Used by createPearSequenceTable
+     */
+    protected function getMaxId()
+    {
+        $tableName = $this->getFullName(true);
+        $pdo = $this->db->query("select max(id) from $tableName");
+        return $pdo->fetchColumn(0);
+    }
+
+    protected function firstSequenceValue()
+    {
+        $sequence_name = $this->getPearSequenceName();
+        $startId = (int) $this->getMaxId();
+        $insertQuery = "insert into $sequence_name (id) values ($startId)";
+        $this->db->exec($insertQuery);
     }
 
     /**
@@ -355,7 +382,8 @@ abstract class Table extends Resource
     public function getValue($column_name, $value = null)
     {
         if (!$this->db->allowed($column_name)) {
-            throw new \Exception(sprintf('Improper column name: "%s"', $column_name));
+            throw new \Exception(sprintf('Improper column name: "%s"',
+                    $column_name));
         }
         if ($value instanceof \phpws2\Variable) {
             $value = $value->toDatabase();
@@ -415,27 +443,32 @@ abstract class Table extends Resource
      */
     public function insertQuery($use_bind_vars = true)
     {
-        $use_pear = false;
-        if ($this->hasPearSequenceTable()) {
-            $use_pear = $this->usePearSequence();
-            if (is_null($use_pear)) {
-                throw new \Exception('This table uses a PEAR sequence table. Cannot insert until usePearSequence is set.');
-            }
+        if ($this->usePearSequence() && !$this->hasPearSequenceTable()) {
+            $this->createPearSequenceTable();
         }
+
+        if (!$this->usePearSequence() && $this->hasPearSequenceTable()) {
+            throw new \Exception('This table uses a PEAR sequence table. Cannot insert until usePearSequence is set.');
+        }
+
         $column_values = array();
         /**
          * If insert select is present, we run with it and stop. The columns are ignored below.
          */
         if ($this->insert_select) {
             if (empty($this->insert_select_columns)) {
-                return sprintf('insert into %s %s;', $this->getFullName(), $this->insert_select);
+                return sprintf('insert into %s %s;', $this->getFullName(),
+                        $this->insert_select);
             } else {
-                return sprintf('insert into %s (%s) %s;', $this->getFullName(), implode(', ', $this->insert_select_columns), $this->insert_select);
+                return sprintf('insert into %s (%s) %s;', $this->getFullName(),
+                        implode(', ', $this->insert_select_columns),
+                        $this->insert_select);
             }
         }
 
         if (empty($this->values)) {
-            throw new \Exception(sprintf(sprintf('No columns to insert in table: %s'), $this->getFullName()));
+            throw new \Exception(sprintf(sprintf('No columns to insert in table: %s'),
+                    $this->getFullName()));
         }
         foreach ($this->values as $val_listing) {
             $columns = array();
@@ -450,7 +483,8 @@ abstract class Table extends Resource
             # If we are using bind vars, they will be supplied in the DB::insert method
             if ($use_bind_vars) {
                 $column_values = $set_names;
-                array_walk($column_values, function(&$value) {
+                array_walk($column_values,
+                        function(&$value) {
                     $value = ':' . $value;
                 });
             } else {
@@ -465,12 +499,13 @@ abstract class Table extends Resource
         }
         reset($this->values);
 
-        if ($use_pear) {
+        if ($this->usePearSequence()) {
             $set_names[] = 'id';
             $column_values[] = ':id';
         }
 
-        return sprintf('insert into %s (%s) values (%s);', $this->getFullName(), implode(', ', $set_names), implode(', ', $column_values));
+        return sprintf('insert into %s (%s) values (%s);', $this->getFullName(),
+                implode(', ', $set_names), implode(', ', $column_values));
     }
 
     /**
@@ -522,7 +557,8 @@ abstract class Table extends Resource
                 call_user_func_array(array('self', 'setPrimaryKey'), $col);
                 $recursion = false;
             } elseif (is_string($col)) {
-                $this->primary_key[] = new \phpws2\Database\Field($this, $col, null, false);
+                $this->primary_key[] = new \phpws2\Database\Field($this, $col,
+                        null, false);
             } else {
                 throw new \Exception('Could not use supplied parameters');
             }
@@ -723,7 +759,8 @@ abstract class Table extends Resource
     protected function getConstraintString($create_query = false)
     {
         foreach ($this->constraints as $c) {
-            if ($create_query && !is_a($c, '\phpws2\Database\TableCreateConstraint')) {
+            if ($create_query && !is_a($c,
+                            '\phpws2\Database\TableCreateConstraint')) {
                 throw new \Exception('This constraint is not allowed during table creation');
             }
             $sql[] = $c->getConstraintString();
@@ -781,7 +818,12 @@ abstract class Table extends Resource
             }
             if ($id_column_exists) {
                 if ($this->usePearSequence()) {
-                    $data['id'] = $this->getLastPearSequence() + 1;
+                    $lastSeq = $this->getLastPearSequence();
+                    if ($lastSeq === false) {
+                        $data['id'] = 1;
+                    } else {
+                        $data['id'] = $lastSeq + 1;
+                    }
                 }
             }
             $prep->execute($data);

@@ -9,6 +9,7 @@ namespace phpws2\Database\Engine\pgsql;
  */
 class Table extends \phpws2\Database\Table
 {
+
     /**
      * Table name is NOT included after "using" in a delete query
      * @var boolean
@@ -166,7 +167,8 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $schema = $this->getSchema($column_name);
 
         $column_type = $schema['data_type'];
-        $dt = \phpws2\Database\Datatype::factory($this, $column_name, $column_type);
+        $dt = \phpws2\Database\Datatype::factory($this, $column_name,
+                        $column_type);
 
         $indexes = $this->getIndexes();
         if (!empty($indexes)) {
@@ -188,7 +190,8 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         $dt->setIsNull($schema['is_nullable'] != 'NO');
 
         if ($find_default) {
-            $default = preg_replace("/::\w[\w\s]+/", '', $schema['column_default']);
+            $default = preg_replace("/::\w[\w\s]+/", '',
+                    $schema['column_default']);
 
             if (strtolower($default) == 'null') {
                 $default = null;
@@ -212,13 +215,21 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
         return (bool) $result;
     }
 
+    protected function createPearSequenceTable()
+    {
+        $sequence_name = $this->getPearSequenceName();
+        $query = 'CREATE SEQUENCE $sequence_name INCREMENT 1 START 1';
+        $this->db->exec($query);
+        $this->firstSequenceValue();
+    }
+
     public function getLastPearSequence()
     {
         $seq_table = $this->getPearSequenceName();
         $result = DB::$PDO->query("select nextval('$seq_table')");
         return $result->fetchColumn();
     }
-    
+
     /**
      * Changes id in the Postgresql to serial coupled to its sequence table.
      */
@@ -266,7 +277,8 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      * @param \phpws2\Database\Datatype $old
      * @param \phpws2\Database\Datatype $new
      */
-    public function alter(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
+    public function alter(\phpws2\Database\Datatype $old,
+            \phpws2\Database\Datatype $new)
     {
         $this->alterColumnParameters($new);
         $this->alterNullStatus($old, $new);
@@ -278,7 +290,8 @@ ORDER BY a.table_catalog, a.table_schema, a.table_name,
      * @param \phpws2\Database\Datatype $old
      * @param \phpws2\Database\Datatype $new
      */
-    private function alterNullStatus(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
+    private function alterNullStatus(\phpws2\Database\Datatype $old,
+            \phpws2\Database\Datatype $new)
     {
         $table_name = $this->getFullName();
         $column_name = $new->getName();
@@ -303,7 +316,8 @@ EOF;
      * @param \phpws2\Database\Datatype $old
      * @param \phpws2\Database\Datatype $new
      */
-    private function alterDefaultStatus(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
+    private function alterDefaultStatus(\phpws2\Database\Datatype $old,
+            \phpws2\Database\Datatype $new)
     {
         $old_default = $old->getDefault();
         $new_default = $new->getDefault();
@@ -339,7 +353,7 @@ ALTER TABLE $table_name ALTER COLUMN $column_name TYPE $new_column_parameters
 EOF;
         $this->db->exec($query);
     }
-    
+
     public function getPrimaryKeySequenceName()
     {
         $sql_query = 'SELECT pg_get_serial_sequence(\'' . $this->getFullName(false) . '\', \'id\')';

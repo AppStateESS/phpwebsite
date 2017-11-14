@@ -9,6 +9,7 @@ namespace phpws2\Database\Engine\mysql;
  */
 class Table extends \phpws2\Database\Table
 {
+
     private $storage_engine = 'InnoDB';
 
     /**
@@ -109,7 +110,7 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
 
         if (isset($column_name)) {
             $column = new \phpws2\Variable\Attribute($column_name);
-            $sql_query.= ' AND information_schema.columns.column_name=\'' .
+            $sql_query .= ' AND information_schema.columns.column_name=\'' .
                     $column->get() . '\'';
         }
         return $sql_query;
@@ -158,10 +159,12 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         }
         $schema = $this->getSchema($column_name);
         if (empty($schema)) {
-            throw new \Exception(sprintf('Unable to retrieve information about column %s', $column_name));
+            throw new \Exception(sprintf('Unable to retrieve information about column %s',
+                    $column_name));
         }
         $column_type = $schema['DATA_TYPE'];
-        $dt = \phpws2\Database\Datatype::factory($this, $column_name, $column_type);
+        $dt = \phpws2\Database\Datatype::factory($this, $column_name,
+                        $column_type);
 
         $indexes = $this->getIndexes();
         if (!empty($indexes)) {
@@ -244,6 +247,15 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
         $seq_table_name = $this->getFullName(false) . '_seq';
         return $this->db->tableExists($seq_table_name);
     }
+    
+
+    protected function createPearSequenceTable()
+    {
+        $sequence_name = $this->getPearSequenceName();
+        $query = "CREATE TABLE $sequence_name (id int not null auto_increment, primary key (id))";
+        $this->db->exec($query);
+        $this->firstSequenceValue();
+    }
 
     /**
      * Switches from PHPWS_DB's PEAR sequence table dependence to one using
@@ -287,7 +299,8 @@ WHERE information_schema.columns.table_name = \'' . $this->getFullName(false) .
      * @param \phpws2\Database\Datatype $old
      * @param \phpws2\Database\Datatype $new
      */
-    public function alter(\phpws2\Database\Datatype $old, \phpws2\Database\Datatype $new)
+    public function alter(\phpws2\Database\Datatype $old,
+            \phpws2\Database\Datatype $new)
     {
         $table_name = $this->getFullName();
         $old_column_name = $old->getName();
