@@ -9,6 +9,8 @@
 \phpws\PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
 class Menu {
+    
+    static $disableMenu = false;
 
     public static function admin()
     {
@@ -399,6 +401,20 @@ class Menu {
         }
         $menus = $db2->select();
         return $menus;
+    }
+    
+    /**
+     * Disables the menu for one page load. Useful to get back some screen
+     * space.
+     */
+    public static function disableMenu()
+    {
+        self::$disableMenu = true;
+    }
+    
+    public static function enableMenu()
+    {
+        self::$disableMenu = true;
     }
 
     public static function categoryView()
