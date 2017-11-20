@@ -24,7 +24,8 @@ class Value extends Column
      * @param string $name
      * @param string $value
      */
-    public function __construct(Table $table, $name, $value = null, $check_existence = null)
+    public function __construct(Table $table, $name, $value = null,
+            $check_existence = null)
     {
         parent::__construct($table, $name, $check_existence);
         $this->set($value);
@@ -39,17 +40,20 @@ class Value extends Column
     {
         switch (\gettype($value)) {
             case 'string':
-                $this->value = new \phpws2\Variable\StringVar($value, $this->name);
+                $this->value = new \phpws2\Variable\StringVar($value,
+                        $this->name);
                 return true;
                 break;
 
             case 'integer':
-                $this->value = new \phpws2\Variable\IntegerVar($value, $this->name);
+                $this->value = new \phpws2\Variable\IntegerVar($value,
+                        $this->name);
                 return true;
                 break;
 
             case 'double':
-                $this->value = new \phpws2\Variable\DoubleVar($value, $this->name);
+                $this->value = new \phpws2\Variable\DoubleVar($value,
+                        $this->name);
                 return true;
                 break;
 
@@ -71,13 +75,20 @@ class Value extends Column
                     //} elseif (method_exists($value, '__toString')) {
                     //$this->value = new \phpws2\Variable\StringVar($value->__toString(), $this->name);
                 } else {
-                    throw new \Exception(sprintf('Unacceptable value type (%s)', gettype($value)));
+                    throw new \Exception(sprintf('Unacceptable value type (%s)',
+                            gettype($value)));
                 }
                 return true;
                 break;
 
             case 'array':
-                $this->value = new \phpws2\Variable\StringVar(serialize($value), $this->name);
+                $this->value = new \phpws2\Variable\StringVar(serialize($value),
+                        $this->name);
+                return true;
+                break;
+
+            case 'boolean':
+                $this->value = $value ? 1 : 0;
                 return true;
                 break;
 
@@ -86,7 +97,8 @@ class Value extends Column
                 return true;
                 break;
         }
-        throw new \Exception(sprintf('Unacceptable value type (%s)', gettype($value)));
+        throw new \Exception(sprintf('Unacceptable value type (%s)',
+                gettype($value)));
     }
 
     /**
