@@ -125,7 +125,7 @@ class Field extends Column {
             $full_name = "count($full_name)";
         }
 
-        return $this->alias ? $full_name . ' AS ' . $this->alias : $full_name;
+        return $this->alias ? $full_name . ' AS "' . $this->alias . '"' : $full_name;
     }
 
     public function rename($new_name)

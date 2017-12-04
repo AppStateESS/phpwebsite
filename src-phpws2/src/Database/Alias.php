@@ -24,9 +24,6 @@ abstract class Alias extends \Canopy\Data {
     public function setAlias($alias)
     {
         if (!empty($alias)) {
-            if (!DB::allowed($alias)) {
-                throw new \Exception(sprintf('Improper alias name'));
-            }
             $this->alias = $alias;
         }
     }
