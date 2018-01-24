@@ -325,7 +325,7 @@ class Blog {
     {
         $link = new PHPWS_Link('View', 'blog',
                 array('id' => $this->id));
-        $link->rewrite = MOD_REWRITE_ENABLED;
+        $link->rewrite = true;
 
         if ($bare) {
             return $link->getAddress();

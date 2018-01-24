@@ -16,7 +16,7 @@ if (!$_SESSION['Access_Allow_Deny']) {
 }
 
 
-if (MOD_REWRITE_ENABLED && Current_User::allow('access')) {
+if (Current_User::allow('access')) {
     $key = \Canopy\Key::getCurrent();
     if (!empty($key) && !$key->isDummy()) {
         \phpws\PHPWS_Core::initModClass('access', 'Access.php');

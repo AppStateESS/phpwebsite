@@ -1,30 +1,32 @@
 <?php
+
 /**
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+class Signup_Sheet
+{
 
-class Signup_Sheet {
-    public $id            = 0;
-    public $key_id        = 0;
-    public $title         = null;
-    public $description   = null;
-    public $start_time    = 0;
-    public $end_time      = 0;
+    public $id = 0;
+    public $key_id = 0;
+    public $title = null;
+    public $description = null;
+    public $start_time = 0;
+    public $end_time = 0;
     public $contact_email = null;
-    public $multiple      = 0;
-    public $extra1        = null;
-    public $extra2        = null;
-    public $extra3        = null;
-    public $_error        = null;
+    public $multiple = 0;
+    public $extra1 = null;
+    public $extra2 = null;
+    public $extra3 = null;
+    public $_error = null;
 
-    public function __construct($id=0)
+    public function __construct($id = 0)
     {
         if (!$id) {
             return;
         }
 
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         $this->init();
     }
 
@@ -80,7 +82,7 @@ class Signup_Sheet {
 
     public function defaultEnd()
     {
-        $this->end_time = mktime(0,0,0,1,1,2020);
+        $this->end_time = mktime(0, 0, 0, 1, 1, 2020);
     }
 
     public function delete()
@@ -107,11 +109,11 @@ class Signup_Sheet {
     public function editSlotLink()
     {
         $vars['aop'] = 'edit_slots';
-        $vars['sheet_id']  = $this->id;
+        $vars['sheet_id'] = $this->id;
         return PHPWS_Text::moduleLink('Edit slots', 'signup', $vars);
     }
 
-    public function getAllSlots($bare=false, $search=null)
+    public function getAllSlots($bare = false, $search = null)
     {
         \phpws\PHPWS_Core::initModClass('signup', 'Slots.php');
         $db = new PHPWS_DB('signup_slots');
@@ -122,8 +124,10 @@ class Signup_Sheet {
         if ($search) {
             $db->addWhere('id', 'signup_peeps.slot_id');    // Limits results to only Slots containing the search query
             $db->addWhere('signup_peeps.sheet_id', $this->id);
-            $db->addWhere('signup_peeps.first_name', "$search%", 'like', 'and', 'search');
-            $db->addWhere('signup_peeps.last_name', "$search%", 'like', 'or', 'search');
+            $db->addWhere('signup_peeps.first_name', "$search%", 'like', 'and',
+                    'search');
+            $db->addWhere('signup_peeps.last_name', "$search%", 'like', 'or',
+                    'search');
         }
 
         if ($bare) {
@@ -157,25 +161,30 @@ class Signup_Sheet {
         $vars['sheet_id'] = $this->id;
         if (Current_User::allow('signup', 'edit_sheet', $this->id, 'sheet')) {
             if (Current_User::isUnrestricted('signup')) {
-                $vars['aop']  = 'edit_sheet';
-                $links[] = PHPWS_Text::secureLink(\Icon::show('edit', 'Edit'), 'signup', $vars);
+                $vars['aop'] = 'edit_sheet';
+                $links[] = PHPWS_Text::secureLink(\Icon::show('edit', 'Edit'),
+                                'signup', $vars);
             }
 
-            $vars['aop']  = 'edit_slots';
-            $links[] = PHPWS_Text::secureLink(\Icon::show('th-list', 'Slots'), 'signup', $vars);
+            $vars['aop'] = 'edit_slots';
+            $links[] = PHPWS_Text::secureLink(\Icon::show('th-list', 'Slots'),
+                            'signup', $vars);
 
             if (Current_User::isUnrestricted('signup')) {
-                $links[] = Current_User::popupPermission($this->key_id,null, 'icon');
+                $links[] = Current_User::popupPermission($this->key_id, null,
+                                'icon');
             }
         }
 
         $vars['aop'] = 'report';
-        $links[] = PHPWS_Text::secureLink(\Icon::show('file-text', 'Report'), 'signup', $vars);
+        $links[] = PHPWS_Text::secureLink(\Icon::show('file-text', 'Report'),
+                        'signup', $vars);
 
         if (Current_User::isUnrestricted('signup')) {
             $vars['aop'] = 'delete_sheet';
             $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
-            $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
+            $js['QUESTION'] = dgettext('signup',
+                    'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
             $js['LINK'] = \Icon::show('delete');
             $links[] = javascript('confirm', $js);
         }
@@ -198,7 +207,6 @@ class Signup_Sheet {
         $this->saveKey();
     }
 
-
     public function saveKey()
     {
         if (empty($this->key_id)) {
@@ -215,11 +223,7 @@ class Signup_Sheet {
         $key->setItemId($this->id);
         $key->setEditPermission('edit_sheet');
 
-        if (MOD_REWRITE_ENABLED) {
-            $key->setUrl('signup/sheet_id/' . $this->id);
-        } else {
-            $key->setUrl('index.php?module=signup&amp;sheet_id=' . $this->id);
-        }
+        $key->setUrl('signup/sheet_id/' . $this->id);
 
         $key->setTitle($this->title);
         $result = $key->save();
@@ -257,7 +261,7 @@ class Signup_Sheet {
             if (empty($totals[$slot_id])) {
                 $totals[$slot_id] = 1;
             } else {
-                $totals[$slot_id]++;
+                $totals[$slot_id] ++;
             }
         }
 
@@ -266,7 +270,8 @@ class Signup_Sheet {
 
     public function viewLink()
     {
-        return PHPWS_Text::rewriteLink($this->title, 'signup', array('sheet_id'=> $this->id));
+        return PHPWS_Text::rewriteLink($this->title, 'signup',
+                        array('sheet_id' => $this->id));
     }
 
     public function flag()
@@ -274,7 +279,6 @@ class Signup_Sheet {
         $key = new \Canopy\Key($this->key_id);
         $key->flag();
     }
-
 
     public function setExtra1($extra)
     {
@@ -297,4 +301,3 @@ class Signup_Sheet {
     }
 
 }
-

@@ -1,12 +1,14 @@
 <?php
+
 /**
  * @version $Id$
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
-
 \phpws\PHPWS_Core::initCoreClass('xmlrpc.php');
 
-class Blog_XML extends MyServer {
+class Blog_XML extends MyServer
+{
+
     public $image_directory = 'images/blog/';
 
     public function delete($id)
@@ -23,7 +25,8 @@ class Blog_XML extends MyServer {
     public function allow($permission)
     {
         if (Current_User::isRestricted('blog')) {
-            return new IXR_Error(4010, 'You do not have permission to access Blog.');
+            return new IXR_Error(4010,
+                    'You do not have permission to access Blog.');
         }
 
         switch ($permission) {
@@ -32,13 +35,15 @@ class Blog_XML extends MyServer {
             case 'edit':
             case 'media':
                 if (!Current_User::allow('blog', 'edit_blog')) {
-                    return new IXR_Error(4020, 'You do not have permission to edit entries.');
+                    return new IXR_Error(4020,
+                            'You do not have permission to edit entries.');
                 }
                 break;
 
             case 'delete':
                 if (!Current_User::allow('blog', 'delete_blog')) {
-                    return new IXR_Error(4030, 'You do not have permission to delete entries.');
+                    return new IXR_Error(4030,
+                            'You do not have permission to delete entries.');
                 }
                 break;
 
@@ -133,19 +138,15 @@ class Blog_XML extends MyServer {
     public function getRPC($blog)
     {
         $d = array();
-        $d['userid']       = $blog->author_id;
-        $d['dateCreated']  = new IXR_Date($blog->create_date);
-        $d['pubDate']      = new IXR_Date($blog->publish_date);
-        $d['postid']       = $blog->id;
-        $d['description']  = $this->appendImages($blog->getSummary(true));
+        $d['userid'] = $blog->author_id;
+        $d['dateCreated'] = new IXR_Date($blog->create_date);
+        $d['pubDate'] = new IXR_Date($blog->publish_date);
+        $d['postid'] = $blog->id;
+        $d['description'] = $this->appendImages($blog->getSummary(true));
         $d['mt_text_more'] = $this->appendImages($blog->getEntry());
         $d['title'] = $blog->title;
 
-        if (MOD_REWRITE_ENABLED) {
-            $d['link'] = \phpws\PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
-        } else {
-            $d['link'] = \phpws\PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
-        }
+        $d['link'] = \phpws\PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
         $d['permalink'] = \phpws\PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
         $d['mt_allow_pings'] = 0;

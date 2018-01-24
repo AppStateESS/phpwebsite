@@ -244,7 +244,7 @@ class PHPWS_Link {
 
     public function isRewrite()
     {
-        return MOD_REWRITE_ENABLED && $this->rewrite;
+        return $this->rewrite;
     }
 
     public function getAddress()
@@ -336,7 +336,7 @@ class PHPWS_Link {
         }
     }
 
-    public function setRewrite($rewrite=MOD_REWRITE_ENABLED)
+    public function setRewrite($rewrite=true)
     {
         $this->rewrite = (bool)$rewrite;
     }
