@@ -11,7 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * This class assists with sorting items within a table.
+ * This class assists with sorting items within a table. The table must
+ * have a primary key id column.
  * 
  * @author Matthew McNaney <mcnaney at gmail dot com>
  *
@@ -55,6 +56,11 @@ class Sortable
     
     private $start_count = 1;
 
+    /**
+     * 
+     * @param string $table_name Table to sort
+     * @param string $sort_column Column used to sort rows
+     */
     public function __construct($table_name, $sort_column)
     {
         $this->setTableName($table_name);
@@ -66,6 +72,12 @@ class Sortable
         $this->table_name = $table_name;
     }
 
+    /**
+     * 
+     * @param string $column The parent column that all sortable rows have in common
+     * @param type $value The value of anchor column, typically an id or key
+     * @throws \Exception
+     */
     public function setAnchor($column, $value)
     {
         if (empty($column) || empty($value)) {
