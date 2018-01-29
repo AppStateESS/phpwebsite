@@ -50,7 +50,7 @@ phpWebSite can now be run in a Docker Container!
 2. Install Docker Compose as per instructions. *[Docker Compose Install](https://docs.docker.com/compose/install/)
 3. Run docker-compose up -d. ( the d option runs it in the background )
 
-You can run psql and mysql command line from localhost to access the container db's. Just use port 6432 for postgres and 4306 for mysql.
+You can run psql and mysql command line from localhost to access the container db's. Just use port 5432 for postgres and 4306 for mysql.
 
 (Depending on your system you may need to add your user to the docker group in order to have the privileges to run the docker-compose command)
 
