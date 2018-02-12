@@ -88,12 +88,12 @@ class Key
 
     public function getCreateDate($format = '%c')
     {
-        return strftime($format, PHPWS_Time::getServerTime($this->create_date));
+        return strftime($format, \phpws\PHPWS_Time::getServerTime($this->create_date));
     }
 
     public function getUpdateDate($format = '%c')
     {
-        return strftime($format, PHPWS_Time::getServerTime($this->update_date));
+        return strftime($format, \phpws\PHPWS_Time::getServerTime($this->update_date));
     }
 
     public function restrictToLogged()
