@@ -894,7 +894,7 @@ class Calendar_Admin
                         Layout::nakedDisplay('An error occurred when trying to repeat an event.', 'aop=schedules');
                         exit();
                     } else {
-                        $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.', 'aop=schedules'));
+                        $this->sendMessage(dgettext('calendar', 'An error occurred when trying to repeat an event.'));
                     }
                 }
 
@@ -1362,7 +1362,7 @@ class Calendar_Admin
     {
         $event_form = self::event_form($event);
         $modal = new \phpws2\Modal('edit-event', $event_form, 'Edit Event');
-        $modal->setWidthPixel(650);
+        $modal->setWidthPixel(800);
         $modal->addButton('<button class="btn btn-success" id="submit-event">Save</button>');
         return $modal->__toString();
     }
