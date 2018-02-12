@@ -263,7 +263,7 @@ class Search_User {
         }
 
         \phpws\PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = new DBPager('phpws_key', 'Key');
+        $pager = new \phpws\DBPager('phpws_key', '\Canopy\Key');
         $pager->setModule('search');
         $pager->setTemplate('search_results.tpl');
         $pager->addToggle('class="bgcolor1"');
