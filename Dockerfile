@@ -2,7 +2,6 @@ FROM centos:7
 MAINTAINER "Ted Eberhard" <eberhardtm@appstate.edu>
 ENV container docker
 USER root
-#RUN yum -y install httpd;
 # install php7 when canopy core is ready
 RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
@@ -29,5 +28,4 @@ ADD docker_conf/nginx.conf /etc/nginx/nginx.conf
 ADD docker-entry.sh /docker-entry.sh
 EXPOSE 80
 CMD ["-D","FOREGROUND"]
-#CMD ["nginx", "-g", "daemon off;"]
 ENTRYPOINT ["/docker-entry.sh"]
