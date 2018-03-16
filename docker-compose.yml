@@ -21,8 +21,10 @@ services:
 
   web:
     build: .
+  #  network_mode: "host"
     ports:
      - "8080:80"
+  #   - "9000:9000"
     depends_on:
      - mysql_db
      - postgres_db
