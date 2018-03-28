@@ -998,7 +998,7 @@ class PHAT_Form extends PHPWS_Item
             return $content;
         } elseif ($_REQUEST['PHAT_Submit']) {
             if (PHATFORM_CAPTCHA && $this->_anonymous && !Current_User::isLogged() && !Captcha::verify()) {
-                javascript('alert', array('content' => 'CAPTCHA word was not correct.'));
+                javascript('alert', array('content' => 'CAPTCHA was incorrect.'));
                 return $this->view(false);
             }
 
