@@ -1,8 +1,1 @@
-<script type="text/javascript">
-//<![CDATA[
-//Custom settings for ReCaptcha
-var RecaptchaOptions = {
-   theme : '{theme}'
-};
-//]>
-</script>
+<script src='https://www.google.com/recaptcha/api.js'></script>

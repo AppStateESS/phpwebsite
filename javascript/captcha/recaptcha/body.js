@@ -1,2 +1,1 @@
-<span style="font-size : 8px">Refresh words by clicking Recycle button</span>
-{content}
+<div class="g-recaptcha" data-sitekey="{site_key}"></div>
