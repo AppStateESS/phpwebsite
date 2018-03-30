@@ -69,7 +69,7 @@ class RSS_Feed
 
         $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
-        $js['LINK'] = '<i class="fa fa-trash-o" title="' . 'Delete feed' . '"></i>';
+        $js['LINK'] = '<i class="far fa-trash-alt" title="Delete feed"></i>';
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' ', $links);

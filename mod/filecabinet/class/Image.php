@@ -435,7 +435,7 @@ class PHPWS_Image extends File_Common
             $links[] = $folder->uploadLink('icon', null, null, $this->id);
             $authkey = \Current_User::getAuthKey(\PHPWS_Text::saltArray(array('iop' => 'delete_image', 'file_id' => $this->id, 'folder_id' => $this->folder_id)));
             $links[] = <<<EOF
-<i style='cursor:pointer' class='fa fa-trash-o delete-file' data-folder-id='$this->folder_id' data-id='$this->id' data-type='iop' data-command='delete_image' data-authkey='$authkey'></i>
+<i style='cursor:pointer' class='far fa-trash-alt delete-file' data-folder-id='$this->folder_id' data-id='$this->id' data-type='iop' data-command='delete_image' data-authkey='$authkey'></i>
 EOF;
         }
 

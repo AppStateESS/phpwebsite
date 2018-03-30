@@ -248,10 +248,9 @@ class PS_Page
         $vars['id'] = $this->id;
         $vars['aop'] = 'delete_page';
         $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars, true);
-        $js['QUESTION'] = dgettext('pagesmith',
-                'Are you sure you want to delete this page?');
+        $js['QUESTION'] = 'Are you sure you want to delete this page?';
         if ($icon) {
-            $js['LINK'] = '<i class="fa fa-trash-o" title="' . 'Delete' . '"></i>';
+            $js['LINK'] = '<i class="far fa-trash-alt" title="Delete"></i>';
         } else {
             $js['LINK'] = 'Delete';
         }
@@ -276,18 +275,16 @@ class PS_Page
     public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
-            $label = '<i class="fa fa-flag" title="%s"></i> ' . 'Remove as front page';
-            if ($icon) {
-                $label = sprintf('<i class="fa fa-flag" title="%s"></i>',
-                        'Remove as front page');
+            $label = '<i class="fas fa-flag"></i>';
+            if (!$icon) {
+                $label .= ' Remove as front page';
             }
             $title = 'Click to remove as front page';
             $vars['fp'] = 0;
         } else {
-            $label = '<i class="fa fa-flag-o" title="%s"></i> ' . 'Show as home page';
-            if ($icon) {
-                $label = sprintf('<i class="fa fa-flag-o" title="%s"></i>',
-                        'Show as home page');
+            $label = '<i class="far fa-flag"></i>';
+            if (!$icon) {
+                $label .= ' Show as home page';
             }
             $title = 'Click to display on front page';
             $vars['fp'] = 1;

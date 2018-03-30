@@ -255,12 +255,10 @@ class Block_Item {
 
         if (Current_User::allow('block', 'delete_block')) {
             $vars['action'] = 'delete';
-            $confirm_vars['QUESTION'] = dgettext('block',
-                    'Are you sure you want to permanently delete this block?');
+            $confirm_vars['QUESTION'] = 'Are you sure you want to permanently delete this block?';
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars,
                             TRUE);
-            $confirm_vars['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('block',
-                            'Delete') . '"></i>';
+            $confirm_vars['LINK'] = '<i class="far fa-trash-alt" title="Delete"></i>';
             $links[] = javascript('confirm', $confirm_vars);
         }
 

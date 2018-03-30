@@ -274,13 +274,12 @@ EOF;
         $vars['dop'] = 'delete_document';
         $link = new PHPWS_Link(null, 'filecabinet', $vars, true);
         $link->setSalted(1);
-        $js['QUESTION'] = dgettext('filecabinet',
-                'Are you sure you want to delete this document?');
+        $js['QUESTION'] = 'Are you sure you want to delete this document?';
 
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = '<i class="fa fa-trash-o" title="' . 'Delete document' . '"></i>';
+            $js['LINK'] = '<i class="far fa-trash-alt" title="Delete document"></i>';
         } else {
             $js['LINK'] = 'Delete';
         }

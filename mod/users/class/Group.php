@@ -313,10 +313,8 @@ class PHPWS_Group
 
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
-        $removelink['QUESTION'] = dgettext('users',
-                'Are you SURE you want to remove this group?');
-        $removelink['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('users',
-                        'Remove') . '"></i>';
+        $removelink['QUESTION'] = 'Are you SURE you want to remove this group?';
+        $removelink['LINK'] = '<i class="far fa-trash-alt" title="Remove"></i>';
         $links[] = Layout::getJavascript('confirm', $removelink);
 
         $template['ACTIONS'] = implode('&nbsp;', $links);

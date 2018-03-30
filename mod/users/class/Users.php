@@ -861,8 +861,7 @@ class PHPWS_User
         $template['EMAIL'] = $this->getEmail(true, true);
 
 
-        $jsvar['QUESTION'] = sprintf(dgettext('users',
-                        'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
+        $jsvar['QUESTION'] = sprintf('Are you certain you want to delete the user &quot;%s&quot; permanently?',
                 $this->getUsername());
         $link = new PHPWS_Link(null, 'users',
                 array('action' => 'admin',
@@ -870,8 +869,7 @@ class PHPWS_User
             'user_id' => $this->id), true);
         $link->setSalted();
         $jsvar['ADDRESS'] = $link->getAddress();
-        $jsvar['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('users',
-                        'Delete user') . '"></i>';
+        $jsvar['LINK'] = '<i class="far fa-trash-alt" title="Delete user"></i>';
 
         $linkVar['command'] = 'editUser';
         $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i>', 'users',

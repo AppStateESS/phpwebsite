@@ -482,26 +482,22 @@ class Blog {
 
         if (Current_User::allow('blog', 'delete_blog')) {
             $link['command'] = 'delete';
-            $confirm_vars['QUESTION'] = dgettext('blog',
-                    'Are you sure you want to permanently delete this blog entry?');
+            $confirm_vars['QUESTION'] = 'Are you sure you want to permanently delete this blog entry?';
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link,
                             true);
 
-            $confirm_vars['LINK'] = '<i class="fa fa-trash-o" title="' . dgettext('blog',
-                            'Delete blog entry') . '"></i>';
+            $confirm_vars['LINK'] = '<i class="far fa-trash-alt" title="Delete blog entry"></i>';
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')) {
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $icon = Icon::show('flag',
-                                'Remove from front page');
+                $icon = '<i class="fas fa-flag" title="Remove from front page"></i>';
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = Icon::show('flag-alt',
-                                'Force to front page');
+                $icon = '<i class="far fa-flag" title="Force to front page"></i>';
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }

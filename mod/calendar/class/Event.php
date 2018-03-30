@@ -199,11 +199,11 @@ class Calendar_Event {
             javascript('confirm');
             if ($type == 'icon') {
                 return <<<EOF
-<a style="cursor : pointer" data-toggle="tooltip" data-placement="top" title="Delete event" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i></a>
+<a style="cursor : pointer" data-toggle="tooltip" data-placement="top" title="Delete event" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="far fa-trash-alt"></i></a>
 EOF;
             } else {
                 return <<<EOF
-<a style="cursor : pointer" class="btn btn-danger btn-sm" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i> $link</a>
+<a style="cursor : pointer" class="btn btn-danger btn-sm" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="far fa-trash-alt"></i> $link</a>
 EOF;
             }
         } else {
