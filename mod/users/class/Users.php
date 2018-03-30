@@ -876,8 +876,7 @@ class PHPWS_User
                         $linkVar);
 
         $linkVar['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink('<i class="fa fa-key" title="' . dgettext('users',
-                                'Permissions') . '"></i>', 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-key" title="Permissions"></i>', 'users', $linkVar);
 
         if (!$this->isDeity() && ($this->id != Current_User::getId())) {
             $links[] = Layout::getJavascript('confirm', $jsvar);
