@@ -45,16 +45,17 @@ class User_Form
     public static function loggedIn()
     {
         $auth = Current_User::getAuthorization();
-
-        $template['GREETING'] = 'Hello';
-        $template['USERNAME'] = Current_User::getUsername();
-        $template['DISPLAY_NAME'] = Current_User::getDisplayName();
-        $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink();
+        if (is_a($auth, 'local_authorization')) {
+            $template['GREETING'] = 'Hello';
+            $template['USERNAME'] = Current_User::getUsername();
+            $template['DISPLAY_NAME'] = Current_User::getDisplayName();
+            $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink();
+            $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page"><i class="far fa-user"></i> Account</a>';
+        }
         $logout_link = $auth->getLogoutLink();
-        $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page">' . dgettext('users', '<span class="glyphicon glyphicon-user"></span> Account') . '</a>';
 
         if ($logout_link) {
-            $template['LOGOUT'] = & $logout_link;
+            $template['LOGOUT'] = $logout_link;
         } else {
             $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', '<span class="fas sign-out-alt"></span> Log Out'), 'users', array('action' => 'user', 'command' => 'logout'));
         }
