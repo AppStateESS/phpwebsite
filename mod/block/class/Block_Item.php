@@ -164,8 +164,7 @@ class Block_Item {
     {
         $edit = $opt = null;
         if (Current_User::allow('block', 'edit_block', $this->id)) {
-            $img = '<i class="fa fa-edit" title="' . dgettext('block',
-                            'Edit block') . '"></i>';
+            $img = '<i class="fa fa-edit" title="Edit block"></i>';
             $edit = PHPWS_Text::secureLink($img, 'block',
                             array('block_id' => $this->id,
                         'action' => 'edit'));
@@ -182,10 +181,8 @@ class Block_Item {
                 $vars['key_id'] = $this->_pin_key->id;
                 $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars,
                                 TRUE);
-                $js_var['QUESTION'] = dgettext('block',
-                        'Are you sure you want to remove this block from this page?');
-                $js_var['LINK'] = "<i class='fa fa-remove-circle' title='" . dgettext('block',
-                                'Remove block from page') . "'></i>";
+                $js_var['QUESTION'] = 'Are you sure you want to remove this block from this page?';
+                $js_var['LINK'] = '<i class="far fa-times-circle" title="Remove block from page"></i>';
 
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
@@ -243,7 +240,7 @@ class Block_Item {
                                         'Remove block from all pages') . "'></i>", 'block', $vars);
             } else {
                 $vars['action'] = 'pin_all';
-                $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag-o' title='" . dgettext('block',
+                $links[] = PHPWS_Text::secureLink("<i class='far fa-flag' title='" . dgettext('block',
                                         'Display block on all pages') . "'></i>", 'block', $vars);
             }
 
