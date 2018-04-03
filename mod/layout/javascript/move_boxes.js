@@ -14,7 +14,7 @@ function fillModal()
         module: 'layout',
         action: 'admin',
         command: 'boxMoveForm'
-    }).success(function(data) {
+    }).done(function(data) {
         $('#box-move .modal-body').html(data);
         setChange();
     });
