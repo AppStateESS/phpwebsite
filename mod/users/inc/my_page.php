@@ -33,7 +33,6 @@ function my_page()
             break;
 
         case 'postUser':
-            User_Settings::setTZ();
             User_Settings::rememberMe();
             User_Settings::setCP();
             $result = User_Action::postUser($user, FALSE);
@@ -85,22 +84,7 @@ class User_Settings {
         }
 
         if ($user->canChangePassword()) {
-            $form->addPassword('password1');
-            $form->setAutoComplete('password1');
-            $form->setClass('password1', 'form-control');
-            $form->addPassword('password2');
-            $form->setAutoComplete('password2');
-            $form->setClass('password2', 'form-control');
-            $form->setTitle('password2', 'Password confirm');
-            $form->setLabel('password1', 'Password');
-        } else {
-            $tpl['PASSWORD1_LABEL'] = 'Password';
-            $tpl['PASSWORD1'] = javascript('slider',
-                    array('link' => dgettext('users',
-                        'Why can\'t I change my password?'),
-                'id' => 'pw-info',
-                'message' => dgettext('users',
-                        'Your account is authorized external to this site. You will need to update it at the source.')));
+            $tpl['SHOW_PW'] = ' ';
         }
 
         $form->addText('email', $user->getEmail());
@@ -202,6 +186,11 @@ class User_Settings {
                         'my_page/user_setting.tpl');
     }
 
+    
+    /**
+     * @deprecated
+     * @return type
+     */
     public static function setTZ()
     {
         if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/',
