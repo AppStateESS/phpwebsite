@@ -9,15 +9,18 @@
       <span class="help-inline">{DISPLAY_NAME_ERROR}</span>
       <!-- END display-name-error -->
     </div>
+    <!-- BEGIN password-show -->
     <div class="form-group {PASSWORD_ERROR_CLASS}">
-      <label class="control-label" for="{PASSWORD1_ID}">{PASSWORD1_LABEL_TEXT}</label>
-      {PASSWORD1}
+      {SHOW_PW}
+      <label>Change password</label>
+      <input type="password" name="password1" class="form-control" title="Enter password" placeholder="Enter new password"/>
       <!-- BEGIN password-error -->
       <span class="help-inline">{PASSWORD_ERROR}</span>
       <!-- END password-error -->
       <br />
-      {PASSWORD2}
+      <input type="password" name="password2" class="form-control" title="Password confirm" placeholder="Retype above password"/>
     </div>
+    <!-- END password-show -->
     <div class="control-group {EMAIL_ERROR_CLASS}">
       <label class="control-label" for="{EMAIL_ID}">{EMAIL_LABEL_TEXT}</label>
       <div class="controls">
@@ -28,5 +31,5 @@
       </div>
     </div>
   </fieldset>
-  {SUBMIT}
+  <div style="margin-top: 1em">{SUBMIT}</div>
 </form>
