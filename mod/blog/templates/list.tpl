@@ -1,5 +1,5 @@
 <p>
-  <a href="{ADD_URI}" title="{ADD_TEXT}" style="margin-bottom: 10px;" class="btn btn-success"><i class="fa fa-file-text"></i> {ADD_TEXT}</a>
+  <a href="{ADD_URI}" title="{ADD_TEXT}" style="margin-bottom: 10px;" class="btn btn-success"><i class="fas fa-file-alt"></i> {ADD_TEXT}</a>
 </p>
 <table class="table table-striped table-hover sans" style="width:98%;">
     <tr style="vertical-align: top">

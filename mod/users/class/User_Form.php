@@ -56,7 +56,7 @@ class User_Form
         if ($logout_link) {
             $template['LOGOUT'] = & $logout_link;
         } else {
-            $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', '<span class="fa fa-sign-out"></span> Log Out'), 'users', array('action' => 'user', 'command' => 'logout'));
+            $template['LOGOUT'] = PHPWS_Text::moduleLink(dgettext('users', '<span class="fas sign-out-alt"></span> Log Out'), 'users', array('action' => 'user', 'command' => 'logout'));
         }
         $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink('Home');
 

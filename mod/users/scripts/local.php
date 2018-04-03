@@ -44,7 +44,7 @@ class local_authorization extends User_Authorization {
     {
         $text = 'Sign in';
         return <<<EOF
-<a id = "sign-in" data-toggle = "modal" href = "#user-login-modal"><i class = "fa fa-user"></i> $text</a>
+<a id="sign-in" data-toggle= "modal" href="#user-login-modal"><i class="fas fa-user"></i> <span>$text</span></a>
 <div id="user-signin">
     <div class = "modal fade" id="user-login-modal" tabindex = "-1" role = "dialog" aria-labelledby = "userLoginModalLabel" aria-hidden = "true">
         <div id="user-login-dialog" class = "modal-dialog" style="max-width:50%; min-width:25%;">
