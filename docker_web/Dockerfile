@@ -25,7 +25,7 @@ ADD docker_conf/php.conf /etc/nginx/conf.d/common/php.conf
 ADD docker_conf/secure_block.conf /etc/nginx/conf.d/common/secure_block.conf
 ADD docker_conf/nginx.conf /etc/nginx/nginx.conf
 
-ADD docker-entry.sh /docker-entry.sh
+ADD docker_web/docker-web-entry.sh /docker-entry.sh
 EXPOSE 80
 CMD ["-D","FOREGROUND"]
 ENTRYPOINT ["/docker-entry.sh"]
