@@ -62,7 +62,7 @@ EOSQL
 setup_temporal_tables() {
   echo "begin temporal tables setup"
   cd temporal_tables && gmake && gmake install && gmake installcheck
-  sudo -u postgres psql -v ON_ERROR_STOP=1 <<-EOSQL
+  psql $POSTGRES_USER -U $POSTGRES_PASSWORD -v ON_ERROR_STOP=1 <<-EOSQL
      CREATE EXTENSION temporal_tables;
 EOSQL
   echo "completed temporal tables setup"
