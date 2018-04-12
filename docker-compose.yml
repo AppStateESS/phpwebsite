@@ -11,16 +11,19 @@ services:
     MYSQL_ROOT_PASSWORD: canopy
 
   postgres_db:
-   image: postgres:9.6
-   ports:
-   - "6432:5432"
-   environment:
-    POSTGRES_PASSWORD: canopy
-    POSTGRES_USER: canopy
-    POSTGRES_DB: canopy
+    build:
+      context: .
+      dockerfile: ./docker_postgres/Dockerfile
+    ports:
+      - "6432:5432"
+    environment:
+      PGDATA: /var/lib/pgsql/data
+    tty: true
 
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: ./docker_web/Dockerfile
     ports:
      - "8080:80"
     depends_on:
