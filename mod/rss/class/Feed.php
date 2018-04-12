@@ -14,6 +14,7 @@ if (!defined('RSS_DATE_FORMAT')) {
 
 class RSS_Feed
 {
+
     public $id = 0;
     public $title = NULL;
     public $address = NULL;
@@ -63,12 +64,15 @@ class RSS_Feed
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . 'Reset' . '"></i>', 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink('<i class="fas fa-sync" title="' . 'Reset' . '"></i>',
+                        'rss', $vars);
 
         $links[] = '<i data-id="' . $this->id . '" class="edit-feed pointer fa fa-edit" title="' . 'Edit the feed' . '"></i>';
 
-        $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
-        $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
+        $js['QUESTION'] = dgettext('rss',
+                'Are you sure you want to delete this RSS feed?');
+        $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
+                $this->id, Current_User::getAuthKey());
         $js['LINK'] = '<i class="far fa-trash-alt" title="Delete feed"></i>';
         $links[] = javascript('confirm', $js);
 
@@ -115,7 +119,8 @@ class RSS_Feed
         $refresh_time = sprintf(dgettext('rss', 'Every %s'), $time);
         $shortened_array = parse_url($this->address);
         $shortened = $shortened_array['scheme'] . '://' . $shortened_array['host'];
-        $tpl['ADDRESS'] = sprintf('<a href="%s" title="%s">%s</a>', $this->address, $this->address, $shortened);
+        $tpl['ADDRESS'] = sprintf('<a href="%s" title="%s">%s</a>',
+                $this->address, $this->address, $shortened);
         $tpl['REFRESH_TIME'] = $refresh_time;
 
         return $tpl;
@@ -191,7 +196,9 @@ class RSS_Feed
         if (empty($item_limit)) {
             $this->item_limit = RSS_FEED_LIMIT;
         } elseif ($item_limit > RSS_MAX_FEED) {
-            $error[] = sprintf(dgettext('rss', 'You may not pull more than %s feeds.'), RSS_MAX_FEED);
+            $error[] = sprintf(dgettext('rss',
+                            'You may not pull more than %s feeds.'),
+                    RSS_MAX_FEED);
             $this->item_limit = RSS_FEED_LIMIT;
         } else {
             $this->item_limit = $item_limit;
@@ -249,13 +256,17 @@ class RSS_Feed
                         break;
                     }
                     if (strlen($item_data['DESCRIPTION']) > RSS_SHORT_DESC_SIZE) {
-                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'], 0, RSS_SHORT_DESC_SIZE) . '...';
+                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'],
+                                        0, RSS_SHORT_DESC_SIZE) . '...';
                     } else {
                         $item_data['SHORT_DESCRIPTION'] = &$item_data['DESCRIPTION'];
                     }
 
-                    $item_data['PUBDATE_REFORMATED'] = strftime(RSS_DATE_FORMAT, strtotime($item_data['PUBDATE']));
-                    
+                    if (isset($item_data['PUBDATE'])) {
+                        $item_data['PUBDATE_REFORMATED'] = strftime(RSS_DATE_FORMAT,
+                                strtotime($item_data['PUBDATE']));
+                    }
+
                     $tpl['item_list'][] = $item_data;
                     $count++;
                 }
@@ -269,9 +280,11 @@ class RSS_Feed
             $image = & $this->mapped['IMAGE'];
 
             if (isset($image['LINK'])) {
-                $tpl['IMAGE'] = sprintf('<a  href="%s"><img class="img-responsive" src="%s" title="%s" /></a>', $image['LINK'], $image['URL'], $image['TITLE']);
+                $tpl['IMAGE'] = sprintf('<a  href="%s"><img class="img-responsive" src="%s" title="%s" /></a>',
+                        $image['LINK'], $image['URL'], $image['TITLE']);
             } else {
-                $tpl['IMAGE'] = sprintf('<img class="img-responsive" src="%s" title="%s" />', $image['URL'], $image['TITLE']);
+                $tpl['IMAGE'] = sprintf('<img class="img-responsive" src="%s" title="%s" />',
+                        $image['URL'], $image['TITLE']);
             }
         } else {
             $tpl['FEED_TITLE'] = &$this->title;
