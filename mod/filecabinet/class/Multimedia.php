@@ -131,16 +131,11 @@ class PHPWS_Multimedia extends File_Common
         }
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id,
                         'folder')) {
-            /*
-              if ($this->embedded) {
-              $command = 'edit_rtmp';
-              } else {
-              $command = 'upload_multimedia_form';
-              }
-             */
             $authkey = \Current_User::getAuthKey();
             $links[] = <<<EOF
-<i style='cursor:pointer' class='far fa-trash-alt delete-file' data-folder-id='$this->folder_id' data-id='$this->id' data-type='mop' data-command='delete_multimedia' data-authkey='$authkey'></i>
+<a class="delete-file pointer" data-folder-id="$this->folder_id" data-id="$this->id" data-type="mop" data-command="delete_multimedia" data-authkey="$authkey">
+    <i class="far fa-trash-alt"></i>
+</a>
 EOF;
         }
 

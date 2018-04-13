@@ -16,16 +16,6 @@ class FC_Images extends FC_Folder_Factory
         $this->loadJavascript();
         $this->loadTemplate();
 
-        $thumbnail = <<<EOF
-<span class="show-thumbs pointer fa-stack" title="Show thumbnails">
-  <i class="fa fa-camera fa-stack-1x" ></i>
-</span>
-<span class="hide-thumbs pointer fa-stack" title="Hide thumbnails" style="display:none">
-  <i class="fa fa-camera fa-stack-1x"></i>
-  <i class="fa fa-ban fa-stack-2x text-danger"></i>
-</span>
-EOF;
-        $this->template->add('admin_option', $thumbnail);
 
         return $this->template->get();
     }

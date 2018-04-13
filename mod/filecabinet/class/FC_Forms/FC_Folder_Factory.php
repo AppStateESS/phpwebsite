@@ -134,7 +134,7 @@ abstract class FC_Folder_Factory
             } else {
                 $active_class = null;
             }
-            $lines[] = "<li class='folder $active_class' data-ftype='$this->ftype' data-folder-id='$id'><i class='pull-right fa fa-edit fa-lg edit-folder admin'></i> $title</li>";
+            $lines[] = "<li class='folder $active_class' data-ftype='$this->ftype' data-folder-id='$id'><a data-folder-id='$id' class='edit-folder'><i class='pull-right fas fa-edit fa-lg admin'></i></a> $title</li>";
         }
         return implode("\n", $lines);
     }

@@ -1,6 +1,6 @@
 var FolderModal = new FolderModal;
 var FolderElements = new FolderElements;
-$(window).load(function()
+$(document).ready(function()
 {
     FolderModal.initialize();
     FolderElements.initialize();

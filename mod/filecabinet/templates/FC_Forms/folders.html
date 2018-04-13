@@ -1,47 +1,46 @@
-<div id="file-cabinet">
-    <div class="row header" id="header-options">
-        <div class="col-sm-3">
-            <button id="upload-file" class="btn btn-primary"><i class="fa fa-arrow-up"></i> Upload</button>
-            <button id="create-folder" class="btn btn-default"><i class="far fa-folder"></i> New folder</button>
-        </div>
-        <div class="col-sm-9">
-            <div class="input-group">
-                <input type="text" id="search-field" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                    <button class="btn btn-danger" id="clear-search" type="button"><i class="fa fa-times"></i></button>
-                    <button class="btn btn-success" id="save-search" type="button"><i class="fa fa-check"></i></button>
-                </span>
-            </div>
-        </div>
+<div id="file-cabinet" class="container-fluid">
+  <div class="row">
+    <div class="col-sm-4">
+      <button id="upload-file" class="btn btn-primary"><i class="fas fa-upload"></i> Upload</button>
+      <button id="create-folder" class="btn btn-default"><i class="far fa-folder"></i> New folder</button>
     </div>
-    <div class="row" id="folder-file-listing">
-        <div id="folder-list" class="col-sm-3">
-            <ul class="list-unstyled">
-            </ul>
-        </div>
-        <div class="col-sm-9">
-            <table class="table table-striped file-list table-hover">
-                <thead>
-                    <tr>
-                        <th class="col-md-1"><?php echo (isset($admin_option)) ? $admin_option : '&nbsp;';?></th>
-                        <th class="col-md-10">Name</th>
-                        <th class="col-md-1">
-                            <i class="fa fa-lock pointer" id="delete-lock" title="Click to unlock deletion"></i>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="files">
-                </tbody>
-            </table>
-        </div>
+    <div class="col-sm-8">
+      <div class="input-group">
+        <input type="text" id="search-field" class="form-control" placeholder="Search...">
+        <span class="input-group-btn">
+          <button class="btn btn-danger" id="clear-search" type="button"><i class="fas fa-times"></i></button>
+          <button class="btn btn-success" id="save-search" type="button"><i class="fas fa-check"></i></button>
+        </span>
+      </div>
+    </div>
+  </div>
+    <div id="folder-list">
+      <div>
+        <ul class="list-unstyled">
+        </ul>
+      </div>
+    </div>
+    <div id="file-listing">
+      <table class="table table-striped file-list table-hover">
+        <thead>
+          <tr>
+            <th><?php echo (isset($admin_option)) ? $admin_option : '&nbsp;';?></th>
+            <th>Name</th>
+            <th>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="files">
+        </tbody>
+      </table>
     </div>
 </div>
 <div id="dropzone-background">
-    <form class="dropzone dz-clickable" id="dropzone-area" class="pointer" method="post" action="index.php" style="overflow:auto">
-        <input type="hidden" name="module" value="filecabinet" />
-        <input type="hidden" name="ckop" value="upload_file" />
-        <input id="dz-folder-id" type="hidden" name="folder_id" value="" />
-    </form>
-    <div id="close-dropzone"><button type="button" class="btn btn-danger">Finished uploading</button></div>
+  <form class="dropzone dz-clickable" id="dropzone-area" class="pointer" method="post" action="index.php" style="overflow:auto">
+    <input type="hidden" name="module" value="filecabinet" />
+    <input type="hidden" name="ckop" value="upload_file" />
+    <input id="dz-folder-id" type="hidden" name="folder_id" value="" />
+  </form>
+  <div id="close-dropzone"><button type="button" class="btn btn-danger">Finished uploading</button></div>
 </div>
 <?php echo $modal?>
