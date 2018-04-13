@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version $Id$
- * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @author Matthew McNaney <mcnaneym@appstate.edu>
  */
 function my_page()
 {
@@ -47,7 +46,8 @@ function my_page()
     return PHPWS_Template::process($tpl, 'layout', 'main.tpl');
 }
 
-class Layout_User_Settings {
+class Layout_User_Settings
+{
 
     public static function user_form()
     {
@@ -59,7 +59,8 @@ class Layout_User_Settings {
         $css = Layout::getAlternateStyles();
         if ($css) {
             $form->addSelect('alternate', $css);
-            $form->setMatch('alternate',  \phpws\PHPWS_Cookie::read('layout_style'));
+            $form->setMatch('alternate',
+                    \phpws\PHPWS_Cookie::read('layout_style'));
             $form->setLabel('alternate', 'Available styles');
             $form->addSubmit('Save settings');
         } else {
@@ -74,7 +75,7 @@ class Layout_User_Settings {
     public function save_settings()
     {
         if (isset($_POST['alternate'])) {
-             \phpws\PHPWS_Cookie::write('layout_style', $_POST['alternate']);
+            \phpws\PHPWS_Cookie::write('layout_style', $_POST['alternate']);
             return TRUE;
         }
     }
