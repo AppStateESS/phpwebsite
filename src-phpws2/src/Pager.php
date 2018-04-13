@@ -569,13 +569,13 @@ class Pager
 
         //foreach ($this->headers as $key => $value) {
         foreach ($this->search_columns as $key => $value) {
-            $columns .= "<li><a data-search-column='$key' class='pager-search-column' href='javascript:void(0)'>$value</a></li>\n";
+            $columns .= "<li><a data-search-column='$key' class='pager-search-column dropdown-item' href='javascript:void(0)'>$value</a></li>\n";
         }
         $content = <<<EOF
-<div class="pull-right input-group" style="max-width:400px">
-    <div class="input-group-btn">
-        <button class="btn-sm btn btn-default pager-search-submit">$search</button>
-        <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <button class="btn btn-default pager-search-submit">$search</button>
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
         <ul class="dropdown-menu">
             $columns
         </ul>
