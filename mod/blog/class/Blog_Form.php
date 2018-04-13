@@ -14,6 +14,7 @@ class Blog_Form
      */
     public static function edit(Blog $blog, $version_id = NULL, $limited = false)
     {
+        javascript('ckeditor');
         javascriptMod('blog', 'image_url');
         if ($limited) {
             throw new \Exception('');
