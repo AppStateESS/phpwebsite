@@ -1,9 +1,9 @@
 <div class="modal fade" id="<?php echo $id?>" tabindex="-1" role="dialog">
-    <div class="modal-dialog<?php echo $size?>" style="<?php echo $width_percentage,$width_pixel?>">
+    <div class="modal-dialog<?php echo $size?>">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <?php if (isset($title)): ?><h4 class="modal-title"><?php echo $title?></h4><?php endif;?>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body" style="<?php echo $height?>">
                 <?php echo $content?>
@@ -15,3 +15,22 @@
         </div>
     </div>
 </div>
+<style>
+<?php
+  if ($width_pixel) {
+    echo <<<EOF
+#$id .modal-dialog {
+  $width_pixel
+  max-$width_pixel
+}
+EOF;
+} elseif ($width_percentage) {
+  echo <<<EOF
+#$id .modal-dialog {
+  $width_percentage
+  max-$width_percentage
+}
+EOF;
+}
+?>
+</style>
