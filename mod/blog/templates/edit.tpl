@@ -1,7 +1,7 @@
 <!-- BEGIN error -->
 <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{MESSAGE}</div>
 <!-- END error -->
-<form method="post" class="form-inline" action="index.php" id="edit-blog" autocomplete="on">
+<form method="post" action="index.php" id="edit-blog" autocomplete="on">
 {HIDDEN_FIELDS}
 <div class="top-label">
     <p>{TITLE_LABEL}<br />
