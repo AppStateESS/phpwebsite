@@ -1,9 +1,9 @@
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    <?php echo $MINIADMIN_TITLE_ALT?> <b class="caret"></b>
+  <i class="fas fa-cog"></i><span class="miniadmin-title"><?php echo $MINIADMIN_TITLE_ALT?></span>
 </a>
-<ul id="miniadmin" class="dropdown-menu" style="max-height:480px;overflow:auto">
+<ul id="miniadmin" class="dropdown-menu">
     <li class="nav-header">phpWebSite</li>
-    <li><a href="index.php?module=controlpanel&command=panel_view">Control panel</a></li>
+    <li><a class="dropdown-item" href="index.php?module=controlpanel&command=panel_view">Control panel</a></li>
     <?php $count=0; if (!empty($module_links)): foreach($module_links as $module_name=>$mod_links):$count++;?>
     <li class="divider"></li>
     <li class="nav-header"><?php echo $module_name?></li>

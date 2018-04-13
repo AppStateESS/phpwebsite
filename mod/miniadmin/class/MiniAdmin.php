@@ -41,7 +41,7 @@ class MiniAdmin {
             foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
                 $mod_title = $modlist[$module];
                 if (isset($links['title_link'])) {
-                    $mod_title = sprintf('<a href="%s">%s</a>',
+                    $mod_title = sprintf('<a class="dropdown-item" href="%s">%s</a>',
                             $links['title_link'], $mod_title);
                 }
                 $module_links[$mod_title] = $links;
