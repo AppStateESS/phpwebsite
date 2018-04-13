@@ -417,7 +417,7 @@ class Menu {
         self::$disableMenu = true;
     }
 
-    public static function categoryView()
+    public static function categoryView($dropdownOnly=false)
     {
         $active_menu = self::getCurrentActiveMenu();
         if ($active_menu == 0) {
@@ -458,7 +458,7 @@ class Menu {
             // if there is not an assoc key, them menu is using drop downs, so
             // we do not add the side menu
             if ($active) {
-                if ($menu->assoc_key) {
+                if ($menu->assoc_key || $dropdownOnly) {
                     Layout::set($menu->view(), 'menu', 'side');
                 }
 
@@ -467,21 +467,19 @@ class Menu {
                 }
             }
 
-            $menu_tpl['menus'][] = self::getCategoryViewLine($menu, $active);
+            $menu_tpl['menus'][] = self::getCategoryViewLine($menu, $active, $dropdownOnly);
         }
         $template = new \phpws2\Template($menu_tpl);
-        \Layout::addJSHeader("<script type='text/javascript' src='" .
-                PHPWS_SOURCE_HTTP . "javascript/responsive_img/responsive-img.min.js'></script>",
-                81);
+
         $template->setModuleTemplate('menu', 'category_view/category_menu.html');
         \Layout::add($template->get(), 'menu', 'top_view');
     }
 
-    private static function getCategoryViewLine($menu, $active)
+    private static function getCategoryViewLine($menu, $active, $dropdownOnly)
     {
         $template = new \phpws2\Template();
         $line = array('active' => $active, 'title' => $menu->title, 'assoc_key' => $menu->assoc_key);
-        if ($menu->assoc_key || !empty($menu->assoc_url)) {
+        if (!$dropdownOnly && ($menu->assoc_key || !empty($menu->assoc_url))) {
             $line['assoc_url'] = $menu->getAssocUrl();
             $template->setModuleTemplate('menu',
                     'category_view/associated_menu.html');

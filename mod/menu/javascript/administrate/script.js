@@ -470,7 +470,7 @@ function MenuAdmin() {
             var select = new Array();
             for (i = 0; i < links.length; i++) {
                 var link = $('a.menu-link-href', $(links[i]));
-                var newselect = '<li><a href="javascript:void(0)" class="move-under" data-link-id="' +
+                var newselect = '<li><a href="javascript:void(0)" class="dropdown-item move-under " data-link-id="' +
                         link.data('linkId') + '">' + link.html() + '</a></li>';
                 $('#menu-admin-area .dropdown-menu').append(newselect);
             }

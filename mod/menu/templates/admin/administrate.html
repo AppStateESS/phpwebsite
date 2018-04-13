@@ -2,162 +2,165 @@
 <?php if (\Current_User::isDeity()): ?><a href="<?php echo $reset_menu_link?>" class="btn btn-warning" id="reset-menu" style="margin-bottom:1em">Reset menu and link order</a><?php endif; ?>
 <div class="clearfix"></div>
 <div id="menu-list">
-    <div id="menu-select">
-        <ul>
-            <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
-            <li data-menu-id="<?php echo $id?>"><a href="javascript:void(0)" class="btn btn-default menu-edit <?php echo $active?>" data-menu-id="<?php echo $id?>"><?php echo $title?></a></li>
-            <?php endforeach; endif;?>
-        </ul>
-    </div>
+  <div id="menu-select">
+    <ul>
+      <?php if(!empty($menus)): foreach($menus as $m): extract($m);?>
+      <li data-menu-id="<?php echo $id?>"><a href="javascript:void(0)" class="btn btn-default menu-edit <?php echo $active?>" data-menu-id="<?php echo $id?>"><?php echo $title?></a></li>
+      <?php endforeach; endif;?>
+    </ul>
+  </div>
 </div>
 <div id="menu-admin">
-    <button class="btn btn-default" id="edit-menu">Edit menu</button>
-    <button class="btn btn-success" id="add-link">Add link</button>
-    <button class="btn btn-danger" id="delete-menu">Delete menu</button>
-    <?php if ($pin_all):?><button class="btn <?php echo $pin_button_class?>" id="pinned-button"><?php echo $pin_all;?></button><?php endif;?>
-    <hr />
-    <div id="menu-admin-area" style="position:relative">
-        <?php echo $first_menu?>
-    </div>
+  <button class="btn btn-default" id="edit-menu">Edit menu</button>
+  <button class="btn btn-success" id="add-link">Add link</button>
+  <button class="btn btn-danger" id="delete-menu">Delete menu</button>
+  <?php if ($pin_all):?><button class="btn <?php echo $pin_button_class?>" id="pinned-button"><?php echo $pin_all;?></button><?php endif;?>
+  <hr />
+  <div id="menu-admin-area" style="position:relative">
+    <?php echo $first_menu?>
+  </div>
 </div>
 <div class="modal fade" id="link-edit-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="warning alert alert-danger"></div>
-                <form id="link-edit-form">
-                    <div class="form-group">
-                        <label for="form-title">Title</label>
-                        <input type="text" name="title" value="" id="form-title" class="form-control" />
-                    </div>
-                    <div class="current-association"><strong>Current url:</strong> <a target="_blank" href=""></a></div>
-                    <div class="form-group form-url-group">
-                        <label for="form-url">Url</label>
-                        <input type="text" name="url" value="" id="form-url" class="form-control" placeholder="http://address.com" />
-                    </div>
-                    <div class="form-group form-key-group">
-                        <div class="text-center"><strong>- <?php echo 'or'?> -</strong></div>
-                        <label for="form-url">PageSmith page</label>
-                        <select name="key_select" class="form-control" id="form-key-select">
-                        </select>
-                        <p>* Page already associated to a menu</p>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <select class="form-control" id="move-to-menu"></select>
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo 'Close'?></button>
-                <button type="button" id="form-link-save" class="btn btn-primary"><?php echo 'Save'?></button>
-                <button type="button" id="form-link-delete" class="btn btn-danger"><?php echo 'Delete'?></button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="warning alert alert-danger"></div>
+        <form id="link-edit-form">
+          <div class="form-group">
+            <label for="form-title">Title</label>
+            <input type="text" name="title" value="" id="form-title" class="form-control" />
+          </div>
+          <div class="current-association"><strong>Current url:</strong> <a target="_blank" href=""></a></div>
+          <div class="form-group form-url-group">
+            <label for="form-url">Url</label>
+            <input type="text" name="url" value="" id="form-url" class="form-control" placeholder="http://address.com" />
+          </div>
+          <div class="form-group form-key-group">
+            <div class="text-center"><strong>- <?php echo 'or'?> -</strong></div>
+            <label for="form-url">PageSmith page</label>
+            <select name="key_select" class="form-control" id="form-key-select">
+            </select>
+            <p>* Page already associated to a menu</p>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <select class="form-control" id="move-to-menu"></select>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo 'Close'?></button>
+        <button type="button" id="form-link-save" class="btn btn-primary"><?php echo 'Save'?></button>
+        <button type="button" id="form-link-delete" class="btn btn-danger"><?php echo 'Delete'?></button>
+      </div>
     </div>
+  </div>
 </div>
 <div class="modal fade" id="menu-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">
-                    <?php echo 'Edit menu'?>
-                </h3>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <?php echo 'Edit menu'?>
+        </h3>
+      </div>
+      <div class="modal-body">
+        <div class="warning alert alert-danger"></div>
+        <form id="menu-edit-form" action='index.php' method='post' enctype="multipart/form-data">
+          <input type='hidden' name='module' value='menu' />
+          <input type='hidden' name='command' value='post_menu' />
+          <input type='hidden' name='menu_id' id='menu-id' value='' />
+          <div class="form-group">
+            <label for="menu-title">Menu title</label>
+            <input type="text" name="title" value="" id="menu-title" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="menu-template">Menu template</label>
+            <select name="template" id="menu-template" class="form-control">
+              <?php echo $templates?>
+            </select>
+          </div>
+          <?php if ($display_type == 1):?>
+          <fieldset><legend>Association</legend>
+            <div class="form-group">
+              <label for="menu-associated-page">Page</label>
+              <select name="assoc_key" id="menu-associated-page" class="form-control">
+              </select>
+              <p style="font-style:italic"><small>* Pages already associated to a menu may not be selected.</small></p>
             </div>
-            <div class="modal-body">
-                <div class="warning alert alert-danger"></div>
-                <form id="menu-edit-form" action='index.php' method='post' enctype="multipart/form-data">
-                    <input type='hidden' name='module' value='menu' />
-                    <input type='hidden' name='command' value='post_menu' />
-                    <input type='hidden' name='menu_id' id='menu-id' value='' />
-                    <div class="form-group">
-                        <label for="menu-title">Menu title</label>
-                        <input type="text" name="title" value="" id="menu-title" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label for="menu-template">Menu template</label>
-                        <select name="template" id="menu-template" class="form-control">
-                            <?php echo $templates?>
-                        </select>
-                    </div>
-                    <fieldset><legend><?php echo 'Association'?></legend>
-                        <div class="form-group">
-                            <label for="menu-associated-page">Page</label>
-                            <select name="assoc_key" id="menu-associated-page" class="form-control">
-                            </select>
-                            <p style="font-style:italic"><small>* <?php echo 'Pages already associated to a menu may not be selected.';?></small></p>
-                        </div>
-                        <div class="form-group">
-                            <label for="menu-associated-url">URL</label>
-                            <input type="text" name="assoc_url" id="menu-associated-url" class="form-control" placeholder="http://address.com" />
-                            <p style="font-style:italic"><small>* <?php echo 'Using a URL prevents display of drop down and side menu.';?></small></p>
-                        </div>
-                        <div class="form-group">
-                            <h4>Image</h4>
-                            <label for="menu-associated-image">Upload</label>
-                            <input type="file" name="assoc_image" id="menu-associated-image" class="form-control" />
-                            <?php if(!empty($carousel)): ?>
-                            <p style='text-align:center'><?php echo 'or'?></p>
-                            <label for="carousel-slide">Copy Carousel slide</label>
-                            <select class="form-control" id="carousel-slide" name="carousel_slide">
-                                <option></option>
-                                <?php echo $carousel?>
-                            </select>
-                            <?php endif; ?>
-                            <div id='assoc-image-thumbnail' style='margin: 6px 0px;'></div>
-                        </div>
-                    </fieldset>
-                </form>
-                <button class='btn btn-danger' id='clear-image'><?php echo 'Clear image'?></button>
+            <div class="form-group">
+              <label for="menu-associated-url">URL</label>
+              <input type="text" name="assoc_url" id="menu-associated-url" class="form-control" placeholder="http://address.com" />
+              <p style="font-style:italic"><small>* Using a URL prevents display of drop down and side menu.</small></p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo 'Close'?></button>
-                <button type="button" id="form-menu-save" class="btn btn-primary"><?php echo 'Save'?></button>
+            <div class="form-group">
+              <h4>Image</h4>
+              <label for="menu-associated-image">Upload</label>
+              <input type="file" name="assoc_image" id="menu-associated-image" class="form-control" />
+              <?php if(!empty($carousel)): ?>
+              <p style='text-align:center'>or</p>
+              <label for="carousel-slide">Copy Carousel slide</label>
+              <select class="form-control" id="carousel-slide" name="carousel_slide">
+                <option></option>
+                <?php echo $carousel?>
+              </select>
+              <?php endif; ?>
+              <div id='assoc-image-thumbnail' style='margin: 6px 0px;'></div>
             </div>
-        </div>
+          </fieldset>
+          <?php endif;?>
+        </form>
+        <button class='btn btn-danger' id='clear-image'><?php echo 'Clear image'?></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo 'Close'?></button>
+        <button type="button" id="form-menu-save" class="btn btn-primary"><?php echo 'Save'?></button>
+      </div>
     </div>
+  </div>
 </div>
 
 
 <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Settings</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="menu-display">Menu display type</label>
-                    <select name="menu-display" id="menu-display" class="form-control">
-                        <option <?php echo $display_type ? null : 'selected="selected"';?> value="0">Classic - Menus only shown on pages they are pinned</option>
-                        <option <?php echo $display_type ? 'selected="selected"':null;?> value="1">Categorized with extra view - Menus only appear when a page is on it</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="menu-link-limit">Link character limit</label>
-                    <select name="menu-link-limit" id="menu-link-limit" class="form-control">
-                        <option value="0">No limit</option>
-                        <?php
-                        for ($i = 5; $i < 51; $i += 5) {
-                        if ($i == $link_limit) {
-                        $selected = " selected='selected'";
-                        } else {
-                        $selected = null;
-                        }
-                        echo "<option$selected>$i</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" id="home-link" name="home_link" value="1" <?php echo  \PHPWS_Settings::get('menu', 'home_link') ? 'checked="checked"' : null; ?> /> <label for="home-link">New menus receive home link</label>
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" id="link-icons" name="link-icons" value="1" <?php echo  \PHPWS_Settings::get('menu', 'link_icons') ? 'checked="checked"' : null; ?> /> <label for="link-icons">Append links with context icons</label>
-                </div>
-                <button class="btn btn-primary" id="force-shortcuts">Force shortcuts on menu links</button>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Settings</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="menu-display">Menu display type</label>
+          <select name="menu-display" id="menu-display" class="form-control">
+            <option <?php echo $display_type == 0 ? 'selected="selected"':null;?> value="0">Classic - Menus only shown on pages they are pinned</option>
+            <option <?php echo $display_type == 1 ? 'selected="selected"':null;?> value="1">Categorized with extra view - Menus only appear when a page is on it</option>
+            <option <?php echo $display_type == 2 ? 'selected="selected"':null;?> value="2">Dropdown only</option>
+          </select>
         </div>
+        <div class="form-group">
+          <label for="menu-link-limit">Link character limit</label>
+          <select name="menu-link-limit" id="menu-link-limit" class="form-control">
+            <option value="0">No limit</option>
+            <?php
+            for ($i = 5; $i < 51; $i += 5) {
+            if ($i == $link_limit) {
+            $selected = " selected='selected'";
+            } else {
+            $selected = null;
+            }
+            echo "<option$selected>$i</option>";
+            }
+            ?>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" id="home-link" name="home_link" value="1" <?php echo  \PHPWS_Settings::get('menu', 'home_link') ? 'checked="checked"' : null; ?> /> <label for="home-link">New menus receive home link</label>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" id="link-icons" name="link-icons" value="1" <?php echo  \PHPWS_Settings::get('menu', 'link_icons') ? 'checked="checked"' : null; ?> /> <label for="link-icons">Append links with context icons</label>
+        </div>
+        <button class="btn btn-primary" id="force-shortcuts">Force shortcuts on menu links</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
 </div>

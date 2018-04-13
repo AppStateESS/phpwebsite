@@ -811,8 +811,6 @@ class Menu_Admin
         \Layout::addStyle('menu', 'admin.css');
         javascript('jquery');
         javascript('jquery_ui');
-        //commenting out for now. problem clearing select dropdown
-        //javascript('select2');
 
         $template = new \phpws2\Template;
         $template->setModuleTemplate('menu', 'admin/administrate.html');
@@ -856,7 +854,9 @@ class Menu_Admin
         $vars['edit'] = 'Edit';
         $vars['title_error'] = 'Please enter a menu title';
 
-        if (PHPWS_Settings::get('menu', 'display_type')) {
+        $display_type = PHPWS_Settings::get('menu', 'display_type');
+        
+        if ($display_type > 0) {
             $vars['pin_all'] = null;
             $vars['pin_some'] = null;
         } else {
@@ -901,7 +901,7 @@ EOF;
 
         $tpl['templates'] = implode('', $menu_tpls);
 
-        $tpl['display_type'] = \PHPWS_Settings::get('menu', 'display_type');
+        $tpl['display_type'] = $display_type;
         if (isset($first_menu) && $first_menu->pin_all) {
             $tpl['pin_all'] = $vars['pin_all'];
             $tpl['pin_button_class'] = 'btn-primary';
@@ -923,7 +923,6 @@ EOF;
         } else {
             $tpl['carousel'] = null;
         }
-
         $template->addVariables($tpl);
         return $template->get();
     }
