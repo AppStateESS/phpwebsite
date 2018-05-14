@@ -872,6 +872,7 @@ abstract class Table extends Resource
     {
         $datatype['bit'] = 'bit';
         $datatype['blob'] = 'blob';
+        $datatype['boolean'] = 'boolean';
         $datatype['char'] = 'character';
         $datatype['character'] = 'character';
         $datatype['character varying'] = 'varchar';
