@@ -1,6 +1,9 @@
 Welcome to phpWebSite!
 ======================
 
+Note: this repository is deprecated. Further updates will now be pushed to
+https://github.com/AppStateESS/canopy
+
 [![Build Status](https://travis-ci.org/AppStateESS/phpwebsite.png?branch=master)](https://travis-ci.org/AppStateESS/phpwebsite)
 
 * [phpWebSite Home](https://phpwebsite.appstate.edu)
