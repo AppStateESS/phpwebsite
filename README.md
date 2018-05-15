@@ -1,4 +1,5 @@
-Welcome to phpWebSite!
+Welcome to Canopy!
+(previously phpWebSite)
 ======================
 
 [![Build Status](https://travis-ci.org/AppStateESS/phpwebsite.png?branch=master)](https://travis-ci.org/AppStateESS/phpwebsite)
@@ -9,9 +10,15 @@ Welcome to phpWebSite!
 phpWebSite comes with its own set of Pear files. Most of the time you
 should just use the files included with distribution.
 
-**phpWebsite is now using composer for dependecies. Before using the 
+**phpWebsite is now using composer for dependencies. Before using the 
 web installer you will have to install composer and run composer install
 from the project root directory.**
+
+**The default theme (bootstrap) requires these processes to be run in the
+themes/bootstrap directory
+npm install
+npm run prod
+
 
 After installation you will need to install some content modules.
 
@@ -39,12 +46,12 @@ overwritten.**
 If you are upgrading, the only file you must keep in your config/core
 directory is language.php.
 
-phpWebSite uses UTF-8 character encoding. Some older database versions
+Canopy uses UTF-8 character encoding. Some older database versions
 of MySQL (pre 4.1) do not support it.
 
 Docker
 ======
-phpWebSite can now be run in a Docker Container!
+Canopy can now be run in a Docker Container!
 
 1. Install Docker Engine as per instructions. * [Docker Install](https://docs.docker.com/engine/installation/)
 2. Install Docker Compose as per instructions. *[Docker Compose Install](https://docs.docker.com/compose/install/)
@@ -54,11 +61,11 @@ You can run psql and mysql command line from localhost to access the container d
 
 (Depending on your system you may need to add your user to the docker group in order to have the privileges to run the docker-compose command)
 
-**Remember while setting up phpwebsite that your database location will not be localhost. We are running 3 seperate containers. One for web, one for mysql, and one for postgresql. If you want mysql then the host will be mysql_db otherwise postgres host will be postgres_db.
+**Remember while setting up Canopy that your database location will not be localhost. We are running 3 seperate containers. One for web, one for mysql, and one for postgresql. If you want mysql then the host will be mysql_db otherwise postgres host will be postgres_db.
 
 Vagrant
 =======
-phpWebSite can now be run in a Vagrant Box!
+Canopy can now be run in a Vagrant Box!
 
 1. Install VirtualBox and Vagrant as per instructions for your platform
 2. Create a new Vagrant Box called 'centos64' from the URL
@@ -69,5 +76,5 @@ phpWebSite can now be run in a Vagrant Box!
 
 Flowplayer
 ==========
-phpWebSite includes the free version of Flowplayer. Commercial web sites are required to purchase a contract from Flowplayer.
+Canopy includes the free version of Flowplayer. Commercial web sites are required to purchase a contract from Flowplayer.
 Please read more at https://flowplayer.org/pricing/
