@@ -1,0 +1,15 @@
+/* Heights */
+$headerBarHeight: 50px;
+$titleMenuHeight : 105px;
+$footerHeight : 160px;
+$userMenuHeight : 44px;
+
+/* Colors */
+$darkGray: #323030;
+$darkGrayTrans: #464444;
+$menuActive: #474747;
+$submenuActive: #868686;
+$mediumGray : #3d3d3d;
+
+$menuHover : lighten($mediumGray, 8%);
+$menuDrop: rgba($mediumGray, 0.95);

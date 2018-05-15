@@ -1,0 +1,71 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+div#main-theme-content {
+  margin-top: $headerBarHeight;
+  flex: 1 0 auto;
+  min-height: 300px;
+}
+
+.site-title {
+
+  a {
+    &:hover {
+      color: #e3e3e3;
+      text-decoration: none;
+    }
+
+    h1 {
+      font-family: "Roboto Condensed";
+      font-size: 32px;
+      color: #fff;
+    }
+  }
+}
+
+.cp-panel {
+  margin-top : 10px;
+}
+
+.sticky-bar {
+  position: fixed;
+  top: $headerBarHeight;
+  background-color : white;
+  z-index : 102;
+  //width: 100%;
+}
+
+#title-menu {
+  background-color : #fff;
+  height: $titleMenuHeight;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.fixed-width {
+  margin: 0 auto;
+}
+@include media-breakpoint-down(sm) {
+  .container {
+    max-width: none;
+    padding: 0 15px;
+    margin: 0;
+  }
+}
+
+// place to hide content you don't want to display (e.g. search box)
+#hidden-valley {
+  display : none;
+  width : 1px;
+  height : 1px;
+  overflow : hidden;
+}

@@ -1,0 +1,46 @@
+.cp-panel {
+  ul.nav {
+    margin-bottom: 1em;
+
+    li {
+      @extend .nav-item;
+      margin-bottom: -$nav-tabs-border-width;
+
+      &.active a {
+        color: $nav-tabs-link-active-color;
+        background-color: $nav-tabs-link-active-bg;
+        border-color: $nav-tabs-link-active-border-color;
+      }
+
+      a {
+        @extend .nav-link;
+        border: $nav-tabs-border-width solid transparent;
+        @include border-top-radius($nav-tabs-border-radius);
+        @include hover-focus {
+          border-color: $nav-tabs-link-hover-border-color;
+        }
+
+        &.disabled {
+          color: $nav-link-disabled-color;
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+
+  .media {
+    margin-bottom: 1em;
+
+    a {
+      margin-right: 6px;
+    }
+
+    .media-body {
+      h4.media-heading {
+        font-size : 20px;
+        margin-bottom: 0;
+      }
+    }
+  }
+}

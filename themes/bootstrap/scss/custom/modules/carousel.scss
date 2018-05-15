@@ -1,0 +1,18 @@
+.carousel-control-prev,
+.carousel-control-next {
+  width : 10%;
+}
+
+.carousel-caption {
+  background-color : rgba(#fff, 0.8);
+  color : #000;
+}
+
+.carousel .carousel-control, .carousel .carousel-indicators { opacity:0; transition:opacity 1s linear;}
+.carousel:hover .carousel-control,  .carousel:hover .carousel-indicators  { opacity:1;}
+
+@include media-breakpoint-down(sm) {
+  #carousel-container {
+    display : none;
+  }
+}

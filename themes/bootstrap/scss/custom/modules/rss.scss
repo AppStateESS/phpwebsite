@@ -1,0 +1,12 @@
+.rss ul li {
+  padding : 6px;
+  border-top : 1px solid $mediumGray;
+  border-left : 1px solid $mediumGray;
+  border-right : 1px solid $mediumGray;
+  &:nth-child(odd) {
+    background-color: $mediumGray;
+  }
+  &:last-child {
+    border-bottom : 1px solid $mediumGray;
+  }
+}

@@ -1,0 +1,12 @@
+button.btn-default, a.btn-default {
+  @extend .btn-outline-secondary;
+}
+
+.dropdown-toggle:hover {
+  cursor: pointer;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}

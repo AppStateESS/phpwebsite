@@ -1,70 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        {BASE}
-        <title>{PAGE_TITLE}</title>
-        {METATAGS}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{THEME_HTTP}img/apple-touch-icon-144x144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{THEME_HTTP}img/apple-touch-icon-114x114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{THEME_HTTP}img/apple-touch-icon-72x72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{THEME_HTTP}img/apple-touch-icon-57x57-precomposed.png">
-        <link rel="shortcut icon" type="image/x-icon" href="{THEME_HTTP}img/favicon.ico">
-        <link href="{THEME_HTTP}css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="{THEME_HTTP}css/local.css" rel="stylesheet" media="screen">
-        <link href="{THEME_HTTP}css/header.css" rel="stylesheet" media="screen">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        {JAVASCRIPT}
-        <script src="{THEME_HTTP}js/phpws.js"></script>
-        <script type="text/javascript">
-            if (typeof CKEDITOR !== 'undefined') {
-                CKEDITOR.config.contentsCss = '{THEME_HTTP}css/bootstrap.min.css';
-            }
-        </script>
-        {STYLE}
-    </head>
-    <body id="bootstrap-theme">
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="./">Bootstrap theme</a>
-                </div>
-                <div class="collapse navbar-collapse navbar-right">
-                    <ul class="nav navbar-nav">
-                        <!-- BEGIN miniadmin -->
-                        <li class="dropdown">
-                            {MINIADMIN_MINI_ADMIN}
-                        </li>
-                        <!-- END miniadmin -->
-                        <li class="dropdown">
-                            {USERS_LOGIN_BOX}
-                        </li>
-                        <li>{SEARCH_SEARCH_BOX}</li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {BASE}
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link href="{THEME_HTTP}dist/css/custom.css" rel="stylesheet" media="screen"> {METATAGS} {STYLE}
+    <title>{PAGE_TITLE}</title>
+  </head>
+
+  <body>
+    <header id="theme-top">
+      <div class="header-bar p-1">
+        <div class="container">
+          <div class="site-title"><a href="./"><h1>{SITE_NAME}</h1></a></div>
+          <div class="site-admin">{USERS_LOGIN_BOX}</div>
+          <div class="miniadmin">{MINIADMIN_MINI_ADMIN}</div>
+          <div id="search-button">
+            <i class="fas fa-search"></i>
+          </div>
         </div>
-        <div>{MENU_TOP_VIEW}</div>
-        {CAROUSEL_SLIDES}
-        <div id="hero">
-            <div class="row">
-                <div class="col-md-3 col-sm-3">
-                    {DEFAULT}
-                    {LIKEBOX_DEFAULT}
-                </div>
-                <div class="col-md-9 col-sm-9">
-                    {BODY}
-                </div>
+      </div>
+    </header>
+    <div id="sticky-container" class="container"></div>
+    <div id="search-menu">
+      <div class="close-container">
+        <button id="close-search" class="btn btn-outline-dark">
+          <i class="fa fa-times"></i></button>
+      </div>
+      <div class="search-box">
+        <form id="search-form">
+          <div class="site-search">
+            <i class="fas fa-search fa-lg"></i>
+            <input id="search-input" placeholder="Search" type="text" />
+          </div>
+          <div class="search-type">
+            <div class="form-check">
+              <input id="site-type-1" class="form-check-input" type="radio" name="searchType" value="site" checked="checked"
+              />
+              <label class="form-check-label" for="site-type-1">This site</label>
             </div>
+          </div>
+          <div class="submit">
+            <button class="btn btn-outline-dark">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="main-theme-content" class="container">
+      <div id="menu-dropdowns"></div>
+      <div id="carousel-container">{CAROUSEL_SLIDES}</div>
+      <div id="title-menu">
+        <!-- BEGIN menu-view -->
+        <div id="top-menu">{MENU_TOP_VIEW}</div>
+        <!-- END menu-view -->
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-lg-9 left-side">
+          {BODY}
         </div>
-        <hr>
-        <footer>
-        </footer>
-        {ANALYTICS_END_BODY}
-    </body>
+        <div class="col-md-4 col-lg-3 right-side">
+          <!-- BEGIN side-menu --><div class="side-menu">{MENU_SIDE}</div><!-- END side-menu -->
+          <!-- BEGIN default-container --><div class="default-container">{DEFAULT}</div><!-- END default-container -->
+        </div>
+      </div>
+    </div>
+    <div id="hidden-valley">{HIDDEN_VALLEY}</div>
+    {ANALYTICS_END_BODY}
+    <script src="{THEME_HTTP}dist/js/custom.js"></script>
+    {JAVASCRIPT}
+  </body>
+
 </html>

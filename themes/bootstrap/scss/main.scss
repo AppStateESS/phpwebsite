@@ -1,0 +1,18 @@
+/* Framing */
+@import '~bootstrap/scss/bootstrap.scss';
+@import './custom/defines.scss';
+@import './custom/general.scss';
+@import './custom/header.scss';
+
+/* Interactive menus */
+@import './custom/theme/search.scss';
+
+/* Modules */
+@import './custom/modules/controlpanel.scss';
+@import './custom/modules/menu.scss';
+@import './custom/modules/carousel.scss';
+@import './custom/modules/miniadmin.scss';
+@import './custom/modules/rss.scss';
+
+/* Small fixes */
+@import './custom/fillin.scss';
