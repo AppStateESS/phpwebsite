@@ -2,8 +2,8 @@
 
 namespace phpws2;
 
-
 require_once PHPWS_SOURCE_DIR . 'src/Array.php';
+
 /**
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -12,6 +12,7 @@ require_once PHPWS_SOURCE_DIR . 'src/Array.php';
  */
 class Pager
 {
+
     /**
      * Total rows
      * @var integer
@@ -157,7 +158,8 @@ class Pager
 
     public function setSearchPhrase($phrase)
     {
-        $this->search_phrase = preg_replace('/\s{2,}/', ' ', trim(rawurldecode($phrase)));
+        $this->search_phrase = preg_replace('/\s{2,}/', ' ',
+                trim(rawurldecode($phrase)));
     }
 
     public function setSearchColumn($column)
@@ -168,7 +170,8 @@ class Pager
     public function setTemplate(Template $template)
     {
         if (!is_file($template->getFile())) {
-            throw new \Exception(sprintf('Could not find template file: %t', $template->getFile()));
+            throw new \Exception(sprintf('Could not find template file: %t',
+                    $template->getFile()));
         }
         $this->template = $template;
     }
@@ -339,13 +342,17 @@ class Pager
             throw new \Exception('No rows to set');
         }
         if (!isset($this->headers[$this->sort_column])) {
-            throw new \Exception(sprintf('Column name "%s" is not known', $this->sort_column));
+            throw new \Exception(sprintf('Column name "%s" is not known',
+                    $this->sort_column));
         }
 
         if (isset($function_call) && !function_exists($function_call)) {
-            throw new \Exception(sprintf('Function "%s" does not exist', $function_call));
+            throw new \Exception(sprintf('Function "%s" does not exist',
+                    $function_call));
         }
-        usort($this->rows, call_user_func_array(array('self', 'make_comparer'), array(array($this->sort_column, $this->sort_direction, $function_call))));
+        usort($this->rows,
+                call_user_func_array(array('self', 'make_comparer'),
+                        array(array($this->sort_column, $this->sort_direction, $function_call))));
     }
 
     /**
@@ -370,7 +377,8 @@ class Pager
         // Normalize criteria up front so that the comparer finds everything tidy
         $criteria = func_get_args();
         foreach ($criteria as $index => $criterion) {
-            $criteria[$index] = is_array($criterion) ? array_pad($criterion, 3, null) : array($criterion, SORT_ASC, null);
+            $criteria[$index] = is_array($criterion) ? array_pad($criterion, 3,
+                            null) : array($criterion, SORT_ASC, null);
         }
 
         return function($first, $second) use ($criteria) {
@@ -502,7 +510,8 @@ class Pager
             $this->sortCurrentRows();
         }
         $start_count = ($this->current_page - 1) * $this->rows_per_page;
-        $this->rows = array_slice($this->rows, $start_count, $this->rows_per_page);
+        $this->rows = array_slice($this->rows, $start_count,
+                $this->rows_per_page);
 
         $this->executeCallback();
     }
@@ -569,13 +578,13 @@ class Pager
 
         //foreach ($this->headers as $key => $value) {
         foreach ($this->search_columns as $key => $value) {
-            $columns .= "<li><a data-search-column='$key' class='pager-search-column dropdown-item' href='javascript:void(0)'>$value</a></li>\n";
+            $columns .= "<li><a data-search-column='$key' class='pager-search-column' href='javascript:void(0)'>$value</a></li>\n";
         }
         $content = <<<EOF
-<div class="input-group">
-    <div class="input-group-prepend">
-        <button class="btn btn-default pager-search-submit">$search</button>
-        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+<div class="pull-right input-group" style="max-width:400px">
+    <div class="input-group-btn">
+        <button class="btn-sm btn btn-default pager-search-submit">$search</button>
+        <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
         <ul class="dropdown-menu">
             $columns
         </ul>
