@@ -869,7 +869,7 @@ class PHPWS_User
             'user_id' => $this->id), true);
         $link->setSalted();
         $jsvar['ADDRESS'] = $link->getAddress();
-        $jsvar['LINK'] = '<i class="far fa-trash-alt" title="Delete user"></i>';
+        $jsvar['LINK'] = '<i class="fa fa-trash-o" title="Delete user"></i>';
 
         $linkVar['command'] = 'editUser';
         $links[] = PHPWS_Text::secureLink('<i class="fa fa-edit"></i>', 'users',

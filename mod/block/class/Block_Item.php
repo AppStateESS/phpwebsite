@@ -182,7 +182,7 @@ class Block_Item {
                 $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars,
                                 TRUE);
                 $js_var['QUESTION'] = 'Are you sure you want to remove this block from this page?';
-                $js_var['LINK'] = '<i class="far fa-times-circle" title="Remove block from page"></i>';
+                $js_var['LINK'] = '<i class="fa fa-times-circle" title="Remove block from page"></i>';
 
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
@@ -240,7 +240,7 @@ class Block_Item {
                                         'Remove block from all pages') . "'></i>", 'block', $vars);
             } else {
                 $vars['action'] = 'pin_all';
-                $links[] = PHPWS_Text::secureLink("<i class='far fa-flag' title='" . dgettext('block',
+                $links[] = PHPWS_Text::secureLink("<i class='fa fa-flag-o' title='" . dgettext('block',
                                         'Display block on all pages') . "'></i>", 'block', $vars);
             }
 
@@ -255,7 +255,7 @@ class Block_Item {
             $confirm_vars['QUESTION'] = 'Are you sure you want to permanently delete this block?';
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars,
                             TRUE);
-            $confirm_vars['LINK'] = '<i class="far fa-trash-alt" title="Delete"></i>';
+            $confirm_vars['LINK'] = '<i class="fa fa-trash-o" title="Delete"></i>';
             $links[] = javascript('confirm', $confirm_vars);
         }
 

@@ -134,7 +134,7 @@ class PHPWS_Multimedia extends File_Common
             $authkey = \Current_User::getAuthKey();
             $links[] = <<<EOF
 <a class="delete-file pointer" data-folder-id="$this->folder_id" data-id="$this->id" data-type="mop" data-command="delete_multimedia" data-authkey="$authkey">
-    <i class="far fa-trash-alt"></i>
+    <i class="fa fa-trash-o"></i>
 </a>
 EOF;
         }

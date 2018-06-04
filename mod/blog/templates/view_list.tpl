@@ -24,7 +24,7 @@
         <!-- END read-more -->
     </div>
     <!-- BEGIN edit-link -->
-    <a href="{EDIT_URI}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Edit blog entry</a>
+    <a href="{EDIT_URI}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit blog entry</a>
     <!-- END edit-link -->
 </article>
 <hr />

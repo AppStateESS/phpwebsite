@@ -8,7 +8,7 @@
 <!-- END day-name -->
 	 <div class="details">
 	  <h4 class="title">{SUMMARY}</h4>
-	  <p class="time" title="{DTSTART}"><i class="far fa-clock"></i> {START_TIME} <!-- BEGIN end-time -->- {END_TIME}<!-- END end-time --></p>
+	  <p class="time" title="{DTSTART}"><i class="fa fa-clock-o"></i> {START_TIME} <!-- BEGIN end-time -->- {END_TIME}<!-- END end-time --></p>
 	   <!-- BEGIN location -->
 	  <p class="location"><i class="fa fa-map-marker"></i> {LOCATION}</p>
 	<!-- END location --></div>

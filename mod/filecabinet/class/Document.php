@@ -279,7 +279,7 @@ EOF;
         $js['ADDRESS'] = $link->getAddress();
 
         if ($icon) {
-            $js['LINK'] = '<i class="far fa-trash-alt" title="Delete document"></i>';
+            $js['LINK'] = '<i class="fa fa-trash-o" title="Delete document"></i>';
         } else {
             $js['LINK'] = 'Delete';
         }

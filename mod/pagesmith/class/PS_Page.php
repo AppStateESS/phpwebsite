@@ -250,7 +250,7 @@ class PS_Page
         $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars, true);
         $js['QUESTION'] = 'Are you sure you want to delete this page?';
         if ($icon) {
-            $js['LINK'] = '<i class="far fa-trash-alt" title="Delete"></i>';
+            $js['LINK'] = '<i class="fa fa-trash-o" title="Delete"></i>';
         } else {
             $js['LINK'] = 'Delete';
         }

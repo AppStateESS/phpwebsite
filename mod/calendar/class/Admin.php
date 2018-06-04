@@ -1420,7 +1420,7 @@ class Calendar_Admin
         $page_tags['DISPLAY_NAME_LABEL'] = 'User';
         $page_tags['AVAILABILITY_LABEL'] = 'Availability';
 
-        $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fas fa-file-alt"></i> ' . 'Create schedule' . '</button>';
+        $page_tags['ADD_CALENDAR'] = '<button id="create-schedule" class="btn btn-success"><i class="fa fa-plus"></i> Create schedule</button>';
 
         $schedule_form = $this->calendar->schedule->form();
         $schedule_modal = new \phpws2\Modal('schedule-modal', $schedule_form, 'Create schedule');

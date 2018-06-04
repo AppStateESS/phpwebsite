@@ -486,18 +486,18 @@ class Blog {
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link,
                             true);
 
-            $confirm_vars['LINK'] = '<i class="far fa-trash-alt" title="Delete blog entry"></i>';
+            $confirm_vars['LINK'] = '<i class="fa fa-trash-o" title="Delete blog entry"></i>';
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')) {
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $icon = '<i class="fas fa-flag" title="Remove from front page"></i>';
+                $icon = '<i class="fa fa-flag" title="Remove from front page"></i>';
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $icon = '<i class="far fa-flag" title="Force to front page"></i>';
+                $icon = '<i class="fa fa-flag-o" title="Force to front page"></i>';
                 $list[] = PHPWS_Text::secureLink($icon, 'blog', $link);
             }
         }

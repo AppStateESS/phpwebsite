@@ -199,11 +199,11 @@ class Calendar_Event {
             javascript('confirm');
             if ($type == 'icon') {
                 return <<<EOF
-<a style="cursor : pointer" data-toggle="tooltip" data-placement="top" title="Delete event" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="far fa-trash-alt"></i></a>
+<a style="cursor : pointer" data-toggle="tooltip" data-placement="top" title="Delete event" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i></a>
 EOF;
             } else {
                 return <<<EOF
-<a style="cursor : pointer" class="btn btn-danger btn-sm" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="far fa-trash-alt"></i> $link</a>
+<a style="cursor : pointer" class="btn btn-danger btn-sm" onclick="javascript:confirm_link('$question', '$address'); return false"><i class="fa fa-trash-o"></i> $link</a>
 EOF;
             }
         } else {
@@ -226,11 +226,10 @@ EOF;
 
         $js['address'] = PHPWS_Text::linkAddress('calendar', $var, true);
         if ($type == 'icon') {
-            $js['label'] = '<i data-toggle="tooltip" data-placement="top" class="fas fa-pencil-alt" title="Blog this"></i>';
+            $js['label'] = '<i data-toggle="tooltip" data-placement="top" class="fa fa-pencil" title="Blog this"></i>';
         } else {
             $js['class'] = 'btn btn-default btn-sm';
-            $js['label'] = '<i class="fas fa-pencil-alt"></i> ' . dgettext('calendar',
-                            'Blog this');
+            $js['label'] = '<i class="fa fa-pencil"></i> Blog this';
         }
         $js['width'] = '320';
         $js['height'] = '240';

@@ -87,7 +87,7 @@ class Icon extends \phpws2\Tag {
                 break;
 
             case 'delete':
-                $this->addClass('far fa-trash-alt');
+                $this->addClass('fa fa-trash-o');
                 break;
 
             case 'email':

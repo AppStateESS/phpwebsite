@@ -157,7 +157,7 @@ class Access_Shortcut
     {
         $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
         $js['ADDRESS'] = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s', $this->id, Current_User::getAuthKey());
-        $js['LINK'] = '<button class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';
+        $js['LINK'] = '<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Delete</button>';
         $tags[] = javascript('confirm', $js);
 
         $tags[] = '<a class="btn btn-success btn-sm edit-shortcut" data-authkey="' . \Current_User::getAuthKey() .

@@ -207,7 +207,7 @@ class PHPWS_Panel_Link {
 
         if (isset($_SESSION['controlpanel_delete_links'])) {
             $tpl['DELETE'] = ' <a href="index.php?module=controlpanel&amp;remove_cp_link=' . $this->id . '">'
-                    . '<i class="far fa-trash-alt"></i></a>';
+                    . '<i class="fa fa-trash-o"></i></a>';
         }
 
         return PHPWS_Template::process($tpl, 'controlpanel', 'link.tpl');
