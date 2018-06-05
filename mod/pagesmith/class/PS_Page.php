@@ -275,14 +275,14 @@ class PS_Page
     public function frontPageToggle($icon = false)
     {
         if ($this->front_page) {
-            $label = '<i class="fas fa-flag"></i>';
+            $label = '<i class="fa fa-flag"></i>';
             if (!$icon) {
                 $label .= ' Remove as front page';
             }
             $title = 'Click to remove as front page';
             $vars['fp'] = 0;
         } else {
-            $label = '<i class="far fa-flag"></i>';
+            $label = '<i class="fa fa-flag-o"></i>';
             if (!$icon) {
                 $label .= ' Show as home page';
             }
