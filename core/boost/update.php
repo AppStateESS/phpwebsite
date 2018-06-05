@@ -644,6 +644,36 @@ EOF;
 + Update the CHAR columns in registered table to VARCHAR
 </pre>
 EOF;
+            
+             case version_compare($version, '2.11.0', '<'):
+                 $content[] = <<<EOF
+<pre>
+2.11.0
+-------------------
+This is the last version of phpWebsite. All further development will occur
+on Canopy.
+        
++ Database : fix to boolean columns under PostgreSQL
++ Database: removed alias name restriction.
++ Database: Added value type for Boolean
++ Database: Fixed PEAR sequence table problem in phpws2.
++ CKEditor : update jquery call, made directories relative.
++ Removed all language translation constructs.
++ Updated recaptcha to version 2.0
++ Default captcha is now recaptcha and not freecap.
++ Replace PHPWS_Error returns with Exceptions
++ Fixed namespace issues with PHPWS_Time, DBPager, Key, PHPWS_Cookie and others.
++ Removed MOD_REWRITE_ENABLED reliance. It should always be on. Allows NgInx
+  usage.
++ FileVar: Added parens as allowed file name character.
++ Menu: added method call that disables menu display.
++ Fixed problems with Document uploading in File Cabinet.
++ Variable.TextOnly prohibits addAllowedTags from StringVar parent.
++ StringVar rewrote add tag logic.
++ phpws2.Resouce createTable less error prone.
++ DateVar - added printEmpty variable to unix epoch format errors.
+</pre>
+EOF;
     }
     return true;
 }
