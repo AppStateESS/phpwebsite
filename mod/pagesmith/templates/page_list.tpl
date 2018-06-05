@@ -1,6 +1,6 @@
 <div style="float: right">{SEARCH}</div>
 <div style="margin-bottom : 10px">
-  <a href="{NEW_PAGE_LINK_URI}" class="btn btn-success"><i class="fas fa-file-alt"></i> {NEW_PAGE_LINK_TEXT}</a>
+  <a href="{NEW_PAGE_LINK_URI}" class="btn btn-success"><i class="fa fa-file-o"></i> {NEW_PAGE_LINK_TEXT}</a>
 </div>
 <table class="table table-striped" style="width:100%">
     <tr>
