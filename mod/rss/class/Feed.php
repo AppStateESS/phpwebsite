@@ -64,7 +64,7 @@ class RSS_Feed
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink('<i class="fas fa-sync" title="' . 'Reset' . '"></i>',
+        $links[] = PHPWS_Text::secureLink('<i class="fa fa-refresh" title="' . 'Reset' . '"></i>',
                         'rss', $vars);
 
         $links[] = '<i data-id="' . $this->id . '" class="edit-feed pointer fa fa-edit" title="' . 'Edit the feed' . '"></i>';

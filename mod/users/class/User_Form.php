@@ -50,7 +50,7 @@ class User_Form
             $template['USERNAME'] = Current_User::getUsername();
             $template['DISPLAY_NAME'] = Current_User::getDisplayName();
             $template['PANEL'] = $template['MODULES'] = PHPWS_ControlPanel::panelLink();
-            $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page"><i class="far fa-user"></i> Account</a>';
+            $template['ACCOUNT'] = '<a href="index.php?module=users&action=user&tab=my_page"><i class="fa fa-user"></i> Account</a>';
         }
         $logout_link = $auth->getLogoutLink();
 

@@ -94,7 +94,7 @@ EOF;
     public function getLogoutLink()
     {
         if ($this->logout_link) {
-            return sprintf('<a href="%s"><i class="fas fa-sign-out-alt"></i> %s</a>', $this->logout_link,
+            return sprintf('<a href="%s"><i class="fa fa-sign-out"></i> %s</a>', $this->logout_link,
                     'Log Out');
         } else {
             return null;

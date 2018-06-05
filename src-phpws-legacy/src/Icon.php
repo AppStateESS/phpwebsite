@@ -91,7 +91,7 @@ class Icon extends \phpws2\Tag {
                 break;
 
             case 'email':
-                $this->addClass('far fa-envelope');
+                $this->addClass('fa fa-envelope-o');
                 break;
 
             case 'error':
@@ -99,7 +99,7 @@ class Icon extends \phpws2\Tag {
                 break;
 
             case 'image':
-                $this->addClass('far fa-image');
+                $this->addClass('fa fa-image-o');
                 break;
 
             case 'up':
