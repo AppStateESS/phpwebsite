@@ -1,0 +1,22 @@
+#rss-feed.rss ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    max-height: 400px;
+    overflow-y : auto;
+}
+#rss-feed.rss ul li {
+    padding: 6px 8px;
+    font-family : arial, helvetica;
+}
+
+#rss-feed.rss .item-date {
+    font-size : 0.9em;
+}
+
+#rss-feed.rss .item-title {
+    font-size : 0.9em;
+}
+
+#rss-feed.rss ul li:nth-child(odd) {
+}
