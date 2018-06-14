@@ -1,11 +1,12 @@
-<div class="rss">
+<div id="rss-feed" class="rss">
   {IMAGE}
   <h4><a href="{FEED_LINK}">{FEED_TITLE}</a></h4>
   <!-- BEGIN message -->{MESSAGE}<!-- END message -->
-  <ul style="list-style-type: none;margin-left:0;padding-left:0">
+  <ul>
     <!-- BEGIN item_list -->
-    <li style="margin-bottom:1em">
-      <a href="{LINK}">{TITLE}<br /><small>{PUBDATE_REFORMATED}</small></a>
+    <li>
+      <span class="item-title"><a href="{LINK}">{TITLE}</span><br />
+      <span class="item-date">Posted: {PUBDATE_REFORMATED}</span></a>
     </li>
     <!-- END item_list -->
   </ul>
