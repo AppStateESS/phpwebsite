@@ -5,7 +5,7 @@
  * @version $Id$
  */
 
-define('RSS_DATE_FORMAT', '%A, %h %e, %Y %l:%M%P');
+define('RSS_DATE_FORMAT', '%A, %h %e, %Y &dash; %l:%M%P');
 
 // The default maximum amount of feeds to show regardless
 // of age
