@@ -1,5 +1,7 @@
 <?php
+
 namespace phpws;
+
 /**
  * Copied from php.net
  * http://us2.php.net/manual/en/ref.xml.php
@@ -17,14 +19,15 @@ namespace phpws;
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+class XMLParser
+{
 
+    public $filename = null;
+    public $xml = null;
+    public $data = null;
+    public $error = null;
+    public $mapped = null;
 
-class XMLParser {
-    public $filename     = null;
-    public $xml          = null;
-    public $data         = null;
-    public $error        = null;
-    public $mapped       = null;
     /**
      * If content_only is true, attribute values will be ignored and only
      * the 'content' tags will be paired to the tag name.
@@ -34,7 +37,7 @@ class XMLParser {
      */
     public $content_only = false;
 
-    public function __construct($xml_file, $die_on_error=true)
+    public function __construct($xml_file, $die_on_error = true)
     {
         $this->filename = $xml_file;
         $this->xml = xml_parser_create();
@@ -50,12 +53,20 @@ class XMLParser {
         }
     }
 
-    public function parse($xml_file, $die_on_error=true)
+    public function parse($xml_file, $die_on_error = true)
     {
-        $file_contents = @file($xml_file);
+        $ctx = stream_context_create(array(
+            'http' => array(
+                'timeout' => 5,
+                'protocol_version' => 1.1,
+                'header' => 'Connection: close'
+            )
+        ));
+        $file_contents = file($xml_file, 0, $ctx);
 
         if (empty($file_contents)) {
-            return \phpws\PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'XMLParser:parse', $xml_file);
+            return \phpws\PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core',
+                            'XMLParser:parse', $xml_file);
         }
 
         foreach ($file_contents as $data) {
@@ -64,11 +75,12 @@ class XMLParser {
             if (!$parse) {
                 if ($die_on_error) {
                     die(sprintf("XML error: %s at line %d",
-                    xml_error_string(xml_get_error_code($this->xml)),
-                    xml_get_current_line_number($this->xml)));
+                                    xml_error_string(xml_get_error_code($this->xml)),
+                                    xml_get_current_line_number($this->xml)));
                     xml_parser_free($this->xml);
                 } else {
-                    return \phpws\PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'XMLParset:parse', $xml_file);
+                    return \phpws\PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core',
+                                    'XMLParset:parse', $xml_file);
                 }
             }
         }
@@ -79,27 +91,30 @@ class XMLParser {
     public function startHandler($parser, $name, $attributes)
     {
         $data['name'] = $name;
-        if ($attributes) { $data['attributes'] = $attributes; }
+        if ($attributes) {
+            $data['attributes'] = $attributes;
+        }
         $this->data[] = $data;
     }
 
     /**
      * Sets the value of content_only. See variable description.
      */
-    public function setContentOnly($only=true)
+    public function setContentOnly($only = true)
     {
-        $this->content_only = (bool)$only;
+        $this->content_only = (bool) $only;
     }
 
-    public function dataHandler($parser, $data) {
+    public function dataHandler($parser, $data)
+    {
         //Trims everything except for spaces
-        if($data = trim($data, "\t\n\r\0\x0B")) {
+        if ($data = trim($data, "\t\n\r\0\x0B")) {
             $test = str_replace(' ', '', $data);
             if (empty($test)) {
                 $data = null;
             }
             $index = count($this->data) - 1;
-            if(isset($this->data[$index]['content'])) {
+            if (isset($this->data[$index]['content'])) {
                 $this->data[$index]['content'] .= $data;
             } else {
                 $this->data[$index]['content'] = $data;
@@ -121,7 +136,6 @@ class XMLParser {
         return $this->subformat($this->data[0]);
     }
 
-
     public function subformat($foo)
     {
         if (isset($foo['child'])) {
@@ -133,7 +147,8 @@ class XMLParser {
                     continue;
                 }
 
-                foreach ($result as $key=>$value);
+                foreach ($result as $key => $value)
+                    ;
 
                 if (isset($bar['child'])) {
                     if (count($value) > 1) {
@@ -163,9 +178,9 @@ class XMLParser {
                 }
             }
 
-            return array($foo['name']=>$content);
+            return array($foo['name'] => $content);
         } elseif ($this->content_only && isset($foo['content'])) {
-            return array($foo['name']=>$foo['content']);
+            return array($foo['name'] => $foo['content']);
         } else {
             if (isset($foo['attributes'])) {
                 $row['ATTRIBUTES'] = $foo['attributes'];
@@ -176,7 +191,7 @@ class XMLParser {
             }
 
             if (isset($row)) {
-                return array($foo['name']=>$row);
+                return array($foo['name'] => $row);
             }
         }
     }
