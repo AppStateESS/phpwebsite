@@ -69,6 +69,8 @@ class RSS_Feed
 
         $links[] = '<i data-id="' . $this->id . '" class="edit-feed pointer fa fa-edit" title="' . 'Edit the feed' . '"></i>';
 
+        $tpl['TITLE'] = '<a href="index.php?module=rss&amp;feed=' . $this->id . '">' . $this->title . '</a>';
+
         $js['QUESTION'] = dgettext('rss',
                 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS'] = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
@@ -246,9 +248,11 @@ class RSS_Feed
      */
     public function view()
     {
+        $sortByDate = false;
         if (!$this->loadParser()) {
             $tpl['MESSAGE'] = dgettext('rss', 'Sorry, unable to grab feed.');
         } else {
+
             if (isset($this->mapped['ITEMS'])) {
                 $count = 0;
                 foreach ($this->mapped['ITEMS'] as $item_data) {
@@ -263,16 +267,27 @@ class RSS_Feed
                     }
 
                     if (isset($item_data['PUBDATE'])) {
+                        $sortByDate = true;
+                        $pubStamp = strtotime($item_data['PUBDATE']);
+                        $xmlKey = $pubStamp;
+                        while (isset($tpl['item_list'][$xmlKey])) {
+                            $xmlKey++;
+                        }
                         $item_data['PUBDATE_REFORMATED'] = strftime(RSS_DATE_FORMAT,
-                                strtotime($item_data['PUBDATE']));
+                                $pubStamp);
+                        $tpl['item_list'][$xmlKey] = $item_data;
+                    } else {
+                        $tpl['item_list'][] = $item_data;
                     }
 
-                    $tpl['item_list'][] = $item_data;
                     $count++;
                 }
             } else {
                 $tpl['MESSAGE'] = 'Unable to list feed.';
             }
+        }
+        if ($sortByDate) {
+            krsort($tpl['item_list']);
         }
         $tpl['FEED_LINK'] = &$this->mapped['CHANNEL']['LINK'];
 
@@ -289,7 +304,6 @@ class RSS_Feed
         } else {
             $tpl['FEED_TITLE'] = &$this->title;
         }
-
         $content = PHPWS_Template::process($tpl, 'rss', 'feeds/view_rss.tpl');
 
         return $content;
