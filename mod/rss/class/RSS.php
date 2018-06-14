@@ -5,7 +5,10 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-class RSS {
+require_once (PHPWS_SOURCE_DIR . 'mod/rss/class/Feed.php');
+
+class RSS
+{
 
     public static function registerModule($module, &$content)
     {
@@ -66,6 +69,18 @@ class RSS {
                     $oModule->proper_name);
             return TRUE;
         }
+    }
+
+    public static function viewFeed($feed_id)
+    {
+        \Layout::addStyle('rss', 'fullview.css');
+        $feed_id = (int) $feed_id;
+        $feed = new \RSS_Feed($feed_id);
+        if (empty($feed->title)) {
+            \phpws2\Error::errorPage('404');
+        }
+        $content = $feed->view();
+        return $content;
     }
 
     public static function showFeeds()
