@@ -924,7 +924,7 @@ class HTML_Template_Sigma extends PEAR
             $this->_resetTemplate($removeUnknownVariables, $removeEmptyBlocks);
             return $this->_getCached($filename);
         }
-        if (false === ($template = @file_get_contents($this->fileRoot . $filename))) {
+        if (false === ($template = file_get_contents($this->fileRoot . $filename))) {
             return $this->raiseError($this->errorMessage(SIGMA_TPL_NOT_FOUND, $filename), SIGMA_TPL_NOT_FOUND);
         }
         $this->_triggers     = array();
