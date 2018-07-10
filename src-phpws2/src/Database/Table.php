@@ -136,6 +136,12 @@ abstract class Table extends Resource
     private $use_pear_sequence;
 
     /**
+     * Normally id but can be changed using usePearSequence 2nd parameter
+     * @var string
+     */
+    private $primary_key_pear_name;
+
+    /**
      * Extended class should add a primary index to the current table.
      */
     abstract public function addPrimaryIndexId();
@@ -422,10 +428,13 @@ abstract class Table extends Resource
      * setting.
      * @return mixed Boolean if set, null otherwise.
      */
-    public function usePearSequence($use = null)
+    public function usePearSequence($use = null, $primary_key_pear_name = null)
     {
         if (!is_null($use)) {
             $this->use_pear_sequence = (bool) $use;
+        }
+        if ($primary_key_pear_name) {
+            $this->primary_key_pear_name = $primary_key_pear_name;
         }
         return $this->use_pear_sequence;
     }
@@ -500,8 +509,15 @@ abstract class Table extends Resource
         reset($this->values);
 
         if ($this->usePearSequence()) {
-            $set_names[] = 'id';
-            $column_values[] = ':id';
+            if ($this->primary_key_pear_name) {
+                $key_name = $this->primary_key_pear_name;
+            } else {
+                $key_name = 'id';
+            }
+            if (!in_array($key_name, $set_names)) {
+                $set_names[] = $key_name;
+                $column_values[] = ':' . $key_name;
+            }
         }
 
         return sprintf('insert into %s (%s) values (%s);', $this->getFullName(),
