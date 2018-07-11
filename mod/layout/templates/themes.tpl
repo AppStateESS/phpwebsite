@@ -13,4 +13,4 @@
   </div>
 </div>
 <button type="submit" id="{UPDATE_ID}" class="btn btn-primary" name="{UPDATE_NAME}">{UPDATE_VALUE}</button>
-{END_FORM}
+</form>
