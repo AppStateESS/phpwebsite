@@ -846,6 +846,9 @@ abstract class DB extends \Canopy\Data
          * @see Group
          */
         $engine = $this->getDatabaseType();
+        if ($engine == 'mysqli') {
+            $engine = 'mysql';
+        }
         $group_class = "\\phpws2\\Database\\Engine\\$engine\Group";
         $this->group_by = new $group_class($fields, $group_type);
         return $this->group_by;
