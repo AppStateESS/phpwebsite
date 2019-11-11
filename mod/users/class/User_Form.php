@@ -369,6 +369,7 @@ class User_Form
         $form->addHidden('command', 'postMembers');
         $form->addHidden('group_id', $group->getId());
         $form->addText('search_member');
+        $form->setClass('search_member', 'form-control');
         $form->setLabel('search_member', 'Add Member');
         $form->addSubmit('search', 'Add');
 
@@ -515,6 +516,7 @@ class User_Form
                     $message['AUTHORIZE'] = dgettext('users', 'Warning: this user\'s authorization script is broken. Choose another and update.');
                 }
                 $form->addSelect('authorize', $result);
+                $form->setClass('authorize', 'form-control');
                 $form->setMatch('authorize', $user->authorize);
                 $form->setLabel('authorize', 'Authorization');
             }
@@ -524,6 +526,7 @@ class User_Form
             $form->addText('username', $user->getUsername());
             $form->setRequired('username');
             $form->setLabel('username', 'Username');
+            $form->setClass('username', 'form-control');
             $form->addPassword('password1');
             $form->addPassword('password2');
             $form->setLabel('password1', 'Password');
@@ -533,7 +536,9 @@ class User_Form
             $form->addTplTag('USERNAME_LABEL', '<strong>' . 'Username' . '</strong>');
         }
         $form->addText('display_name', $user->display_name);
+        $form->setClass('display_name', 'form-control');
         $form->addText('email', $user->getEmail());
+        $form->setClass('email', 'form-control');
         $form->setSize('email', 30);
         $form->setRequired('email');
 
@@ -666,6 +671,7 @@ class User_Form
         $form->addHidden('command', 'postGroup');
 
         $form->addText('groupname', $group->getName());
+        $form->setClass('groupname', 'form-control');
         $form->setLabel('groupname', 'Group Name');
         $template = $form->getTemplate();
 
@@ -689,6 +695,7 @@ class User_Form
     public function memberForm()
     {
         $form->add('add_member', 'textfield');
+        $form->setClass('add_member', 'form-control');
         $form->add('new_member_submit', 'submit', 'Add');
 
         $template['CURRENT_MEMBERS'] = User_Form::memberListForm($group);
@@ -837,6 +844,7 @@ class User_Form
             $template['FILE_LIST'] = 'No new scripts found';
         } else {
             $form->addSelect('file_list', $remaining_files);
+            $form->setClass('file_list', 'form-control');
             $form->reindexValue('file_list');
             $form->addSubmit('add_script', 'Add Script File');
         }
@@ -881,6 +889,7 @@ class User_Form
             $row['CHECK'] = sprintf('<input type="radio" name="default_authorization" value="%s" %s />', $id, $checked);
             $form = new PHPWS_Form();
             $form->addSelect("default_group[$id]", $groups);
+            $form->setClass('default_group[$id]', 'form-control');
             $form->setMatch("default_group[$id]", $default_group);
             $row['DEFAULT_GROUP'] = $form->get("default_group[$id]");
 
@@ -908,6 +917,7 @@ class User_Form
         $form->addSubmit('submit', 'Update Settings');
 
         $form->addText('site_contact', PHPWS_User::getUserSetting('site_contact'));
+        $form->setClass('site_contact', 'form-control');
         $form->setLabel('site_contact', 'Site contact email');
         $form->setSize('site_contact', 40);
 
@@ -950,6 +960,7 @@ class User_Form
 
             $form->addSelect('user_menu', $menu_options);
             $form->setMatch('user_menu', PHPWS_User::getUserSetting('user_menu'));
+            $form->setClass('user_menu', 'form-control');
             $form->setLabel('user_menu', 'User Menu');
 
             $form->addCheckBox('show_login', 1);
@@ -967,6 +978,7 @@ class User_Form
         }
 
         $form->addTextArea('forbidden_usernames', PHPWS_Settings::get('users', 'forbidden_usernames'));
+        $form->setClass('forbidden_usernames', 'form-control');
         $form->setLabel('forbidden_usernames', dgettext('users', 'Forbidden usernames (one per line)'));
 
         $form->addCheckbox('session_warning', 1);
