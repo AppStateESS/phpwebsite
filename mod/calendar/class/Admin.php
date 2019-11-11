@@ -926,6 +926,7 @@ class Calendar_Admin
 
         PHPWS_Settings::set('calendar', 'display_mini', (int) $_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int) $_POST['starting_day']);
+        PHPWS_Settings::set('calendar', 'cal_manager', $_POST['cal_manager']);
         PHPWS_Settings::set('calendar', 'default_view', $_POST['default_view']);
         PHPWS_Settings::set('calendar', 'brief_grid', $_POST['brief_grid']);
 
@@ -1509,6 +1510,10 @@ class Calendar_Admin
         $form->addRadio('display_mini', array(0, 1, 2));
         $form->setLabel('display_mini', array(dgettext('calendar', 'Don\'t show'), 'Only on front page', 'On all pages'));
         $form->setMatch('display_mini', PHPWS_Settings::get('calendar', 'display_mini'));
+        
+        $form->addText('cal_manager', PHPWS_Settings::get('calendar', 'cal_manager'));
+        $form->setClass('cal_manager', 'form-control');
+        $form->setLabel('cal_manager', dgettext('calendar', 'Calendar Manager'));
 
         $views['grid'] = 'Month grid';
         $views['list'] = 'Month list';
