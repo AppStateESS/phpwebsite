@@ -6,7 +6,8 @@
 <div>{CACHE_MONTH_VIEWS} {CACHE_MONTH_VIEWS_LABEL}</div>
 <div>{MINI_GRID} {MINI_GRID_LABEL}</div>
 <div>{NO_FOLLOW} {NO_FOLLOW_LABEL}</div>
-<table style="margin-top: 20px" cellpadding="4" width="98%">
+<div>{CAL_MANAGER} {CAL_MANAGER_LABEL}</div>
+<table class="table">
     <tr>
         <td width="20%"><strong>{START_LABEL}</strong></td>
         <td>{STARTING_DAY_1} {STARTING_DAY_1_LABEL}<br />
