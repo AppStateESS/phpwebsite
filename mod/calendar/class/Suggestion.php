@@ -147,6 +147,13 @@ class Calendar_Suggestion extends Calendar_Event {
         $this->schedule_id = $this->_schedule->id;
         $this->submitted = time();
         $db = new PHPWS_DB('calendar_suggestions');
+        $to = PHPWS_Settings::get('calendar', 'cal_manager');
+        $subject = "Suggested Calendar Event";
+        $txt = "A new Calendar Event has been submitted";
+        $headers = "From: foo@bar.com" . "\r\n" . //Needs to be set Could be an additional setting or commented out completely
+        		"CC: yada.yada.com";              // Same
+        
+        mail($to,$subject,$txt,$headers);
         return $db->saveObject($this);
     }
 
