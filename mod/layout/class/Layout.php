@@ -585,7 +585,7 @@ class Layout
         // Say it loud
         $metatags[] = '<meta name="generator" content="phpWebSite" />';
 
-        $metatags[] = '<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type" />';
+        $metatags[] = '<meta charset="utf-8" />';
         if (!empty($author)) {
             $metatags[] = '<meta name="author" content="' . $meta_author . '" />';
         } else {
@@ -919,7 +919,7 @@ class Layout
         }
 
         if (!isset($_SESSION['javascript_enabled'])) {
-            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0;url=index.php?nojs=1&ret=' . urlencode(\phpws\PHPWS_Core::getCurrentUrl()) . '"/></noscript>';
+            $jsHead[] = '<noscript><meta http-equiv="refresh" content="0; url=index.php?nojs=1&ret=' . urlencode(\phpws\PHPWS_Core::getCurrentUrl()) . '"/></noscript>';
         }
 
         if (isset($_GET['nojs'])) {
