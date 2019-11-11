@@ -179,6 +179,7 @@ class Calendar_Schedule
 
         $event = new Calendar_Event(0, $this);
         $suggest_form = Calendar_Admin::event_form($event, true);
+        $captcha = Captcha::get();
 
         $modal = <<<EOF
 <div class="modal fade" id="suggestEvent" tabindex="-1" role="dialog">
@@ -192,6 +193,7 @@ class Calendar_Schedule
          $suggest_form
       </div>
       <div class="modal-footer">
+      $captcha
         <button type="submit" onClick="$('#event_form').submit();" class="btn btn-success">Suggest event</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
