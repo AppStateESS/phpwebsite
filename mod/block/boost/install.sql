@@ -8,6 +8,7 @@ title varchar( 255 ),
 content text not null,
 file_id int not null default 0,
 hide_title smallint not null default 0,
+hide_narrow smallint not null default 0,  
 primary key ( id )
 );
 
