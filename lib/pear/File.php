@@ -32,47 +32,47 @@ require_once 'PEAR.php';
  * The default number of bytes for reading
  */
 if (!defined('FILE_DEFAULT_READSIZE')) {
-    define('FILE_DEFAULT_READSIZE', 1024, true);
+    define('FILE_DEFAULT_READSIZE', 1024);
 }
 
 /**
  * The maximum number of bytes for reading lines
  */
 if (!defined('FILE_MAX_LINE_READSIZE')) {
-    define('FILE_MAX_LINE_READSIZE', 40960, true);
+    define('FILE_MAX_LINE_READSIZE', 40960);
 }
 
 /**
  * Whether file locks should block
  */
 if (!defined('FILE_LOCKS_BLOCK')) {
-    define('FILE_LOCKS_BLOCK', true, true);
+    define('FILE_LOCKS_BLOCK', true);
 }
 
 /**
  * Mode to use for reading from files
  */
-define('FILE_MODE_READ', 'rb', true);
+define('FILE_MODE_READ', 'rb');
 
 /**
  * Mode to use for truncating files, then writing
  */
-define('FILE_MODE_WRITE', 'wb', true);
+define('FILE_MODE_WRITE', 'wb');
 
 /**
  * Mode to use for appending to files
  */
-define('FILE_MODE_APPEND', 'ab', true);
+define('FILE_MODE_APPEND', 'ab');
 
 /**
  * Use this when a shared (read) lock is required
  */
-define('FILE_LOCK_SHARED', LOCK_SH | (FILE_LOCKS_BLOCK ? 0 : LOCK_NB), true);
+define('FILE_LOCK_SHARED', LOCK_SH | (FILE_LOCKS_BLOCK ? 0 : LOCK_NB));
 
 /**
  * Use this when an exclusive (write) lock is required
  */
-define('FILE_LOCK_EXCLUSIVE', LOCK_EX | (FILE_LOCKS_BLOCK ? 0 : LOCK_NB), true);
+define('FILE_LOCK_EXCLUSIVE', LOCK_EX | (FILE_LOCKS_BLOCK ? 0 : LOCK_NB));
 
 /**
  * Class for handling files
