@@ -169,6 +169,7 @@ class Calendar_Admin
         $form->addText('summary', $event->summary);
         $form->setLabel('summary', 'Summary');
         $form->setSize('summary', 60);
+        $form->setRequired('summary');
 
         $form->addText('location', $event->location);
         $form->setLabel('location', 'Location');
