@@ -417,7 +417,7 @@ class Setup
         $mdb2_connection = $tdb->connect($dsn);
         if ($mdb2_connection->isConnected()) {
             $tables = $mdb2_connection->listTables();
-            if (count($tables)) {
+            if ($tables !== null && count($tables) > 0) {
                 return 2;
             } else {
                 $this->setConfigSet('dsn', $dsn);
@@ -897,12 +897,6 @@ class Setup
                 'You have register_globals enabled. You should disable it.');
         $test['globals']['name'] = 'Register globals disabled';
         $test['globals']['crit'] = false;
-
-        $test['magic_quotes']['pass'] = !get_magic_quotes_gpc() && !get_magic_quotes_runtime();
-        $test['magic_quotes']['fail'] = dgettext('core',
-                'Magic quotes is enabled. Please disable it in your php.ini file.');
-        $test['magic_quotes']['name'] = 'Magic quotes disabled';
-        $test['magic_quotes']['crit'] = true;
 
         foreach ($test as $test_section => $val) {
             if (!$val['pass']) {

@@ -378,7 +378,8 @@ class File extends PEAR
         $filePointers = &PEAR::getStaticProperty('File', 'filePointers');
 
         // unlock files
-        for ($i = 0, $c = count($locks); $i < $c; $i++) {
+        $c = is_array($locks) ? count($locks) : 0;
+        for ($i = 0; $i < $c; $i++) {
             is_resource($locks[$i]) and @flock($locks[$i], LOCK_UN);
         }
 
