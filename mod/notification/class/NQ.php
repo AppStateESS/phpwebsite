@@ -17,7 +17,7 @@ class NQ
 
     public static function close()
     {
-        if(count(self::$queues) > 0) {
+        if(is_array(self::$queues) && count(self::$queues) > 0) {
             $_SESSION['NotificationQueue'] = serialize(self::$queues);
         } else {
             if(isset($_SESSION['NotificationQueue'])) {
