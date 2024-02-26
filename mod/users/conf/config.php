@@ -45,9 +45,9 @@ define('NEW_SIGNUP_WINDOW', 48);
 // Enter the minimum character
 // count allowed for each
 define('PASSWORD_LENGTH', 5);
-define('USERNAME_LENGTH', 3);
-define('DISPLAY_NAME_LENGTH', 4);
-define('GROUPNAME_LENGTH', 4);
+define('USERNAME_LENGTH', 1);
+define('DISPLAY_NAME_LENGTH', 1);
+define('GROUPNAME_LENGTH', 1);
 
 define('LOGIN_BUTTON', 'Login');
 define('USER_SIGNUP_QUESTION', dgettext('users', 'Want to join?'));
