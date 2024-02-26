@@ -250,6 +250,8 @@ class Signup_Forms {
 
     public function editSheet()
     {
+        javascript('ckeditor');
+    	javascript('datetimepicker', null, false, true, true);
         $form = new PHPWS_Form('signup_sheet');
         $sheet = & $this->signup->sheet;
 
@@ -266,12 +268,15 @@ class Signup_Forms {
         }
 
         $form->addText('title', $sheet->title);
+        $form->setClass('title', 'form-control');
         $form->setLabel('title', 'Title');
-
+        
         $form->addTextArea('description', $sheet->description);
+        $form->setClass('description', 'ckeditor form-control');
         $form->setLabel('description', 'Description');
 
         $form->addText('contact_email', $sheet->contact_email);
+        $form->setClass('contact_email', 'form-control');
         $form->setLabel('contact_email', 'Contact email');
 
         $form->addCheck('multiple', 1);
@@ -297,17 +302,17 @@ class Signup_Forms {
         $form->setLabel('extra3', 'Extra information 3');
 
         $form->addText('end_time', $sheet->getEndTime());
-        $form->setClass('end_time', 'datepicker');
+        $form->setClass('end_time', 'datetimepicker');
         $form->setLabel('end_time', 'Close signup');
 
         $js_vars['type'] = 'text_clock';
         $js_vars['form_name'] = 'signup_sheet';
 
-        $js_vars['date_name'] = 'start_time';
-        $form->addTplTag('ST_JS', javascript('js_calendar', $js_vars));
+//        $js_vars['date_name'] = 'start_time';
+//        $form->addTplTag('ST_JS', javascript('js_calendar', $js_vars));
 
-        $js_vars['date_name'] = 'end_time';
-        $form->addTplTag('ET_JS', javascript('js_calendar', $js_vars));
+//        $js_vars['date_name'] = 'end_time';
+//        $form->addTplTag('ET_JS', javascript('js_calendar', $js_vars));
 
         $tpl = $form->getTemplate();
 
