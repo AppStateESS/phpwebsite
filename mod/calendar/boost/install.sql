@@ -22,8 +22,8 @@ CREATE TABLE calendar_notice (
 CREATE TABLE calendar_suggestions (
   id int NOT NULL default 0,
   schedule_id int NOT NULL default 0,
-  summary varchar(60) NOT NULL,
-  location varchar(60) default NULL,
+  summary varchar(100) NOT NULL,
+  location text,
   loc_link varchar(255) default NULL,
   description text,
   all_day smallint NOT NULL default 0,
