@@ -2,7 +2,7 @@
     "require": {
         "doctrine/dbal": "^2.7.0",
         "doctrine/common": "^2.4.3",
-        "swiftmailer/swiftmailer": "^5.4",
+        "swiftmailer/swiftmailer": "^6.2",
         "phansys/getid3": "^1.9"
     },
     "require-dev": {
